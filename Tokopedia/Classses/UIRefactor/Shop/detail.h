@@ -85,6 +85,12 @@ typedef enum
 #define kTKPDDETAIL_DATAQUERYKEY @"query"
 #define DATA_ETALASE_KEY @"etalase"
 #define kTKPDDETAIL_ACTIONKEY @"action"
+#define kTKPD_SHOP_LOGO @"shop_logo"
+#define kTKPD_OPEN_SHOP @"open_shop"
+#define kTKPD_SHOP_SHORT_DESC @"shop_short_desc"
+#define kTKPD_SHOP_TAG_LINE @"shop_tag_line"
+#define kTKPD_SHOP_COURIER_ORIGIN @"shop_courier_origin"
+#define kTKPD_SHOP_POSTAL @"shop_postal"
 #define kTKPDDETAIL_DATAINDEXKEY @"index"
 #define kTKPDDETAIL_DATAINDEXPATHKEY @"indexpath"
 #define kTKPDDETAIL_DATAADDRESSKEY @"dataaddress" //for address detail delegate
@@ -143,6 +149,7 @@ typedef enum
 //Shop Setting Shipping
 #define kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY @"get_shipping_info"
 #define kTKPDDETAIL_APIEDITSHIPPINGINFOKEY @"update_shipping_info"
+#define kTKPDDETAIL_APIGET_OPEN_SHOP_FORM @"get_open_shop_form"
 //Shop Setting Etalase
 #define kTKPDDETAIL_APIGETETALASEKEY @"get_shop_etalase"
 #define kTKPDDETAIL_APIDELETEETALASEKEY @"event_shop_delete_etalase"
@@ -414,6 +421,7 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY @"courier_origin"
 
 #define kTKPDSHOPSHIPMENT_APISHIPMENTIDS @"shipment_ids"
+#define kTKPDSHOPSHIPMENT_APIPAYMENTIDS @"payment_ids"
 
 //JNE
 #define kTKPDSHOPSHIPMENT_APIJNEKEY @"jne"

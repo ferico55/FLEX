@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class MyShopShipmentTableViewController;
 @interface MyShopPaymentViewController : UIViewController
 
 @property (nonatomic, strong)NSDictionary *data;
-
+@property (nonatomic, unsafe_unretained) MyShopShipmentTableViewController *myShopShipmentTableViewController;
+@property (nonatomic, unsafe_unretained) NSArray *arrDataPayment;
 @end

@@ -1552,15 +1552,18 @@
     BOOL isValid = YES;
     BOOL isValidPrice = YES;
     BOOL isValidWeight = YES;
+    int nImage = 0;
+    
     
     NSMutableArray *productImagesTemp = [NSMutableArray new];
     for (NSString *productImage in _productImageURLs) {
         if (![productImage isEqualToString:@""]) {
             [productImagesTemp addObject:productImage];
+            nImage++;
         }
     }
     //BOOL isValidImage = (productImagesTemp.count>0);
-    BOOL isValidImage = YES;
+    BOOL isValidImage = nImage!=0;
     
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductDetail new];
     Breadcrumb *department = [_dataInput objectForKey:DATA_CATEGORY_KEY]?:[Breadcrumb new];

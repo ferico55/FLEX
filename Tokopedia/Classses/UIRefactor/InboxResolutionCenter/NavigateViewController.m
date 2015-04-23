@@ -54,11 +54,19 @@
     favoriteController.data = @{MORE_USER_ID:(userID)?:@""};
     [viewControllers addObject:favoriteController];
     
-    ProfileContactViewController *contactController = [ProfileContactViewController new];
-    [viewControllers addObject:contactController];
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    if([userID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        ProfileContactViewController *contactController = [ProfileContactViewController new];
+        [viewControllers addObject:contactController];
+    }
+    else {
+        biodataController.isNotMyBiodata = YES;
+    }
     
     TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
     profileController.data = @{MORE_USER_ID:(userID)?:@""};
+    profileController.isOtherProfile = biodataController.isNotMyBiodata;
     [profileController setViewControllers:viewControllers animated:YES];
     [profileController setSelectedIndex:0];
     

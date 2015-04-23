@@ -244,6 +244,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
+    if(self.cellType == UITableViewCellTypeOneColumn) {
+        count = _product.count;
+    }
+        
 #ifdef kTKPDSEARCHRESULT_NODATAENABLE
     return _isnodata?1:count;
 #else

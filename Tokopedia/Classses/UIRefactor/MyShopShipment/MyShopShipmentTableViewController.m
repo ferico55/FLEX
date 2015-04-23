@@ -12,6 +12,9 @@
 #import "ShopSettings.h"
 #import "detail.h"
 #import "GeneralTableViewController.h"
+#import "Payment.h"
+#import "string_create_shop.h"
+#import "MyShopPaymentViewController.h"
 #import "MyShopShipmentInfoViewController.h"
 #import "AlertInfoView.h"
 
@@ -64,6 +67,7 @@
     
     __weak RKObjectManager *_objectManagerAction;
     __weak RKManagedObjectRequestOperation *_requestAction;
+    BOOL hasSelectKotaAsal;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *provinceLabel;
@@ -152,18 +156,19 @@
 @end
 
 @implementation MyShopShipmentTableViewController
-
+@synthesize createShopViewController;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Pengiriman";
     
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    self.navigationItem.backBarButtonItem = backBarButton;
+//    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+//                                                                      style:UIBarButtonItemStyleBordered
+//                                                                     target:self
+//                                                                     action:nil];
+//    self.navigationItem.backBarButtonItem = backBarButton;
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
-    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:(createShopViewController!=nil? CStringLanjut:@"Simpan")
                                                                    style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(tap:)];
@@ -235,6 +240,8 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (_shipment) {
+        if(createShopViewController!=nil && !hasSelectKotaAsal)
+            return 1;
         return 8;
     } else {
         return 0;
@@ -846,7 +853,18 @@
 
 - (void)tap:(id)sender
 {
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+    if(createShopViewController != nil)
+    {
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSDictionary *_auth = [_userManager getUserLoginData];
+        
+        MyShopPaymentViewController *myShopPaymentViewController = [MyShopPaymentViewController new];
+        myShopPaymentViewController.data = @{kTKPD_AUTHKEY:[_auth objectForKey:kTKPD_AUTHKEY]?:@{}};
+        myShopPaymentViewController.arrDataPayment = _shipment.payment_options;
+        myShopPaymentViewController.myShopShipmentTableViewController = self;
+        [self.navigationController pushViewController:myShopPaymentViewController animated:YES];
+    }
+    else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         [self configureRestKitAction];
         [self requestAction];
     }
@@ -1022,6 +1040,7 @@
 {
     if ([textField isEqual:_postCodeTextField]) {
         _shipment.shop_shipping.postal_code = textField.text;
+        [self validateEnableRightBarButtonItem];
     } else if ([textField isEqual:_shipmentJNEMinimumWeightTextField]) {
         _shipment.jne.jne_min_weight = textField.text;
     } else if ([textField isEqual:_shipmentJNEExtraFeeTextField]) {
@@ -1039,9 +1058,20 @@
 
 - (void)didSelectObject:(id)object
 {
+    if(createShopViewController != nil)
+    {
+        hasSelectKotaAsal = YES;
+        [self validateEnableRightBarButtonItem];
+    }
+    
     NSInteger index = [_districts indexOfObject:object];
     District *district = [_shipment.district objectAtIndex:index];
     _provinceLabel.text = district.district_name;
+    
+    if(createShopViewController!=nil && _shipment.shop_shipping==nil)
+        _shipment.shop_shipping = [ShopShipping new];
+    
+    
     _shipment.shop_shipping.district_name = district.district_name;
     _shipment.shop_shipping.district_id = district.district_id;
 
@@ -1088,6 +1118,8 @@
                                                       kTKPDSHOPSHIPMENT_APISHIPMENTAVAILABLEKEY,
                                                       ]];
     
+    
+    
     RKObjectMapping *shipmentsPackageMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipmentPackage class]];
     [shipmentsPackageMapping addAttributeMappingsFromArray:@[
                                                              kTKPDSHOPSHIPMENT_APIDESCKEY,
@@ -1133,6 +1165,19 @@
                                                                                    withMapping:districtMapping];
     [resultMapping addPropertyMapping:districtRel];
     
+    if(createShopViewController != nil)
+    {
+        RKObjectMapping *paymentMapping = [RKObjectMapping mappingForClass:[Payment class]];
+        [paymentMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APIPAYMENTIMAGEKEY,
+                                                        kTKPDDETAILSHOP_APIPAYMENTIDKEY,
+                                                        kTKPDDETAILSHOP_APIPAYMENTNAMEKEY,
+                                                        kTKPDDETAILSHOP_APIPAYMENTINFOKEY,
+                                                        kTKPDDETAILSHOP_APIPAYMENTDEFAULTSTATUSKEY
+                                                        ]];
+        RKRelationshipMapping *paymentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIPAYMENTOPTIONKEY toKeyPath:kTKPDDETAILSHOP_APIPAYMENTOPTIONKEY withMapping:paymentMapping];
+        [resultMapping addPropertyMapping:paymentRel];
+    }
+    
     RKRelationshipMapping *shipmentsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APISHIPMENTKEY
                                                                                       toKeyPath:kTKPDSHOPSHIPMENT_APISHIPMENTKEY
                                                                                     withMapping:shipmentsMapping];
@@ -1173,7 +1218,7 @@
     // Response Descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:shippingMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDSHOPSHIPMENT_APIPATH
+                                                                                       pathPattern:(createShopViewController!=nil? kTKPMYSHOP_APIPATH : kTKPDSHOPSHIPMENT_APIPATH)
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -1188,11 +1233,10 @@
     self.tableView.sectionFooterHeight = 0;
     self.tableView.sectionHeaderHeight = 0;
     
-    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY};
-    
+    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : (createShopViewController!=nil?kTKPDDETAIL_APIGET_OPEN_SHOP_FORM : kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY)};
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:kTKPDSHOPSHIPMENT_APIPATH
+                                                                      path:(createShopViewController!=nil? kTKPMYSHOP_APIPATH : kTKPDSHOPSHIPMENT_APIPATH)
                                                                 parameters:[param encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -1218,8 +1262,11 @@
     if (status) {
         
         UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
-        saveButton.tintColor = [UIColor whiteColor];
-        saveButton.enabled = YES;
+        if(createShopViewController == nil)
+        {
+            saveButton.tintColor = [UIColor whiteColor];
+            saveButton.enabled = YES;
+        }
         
         _shipment = shippingInfo.result;
         _availableShipments = _shipment.shop_shipping.district_shipping_supported;
@@ -1232,6 +1279,29 @@
         
         _provinceLabel.text = _shipment.shop_shipping.district_name;
         _postCodeTextField.text = _shipment.shop_shipping.postal_code;
+        
+        if(createShopViewController != nil)
+        {
+            if(_shipment.jne == nil)
+            {
+                _shipment.jne = [JNE new];
+                _shipment.jne.jne_fee = 0;
+                _shipment.jne.jne_diff_district = @"0";
+                _shipment.jne.jne_min_weight = @"";
+                _shipment.jne.jne_tiket = @"0";
+            }
+            if(_shipment.tiki == nil)
+            {
+                _shipment.tiki = [Tiki new];
+                _shipment.tiki.tiki_fee = 0;
+            }
+            if(_shipment.pos == nil) {
+                _shipment.pos = [POSIndonesia new];
+                _shipment.pos.pos_fee = 0;
+                _shipment.pos.pos_min_weight = 0;
+            }
+        }
+        
         
         for (ShippingInfoShipments *shipment in _shipment.shipment) {
             if ([shipment.shipment_name isEqualToString:@"JNE"]) {
@@ -1502,6 +1572,170 @@
 {
     
 }
+
+
+#pragma mark - Method
+- (ShippingInfoShipments *)getPandu
+{
+    return _pandu;
+}
+
+- (NSArray *)getAvailShipment
+{
+    return _availableShipments;
+}
+
+- (ShippingInfoShipments *)getRpx
+{
+    return _RPX;
+}
+
+- (ShippingInfoShipments *)getCahaya
+{
+    return _cahaya;
+}
+
+- (ShippingInfoShipments *)getWahana
+{
+    return _wahana;
+}
+
+- (ShippingInfoShipmentPackage *)getTikiPackageOn
+{
+    return _tikiPackageONS;
+}
+
+- (ShippingInfoShipmentPackage *)getTikiPackageRegular
+{
+    return _tikiPackageReguler;
+}
+
+- (ShippingInfoShipmentPackage *)getRpxPackageEco
+{
+    return _RPXPackageEconomy;
+}
+
+- (ShippingInfoShipmentPackage *)getPosPackageBiasa
+{
+    return _posPackageBiasa;
+}
+
+- (ShippingInfoShipmentPackage *)getCahayaPackageNormal
+{
+    return _cahayaPackageNormal;
+}
+
+- (ShippingInfoShipmentPackage *)getPanduPackageRegular
+{
+    return _panduPackageRegular;
+}
+
+- (ShippingInfoShipmentPackage *)getPosPackageExpress
+{
+    return _posPackageExpress;
+}
+
+- (ShippingInfoShipmentPackage *)getPosPackageKhusus
+{
+    return _posPackageKhusus;
+}
+
+- (ShippingInfoShipmentPackage *)getWahanaPackNormal
+{
+    return _wahanaPackageNormal;
+}
+
+- (ShippingInfoShipmentPackage *)getRpxPackageNextDay
+{
+    return _RPXPackageNextDay;
+}
+
+- (ShippingInfoShipmentPackage *)getJnePackageOke
+{
+    return _JNEPackageOke;
+}
+
+- (ShippingInfoShipmentPackage *)getJnePackageReguler
+{
+    return _JNEPackageReguler;
+}
+
+- (ShippingInfoShipmentPackage *)getJnePackageYes
+{
+    return _JNEPackageYes;
+}
+
+- (ShippingInfoResult *)getShipment
+{
+    return _shipment;
+}
+
+- (ShippingInfoShipments *)getJne
+{
+    return _JNE;
+}
+
+- (ShippingInfoShipments *)getTiki
+{
+    return _tiki;
+}
+
+- (ShippingInfoShipments *)getPosIndo
+{
+    return _posIndonesia;
+}
+
+- (int)getCourirOrigin
+{
+    return (int)_shipment.shop_shipping.district_id;
+}
+
+- (BOOL)getJneExtraFeeTextField
+{
+    return _showJNEExtraFeeTextField;
+}
+
+- (BOOL)getJneMinWeightTextField
+{
+    return _showJNEMinimumWeightTextField;
+}
+
+- (BOOL)getTikiExtraFee
+{
+    return _showTikiExtraFee;
+}
+
+- (BOOL)getPosMinWeight
+{
+    return _showPosMinimumWeight;
+}
+
+- (BOOL)getPosExtraFee
+{
+    return _showPosExtraFee;
+}
+
+- (NSString *)getPostalCode
+{
+    return _postCodeTextField.text;
+}
+
+- (void)validateEnableRightBarButtonItem
+{
+    if(hasSelectKotaAsal && _postCodeTextField.text.length>1)
+    {
+        UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
+        saveButton.tintColor = [UIColor whiteColor];
+        saveButton.enabled = YES;
+    }
+    else
+    {
+        UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
+        saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+        saveButton.enabled = NO;
+    }
+}
+
 
 #pragma mark - Restkit Action
 

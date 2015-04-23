@@ -34,6 +34,7 @@ typedef enum
 #define kTKPDCATEGORY_DATAICONKEY @"icon"
 #define kTKPDCATEGORY_DATAISNULLCHILD @"isnullchild"
 #define kTKPDCATEGORY_DATATYPEKEY @"type"
+#define kTKPDHASHTAG_HOTLIST @"hashtag_hotlist"
 #define kTKPDCATEGORY_DATATYPECATEGORYKEY 1
 #define DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE @"previousviewtype"
 
