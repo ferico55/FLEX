@@ -268,12 +268,14 @@
     
     _requestCount++;
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:[[self getEditedParam] encrypt]];
-    
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:_isEditForm?@[CStringGagalMemperbaharuiUlasan]:@[CStringGagalMenambahUlasan] delegate:self];
+        [stickyAlertView show];
+        [self.navigationController popViewControllerAnimated:YES];
     }];
     
     [_operationQueue addOperation:_request];
@@ -287,10 +289,15 @@
     
     if(status) {
         if([generalaction.result.is_success isEqualToString:@"1"]) {
-            
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:_isEditForm?@[CStringBerhasilMemperbaharuiUlasan]:@[CStringBerhasilMenambahUlasan] delegate:self];
+            [stickyAlertView show];
+            [self.navigationController popViewControllerAnimated:YES];
         } else {
             NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:generalaction.message_error,@"messages", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:_isEditForm?@[CStringGagalMemperbaharuiUlasan]:@[CStringGagalMenambahUlasan] delegate:self];
+            [stickyAlertView show];
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
 
@@ -342,7 +349,7 @@
                 
             case 11 : {
                 if([self validateReviewValue]) {
-                    [self.navigationController popViewControllerAnimated:YES];
+//                    [self.navigationController popViewControllerAnimated:YES];
                     
                     NSDictionary *userinfo;
                     _editedParam = [self getEditedParam];

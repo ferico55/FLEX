@@ -11,5 +11,5 @@
 @interface ProductListMyShopViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *data;
-
+- (void)setArrayList:(NSArray *)arrList;
 @end
