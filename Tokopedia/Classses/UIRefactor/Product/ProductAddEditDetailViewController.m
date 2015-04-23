@@ -1144,14 +1144,7 @@
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                     [alert show];
 
-                    
-                    if (_isBeingPresented) {
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    } else {
-                        NSInteger indexPopViewController = self.navigationController.viewControllers.count-3;
-                        UIViewController *popViewController = self.navigationController.viewControllers [indexPopViewController];
-                        [self.navigationController popToViewController:popViewController animated:NO];
-                    }
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                 }
@@ -1431,7 +1424,7 @@
         BOOL isProductReturnable = (productReturnable == RETURNABLE_YES_ID)?YES:NO;
         _returnableProductSwitch.on = isProductReturnable;
         
-        NSString *productDescription = product.product_short_desc?:@"";
+        NSString *productDescription = [NSString convertHTML:product.product_short_desc]?:@"";
         _productDescriptionTextView.text = productDescription;
         
         NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];

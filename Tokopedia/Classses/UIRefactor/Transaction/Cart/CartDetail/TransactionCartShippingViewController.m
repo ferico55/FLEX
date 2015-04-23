@@ -293,9 +293,11 @@
     [_requestActionCalculate setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionCalculate:mappingResult withOperation:operation];
         [timer invalidate];
+        _isFinishCalculate = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionCalculate:error];
         [timer invalidate];
+        _isFinishCalculate = YES;
     }];
     
     [_operationQueue addOperation:_requestActionCalculate];
