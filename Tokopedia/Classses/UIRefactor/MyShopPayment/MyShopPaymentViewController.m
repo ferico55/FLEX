@@ -60,6 +60,7 @@
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     
+    RequestUploadImage *uploadImageRequest;
     RKObjectManager *objectOpenShop;
     GenerateHost *_generateHost;
     TokopediaNetworkManager *tokopediaNetworkManager;
@@ -159,6 +160,10 @@
     [tokopediaNetworkManager requestCancel];
     tokopediaNetworkManager.delegate = nil;
     tokopediaNetworkManager = nil;
+    
+    uploadImageRequest.delegate = nil;
+    [uploadImageRequest cancelActionUploadPhoto];
+    uploadImageRequest = nil;
 }
 
 #pragma mark - Table View Data Source
@@ -941,6 +946,10 @@
 {
     filePath = uploadImage.result.file_path;
     [[self getNetworkManager] doRequest];
+    
+    uploadImageRequest.delegate = nil;
+    [uploadImageRequest cancelActionUploadPhoto];
+    uploadImageRequest = nil;
 }
 
 - (void)failedUploadObject:(id)object
@@ -950,6 +959,10 @@
 //    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
 //    [stickyAlertView show];
     [self isLoading:NO];
+    
+    uploadImageRequest.delegate = nil;
+    [uploadImageRequest cancelActionUploadPhoto];
+    uploadImageRequest = nil;
 }
 
 
@@ -957,14 +970,14 @@
 - (void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generateHost = generateHost;
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = [myShopShipmentTableViewController.createShopViewController getDictContentPhoto];
-    uploadImage.delegate = self;
-    uploadImage.generateHost = _generateHost;
-    uploadImage.action = kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY;
-    uploadImage.fieldName = API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME;
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    uploadImageRequest = [RequestUploadImage new];
+    uploadImageRequest.imageObject = [myShopShipmentTableViewController.createShopViewController getDictContentPhoto];
+    uploadImageRequest.delegate = self;
+    uploadImageRequest.generateHost = _generateHost;
+    uploadImageRequest.action = kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY;
+    uploadImageRequest.fieldName = API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME;
+    [uploadImageRequest configureRestkitUploadPhoto];
+    [uploadImageRequest requestActionUploadPhoto];
 }
 
 - (void)failedGenerateHost

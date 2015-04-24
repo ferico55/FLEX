@@ -757,7 +757,7 @@
 #pragma mark - UIImagePicker Delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSString *strImageName = @"asset.jpg";
+    NSString *strImageName = @"asset.JPG";
     if(picker.view.tag == 0) //Camera
     {
         hasSetImgGambar = YES;
