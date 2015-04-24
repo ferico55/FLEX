@@ -197,14 +197,13 @@
 
     _button.layer.cornerRadius = 2;
     
-    self.hidesBottomBarWhenPushed = YES;    
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     if(!hasLoadViewWillAppear && isOtherProfile) {
-        hasLoadViewWillAppear = !hasLoadViewWillAppear;
         for(UIButton *temp in _chevrons)
         {
             if(temp.tag == 12) {//Btn Kontak
@@ -227,6 +226,20 @@
         if (_isnodata) {
             [self loadData];
         }
+    }
+    
+    
+    
+    
+    if(! hasLoadViewWillAppear) {
+        hasLoadViewWillAppear = !hasLoadViewWillAppear;
+        //Hidden bottom green color
+        CGRect frame = _scrollview.bounds;
+        frame.origin.y = frame.size.height;
+        frame.size.height += frame.size.height;
+        UIView* grayView = [[UIView alloc] initWithFrame:frame];
+        grayView.backgroundColor = ((UIViewController *) [_viewControllers firstObject]).view.backgroundColor;
+        [_scrollview insertSubview:grayView atIndex:0];
     }
 }
 
