@@ -201,8 +201,6 @@
     [_titleNoteTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     
     _isNewNoteReturnableProduct = NO;
-    
-
 
 }
 
@@ -483,7 +481,8 @@
                     _isNewNoteReturnableProduct = YES;
                 }
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
@@ -767,7 +766,16 @@
                 _titleNoteTextField.text = _note.result.detail.notes_title;
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:[self attributes]];
+                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                style.lineSpacing = 6.0;
+
+                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+                [attributes setObject:font forKey:NSFontAttributeName];
+                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+                
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 _contentNoteTextView.attributedText = attributedString;
                 
                [self setTimeLabelBecomeCurrentDate];
@@ -789,7 +797,16 @@
 
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:[self attributes]];
+                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                style.lineSpacing = 6.0;
+                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+                
+                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+                [attributes setObject:font forKey:NSFontAttributeName];
+
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 [self configureRestKit];

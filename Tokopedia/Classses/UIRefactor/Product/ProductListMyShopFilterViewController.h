@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
+
 #import <UIKit/UIKit.h>
-
+@class ProductListMyShopViewController;
 @interface ProductListMyShopFilterViewController : UITableViewController
-
+@property (nonatomic, unsafe_unretained) ProductListMyShopViewController *productListMyShopViewController;
 @end

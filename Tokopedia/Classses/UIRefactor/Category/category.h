@@ -28,6 +28,7 @@ typedef enum
 #define kTKPDCATEGORY_DATACOLUMNSKEY @"column"
 #define kTKPDCATEGORY_DATACATEGORYKEY @"categories"
 #define kTKPDCATEGORY_DATATITLEKEY @"title"
+#define CStringKategory @"Kategory"
 #define kTKPDCATEGORY_DATADIDALLCATEGORYKEY @"d_id_allcategory"
 #define kTKPDCATEGORY_DATADIDKEY @"d_id"
 #define kTKPDCATEGORY_DATADEPARTMENTIDKEY @"department_id"
