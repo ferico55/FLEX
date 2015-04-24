@@ -298,7 +298,7 @@
 
         if (status) {
             if (_settings.message_status) {
-                NSArray *array = _settings.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                NSArray *array = [[NSArray alloc] initWithObjects:KTKPDSHOP_SUCCESSEDIT, nil];
                 NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
             }

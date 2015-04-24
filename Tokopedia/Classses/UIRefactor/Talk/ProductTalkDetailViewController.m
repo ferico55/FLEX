@@ -24,6 +24,7 @@
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
 #import "UserAuthentificationManager.h"
@@ -170,7 +171,7 @@
     
     //validate previous class so it can use several URL path
     NSArray *vcs = self.navigationController.viewControllers;
-    if([vcs[[vcs count] - 2] isKindOfClass:[InboxTalkViewController class]]) {
+    if([vcs[[vcs count] - 2] isKindOfClass:[TKPDTabInboxTalkNavigationController class]]) {
         
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
