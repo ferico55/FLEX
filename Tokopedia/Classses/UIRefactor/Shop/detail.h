@@ -768,7 +768,9 @@ typedef enum
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
 #define KTKPDTALK_UNDELIVERED @"Diskusi Anda gagal terkirim."
 #define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
-
+#define KTKPDMESSAGE_EMPTYFORM2 @"Panjang pesan harus lebih dari 5 karakter."
+#define kTKPDMESSAGE_EMPTY @"Pesan harus diisi"
+#define kTKPDSUBJECT_EMPTY @"Subject harus diisi"
 #define KTKPDMESSAGE_EMPTYFORM5 @"Panjang pesan harus lebih dari 5 karakter."
 
 
