@@ -757,6 +757,7 @@
 #pragma mark - UIImagePicker Delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    NSString *strImageName = @"asset.JPG";
     if(picker.view.tag == 0) //Camera
     {
         hasSetImgGambar = YES;
@@ -768,6 +769,9 @@
     {
         hasSetImgGambar = YES;
         imgGambar.image = info[UIImagePickerControllerOriginalImage];
+        NSURL *imagePath = [info objectForKey:UIImagePickerControllerReferenceURL];
+        strImageName = [imagePath lastPathComponent];
+        
         [self checkValidation:nil withSlogan:nil withDesc:nil];
     }
     
@@ -777,7 +781,7 @@
     NSMutableDictionary *dictPhoto = [NSMutableDictionary new];
     [dictContent setObject:dictPhoto forKey:kTKPDCAMERA_DATAPHOTOKEY];
     [dictPhoto setObject:UIImageJPEGRepresentation(imgGambar.image, 1.0f) forKey:DATA_CAMERA_IMAGEDATA];
-    [dictPhoto setObject:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:DATA_CAMERA_IMAGENAME];
+    [dictPhoto setObject:strImageName forKey:DATA_CAMERA_IMAGENAME];
     [picker dismissViewControllerAnimated:YES completion:NULL];
     
     [tempImage removeFromSuperview];
