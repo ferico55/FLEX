@@ -9,7 +9,7 @@
 #import "detail.h"
 #import "NoteDetail.h"
 #import "ShopNotesDetailViewController.h"
-
+#import "TokopediaNetworkManager.h"
 #import "URLCacheController.h"
 
 @interface ShopNotesDetailViewController (){
@@ -264,7 +264,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];

@@ -362,8 +362,9 @@
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
     _thumb.alpha = 1;
-    NSDictionary *userinfo = @{kTKPDPROFILE_APIUPLOADFILETHUMBKEY :_images.result.file_th,
-                               kTKPDPROFILE_APIUPLOADFILEPATHKEY:_images.result.file_path
+    _images = uploadImage;
+    NSDictionary *userinfo = @{kTKPDPROFILE_APIUPLOADFILETHUMBKEY :uploadImage.result.file_th,
+                               kTKPDPROFILE_APIUPLOADFILEPATHKEY:uploadImage.result.file_path
                                };
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
@@ -674,8 +675,27 @@
 
 -(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
 {
-    NSDictionary *object = @{DATA_SELECTED_PHOTO_KEY : userinfo,
-                             DATA_SELECTED_IMAGE_VIEW_KEY : _thumb};
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:userinfo forKey:DATA_SELECTED_PHOTO_KEY];
+
+    UIImageView *imageView = _thumb;
+    
+    
+    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    
+    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    
+    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
+    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
+    imageView.image = image;
+    imageView.hidden = NO;
+    imageView.alpha = 0.5f;
+    
     [self actionUploadImage:object];
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -13,7 +13,6 @@
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -21,7 +20,6 @@
             <connections>
                 <outlet property="contentNoteTextView" destination="Q7v-o7-4nJ" id="jMd-PG-yQe"/>
                 <outlet property="timeNoteLabel" destination="Tww-wo-38B" id="rBg-Jo-pPA"/>
-                <outlet property="titleLabel" destination="nwF-Iv-Mle" id="3l3-fa-up8"/>
                 <outlet property="titleNoteTextField" destination="1gX-EH-jNo" id="sqk-s9-fjr"/>
                 <outlet property="view" destination="iN0-l3-epB" id="qCh-in-6Zw"/>
             </connections>
@@ -31,7 +29,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="September 3, 2014, 1:19" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tww-wo-38B" userLabel="Label Time">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="September 3, 2014, 1:19" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tww-wo-38B" userLabel="Label Time">
                     <rect key="frame" x="17" y="45" width="286" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="DaF-SB-WbB"/>
@@ -66,30 +64,17 @@
                         <outlet property="delegate" destination="-1" id="sEL-UK-xHt"/>
                     </connections>
                 </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Judul" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwF-Iv-Mle">
-                    <rect key="frame" x="17" y="19" width="291" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="VIm-Vt-YIV"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="nwF-Iv-Mle" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="24b-cp-OqB"/>
                 <constraint firstAttribute="bottom" secondItem="Q7v-o7-4nJ" secondAttribute="bottom" id="5I3-62-gXz"/>
                 <constraint firstItem="3CR-Go-hoS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CgW-cO-gds"/>
                 <constraint firstItem="Tww-wo-38B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="GmN-u1-pD0"/>
                 <constraint firstAttribute="trailing" secondItem="1gX-EH-jNo" secondAttribute="trailing" constant="12" id="HqM-PL-ygj"/>
-                <constraint firstItem="nwF-Iv-Mle" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="Iql-V0-Oac"/>
                 <constraint firstAttribute="trailing" secondItem="Tww-wo-38B" secondAttribute="trailing" constant="17" id="LFh-iF-QzN"/>
                 <constraint firstItem="1gX-EH-jNo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="LSD-Dq-hyG"/>
                 <constraint firstAttribute="trailing" secondItem="Q7v-o7-4nJ" secondAttribute="trailing" id="SxF-sB-ywK"/>
-                <constraint firstAttribute="trailing" secondItem="nwF-Iv-Mle" secondAttribute="trailing" constant="12" id="URH-jj-T56"/>
-                <constraint firstItem="Tww-wo-38B" firstAttribute="top" secondItem="nwF-Iv-Mle" secondAttribute="bottom" constant="5" id="Ve9-AA-SMG"/>
                 <constraint firstAttribute="trailing" secondItem="3CR-Go-hoS" secondAttribute="trailing" id="aYc-jp-gds"/>
                 <constraint firstItem="1gX-EH-jNo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="i93-ig-PsN"/>
                 <constraint firstItem="Q7v-o7-4nJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="ksI-Uh-ANd"/>

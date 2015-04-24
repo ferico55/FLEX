@@ -108,6 +108,7 @@ typedef enum
 
 #define DATA_PRODUCT_IMAGE_NAME_KEY @"dataimagename"
 #define DATA_PRODUCT_DETAIL_KEY @"productdetail"
+#define DATA_SHOP_HAS_TERM_KEY @"data_shop_has_term"
 #define DATA_TYPE_ADD_EDIT_PRODUCT_KEY @"type"
 
 #define API_SERVER_ID_KEY @"server_id"
@@ -140,6 +141,8 @@ typedef enum
 #define API_PRODUCT_FORM_DESCRIPTION_KEY @"product_short_desc"
 #define API_PRODUCT_FORM_DEPARTMENT_TREE_KEY @"product_department_tree"
 #define API_PRODUCT_IS_CHANGE_WHOLESALE_KEY @"product_change_wholesale"
+#define API_PRODUCT_RETURNABLE_KEY @"product_returnable"
+#define API_SHOP_HAS_TERMS_KEY @"shop_has_terms"
 #define API_IS_DUPLICATE_KEY @"duplicate"
 #define API_PRODUCT_ID_KEY @"product_id"
 #define API_PRODUCT_PICTURE_ID_KEY @"picture_id"

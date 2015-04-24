@@ -16,6 +16,8 @@
 @optional
 -(void)ProductEditDetailViewController:(ProductAddEditDetailViewController*)cell withUserInfo:(NSDictionary*)userInfo;
 -(void)MoveToWareHouseAtIndexPath:(NSIndexPath*)indexPath;
+-(void)DidEditReturnableNote;
+
 @end
 
 @interface ProductAddEditDetailViewController : UIViewController
