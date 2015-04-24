@@ -15,6 +15,8 @@
 #import "MyShopNoteDetailViewController.h"
 #import "GeneralList1GestureCell.h"
 
+#import "NoResultView.h"
+
 #import "MGSwipeButton.h"
 
 #pragma mark - Setting Note View Controller
@@ -408,7 +410,16 @@
             if (status) {
                 NSArray *list = _notes.result.list;
                 [_list addObjectsFromArray:list];
-                _isnodata = NO;
+                
+                if (_list.count>0) {
+                    _isnodata = NO;
+                }
+                else
+                {
+                    NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
+                    _table.tableFooterView = noResultView;
+                    _table.sectionFooterHeight = noResultView.frame.size.height;
+                }
                 
                 [_table reloadData];
             }

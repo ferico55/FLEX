@@ -595,6 +595,7 @@ typedef enum
 #define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
 #define kTKPDNOTE_APINOTESCONTENTKEY @"notes_content"
+#define NOTE_CREATE_TIME @"notes_create_time"
 
 #define kTKPDNOTE_EDIT_NOTE_SUCCESS @"Anda telah berhasil memperbaharui catatan"
 #define kTKPDNOTE_DELETE_NOTE_SUCCESS @"Anda telah berhasil menghapus catatan"

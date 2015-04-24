@@ -70,6 +70,8 @@
     UIBarButtonItem *_cancelBarButtonItem;
     LoadingView *loadingView;
     NSIndexPath *_indexPath;
+    
+    NSString *_searchKeyword;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -186,6 +188,8 @@
     
     _selectedIndexPath = [_data objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     _limit = kTKPDPROFILESETTINGADDRESS_LIMITPAGE;
+    
+    [self request];
 }
 
 
@@ -199,11 +203,18 @@
 {
     [super viewWillAppear:animated];
     
-    if (!_isrefreshview) {
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self request];
-        }
-    }
+//    if (!_isrefreshview) {
+//        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+//            [self request];
+//        }
+//    }
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -263,11 +274,17 @@
                     
                     ((GeneralList1GestureCell*)cell).textLabel.text = list.address_name;
                     ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-
+                    
                     if (indexPath.section == 0) {
                         ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"Alamat Utama";
-                    } else {
+                    }
+                    else
+                    {
                         ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
+                    }
+
+                    if (![_searchKeyword isEqualToString:@""] && _searchKeyword != nil) {
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@"";
                     }
                 }
             }
@@ -371,7 +388,7 @@
     NSInteger section = _list.count - 1;
 	if (section == indexPath.section) {
 		//NSLog(@"%@", NSStringFromSelector(_cmd));
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ([_searchKeyword isEqualToString:@""] || _searchKeyword == nil)) {
             /** called if need to load next page **/
             NSLog(@"%@", NSStringFromSelector(_cmd));
             [self request];
@@ -395,6 +412,11 @@
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    //[_table reloadData];
+}
+
+-(void)reloadTableData
 {
     [_table reloadData];
 }
@@ -989,7 +1011,7 @@
         NSMutableArray *listFiltered = [NSMutableArray new];
         for (AddressFormList *address in _list) {
             for (NSString *name in listName) {
-                if ([address.address_name isEqualToString:name]) {
+                if ([address.address_name isEqualToString:name] && ![listFiltered containsObject:address]) {
                     [listFiltered addObject:address];
                 }
             }
@@ -1001,16 +1023,18 @@
         }
         [_list removeAllObjects];
         [_list addObjectsFromArray:listFiltered];
-        
-        [_table reloadData];
     }
     else
     {
         [_list removeAllObjects];
         [_list addObjectsFromArray:_listTemp];
-        [_table reloadData];
     }
     
+    _searchKeyword = searchBar.text;
+
+    [_table reloadData];
+    [self performSelector:@selector(reloadTableData) withObject:nil afterDelay:0.1];
+
     return YES;
 }
 
