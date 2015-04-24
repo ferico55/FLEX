@@ -5,7 +5,7 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
-
+#import "LoginViewController.h"
 #import "ShopContainerViewController.h"
 #import "ShopTalkPageViewController.h"
 #import "ShopProductPageViewController.h"
@@ -25,7 +25,7 @@
 #import "FavoriteShopAction.h"
 
 
-@interface ShopContainerViewController () <UIScrollViewDelegate> {
+@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
     BOOL _isNoData;
     BOOL _isRefreshView;
     
@@ -643,9 +643,8 @@
 - (IBAction)favoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
     
-    _requestFavoriteCount = 0;
-    
     if(_auth) {
+        _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
         
@@ -656,12 +655,28 @@
 - (IBAction)unfavoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
     
-    _requestFavoriteCount = 0;
-    [self configureFavoriteRestkit];
-    [self favoriteShop:_shop.result.info.shop_id];
+    if(_auth!=nil && _auth.count>0) {
+        _requestFavoriteCount = 0;
+        [self configureFavoriteRestkit];
+        [self favoriteShop:_shop.result.info.shop_id];
     
-    self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
-    
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
+    }
+    else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 - (IBAction)settingTap:(id)sender {
@@ -829,5 +844,14 @@
 }
 
 
-
+#pragma mark - LoginView Delegate
+- (void)redirectViewController:(id)viewController
+{
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *tempAuth = [secureStorage keychainDictionary];
+    _auth = [tempAuth mutableCopy];
+    
+    [self configureRestKit];
+    [self request];
+}
 @end
