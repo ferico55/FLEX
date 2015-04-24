@@ -469,13 +469,9 @@
     }
     
     else if (indexPath.section == 6) {
-        [Helpshift logout];
-        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
-        [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
-        
-        TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-        [storage resetKeychain];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                                                            object:nil
+                                                          userInfo:@{}];
     }
 
     self.hidesBottomBarWhenPushed = NO;

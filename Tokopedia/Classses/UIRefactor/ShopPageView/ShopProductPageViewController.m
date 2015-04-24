@@ -271,7 +271,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
                 kTKPDNOTES_APINOTEIDKEY:list.note_id,
-                kTKPDNOTES_APINOTETITLEKEY:list.note_title
+                kTKPDNOTES_APINOTETITLEKEY:list.note_title,
+                kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
                 };
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -297,12 +298,30 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 #pragma mark - TableView Source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
-#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
-    return _isNoData ? 1 : count;
-#else
-    return _isNoData ? 0 : count;
-#endif
+    NSInteger count = 0;
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        count = _product.count;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isNoData?1:count;
+        #else
+            count = _isNoData?0:count;
+        #endif
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isNoData?1:count;
+        #else
+            count = _isNoData?0:count;
+        #endif
+    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+        count = (_product.count%3==0)?_product.count/3:_product.count/3+1;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isNoData?1:count;
+        #else
+            count = _isNoData?0:count;
+        #endif
+    }
+    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

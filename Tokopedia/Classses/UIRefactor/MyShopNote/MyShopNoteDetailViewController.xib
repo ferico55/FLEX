@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -21,7 +21,7 @@
             <connections>
                 <outlet property="contentNoteTextView" destination="Q7v-o7-4nJ" id="jMd-PG-yQe"/>
                 <outlet property="timeNoteLabel" destination="Tww-wo-38B" id="rBg-Jo-pPA"/>
-                <outlet property="titleLabel" destination="nwF-Iv-Mle" id="3l3-fa-up8"/>
+                <outlet property="titleLabel" destination="nwF-Iv-Mle" id="p8L-RP-eVu"/>
                 <outlet property="titleNoteTextField" destination="1gX-EH-jNo" id="sqk-s9-fjr"/>
                 <outlet property="view" destination="iN0-l3-epB" id="qCh-in-6Zw"/>
             </connections>

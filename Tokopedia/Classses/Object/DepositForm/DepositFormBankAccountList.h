@@ -11,7 +11,7 @@
 @interface DepositFormBankAccountList : NSObject
 
 @property (nonatomic) NSInteger bank_id;
-@property (nonatomic) NSInteger bank_account_id;
+@property (nonatomic, strong) NSString *bank_account_id;
 @property (nonatomic, strong) NSString *bank_branch;
 @property (nonatomic, strong) NSString *bank_account_name;
 @property (nonatomic, strong) NSString *bank_name;

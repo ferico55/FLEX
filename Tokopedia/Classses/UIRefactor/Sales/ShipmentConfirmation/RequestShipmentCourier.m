@@ -94,7 +94,6 @@
     
     NSDictionary* param = @{
                             API_ACTION_KEY           : API_GET_EDIT_SHIPPING_FORM,
-                            API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
                             };
     
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
@@ -110,7 +109,9 @@
             [self.delegate didReceiveShipmentCourier:shipment.result.shipment];
         }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self.delegate requestShipmentCourierError:error]; //TODO:: Create function
+        if ([self.delegate respondsToSelector:@selector(requestShipmentCourierError:)]) {
+            [self.delegate requestShipmentCourierError:error]; //TODO:: Create function
+        }
     }];
     
     [_operationQueue addOperation:_request];

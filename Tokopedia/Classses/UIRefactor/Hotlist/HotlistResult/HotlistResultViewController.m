@@ -230,16 +230,27 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSInteger count = 0;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         count = _product.count;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
     } else if (self.cellType == UITableViewCellTypeThreeColumn) {
         count = (_product.count%3==0)?_product.count/3:_product.count/3+1;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
     }
-#ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    return _isnodata?1:count;
-#else
-    return _isnodata?0:count;
-#endif
+    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

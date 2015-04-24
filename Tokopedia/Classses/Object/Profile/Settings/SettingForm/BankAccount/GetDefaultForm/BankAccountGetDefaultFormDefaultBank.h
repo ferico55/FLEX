@@ -10,7 +10,7 @@
 
 @interface BankAccountGetDefaultFormDefaultBank : NSObject
 
-@property (nonatomic, strong) NSString *bank_account_id;
+@property (nonatomic) NSInteger bank_account_id;
 @property (nonatomic, strong) NSString *bank_name;
 @property (nonatomic, strong) NSString *bank_account_name;
 @property (nonatomic, strong) NSString *bank_owner_id;
