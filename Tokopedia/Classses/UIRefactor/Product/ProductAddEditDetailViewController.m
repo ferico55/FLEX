@@ -155,6 +155,11 @@
     
     _isBeingPresented = self.navigationController.isBeingPresented;
 
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(didEditNote:)
+                               name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY
+                             object:nil];
 }
 
 
@@ -556,7 +561,18 @@
     NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     
     NSString *productID = product.product_id?:@"";
-    BOOL isReturnableProduct = [[userInfo objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
+    NSInteger returnableProduct = [[_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
+    if (returnableProduct == -1) {
+        returnableProduct = 0; // Not Set
+    }
+    else if(returnableProduct == 1)
+    {
+        returnableProduct = 1; //returnable
+    }
+    else
+    {
+        returnableProduct = 2; // not returnable
+    }
     
     NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
     
@@ -569,6 +585,7 @@
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
+
     
     [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
     
@@ -590,7 +607,7 @@
                                       API_PRODUCT_CONDITION_KEY : productConditionID,
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : productImage?:@(0),
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
-                                      API_PRODUCT_IS_RETURNABLE_KEY : @(isReturnableProduct)?:@(0),
+                                      API_PRODUCT_IS_RETURNABLE_KEY : @(returnableProduct),
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
                                       API_UNIQUE_ID_KEY:uniqueID,
                                       API_IS_DUPLICATE_KEY : @(duplicate),
@@ -792,8 +809,9 @@
             if (status) {
                 if ([setting.result.file_uploaded isEqualToString:@"1"] || setting.result.file_uploaded == nil) {
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+                    [alert show];
+                    
                     _saveBarButtonItem.enabled = YES;
                 }
                 else
@@ -1046,7 +1064,18 @@
     NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
     
     NSString *productID = product.product_id?:@"";
-    NSString *isReturnableProduct = product.product_returnable;
+    NSString *returnableProduct = [_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]?:product.product_returnable?:@"";
+    if ([returnableProduct integerValue] == -1) {
+        returnableProduct = @"0"; // Not Set
+    }
+    else if([returnableProduct integerValue] == 1)
+    {
+        returnableProduct = @"1"; //returnable
+    }
+    else
+    {
+        returnableProduct = @"2"; // not returnable
+    }
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
                                       API_PRODUCT_ID_KEY: productID,
@@ -1066,7 +1095,7 @@
                                       API_PRODUCT_CONDITION_KEY : productConditionID,
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : productImage?:@(0),
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
-                                      API_PRODUCT_IS_RETURNABLE_KEY : isReturnableProduct?:@"",
+                                      API_PRODUCT_IS_RETURNABLE_KEY : returnableProduct?:@"",
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
                                       };
     NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
@@ -1412,6 +1441,14 @@
 }
 
 #pragma mark - Methods
+-(void)setData:(NSDictionary *)data
+{
+    _data = data;
+    if (data) {
+        [self setDefaultData:_data];
+    }
+}
+
 -(void)setDefaultData:(NSDictionary*)data
 {
     _data = data;
@@ -1420,8 +1457,11 @@
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
         ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-        NSInteger productReturnable = [product.product_returnable integerValue];
-        BOOL isProductReturnable = (productReturnable == RETURNABLE_YES_ID)?YES:NO;
+        NSString *productReturnable = product.product_returnable;
+        if ([productReturnable isEqualToString:@""] || [productReturnable isEqualToString:@"0"] || productReturnable == nil) {
+            [_dataInput setObject:@(-1) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
+        }
+        BOOL isProductReturnable = ([productReturnable integerValue] == RETURNABLE_YES_ID)?YES:NO;
         _returnableProductSwitch.on = isProductReturnable;
         
         NSString *productDescription = [NSString convertHTML:product.product_short_desc]?:@"";
@@ -1439,6 +1479,17 @@
             }
             [_dataInput setObject:_wholesaleList forKey:DATA_WHOLESALE_LIST_KEY];
         }
+        
+        NSString *shopHasTerm = [_data objectForKey:DATA_SHOP_HAS_TERM_KEY];
+        if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
+            _returnableProductSwitch.enabled = NO;
+        }
+        else
+        {
+            _returnableProductSwitch.enabled = YES;
+        }
+        
+        [_tableView reloadData];
     }
 }
 
@@ -1489,6 +1540,11 @@
                              range:[_pengembalianProductLabel.text rangeOfString:_pengembalianProductLabel.text]];
     
     _pengembalianProductLabel.attributedText = attributedString;
+}
+
+-(void)didEditNote:(NSNotification*)notification
+{
+    [_delegate DidEditReturnableNote];
 }
 
 @end

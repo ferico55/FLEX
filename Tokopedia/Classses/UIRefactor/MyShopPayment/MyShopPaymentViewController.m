@@ -55,11 +55,12 @@
     
     NSOperationQueue *_operationQueue;
     
-    NSString *_cachepath;
+    NSString *_cachepath, *filePath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     
+    RequestUploadImage *uploadImageRequest;
     RKObjectManager *objectOpenShop;
     GenerateHost *_generateHost;
     TokopediaNetworkManager *tokopediaNetworkManager;
@@ -159,6 +160,10 @@
     [tokopediaNetworkManager requestCancel];
     tokopediaNetworkManager.delegate = nil;
     tokopediaNetworkManager = nil;
+    
+    uploadImageRequest.delegate = nil;
+    [uploadImageRequest cancelActionUploadPhoto];
+    uploadImageRequest = nil;
 }
 
 #pragma mark - Table View Data Source
@@ -704,7 +709,7 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:kTKPD_OPEN_SHOP forKey:kTKPDDETAIL_ACTIONKEY];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaDomain] forKey:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY];
-    [param setObject:@"" forKey:kTKPD_SHOP_LOGO];
+    [param setObject:filePath==nil?@"":filePath forKey:kTKPD_SHOP_LOGO];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaToko] forKey:kTKPDDETAIL_APISHOPNAMEKEY];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getDesc] forKey:kTKPD_SHOP_SHORT_DESC];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getSlogan] forKey:kTKPD_SHOP_TAG_LINE];
@@ -939,16 +944,25 @@
 #pragma mark - RequestUploadImage delegate
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
+    filePath = uploadImage.result.file_path;
     [[self getNetworkManager] doRequest];
+    
+    uploadImageRequest.delegate = nil;
+    [uploadImageRequest cancelActionUploadPhoto];
+    uploadImageRequest = nil;
 }
 
 - (void)failedUploadObject:(id)object
 {
 //    [self successUploadObject:nil withMappingResult:nil];
 //    return;
-    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
-    [stickyAlertView show];
+//    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
+//    [stickyAlertView show];
     [self isLoading:NO];
+    
+    uploadImageRequest.delegate = nil;
+    [uploadImageRequest cancelActionUploadPhoto];
+    uploadImageRequest = nil;
 }
 
 
@@ -956,14 +970,14 @@
 - (void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generateHost = generateHost;
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = [myShopShipmentTableViewController.createShopViewController getDictContentPhoto];
-    uploadImage.delegate = self;
-    uploadImage.generateHost = _generateHost;
-    uploadImage.action = kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY;
-    uploadImage.fieldName = API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME;
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    uploadImageRequest = [RequestUploadImage new];
+    uploadImageRequest.imageObject = [myShopShipmentTableViewController.createShopViewController getDictContentPhoto];
+    uploadImageRequest.delegate = self;
+    uploadImageRequest.generateHost = _generateHost;
+    uploadImageRequest.action = kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY;
+    uploadImageRequest.fieldName = API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME;
+    [uploadImageRequest configureRestkitUploadPhoto];
+    [uploadImageRequest requestActionUploadPhoto];
 }
 
 - (void)failedGenerateHost

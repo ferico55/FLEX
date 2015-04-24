@@ -28,7 +28,7 @@
 #import "TKPDTabShopViewController.h"
 #import "ShopFavoritedViewController.h"
 #import "ShopReviewViewController.h"
-#import "ShopNotesViewController.h"
+#import "MyShopNoteViewController.h"
 #import "ShopTalkViewController.h"
 
 #import "InboxMessageViewController.h"

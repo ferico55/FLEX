@@ -104,7 +104,7 @@
     NSMutableArray *_selectedIndexPathCameraController;
     
     TokopediaNetworkManager *_networkManager;
-    
+    ProductAddEditDetailViewController *_detailVC;
 }
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -268,6 +268,11 @@
     
 }
 
+-(void)dealloc
+{
+    _detailVC = nil;
+}
+
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
@@ -301,15 +306,16 @@
                             defaultImagePath = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)? [_productImageURLs firstObject]:[_productImageIDs firstObject];
                             [_dataInput setObject:defaultImagePath forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
                         }
-                        ProductAddEditDetailViewController *vc = [ProductAddEditDetailViewController new];
-                        vc.data = @{kTKPD_AUTHKEY : auth?:@{},
-                                    DATA_INPUT_KEY : _dataInput,
-                                    DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
-                                    DATA_PRODUCT_DETAIL_KEY: productDetail
-                                    };
-                        vc.generateHost = _generateHost;
-                        vc.delegate = self;
-                        [self.navigationController pushViewController:vc animated:YES];
+                        if (!_detailVC)_detailVC = [ProductAddEditDetailViewController new];
+                        _detailVC.data = @{kTKPD_AUTHKEY : auth?:@{},
+                                           DATA_INPUT_KEY : _dataInput?:@{},
+                                           DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
+                                           DATA_PRODUCT_DETAIL_KEY: productDetail,
+                                           DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0"
+                                            };
+                        _detailVC.generateHost = _generateHost;
+                        _detailVC.delegate = self;
+                        [self.navigationController pushViewController:_detailVC animated:YES];
                     }
                     else
                     {
@@ -752,7 +758,25 @@
         [data addEntriesFromDictionary:_data];
         [self setDefaultData:data];
         
-        
+        if(_detailVC)
+        {
+            NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+            NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+            id productDetail = [_data objectForKey:DATA_PRODUCT_DETAIL_KEY]?:@"";
+            NSString *defaultImagePath = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
+            if (!defaultImagePath) {
+                defaultImagePath = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)? [_productImageURLs firstObject]:[_productImageIDs firstObject];
+                [_dataInput setObject:defaultImagePath forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
+            }
+            _detailVC.data = @{kTKPD_AUTHKEY : auth?:@{},
+                               DATA_INPUT_KEY : _dataInput,
+                               DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
+                               DATA_PRODUCT_DETAIL_KEY: productDetail,
+                               DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms
+                               };
+            _detailVC.generateHost = _generateHost;
+            _detailVC.delegate = self;
+        }
         
 //        GeneratedHost *newGeneratedHost = [GeneratedHost new];
 //        newGeneratedHost.server_id = _product.result.server_id;
@@ -1410,6 +1434,14 @@
     [_dataInput addEntriesFromDictionary:updatedDataInput];
 }
 
+-(void)DidEditReturnableNote
+{
+    _networkManager.delegate = self;
+    [_networkManager doRequest];
+    
+
+}
+
 
 #pragma mark - Methods
 
@@ -1460,6 +1492,7 @@
             product.product_move_to = value;
             product.product_etalase_id = product.product_etalase_id?:@(0);
             product.product_description = product.product_short_desc;
+            product.product_returnable = _product.result.info.product_returnable;
         }
         [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
         NSArray *images = result.product_images;
@@ -1679,33 +1712,7 @@
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
-//    if(_keyboardSize.height < 0){
-//        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-//        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-//        
-//        
-//        _scrollviewContentSize = [_scrollView contentSize];
-//        _scrollviewContentSize.height += _keyboardSize.height;
-//        [_scrollView setContentSize:_scrollviewContentSize];
-//    }else{
-//        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-//                              delay:0
-//                            options: UIViewAnimationOptionCurveEaseInOut
-//                         animations:^{
-//                             _scrollviewContentSize = [_scrollView contentSize];
-//                             _scrollviewContentSize.height -= _keyboardSize.height;
-//                             
-//                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-//                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-//                             _scrollviewContentSize.height += _keyboardSize.height;
-//                             if ((_activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y) {
-//                                 UIEdgeInsets inset = _scrollView.contentInset;
-//                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height + 10));
-//                                 [_scrollView setContentInset:inset];
-//                             }
-//                         }
-//                         completion:^(BOOL finished){
-//                         }];
+
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
@@ -1750,8 +1757,13 @@
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailProductResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{API_SERVER_ID_KEY:API_SERVER_ID_KEY,
-                                                        API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY
+                                                        API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY,
                                                         }];
+    
+    RKObjectMapping *OtherInfoMapping = [RKObjectMapping mappingForClass:[Info class]];
+    [OtherInfoMapping addAttributeMappingsFromArray:@[API_PRODUCT_RETURNABLE_KEY,
+                                                   API_SHOP_HAS_TERMS_KEY
+                                                   ]];
     
     RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
     [infoMapping addAttributeMappingsFromDictionary:@{API_PRODUCT_NAME_KEY:API_PRODUCT_NAME_KEY,
@@ -1837,6 +1849,7 @@
     // Relationship Mapping
     [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
     
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY withMapping:OtherInfoMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_INFO_KEY toKeyPath:API_PRODUCT_INFO_KEY withMapping:infoMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY toKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY withMapping:statisticMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
