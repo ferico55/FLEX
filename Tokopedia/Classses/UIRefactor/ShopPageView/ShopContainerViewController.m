@@ -23,6 +23,7 @@
 #import "string_product.h"
 
 #import "FavoriteShopAction.h"
+#import "UserAuthentificationManager.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate> {
@@ -55,6 +56,7 @@
     UIBarButtonItem *_addProductBarButton;
     UIBarButtonItem *_settingBarButton;
     UIBarButtonItem *_messageBarButton;
+    UserAuthentificationManager *_userManager;
     
 }
 
@@ -106,9 +108,9 @@
     _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
 
-    
+    _userManager = [UserAuthentificationManager new];
     _auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
-    if ([_auth count] > 0) {
+    if ([_userManager isLogin]) {
         //toko sendiri dan login
         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
             self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
@@ -117,7 +119,7 @@
         }
 
     } else {
-            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
+            self.navigationItem.rightBarButtonItems = @[_infoBarButton ];
     }
     
 
@@ -552,7 +554,12 @@
                     if(_shop.result.info.shop_already_favorited == 1) {
                         self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
                     } else {
-                        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
+                        if([_userManager isLogin]) {
+                            self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
+                        } else {
+                            self.navigationItem.rightBarButtonItems = @[_infoBarButton];
+                        }
+                        
                     }
                 }
                 

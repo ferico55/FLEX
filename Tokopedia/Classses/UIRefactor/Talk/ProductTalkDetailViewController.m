@@ -180,6 +180,18 @@
         _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
     }
     
+    if([_userManager isLogin]) {
+        _reportButton.hidden = NO;
+    } else {
+        _reportButton.hidden = YES;
+        _buttonsDividers.hidden = YES;
+        
+        CGRect newFrame = _talktotalcommentlabel.frame;
+        newFrame.origin.x = 120;
+        _talktotalcommentlabel.frame = newFrame;
+    }
+    
+    
     
     //UIBarButtonItem *barbutton1;
     //NSBundle* bundle = [NSBundle mainBundle];
@@ -296,16 +308,6 @@
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
             
 
-            if([_userManager isLogin]) {
-                _reportButton.hidden = NO;
-            } else {
-                _reportButton.hidden = YES;
-                _buttonsDividers.hidden = YES;
-                
-                CGRect newFrame = _talktotalcommentlabel.frame;
-                newFrame.origin.x = 120;
-                _talktotalcommentlabel.frame = newFrame;
-            }
             
             if(list.is_not_delivered) {
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = NO;
@@ -490,8 +492,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    if([_userManager getUserId]) {
+    _userManager = [UserAuthentificationManager new];
+    if([_userManager isLogin]) {
         [_talkInputView setHidden:NO];
         [_sendButton setEnabled:NO];
     } else {
@@ -1048,7 +1050,8 @@
 #pragma mark - Swipe Delegate
 -(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
 {
-    if([_auth objectForKey:@"user_id"]) {
+
+    if([_userManager isLogin]) {
         return YES;
     }
     
