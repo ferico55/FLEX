@@ -7,7 +7,7 @@
 //
 
 #import "DetailReviewViewController.h"
-#import "InboxReview.h"
+#import "Review.h"
 #import "UserAuthentificationManager.h"
 #import "GeneralAction.h"
 #import "string_inbox_review.h"
@@ -58,7 +58,7 @@
     NSOperationQueue *_operationDeleteCommentQueue;
     
     NSInteger *_requestCount;
-    InboxReviewList *_review;
+    ReviewList *_review;
     NSString *_commentReview;
     NSTimer *_timer;
 }
@@ -235,7 +235,7 @@
         _deleteReviewButton.hidden = YES;
     }
     
-    _qualityrate.starscount = [_review.review_rate_quality integerValue];
+    _qualityrate.starscount = [_review.review_rate_product integerValue];
     _speedrate.starscount = [_review.review_rate_speed integerValue];
     _servicerate.starscount = [_review.review_rate_service integerValue];
     _accuracyrate.starscount = [_review.review_rate_accuracy integerValue];

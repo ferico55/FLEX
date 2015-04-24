@@ -29,6 +29,7 @@
 @end
 
 @implementation ProfileBiodataViewController
+@synthesize isNotMyBiodata;
 
 #pragma mark - Initializations
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -77,7 +78,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (!_isnodatashop)return 2;
+    if (!_isnodatashop) {
+        if(isNotMyBiodata)
+            return 1;
+        else
+            return 2;
+    }
     else return 0;
 }
 
@@ -115,6 +121,8 @@
             if (cell == nil) {
                 cell = [ProfileBiodataShopCell newcell];
                 ((ProfileBiodataShopCell*)cell).delegate = self;
+                ((ProfileBiodataShopCell *)cell).labelname.userInteractionEnabled = YES;
+                [((ProfileBiodataShopCell *)cell).labelname addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionGoToUserProfile:)]];
             }
             ((ProfileBiodataShopCell*)cell).labelname.text = _profileinfo.result.shop_info.shop_name;
             ((ProfileBiodataShopCell*)cell).labellocation.text = _profileinfo.result.shop_info.shop_location;
@@ -178,6 +186,15 @@
 {
     ((ProfileBiodataCell*)cell).labelbirth.text = _profileinfo.result.user_info.user_birth?:@"-";
     ((ProfileBiodataCell*)cell).labelhobbies.text = (_profileinfo.result.user_info.user_hobbies == nil || [_profileinfo.result.user_info.user_hobbies isEqualToString:@"0"])?@"-":_profileinfo.result.user_info.user_hobbies;
+}
+
+
+#pragma mark - Method
+- (void)actionGoToUserProfile:(id)sender
+{
+    if(self.navigationController.viewControllers.count > 1) {
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3] animated:YES];
+    }
 }
 
 #pragma mark - Cell Delegate

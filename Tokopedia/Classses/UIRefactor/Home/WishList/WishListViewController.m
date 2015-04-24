@@ -22,8 +22,8 @@
 {
     NSMutableArray *product;
     int page, limit, requestCount;
-    BOOL isNoData, isRefreshView;
-    NSString *uriNext;
+    BOOL isNoData, isRefreshView, hasInitData;
+    NSString *uriNext, *strUserID;
     __weak RKObjectManager *objectManager;
     __weak RKManagedObjectRequestOperation *request;
     NSOperationQueue *operationQueue;
@@ -60,7 +60,7 @@
     /** set table footer view (loading act) **/
     tblWishList.tableFooterView = footer;
     [activityIndicator startAnimating];
-    tblWishList.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
+    tblWishList.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
     CGRect rectTable = tblWishList.frame;
     rectTable.size.height -= 105;
     tblWishList.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
@@ -102,7 +102,26 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+ 
+    //Check Difference userID
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
     
+    if(hasInitData)
+    {
+        hasInitData = !hasInitData;
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+    }
+    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+        product = [NSMutableArray new];
+        page = 1;
+        isNoData = YES;
+        isRefreshView = NO;
+        uriNext = nil;
+        [tokoPediaNetworkManager doRequest];
+    }
 }
 
 /*

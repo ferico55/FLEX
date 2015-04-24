@@ -5,7 +5,7 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "CreateShopViewController.h"
 #import "MoreViewController.h"
 #import "more.h"
 #import "TKPDSecureStorage.h"
@@ -28,7 +28,7 @@
 #import "TKPDTabShopViewController.h"
 #import "ShopFavoritedViewController.h"
 #import "ShopReviewViewController.h"
-#import "ShopNotesViewController.h"
+#import "MyShopNoteViewController.h"
 #import "ShopTalkViewController.h"
 
 #import "InboxMessageViewController.h"
@@ -43,6 +43,9 @@
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
 #import "ReputationPageViewController.h"
+#import "ProductListMyShopViewController.h"
+#import "MyShopEtalaseViewController.h"
+#import "InboxResolutionCenterTabViewController.h"
 #import "Helpshift.h"
 
 @interface MoreViewController () <NotificationManagerDelegate> {
@@ -54,7 +57,7 @@
     __weak RKObjectManager *_depositObjectManager;
     __weak RKManagedObjectRequestOperation *_depositRequest;
     NSInteger _depositRequestCount;
-    BOOL _isNoDataDeposit;
+    BOOL _isNoDataDeposit, hasLoadViewWillAppear;
     NotificationManager *_notifManager;
 }
 
@@ -98,7 +101,8 @@
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
     if([_auth objectForKey:@"shop_id"]) {
-        _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
+        if([_auth objectForKey:@"shop_name"])
+            _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
         
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -133,6 +137,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if(hasLoadViewWillAppear) {
+        return;
+    }
+    
+    hasLoadViewWillAppear = !hasLoadViewWillAppear;
     [super viewWillAppear:animated];
     
     self.navigationController.title = @"More";
@@ -187,6 +196,50 @@
     [super didReceiveMemoryWarning];
 }
 
+
+#pragma mark - Method
+- (void)updateKeyChain
+{
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    
+    if([_auth objectForKey:@"shop_id"]) {
+        _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
+        
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        [_shopImageView setImageWithURLRequest:request
+                              placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
+                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                           //NSLOG(@"thumb: %@", thumb);
+                                           [_shopImageView setImage:image];
+#pragma clang diagnostic pop
+                                       } failure: nil];
+        
+        if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
+            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
+                                         _shopIsGoldLabel.frame.origin.y,
+                                         22, 22);
+            [_shopCell addSubview:imageView];
+            _shopIsGoldLabel.text = @"        Gold Merchant";
+        } else {
+            _shopIsGoldLabel.text = @"Regular Merchant";
+            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
+            shopIsGoldLabelFrame.origin.x = 83;
+            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            _shopIsGoldLabel.text = @"";
+        }
+        
+        [self.tableView reloadData];
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -208,7 +261,7 @@
         case 2:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
-                    return 2;
+                    return 4;
             else return 0;
             break;
             
@@ -220,7 +273,7 @@
             break;
             
         case 4:
-            return 3;
+            return 4;
             break;
             
         case 5:
@@ -302,20 +355,31 @@
         [self.navigationController pushViewController:purchaseController animated:YES];
     }
     
-    else if (indexPath.section == 2 && indexPath.row == 0) {
-        ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-        container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
-                                                               MORE_AUTH : _auth,
-                                                               MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
-                                                               };
-        [self.navigationController pushViewController:container animated:YES];
-    }
     
-    else if (indexPath.section == 2 && indexPath.row == 1) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
-        salesController.notification = _notifManager.notification;
-        [self.navigationController pushViewController:salesController animated:YES];
+    else if (indexPath.section == 2) {
+        if(indexPath.row == 0) {
+            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+                               MORE_AUTH : _auth,
+                               MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+                               };
+            [self.navigationController pushViewController:container animated:YES];
+        } else if(indexPath.row == 1) {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
+            salesController.notification = _notifManager.notification;
+            [self.navigationController pushViewController:salesController animated:YES];
+        } else if (indexPath.row == 2) {
+            ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
+            vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if (indexPath.row == 3) {
+            MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
+            vc.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID]?:@{},
+                        kTKPD_AUTHKEY:_auth?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+
     }
     
     else if (indexPath.section == 4) {
@@ -370,6 +434,11 @@
             [nc setViewControllers:vcs];
             nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
+            
+        } else if (indexPath.row  == 3) {
+            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
             
         }
         
@@ -525,4 +594,11 @@
 }
 
 
+#pragma mark - Action
+- (IBAction)actionCreateShop:(id)sender
+{
+    CreateShopViewController *createShopViewController = [CreateShopViewController new];
+    createShopViewController.moreViewController = self;
+    [self pushViewController:createShopViewController];
+}
 @end

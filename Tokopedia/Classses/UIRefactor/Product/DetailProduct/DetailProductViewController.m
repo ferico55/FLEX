@@ -13,6 +13,7 @@
 #define CTagWishList 5
 #define CTagUnWishList 6
 
+#import "GalleryViewController.h"
 #import "detail.h"
 #import "search.h"
 #import "stringrestkit.h"
@@ -77,6 +78,7 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
+GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
 DetailProductInfoCellDelegate,
@@ -1486,7 +1488,7 @@ TokopediaNetworkManagerDelegate
                 _isnodatawholesale = NO;
             }
             if([_product.result.product.product_description isEqualToString:@"0"])
-                _product.result.product.product_description = kTKPDTIDAK_ADA_WISHLIST;
+                _product.result.product.product_description = NO_DESCRIPTION;
             
             
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
@@ -1510,12 +1512,12 @@ TokopediaNetworkManagerDelegate
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = NO;
                 [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
-                btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:11.0f];
+                btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
                 [btnWishList setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                btnWishList.layer.cornerRadius = btnShare.layer.cornerRadius = 5;
-                btnWishList.layer.masksToBounds = btnShare.layer.masksToBounds = YES;
-                btnWishList.layer.borderColor = btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-                btnWishList.layer.borderWidth = btnShare.layer.borderWidth = 1.0f;
+                btnWishList.layer.cornerRadius = 5;
+                btnWishList.layer.masksToBounds = YES;
+                btnWishList.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+                btnWishList.layer.borderWidth = 1.0f;
                 btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
                 btnWishList.titleEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 0);
                 
@@ -2163,16 +2165,20 @@ TokopediaNetworkManagerDelegate
 
 #pragma mark - Tap View
 - (void)tapProductGallery {
-    NSDictionary *data = @{
-                           @"image_index" : @(_pageheaderimages),
-                           @"images" : _product.result.product_images
-                           };
-    
-    ProductGalleryViewController *vc = [ProductGalleryViewController new];
-    vc.data = data;
-    
-    [self.navigationController presentViewController:vc animated:YES completion:nil];
+//    NSDictionary *data = @{
+//                           @"image_index" : @(_pageheaderimages),
+//                           @"images" : _product.result.product_images
+//                           };
+//    
+//    ProductGalleryViewController *vc = [ProductGalleryViewController new];
+//    vc.data = data;
+//    
+//    [self.navigationController presentViewController:vc animated:YES completion:nil];
     //    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+    [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
 - (void)tapShop {
@@ -2184,5 +2190,45 @@ TokopediaNetworkManagerDelegate
 }
 
 
+
+#pragma mark - GalleryPhoto Delegate
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
+{
+    return (int)_product.result.product_images.count;
+}
+
+
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
+{
+    if(((int) index) < 0)
+        return ((ProductImages *) [_product.result.product_images objectAtIndex:0]).image_description;
+    else if(((int)index) > _product.result.product_images.count-1)
+        return ((ProductImages *) [_product.result.product_images objectAtIndex:_product.result.product_images.count-1]).image_description;
+        
+    return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_description;
+}
+
+
+- (NSString*)photoGallery:(GalleryViewController*)gallery filePathForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
+    return nil;
+}
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
+    if(((int) index) < 0)
+        return ((ProductImages *) [_product.result.product_images objectAtIndex:0]).image_src;
+    else if(((int)index) > _product.result.product_images.count-1)
+        return ((ProductImages *) [_product.result.product_images objectAtIndex:_product.result.product_images.count-1]).image_src;
+    
+    return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_src;
+}
+
+- (void)handleTrashButtonTouch:(id)sender {
+}
+
+
+- (void)handleEditCaptionButtonTouch:(id)sender {
+    // here we could implement some code to change the caption for a stored image
+}
 
 @end

@@ -92,8 +92,9 @@
 
 @end
 
-@implementation TxOrderPaymentViewController
+#define TAG_REQUEST_FORM 10
 
+@implementation TxOrderPaymentViewController
 
 #pragma mark - View LifeCycle
 - (void)viewDidLoad {
@@ -102,7 +103,9 @@
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _mapping = [TxOrderObjectMapping new];
+    
     _networkManager = [TokopediaNetworkManager new];
+    _networkManager.tagRequest = TAG_REQUEST_FORM;
     _networkManager.delegate = self;
     
     _sectionNewRekeningCells = [NSArray sortViewsWithTagInArray:_sectionNewRekeningCells];
@@ -147,9 +150,8 @@
     
     [_dataInput addEntriesFromDictionary:_data];
     
-    if (_isConfirmed)[self configureRestKitIsConfirmed];else[self configureRestKit];
-    [self request];
-        
+    [_networkManager doRequest];
+    
     _isNewRekening = NO;
     
     [_dataInput setObject:[NSDate date] forKey:DATA_PAYMENT_DATE_KEY];
@@ -159,6 +161,7 @@
 {
     [super viewWillAppear:animated];
     
+    _networkManager.delegate = self;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
@@ -170,7 +173,8 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -519,297 +523,123 @@
 }
 
 #pragma mark - Request Get Transaction Order Payment Confirmation
--(void)cancel
+-(id)getObjectManager:(int)tag
 {
-    [_request cancel];
-    _request = nil;
-    [_objectManager.operationQueue cancelAllOperations];
-    _objectManager = nil;
+    if (tag == TAG_REQUEST_FORM) {
+        return _isConfirmed?[self objectManagerConfirmed]: [self objectManagerConfirmation];
+    }
+    return nil;
 }
 
-
--(void)configureRestKit
+-(NSDictionary *)getParameter:(int)tag
 {
-    _objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentFormResult class]];
-    
-    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentFormForm class]];
-    [formMapping addAttributeMappingsFromArray:@[API_TOKEN_KEY]];
-    
-    RKObjectMapping *listBankMapping = [_mapping bankAccountListMapping];
-    RKObjectMapping *listSystemBankMapping = [_mapping systemBankListMapping];
-    RKObjectMapping *listMethodMapping = [_mapping methodListMapping];
-    RKObjectMapping *orderMapping = [_mapping confirmedOrderDetailMapping];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *formRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY
-                                                                                    toKeyPath:API_FORM_KEY
-                                                                                  withMapping:formMapping];
-    
-    RKRelationshipMapping *orderRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_KEY
-                                                                                   toKeyPath:API_ORDER_FORM_KEY
-                                                                                 withMapping:orderMapping];
-    
-    RKRelationshipMapping *listBankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_KEY
-                                                                                    toKeyPath:API_BANK_ACCOUNT_KEY
-                                                                                  withMapping:listBankMapping];
-    
-    RKRelationshipMapping *listBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY
-                                                                                    toKeyPath:API_SYSTEM_BANK_KEY
-                                                                                  withMapping:listSystemBankMapping];
-    
-    RKRelationshipMapping *listMethodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_KEY
-                                                                                   toKeyPath:API_METHOD_KEY
-                                                                                 withMapping:listMethodMapping];
-    [statusMapping addPropertyMapping:resultRel];
-    [resultMapping addPropertyMapping:formRel];
-    [formMapping addPropertyMapping:listBankAccountRel];
-    [formMapping addPropertyMapping:listBankRel];
-    [formMapping addPropertyMapping:listMethodRel];
-    [formMapping addPropertyMapping:orderRel];
- 
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
+    if (tag == TAG_REQUEST_FORM) {
+        NSArray *selectedOrders = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
+        NSMutableArray *confirmationIDs = [NSMutableArray new];
+        for (TxOrderConfirmationList *order in selectedOrders) {
+            [confirmationIDs addObject:order.confirmation.confirmation_id];
+        }
+        
+        NSString * confirmationID = (_isConfirmed)?_paymentID:[[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"];
+        NSString *action = (_isConfirmed)?ACTION_GET_EDIT_PAYMENT_FORM:ACTION_GET_CONFIRM_PAYMENT_FORM;
+        NSString *confirmationKey = (_isConfirmed)?API_ORDER_PAYMENT_ID_KEY:API_CONFIRMATION_CONFIRMATION_ID_KEY;
+        
+        NSDictionary* param = @{API_ACTION_KEY : action,
+                                confirmationKey:confirmationID};
+        return param;
+    }
+    return nil;
 }
 
--(void)configureRestKitIsConfirmed
+-(NSString *)getPath:(int)tag
 {
-    _objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEdit class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditResult class]];
-    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditForm class]];
-    RKObjectMapping *methodMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditMethod class]];
-    [methodMapping addAttributeMappingsFromArray:@[API_METHOD_ID_CHOOSEN_KEY]];
-    
-    RKObjectMapping *bankMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditBankAccount class]];
-    [bankMapping addAttributeMappingsFromArray:@[API_BANK_ACCOUNT_ID_CHOOSEN_KEY]];
-    
-    RKObjectMapping *systemBankMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditSystemBank class]];
-    [systemBankMapping addAttributeMappingsFromArray:@[API_SYSTEM_BANK_ID_CHOOSEN_KEY]];
-    
-    RKObjectMapping *orderMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditOrder class]];
-    [orderMapping addAttributeMappingsFromArray:@[API_INVOICE_STRING_KEY,
-                                                  API_INVOICE_LIST_KEY
-                                                  ]];
-    
-    RKObjectMapping *listBankMapping = [_mapping bankAccountListMapping];
-    RKObjectMapping *listSystemBankMapping = [_mapping systemBankListMapping];
-    RKObjectMapping *listMethodMapping = [_mapping methodListMapping];
-    RKObjectMapping *paymentMapping = [_mapping confirmedOrderDetailMapping];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *formRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY
-                                                                                toKeyPath:API_FORM_KEY
-                                                                              withMapping:formMapping];
-    
-    RKRelationshipMapping *paymentRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_PAYMENT_KEY
-                                                                                 toKeyPath:API_ORDER_FORM_PAYMENT_KEY
-                                                                               withMapping:paymentMapping];
-    
-    RKRelationshipMapping *orderRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_KEY
-                                                                                   toKeyPath:API_ORDER_FORM_KEY
-                                                                                 withMapping:orderMapping];
-    
-    RKRelationshipMapping *bankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_KEY
-                                                                                           toKeyPath:API_BANK_ACCOUNT_KEY
-                                                                                         withMapping:bankMapping];
-    RKRelationshipMapping *listBankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_LIST_KEY
-                                                                                       toKeyPath:API_BANK_ACCOUNT_LIST_KEY
-                                                                                     withMapping:listBankMapping];
-    
-    RKRelationshipMapping *systemBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY
-                                                                                    toKeyPath:API_SYSTEM_BANK_KEY
-                                                                                  withMapping:systemBankMapping];
-    RKRelationshipMapping *listSystemBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_LIST_KEY
-                                                                                      toKeyPath:API_SYSTEM_BANK_LIST_KEY
-                                                                                    withMapping:listSystemBankMapping];
-    
-    RKRelationshipMapping *methodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_KEY
-                                                                                       toKeyPath:API_METHOD_KEY
-                                                                                     withMapping:methodMapping];
-    RKRelationshipMapping *listMethodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_LIST_KEY
-                                                                                       toKeyPath:API_METHOD_LIST_KEY
-                                                                                     withMapping:listMethodMapping];
-    
-    [statusMapping addPropertyMapping:resultRel];
-    [resultMapping addPropertyMapping:formRel];
-    
-    [formMapping addPropertyMapping:bankAccountRel];
-    [bankMapping addPropertyMapping:listBankAccountRel];
-    
-    [formMapping addPropertyMapping:systemBankRel];
-    [systemBankMapping addPropertyMapping:listSystemBankRel];
-    
-    [formMapping addPropertyMapping:methodRel];
-    [methodMapping addPropertyMapping:listMethodRel];
-    
-    [formMapping addPropertyMapping:paymentRel];
-    [formMapping addPropertyMapping:orderRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
+    if (tag == TAG_REQUEST_FORM) {
+        return API_PATH_TX_ORDER;
+    }
+    return nil;
 }
 
--(void)request
+-(void)actionBeforeRequest:(int)tag
 {
-    if (_request.isExecuting) return;
-    NSTimer *timer;
-    
-    NSArray *selectedOrders = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
-    NSMutableArray *confirmationIDs = [NSMutableArray new];
-    for (TxOrderConfirmationList *order in selectedOrders) {
-        [confirmationIDs addObject:order.confirmation.confirmation_id];
+    if (tag == TAG_REQUEST_FORM) {
+        _tableView.tableFooterView = _footerView;
+        [_act startAnimating];
+        _isFinishRequestForm = NO;
+    }
+}
+
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    if (tag == TAG_REQUEST_FORM) {
+        if (_isConfirmed) {
+            TxOrderPaymentEdit *form = stat;
+            return form.status;
+        }
+        else
+        {
+            TxOrderConfirmPaymentForm *form = stat;
+            return form.status;
+        }
     }
     
-    NSString * confirmationID = (_isConfirmed)?_paymentID:[[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"];
-    NSString *action = (_isConfirmed)?ACTION_GET_EDIT_PAYMENT_FORM:ACTION_GET_CONFIRM_PAYMENT_FORM;
-    NSString *confirmationKey = (_isConfirmed)?API_ORDER_PAYMENT_ID_KEY:API_CONFIRMATION_CONFIRMATION_ID_KEY;
-    
-    NSDictionary* param = @{API_ACTION_KEY : action,
-                            confirmationKey:confirmationID};
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID forKey:@"user_id"];
-//    
-//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
-//#else
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
-//#endif
-    
-    _tableView.tableFooterView = _footerView;
-    [_act startAnimating];
-    _isFinishRequestForm = NO;
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccess:mappingResult withOperation:operation];
-        [timer invalidate];
+    return nil;
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    if (tag == TAG_REQUEST_FORM) {
+        [self requestSuccess:successResult withOperation:operation];
         [_act stopAnimating];
         _tableView.tableFooterView = nil;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailure:error];
-        [timer invalidate];
+    }
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    [self actionAfterFailRequestMaxTries:tag];
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if (tag == TAG_REQUEST_FORM) {
         [_act stopAnimating];
         _tableView.tableFooterView = nil;
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    }
 }
 
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stat = [result objectForKey:@""];
+    id form;
     BOOL status;
     if(_isConfirmed){
-        TxOrderPaymentEdit *form = stat;
-        status = [form.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        form = (TxOrderPaymentEdit*)stat;
+        status = [[form status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     }
     else {
-        TxOrderConfirmPaymentForm *form = stat;
-        status = [form.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        form = (TxOrderConfirmPaymentForm*)stat;
+        status = [[form status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     }
+    
     if (status) {
-        [self requestProcess:object];
-    }
-}
-
--(void)requestFailure:(id)object
-{
-    [self requestProcess:object];
-}
-
--(void)requestProcess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            id form;
-            BOOL status;
-            if(_isConfirmed){
-                form = (TxOrderPaymentEdit*)stat;
-                status = [[form status] isEqualToString:kTKPDREQUEST_OKSTATUS];
-            }
-            else {
-                form = (TxOrderConfirmPaymentForm*)stat;
-                status = [[form status] isEqualToString:kTKPDREQUEST_OKSTATUS];
-            }
-            
-            if (status) {
-                if([form message_error])
-                {
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:[form message_error] delegate:self];
-                    [alert show];
-                }
-                else{
-                    if (_isConfirmed)
-                        [self setDefaultDataConfirmed:((TxOrderPaymentEdit*)form).result.form];
-                    else
-                        [self setDefaultDataConfirmation:((TxOrderConfirmPaymentForm*)form).result.form];
-                
-                    _isFinishRequestForm = YES;
-                    [_tableView reloadData];
-                }
-            }
+        if([form message_error])
+        {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:[form message_error] delegate:self];
+            [alert show];
         }
         else{
-            [self cancel];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+            if (_isConfirmed)
+                [self setDefaultDataConfirmed:((TxOrderPaymentEdit*)form).result.form];
+            else
+                [self setDefaultDataConfirmation:((TxOrderConfirmPaymentForm*)form).result.form];
+            
+            _isFinishRequestForm = YES;
+            [_tableView reloadData];
         }
     }
-}
-
--(void)requestTimeout
-{
-    [self cancel];
 }
 
 
@@ -1589,5 +1419,165 @@
                      completion:^(BOOL finished){
                      }];
 }
+
+#pragma mark - Object Manager
+
+-(RKObjectManager*)objectManagerConfirmation
+{
+    _objectManager = [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentForm class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentFormResult class]];
+    
+    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentFormForm class]];
+    [formMapping addAttributeMappingsFromArray:@[API_TOKEN_KEY]];
+    
+    RKObjectMapping *listBankMapping = [_mapping bankAccountListMapping];
+    RKObjectMapping *listSystemBankMapping = [_mapping systemBankListMapping];
+    RKObjectMapping *listMethodMapping = [_mapping methodListMapping];
+    RKObjectMapping *orderMapping = [_mapping confirmedOrderDetailMapping];
+    
+    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                   toKeyPath:kTKPD_APIRESULTKEY
+                                                                                 withMapping:resultMapping];
+    
+    RKRelationshipMapping *formRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY
+                                                                                toKeyPath:API_FORM_KEY
+                                                                              withMapping:formMapping];
+    
+    RKRelationshipMapping *orderRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_KEY
+                                                                                 toKeyPath:API_ORDER_FORM_KEY
+                                                                               withMapping:orderMapping];
+    
+    RKRelationshipMapping *listBankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_KEY
+                                                                                           toKeyPath:API_BANK_ACCOUNT_KEY
+                                                                                         withMapping:listBankMapping];
+    
+    RKRelationshipMapping *listBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY
+                                                                                    toKeyPath:API_SYSTEM_BANK_KEY
+                                                                                  withMapping:listSystemBankMapping];
+    
+    RKRelationshipMapping *listMethodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_KEY
+                                                                                       toKeyPath:API_METHOD_KEY
+                                                                                     withMapping:listMethodMapping];
+    [statusMapping addPropertyMapping:resultRel];
+    [resultMapping addPropertyMapping:formRel];
+    [formMapping addPropertyMapping:listBankAccountRel];
+    [formMapping addPropertyMapping:listBankRel];
+    [formMapping addPropertyMapping:listMethodRel];
+    [formMapping addPropertyMapping:orderRel];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:API_PATH_TX_ORDER
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManager addResponseDescriptor:responseDescriptor];
+    
+    return _objectManager;
+}
+
+-(RKObjectManager*)objectManagerConfirmed
+{
+    _objectManager = [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEdit class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditResult class]];
+    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditForm class]];
+    RKObjectMapping *methodMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditMethod class]];
+    [methodMapping addAttributeMappingsFromArray:@[API_METHOD_ID_CHOOSEN_KEY]];
+    
+    RKObjectMapping *bankMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditBankAccount class]];
+    [bankMapping addAttributeMappingsFromArray:@[API_BANK_ACCOUNT_ID_CHOOSEN_KEY]];
+    
+    RKObjectMapping *systemBankMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditSystemBank class]];
+    [systemBankMapping addAttributeMappingsFromArray:@[API_SYSTEM_BANK_ID_CHOOSEN_KEY]];
+    
+    RKObjectMapping *orderMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditOrder class]];
+    [orderMapping addAttributeMappingsFromArray:@[API_INVOICE_STRING_KEY,
+                                                  API_INVOICE_LIST_KEY
+                                                  ]];
+    
+    RKObjectMapping *listBankMapping = [_mapping bankAccountListMapping];
+    RKObjectMapping *listSystemBankMapping = [_mapping systemBankListMapping];
+    RKObjectMapping *listMethodMapping = [_mapping methodListMapping];
+    RKObjectMapping *paymentMapping = [_mapping confirmedOrderDetailMapping];
+    
+    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                   toKeyPath:kTKPD_APIRESULTKEY
+                                                                                 withMapping:resultMapping];
+    
+    RKRelationshipMapping *formRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY
+                                                                                toKeyPath:API_FORM_KEY
+                                                                              withMapping:formMapping];
+    
+    RKRelationshipMapping *paymentRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_PAYMENT_KEY
+                                                                                   toKeyPath:API_ORDER_FORM_PAYMENT_KEY
+                                                                                 withMapping:paymentMapping];
+    
+    RKRelationshipMapping *orderRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_KEY
+                                                                                 toKeyPath:API_ORDER_FORM_KEY
+                                                                               withMapping:orderMapping];
+    
+    RKRelationshipMapping *bankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_KEY
+                                                                                       toKeyPath:API_BANK_ACCOUNT_KEY
+                                                                                     withMapping:bankMapping];
+    RKRelationshipMapping *listBankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_LIST_KEY
+                                                                                           toKeyPath:API_BANK_ACCOUNT_LIST_KEY
+                                                                                         withMapping:listBankMapping];
+    
+    RKRelationshipMapping *systemBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY
+                                                                                      toKeyPath:API_SYSTEM_BANK_KEY
+                                                                                    withMapping:systemBankMapping];
+    RKRelationshipMapping *listSystemBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_LIST_KEY
+                                                                                          toKeyPath:API_SYSTEM_BANK_LIST_KEY
+                                                                                        withMapping:listSystemBankMapping];
+    
+    RKRelationshipMapping *methodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_KEY
+                                                                                   toKeyPath:API_METHOD_KEY
+                                                                                 withMapping:methodMapping];
+    RKRelationshipMapping *listMethodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_LIST_KEY
+                                                                                       toKeyPath:API_METHOD_LIST_KEY
+                                                                                     withMapping:listMethodMapping];
+    
+    [statusMapping addPropertyMapping:resultRel];
+    [resultMapping addPropertyMapping:formRel];
+    
+    [formMapping addPropertyMapping:bankAccountRel];
+    [bankMapping addPropertyMapping:listBankAccountRel];
+    
+    [formMapping addPropertyMapping:systemBankRel];
+    [systemBankMapping addPropertyMapping:listSystemBankRel];
+    
+    [formMapping addPropertyMapping:methodRel];
+    [methodMapping addPropertyMapping:listMethodRel];
+    
+    [formMapping addPropertyMapping:paymentRel];
+    [formMapping addPropertyMapping:orderRel];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:API_PATH_TX_ORDER
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManager addResponseDescriptor:responseDescriptor];
+    
+    return _objectManager;
+}
+
 
 @end

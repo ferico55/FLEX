@@ -837,6 +837,12 @@
 
 #pragma mark - Methods
 
+- (void)setArrayList:(NSArray *)arrList
+{
+    _list = [NSMutableArray arrayWithArray:arrList];
+    [_table reloadData];
+}
+
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
 {
     [_datainput setObject:_list[indexpath.row] forKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];

@@ -112,11 +112,13 @@
     _networkManager.delegate = self;
 }
 
--(void)viewWillDisappear:(BOOL)animated
+-(void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
+    [super viewDidDisappear:animated];
+    [_networkManager requestCancel];
     _networkManager.delegate = nil;
 }
+
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
 {
@@ -576,10 +578,20 @@
             [_tableView reloadData];
         }
     }
+    [_refreshControl endRefreshing];
+    [_act stopAnimating];
+    _tableView.tableFooterView = nil;
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
+    [_refreshControl endRefreshing];
+    [_act stopAnimating];
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    [_refreshControl endRefreshing];
     [_act stopAnimating];
 }
 

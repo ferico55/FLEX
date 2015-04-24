@@ -12,10 +12,11 @@
 #define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 
 //#if DEBUG
-//    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
 //#else
-//    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
+//#define kTkpdBaseURLString @"https://beta.tokopedia.com/ws"
 
 #define kTKPD_AUTHKEY @"auth"
 #define kTKPD_ISLOGINKEY @"is_login"
@@ -26,6 +27,7 @@
 #define kTKPD_SHOPIDKEY @"shop_id"
 #define kTKPD_SHOPNAMEKEY @"shop_name"
 #define kTKPD_SHOPIMAGEKEY @"shop_avatar"
+#define kTKPD_SHOPURL @"shop_url"
 #define kTKPD_SHOPISGOLD @"shop_is_gold"
 #define kTKPD_NULLCOMMENTKEY @"0"
 

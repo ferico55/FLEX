@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamMedium.ttf">
@@ -37,10 +37,12 @@
             </subviews>
             <constraints>
                 <constraint firstItem="2Qi-pz-RM1" firstAttribute="top" secondItem="GyS-q9-6U3" secondAttribute="bottom" id="1mE-8K-g6U"/>
+                <constraint firstItem="GyS-q9-6U3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="125" id="3kf-na-jH2"/>
                 <constraint firstAttribute="trailing" secondItem="2Qi-pz-RM1" secondAttribute="trailing" constant="15" id="G4F-1V-a8y"/>
                 <constraint firstItem="GyS-q9-6U3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="Tmv-YR-1Gy"/>
                 <constraint firstItem="2Qi-pz-RM1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="YrQ-C0-NPB"/>
                 <constraint firstAttribute="bottom" secondItem="2Qi-pz-RM1" secondAttribute="bottom" constant="5" id="vEQ-hA-2pD"/>
+                <constraint firstAttribute="trailing" secondItem="GyS-q9-6U3" secondAttribute="trailing" constant="125" id="y5U-3r-7Ft"/>
                 <constraint firstAttribute="centerX" secondItem="GyS-q9-6U3" secondAttribute="centerX" id="yxL-ZA-Gfa"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

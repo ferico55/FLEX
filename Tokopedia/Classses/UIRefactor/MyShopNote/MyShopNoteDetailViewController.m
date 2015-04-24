@@ -51,6 +51,7 @@
     NSTimeInterval _timeinterval;
     
     BOOL _isBeingPresented;
+    BOOL _isNewNoteReturnableProduct;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -106,22 +107,6 @@
                                                                          action:@selector(tap:)];
         barButtonItem.tag = 10;
         self.navigationItem.leftBarButtonItem = barButtonItem;   
-    }
-    
-    switch (_type) {
-        case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
-        case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
-        case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
-        case NOTES_RETURNABLE_PRODUCT:
-            _titleLabel.hidden = YES;
-            _titleNoteTextField.hidden = NO;
-            break;
-        case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
-            _titleLabel.hidden = NO;
-            _titleNoteTextField.hidden = YES;
-            break;
-        default:
-            break;
     }
     
     NSString *barButtonTitle;
@@ -207,14 +192,19 @@
                            selector:@selector(keyboardWillShow:)
                                name:UIKeyboardWillShowNotification
                              object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(didEditNote:)
+                               name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY
+                             object:nil];
     
     if ([[_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY] isEqualToString:@"2"]) {
         _titleNoteTextField.enabled = NO;
     }
     
-    [_titleNoteTextField addTarget:self
-                            action:@selector(textFieldValueChanged:)
-                  forControlEvents:UIControlEventEditingChanged];
+    [_titleNoteTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    
+    _isNewNoteReturnableProduct = NO;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -327,7 +317,8 @@
     RKObjectMapping *detailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
     [detailMapping addAttributeMappingsFromDictionary:@{kTKPDNOTE_APINOTESTITLEKEY:kTKPDNOTE_APINOTESTITLEKEY,
                                                         kTKPDNOTE_APINOTESUPDATETIMEKEY:kTKPDNOTE_APINOTESUPDATETIMEKEY,
-                                                        kTKPDNOTE_APINOTESCONTENTKEY:kTKPDNOTE_APINOTESCONTENTKEY
+                                                        kTKPDNOTE_APINOTESCONTENTKEY:kTKPDNOTE_APINOTESCONTENTKEY,
+                                                        NOTE_CREATE_TIME:NOTE_CREATE_TIME
                                                         }];
     
     //add relationship mapping
@@ -470,8 +461,10 @@
             BOOL status = [_note.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
+                if ([_note.result.detail.notes_update_time isEqualToString:@""]|| _note.result.detail.notes_update_time == nil) {
+                    _note.result.detail.notes_update_time = _note.result.detail.notes_create_time;
+                }
                 _barbuttonedit.enabled = YES;
-                _timeNoteLabel.hidden = NO;
                 _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
                 NSString *note = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
                 _titleLabel.text = [NSString convertHTML:note];
@@ -489,9 +482,18 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 
                 NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
-                contentNote = [NSString convertHTML:contentNote];
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote
-                                                                                       attributes:attributes];
+                
+                if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
+                    _isNewNoteReturnableProduct = YES;
+                }
+                
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                NSRange range = (NSRange){0,[attributedString length]};
+                [attributedString enumerateAttribute:NSFontAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id value, NSRange range, BOOL *stop) {
+                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
+                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
+                }];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
@@ -501,7 +503,6 @@
                 
                 if (_type == NOTES_RETURNABLE_PRODUCT && [_note.result.detail.notes_title isEqual:@"0"])
                 {
-                    _titleNoteTextField.hidden = NO;
                     _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
                     _titleNoteTextField.enabled = NO;
                     _barbuttonedit.enabled = YES;
@@ -597,7 +598,7 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSString *action;
-    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
         action = kTKPDDETAIL_APIADDNOTESDETAILKEY;
     }
     else
@@ -617,7 +618,7 @@
                             kTKPDNOTES_APINOTEIDKEY : noteID?:@"",
                             kTKPDNOTES_APINOTETITLEKEY : noteTitle,
                             kTKPDNOTES_APINOTECONTENTKEY : noteContent,
-                            NOTES_TERMS_FLAG_KEY : @(terms)
+                            NOTES_TERMS_FLAG_KEY : @(terms),
                             };
     _requestcount ++;
     
@@ -684,7 +685,7 @@
                             defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
                             break;
                         default:
-                            defaultMessage = @[];
+                            defaultMessage = @[@"Success"];
                             break;
                     }
 
@@ -770,60 +771,23 @@
         _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY] integerValue];
         switch (_type) {
             case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY: {
-                
-                _titleNoteTextField.hidden = YES;
-                _titleLabel.hidden = NO;
-                _timeNoteLabel.hidden = NO;
-
                 [_contentNoteTextView setPlaceholder:@"Konten"];
-
-                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
-                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
-                
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                [attributes setObject:font forKey:NSFontAttributeName];
                 
                 NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@""
-                                                                                       attributes:attributes];
+                                                                                       attributes:[self attributes]];
                 _contentNoteTextView.attributedText = attributedString;
                 
-                NSDate *date = [NSDate date];
-                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-                NSInteger year = [components year];
-                NSInteger day = [components day];
-                
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                dateFormatter.dateFormat = @"yyyyMMdd";
-                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id"]];
-                
-                dateFormatter.dateFormat=@"MMMM";
-                NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
-                NSLog(@"month: %@", monthString);
-                [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-                NSString *currentTime = [dateFormatter stringFromDate:date];
-
-                _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
-                                       day, monthString, year, currentTime];
-                [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
+                [self setTimeLabelBecomeCurrentDate];
 
                 break;
             }
             case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:{
 
-                _titleLabel.hidden = YES;
-                _titleNoteTextField.hidden = NO;
-                _contentNoteTextView.hidden = NO;
-                
                 [_barbuttonedit setEnabled:YES];
                 
                 _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
                 _titleNoteTextField.text = _note.result.detail.notes_title;
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
-                [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
-
                 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
@@ -833,10 +797,16 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                NSRange range = (NSRange){0,[attributedString length]};
+                [attributedString enumerateAttribute:NSFontAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id value, NSRange range, BOOL *stop) {
+                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
+                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
+                }];
                 _contentNoteTextView.attributedText = attributedString;
                 
-                _timeNoteLabel.hidden = NO;
+               [self setTimeLabelBecomeCurrentDate];
                 
                 if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
                     _barbuttonedit.enabled = YES;
@@ -847,27 +817,29 @@
             }
             case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY: {
 
-                _titleNoteTextField.hidden = YES;
-                _titleLabel.hidden = NO;
                 _contentNoteTextView.editable = NO;
                 
                 _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
-                _titleLabel.text = _note.result.detail.notes_title;
+                _titleNoteTextField.text = _note.result.detail.notes_title;
+                _titleNoteTextField.enabled = NO;
 
-                _timeNoteLabel.hidden = NO;
-                _titleNoteTextField.hidden = YES;
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
-                
-                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
-                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+//                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                [attributes setObject:font forKey:NSFontAttributeName];
+//                [attributes setObject:font forKey:NSFontAttributeName];
 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                NSRange range = (NSRange){0,[attributedString length]};
+                [attributedString enumerateAttribute:NSFontAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id value, NSRange range, BOOL *stop) {
+                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
+                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
+                }];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 [self configureRestKit];
@@ -875,8 +847,6 @@
                 break;
             }
             case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY: {
-                _titleNoteTextField.hidden = NO;
-                _titleLabel.hidden = YES;
                 [_barbuttonedit setEnabled:YES];
                 [self configureRestKit];
                 [self request];
@@ -884,29 +854,11 @@
             }
             case NOTES_RETURNABLE_PRODUCT:
             {
-                _titleNoteTextField.hidden = NO;
                 _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
                 _titleNoteTextField.enabled = NO;
                 _barbuttonedit.enabled = YES;
                 
-                NSDate *date = [NSDate date];
-                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-                NSInteger year = [components year];
-                NSInteger day = [components day];
-                
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                dateFormatter.dateFormat = @"yyyyMMdd";
-                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id"]];
-                
-                dateFormatter.dateFormat=@"MMMM";
-                NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
-                NSLog(@"month: %@", monthString);
-                [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-                NSString *currentTime = [dateFormatter stringFromDate:date];
-                
-                _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
-                                       day, monthString, year, currentTime];
-                [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
+                [self setTimeLabelBecomeCurrentDate];
                 
                 [self configureRestKit];
                 [self request];
@@ -916,6 +868,55 @@
                 break;
         }
     }
+    
+    if ([_titleNoteTextField.text isEqualToString:@"Kebijakan Pengembalian Produk"]) {
+        [self setTimeLabelBecomeCurrentDate];
+        
+        _titleNoteTextField.enabled = NO;
+    }
+}
+
+-(NSMutableDictionary*)attributes
+{
+    
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+    
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    [attributes setObject:font forKey:NSFontAttributeName];
+    
+    return attributes;
+}
+
+-(void)setTimeLabelBecomeCurrentDate
+{
+    NSDate *date = [NSDate date];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
+    NSInteger year = [components year];
+    NSInteger day = [components day];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyyMMdd";
+    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id"]];
+    
+    dateFormatter.dateFormat=@"MMMM";
+    NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
+    NSLog(@"month: %@", monthString);
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    NSString *currentTime = [dateFormatter stringFromDate:date];
+    
+    _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
+                           day, monthString, year, currentTime];
+    [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
+}
+
+-(void)didEditNote:(NSNotificationCenter*)notification
+{
+    [self configureRestKit];
+    [self request];
 }
 
 #pragma mark - Keyboard notification

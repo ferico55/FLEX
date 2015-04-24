@@ -42,7 +42,7 @@
 @property (nonatomic, weak) id<TKPDTabProfileNavigationControllerDelegate> delegate;
 
 @property (nonatomic, readonly, assign) UIEdgeInsets contentInsetForChildController;
-
+@property (nonatomic) BOOL isOtherProfile;
 //+ (id)allocinit;
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (void)setSelectedViewController:(UIViewController *)selectedViewController animated:(BOOL)animated;

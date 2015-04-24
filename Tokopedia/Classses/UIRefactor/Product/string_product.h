@@ -108,6 +108,7 @@ typedef enum
 
 #define DATA_PRODUCT_IMAGE_NAME_KEY @"dataimagename"
 #define DATA_PRODUCT_DETAIL_KEY @"productdetail"
+#define DATA_SHOP_HAS_TERM_KEY @"data_shop_has_term"
 #define DATA_TYPE_ADD_EDIT_PRODUCT_KEY @"type"
 
 #define API_SERVER_ID_KEY @"server_id"
@@ -140,6 +141,8 @@ typedef enum
 #define API_PRODUCT_FORM_DESCRIPTION_KEY @"product_short_desc"
 #define API_PRODUCT_FORM_DEPARTMENT_TREE_KEY @"product_department_tree"
 #define API_PRODUCT_IS_CHANGE_WHOLESALE_KEY @"product_change_wholesale"
+#define API_PRODUCT_RETURNABLE_KEY @"product_returnable"
+#define API_SHOP_HAS_TERMS_KEY @"shop_has_terms"
 #define API_IS_DUPLICATE_KEY @"duplicate"
 #define API_PRODUCT_ID_KEY @"product_id"
 #define API_PRODUCT_PICTURE_ID_KEY @"picture_id"
@@ -183,6 +186,26 @@ typedef enum
 
 #define ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME @"Nama produk bersifat permanen dan tidak dapat diubah"
 
+#define CStringDenganDanTanpaKatalog @"Dengan & Tanpa Katalog"
+#define CStringDenganKatalog @"Dengan Katalog"
+#define CStringTanpaKatalog @"Tanpa Katalog"
+#define CStringSemuaKondisi @"Semua Kondisi"
+#define CStringBaru @"Baru"
+#define CStringBekas @"Bekas"
+#define CStringDenganDanTanpaGambar @"Dengan & Tanpa Gambar"
+#define CStringDenganGambar @"Dengan Gambar"
+#define CStringTanpaGambar @"Tanpa Gambar"
+#define CStringKatalog @"Katalog"
+#define CStringGambar @"Gambar"
+#define CStringKondisi @"Kondisi"
+#define CStringPending @"pending"
+#define CStringUnderReview @"Under Review"
+#define CStringWareHouse @"Warehouse"
+#define CStringEtalase @"etalase"
+#define CStringAllEtalase @"All Etalase"
+#define CStringAllProduct @"All Products"
+#define CStringAllCategory @"All Category"
+
 #define ERRORMESSAGE_NULL_PRODUCT_NAME @"Nama Produk harus diisi."
 #define ERRORMESSAGE_NULL_PRICE @"Harga harus diisi."
 #define ERRORMESSAGE_NULL_CATEGORY @"Kategori tidak benar."
@@ -221,5 +244,6 @@ typedef enum
 #define PRODUCT_DESC @"Deskripsi Produk"
 #define PRODUCT_WHOLESALE @"Harga Grosir"
 #define PRODUCT_INFO @"Informasi Produk"
+#define NO_DESCRIPTION @"Tidak ada deskripsi"
 
 #endif

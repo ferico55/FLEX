@@ -58,6 +58,8 @@
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
     NoResultView *_noResult;
+    NSString *strUserID;
+    BOOL hasInitData;
 }
 
 #pragma mark - Factory Method
@@ -120,10 +122,12 @@
 
     NSLog(@"going here first");
     
+    
     if (!_isrefreshview) {
 //        [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
 //            [self loadData];
+            hasInitData = YES;
             [_networkManager doRequest];
         }
     }
@@ -138,6 +142,29 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    
+    //Check login with different id
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+
+    if(hasInitData)
+    {
+        hasInitData = !hasInitData;
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+    }
+    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+        _product = [NSMutableArray new];
+        _lastStoredArray = [NSMutableArray new];
+        _refreshedArray = [NSMutableArray new];
+        _urinext = nil;
+        _page = 1;
+        _isnodata = YES;
+        _isrefreshview = NO;
+        [_networkManager doRequest];
+    }
 }
 
 

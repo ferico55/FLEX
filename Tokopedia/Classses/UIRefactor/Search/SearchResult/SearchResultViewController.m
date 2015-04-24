@@ -449,6 +449,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
                 ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
+                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingMiddle;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = [NSString stringWithFormat:@"%@ Toko", list.catalog_count_shop];
 
                 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image_300] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];

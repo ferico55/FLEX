@@ -28,12 +28,14 @@ typedef enum
 #define kTKPDCATEGORY_DATACOLUMNSKEY @"column"
 #define kTKPDCATEGORY_DATACATEGORYKEY @"categories"
 #define kTKPDCATEGORY_DATATITLEKEY @"title"
+#define CStringKategory @"Kategory"
 #define kTKPDCATEGORY_DATADIDALLCATEGORYKEY @"d_id_allcategory"
 #define kTKPDCATEGORY_DATADIDKEY @"d_id"
 #define kTKPDCATEGORY_DATADEPARTMENTIDKEY @"department_id"
 #define kTKPDCATEGORY_DATAICONKEY @"icon"
 #define kTKPDCATEGORY_DATAISNULLCHILD @"isnullchild"
 #define kTKPDCATEGORY_DATATYPEKEY @"type"
+#define kTKPDHASHTAG_HOTLIST @"hashtag_hotlist"
 #define kTKPDCATEGORY_DATATYPECATEGORYKEY 1
 #define DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE @"previousviewtype"
 

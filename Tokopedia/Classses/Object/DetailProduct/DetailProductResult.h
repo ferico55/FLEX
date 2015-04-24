@@ -16,6 +16,7 @@
 #import "OtherProduct.h"
 #import "ProductImages.h"
 #import "Rating.h"
+#import "Info.h"
 
 @interface DetailProductResult : NSObject
 
@@ -29,5 +30,6 @@
 @property (nonatomic, strong) NSArray *breadcrumb;
 @property (nonatomic, strong) NSArray *other_product;
 @property (nonatomic, strong) NSArray *product_images;
+@property (nonatomic, strong) Info *info;
 
 @end

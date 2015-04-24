@@ -25,6 +25,10 @@
 #import "SettingAddressEditViewController.h"
 #import "GeneralTableViewController.h"
 
+#import "TokopediaNetworkManager.h"
+
+#define TAG_REQUEST_FORM 10
+
 #pragma mark - Transaction Add To Cart View Controller
 
 @interface TransactionATCViewController ()
@@ -34,6 +38,7 @@
     SettingAddressViewControllerDelegate,
     SettingAddressEditViewControllerDelegate,
     GeneralTableViewControllerDelegate,
+    TokopediaNetworkManagerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
@@ -80,6 +85,8 @@
     ShippingInfoShipmentPackage *_selectedShipmentPackage;
     ShippingInfoShipments *_selectedShipment;
     
+    TokopediaNetworkManager *_networkManager;
+    
     NSArray *_shipments;
 }
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
@@ -104,14 +111,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *productQuantityLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *productQuantityStepper;
-
--(void)cancelFormATC;
--(void)configureRestKitFormATC;
--(void)requestFormATC;
--(void)requestSuccessFormATC:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureFormATC:(id)object;
--(void)requestProcessFormATC:(id)object;
--(void)requestTimeoutFormATC;
 
 -(void)cancelActionATC;
 -(void)configureRestKitActionATC;
@@ -179,8 +178,11 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    [self configureRestKitFormATC];
-    [self requestFormATC];
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.tagRequest = TAG_REQUEST_FORM;
+    _networkManager.delegate = self;
+    [_networkManager doRequest];
+    
     _buyButton.hidden = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -220,6 +222,15 @@
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    _networkManager.delegate = self;
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
 }
 
 #pragma mark - View Action
@@ -574,95 +585,98 @@
     _objectManagerFormATC = nil;
 }
 
--(void)configureRestKitFormATC
+-(id)getObjectManager:(int)tag
 {
-    _objectManagerFormATC = [RKObjectManager sharedClient];
+    if (tag== TAG_REQUEST_FORM) {
+        return [self objectManagerForm];
+    }
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionATCForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionATCFormResult class]];
-    
-    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TransactionATCFormDetail class]];
-    [formMapping addAttributeMappingsFromDictionary:@{API_AVAILABLE_COUNT_KEY:API_AVAILABLE_COUNT_KEY}];
-    
-    TransactionObjectMapping *mapping = [TransactionObjectMapping new];
-    RKObjectMapping *productMapping = [mapping productMapping];
-    RKObjectMapping *AddressMapping = [mapping addressMapping];
-    RKObjectMapping *shipmentsMapping = [mapping shipmentsMapping];
-    RKObjectMapping *shipmentspackageMapping = [mapping shipmentPackageMapping];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY toKeyPath:API_FORM_KEY withMapping:formMapping]];
-    
-    [formMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_DETAIL_KEY toKeyPath:API_PRODUCT_DETAIL_KEY withMapping:productMapping]];
-    
-    [formMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DESTINATION_KEY toKeyPath:API_DESTINATION_KEY withMapping:AddressMapping]];
-    
-    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY withMapping:shipmentsMapping];
-    [formMapping addPropertyMapping:shipmentRel];
-    
-    RKRelationshipMapping *shipmentpackageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY withMapping:shipmentspackageMapping];
-    [shipmentsMapping addPropertyMapping:shipmentpackageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_CART_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerFormATC addResponseDescriptor:responseDescriptor];
-    
+    return nil;
 }
 
--(void)requestFormATC
+-(NSDictionary *)getParameter:(int)tag
 {
-    if (_requestFormATC.isExecuting) return;
-    NSTimer *timer;
+    if (tag == TAG_REQUEST_FORM) {
+        ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+        NSInteger productID = [product.product_id integerValue];
+        
+        NSDictionary* param = @{API_ACTION_KEY :ACTION_ADD_TO_CART_FORM,
+                                API_PRODUCT_ID_KEY:@(productID)
+                                };
+        return param;
+    }
     
-    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
-    NSInteger productID = [product.product_id integerValue];
+    return nil;
+}
+
+-(NSString *)getPath:(int)tag
+{
+    if (tag == TAG_REQUEST_FORM) {
+        return API_TRANSACTION_CART_PATH;
+    }
+    return nil;
+}
+
+-(void)actionBeforeRequest:(int)tag
+{
+    if (tag == TAG_REQUEST_FORM) {
+        _tableView.tableFooterView = _footer;
+        [_act startAnimating];
+        _isRequestFrom = YES;
+        [self buyButtonIsLoading:YES];
+    }
+}
+
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
     
-    NSDictionary* param = @{API_ACTION_KEY :ACTION_ADD_TO_CART_FORM,
-                            API_PRODUCT_ID_KEY:@(productID)
-                            };
-    _requestcount ++;
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
-    _isRequestFrom = YES;
-    [self buyButtonIsLoading:YES];
-    
-    _requestFormATC = [_objectManagerFormATC appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_CART_PATH parameters:[param encrypt]];
-    
-    [_requestFormATC setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessFormATC:mappingResult withOperation:operation];
+    if (tag == TAG_REQUEST_FORM) {
+        TransactionATCForm *ATCForm = stat;
+        return ATCForm.status;
+    }
+    return nil;
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    if (tag == TAG_REQUEST_FORM) {
         _isRefreshRequest = NO;
         [_refreshControl endRefreshing];
-        [timer invalidate];
         _isRequestFrom = NO;
         _tableView.tableFooterView = nil;
         [_act stopAnimating];
         [self buyButtonIsLoading:NO];
         _buyButton.hidden = NO;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureFormATC:error];
+        [self requestSuccessFormATC:successResult withOperation:operation];
+    }
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    if (tag == TAG_REQUEST_FORM) {
         _isRefreshRequest = NO;
         [_refreshControl endRefreshing];
-        [timer invalidate];
         _isRequestFrom = NO;
         _tableView.tableFooterView = nil;
         [_act stopAnimating];
         [self buyButtonIsLoading:NO];
-        _buyButton.hidden = YES;
-    }];
-    
-    [_operationQueue addOperation:_requestFormATC];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutFormATC) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+        _buyButton.hidden = NO;
+    }
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if (tag == TAG_REQUEST_FORM) {
+        _isRefreshRequest = NO;
+        [_refreshControl endRefreshing];
+        _isRequestFrom = NO;
+        _tableView.tableFooterView = nil;
+        [_act stopAnimating];
+        [self buyButtonIsLoading:NO];
+        _buyButton.hidden = NO;
+    }
 }
 
 -(void)requestSuccessFormATC:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -673,84 +687,47 @@
     BOOL status = [ATCForm.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessFormATC:object];
-    }
-}
-
--(void)requestFailureFormATC:(id)object
-{
-    [self requestProcessFormATC:object];
-}
-
--(void)requestProcessFormATC:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionATCForm *ATCForm = stat;
-            BOOL status = [ATCForm.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(ATCForm.message_error)
-                {
-                    NSArray *messages = ATCForm.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-                    [alert show];
-                }
-                else{
-                    AddressFormList *address = ATCForm.result.form.destination;
-                    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
-                    
-                    NSIndexPath* selectedIndexPathShipment =[_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    
-                    NSIndexPath* selectedIndexPathShipmentPackage =[_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    
-                    NSArray *shipments = ATCForm.result.form.shipment;
-                    _shipments = shipments;
-                    [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
-                    
-                    NSInteger indexShipment = selectedIndexPathShipment.row;
-                    ShippingInfoShipments *shipment = shipments[indexShipment];
-                    
-                    NSInteger indexShipmentPackage = selectedIndexPathShipmentPackage.row;
-                    NSMutableArray *shipmentPackages = [NSMutableArray new];
-                    [shipmentPackages addObjectsFromArray:shipment.shipment_package];
-                    for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                        if ([package.price isEqualToString:@"0"]) {
-                            [shipmentPackages removeObject:package];
-                        }
-                    }
-                    
-                    if (shipmentPackages.count > 0) {
-                        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                        _selectedShipment = shipment;
-                        _selectedShipmentPackage = shipmentPackage;
-                    }
-
-                    [self setAddress:address];
-                    _isnodata = NO;
-                    [_tableView reloadData];
-                }
-            }
+        if(ATCForm.message_error)
+        {
+            NSArray *messages = ATCForm.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+            [alert show];
         }
         else{
+            AddressFormList *address = ATCForm.result.form.destination;
+            [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
             
-            [self cancelFormATC];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
+            NSArray *shipments = ATCForm.result.form.shipment;
+            _shipments = shipments;
+            [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
+            
+            NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+            for (ShippingInfoShipments *shipment in _shipments) {
+                NSMutableArray *shipmentPackages = [NSMutableArray new];
+                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if (![package.price isEqualToString:@"0"]) {
+                        [shipmentPackages addObject:package];
+                    }
+                }
+                
+                if (shipmentPackages.count>0) {
+                    shipment.shipment_package = shipmentPackages;
+                    [shipmentSupporteds addObject:shipment];
+                }
             }
+            
+            _shipments = shipmentSupporteds;
+            _selectedShipment = [shipmentSupporteds firstObject];
+            _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
+            
+            [self setAddress:address];
+            _isnodata = NO;
+            [_tableView reloadData];
         }
     }
+
 }
 
--(void)requestTimeoutFormATC
-{
-    [self cancelFormATC];
-}
 
 //# sub add_to_cart example URL
 //# www.tkpdevel-pg.ekarisky/ws/action/tx.pl?action=add_to_cart&
@@ -1118,6 +1095,25 @@
                     NSArray *shipments = calculate.result.shipment;
                     _shipments = shipments;
                     
+                    NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+                    for (ShippingInfoShipments *shipment in _shipments) {
+                        NSMutableArray *shipmentPackages = [NSMutableArray new];
+                        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                            if (![package.price isEqualToString:@"0"]) {
+                                [shipmentPackages addObject:package];
+                            }
+                        }
+                        
+                        if (shipmentPackages.count>0) {
+                            shipment.shipment_package = shipmentPackages;
+                            [shipmentSupporteds addObject:shipment];
+                        }
+                    }
+                    
+                    _shipments = shipmentSupporteds;
+                    _selectedShipment = [shipmentSupporteds firstObject];
+                    _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
+                    
                     for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
                         UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
                         [indicatorView stopAnimating];
@@ -1126,6 +1122,8 @@
                         UILabel *label = (UILabel *)[cell viewWithTag:1];
                         label.hidden = NO;
                     }
+                    
+                    [_tableView reloadData];
                 }
             }
         }
@@ -1154,6 +1152,7 @@
     ShippingInfoShipments *shipmentObject;
 
     if (indexPath.row == TAG_BUTTON_TRANSACTION_SHIPPING_AGENT) {
+        
         for (ShippingInfoShipments *package in _shipments) {
             if ([package.shipment_name isEqualToString:(NSString*)object]) {
                 shipmentObject = package;
@@ -1245,17 +1244,6 @@
 #pragma mark - Setting Address Delegate
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    for (ShippingInfoShipments *shipment in _shipments) {
-        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-            if (![package.price isEqualToString:@"0"]) {
-                _selectedShipment = shipment;
-                _selectedShipmentPackage = package;
-                break;
-            }
-        }
-        break;
-    }
-    
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     [self setAddress:address];
@@ -1353,8 +1341,7 @@
 
 -(void)refreshView
 {
-    [self configureRestKitFormATC];
-    [self requestFormATC];
+    [_networkManager doRequest];
 }
 
 -(void)setDefaultData:(NSDictionary*)data
@@ -1468,6 +1455,53 @@
     [_dataInput setObject:action forKey:DATA_TODO_CALCULATE];
     [self configureRestKitActionCalculate];
     [self requestActionCalculate:_dataInput];
+}
+
+
+#pragma mark - Object Manager
+-(RKObjectManager*)objectManagerForm
+{
+    _objectManagerFormATC = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionATCForm class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionATCFormResult class]];
+    
+    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TransactionATCFormDetail class]];
+    [formMapping addAttributeMappingsFromDictionary:@{API_AVAILABLE_COUNT_KEY:API_AVAILABLE_COUNT_KEY}];
+    
+    TransactionObjectMapping *mapping = [TransactionObjectMapping new];
+    RKObjectMapping *productMapping = [mapping productMapping];
+    RKObjectMapping *AddressMapping = [mapping addressMapping];
+    RKObjectMapping *shipmentsMapping = [mapping shipmentsMapping];
+    RKObjectMapping *shipmentspackageMapping = [mapping shipmentPackageMapping];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY toKeyPath:API_FORM_KEY withMapping:formMapping]];
+    
+    [formMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_DETAIL_KEY toKeyPath:API_PRODUCT_DETAIL_KEY withMapping:productMapping]];
+    
+    [formMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DESTINATION_KEY toKeyPath:API_DESTINATION_KEY withMapping:AddressMapping]];
+    
+    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY withMapping:shipmentsMapping];
+    [formMapping addPropertyMapping:shipmentRel];
+    
+    RKRelationshipMapping *shipmentpackageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY withMapping:shipmentspackageMapping];
+    [shipmentsMapping addPropertyMapping:shipmentpackageRel];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_CART_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManagerFormATC addResponseDescriptor:responseDescriptor];
+    
+    return _objectManagerFormATC;
 }
 
 @end

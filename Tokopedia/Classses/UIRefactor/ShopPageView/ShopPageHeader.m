@@ -180,9 +180,9 @@
 //        _manipulatedView.frame = newFrame2;
     } else {
 //        CGRect newFrame = _manipulatedView.frame;
-//        newFrame.origin.y = 0;
+//        newFrame.origin.y -= 70;
 //        _manipulatedView.frame = newFrame;
-        
+//        
 //        CGRect newFrame2 = self.view.frame;
 //        newFrame2.size.height -= 70;
 //        self.view.frame = newFrame2;

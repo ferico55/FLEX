@@ -87,7 +87,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.navigationController.title = nil;
 }
 
 - (void)didReceiveMemoryWarning {

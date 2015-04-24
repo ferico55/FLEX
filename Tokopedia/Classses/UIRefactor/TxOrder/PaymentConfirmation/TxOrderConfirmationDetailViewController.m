@@ -183,7 +183,7 @@
         else
         {
             //Calculate the expected size based on the font and linebreak mode of your label
-            CGSize maximumLabelSize = CGSizeMake(200,9999);
+            CGSize maximumLabelSize = CGSizeMake(290,9999);
             
             CGSize expectedLabelSize = [_addressLabel.text sizeWithFont:_addressLabel.font
                                                           constrainedToSize:maximumLabelSize
@@ -192,13 +192,13 @@
             //adjust the label the the new height.
             CGRect newFrame = _addressLabel.frame;
             newFrame.size.height = expectedLabelSize.height;
-            height = COST_CELL_HEIGHT - 50 + newFrame.size.height;
+            height = COST_CELL_HEIGHT + newFrame.size.height;
         }
     }
     else
     {
         //Calculate the expected size based on the font and linebreak mode of your label
-        CGSize maximumLabelSize = CGSizeMake(200,9999);
+        CGSize maximumLabelSize = CGSizeMake(290,9999);
         
         CGSize expectedLabelSize = [_addressLabel.text sizeWithFont:_addressLabel.font
                                           constrainedToSize:maximumLabelSize
@@ -207,7 +207,7 @@
         //adjust the label the the new height.
         CGRect newFrame = _addressLabel.frame;
         newFrame.size.height = expectedLabelSize.height;
-        height = COST_CELL_HEIGHT - 50 + newFrame.size.height;
+        height = COST_CELL_HEIGHT + newFrame.size.height;
     }
     return height;
 }
@@ -377,7 +377,8 @@
     cell.shipmentLabel.text = [NSString stringWithFormat:@"%@ - %@",orderList.order_shipment.shipment_name, orderList.order_shipment.shipment_product];
     BOOL isDropshipper = (![orderList.order_detail.detail_dropship_name isEqualToString:@"0"]);
     [cell.dropshipLabel setText:(isDropshipper)?@"Ya":@"Tidak" animated:YES];
-    cell.insuranceLabel.text = (orderList.order_detail.detail_force_insurance==1)?@"Wajib Asuransi":([orderList.order_detail.detail_insurance_price isEqualToString:@"0"])?@"Tidak":@"Ya";
+    cell.insuranceLabel.text = ([orderList.order_detail.detail_insurance_price isEqualToString:@"0"])?@"Tidak":@"Ya";
+    //(orderList.order_detail.detail_force_insurance==1)?@"Wajib Asuransi":([orderList.order_detail.detail_insurance_price isEqualToString:@"0"])?@"Tidak":@"Ya";
     cell.partialLabel.text = (orderList.order_detail.detail_partial_order==0)?@"Tidak":@"Ya";
     return cell;
 }

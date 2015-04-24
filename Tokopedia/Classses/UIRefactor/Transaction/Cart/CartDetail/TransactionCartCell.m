@@ -41,7 +41,5 @@
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10)
         [_delegate didTapProductAtIndexPath:_indexPath];
-    else if (gesture.view.tag == 11)
-        [_delegate didTapImageAtIndexPath:_indexPath];
 }
 @end

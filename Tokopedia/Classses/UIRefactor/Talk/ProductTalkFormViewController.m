@@ -233,7 +233,7 @@
             
             case 11 : {
                 if (_request.isExecuting) return;
-                if(_talkfield.text.length < 3) {
+                if(_talkfield.text.length < 3 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
