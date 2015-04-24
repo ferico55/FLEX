@@ -13,5 +13,6 @@
 @property (nonatomic, strong) NSString *notes_title;
 @property (nonatomic, strong) NSString *notes_update_time;
 @property (nonatomic, strong) NSString *notes_content;
+@property (nonatomic, strong) NSString *notes_create_time;
 
 @end
