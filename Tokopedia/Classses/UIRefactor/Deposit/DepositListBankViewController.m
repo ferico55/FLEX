@@ -253,7 +253,7 @@
                 userinfo = @{
                              @"indexpath" : indexpath,
                              @"bank_account_name" : bankName,
-                             @"bank_account_id" : @(list.bank_account_id),
+                             @"bank_account_id" : list.bank_account_id,
                              @"is_verified_account" : @(list.is_verified_account)?:0
                              };
                 

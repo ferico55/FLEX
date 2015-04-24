@@ -39,6 +39,7 @@
     CGSize _scrollviewContentSize;
     
     UIBarButtonItem *_barbuttonsave;
+    BOOL _isBeingPresented;
 }
 @property (weak, nonatomic) IBOutlet UITextField *accountNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *accountNumberTextField;
@@ -141,7 +142,9 @@
     BOOL msisdnIsVerified = [[auth objectForKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY] boolValue];
     if (msisdnIsVerified) {
         [self.sendOTPButton setTitle:@"Kirim OTP Ke HP" forState:UIControlStateNormal];
-    }    
+    }
+    
+    _isBeingPresented = self.navigationController.isBeingPresented;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -336,6 +339,7 @@
     
     NSInteger bankID = [[userinfo objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]integerValue]?:list.bank_id;
     NSString *bankname = [userinfo objectForKey:API_BANK_NAME_KEY]?:list.bank_name?:@(0);
+    NSString *bankAccountID = [userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY]?:list.bank_account_id;
     NSString *accountname = [userinfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNAMEKEY]?:list.bank_account_name?:@(0);
     NSNumber *accountnumber = [userinfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY]?:list.bank_account_number?:@(0);
     NSString *branchname = [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY]?:list.bank_branch?:@(0);
@@ -345,6 +349,7 @@
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:action,
                             kTKPDPROFILESETTING_APIBANKIDKEY : @(bankID),
                             API_BANK_NAME_KEY : bankname,
+                            kTKPDPROFILESETTING_APIACCOUNTIDKEY : bankAccountID,
                             kTKPDPROFILESETTING_APIACCOUNTNAMEKEY : accountname,
                             kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY : accountnumber,
                             kTKPDPROFILESETTING_APIBANKBRANCHKEY : branchname,
@@ -372,11 +377,11 @@
     
     [_operationQueue addOperation:_requestActionAddBank];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                            target:self
-                                          selector:@selector(requestTimeoutActionAddBank)
-                                          userInfo:nil
-                                           repeats:NO];
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                             target:self
+                                           selector:@selector(requestTimeoutActionAddBank)
+                                           userInfo:nil
+                                            repeats:NO];
     
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
@@ -411,25 +416,43 @@
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages
                                                                                    delegate:self];
                     [alert show];
-                }
-                if (setting.result.is_success == 1) {
+                } else if (setting.result.is_success == 1) {
                     //TODO:: add alert
                     NSDictionary *userinfo;
                     if (_type == TYPE_ADD_EDIT_PROFILE_EDIT){
-                        //TODO: Behavior after edit
-                        NSArray *viewcontrollers = self.navigationController.viewControllers;
-                        NSInteger index = viewcontrollers.count-3;
-                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                        userinfo = @{kTKPDPROFILE_DATAEDITTYPEKEY:[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY],
-                                     kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
+
+                        if (_isBeingPresented) {
+                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                        } else {
+                            NSArray *viewcontrollers = self.navigationController.viewControllers;
+                            NSInteger index = viewcontrollers.count-3;
+                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index]
+                                                                  animated:NO];
+                        }
+                        
+                        userinfo = @{
+                                     kTKPDPROFILE_DATAEDITTYPEKEY   : [_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@"",
+                                     kTKPDPROFILE_DATAINDEXPATHKEY  : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:@""
                                      };
+                    } else {
+                        if (_isBeingPresented) {
+                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                        } else {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
                     }
-                    else [self.navigationController popViewControllerAnimated:YES];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY
+                                                                        object:nil
+                                                                      userInfo:userinfo];
 
                     NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                      delegate:self];
+                    [alert show];
+                } else {
+                    NSArray *errorMessage = @[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
                     [alert show];
                 }
             }
@@ -605,16 +628,15 @@
 #pragma mark - Setting Bank Name Delegate
 -(void)SettingBankNameViewController:(UIViewController *)vc withData:(NSDictionary *)data
 {
-    NSIndexPath *indexpath;
-    NSString *name;
-    NSInteger bankid;
-    indexpath = [data objectForKey:kTKPDPROFILE_DATABANKINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    name = [data objectForKey:API_BANK_NAME_KEY];
-    bankid = [[data objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY] integerValue];
+    NSIndexPath *indexpath = [data objectForKey:kTKPDPROFILE_DATABANKINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    NSString *name = [data objectForKey:API_BANK_NAME_KEY];
+    NSInteger bankid = [[data objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY] integerValue];
+    NSString *bankAccountID = [data objectForKey:API_BANK_ACCOUNT_ID_KEY];
     [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATABANKINDEXPATHKEY];
     [_bankNameButton setTitle:name forState:UIControlStateNormal];
     [_datainput setObject:name forKey:API_BANK_NAME_KEY];
     [_datainput setObject:@(bankid) forKey:kTKPDPROFILESETTING_APIBANKIDKEY];
+    [_datainput setObject:bankAccountID forKeyedSubscript:API_BANK_ACCOUNT_ID_KEY];
 }
 
 

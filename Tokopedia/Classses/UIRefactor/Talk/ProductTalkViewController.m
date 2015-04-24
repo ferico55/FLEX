@@ -820,38 +820,60 @@
     
     if([userinfo objectForKey:@"talk_id"]) {
         NSInteger row = 0;
-        TalkList *list = _list[row];
-        
-        list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
-        list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
-        list.disable_comment = NO;
+        if(_list.count == 0) {
+            [self insertList:userinfo];
+
+            TalkList *list = _list[row];
+            list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
+            list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
+            list.disable_comment = NO;
+        }
+        else {
+            TalkList *list = _list[row];
+            if(list.talk_id!=nil && ![list.talk_id isEqualToString:@""]) {
+                [self insertList:userinfo];
+                
+                list = _list[row];
+                list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
+                list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
+                list.disable_comment = NO;
+            }
+            else {
+                list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
+                list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
+                list.disable_comment = NO;
+            }
+        }
     } else {
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary* auth = [secureStorage keychainDictionary];
-        auth = [auth mutableCopy];
-        
-        
-        TalkList *list = [TalkList new];
-        list.talk_user_name = [auth objectForKey:kTKPD_FULLNAMEKEY];
-        list.talk_total_comment = kTKPD_NULLCOMMENTKEY;
-        list.talk_user_image = [auth objectForKey:kTKPD_USERIMAGEKEY];
-        
-        NSDate *today = [NSDate date];
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
-        NSString *dateString = [dateFormat stringFromDate:today];
-        
-        list.talk_create_time = [dateString stringByAppendingString:@" WIB"];
-        list.talk_message = [userinfo objectForKey:TKPD_TALK_MESSAGE];
-        
-        list.disable_comment = YES;
-        [_list insertObject:list atIndex:0];
+        [self insertList:userinfo];
     }
-    
     
     
     [_table reloadData];
     
+}
+
+- (void)insertList:(NSDictionary *)userinfo {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    auth = [auth mutableCopy];
+    
+    
+    TalkList *list = [TalkList new];
+    list.talk_user_name = [auth objectForKey:kTKPD_FULLNAMEKEY];
+    list.talk_total_comment = kTKPD_NULLCOMMENTKEY;
+    list.talk_user_image = [auth objectForKey:kTKPD_USERIMAGEKEY];
+    
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
+    NSString *dateString = [dateFormat stringFromDate:today];
+    
+    list.talk_create_time = [dateString stringByAppendingString:@" WIB"];
+    list.talk_message = [userinfo objectForKey:TKPD_TALK_MESSAGE];
+    
+    list.disable_comment = YES;
+    [_list insertObject:list atIndex:0];
 }
 
 #pragma mark - General Cell Comment Delegate

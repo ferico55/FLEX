@@ -283,7 +283,17 @@
             
             case 11 : {
                 if (_request.isExecuting) return;
-                if(_messagefield.text.length < 3 || _messagesubjectfield.text.length < 3) {
+                if(_messagesubjectfield.text.length == 0) {
+                    NSArray *array = [[NSArray alloc] initWithObjects:kTKPDSUBJECT_EMPTY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                else if(_messagefield.text.length == 0) {
+                    NSArray *array = [[NSArray alloc] initWithObjects:kTKPDMESSAGE_EMPTY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                else if(_messagefield.text.length < 3 || _messagesubjectfield.text.length < 3) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];

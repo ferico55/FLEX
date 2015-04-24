@@ -208,6 +208,7 @@ UIAlertViewDelegate>
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
                 kTKPDNOTES_APINOTEIDKEY:list.note_id,
                 kTKPDNOTES_APINOTETITLEKEY:list.note_title,
+                kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
                 @"shop_id" : [_data objectForKey:@"shop_id"]
                 };
     

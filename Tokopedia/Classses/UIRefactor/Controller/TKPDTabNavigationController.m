@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIView *container;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentcontrol;
 @property (weak, nonatomic) IBOutlet UIView *tabView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tabViewHeightConstraint;
 
 - (IBAction)tap:(UISegmentedControl *)sender;
 
@@ -561,12 +562,10 @@
     _barbuttoncategory.enabled = YES;
     
     if (_segmentcontrol.numberOfSegments == 1) {
-        _tabView.hidden = YES;
+        _tabViewHeightConstraint.constant = 0;
     } else {
         _tabView.backgroundColor = [UIColor whiteColor];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_CATEGORY_HIDE_TAB_BAR object:nil];
-    }
-    
+    }    
 }
 
 @end

@@ -33,7 +33,8 @@ typedef enum
 {
     PRESENTED_ETALASE_DEFAULT = 0,
     PRESENTED_ETALASE_ADD_PRODUCT,
-    PRESENTED_ETALASE_SHOP_PRODUCT
+    PRESENTED_ETALASE_SHOP_PRODUCT,
+    PRESENTED_ETALASE_MANAGE_PRODUCT,
 }PRESENTED_ETALASE_TYPE;
 
 
@@ -594,6 +595,7 @@ typedef enum
 
 #define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
+#define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
 #define kTKPDNOTE_APINOTESCONTENTKEY @"notes_content"
 #define NOTE_CREATE_TIME @"notes_create_time"
 
@@ -770,6 +772,9 @@ typedef enum
 #define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
 #define KTKPDSHOP_SUCCESSEDIT @"Anda berhasil memperbaharui informasi Toko."
 
+#define KTKPDMESSAGE_EMPTYFORM2 @"Panjang pesan harus lebih dari 5 karakter."
+#define kTKPDMESSAGE_EMPTY @"Pesan harus diisi"
+#define kTKPDSUBJECT_EMPTY @"Subject harus diisi"
 #define KTKPDMESSAGE_EMPTYFORM5 @"Panjang pesan harus lebih dari 5 karakter."
 
 
@@ -781,7 +786,9 @@ typedef enum
 #define kTKPDTALK_ADDTALK @"add_product_talk"
 #define kTKPDTALK_TALKMESSAGE @"text_comment"
 
-#define kTKPDSHOP_ETALASEARRAY @[@{kTKPDSHOP_APIETALASENAMEKEY:@"Produk Terjual",kTKPDSHOP_APIETALASEIDKEY:@(7)}, @{kTKPDSHOP_APIETALASENAMEKEY:@"All Etalase",kTKPDSHOP_APIETALASEIDKEY:@(0)}]
+#define kTKPDSHOP_ETALASEARRAY @[@{kTKPDSHOP_APIETALASENAMEKEY:@"Produk Terjual",kTKPDSHOP_APIETALASEIDKEY:@(7)}, @{kTKPDSHOP_APIETALASENAMEKEY:@"Semua Etalase",kTKPDSHOP_APIETALASEIDKEY:@(0)}]
+
+#define kTKPDMANAGEPRODUCT_ETALASEARRAY @[@{kTKPDSHOP_APIETALASENAMEKEY:@"Semua Produk",kTKPDSHOP_APIETALASEIDKEY:@""}, @{kTKPDSHOP_APIETALASENAMEKEY:@"Semua Etalase",kTKPDSHOP_APIETALASEIDKEY:@"etalase"}, @{kTKPDSHOP_APIETALASENAMEKEY:@"Gudang",kTKPDSHOP_APIETALASEIDKEY:@"warehouse"}, @{kTKPDSHOP_APIETALASENAMEKEY:@"Pengawasan", kTKPDSHOP_APIETALASEIDKEY:@"pending"}]
 
 #define DATA_ADD_NEW_ETALASE_ID -1
 #define API_ADD_PRODUCT_NEW_ETALASE_TAG @"new"

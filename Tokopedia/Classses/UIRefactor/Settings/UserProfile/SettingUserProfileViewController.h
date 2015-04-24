@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SettingUserProfileDelegate <NSObject>
+
+- (void)successEditUserProfile;
+
+@end
+
 @interface SettingUserProfileViewController : UIViewController
 
 @property (strong, nonatomic) NSDictionary *data;
+@property (assign, nonatomic) id<SettingUserProfileDelegate> delegate;
 
 @end

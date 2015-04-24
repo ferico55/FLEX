@@ -36,8 +36,6 @@
     NSInteger _requestCount;
     
     UIRefreshControl *_refreshControl;
-    
-    NSArray *_catalog_shops;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -59,9 +57,7 @@
                                                                   action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backButton;
     
-    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
-    
-    _catalog_shops = _catalog.result.catalog_shops;
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);    
     _operationQueue = [NSOperationQueue new];
 }
 
@@ -108,10 +104,10 @@
     cell.indexPath = indexPath;
 
     CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
+    cell.shopNameLabel.text = shop.shop_name;
+    cell.shopLocationLabel.text = shop.shop_location;
     
     ProductList *product = [shop.product_list objectAtIndex:0];
-    cell.shopNameLabel.text = product.shop_name;
-    cell.shopLocationLabel.text = shop.shop_location;
     cell.productNameLabel.text = product.product_name;
     cell.productConditionLabel.text = product.product_condition;
     cell.productPriceLabel.text = product.product_price;
@@ -241,16 +237,18 @@
                                                                API_MIN_PRICE_KEY]];
     
     RKObjectMapping *catalogShopsMapping = [RKObjectMapping mappingForClass:[CatalogShops class]];
-    [catalogShopsMapping addAttributeMappingsFromArray:@[@"shop_id",
+    [catalogShopsMapping addAttributeMappingsFromArray:@[
+                                                         API_SHOP_ID_NUMBER_KEY,
                                                          API_SHOP_NAME_KEY,
-                                                         API_SHOP_RATE_ACCURACY_KEY,
+                                                         API_SHOP_TOTAL_ADDRESS_KEY,
                                                          API_SHOP_IMAGE_KEY,
                                                          API_SHOP_LOCATION_KEY,
-                                                         API_SHOP_RATE_SPEED_KEY,
-                                                         API_SHOP_TOTAL_ADDRESS_KEY,
                                                          @"shop_total_product",
                                                          API_SHOP_RATE_SERVICE_KEY,
-                                                         API_IS_GOLD_SHOP_KEY]];
+                                                         API_SHOP_RATE_ACCURACY_KEY,
+                                                         API_SHOP_RATE_SPEED_KEY,
+                                                         API_IS_GOLD_SHOP_KEY,
+                                                         ]];
     
     RKObjectMapping *productListMapping = [RKObjectMapping mappingForClass:[ProductList class]];
     [productListMapping addAttributeMappingsFromArray:@[API_PRODUCT_CONDITION_KEY,

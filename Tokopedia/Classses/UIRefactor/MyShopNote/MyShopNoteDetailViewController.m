@@ -15,10 +15,12 @@
 #import "UserAuthentificationManager.h"
 
 #pragma mark - MyShopNoteDetailViewController
+
 @interface MyShopNoteDetailViewController ()
 <
     UITextFieldDelegate,
-    UITextViewDelegate
+    UITextViewDelegate,
+    MyShopNoteDetailDelegate
 >
 {
     NSInteger _requestcount;
@@ -52,6 +54,7 @@
     BOOL _isNewNoteReturnableProduct;
 }
 
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *titleNoteTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeNoteLabel;
 @property (weak, nonatomic) IBOutlet UITextView *contentNoteTextView;
@@ -266,10 +269,12 @@
                 //edit
                 MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
                 vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                vc.delegate = self;
                 vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
                             kTKPDDETAIL_DATANOTEKEY : _note?:@"",
-                            kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@(0)
+                            kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@(0),
+                            kTKPDNOTES_APINOTESTATUSKEY : [_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY]
                             };
                 
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -461,9 +466,10 @@
                 }
                 _barbuttonedit.enabled = YES;
                 _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                [_titleNoteTextField sizeToFit];
-                _titleNoteTextField.enabled = NO;
+                NSString *note = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
+                _titleLabel.text = [NSString convertHTML:note];
+                _titleLabel.numberOfLines = 0;
+                [_titleLabel sizeToFit];
                 _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
                 
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
@@ -521,8 +527,7 @@
                     [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
                 }
             }
-        }
-        else{
+        } else {
             [self cancel];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
@@ -629,11 +634,9 @@
     [_requestActionNote setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionNote:mappingResult withOperation:operation];
         [timer invalidate];
-        _barbuttonedit.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionNote:error];
         [timer invalidate];
-        _barbuttonedit.enabled = YES;
     }];
     
     [_operationQueue addOperation:_requestActionNote];
@@ -692,6 +695,10 @@
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                     [alert show];
                 
+                    if ([_delegate respondsToSelector:@selector(successEditNote:text:)]) {
+                        [_delegate successEditNote:_titleNoteTextField.text text:_contentNoteTextView.text];
+                    }
+                    
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
             }
@@ -728,6 +735,15 @@
     [self updateSaveTabbarTitle:textField.text content:_contentNoteTextView.text];
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if ([[_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY] integerValue] == 2) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 #pragma mark - Text View Delegate
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -738,12 +754,14 @@
 
 - (void)updateSaveTabbarTitle:(NSString *)title content:(NSString *)content
 {
-    if (title.length == 0 || content.length == 0) {
-        _barbuttonedit.enabled = NO;
-        _barbuttonedit.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
-    } else {
-        _barbuttonedit.enabled = YES;
-        _barbuttonedit.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:1];
+    if ([[_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY] integerValue] != 2) {
+        if (title.length == 0 || content.length == 0) {
+            _barbuttonedit.enabled = NO;
+            _barbuttonedit.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
+        } else {
+            _barbuttonedit.enabled = YES;
+            _barbuttonedit.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:1];
+        }
     }
 }
 
@@ -910,6 +928,16 @@
     NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
     self.contentNoteTextView.contentInset = UIEdgeInsetsMake(8, 0, keyboardFrameBeginRect.size.height, 0);
+}
+
+#pragma mark - My shop note delegate
+
+- (void)successEditNote:(NSString *)title text:(NSString *)text
+{
+    _titleLabel.text = title;
+    [_titleLabel sizeToFit];
+    
+    _contentNoteTextView.text = text;
 }
 
 @end
