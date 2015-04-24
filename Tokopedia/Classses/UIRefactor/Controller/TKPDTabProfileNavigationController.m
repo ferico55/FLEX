@@ -228,9 +228,6 @@
         }
     }
     
-    
-    
-    
     if(! hasLoadViewWillAppear) {
         hasLoadViewWillAppear = !hasLoadViewWillAppear;
         //Hidden bottom green color
