@@ -55,7 +55,7 @@
     
     NSOperationQueue *_operationQueue;
     
-    NSString *_cachepath;
+    NSString *_cachepath, *filePath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
@@ -704,7 +704,7 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:kTKPD_OPEN_SHOP forKey:kTKPDDETAIL_ACTIONKEY];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaDomain] forKey:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY];
-    [param setObject:@"" forKey:kTKPD_SHOP_LOGO];
+    [param setObject:filePath==nil?@"":filePath forKey:kTKPD_SHOP_LOGO];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaToko] forKey:kTKPDDETAIL_APISHOPNAMEKEY];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getDesc] forKey:kTKPD_SHOP_SHORT_DESC];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getSlogan] forKey:kTKPD_SHOP_TAG_LINE];
@@ -939,6 +939,7 @@
 #pragma mark - RequestUploadImage delegate
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
+    filePath = uploadImage.result.file_path;
     [[self getNetworkManager] doRequest];
 }
 
@@ -946,8 +947,8 @@
 {
 //    [self successUploadObject:nil withMappingResult:nil];
 //    return;
-    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
-    [stickyAlertView show];
+//    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
+//    [stickyAlertView show];
     [self isLoading:NO];
 }
 
