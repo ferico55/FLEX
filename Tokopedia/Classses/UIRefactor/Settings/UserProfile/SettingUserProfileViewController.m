@@ -443,6 +443,8 @@
               kTKPDPROFILE_APIBIRTHYEARKEY:[userInfo objectForKey:kTKPDPROFILE_APIBIRTHYEARKEY]?:_profile.result.data_user.birth_year,
               kTKPDPROFILE_APIGENDERKEY:[userInfo objectForKey:kTKPDPROFILE_APIGENDERKEY]?:_profile.result.data_user.gender,
               kTKPDPROFILE_APIHOBBYKEY:[userInfo objectForKey:kTKPDPROFILE_APIHOBBYKEY]?:_profile.result.data_user.hobby,
+              kTKPDPROFILE_APIEMAILKEY:[userInfo objectForKey:kTKPDPROFILE_APIUSEREMAILKEY]?:_profile.result.data_user.user_email,
+              kTKPDPROFILE_APIMESSENGERKEY:[userInfo objectForKey:kTKPDPROFILE_APIUSERMESSENGERKEY]?:_profile.result.data_user.user_messenger,
               kTKPDPROFILE_APIPASSKEY:[userInfo objectForKey:kTKPDPROFILE_APIPASSKEY]
               };
     
@@ -515,6 +517,10 @@
                                                                       userInfo:nil];
                     
                     [self.navigationController popViewControllerAnimated:YES];
+                    
+                    if ([_delegate respondsToSelector:@selector(successEditUserProfile)]) {
+                        [_delegate successEditUserProfile];
+                    }
                 }
             }
         }

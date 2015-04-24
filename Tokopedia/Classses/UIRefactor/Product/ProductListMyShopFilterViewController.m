@@ -6,16 +6,24 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
+#import "detail.h"
+#import "category.h"
+
 #import "ProductListMyShopFilterViewController.h"
 #import "GeneralTableViewController.h"
+#import "MyShopEtalaseFilterViewController.h"
+#import "CategoryMenuViewController.h"
 
 @interface ProductListMyShopFilterViewController ()
 <
-    GeneralTableViewControllerDelegate
+    GeneralTableViewControllerDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    CategoryMenuViewDelegate
 >
 {
-    NSString *_etalaseValue;
-    NSString *_categoryValue;
+    EtalaseList *_etalase;
+    NSString *_departmentID;
+    NSString *_departmentName;
     NSString *_catalogValue;
     NSString *_pictureValue;
     NSString *_conditionValue;
@@ -29,8 +37,8 @@
     
     self.title = @"Filter";
     
-    _etalaseValue = @"Semua Produk";
-    _categoryValue = @"Semua Kategori";
+    _departmentID = @"0";
+    _departmentName = @"Semua Kategori";
     _catalogValue = @"Dengan & Tanpa Katalog";
     _pictureValue = @"Dengan & Tanpa Gambar";
     _conditionValue = @"Semua Kondisi";
@@ -45,12 +53,14 @@
                                                                        style:UIBarButtonItemStyleBordered
                                                                       target:self
                                                                       action:@selector(tap:)];
+    canceBarButton.tag = 10;
     self.navigationItem.leftBarButtonItem = canceBarButton;
 
     UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                                       style:UIBarButtonItemStyleDone
                                                                      target:self
                                                                      action:@selector(tap:)];
+    doneBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = doneBarButton;
 }
 
@@ -77,10 +87,10 @@
 
     if (indexPath.row == 0) {
         cell.textLabel.text = @"Etalase";
-        cell.detailTextLabel.text = _etalaseValue;
+        cell.detailTextLabel.text = _etalase.etalase_name?:@"Semua Produk";
     } else if (indexPath.row == 1) {
         cell.textLabel.text = @"Kategori";
-        cell.detailTextLabel.text = _categoryValue;
+        cell.detailTextLabel.text = _departmentName;
     } else if (indexPath.row == 2) {
         cell.textLabel.text = @"Katalog";
         cell.detailTextLabel.text = _catalogValue;
@@ -99,7 +109,23 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
+        MyShopEtalaseFilterViewController *controller = [MyShopEtalaseFilterViewController new];
+        controller.delegate = self;
+        controller.data = @{kTKPD_SHOPIDKEY:_shopID,
+                            DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_MANAGE_PRODUCT)};
+        [self.navigationController pushViewController:controller animated:YES];
     } else if (indexPath.row == 1) {
+        CategoryMenuViewController *controller = [CategoryMenuViewController new];
+        controller.delegate = self;
+        controller.data = @{
+                            kTKPDCATEGORY_DATADEPARTMENTIDKEY:_departmentID,
+                            DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
+                            };
+
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+        nav.navigationBar.translucent = NO;
+        
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
     } else if (indexPath.row == 2) {
         GeneralTableViewController *controller = [GeneralTableViewController new];
         controller.objects = @[
@@ -154,7 +180,64 @@
 
 - (void)tap:(id)sender
 {
-    
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem *)sender;
+        if (button.tag == 10) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else if (button.tag == 11) {
+            if ([self.delegate respondsToSelector:@selector(filterProductEtalase:department:catalog:picture:condition:)]) {
+                
+                NSString *catalogValueID = @"";
+                NSString *pictureValueID = @"";
+                NSString *conditionValueID = @"";
+
+                if ([_catalogValue isEqualToString:@"Dengan Katalog"]) {
+                    catalogValueID = @"1";
+                } else if ([_catalogValue isEqualToString:@"Tanpa Katalog"]) {
+                    catalogValueID = @"2";
+                }
+                
+                if ([_pictureValue isEqualToString:@"Dengan Gambar"]) {
+                    pictureValueID = @"1";
+                } else if ([_pictureValue isEqualToString:@"Tanpa Gambar"]) {
+                    pictureValueID = @"2";
+                }
+                
+                if ([_conditionValue isEqualToString:@"Baru"]) {
+                    conditionValueID = @"1";
+                } else if ([_conditionValue isEqualToString:@"Bekas"]) {
+                    conditionValueID = @"2";
+                }
+                
+                [self.delegate filterProductEtalase:_etalase
+                                         department:_departmentID
+                                            catalog:catalogValueID
+                                            picture:pictureValueID
+                                          condition:conditionValueID];
+            }
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
 }
 
+#pragma mark - Myshop etalase filter delegate
+
+- (void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    _etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    cell.detailTextLabel.text = _etalase.etalase_name;
+}
+
+#pragma mark - Category menu delegate
+
+-(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
+{
+    _departmentID = [userInfo objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY];
+    _departmentName = [userInfo objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    cell.detailTextLabel.text = _departmentName;
+}
 @end

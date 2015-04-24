@@ -123,6 +123,8 @@ typedef enum
 #define kTKPDPROFILE_APIBIRTHMONTHKEY @"birth_month"
 #define kTKPDPROFILE_APIBIRTHYEARKEY @"birth_year"
 #define kTKPDPROFILE_APIGENDERKEY @"gender"
+#define kTKPDPROFILE_APIEMAILKEY @"email"
+#define kTKPDPROFILE_APIMESSENGERKEY @"messanger"
 
 #define kTKPDPROFILESETTING_APIUSERIDKEY @"user_id"
 #define kTKPDPROFILESETTING_APIPASSKEY @"password"

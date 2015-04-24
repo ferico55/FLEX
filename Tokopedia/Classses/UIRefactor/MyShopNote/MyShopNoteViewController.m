@@ -30,8 +30,6 @@
     NSInteger _requestcount;
     BOOL _isnodata;
     
-    BOOL _isrefreshview;
-    
     Notes *_notes;
     
     __weak RKObjectManager *_objectmanager;
@@ -43,12 +41,8 @@
     NSOperationQueue *_operationQueue;
     
     UIRefreshControl *_refreshControl;
-    
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
-    NSTimeInterval _timeinterval;
 }
+
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -86,8 +80,6 @@
     _datainput = [NSMutableDictionary new];
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
-    _cachecontroller = [URLCacheController new];
-    _cacheconnection = [URLCacheConnection new];
     
     if (_list.count>2) {
         _isnodata = NO;
@@ -112,14 +104,6 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    //cache
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[auth objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
-    
     //Add observer
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
@@ -131,11 +115,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata) {
-            [self request];
-        }
+    [self configureRestKit];
+    if (_isnodata) {
+        [self request];
     }
 }
 
@@ -233,7 +215,7 @@
         } else if ([sender tag] == 11) {
             MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
             vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
-                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
+                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY),
                         };
             
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -303,42 +285,39 @@
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPNOTEKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
                             };
-    [_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
-        if (!_isrefreshview) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-        }
-        NSTimer *timer;
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPNOTE_APIPATH parameters:[param encrypt]];
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [timer invalidate];
-            _table.hidden = NO;
-            _isrefreshview = NO;
-            [_refreshControl endRefreshing];
-            [_act stopAnimating];
-            [self requestsuccess:mappingResult withOperation:operation];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            [timer invalidate];
-            _isrefreshview = NO;
-            [_refreshControl endRefreshing];
-            [_act stopAnimating];
-            [self requestfailure:error];
-        }];
-        [_operationQueue addOperation:_request];
-        
-        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    }else{
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-    }
+
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
+
+    NSTimer *timer;
+
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDDETAILSHOPNOTE_APIPATH
+                                                                parameters:[param encrypt]];
+
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [timer invalidate];
+        _table.hidden = NO;
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
+        [self requestsuccess:mappingResult withOperation:operation];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [timer invalidate];
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
+        [self requestfailure:error];
+    }];
+    [_operationQueue addOperation:_request];
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                             target:self
+                                           selector:@selector(requesttimeout)
+                                           userInfo:nil
+                                            repeats:NO];
+
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -349,49 +328,13 @@
     BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && _notes.result) {
-        if (_notes.result.list > 0) {
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-            [_cachecontroller connectionDidFinish:_cacheconnection];
-            //save response data
-            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        }
         [self requestprocess:object];
     }
 }
 
 -(void)requestfailure:(id)object
 {
-    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
-        [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stats = [result objectForKey:@""];
-            _notes = stats;
-            BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
+    [self requestprocess:object];
 }
 
 -(void)requestprocess:(id)object
@@ -487,12 +430,10 @@
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
         [_act stopAnimating];
-        _isrefreshview = NO;
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureActionDelete:error];
-        _isrefreshview = NO;
         [timer invalidate];
     }];
     
@@ -590,7 +531,6 @@
     [self cancel];
     _requestcount = 0;
     [_list removeAllObjects];
-    _isrefreshview = YES;
     
     [_table reloadData];
     /** request data **/
@@ -643,7 +583,8 @@
             MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
             vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
                         kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
-                        kTKPDNOTES_APINOTEIDKEY : list.note_id
+                        kTKPDNOTES_APINOTEIDKEY : list.note_id,
+                        kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
                         };
             
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];

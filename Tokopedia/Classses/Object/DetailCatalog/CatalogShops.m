@@ -11,7 +11,7 @@
 @implementation CatalogShops
 
 - (NSString*)shop_name {
-    return [_shop_id kv_decodeHTMLCharacterEntities];
+    return [_shop_name kv_decodeHTMLCharacterEntities];
 }
 
 @end

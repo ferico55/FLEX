@@ -7,7 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EtalaseList.h"
+
+@protocol ProductListMyShopFilterDelegate <NSObject>
+
+- (void)filterProductEtalase:(EtalaseList *)etalase
+                  department:(NSString *)department
+                     catalog:(NSString *)catalog
+                     picture:(NSString *)picture
+                   condition:(NSString *)condition;
+
+@end
 
 @interface ProductListMyShopFilterViewController : UITableViewController
+
+@property (assign, nonatomic) id<ProductListMyShopFilterDelegate> delegate;
+@property (strong, nonatomic) NSString *shopID;
 
 @end

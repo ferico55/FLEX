@@ -20,7 +20,7 @@
 
 #import "URLCacheController.h"
 
-@interface TKPDTabProfileNavigationController () <UIScrollViewDelegate> {
+@interface TKPDTabProfileNavigationController () <UIScrollViewDelegate, SettingUserProfileDelegate> {
 	UIView* _tabbar;
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
@@ -611,6 +611,7 @@
             {
                 //button edit profile action
                 SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
+                vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -759,6 +760,7 @@
     _requestcount = 0;
     _isrefreshview = YES;
     /** request data **/
+    
     [self configureRestKit];
     [self loadData];
 }
@@ -861,44 +863,38 @@
                             };
     
     [_cachecontroller getFileModificationDate];
+    
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-//	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
-        NSTimer *timer;
-        [_act startAnimating];
+    NSTimer *timer;
+    [_act startAnimating];
 
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                        method:RKRequestMethodPOST
-                                                                          path:kTKPDPROFILE_PEOPLEAPIPATH
-                                                                    parameters:[param encrypt]];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDPROFILE_PEOPLEAPIPATH
+                                                                parameters:[param encrypt]];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestsuccess:mappingResult withOperation:operation];
+        [_act stopAnimating];
+        [timer invalidate];
         
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        //[_objectmanager getObjectsAtPath:kTKPDPROFILE_PEOPLEAPIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            
-            [self requestsuccess:mappingResult withOperation:operation];
-            [_act stopAnimating];
-            [timer invalidate];
-            
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            [self requestfailure:error];
-            [_act stopAnimating];
-            [timer invalidate];
-        }];
-        
-        [_operationQueue addOperation:_request];
-        
-        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-////    }else {
-//        [_act stopAnimating];
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-//        NSLog(@"cache and updated in last 24 hours.");
-//        [self requestfailure:nil];
-//	}
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestfailure:error];
+        [_act stopAnimating];
+        [timer invalidate];
+    }];
+    
+    [_operationQueue addOperation:_request];
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                             target:self
+                                           selector:@selector(requesttimeout)
+                                           userInfo:nil
+                                            repeats:NO];
+
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -1084,6 +1080,13 @@
             [_barbuttoninfo setTintColor: [UIColor clearColor]];
         }
     }
+}
+
+#pragma mark - Setting user profile delegate
+
+- (void)successEditUserProfile
+{
+    [self refreshView];
 }
 
 @end

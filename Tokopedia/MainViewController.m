@@ -8,6 +8,8 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 
+#import "Helpshift.h"
+
 #import "MainViewController.h"
 #import "LoginViewController.h"
 #import "SearchViewController.h"
@@ -449,6 +451,11 @@
 }
 
 - (void)doApplicationLogout {
+    [Helpshift logout];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
+                                                        object:nil];
+
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
     [FBSession setActiveSession:nil];

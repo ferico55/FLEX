@@ -154,6 +154,13 @@ typedef enum
 #define API_PRODUCT_QUANTITY_KEY @"product_quantity"
 #define API_PRODUCT_CART_ID_KEY @"product_cart_id"
 
+#define API_MANAGE_PRODUCT_KEYWORD_KEY          @"keyword"
+#define API_MANAGE_PRODUCT_ETALASE_ID_KEY       @"etalase_id"
+#define API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY    @"etalase_id"
+#define API_MANAGE_PRODUCT_CATALOG_ID_KEY       @"catalog_id"
+#define API_MANAGE_PRODUCT_PICTURE_STATUS_KEY   @"picture_status"
+#define API_MANAGE_PRODUCT_CONDITION_KEY        @"condition"
+
 #define API_WHOLESALE_QUANTITY_MINIMUM_KEY @"qty_min_"
 #define API_WHOLESALE_QUANTITY_MAXIMUM_KEY @"qty_max_"
 #define API_WHOLESALE_PRICE @"prd_prc_"

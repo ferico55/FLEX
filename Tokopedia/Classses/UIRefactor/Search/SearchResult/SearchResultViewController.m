@@ -180,11 +180,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setTableViewContentInset)
-                                                 name:kTKPD_CATEGORY_HIDE_TAB_BAR
-                                               object:nil];
-    
     self.cellType = UITableViewCellTypeTwoColumn;
 }
 
@@ -223,17 +218,13 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if (_isnodata) {
         cell.backgroundColor = [UIColor whiteColor];
     }
-    
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section]-1;
-    
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
-        
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext !=0 ) {
             /** called if need to load next page **/
             [self request];
-        }
-        else{
+        } else {
             [_act stopAnimating];
             _table.tableFooterView = nil;
         }
@@ -243,12 +234,30 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 #pragma mark - Table View Data Source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
-#ifdef kTKPDSEARCHRESULT_NODATAENABLE
-    return _isnodata?1:count;
-#else
-    return _isnodata?0:count;
-#endif
+    NSInteger count = 0;
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        count = _product.count;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
+    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+        count = (_product.count%3==0)?_product.count/3:_product.count/3+1;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
+    }
+    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -258,7 +267,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
             height = 400;
         } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-            height = 400;
+            height = 390;
         }
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         height = 215;
@@ -1039,12 +1048,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;
-}
-
-- (void)setTableViewContentInset
-{
-    self.table.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
-    self.table.scrollIndicatorInsets = UIEdgeInsetsMake(44, 0, 0, 0);
 }
 
 @end

@@ -718,7 +718,7 @@
     
     NSDictionary* param = @{
                             kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIDELETEBANKKEY,
-                            kTKPDPROFILESETTING_APIACCOUNTIDKEY : @(bankAccount.bank_account_id)?:@(0)
+                            kTKPDPROFILESETTING_APIACCOUNTIDKEY : bankAccount.bank_account_id?:@(0)
                             };
     _requestcount ++;
     
@@ -836,7 +836,7 @@
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
     BankAccountFormList *list = [data objectForKey:kTKPDPROFILE_DATABANKKEY];
-    [_datainput setObject:@(list.bank_account_id) forKey:API_BANK_ACCOUNT_ID_KEY];
+    [_datainput setObject:list.bank_account_id forKey:API_BANK_ACCOUNT_ID_KEY];
     NSIndexPath *indexpath = [data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     switch (button.tag) {
         case 10:
@@ -892,7 +892,7 @@
     _ismanualsetdefault = YES;
     
     BankAccountFormList *bankAccount = _list[indexPath.row];
-    [_datainput setObject:@(bankAccount.bank_account_id) forKey:API_BANK_ACCOUNT_ID_KEY];
+    [_datainput setObject:bankAccount.bank_account_id forKey:API_BANK_ACCOUNT_ID_KEY];
 
     [self configureRestKitActionGetDefaultForm];
     [self requestActionGetDefaultForm:_datainput];

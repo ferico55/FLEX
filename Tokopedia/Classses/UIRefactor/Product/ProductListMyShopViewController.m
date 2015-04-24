@@ -24,7 +24,16 @@
 #import "SortViewController.h"
 #import "FilterViewController.h"
 
-@interface ProductListMyShopViewController ()<UITableViewDataSource, UITableViewDelegate,UISearchBarDelegate, MGSwipeTableCellDelegate, SortViewControllerDelegate, MyShopEtalaseFilterViewControllerDelegate>
+@interface ProductListMyShopViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UISearchBarDelegate,
+    MGSwipeTableCellDelegate,
+    SortViewControllerDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    ProductListMyShopFilterDelegate
+>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -291,7 +300,7 @@
             {
                 NSIndexPath *indexpath = [_dataFilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
@@ -300,7 +309,11 @@
             }
             case BUTTON_FILTER_TYPE_FILTER:
             {
+                NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+                
                 ProductListMyShopFilterViewController *controller = [ProductListMyShopFilterViewController new];
+                controller.delegate = self;
+                controller.shopID = [auth objectForKey:kTKPD_SHOPIDKEY];
                 
                 UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
                 navigation.navigationBar.translucent = NO;
@@ -403,6 +416,11 @@
     NSInteger etalaseID = [[_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]integerValue];
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
     
+    NSString *departmentID = [_dataFilter objectForKey:API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY]?:@"";
+    NSString *catalogID = [_dataFilter objectForKey:API_MANAGE_PRODUCT_CATALOG_ID_KEY]?:@"";
+    NSString *pictureStatus = [_dataFilter objectForKey:API_MANAGE_PRODUCT_PICTURE_STATUS_KEY]?:@"";
+    NSString *productCondition = [_dataFilter objectForKey:API_MANAGE_PRODUCT_CONDITION_KEY]?:@"";
+    
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : ACTION_GET_PRODUCT_LIST,
                             kTKPDDETAIL_APISHOPIDKEY : @(shopID),
@@ -410,6 +428,10 @@
                             kTKPDDETAIL_APIPAGEKEY : @(_page),
                             kTKPDDETAIL_APISORTKEY : @(orderByID),
                             kTKPDSHOP_APIETALASEIDKEY:@(etalaseID),
+                            API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY : departmentID,
+                            API_MANAGE_PRODUCT_CATALOG_ID_KEY : catalogID,
+                            API_MANAGE_PRODUCT_PICTURE_STATUS_KEY : pictureStatus,
+                            API_MANAGE_PRODUCT_CONDITION_KEY : productCondition,
                             API_KEYWORD_KEY:keyword,
                             };
     [_cachecontroller getFileModificationDate];
@@ -420,7 +442,10 @@
             [_act startAnimating];
         }
         NSTimer *timer;
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodPOST
+                                                                          path:kTKPDDETAILPRODUCT_APIPATH
+                                                                    parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [timer invalidate];
             [_refreshControl endRefreshing];
@@ -847,7 +872,13 @@
 #pragma mark - UISearchBar Delegate
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    [_list removeAllObjects];
+    [self.table reloadData];
     
+    [_request cancel];
+    
+    [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
+    [self refreshView:nil];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -860,20 +891,17 @@
     [_searchbar resignFirstResponder];
 }
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
-{
-    [searchBar setShowsCancelButton:NO animated:YES];
-    [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
-    [self refreshView:nil];
-    return YES;
-}
-
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
     return YES;
 }
 
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:NO animated:YES];
+    return YES;
+}
 
 #pragma mark - Notification
 - (void)didEditNote:(NSNotification*)notification
@@ -884,6 +912,8 @@
 #pragma mark - Sort Delegate
 -(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
+    [_list removeAllObjects];
+    [self.table reloadData];
     [_dataFilter addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
 }
@@ -973,4 +1003,20 @@
     return nil;
     
 }
+
+#pragma mark - Product list filter delegate
+
+- (void)filterProductEtalase:(EtalaseList *)etalase department:(NSString *)department catalog:(NSString *)catalog picture:(NSString *)picture condition:(NSString *)condition
+{
+    [_dataFilter setValue:etalase.etalase_id forKey:API_PRODUCT_ETALASE_ID_KEY];
+    [_dataFilter setValue:department forKey:API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY];
+    [_dataFilter setValue:catalog forKey:API_MANAGE_PRODUCT_CATALOG_ID_KEY];
+    [_dataFilter setValue:picture forKey:API_MANAGE_PRODUCT_PICTURE_STATUS_KEY];
+    [_dataFilter setValue:condition forKey:API_MANAGE_PRODUCT_CONDITION_KEY];
+ 
+    [_list removeAllObjects];
+    [self.table reloadData];
+    [self refreshView:nil];
+}
+
 @end

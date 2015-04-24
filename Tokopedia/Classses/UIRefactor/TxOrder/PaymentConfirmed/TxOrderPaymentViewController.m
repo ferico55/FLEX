@@ -886,7 +886,7 @@
     NSString *bankAccountName = bank.bank_account_name?:@"";
     NSString *bankAccountBranch = bank.bank_branch?:@"";
     NSString *bankAccountNumber = bank.bank_account_number?:@"";
-    NSNumber *bankAccountID = _isNewRekening?@(0):@(bank.bank_account_id);
+    NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id;
     NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
     NSString *action = _isConfirmed?ACTION_EDIT_PAYMENT:ACTION_CONFIRM_PAYMENT;
     

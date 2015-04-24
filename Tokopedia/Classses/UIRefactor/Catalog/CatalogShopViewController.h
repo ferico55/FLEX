@@ -12,5 +12,6 @@
 @interface CatalogShopViewController : UIViewController
 
 @property (strong, nonatomic) Catalog *catalog;
+@property (strong, nonatomic) NSArray *catalog_shops;
 
 @end
