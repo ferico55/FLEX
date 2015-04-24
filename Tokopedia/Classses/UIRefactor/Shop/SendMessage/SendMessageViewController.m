@@ -10,14 +10,114 @@
 #import "detail.h"
 #import "SendMessage.h"
 #import "StickyAlert.h"
+@implementation MessageTextView
+@synthesize del;
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
-@interface SendMessageViewController () <UITextViewDelegate>{
+- (id)initWithFrame:(CGRect)frame
+{
+    if(self=[super initWithFrame:frame])
+    {
+        self.delegate = self;
+        [self setPlaceholder:@""];
+        [self setPlaceholderColor:[UIColor lightGrayColor]];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextViewTextDidChangeNotification object:nil];
+    }
+    
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if(self=[super initWithCoder:aDecoder]) {
+        self.delegate = self;
+        [self setPlaceholder:@""];
+        [self setPlaceholderColor:[UIColor lightGrayColor]];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextViewTextDidChangeNotification object:nil];
+    }
+    
+    return self;
+}
+
+- (void)textChanged:(NSNotification *)notification
+{
+    if([[self placeholder] length] == 0)
+        return;
+    
+    if([[self text] length] == 0)
+        [[self viewWithTag:999] setAlpha:1];
+    else
+        [[self viewWithTag:999] setAlpha:0];
+}
+
+- (void)setText:(NSString *)text {
+    [super setText:text];
+    [self textChanged:nil];
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    return [del textViewShouldBeginEditing:textView];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    return [del textView:textView shouldChangeTextInRange:range replacementText:text];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    if( [[self placeholder] length] > 0 )
+    {
+        if (_placeHolderLabel == nil )
+        {
+            _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, self.bounds.size.width - 16, 0)];
+            _placeHolderLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            _placeHolderLabel.numberOfLines = 0;
+            _placeHolderLabel.font = self.font;
+            _placeHolderLabel.backgroundColor = [UIColor clearColor];
+            _placeHolderLabel.textColor = self.placeholderColor;
+            _placeHolderLabel.alpha = 0;
+            _placeHolderLabel.tag = 999;
+            [self addSubview:_placeHolderLabel];
+        }
+        
+        _placeHolderLabel.text = self.placeholder;
+        [_placeHolderLabel sizeToFit];
+        [self sendSubviewToBack:_placeHolderLabel];
+    }
+    
+    if( [[self text] length] == 0 && [[self placeholder] length] > 0 )
+    {
+        [[self viewWithTag:999] setAlpha:1];
+    }
+    
+    [super drawRect:rect];
+}
+
+@end
+
+
+
+
+
+
+
+
+
+
+
+
+@interface SendMessageViewController () <CustomTxtViewProtocol>{
     BOOL _isnodata;
     
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *shoplabel;
-@property (weak, nonatomic) IBOutlet UITextView *messagefield;
+@property (weak, nonatomic) IBOutlet MessageTextView *messagefield;
 @property (weak, nonatomic) IBOutlet UITextField *messagesubjectfield;
 
 
@@ -68,31 +168,14 @@
     
     self.navigationItem.rightBarButtonItem = barbuttonright;
     
-    _messagefield.delegate = self;
-    _messagefield.text = kTKPDMESSAGE_PLACEHOLDER;
+    _messagefield.del = self;
+    _messagefield.placeholder = kTKPDMESSAGE_PLACEHOLDER;
+    _messagefield.placeholderColor = [UIColor lightGrayColor];
     _messagefield.textColor = [UIColor lightGrayColor]; //optional
     
     _operationQueue = [NSOperationQueue new];
     
     
-}
-
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-    if ([textView.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
-        textView.text = @"";
-        textView.textColor = [UIColor blackColor]; //optional
-    }
-    [textView becomeFirstResponder];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    if ([textView.text isEqualToString:@""]) {
-        textView.text = kTKPDMESSAGE_PLACEHOLDER;
-        textView.textColor = [UIColor lightGrayColor]; //optional
-    }
-    [textView resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -250,4 +333,33 @@
 }
 */
 
+
+#pragma mark - CustomTextView Delegate
+//- (void)textViewDidBeginEditing:(UITextView *)textView
+//{
+//    if ([textView.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
+//        textView.text = @"";
+//        textView.textColor = [UIColor blackColor]; //optional
+//    }
+//    [textView becomeFirstResponder];
+//}
+//
+//- (void)textViewDidEndEditing:(UITextView *)textView
+//{
+//    if ([textView.text isEqualToString:@""]) {
+//        textView.text = kTKPDMESSAGE_PLACEHOLDER;
+//        textView.textColor = [UIColor lightGrayColor]; //optional
+//    }
+//    [textView resignFirstResponder];
+//}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    return YES;
+}
 @end

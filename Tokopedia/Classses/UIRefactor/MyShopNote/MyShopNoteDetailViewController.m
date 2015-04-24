@@ -809,10 +809,10 @@
 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
-                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+//                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                [attributes setObject:font forKey:NSFontAttributeName];
+//                [attributes setObject:font forKey:NSFontAttributeName];
 
 //                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
                 
