@@ -1685,6 +1685,26 @@ TokopediaNetworkManagerDelegate
 }
 
 #pragma mark - Methods
+- (void)initViewTokoTutup
+{
+    int padding = 10;
+    float height = [self calculateHeightLabelDesc:CGSizeMake(_table.bounds.size.width-(padding*2), 9999) withText:[NSString stringWithFormat:CStringDescTokoTutup, @"test", @"2015-12-12"]];
+    height += (padding*2);
+    UIView *viewContentTokoTutup = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _table.bounds.size.width, height)];
+    viewContentTokoTutup.backgroundColor = [UIColor yellowColor];
+    
+    
+    UILabel *lblDescTokoTutup = [[UILabel alloc] initWithFrame:CGRectMake(padding, padding, viewContentTokoTutup.bounds.size.width-(padding*2), height-(padding*2))];
+    lblDescTokoTutup.backgroundColor = [UIColor clearColor];
+    lblDescTokoTutup.text = [NSString stringWithFormat:CStringDescTokoTutup, @"test", @"2015-12-12"];
+    [viewContentTokoTutup addSubview:lblDescTokoTutup];
+    
+    
+    _dinkButton.hidden = YES;
+    _buyButton.hidden = YES;
+}
+
+
 - (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
