@@ -45,15 +45,6 @@
 
 @implementation DetailShipmentStatusViewController
 
-//typedef enum {
-//    ORDER_SHIPPING                  = 500,
-//    ORDER_SHIPPING_TRACKER_INVALID  = 520,
-//    ORDER_SHIPPING_REF_NUM_EDITED   = 530,
-//    ORDER_DELIVERED                 = 600,
-//    ORDER_DELIVERED_CONFIRM         = 610,
-//    ORDER_DELIVERED_DUE_DATE        = 620,
-//} ORDER_STATUS;
-
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -91,7 +82,8 @@
     }
     
     if (_is_allow_manage_tx && _order.order_detail.detail_ship_ref_num) {
-        if (_order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+        if (_order.order_detail.detail_order_status >= ORDER_SHIPPING &&
+            _order.order_detail.detail_order_status <= ORDER_SHIPPING_REF_NUM_EDITED) {
             _changeReceiptButton.enabled = YES;
         } else {
             _changeReceiptButton.enabled = NO;
@@ -99,7 +91,6 @@
     } else {
         _changeReceiptButton.enabled = NO;
     }
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated

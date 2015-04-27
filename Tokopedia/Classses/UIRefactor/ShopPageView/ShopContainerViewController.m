@@ -5,7 +5,7 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
-
+#import "LoginViewController.h"
 #import "ShopContainerViewController.h"
 #import "ShopTalkPageViewController.h"
 #import "ShopProductPageViewController.h"
@@ -25,7 +25,7 @@
 #import "FavoriteShopAction.h"
 
 
-@interface ShopContainerViewController () <UIScrollViewDelegate> {
+@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
     BOOL _isNoData;
     BOOL _isRefreshView;
     
@@ -105,7 +105,7 @@
     _messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
     _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
-
+    
     
     _auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
     if ([_auth count] > 0) {
@@ -115,18 +115,12 @@
         } else {
             self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
         }
-
+        
     } else {
-            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doRequestShopInfo:) name:SHOULD_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil];
-}
-
--(void)doRequestShopInfo:(NSNotificationCenter*)notification
-{
-    [self configureRestKit];
-    [self request];
+    
 }
 
 - (UIBarButtonItem*)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action {
@@ -157,7 +151,7 @@
     _cacheController = [URLCacheController new];
     _cacheController.URLCacheInterval = 86400.0;
     _cacheConnection = [URLCacheConnection new];
-
+    
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
@@ -184,7 +178,7 @@
     
     [self addChildViewController:self.pageController];
     [self.view addSubview:[self.pageController view]];
-
+    
     NSArray *subviews = self.pageController.view.subviews;
     UIPageControl *thisControl = nil;
     for (int i=0; i<[subviews count]; i++) {
@@ -199,7 +193,7 @@
     
     [self configureRestKit];
     [self request];
-
+    
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
 }
@@ -245,7 +239,7 @@
     else if ([viewController isKindOfClass:[ShopNotesPageViewController class]]) {
         return nil;
     }
-
+    
     return nil;
     
 }
@@ -263,10 +257,10 @@
 #pragma mark - Init Notification
 - (void)initNotificationCenter {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-
+    
     [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
- }
+}
 
 
 
@@ -650,9 +644,8 @@
 - (IBAction)favoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
     
-    _requestFavoriteCount = 0;
-    
     if(_auth) {
+        _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
         
@@ -663,12 +656,28 @@
 - (IBAction)unfavoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
     
-    _requestFavoriteCount = 0;
-    [self configureFavoriteRestkit];
-    [self favoriteShop:_shop.result.info.shop_id];
-    
-    self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
-    
+    if(_auth!=nil && _auth.count>0) {
+        _requestFavoriteCount = 0;
+        [self configureFavoriteRestkit];
+        [self favoriteShop:_shop.result.info.shop_id];
+        
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
+    }
+    else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 - (IBAction)settingTap:(id)sender {
@@ -801,9 +810,9 @@
                             @"shop_id"              :   shop_id};
     
     _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:@"action/favorite-shop.pl"
-                                                                parameters:[param encrypt]];
+                                                                                    method:RKRequestMethodPOST
+                                                                                      path:@"action/favorite-shop.pl"
+                                                                                parameters:[param encrypt]];
     
     [_requestFavorite setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestFavoriteResult:mappingResult withOperation:operation];
@@ -820,10 +829,10 @@
     [_operationFavoriteQueue addOperation:_requestFavorite];
     
     _timerFavorite = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requestTimeout)
-                                            userInfo:nil
-                                             repeats:NO];
+                                                      target:self
+                                                    selector:@selector(requestTimeout)
+                                                    userInfo:nil
+                                                     repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timerFavorite forMode:NSRunLoopCommonModes];
 }
 
@@ -836,5 +845,14 @@
 }
 
 
-
+#pragma mark - LoginView Delegate
+- (void)redirectViewController:(id)viewController
+{
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *tempAuth = [secureStorage keychainDictionary];
+    _auth = [tempAuth mutableCopy];
+    
+    [self configureRestKit];
+    [self request];
+}
 @end

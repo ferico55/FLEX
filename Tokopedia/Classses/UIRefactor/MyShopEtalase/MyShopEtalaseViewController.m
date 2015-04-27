@@ -196,7 +196,16 @@
         
         if (_list.count > indexPath.row) {
             EtalaseList *list = _list[indexPath.row];
-            cell.textLabel.text = list.etalase_name;
+
+            if (list.etalase_name.length > 20) {
+                NSRange stringRange = {0, MIN([list.etalase_name length], 20)};
+                stringRange = [list.etalase_name rangeOfComposedCharacterSequencesForRange:stringRange];
+                NSString *shortString = [list.etalase_name substringWithRange:stringRange];
+                cell.textLabel.text = [NSString stringWithFormat:@"%@...", shortString];
+            } else {
+                cell.textLabel.text = list.etalase_name;
+            }
+            
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ Produk",list.etalase_total_product];
             cell.indexpath = indexPath;
             cell.type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;

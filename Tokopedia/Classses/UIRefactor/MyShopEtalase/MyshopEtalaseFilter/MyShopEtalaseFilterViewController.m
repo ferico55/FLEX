@@ -74,13 +74,14 @@
     
     _table.tableFooterView = _footer;
     
-
-    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                        style:UIBarButtonItemStyleBordered
-                                                                       target:self
-                                                                       action:@selector(tap:)];
-    cancelBarButton.tag = 10;
-    self.navigationItem.leftBarButtonItem = cancelBarButton;
+    if (self.navigationController.isBeingPresented) {
+        UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                            style:UIBarButtonItemStyleBordered
+                                                                           target:self
+                                                                           action:@selector(tap:)];
+        cancelBarButton.tag = 10;
+        self.navigationItem.leftBarButtonItem = cancelBarButton;
+    }
     
     UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                                         style:UIBarButtonItemStyleDone
@@ -99,6 +100,14 @@
             etalase.etalase_id = [kTKPDSHOP_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASEIDKEY];
             [_etalaseList addObject:etalase];
         }
+    } else if (presentedEtalaseType == PRESENTED_ETALASE_MANAGE_PRODUCT) {
+        int etalaseArrayCount = (int)kTKPDMANAGEPRODUCT_ETALASEARRAY.count;
+        for (int i = 0;i<etalaseArrayCount;i++) {
+            EtalaseList *etalase = [EtalaseList new];
+            etalase.etalase_name = [kTKPDMANAGEPRODUCT_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+            etalase.etalase_id = [kTKPDMANAGEPRODUCT_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASEIDKEY];
+            [_etalaseList addObject:etalase];
+        }        
     }
     
     NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
@@ -430,7 +439,7 @@
                     etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
                     etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
                     [_etalaseList addObject:etalase];
-                }
+                } 
                 
                 if (_etalaseList.count >0) {
                     _isnodata = NO;

@@ -163,13 +163,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setTableViewContentInset)
-                                                 name:kTKPD_CATEGORY_HIDE_TAB_BAR
-                                               object:nil];
-
+                                               object:nil];    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -403,7 +397,7 @@
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         
         _searchitem = [result objectForKey: @""];
-        
+
         NSString *statusstring = _searchitem.status;
         BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
         
@@ -425,7 +419,11 @@
                 if (_product.count >0) {
                     
                     _urinext =  _searchitem.result.paging.uri_next;
-                    _page = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
+                    
+                    NSInteger tempInt = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
+                    if(tempInt == _page)
+                        _urinext = nil;
+                    _page = tempInt;
                     
                     NSLog(@"next page : %zd",_page);
                     _isnodata = NO;
@@ -466,19 +464,6 @@
 
 -(void)SearchResultShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-//    List *list = _product[indexpath.row];
-//
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-//    
-//    NSIndexPath *indexPath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-//    shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY : list.shop_id,
-//                                kTKPDDETAIL_APISHOPNAMEKEY : list.shop_name,
-//                                kTKPDDETAIL_APISHOPISGOLD : list.shop_gold_status,
-//                                kTKPDFILTERSORT_DATAINDEXPATHKEY : indexPath?:0,
-//                                kTKPD_AUTHKEY:[_data objectForKey : kTKPD_AUTHKEY]?:@{}};
-//
-//    [self.navigationController pushViewController:shopViewController animated:YES];
     List *list = _product[indexpath.row];
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
@@ -680,12 +665,6 @@
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
     
-    /** redirect mapping & hascatalog **/
-    //RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
-    //[redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
-    //                                                       kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,
-    //                                                       kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
-    
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -739,12 +718,6 @@
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;
-}
-
-- (void)setTableViewContentInset
-{
-    self.table.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
-    self.table.scrollIndicatorInsets = UIEdgeInsetsMake(44, 0, 0, 0);
 }
 
 @end

@@ -132,8 +132,10 @@
     //opened when application is on background
     if(application.applicationState == UIApplicationStateInactive ||
        application.applicationState == UIApplicationStateBackground) {
-        NotificationManager *notifManager = [NotificationManager new];
-        [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
+//        NotificationManager *notifManager = [NotificationManager new];
+//        [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"redirectNotification" object:nil userInfo:userInfo];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotification" object:self];
     }

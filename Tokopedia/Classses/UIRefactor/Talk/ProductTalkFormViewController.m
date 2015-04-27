@@ -183,6 +183,7 @@
                      };
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTalk" object:nil userInfo:userinfo];
+        [self.navigationController popViewControllerAnimated:TRUE];
     } else {
         
         NSArray *array = [[NSArray alloc] initWithObjects:KTKPDTALK_UNDELIVERED, nil];
@@ -233,18 +234,13 @@
             
             case 11 : {
                 if (_request.isExecuting) return;
-                if(_talkfield.text.length < 3 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
-                    NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM, nil];
+                if(_talkfield.text.length < 6 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
+                    NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM2, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 } else {
-                    NSDictionary *userinfo;
-                    userinfo = @{TKPD_TALK_MESSAGE:_talkfield.text};
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTalk" object:nil userInfo:userinfo];
                     [self configureRestkit];
                     [self doProductTalkForm];
-                    [self.navigationController popViewControllerAnimated:TRUE];
                 }
                 
                 break;

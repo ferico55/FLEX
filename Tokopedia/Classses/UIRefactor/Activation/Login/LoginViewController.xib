@@ -16,6 +16,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
                 <outlet property="activityIndicator" destination="OfY-Za-Mqc" id="dml-LN-7Hq"/>
+                <outlet property="cheatView" destination="1fi-MM-UxN" id="Ima-F6-B6y"/>
                 <outlet property="emailTextField" destination="TaY-hL-DlK" id="0pG-0z-24H"/>
                 <outlet property="facebookLoginButton" destination="Gxv-a7-Kso" id="FDu-nS-hG0"/>
                 <outlet property="forgetPasswordButton" destination="Meb-uf-Mbe" id="J7C-d1-Lcy"/>
@@ -112,6 +113,9 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="sQS-cs-zQR"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1fi-MM-UxN">
+                    <rect key="frame" x="86" y="2" width="154" height="44"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>

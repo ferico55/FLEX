@@ -9,6 +9,8 @@
 #import "UserAuthentificationManager.h"
 #import "TKPDSecureStorage.h"
 
+#import "activation.h"
+
 @implementation UserAuthentificationManager {
     NSDictionary *_auth;
 }
@@ -47,6 +49,11 @@
 
 - (NSString*)getMyDeviceToken {
     return [_auth objectForKey:@"device_token"] ?: @"0";
+}
+
+//auto increment from database that had been saved in secure storage
+- (NSString*)getMyDeviceIdToken {
+    return [_auth objectForKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY] ?: @"0";
 }
 
 - (NSString *)getShopId {

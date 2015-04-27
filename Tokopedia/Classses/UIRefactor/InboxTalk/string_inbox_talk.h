@@ -29,6 +29,7 @@
 #define PROMPT_DELETE_TALK_MESSAGE @"Diskusi yg sudah dihapus, tidak dapat dikembalikan"
 #define SUCCESS_REPORT_TALK @"Laporan Kamu telah sukses terkirim"
 #define BUTTON_CANCEL @"Tidak"
+#define CStringFailedDeleteMessage @"Failed delete message"
 #define BUTTON_OK @"Ya"
 
 

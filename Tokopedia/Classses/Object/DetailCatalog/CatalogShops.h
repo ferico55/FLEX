@@ -12,17 +12,18 @@
 
 @interface CatalogShops : NSObject
 
-//@property (nonatomic, strong) ProductList *product_list;
-@property (nonatomic, strong) NSArray *product_list;
-@property (nonatomic) NSInteger shop_rate_accuracy;
-@property (nonatomic, strong) NSString *shop_image;
 @property (nonatomic, strong) NSString *shop_id;
-@property (nonatomic, strong) NSString *shop_location;
-@property (nonatomic) NSInteger shop_rate_speed;
-@property (nonatomic) NSInteger is_gold_shop;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *shop_total_address;
+@property (nonatomic, strong) NSString *shop_image;
+@property (nonatomic, strong) NSString *shop_location;
+
 @property (nonatomic) NSInteger shop_total_product;
 @property (nonatomic) NSInteger shop_rate_service;
+@property (nonatomic) NSInteger shop_rate_accuracy;
+@property (nonatomic) NSInteger shop_rate_speed;
+@property (nonatomic) NSInteger is_gold_shop;
+
+@property (nonatomic, strong) NSArray *product_list;
 
 @end

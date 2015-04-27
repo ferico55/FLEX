@@ -46,6 +46,7 @@
     
     FBLoginView *_loginView;
     
+    
     id<FBGraphUser> _facebookUser;
 }
 
@@ -54,6 +55,7 @@
 @property (weak, nonatomic) IBOutlet UIView *facebookLoginButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
+@property (weak, nonatomic) IBOutlet UIView *cheatView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (weak, nonatomic) IBOutlet UIImageView *screenLogin;
@@ -121,6 +123,11 @@
         cancelButton.tintColor = [UIColor whiteColor];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
+    
+    UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(autoSetUser)];
+    doubleTapGesture.numberOfTapsRequired = 2;
+    [_cheatView addGestureRecognizer:doubleTapGesture];
+    [_cheatView setUserInteractionEnabled:YES];
     
     _loginView = [[FBLoginView alloc] init];
     _loginView.readPermissions = @[@"public_profile", @"email"];
@@ -778,6 +785,11 @@
                                                             object:nil
                                                           userInfo:nil];
     }
+}
+
+- (void)autoSetUser {
+    _emailTextField.text = @"orangkeren@yahoo.com";
+    _passwordTextField.text = @"kambinglu";
 }
 
 @end

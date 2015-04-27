@@ -19,6 +19,7 @@
 #import "string_home.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
+#import "string_inbox_review.h"
 #import "detail.h"
 #import "ShopPageHeader.h"
 #import "NoResultView.h"
@@ -271,6 +272,11 @@ UIAlertViewDelegate>
                 [((GeneralReviewCell*)cell).commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
             }
             
+            if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
+                ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
+            } else {
+                ((GeneralReviewCell*)cell).editReviewButton.hidden = YES;
+            }
             
             if ([list.review_message length] > 50) {
                 NSRange stringRange = {0, MIN([list.review_message length], 50)};

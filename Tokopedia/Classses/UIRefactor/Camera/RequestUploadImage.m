@@ -74,13 +74,24 @@
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"0";
     NSInteger userID = _generateHost.result.generated_host.user_id;
     
-    NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY: _action,
+    NSDictionary *param;
+    
+    if([_action isEqualToString:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY]) {
+        param = @{
+                  kTKPDDETAIL_APIACTIONKEY : _action,
+                  kTKPD_USERIDKEY : @(userID)
+                  };
+    }
+    else {
+        param = @{ kTKPDDETAIL_APIACTIONKEY: _action,
                              kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
                              kTKPD_USERIDKEY : @(userID),
                              @"product_id" : _productID?:@"",
                              @"new_add" : @(1)
                              //@"is_temp" :@(1)
                              };
+    }
+    
     
     _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
                                                                    withName:_fieldName

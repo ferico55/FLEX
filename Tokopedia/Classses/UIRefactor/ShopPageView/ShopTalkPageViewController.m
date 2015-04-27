@@ -25,6 +25,7 @@
 #import "ShopPageHeader.h"
 #import "NoResultView.h"
 #import "NSString+HTML.h"
+#import "UserAuthentificationManager.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -75,6 +76,7 @@ UIAlertViewDelegate>
     BOOL _isNeedToInsertCache;
     BOOL _isLoadFromCache;
     NoResultView *_noResult;
+    UserAuthentificationManager *_userManager;
     
     
     __weak RKObjectManager *_objectManager;
@@ -188,6 +190,7 @@ UIAlertViewDelegate>
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    _userManager = [UserAuthentificationManager new];
     if (!_isrefreshview) {
         [self configureRestKit];
         
@@ -267,7 +270,7 @@ UIAlertViewDelegate>
             }
             [((GeneralTalkCell*)cell).unfollowButton setTitle:followStatus forState:UIControlStateNormal];
             
-            if(![list.talk_own isEqualToString:@"1"]) {
+            if(![list.talk_own isEqualToString:@"1"] && [_userManager isLogin]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
@@ -276,6 +279,13 @@ UIAlertViewDelegate>
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
                 newFrame.origin.x = 75;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+            }
+            
+            
+            if([_userManager isLogin]) {
+                ((GeneralTalkCell*)cell).moreActionButton.hidden = NO;
+            } else {
+                ((GeneralTalkCell*)cell).moreActionButton.hidden = YES;
             }
             
             if ([list.talk_message length] > 30) {

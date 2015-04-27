@@ -100,11 +100,26 @@
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"user_image"]]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_profilePictureImageView setImageWithURLRequest:request
+                          placeholderImage:[UIImage imageNamed:@"nil"]
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                       //NSLOG(@"thumb: %@", thumb);
+                                       [_profilePictureImageView setImage:image];
+#pragma clang diagnostic pop
+                                   } failure: nil];
+    
     if([_auth objectForKey:@"shop_id"]) {
         if([_auth objectForKey:@"shop_name"])
             _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
         
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
+        NSString *strAvatar = [[_auth objectForKey:@"shop_avatar"] isMemberOfClass:[NSString class]]? [_auth objectForKey:@"shop_avatar"] : [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_avatar"]];        
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strAvatar]
                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                   timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
@@ -137,6 +152,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self initNotificationManager];
     if(hasLoadViewWillAppear) {
         return;
     }
@@ -145,7 +161,7 @@
     [super viewWillAppear:animated];
     
     self.navigationController.title = @"More";
-    [self initNotificationManager];
+
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 
@@ -372,6 +388,7 @@
         } else if (indexPath.row == 2) {
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
+            vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
             MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
@@ -472,9 +489,6 @@
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
         [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
-        
-        TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-        [storage resetKeychain];
     }
 
     self.hidesBottomBarWhenPushed = NO;

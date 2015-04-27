@@ -9,6 +9,7 @@
 #import "Talk.h"
 #import "string_product.h"
 #import "detail.h"
+#import "GeneralAction.h"
 #import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
 #import "ProductTalkCell.h"
@@ -20,13 +21,17 @@
 #import "GeneralAction.h"
 #import "UserAuthentificationManager.h"
 #import "ReportViewController.h"
+#import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
-
+#import "string_inbox_talk.h"
 #import "stringrestkit.h"
 #import "inbox.h"
 
+#define CTagDeleteAlert 12
+#define CTagDeleteMessage 13
+
 #pragma mark - Product Talk View Controller
-@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate,ReportViewControllerDelegate>
+@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate,ReportViewControllerDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate>
 {
     NSMutableArray *_list;
     NSArray *_headerimages;
@@ -39,6 +44,7 @@
     NSInteger _page;
     NSInteger _limit;
     NSString *_urinext;
+    NSIndexPath *selectedIndexPath;
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
     
@@ -49,7 +55,6 @@
     
     __weak RKManagedObjectRequestOperation *_request;
     __weak RKManagedObjectRequestOperation *_requestUnfollow;
-    __weak RKManagedObjectRequestOperation *_requestDelete;
     
     NSOperationQueue *_operationQueue;
     NSOperationQueue *_operationUnfollowQueue;
@@ -65,6 +70,7 @@
     ReportViewController *_reportController;
     NoResultView *_noResultView;
     
+    TokopediaNetworkManager *tokopediaNetworkManagerDeleteMessage;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -235,7 +241,7 @@
             }
             [((GeneralTalkCell*)cell).unfollowButton setTitle:followStatus forState:UIControlStateNormal];
             
-            if(![list.talk_own isEqualToString:@"1"]) {
+            if(![list.talk_own isEqualToString:@"1"] && [_userManager isLogin]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
@@ -244,6 +250,13 @@
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
                 newFrame.origin.x = 75;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+            }
+            
+
+            if([_userManager isLogin]) {
+                ((GeneralTalkCell*)cell).moreActionButton.hidden = NO;
+            } else {
+                ((GeneralTalkCell*)cell).moreActionButton.hidden = YES;
             }
             ((GeneralTalkCell*)cell).productViewIsHidden = YES;
             ((GeneralTalkCell*)cell).messageLabel.hidden = NO;
@@ -742,6 +755,20 @@
 }
 
 #pragma mark - Methods
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
+    if(tag == CTagDeleteMessage) {
+        if(tokopediaNetworkManagerDeleteMessage == nil) {
+            tokopediaNetworkManagerDeleteMessage = [TokopediaNetworkManager new];
+            tokopediaNetworkManagerDeleteMessage.delegate = self;
+            tokopediaNetworkManagerDeleteMessage.tagRequest = tag;
+        }
+        
+        return tokopediaNetworkManagerDeleteMessage;
+    }
+    
+    return nil;
+}
+
 -(void)setHeaderData:(NSDictionary*)data
 {
     UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
@@ -758,6 +785,7 @@
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY] attributes:attributes];
     
     _productnamelabel.attributedText = attributedText;
+    _productnamelabel.numberOfLines = 3;
     
     _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
     _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
@@ -812,38 +840,60 @@
     
     if([userinfo objectForKey:@"talk_id"]) {
         NSInteger row = 0;
-        TalkList *list = _list[row];
-        
-        list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
-        list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
-        list.disable_comment = NO;
+        if(_list.count == 0) {
+            [self insertList:userinfo];
+
+            TalkList *list = _list[row];
+            list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
+            list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
+            list.disable_comment = NO;
+        }
+        else {
+            TalkList *list = _list[row];
+            if(list.talk_id!=nil && ![list.talk_id isEqualToString:@""]) {
+                [self insertList:userinfo];
+                
+                list = _list[row];
+                list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
+                list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
+                list.disable_comment = NO;
+            }
+            else {
+                list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
+                list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
+                list.disable_comment = NO;
+            }
+        }
     } else {
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary* auth = [secureStorage keychainDictionary];
-        auth = [auth mutableCopy];
-        
-        
-        TalkList *list = [TalkList new];
-        list.talk_user_name = [auth objectForKey:kTKPD_FULLNAMEKEY];
-        list.talk_total_comment = kTKPD_NULLCOMMENTKEY;
-        list.talk_user_image = [auth objectForKey:kTKPD_USERIMAGEKEY];
-        
-        NSDate *today = [NSDate date];
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
-        NSString *dateString = [dateFormat stringFromDate:today];
-        
-        list.talk_create_time = [dateString stringByAppendingString:@" WIB"];
-        list.talk_message = [userinfo objectForKey:TKPD_TALK_MESSAGE];
-        
-        list.disable_comment = YES;
-        [_list insertObject:list atIndex:0];
+        [self insertList:userinfo];
     }
-    
     
     
     [_table reloadData];
     
+}
+
+- (void)insertList:(NSDictionary *)userinfo {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    auth = [auth mutableCopy];
+    
+    
+    TalkList *list = [TalkList new];
+    list.talk_user_name = [auth objectForKey:kTKPD_FULLNAMEKEY];
+    list.talk_total_comment = kTKPD_NULLCOMMENTKEY;
+    list.talk_user_image = [auth objectForKey:kTKPD_USERIMAGEKEY];
+    
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
+    NSString *dateString = [dateFormat stringFromDate:today];
+    
+    list.talk_create_time = [dateString stringByAppendingString:@" WIB"];
+    list.talk_message = [userinfo objectForKey:TKPD_TALK_MESSAGE];
+    
+    list.disable_comment = YES;
+    [_list insertObject:list atIndex:0];
 }
 
 #pragma mark - General Cell Comment Delegate
@@ -855,8 +905,17 @@
 }
 
 - (void)deleteTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-   //TODO::Later to do this
+    selectedIndexPath = indexpath;
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:PROMPT_DELETE_TALK
+                          message:PROMPT_DELETE_TALK_MESSAGE
+                          delegate:self
+                          cancelButtonTitle:BUTTON_CANCEL
+                          otherButtonTitles:nil];
     
+    alert.tag = CTagDeleteAlert;
+    [alert addButtonWithTitle:BUTTON_OK];
+    [alert show];
 }
 
 #pragma mark - Report Delegate
@@ -873,4 +932,114 @@
 }
 
 
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == CTagDeleteAlert) {
+        if(buttonIndex == 1) {
+            self.navigationController.view.userInteractionEnabled = NO;
+            [[self getNetworkManager:CTagDeleteMessage] doRequest];
+        }
+        else {
+            selectedIndexPath = nil;
+        }
+    }
+}
+
+
+
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag {
+    if(tag == CTagDeleteMessage) {
+        NSInteger row = selectedIndexPath.row;
+        TalkList *list = _list[row];
+        return @{
+                 kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
+                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
+                 TKPD_TALK_ID:list.talk_id?:0,
+                 kTKPDDETAILSHOP_APISHOPID : list.talk_shop_id
+                 };
+    }
+    
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag {
+    if(tag == CTagDeleteMessage) {
+        return TKPD_MESSAGE_TALK_ACTION;
+    }
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag {
+    if(tag == CTagDeleteMessage) {
+        _objectDeletemanager =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:TKPD_MESSAGE_TALK_ACTION
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectDeletemanager addResponseDescriptor:responseDescriptorStatus];
+        return _objectDeletemanager;
+    }
+    
+    return nil;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    return ((GeneralAction *) stat).status;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+    if(tag == CTagDeleteMessage) {
+        [_list removeObjectAtIndex:selectedIndexPath.row];
+        [_table reloadData];
+        selectedIndexPath = nil;
+        self.navigationController.view.userInteractionEnabled = YES;
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+
+}
+
+- (void)actionBeforeRequest:(int)tag {
+
+}
+
+- (void)actionRequestAsync:(int)tag {
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if(tag == CTagDeleteMessage) {
+        selectedIndexPath = nil;
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedDeleteMessage] delegate:self];
+        [stickyAlertView show];
+        self.navigationController.view.userInteractionEnabled = YES;
+    }
+}
 @end

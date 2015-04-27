@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -25,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="singleLineEtched" rowHeight="83" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DEU-dk-S8H">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <rect key="frame" x="0.0" y="30" width="320" height="480"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -74,11 +74,11 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="r0y-ak-8VP" secondAttribute="bottom" id="B8t-Lo-68J"/>
-                <constraint firstAttribute="trailing" secondItem="DEU-dk-S8H" secondAttribute="trailing" id="HyQ-W0-Aj7"/>
-                <constraint firstAttribute="bottom" secondItem="DEU-dk-S8H" secondAttribute="bottom" id="Jbw-Qe-eSn"/>
+                <constraint firstItem="DEU-dk-S8H" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="JbI-Z3-cGL"/>
                 <constraint firstAttribute="trailing" secondItem="r0y-ak-8VP" secondAttribute="trailing" id="QbD-iu-2xt"/>
-                <constraint firstItem="DEU-dk-S8H" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bvO-4j-ohg"/>
-                <constraint firstItem="DEU-dk-S8H" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="i4Q-vh-BaB"/>
+                <constraint firstItem="DEU-dk-S8H" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="nKg-Hf-CJ3"/>
+                <constraint firstAttribute="bottom" secondItem="DEU-dk-S8H" secondAttribute="bottom" constant="-30" id="oc4-xC-j6t"/>
+                <constraint firstItem="DEU-dk-S8H" firstAttribute="trailing" secondItem="r0y-ak-8VP" secondAttribute="trailing" id="xnO-K9-Sff"/>
                 <constraint firstItem="r0y-ak-8VP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zBo-MN-48d"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

@@ -11,9 +11,9 @@
 #define API_ACTION_KEY                  @"action"
 #define API_CATALOG_ID_KEY              @"catalog_id"
 
-#define API_FILTER_LOCATION_KEY                @"location"
-#define API_FILTER_CONDITION_KEY               @"condition"
-#define API_FILTER_ORDER_BY_KEY                @"order_by"
+#define API_FILTER_LOCATION_KEY         @"location"
+#define API_FILTER_CONDITION_KEY        @"condition"
+#define API_FILTER_ORDER_BY_KEY         @"order_by"
 
 #define API_STATUS_KEY                  @"status"
 #define API_CONFIG_KEY                  @"config"
@@ -62,7 +62,7 @@
 #define API_TIME_KEY                    @"time"
 #define API_NAME_KEY                    @"name"
 
-#define API_SHOP_ID_KEY                 @"shop_id"
+#define API_SHOP_ID_NUMBER_KEY          @"shop_id"
 #define API_CATALOG_SHOPS_KEY           @"catalog_shops"
 #define API_PRODUCT_LIST_KEY            @"product_list"
 #define API_SHOP_RATE_ACCURACY_KEY      @"shop_rate_accuracy"
@@ -72,12 +72,12 @@
 #define API_IS_GOLD_SHOP_KEY            @"is_gold_shop"
 #define API_SHOP_NAME_KEY               @"shop_name"
 #define API_SHOP_TOTAL_ADDRESS_KEY      @"shop_total_address"
-#define API_SHOP_TOTAL_PRODUCT_KEY      @"shop_total_product"
 #define API_SHOP_RATE_SERVICE_KEY       @"shop_rate_service"
+#define API_SHOP_TOTAL_PRODUCT_KEY      @"shop_total_product"
 
 #define API_PRODUCT_ID_KEY              @"product_id"
 #define API_PRODUCT_PRICE_KEY           @"product_price"
 #define API_PRODUCT_CONDITION_KEY       @"product_condition"
 #define API_PRODUCT_NAME_KEY            @"product_name"
 
-#define API_CATALOG_IMAGE_KEY           @"catalog_image"
+#define API_CATALOG_IMAGE_KEY           @"catalog_images"

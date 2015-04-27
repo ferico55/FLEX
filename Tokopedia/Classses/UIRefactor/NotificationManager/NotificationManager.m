@@ -11,6 +11,8 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "NotificationState.h"
 
+#import "HomeTabViewController.h"
+
 @interface NotificationManager () <NotificationDelegate, NotificationViewDelegate>
 
 @end
@@ -26,6 +28,8 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotification) name:@"resetNotification" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUnreadNotification:) name:@"setUnreadNotification" object:nil];
+        
+
     }
     return self;
 }
@@ -204,6 +208,7 @@
         [[_attachedViewController.tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
 }
+
 
 #pragma mark - Notification view delegate
 

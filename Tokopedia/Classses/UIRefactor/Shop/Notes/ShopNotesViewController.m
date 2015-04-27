@@ -609,7 +609,8 @@
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
                 kTKPDNOTES_APINOTEIDKEY:list.note_id,
-                kTKPDNOTES_APINOTETITLEKEY:list.note_title
+                kTKPDNOTES_APINOTETITLEKEY:list.note_title,
+                kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
                 };
     [self.navigationController pushViewController:vc animated:YES];
 }
