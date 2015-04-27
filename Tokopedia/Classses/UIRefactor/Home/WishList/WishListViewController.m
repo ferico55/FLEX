@@ -197,8 +197,12 @@
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).attributedText = attributedString;
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingTail;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
-                ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
                 
+                if(list.shop_gold_status == 1) {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                } else {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+                }
                 
                 NSString *urlstring = list.product_image;
                 NSURLRequest *localRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
