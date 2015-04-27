@@ -400,9 +400,15 @@
 #pragma mark - Action View
 - (void)lanjut:(id)sender
 {
-    MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
-    controller.createShopViewController = self;
-    [self.navigationController pushViewController:controller animated:YES];
+    if(txtNamaToko.text.length > 24) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringLimitNamaToko] delegate:self];
+        [stickyAlertView show];
+    }
+    else {
+        MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+        controller.createShopViewController = self;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (void)showImage:(id)sender

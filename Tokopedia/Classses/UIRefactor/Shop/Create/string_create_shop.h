@@ -39,6 +39,7 @@
 
 
 #pragma mark - String
+#define CStringLimitNamaToko @"Nama toko maksimal 24 karakter"
 #define CStringFailedCreateShop @"Gagal buat toko"
 #define CStringPilihProvinsi @"Pilih provinsi"
 #define CStringKotaAsal @"Kota Asal"
