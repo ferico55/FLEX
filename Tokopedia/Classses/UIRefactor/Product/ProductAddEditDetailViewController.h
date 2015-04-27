@@ -31,5 +31,6 @@
 @property (strong,nonatomic) NSDictionary *data;
 
 @property GenerateHost *generateHost;
+@property (strong,nonatomic) NSString *shopHasTerm;
 
 @end

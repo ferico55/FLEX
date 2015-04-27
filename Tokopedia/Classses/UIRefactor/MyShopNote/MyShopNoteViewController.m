@@ -494,6 +494,15 @@
                     [alert show];
                 }
                 if (setting.result.is_success == 1) {
+                    NSInteger noteID = [[_datainput objectForKey:kTKPDNOTES_APINOTEIDKEY] integerValue];
+                    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+                    NSInteger termID = [[auth getShopHasTerm]integerValue];
+                    
+                    if (noteID == termID) {
+                        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                        [notificationCenter postNotificationName:SHOULD_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil];
+                    }
+                    
                     NSArray *successMessages = setting.message_status?:@[kTKPDNOTE_DELETE_NOTE_SUCCESS];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                     [alert show];

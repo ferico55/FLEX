@@ -177,7 +177,7 @@ typedef enum
 #define CONFIRMATIONMESSAGE_DELETE_PRODUCT_IMAGE @"Apakah Anda ingin menghapus gambar ini?"
 
 #define SUCCESSMESSAGE_ADD_PRODUCT @"Sukses menambahkan product."
-#define SUCCESSMESSAGE_EDIT_PRODUCT @"Sukses merubah product."
+#define SUCCESSMESSAGE_EDIT_PRODUCT @"Anda telah berhasil memperbaharui produk."
 #define SUCCESSMESSAGE_COPY_PRODUCT @"Sukses mensalin product"
 
 #define SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE @"Sukses menghapus gambar"
@@ -210,7 +210,7 @@ typedef enum
 #define ERRORMESSAGE_NULL_PRODUCT_NAME @"Nama Produk harus diisi."
 #define ERRORMESSAGE_NULL_PRICE @"Harga harus diisi."
 #define ERRORMESSAGE_NULL_CATEGORY @"Kategori tidak benar."
-#define ERRORMESSAGE_NULL_IMAGE @"Gambar harus diisi."
+#define ERRORMESSAGE_NULL_IMAGE @"Gambar harus tersedia."
 #define ERRORMESSAGE_INVALID_PRICE_RUPIAH @"Rentang Harga 100 - 50000000."
 #define ERRORMESSAGE_INVALID_PRICE_USD @"Rentang Harga 1 - 4000."
 #define ERRORMESSAGE_INVALID_WEIGHT_GRAM @"Berat harus diisi antara 1 - 35000."

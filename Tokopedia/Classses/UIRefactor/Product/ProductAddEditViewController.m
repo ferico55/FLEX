@@ -80,6 +80,9 @@
     __weak RKObjectManager *_objectmanagerDeleteImage;
     __weak RKManagedObjectRequestOperation *_requestDeleteImage;
     
+    __weak RKObjectManager *_objectmanagerEditProductPicture;
+    __weak RKManagedObjectRequestOperation *_requestEditProductPicture;
+    
     NSMutableArray *_errorMessage;
     
     NSInteger _requestCount;
@@ -215,19 +218,21 @@
     _auth = [secureStorage keychainDictionary];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
+    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY)
+    {
         _networkManager = [TokopediaNetworkManager new];
         _networkManager.delegate = self;
         _networkManager .tagRequest = TAG_REQUEST_DETAIL;
         [_networkManager doRequest];
     }
-    //else{
         RequestGenerateHost *generateHost =[RequestGenerateHost new];
         [generateHost configureRestkitGenerateHost];
         [generateHost requestGenerateHost];
         generateHost.delegate = self;
-    //}
     
+    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+        _productNameTextField.enabled = NO;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -242,6 +247,20 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    switch (type) {
+        case TYPE_ADD_EDIT_PRODUCT_ADD:
+            self.title = @"Tambah Produk";
+            break;
+        case TYPE_ADD_EDIT_PRODUCT_EDIT:
+            self.title = @"Ubah Produk";
+            break;
+        case TYPE_ADD_EDIT_PRODUCT_COPY:
+            self.title = @"Salin Produk";
+            break;
+        default:
+            break;
+    }
 }
 
 -(void)viewDidLayoutSubviews
@@ -260,6 +279,8 @@
     
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
+    
+    self.title = @"";
 }
 
 - (void)didReceiveMemoryWarning
@@ -293,8 +314,8 @@
             {
                 if (!_isFinishedUploadImages) {
                     NSArray *errorMessage = @[ERRORMESSAGE_PROCESSING_UPLOAD_IMAGE];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:errorMessage,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+                    [alert show];
                 }
                 else{
                     if ([self dataInputIsValid]) {
@@ -307,6 +328,7 @@
                             [_dataInput setObject:defaultImagePath forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
                         }
                         if (!_detailVC)_detailVC = [ProductAddEditDetailViewController new];
+                        _detailVC.title = self.title;
                         _detailVC.data = @{kTKPD_AUTHKEY : auth?:@{},
                                            DATA_INPUT_KEY : _dataInput?:@{},
                                            DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
@@ -319,9 +341,8 @@
                     }
                     else
                     {
-                        NSArray *errorMessage = _errorMessage;
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:errorMessage,@"messages", nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:_errorMessage delegate:self];
+                        [alert show];
                     }
                 }
                 break;
@@ -598,7 +619,16 @@
         case 1:
             switch (indexPath.row) {
                 case BUTTON_PRODUCT_PRODUCT_NAME:
-                    [_productNameTextField becomeFirstResponder];
+                {
+                    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+                    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+                        _productNameTextField.enabled = NO;
+                        UIAlertView *editableNameProductAlert = [[UIAlertView alloc]initWithTitle:nil message:ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                        [editableNameProductAlert show];
+                    }
+                    else
+                        [_productNameTextField becomeFirstResponder];
+                }
                     break;
                 case BUTTON_PRODUCT_CATEGORY:
                 {
@@ -734,6 +764,7 @@
 {
     [self enableButtonBeforeSuccessRequest:YES];
     [self requestsuccess:successResult withOperation:operation];
+    
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -758,6 +789,7 @@
         [data addEntriesFromDictionary:_data];
         [self setDefaultData:data];
         
+        
         if(_detailVC)
         {
             NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
@@ -778,18 +810,7 @@
             _detailVC.delegate = self;
         }
         
-//        GeneratedHost *newGeneratedHost = [GeneratedHost new];
-//        newGeneratedHost.server_id = _product.result.server_id;
-//        newGeneratedHost.user_id = [[_authManager getUserId] integerValue];
-//        
-//        GenerateHostResult *newGeneratedHostResult = [GenerateHostResult new];
-//        newGeneratedHostResult.generated_host = newGeneratedHost;
-//        
-//        GenerateHost *newGenerateHost = [GenerateHost new];
-//        newGenerateHost.result = newGeneratedHostResult;
-//        
-//        _generateHost = newGenerateHost;
-        
+
         [_tableView reloadData];
     }
 }
@@ -801,25 +822,40 @@
     ((UIButton*)_addImageButtons[0]).enabled = YES;
 }
 
+-(void)failedGenerateHost
+{
+    
+}
+
 #pragma mark Request Action Upload Photo
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
     _images = uploadImage;
+
+    
+    [_uploadingImages removeObject:object];
+    
     UIImageView *thumbProductImage = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     thumbProductImage.alpha = 1.0;
     
     thumbProductImage.userInteractionEnabled = YES;
+    
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    
-    [_productImageURLs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.file_path?:@""];
-    [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:@(_images.result.pic_id)?:@""];
-    
-    NSArray *objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
-    NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
-    [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-    NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
-    
-    [_uploadingImages removeObject:object];
+
+    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+        [self configureRestKitEditProductPicture];
+        [self requestEditProductPicture:object];
+    }
+    else
+    {
+        [_productImageURLs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.file_path?:@""];
+        [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.pic_id?:@""];
+        
+        NSArray *objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
+        NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
+        [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
+        NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
+    }
     
     [self requestProcessUploadPhoto];
 }
@@ -854,7 +890,12 @@
     else
     {
         _isFinishedUploadImages = YES;
+        
+        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+
     }
+    
+    
 }
 
 #pragma mark Request Delete Image
@@ -955,14 +996,14 @@
                 if(setting.message_error)
                 {
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:ERRORMESSAGE_DELETE_PRODUCT_IMAGE, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+                    [alert show];
                     [self cancelDeletedImage];
                 }
                 if (setting.result.is_success == 1) {
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
+                    [alert show];
                 }
             }
         }
@@ -984,6 +1025,96 @@
 {
     [self cancelDeleteImage];
 }
+
+#pragma mark Request Edit Product Picture
+-(void)configureRestKitEditProductPicture
+{
+    _objectmanagerEditProductPicture =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"pic_id":@"pic_id"}];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectmanagerEditProductPicture addResponseDescriptor:responseDescriptor];
+}
+
+-(void)cancelEditProductPicture
+{
+    [_requestEditProductPicture cancel];
+    _requestEditProductPicture = nil;
+    
+    [_objectmanagerEditProductPicture.operationQueue cancelAllOperations];
+    _objectmanagerEditProductPicture = nil;
+}
+
+- (void)requestEditProductPicture:(id)pictureObject
+{
+    if(_requestEditProductPicture.isExecuting) return;
+    
+    NSDictionary *param = @{@"action" : @"edit_product_picture",
+                            @"pic_obj" : _images.result.pic_obj
+                            };
+    
+    NSTimer *timer;
+    
+    _requestEditProductPicture = [_objectmanagerEditProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
+    [_requestEditProductPicture setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestSuccessEditProductPicture:pictureObject withOperation:operation mappingResult:mappingResult];
+        [timer invalidate];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [timer invalidate];
+    }];
+    
+    [_operationQueue addOperation:_requestEditProductPicture];
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutEditProductPicture) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+}
+
+
+-(void)requestSuccessEditProductPicture:(id)object withOperation:(RKObjectRequestOperation*)operation mappingResult:(RKMappingResult*)mappingResult
+{
+    NSDictionary *result = mappingResult.dictionary;
+    id info = [result objectForKey:@""];
+    _images = info;
+    NSString *statusstring = _images.status;
+    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+         if (_setting.result.is_success == 1) {
+            UIImageView *thumbProductImage = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+            thumbProductImage.alpha = 1.0;
+            
+            thumbProductImage.userInteractionEnabled = YES;
+            
+            [_productImageURLs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.file_path?:@""];
+            [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.pic_id?:@""];
+            
+            NSArray *objectProductPhoto = _productImageIDs;
+            NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
+            [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
+            NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
+         }
+    }
+}
+
+-(void)requestTimeoutEditProductPicture
+{
+    [self cancelEditProductPicture];
+}
+
 
 
 #pragma mark - Camera Delegate
@@ -1112,6 +1243,7 @@
             image.image = imagePhoto;
             image.hidden = NO;
             image.alpha = 0.5f;
+            imageView = image;
         }
     }
     
@@ -1151,6 +1283,12 @@
     uploadImage.generateHost = _generateHost;
     uploadImage.action = ACTION_UPLOAD_PRODUCT_IMAGE;
     uploadImage.fieldName = @"fileToUpload";
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    if (type == TYPE_ADD_EDIT_PRODUCT_ADD ||type == TYPE_ADD_EDIT_PRODUCT_COPY)
+    {
+        uploadImage.isNewAdd = YES;
+    }
+    
     [uploadImage configureRestkitUploadPhoto];
     [uploadImage requestActionUploadPhoto];
 }
@@ -1194,17 +1332,17 @@
                                    };
         [self requestDeleteImage:userInfo];
     }
-
+    
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:((UIImageView*)_thumbProductImageViews[index]).image  forKey:DATA_SELECTED_PHOTO_KEY];
+    [object setObject:((UIImageView*)_thumbProductImageViews[index]) forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    
     ((UIButton*)_addImageButtons[index]).hidden = NO;
     ((UIButton*)_addImageButtons[index]).enabled = YES;
     [_productImageIDs replaceObjectAtIndex:index withObject:@""];
     [_productImageURLs replaceObjectAtIndex:index withObject:@""];
     ((UIImageView*)_thumbProductImageViews[index]).image = nil;
     ((UIImageView*)_thumbProductImageViews[index]).hidden = YES;
-    
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:((UIImageView*)_thumbProductImageViews[index]).image  forKey:DATA_SELECTED_PHOTO_KEY];
-    [object setObject:((UIImageView*)_thumbProductImageViews[index]) forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     
     [self failedUploadObject:object];
 }
@@ -1263,8 +1401,8 @@
             
             if ( value == PRICE_CURRENCY_ID_USD && !isGoldShop) {
                 NSArray *errorMessage = @[ERRORMESSAGE_INVALID_PRICE_CURRENCY_USD];
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:errorMessage,@"messages", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+                [alert show];
             }
             else{
                 if (value != previousValue) {
@@ -1436,10 +1574,10 @@
 
 -(void)DidEditReturnableNote
 {
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
-    
-
+    //_networkManager.delegate = self;
+    //[_networkManager doRequest];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:SHOULD_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil];
 }
 
 
@@ -1475,7 +1613,6 @@
             product.product_currency_id = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_VALUE_KEY];
             
             product.product_min_order = @"1";
-            
             product.product_condition = [ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY];
             
             NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[0] objectForKey:DATA_VALUE_KEY];
