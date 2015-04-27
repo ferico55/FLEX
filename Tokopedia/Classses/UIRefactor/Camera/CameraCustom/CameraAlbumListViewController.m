@@ -36,6 +36,10 @@
     
     self.title = @"Album";
     
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [backBarButtonItem setTintColor:[UIColor whiteColor]];
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
     [self getAsset];
 }
 
@@ -59,10 +63,16 @@
         switch ([error code]) {
             case ALAssetsLibraryAccessUserDeniedError:
             case ALAssetsLibraryAccessGloballyDeniedError:
-                errorMessage = @"The user has declined access to it.";
+            {
+                errorMessage = @"You can enable access in Privacy Setting";
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This app does not have access to your photos or videos." message:errorMessage delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+                [alert show];
                 break;
+            }
             default:
                 errorMessage = @"Reason unknown.";
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+                [alert show];
                 break;
         }
     };
@@ -119,6 +129,11 @@
     vc.delegate = _delegate;
     //[self presentViewController:nav animated:YES completion:nil];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)tap:(id)sender
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

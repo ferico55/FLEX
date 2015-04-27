@@ -105,7 +105,7 @@
             }
             else
             {
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No Camera" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"Camera is not available for this device." delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
                 [alert show];
                 [self dismissViewControllerAnimated:NO completion:nil];
             }
@@ -323,5 +323,7 @@
     [((NSMutableDictionary*)_data)removeObjectForKey:kTKPDCAMERA_DATACAMERAKEY];
     [((NSMutableDictionary*)_data)removeObjectForKey:kTKPDCAMERA_DATAUSERINFOKEY];
 }
+
+
 
 @end

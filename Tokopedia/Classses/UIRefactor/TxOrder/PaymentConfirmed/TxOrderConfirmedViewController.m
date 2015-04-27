@@ -345,7 +345,7 @@
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
     //cell.editButton.hidden = (detailOrder.has_user_bank != 1);
     //cell.editButton.enabled = (detailOrder.has_user_bank == 1);
-    cell.uploadProodButton.hidden = ([[detailOrder.button objectForKey:API_ORDER_BUTTON_UPLOAD_PROOF_KEY] integerValue] != 1);
+    cell.uploadProofButton.hidden = ([[detailOrder.button objectForKey:API_ORDER_BUTTON_UPLOAD_PROOF_KEY] integerValue] != 1);
     cell.indexPath = indexPath;
     
     return cell;
@@ -724,7 +724,7 @@
 -(void)requestProof:(id)object
 {
     if (_requestProof.isExecuting) return;
-    NSTimer *timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutProof) userInfo:nil repeats:NO];
+    NSTimer *timer= [NSTimer scheduledTimerWithTimeInterval:20.0 target:self selector:@selector(requestTimeoutProof) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
     TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];

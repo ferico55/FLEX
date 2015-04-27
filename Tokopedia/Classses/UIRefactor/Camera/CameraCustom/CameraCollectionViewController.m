@@ -103,28 +103,50 @@
 {
     _assets = [@[] mutableCopy];
     __block NSMutableArray *tmpAssets = [@[] mutableCopy];
-    // 1
+
     ALAssetsLibrary *assetsLibrary = [self defaultAssetsLibrary];
-    // 2
+    
+    // setup our failure view controller in case enumerateGroupsWithTypes fails
+    ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *error) {
+        
+        NSString *errorMessage = nil;
+        switch ([error code]) {
+            case ALAssetsLibraryAccessUserDeniedError:
+            case ALAssetsLibraryAccessGloballyDeniedError:
+            {
+                errorMessage = @"You can enable access in Privacy Setting";
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This app does not have access to your photos or videos." message:errorMessage delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+                [alert show];
+                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(dissmissViewController:)];
+                [backBarButtonItem setTintColor:[UIColor whiteColor]];
+                self.navigationItem.leftBarButtonItem = backBarButtonItem;
+                self.navigationItem.rightBarButtonItem = nil;
+                break;
+            }
+            default:
+                errorMessage = @"Reason unknown.";
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+                [alert show];
+                break;
+        }
+    };
+
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
             if(result)
             {
-                // 3
+                
                 [tmpAssets addObject:result];
             }
         }];
         
-        // 4
+        
         //NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
         //self.assets = [tmpAssets sortedArrayUsingDescriptors:@[sort]];
         self.assets = tmpAssets;
         
-        // 5
         [_collectionview reloadData];
-    } failureBlock:^(NSError *error) {
-        NSLog(@"Error loading images %@", error);
-    }];
+    } failureBlock:failureBlock];
 }
 
 #pragma mark - assets
@@ -153,6 +175,7 @@
     
     ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
     [self.assetsGroup setAssetsFilter:onlyPhotosFilter];
+    
     [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
     [_collectionview reloadData];
 }
@@ -180,7 +203,7 @@
         ((CameraCollectionCell*)cell).checkmarkImageView.hidden = YES;
         
         if (indexPath.row == 0) {
-            ((CameraCollectionCell*)cell).thumb.image = [UIImage imageNamed:@"icon_camera_grey_active.png"];
+            ((CameraCollectionCell*)cell).thumb.image = [UIImage imageNamed:@"icon_camera_album.png"];
         }
         else{
             for (NSIndexPath *selected in _selectedIndexPath) {
@@ -386,8 +409,14 @@
 
 -(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
 {
-    [_delegate didDismissController:self withUserInfo:userinfo];
+    NSDictionary *userInfoDict = @{@"selected_images":@[userinfo]};
+    [_delegate didDismissController:self withUserInfo:userInfoDict];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)dissmissViewController:(id)sender
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

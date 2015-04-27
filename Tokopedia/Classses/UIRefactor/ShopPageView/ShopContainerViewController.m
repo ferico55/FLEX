@@ -333,7 +333,8 @@
                                                           kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
                                                           kTKPDDETAILSHOP_APISHOPISGOLD:kTKPDDETAILSHOP_APISHOPISGOLD,
                                                           kTKPDDETAILSHOP_APISHOPURLKEY:kTKPDDETAILSHOP_APISHOPURLKEY,
-                                                          API_IS_OWNER_SHOP_KEY:API_IS_OWNER_SHOP_KEY
+                                                          API_IS_OWNER_SHOP_KEY:API_IS_OWNER_SHOP_KEY,
+                                                          @"shop_has_terms" : @"shop_has_terms"
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
@@ -451,8 +452,6 @@
             [_timer invalidate];
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            
-            // Failure
             app.networkActivityIndicatorVisible = NO;
             [self requestFailure:error];
             [_timer invalidate];
@@ -555,7 +554,9 @@
                     }
                 }
                 
-                
+                TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
                 _isNoData = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
             }
@@ -565,7 +566,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestCount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestCount);
                     [self performSelector:@selector(configureRestKit)
                                withObject:nil
                                afterDelay:kTKPDREQUEST_DELAYINTERVAL];
