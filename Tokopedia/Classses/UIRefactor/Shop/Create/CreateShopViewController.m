@@ -220,6 +220,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     if(! hasLoadViewWillAppear)
     {
@@ -431,6 +432,8 @@
     }
     else
     {
+        [txtDomain resignFirstResponder];
+        txtDomain.enabled = NO;
         [self isCheckingDomain:YES];
         [[self getNetworkManager] doRequest];
     }
@@ -755,6 +758,11 @@
 
 
 #pragma mark - UIImagePicker Delegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *strImageName = @"asset.JPG";
@@ -909,6 +917,7 @@
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
+    txtDomain.enabled = YES;
     [self isCheckingDomain:NO];
     AddShop *addShop = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
 
@@ -948,6 +957,7 @@
 {
     isValidDomain = NO;
     [self isCheckingDomain:NO];
+    txtDomain.enabled = YES;
 }
 
 

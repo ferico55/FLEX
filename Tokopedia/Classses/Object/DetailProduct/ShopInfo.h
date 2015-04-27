@@ -29,6 +29,9 @@
 @property (nonatomic, strong) NSString *shop_url;
 @property (nonatomic, strong) NSString *shop_is_owner;
 @property (nonatomic) NSInteger shop_is_gold;
+@property (nonatomic, strong) NSString *shop_is_closed_note;
+@property (nonatomic, strong) NSString *shop_is_closed_reason;
+@property (nonatomic, strong) NSString *shop_is_closed_until;
 
 @property (nonatomic) NSArray *shop_pay_gateway;
 

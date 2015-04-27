@@ -47,6 +47,7 @@
         [_requestTimer invalidate];
         _requestTimer = nil;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [self requestFail:error];
     }];
     
