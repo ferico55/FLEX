@@ -15,7 +15,7 @@
     CreateShopCell *result = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(result)
     {
-        lblDomain = [[UILabel alloc] initWithFrame:CGRectMake(CPaddingLeft, CPaddingLeft, (self.bounds.size.width/1.9f)-(CPaddingLeft*2), self.bounds.size.height-(CPaddingLeft*2))];
+        lblDomain = [[UILabel alloc] initWithFrame:CGRectMake(CPaddingLeft+2, CPaddingLeft, (self.bounds.size.width/1.9f)-(CPaddingLeft*2), self.bounds.size.height-(CPaddingLeft*2))];
         lblDomain.backgroundColor = [UIColor clearColor];
         lblDomain.text = CStringRootDomain;
         lblDomain.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];

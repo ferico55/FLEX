@@ -190,23 +190,19 @@
     CustomTxtView *txtSlogan, *txtDesc;
     UITextView *activeTextView;
     UILabel *lblCountSlogan, *lblCountDescripsi;
-    UIButton *btnLanjut;
+    UIBarButtonItem *btnLanjut;
 }
 @synthesize moreViewController;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNavigation];
     
-    btnLanjut = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnLanjut.frame = CGRectMake(0, 0, 50, self.navigationController.navigationBar.bounds.size.height);
-    [btnLanjut setTitle:CStringLanjut forState:UIControlStateNormal];
-    [btnLanjut addTarget:self action:@selector(lanjut:) forControlEvents:UIControlEventTouchUpInside];
-    [self enableLanjut:NO];
-    
+    btnLanjut = [[UIBarButtonItem alloc] initWithTitle:CStringLanjut style:UIBarButtonItemStylePlain target:self action:@selector(lanjut:)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showKeyboard:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:) name:UIKeyboardDidHideNotification object:nil];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnLanjut];
+    self.navigationItem.rightBarButtonItem = btnLanjut;
     self.hidesBottomBarWhenPushed = YES;
+    [self enableLanjut:NO];
 }
 
 - (void)dealloc
@@ -229,6 +225,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     if(! hasLoadViewWillAppear)
     {
@@ -260,9 +257,7 @@
 
 - (void)enableLanjut:(BOOL)isEnable
 {
-    btnLanjut.userInteractionEnabled = isEnable;
-    btnLanjut.enabled = isEnable;
-    [btnLanjut setTitleColor:(isEnable? [UIColor whiteColor]:[UIColor lightGrayColor]) forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItem.enabled = isEnable;
 }
 
 
@@ -411,9 +406,15 @@
 #pragma mark - Action View
 - (void)lanjut:(id)sender
 {
-    MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
-    controller.createShopViewController = self;
-    [self.navigationController pushViewController:controller animated:YES];
+    if(txtNamaToko.text.length > 24) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringLimitNamaToko] delegate:self];
+        [stickyAlertView show];
+    }
+    else {
+        MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+        controller.createShopViewController = self;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (void)showImage:(id)sender
@@ -436,6 +437,8 @@
     }
     else
     {
+        [txtDomain resignFirstResponder];
+        txtDomain.enabled = NO;
         [self isCheckingDomain:YES];
         [[self getNetworkManager] doRequest];
     }
@@ -577,7 +580,7 @@
             lblUnggahGambar.textAlignment = NSTextAlignmentCenter;
             lblUnggahGambar.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
             lblUnggahGambar.backgroundColor = [UIColor clearColor];
-            lblUnggahGambar.textColor = [UIColor greenColor];
+            lblUnggahGambar.textColor = [UIColor blueColor];
             [viewImgGambar addSubview:lblUnggahGambar];
             
             int diameterImage = 100;
@@ -592,8 +595,8 @@
             if(! hasSetImgGambar)
             {
                 tempImage = [UIImageView new];
-                tempImage.frame = CGRectMake((diameterImage-40)/2.0f, (diameterImage-40)/2.0f, 40, 40);
-                tempImage.image = [UIImage imageNamed:@"icon_camera_grey_active.png"];
+                tempImage.frame = CGRectMake((diameterImage-40)/2.0f, (diameterImage-30)/2.0f, 40, 30);
+                tempImage.image = [UIImage imageNamed:@"HS-camera-button.png"];
                 [imgGambar addSubview:tempImage];
             }
             
@@ -760,6 +763,11 @@
 
 
 #pragma mark - UIImagePicker Delegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *strImageName = @"asset.JPG";
@@ -914,6 +922,7 @@
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
+    txtDomain.enabled = YES;
     [self isCheckingDomain:NO];
     AddShop *addShop = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
 
@@ -953,6 +962,7 @@
 {
     isValidDomain = NO;
     [self isCheckingDomain:NO];
+    txtDomain.enabled = YES;
 }
 
 
