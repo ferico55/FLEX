@@ -388,6 +388,7 @@
         } else if (indexPath.row == 2) {
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
+            vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
             MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];

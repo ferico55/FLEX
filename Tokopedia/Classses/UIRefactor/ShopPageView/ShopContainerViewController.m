@@ -23,7 +23,6 @@
 #import "string_product.h"
 
 #import "FavoriteShopAction.h"
-#import "UserAuthentificationManager.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
@@ -56,7 +55,6 @@
     UIBarButtonItem *_addProductBarButton;
     UIBarButtonItem *_settingBarButton;
     UIBarButtonItem *_messageBarButton;
-    UserAuthentificationManager *_userManager;
     
 }
 
@@ -107,22 +105,22 @@
     _messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
     _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
-
-    _userManager = [UserAuthentificationManager new];
+    
+    
     _auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
-    if ([_userManager isLogin]) {
+    if ([_auth count] > 0) {
         //toko sendiri dan login
         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
             self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
         } else {
             self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
         }
-
+        
     } else {
-            self.navigationItem.rightBarButtonItems = @[_infoBarButton ];
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
     }
     
-
+    
 }
 
 - (UIBarButtonItem*)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action {
@@ -153,7 +151,7 @@
     _cacheController = [URLCacheController new];
     _cacheController.URLCacheInterval = 86400.0;
     _cacheConnection = [URLCacheConnection new];
-
+    
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
@@ -180,7 +178,7 @@
     
     [self addChildViewController:self.pageController];
     [self.view addSubview:[self.pageController view]];
-
+    
     NSArray *subviews = self.pageController.view.subviews;
     UIPageControl *thisControl = nil;
     for (int i=0; i<[subviews count]; i++) {
@@ -195,7 +193,7 @@
     
     [self configureRestKit];
     [self request];
-
+    
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
 }
@@ -241,7 +239,7 @@
     else if ([viewController isKindOfClass:[ShopNotesPageViewController class]]) {
         return nil;
     }
-
+    
     return nil;
     
 }
@@ -259,11 +257,10 @@
 #pragma mark - Init Notification
 - (void)initNotificationCenter {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-
+    
     [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
-    [nc addObserver:self selector:@selector(refreshShopData) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
- }
+}
 
 
 
@@ -554,12 +551,7 @@
                     if(_shop.result.info.shop_already_favorited == 1) {
                         self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
                     } else {
-                        if([_userManager isLogin]) {
-                            self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
-                        } else {
-                            self.navigationItem.rightBarButtonItems = @[_infoBarButton];
-                        }
-                        
+                        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
                     }
                 }
                 
@@ -667,7 +659,7 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-    
+        
         self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
     }
     else {
@@ -817,9 +809,9 @@
                             @"shop_id"              :   shop_id};
     
     _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:@"action/favorite-shop.pl"
-                                                                parameters:[param encrypt]];
+                                                                                    method:RKRequestMethodPOST
+                                                                                      path:@"action/favorite-shop.pl"
+                                                                                parameters:[param encrypt]];
     
     [_requestFavorite setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestFavoriteResult:mappingResult withOperation:operation];
@@ -836,10 +828,10 @@
     [_operationFavoriteQueue addOperation:_requestFavorite];
     
     _timerFavorite = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requestTimeout)
-                                            userInfo:nil
-                                             repeats:NO];
+                                                      target:self
+                                                    selector:@selector(requestTimeout)
+                                                    userInfo:nil
+                                                     repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timerFavorite forMode:NSRunLoopCommonModes];
 }
 
@@ -852,16 +844,6 @@
 }
 
 
-<<<<<<< HEAD
-- (void)refreshShopData {
-    [self configureRestKit];
-    [self request];
-    
-    [self postNotificationSetShopHeader];
-}
-
-
-=======
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController
 {
@@ -872,5 +854,4 @@
     [self configureRestKit];
     [self request];
 }
->>>>>>> 29be081bffcfd7662de88ccaa516faa833b790db
 @end
