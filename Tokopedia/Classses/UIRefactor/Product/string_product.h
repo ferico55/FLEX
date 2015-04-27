@@ -186,6 +186,7 @@ typedef enum
 
 #define ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME @"Nama produk bersifat permanen dan tidak dapat diubah"
 
+#define CStringDescTokoTutup @"Toko ini sedang tutup karena %@ sampai tanggal %@"
 #define CStringDenganDanTanpaKatalog @"Dengan & Tanpa Katalog"
 #define CStringDenganKatalog @"Dengan Katalog"
 #define CStringTanpaKatalog @"Tanpa Katalog"
