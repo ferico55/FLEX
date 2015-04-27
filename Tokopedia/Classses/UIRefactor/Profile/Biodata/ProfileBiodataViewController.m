@@ -192,9 +192,9 @@
 #pragma mark - Method
 - (void)actionGoToUserProfile:(id)sender
 {
-    if(self.navigationController.viewControllers.count > 1) {
-        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3] animated:YES];
-    }
+//    if(self.navigationController.viewControllers.count > 1) {
+//        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3] animated:YES];
+//    }
 }
 
 #pragma mark - Cell Delegate

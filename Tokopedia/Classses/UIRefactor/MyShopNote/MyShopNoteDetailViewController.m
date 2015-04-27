@@ -466,6 +466,10 @@
                 _titleNoteTextField.enabled = NO;
                 _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
                 
+                if (_timeNoteLabel.text == nil) {
+                    [self setTimeLabelBecomeCurrentDate];
+                }
+                
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -482,7 +486,7 @@
                 }
                 
 //                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[contentNote dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
@@ -796,13 +800,9 @@
                 _titleNoteTextField.enabled = NO;
 
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
-
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
-                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                [attributes setObject:font forKey:NSFontAttributeName];
+                [[self attributes] setObject:font forKey:NSFontAttributeName];
 
 //                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
                 

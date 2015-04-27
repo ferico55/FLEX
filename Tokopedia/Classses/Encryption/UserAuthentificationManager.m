@@ -53,6 +53,11 @@
     return [_auth objectForKey:@"shop_id"]?:@"0";
 }
 
+-(NSString *)getShopHasTerm
+{
+    return [[_auth objectForKey:@"shop_has_terms"] stringValue]?:@"";
+}
+
 - (NSString *)addParameterAndConvertToString:(id)params
 {
     NSDictionary *mutable = [params mutableCopy];

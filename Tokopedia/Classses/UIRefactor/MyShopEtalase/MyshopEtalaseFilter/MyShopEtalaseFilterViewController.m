@@ -15,6 +15,7 @@
 
 #import "URLCacheController.h"
 
+#define ETALASE_OBJECT_SELECTED_KEY @"object_selected"
 @interface MyShopEtalaseFilterViewController ()<UITableViewDataSource, UITableViewDelegate, MyShopEtalaseFilterCellDelegate, MyShopEtalaseEditViewControllerDelegate>{
     BOOL _isnodata;
     
@@ -34,6 +35,8 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    
+    EtalaseList *_selectedEtalase;
 }
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -101,6 +104,14 @@
     NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
     
+    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+    if (!selectedEtalase) {
+        _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
+    }
+    else
+    {
+        _selectedEtalase = selectedEtalase;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -218,12 +229,16 @@
             ((MyShopEtalaseFilterCell*)cell).delegate = self;
         }
         if (_etalaseList.count > indexPath.row) {
-            if (indexPath.row != ((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row) {
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+            EtalaseList *list =_etalaseList[indexPath.row];
+
+            if ([list.etalase_id integerValue] == [_selectedEtalase.etalase_id integerValue]) {
+                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
             }
             else
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
-            EtalaseList *list =_etalaseList[indexPath.row];
+            {
+                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+            }
+            
             ((MyShopEtalaseFilterCell*)cell).label.text = list.etalase_name;
             ((MyShopEtalaseFilterCell*)cell).indexpath = indexPath;
         }
@@ -463,6 +478,7 @@
 -(void)MyShopEtalaseFilterCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
+    _selectedEtalase = _etalaseList[indexpath.row];
     [_table reloadData];
 }
 

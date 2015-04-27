@@ -40,7 +40,9 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY,
                                                         kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY:kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY,
-                                                        @"file_name" : @"file_name"
+                                                        @"file_name" : @"file_name",
+                                                        @"pic_id" : @"pic_id",
+                                                        @"pic_obj" : @"pic_obj"
                                                         }];
     
     // Relationship Mapping

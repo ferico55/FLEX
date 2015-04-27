@@ -1330,6 +1330,10 @@
 		FC36DFAA19B0656400AF74C1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC36DFA819B0656400AF74C1 /* InfoPlist.strings */; };
 		FC36DFAC19B0656400AF74C1 /* TokopediaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
+		FC765A911AEDE3E800ED6FCA /* icon_upload_image.png in Resources */ = {isa = PBXBuildFile; fileRef = FC765A8F1AEDE3E800ED6FCA /* icon_upload_image.png */; };
+		FC765A921AEDE3E800ED6FCA /* icon_upload_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC765A901AEDE3E800ED6FCA /* icon_upload_image@2x.png */; };
+		FC765A951AEDE55E00ED6FCA /* icon_camera_album.png in Resources */ = {isa = PBXBuildFile; fileRef = FC765A931AEDE55E00ED6FCA /* icon_camera_album.png */; };
+		FC765A961AEDE55E00ED6FCA /* icon_camera_album@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC765A941AEDE55E00ED6FCA /* icon_camera_album@2x.png */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -3409,6 +3413,10 @@
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
+		FC765A8F1AEDE3E800ED6FCA /* icon_upload_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_upload_image.png; sourceTree = "<group>"; };
+		FC765A901AEDE3E800ED6FCA /* icon_upload_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_upload_image@2x.png"; sourceTree = "<group>"; };
+		FC765A931AEDE55E00ED6FCA /* icon_camera_album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_camera_album.png; sourceTree = "<group>"; };
+		FC765A941AEDE55E00ED6FCA /* icon_camera_album@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera_album@2x.png"; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -6625,6 +6633,8 @@
 		7AD2D65A1ADBB1B9003E1F94 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				FC765A8F1AEDE3E800ED6FCA /* icon_upload_image.png */,
+				FC765A901AEDE3E800ED6FCA /* icon_upload_image@2x.png */,
 				7AD2D65B1ADBB1B9003E1F94 /* balloon_read_left.png */,
 				7AD2D65C1ADBB1B9003E1F94 /* balloon_read_right.png */,
 				7AD2D65D1ADBB1B9003E1F94 /* button_white.png */,
@@ -6656,6 +6666,8 @@
 				7AD2D6A91ADBB1B9003E1F94 /* icon_cart_active.png */,
 				7AD2D6AA1ADBB1B9003E1F94 /* icon_cart_active@2x (deleted 23861aca8f6e2f6ddf563538915cc090).png */,
 				7AD2D6AB1ADBB1B9003E1F94 /* icon_cart_active@2x.png */,
+				FC765A931AEDE55E00ED6FCA /* icon_camera_album.png */,
+				FC765A941AEDE55E00ED6FCA /* icon_camera_album@2x.png */,
 				7AD2D6AC1ADBB1B9003E1F94 /* icon_category (deleted ee34d2665bd5bce403c69b63f0e25d38).png */,
 				7AD2D6AD1ADBB1B9003E1F94 /* icon_category.png */,
 				7AD2D6AE1ADBB1B9003E1F94 /* icon_category@2x (deleted 2662e0e529163403f536f7766e1f94cd).png */,
@@ -7632,6 +7644,7 @@
 				7AD2DCBE1ADBB1BA003E1F94 /* icon_home.png in Resources */,
 				7AD2DCC41ADBB1BA003E1F94 /* icon_more_active.png in Resources */,
 				7AD2DBB11ADBB1BA003E1F94 /* icon_2@2x.png in Resources */,
+				FC765A911AEDE3E800ED6FCA /* icon_upload_image.png in Resources */,
 				7AD2D9F11ADBB1BA003E1F94 /* GeneralTalkCommentCell.xib in Resources */,
 				7AD2DCF91ADBB1BB003E1F94 /* HS-delete-button@3x.png in Resources */,
 				7AD2DB181ADBB1BA003E1F94 /* ShopNotesPageViewController.xib in Resources */,
@@ -7720,6 +7733,7 @@
 				7AD2DA011ADBB1BA003E1F94 /* ProductFeedViewController.xib in Resources */,
 				7AD2DC151ADBB1BA003E1F94 /* icon_home_active@2x.png in Resources */,
 				7AD2D9E91ADBB1BA003E1F94 /* GeneralReviewCell.xib in Resources */,
+				FC765A961AEDE55E00ED6FCA /* icon_camera_album@2x.png in Resources */,
 				7AD2D9A11ADBB1BA003E1F94 /* CatalogSellerHeaderView.xib in Resources */,
 				7AD2DBA61ADBB1BA003E1F94 /* icon_17@2x.png in Resources */,
 				7AD2DAD31ADBB1BA003E1F94 /* SettingAddressDetailViewController.xib in Resources */,
@@ -8068,6 +8082,7 @@
 				7AD2DC1C1ADBB1BA003E1F94 /* icon_lock_grey.png in Resources */,
 				7AD2DABB1ADBB1BA003E1F94 /* SubmitShipmentConfirmationViewController.xib in Resources */,
 				7AD2DA3B1ADBB1BA003E1F94 /* MyShopAddressDetailViewController.xib in Resources */,
+				FC765A921AEDE3E800ED6FCA /* icon_upload_image@2x.png in Resources */,
 				7AD2DC401ADBB1BA003E1F94 /* icon_people_grey.png in Resources */,
 				7AD2DCF21ADBB1BB003E1F94 /* HS-Attachment@2x.png in Resources */,
 				7AD2DB671ADBB1BA003E1F94 /* TxOrderConfirmationCostCell.xib in Resources */,
@@ -8156,6 +8171,7 @@
 				7AD2DA7D1ADBB1BA003E1F94 /* ProductListMyShopViewController.xib in Resources */,
 				7AD2DAD11ADBB1BA003E1F94 /* SearchResultViewController.xib in Resources */,
 				7AD2DA8E1ADBB1BA003E1F94 /* ReputationDetailFormViewController.xib in Resources */,
+				FC765A951AEDE55E00ED6FCA /* icon_camera_album.png in Resources */,
 				7AD2DC9F1ADBB1BA003E1F94 /* navigation-button-bg-pt@2x.png in Resources */,
 				7AD2DAF91ADBB1BA003E1F94 /* ShopFavoritedCell.xib in Resources */,
 				7AD2DCA41ADBB1BA003E1F94 /* top_bg1@2x.png in Resources */,

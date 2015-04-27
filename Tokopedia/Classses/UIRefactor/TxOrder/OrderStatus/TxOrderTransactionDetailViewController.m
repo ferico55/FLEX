@@ -254,6 +254,11 @@
         _dropshipHeightConstraint.constant = 0;
         _dropshipView.hidden = YES;
     }
+    else
+    {
+        _senderName.text = dropshipName;
+        _senderPhone.text = _order.order_detail.detail_dropship_telp;
+    }
 }
 
 @end

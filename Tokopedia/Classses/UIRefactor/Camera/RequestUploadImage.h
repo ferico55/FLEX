@@ -37,5 +37,6 @@
 @property NSString *action;
 @property NSString *fieldName;
 @property NSString *productID;
+@property BOOL isNewAdd;
 
 @end
