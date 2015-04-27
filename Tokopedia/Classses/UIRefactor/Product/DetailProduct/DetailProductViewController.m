@@ -1017,6 +1017,7 @@ TokopediaNetworkManagerDelegate
                                                               kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
                                                               API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPSTATUSKEY:kTKPDDETAILPRODUCT_APISHOPSTATUSKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPCLOSEDUNTIL:kTKPDDETAILPRODUCT_APISHOPCLOSEDUNTIL,
                                                               kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON:kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON,
                                                               kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE:kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE,
@@ -1472,7 +1473,7 @@ TokopediaNetworkManagerDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(_product.result.shop_info.shop_is_closed_note!=nil && ![_product.result.shop_info.shop_is_closed_note isEqualToString:@"0"]) {
+        if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
             [self initViewTokoTutup];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, [lblDescTokoTutup sizeThatFits:CGSizeMake(lblDescTokoTutup.bounds.size.width, 9999)].height+16+viewTableContentHeader.bounds.size.height);
         }
@@ -1581,7 +1582,7 @@ TokopediaNetworkManagerDelegate
             
             _table.hidden = NO;
             
-            if(_product.result.shop_info.shop_is_closed_note!=nil && ![_product.result.shop_info.shop_is_closed_note isEqualToString:@"0"]) {
+            if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
                 if(hasSetTokoTutup){
                     return;
                 }
