@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MGSwipeTableCell.h"
+#import "MarqueeLabel.h"
 
 #define kTKPDSETTINGPRODUCTCELL_IDENTIFIER @"ProductListMyShopCellIdentifier"
 

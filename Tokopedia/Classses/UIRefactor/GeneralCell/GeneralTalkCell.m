@@ -57,6 +57,9 @@
     [self.commentlabel addGestureRecognizer:messageGesture];
     [self.commentlabel setUserInteractionEnabled:YES];
     
+    [self.messageLabel addGestureRecognizer:messageGesture];
+    [self.messageLabel setUserInteractionEnabled:YES];
+    
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [self.thumb addGestureRecognizer:userGesture];
     [self.thumb setUserInteractionEnabled:YES];

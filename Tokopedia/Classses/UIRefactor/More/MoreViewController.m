@@ -384,6 +384,7 @@
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
             salesController.notification = _notifManager.notification;
+            salesController.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
@@ -394,6 +395,7 @@
             MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
             vc.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID]?:@{},
                         kTKPD_AUTHKEY:_auth?:@{}};
+            vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }
 
@@ -417,6 +419,7 @@
             TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
             [inboxController setSelectedIndex:2];
             [inboxController setViewControllers:vcs];
+            inboxController.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:inboxController animated:YES];
         } else if(indexPath.row == 1) {
             InboxTalkViewController *vc = [InboxTalkViewController new];
@@ -433,6 +436,7 @@
             TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
+            nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
         } else if (indexPath.row == 2) {
             InboxReviewViewController *vc = [InboxReviewViewController new];

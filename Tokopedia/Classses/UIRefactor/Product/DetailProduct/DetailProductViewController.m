@@ -28,6 +28,7 @@
 #import "RKObjectManager.h"
 
 #import "StarsRateView.h"
+#import "MarqueeLabel.h"
 
 #import "DetailProductViewController.h"
 #import "DetailProductWholesaleCell.h"
@@ -315,6 +316,11 @@ TokopediaNetworkManagerDelegate
         [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }];
     
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [tokopediaNetworkManager requestCancel];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -803,7 +809,7 @@ TokopediaNetworkManagerDelegate
         DetailProductInfoCell *productInfoCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if (productInfoCell == nil) {
             productInfoCell = [DetailProductInfoCell newcell];
-            ((DetailProductInfoCell*)cell).delegate = self;
+            ((DetailProductInfoCell*)productInfoCell).delegate = self;
         }
         [self productinfocell:productInfoCell withtableview:tableView];
         _informationHeight = productInfoCell.productInformationView.frame.size.height;
@@ -1635,8 +1641,8 @@ TokopediaNetworkManagerDelegate
     [c setNavigationTitle:breadcrumb.department_name];
     [self.navigationController pushViewController:c animated:YES];
 }
--(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index
-{
+
+-(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index {
     switch (index) {
         case 10: {
             [self gotToSearchWithDepartment:10];
@@ -1768,11 +1774,14 @@ TokopediaNetworkManagerDelegate
     
     NSString *productName = _product.result.product.product_name?:@"";
     
+
+    CGRect labelCGRectFrame = CGRectMake(0, 0, 480, 44);
+    MarqueeLabel *productLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:6.0 andFadeLength:10.0f];
     
-    UILabel *productLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
+
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
-    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:13];
+    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:15];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;

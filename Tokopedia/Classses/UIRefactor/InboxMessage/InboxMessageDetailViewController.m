@@ -15,6 +15,7 @@
 #import "HPGrowingTextView.h"
 #import "inbox.h"
 #import "detail.h"
+#import "NavigateViewController.h"
 
 @interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
 
@@ -210,7 +211,11 @@
         
         cell.messageLabel.attributedText = attributedText;
 //        cell.messageLabel.text = message.message_reply;
-        
+        UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
+
+        [cell.avatarImageView addGestureRecognizer:tapUser];
+        [cell.avatarImageView setUserInteractionEnabled:YES];
+        cell.avatarImageView.tag = [message.user_id integerValue];
 
         if([message.message_action isEqualToString:@"1"]) {
             if(message.is_just_sent) {
@@ -747,6 +752,14 @@
     } else {
         _buttonsend.enabled = YES;
     }
+}
+
+#pragma mark - Tap User
+- (void)tapUser:(id)sender{
+    NavigateViewController *navigateController = [NavigateViewController new];
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
+    NSString *userId = [NSString stringWithFormat:@"%ld", (long)tap.view.tag];
+    [navigateController navigateToProfileFromViewController:self withUserID:userId];
 }
 
 @end

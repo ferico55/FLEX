@@ -20,7 +20,11 @@
 #pragma mark - Detail Product Info Cell
 @interface DetailProductInfoCell : UITableViewCell
 
-@property (weak, nonatomic) id<DetailProductInfoCellDelegate> delegate;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+@property (nonatomic, weak) IBOutlet id<DetailProductInfoCellDelegate> delegate;
+#else
+@property (nonatomic, assign) IBOutlet id<DetailProductInfoCellDelegate> delegate;
+#endif
 
 @property (weak, nonatomic) IBOutlet UIView *productInformationView;
 @property (weak, nonatomic) IBOutlet UILabel *minorderlabel;

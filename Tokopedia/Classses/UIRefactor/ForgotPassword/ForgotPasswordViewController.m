@@ -116,4 +116,9 @@
     [_networkManager doRequest];
 }
 
+#pragma mark - Keyboard
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [_emailText resignFirstResponder];
+}
+
 @end
