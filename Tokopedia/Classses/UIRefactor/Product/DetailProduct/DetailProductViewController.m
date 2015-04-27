@@ -2044,6 +2044,11 @@ TokopediaNetworkManagerDelegate
             BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
+                [_otherProductObj removeAllObjects];
+                
+                for(int i=0;i<_otherproductviews.count;i++)
+                    [[_otherproductviews objectAtIndex:i] removeFromSuperview];
+                [_otherproductviews removeAllObjects];
                 [_otherProductObj addObjectsFromArray: otherProduct.result.other_product];
                 [self setOtherProducts];
             }
