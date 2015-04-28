@@ -62,7 +62,8 @@
 
 -(NSString *)getShopHasTerm
 {
-    return [[_auth objectForKey:@"shop_has_terms"] stringValue]?:@"";
+    NSString *shopHasTerms = [_auth objectForKey:@"shop_has_terms"];
+    return shopHasTerms?:@"";
 }
 
 - (NSString *)addParameterAndConvertToString:(id)params
