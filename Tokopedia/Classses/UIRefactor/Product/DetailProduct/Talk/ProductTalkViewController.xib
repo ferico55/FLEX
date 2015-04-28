@@ -59,24 +59,19 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="LZd-s0-Fh4" userLabel="HeaderView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="94"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="292" translatesAutoresizingMaskIntoConstraints="NO" id="K6e-rW-SBX">
-                    <rect key="frame" x="15" y="15" width="291" height="14"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="9D8-FD-7Bh"/>
-                        <constraint firstAttribute="width" constant="291" id="gtY-0c-WFt"/>
-                    </constraints>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="292" translatesAutoresizingMaskIntoConstraints="NO" id="K6e-rW-SBX">
+                    <rect key="frame" x="15" y="18" width="291" height="14"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adA-wo-hgr">
-                    <rect key="frame" x="15" y="34" width="291" height="13"/>
+                    <rect key="frame" x="15" y="37" width="291" height="13"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="13" id="PL2-iu-NLb"/>
-                        <constraint firstAttribute="width" constant="291" id="TZq-Ew-yrA"/>
+                        <constraint firstAttribute="height" constant="13" id="G3j-NM-ONo"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                     <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
@@ -85,14 +80,17 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="adA-wo-hgr" firstAttribute="top" secondItem="K6e-rW-SBX" secondAttribute="bottom" constant="5" id="Fbw-sx-yFt"/>
-                <constraint firstItem="K6e-rW-SBX" firstAttribute="top" secondItem="LZd-s0-Fh4" secondAttribute="top" constant="15" id="IrK-90-3eP"/>
-                <constraint firstItem="K6e-rW-SBX" firstAttribute="leading" secondItem="LZd-s0-Fh4" secondAttribute="leading" constant="15" id="ayx-EW-tnE"/>
-                <constraint firstItem="adA-wo-hgr" firstAttribute="leading" secondItem="LZd-s0-Fh4" secondAttribute="leading" constant="15" id="bdE-1c-XaH"/>
+                <constraint firstItem="adA-wo-hgr" firstAttribute="top" secondItem="K6e-rW-SBX" secondAttribute="bottom" constant="5" id="1Rg-eN-Hqu"/>
+                <constraint firstItem="K6e-rW-SBX" firstAttribute="leading" secondItem="adA-wo-hgr" secondAttribute="leading" id="BBH-oo-Di6"/>
+                <constraint firstItem="K6e-rW-SBX" firstAttribute="leading" secondItem="LZd-s0-Fh4" secondAttribute="leading" constant="15" id="Gef-8M-ezX"/>
+                <constraint firstItem="K6e-rW-SBX" firstAttribute="trailing" secondItem="adA-wo-hgr" secondAttribute="trailing" id="PRp-SX-RhJ"/>
+                <constraint firstItem="K6e-rW-SBX" firstAttribute="top" secondItem="LZd-s0-Fh4" secondAttribute="top" constant="18" id="a3K-9v-8IC"/>
+                <constraint firstItem="K6e-rW-SBX" firstAttribute="centerX" secondItem="LZd-s0-Fh4" secondAttribute="centerX" id="eES-VY-FdN"/>
+                <constraint firstAttribute="bottom" secondItem="adA-wo-hgr" secondAttribute="bottom" constant="17" id="noa-dr-xKr"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-202" y="45"/>
+            <point key="canvasLocation" x="-202" y="31.5"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -39,14 +39,14 @@ typedef enum
 
 
 
-#define kTKPDTITLE_TALK @"Talk About It"
-#define kTKPDTITLE_REVIEW @"Review"
-#define kTKPDTITLE_SHOP_NOTES @"Shop Note"
-#define kTKPDTITLE_SEND_MESSAGE @"Send Message"
-#define kTKPDTITLE_NEW_TALK @"New Talk About It"
+#define kTKPDTITLE_TALK @"Diskusi"
+#define kTKPDTITLE_REVIEW @"Ulasan"
+#define kTKPDTITLE_SHOP_NOTES @"Catatan Toko"
+#define kTKPDTITLE_SEND_MESSAGE @"Kirim Pesan"
+#define kTKPDTITLE_NEW_TALK @"Diskusi Baru"
 #define kTKPDTITLE_SHOP_INFO @"Informasi Toko"
 #define KTKPDTITLE_FAV_THIS_SHOP @"Yang Memfavoritkan"
-#define KTKPDTITLE_PEOPLE @"People Information"
+#define KTKPDTITLE_PEOPLE @"Informasi Pengguna"
 #define KTKPDTITLE_BIODATA @"Biodata"
 
 #define TITLE_SHOP_SETTING @"Pengaturan Toko"
