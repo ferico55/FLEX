@@ -170,12 +170,15 @@
                         <constraint firstItem="qZe-o4-E8U" firstAttribute="top" secondItem="PXi-mL-NyL" secondAttribute="top" constant="8" id="ntQ-zt-bow"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7az-US-WYX">
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7az-US-WYX">
                     <rect key="frame" x="0.0" y="51" width="320" height="533"/>
                     <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DQy-5R-3v9">
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DQy-5R-3v9">
                             <rect key="frame" x="0.0" y="47" width="320" height="249"/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="249" id="MrQ-UH-87W"/>
+                            </constraints>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="Y0n-ii-TgK"/>
                             </connections>
@@ -315,7 +318,7 @@
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="icon_sold_28px.png" translatesAutoresizingMaskIntoConstraints="NO" id="pJ4-0D-QOh">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_sold_28px.png" translatesAutoresizingMaskIntoConstraints="NO" id="pJ4-0D-QOh">
                             <rect key="frame" x="52" y="307" width="15" height="15"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="15" id="bZG-RP-pgX"/>
@@ -328,7 +331,7 @@
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="icon_view_28px.png" translatesAutoresizingMaskIntoConstraints="NO" id="SRB-JI-Dmb">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icon_view_28px.png" translatesAutoresizingMaskIntoConstraints="NO" id="SRB-JI-Dmb">
                             <rect key="frame" x="208" y="308" width="15" height="15"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="15" id="NI1-l8-1lO"/>
@@ -365,6 +368,7 @@
                         <constraint firstItem="DQy-5R-3v9" firstAttribute="leading" secondItem="7az-US-WYX" secondAttribute="leading" id="Q6g-Mx-pT4"/>
                         <constraint firstItem="pJ4-0D-QOh" firstAttribute="leading" secondItem="7az-US-WYX" secondAttribute="leading" constant="52" id="W8a-Dp-VZB"/>
                         <constraint firstItem="DQy-5R-3v9" firstAttribute="top" secondItem="7az-US-WYX" secondAttribute="top" constant="47" id="fgN-OS-nfp"/>
+                        <constraint firstAttribute="height" constant="533" id="kie-Uh-PYw"/>
                         <constraint firstAttribute="trailing" secondItem="SRB-JI-Dmb" secondAttribute="trailing" constant="97" id="rP8-KD-EeH"/>
                     </constraints>
                 </view>
