@@ -271,6 +271,11 @@ typedef enum
 #define kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY @"shop_tagline"
 #define kTKPDDETAILPRODUCT_APISHOPNAMEKEY @"shop_name"
 #define kTKPDDETAILPRODUCT_APISHOPURLKEY @"shop_url"
+#define kTKPDDETAILPRODUCT_APISHOPSTATUSKEY @"shop_status"
+#define kTKPDDETAILPRODUCT_APISHOPCLOSEDUNTIL @"shop_is_closed_until"
+#define kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON @"shop_is_closed_reason"
+#define kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE @"shop_is_closed_note"
+
 #define kTKPDDETAILPRODUCT_APISHOPSTATSKEY @"shop_stats"
 #define kTKPDDETAILPRODUCT_APISHOPISFAVKEY @"shop_already_favorited"
 #define kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY @"shop_description"
@@ -770,6 +775,8 @@ typedef enum
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
 #define KTKPDTALK_UNDELIVERED @"Diskusi Anda gagal terkirim."
 #define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
+#define KTKPDSHOP_SUCCESSEDIT @"Anda berhasil memperbaharui informasi Toko."
+
 #define KTKPDMESSAGE_EMPTYFORM2 @"Panjang pesan harus lebih dari 5 karakter."
 #define kTKPDMESSAGE_EMPTY @"Pesan harus diisi"
 #define kTKPDSUBJECT_EMPTY @"Subject harus diisi"

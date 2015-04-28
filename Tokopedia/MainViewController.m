@@ -32,10 +32,15 @@
 #import "UserAuthentificationManager.h"
 #import "HomeTabViewController.h"
 
+#import "TokopediaNetworkManager.h"
+#import "UserAuthentificationManager.h"
+#import "Logout.h"
+
 @interface MainViewController ()
 <
     UITabBarControllerDelegate,
-    LoginViewDelegate
+    LoginViewDelegate,
+    TokopediaNetworkManagerDelegate
 >
 {
     UITabBarController *_tabBarController;
@@ -44,9 +49,17 @@
     URLCacheController *_cacheController;
     
     UserAuthentificationManager *_userManager;
+    TokopediaNetworkManager *_logoutRequestManager;
+    __weak RKObjectManager *_objectmanager;
+    
+    NSString *_persistToken;
 }
 
 @end
+
+typedef enum TagRequest {
+    LogoutTag
+} TagRequest;
 
 @implementation MainViewController
 
@@ -67,11 +80,16 @@
     _auth = [NSMutableDictionary new];
     _cacheController = [URLCacheController new];
     
+    _logoutRequestManager = [TokopediaNetworkManager new];
+    _logoutRequestManager.delegate = self;
+    _logoutRequestManager.tagRequest = LogoutTag;
     
     [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(applicationLogin:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil];
     [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
+    
+    [center addObserver:self selector:@selector(redirectNotification:) name:@"redirectNotification" object:nil];
 
     [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
 }
@@ -79,6 +97,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    _userManager = [UserAuthentificationManager new];
 }
 
 #pragma mark - Memory Management
@@ -441,6 +461,8 @@
 
 - (void)applicationlogout:(NSNotification*)notification
 {
+    _userManager = [UserAuthentificationManager new];
+    _persistToken = [_userManager getMyDeviceToken]; //token device from ios
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar ?"
                                                         message:nil
                                                        delegate:self
@@ -455,11 +477,13 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
                                                         object:nil];
-    
+
     if ([FBSession activeSession].state == FBSessionStateOpen &&
         [FBSession activeSession].state == FBSessionStateOpenTokenExtended) {
         [FBSession.activeSession closeAndClearTokenInformation];
     }
+    
+    [_logoutRequestManager doRequest];
 
 //    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
 //    [_cacheController initCacheWithDocumentPath:path];
@@ -469,11 +493,14 @@
     [storage resetKeychain];
     [_auth removeAllObjects];
     
+    [storage setKeychainWithValue:_persistToken withKey:@"device_token"];
+    
     [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
                                                         object:nil
                                                       userInfo:@{}];
+    
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
 }
@@ -491,6 +518,110 @@
 }
 
 -(void)redirectViewController:(id)viewController {
+    
 }
+
+
+#pragma mark - Logout Controller
+- (NSDictionary *)getParameter:(int)tag {
+    NSDictionary *param;
+    if(tag == LogoutTag) {
+        param = @{@"device_token_id" : [_userManager getMyDeviceIdToken],
+                  @"device_id" : [_userManager getMyDeviceToken] //token device from ios
+                  };
+    }
+    
+    return param;
+}
+
+- (NSString *)getPath:(int)tag {
+    NSString *path;
+    if(tag == LogoutTag) {
+        path = kTKPDLOGOUT_APIPATH;
+    }
+    
+    return path;
+}
+
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    Logout *logout = stat;
+    
+    return logout.status;
+}
+
+- (id)getObjectManager:(int)tag {
+    if(tag == LogoutTag) {
+        _objectmanager =  [RKObjectManager sharedClient];
+        
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Logout class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LogoutResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGOUT_ISDELETEDEVICE    : kTKPDLOGOUT_ISDELETEDEVICE,
+                                                            kTKPDLOGOUT_ISLOGOUT     : kTKPDLOGOUT_ISLOGOUT,
+                                                            }];
+        //add relationship mapping
+        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                      toKeyPath:kTKPD_APIRESULTKEY
+                                                                                    withMapping:resultMapping]];
+        
+        // register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:kTKPDLOGOUT_APIPATH
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+        
+        return _objectmanager;
+    }
+    
+    return nil;
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    
+}
+
+- (void)actionBeforeRequest:(int)tag {
+    if(tag == LogoutTag) {
+        
+    }
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    if(tag == LogoutTag) {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        Logout *logout = [result objectForKey:@""];
+        
+        if([logout.result.is_logout isEqualToString:@"1"]) {
+            
+        }
+    }
+}
+
+
+- (void)redirectNotification:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    
+    _tabBarController.selectedIndex = 0;
+    for(UIViewController *viewController in _tabBarController.viewControllers) {
+        if([viewController isKindOfClass:[UINavigationController class]]) {
+            [(UINavigationController *)viewController popToRootViewControllerAnimated:NO];
+        }
+    }
+    
+}
+
+
 
 @end

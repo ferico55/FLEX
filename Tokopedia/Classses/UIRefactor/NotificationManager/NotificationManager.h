@@ -12,6 +12,7 @@
 #import "NotificationViewController.h"
 #import "UserAuthentificationManager.h"
 #import "NotificationRequest.h"
+#import "RedirectHandler.h"
 
 @protocol NotificationManagerDelegate <NSObject>
 
@@ -23,6 +24,7 @@
 
 @interface NotificationManager : NSObject  {
     UserAuthentificationManager *_userManager;
+    RedirectHandler *_redirectHandler;
 }
 
 @property (strong, nonatomic) Notification *notification;

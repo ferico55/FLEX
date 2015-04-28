@@ -39,6 +39,7 @@
 
 
 #pragma mark - String
+#define CStringLimitNamaToko @"Nama toko maksimal 24 karakter"
 #define CStringFailedCreateShop @"Gagal buat toko"
 #define CStringPilihProvinsi @"Pilih provinsi"
 #define CStringKotaAsal @"Kota Asal"
@@ -59,7 +60,7 @@
 #define CStringInfoToko @"Informasi Toko"
 #define CStringPlaceHolderNamaToko @"Nama Toko"
 #define CStringPlaceHolderSlogan @"Slogan"
-#define CstringPlaceHolderDesc @"Descripsi"
+#define CstringPlaceHolderDesc @"Deskripsi"
 #define CStringRootDomain @"https://tokopedia.com/"
 #define CStringDescGambarFoto @"Besar file: maksimum 10.000.000 bytes(10 Megabytes)"
 #define CStringDescCheckDomain @"Pilihlah nama domain yang mencerminkan nama toko anda. Nama domain maksimal 16 karakter, tanpa spasi, hanya huruf, dan angka biasa."

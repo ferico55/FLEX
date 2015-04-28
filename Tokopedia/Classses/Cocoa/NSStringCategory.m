@@ -103,10 +103,10 @@
         timeLeft = [NSString stringWithFormat:@"%ld hari yang lalu", (long)days];
     }
     else if(hours) {
-//        if (hours<0) {
-//            hours = hours;
-//        }
-        timeLeft = [NSString stringWithFormat: @"%ld jam yang lalu", (long)hours];
+        if (hours<0) {
+            timeLeft = [NSString stringWithFormat: @"Beberapa menit yang lalu"];
+        }
+        else timeLeft = [NSString stringWithFormat: @"%ld jam yang lalu", (long)hours];
     }
     else if(minutes) {
 //        if (minutes<0) {

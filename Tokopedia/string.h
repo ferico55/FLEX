@@ -50,6 +50,8 @@
 #define CStringGagalMemperbaharuiUlasan @"Gagal memperbaharui ulasan"
 #define CStringGagalMenambahUlasan @"Gagal menambahkan ulasan"
 
+#define CStringBerhasilMenghapusKomentarDiskusi @"Anda telah berhasil menghapus komentar"
+
 #define kTKPDNETWORK_ERRORTITLE @"Network Error"
 #define kTKPDNETWORK_ERRORDESCS @"The Internet connection appears to be offline."
 #define kTKPDBUTTON_OKTITLE @"OK"

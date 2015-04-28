@@ -184,6 +184,11 @@
     
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [tokopediaNetWorkManager requestCancel];
+}
+
 #pragma mark - DataSource Delegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
@@ -703,6 +708,7 @@
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
+    
 }
 
 - (void)actionBeforeRequest:(int)tag

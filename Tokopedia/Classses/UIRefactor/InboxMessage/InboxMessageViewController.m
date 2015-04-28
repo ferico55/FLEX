@@ -18,6 +18,9 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "UserAuthentificationManager.h"
 #import "EncodeDecoderManager.h"
+#import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
+
 
 @interface InboxMessageViewController ()
 <
@@ -26,7 +29,9 @@
     UISearchBarDelegate,
     UISearchDisplayDelegate,
     MGSwipeTableCellDelegate,
-    TKPDTabInboxMessageNavigationControllerDelegate
+    TKPDTabInboxMessageNavigationControllerDelegate,
+    TokopediaNetworkManagerDelegate,
+    LoadingViewDelegate
 >
 
 @property (strong, nonatomic) IBOutlet UIView *searchView;
@@ -45,6 +50,12 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *buttontrash;
 @property (weak, nonatomic) IBOutlet UIButton *buttonarchive;
+
+
+typedef enum TagRequest {
+    messageListTag,
+    messageActionTag
+} TagRequest;
 
 
 @end
@@ -88,6 +99,8 @@
     NoResultView *_noresult;
     UserAuthentificationManager *_userManager;
     EncodeDecoderManager *_encodeDecodeManager;
+    TokopediaNetworkManager *_networkManager;
+    LoadingView *_loadingView;
 }
 
 
@@ -143,6 +156,13 @@
     _encodeDecodeManager = [EncodeDecoderManager new];
     _noresult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    _networkManager.tagRequest = messageListTag;
+    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
+    
     /** set first page become 1 **/
     _page = 1;
     [self initNotification];
@@ -182,12 +202,16 @@
 {
     [super viewWillAppear:animated];
     if (!_isrefreshview) {
-        [self configureRestKit];
-        
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
+            [_networkManager doRequest];
         }
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [_networkManager requestCancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -401,8 +425,7 @@
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            [self configureRestKit];
-            [self loadData];
+            [_networkManager doRequest];
         } else {
             _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
             [_act stopAnimating];
@@ -480,13 +503,12 @@
         _readstatus = @"unread";
     }
 
-    [self cancel];
+    [_networkManager requestCancel];
     [_messages removeAllObjects];
     [_table reloadData];
     _table.tableFooterView = _footer;
     _page = 1;
-    [self configureRestKit];
-    [self loadData];
+    [_networkManager doRequest];
     
     [_table reloadData];
 }
@@ -498,9 +520,8 @@
         _page = 1;
         [_table reloadData];
         _table.tableFooterView = _footer;
-
-        [self configureRestKit];
-        [self loadData]; 
+        
+        [_networkManager doRequest];
     }
 }
 
@@ -518,213 +539,11 @@
 
 }
 
-#pragma mark - Request and Mapping
-
-- (void)configureRestKit {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageResult class]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxMessageList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 KTKPDMESSAGE_IDKEY,
-                                                 KTKPDMESSAGE_USERFULLNAMEKEY,
-                                                 KTKPDMESSAGE_CREATETIMEKEY,
-                                                 KTKPDMESSAGE_READSTATUSKEY,
-                                                 KTKPDMESSAGE_TITLEKEY,
-                                                 KTKPDMESSAGE_USERIDKEY,
-                                                 KTKPDMESSAGE_MESSAGEREPLYKEY,
-                                                 KTKPDMESSAGE_INBOXIDKEY,
-                                                 KTKPDMESSAGE_USERIMAGEKEY,
-                                                 KTKPDMESSAGE_JSONDATAKEY
-                                                 ]];
-
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:KTKPDMESSAGE_PATHURL
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
-
-- (void)loadData {
-    if (_request.isExecuting) return;
-    
-    // create a new one, this one is expired or we've never gotten it
-    if (_navthatwillrefresh || !_isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-    }
-    
-    
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
-                            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                            kTKPDHOME_APIPAGEKEY:@(_page),
-                            KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
-                            KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-                            KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
-                            };
-
-    
-    _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_PATHURL parameters:[param encrypt]];
-     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
-        [self requestsuccess:mappingResult withOperation:operation];
-
-        
-        [_table reloadData];
-        if(_iseditmode) {
-            for (NSIndexPath *indexpath in _messages_selected) {
-                [_table selectRowAtIndexPath:indexpath animated:YES scrollPosition:UITableViewScrollPositionTop];
-            }
-            
-        }
-
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requesttimeout)
-                                            userInfo:nil
-                                             repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requesttimeout {
-    
-}
-
--(void) requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    InboxMessage *inboxmessage = info;
-    BOOL status = [inboxmessage.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if(status) {
-        [self requestproceed:object];
-    }
-}
-
--(void) requestproceed:(id)object {
-    if (object) {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stat = [result objectForKey:@""];
-        InboxMessage *inboxmessage = stat;
-        BOOL status = [inboxmessage.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        
-        if (status) {
-            [_messages addObjectsFromArray: inboxmessage.result.list];
-            
-            if (_messages.count >0) {
-                _isnodata = NO;
-                _urinext =  inboxmessage.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
-                    
-                    [queries setObject:value forKey:key];
-                }
-                
-                _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
-            } else {
-                _isnodata = YES;
-                _table.tableFooterView = _noresult;
-                
-            }
-        }
-        else{
-            
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    _table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    [_act stopAnimating];
-                    _table.tableFooterView = _noresult;
-                }
-            }
-            else
-            {
-                [_act stopAnimating];
-                _table.tableFooterView = _noresult;
-            }
-            
-        }
-    }
-}
-
--(void)cancel {
-    [_request cancel];
-    _request = nil;
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
-}
-
-
--(void) requestfailure:(id)error {
-    
-}
-
-
-
 
 #pragma mark - Refresh Data
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    [self cancel];
+    [_networkManager requestCancel];
     /** clear object **/
     [_messages removeAllObjects];
     
@@ -738,8 +557,7 @@
     
     [_table reloadData];
     /** request data **/
-    [self configureRestKit];
-    [self loadData];
+    [_networkManager doRequest];
 }
 
 
@@ -768,8 +586,7 @@
     
     [_messages removeAllObjects];
 
-    [self configureRestKit];
-    [self loadData];
+    [_networkManager doRequest];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
@@ -914,7 +731,6 @@
 
 -(void) requestactionfailure:(id)error {
     [self undoactionmessage];
-    [self cancel];
 }
 -(void) requestactiontimeout {
     [self undoactionmessage];
@@ -1043,5 +859,162 @@
     }
     return nil;
 }
+
+#pragma mark - Tokopedia Network Manager 
+- (NSDictionary *)getParameter:(int)tag {
+    if(tag == messageListTag) {
+        NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
+                                kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
+                                kTKPDHOME_APIPAGEKEY:@(_page),
+                                KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
+                                KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
+                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
+                                };
+        return param;
+    }
+    
+    return nil;
+}
+
+- (NSString *)getPath:(int)tag {
+    if(tag == messageListTag) {
+        return KTKPDMESSAGE_PATHURL;
+    }
+    
+    return nil;
+}
+
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
+    if(tag == messageListTag) {
+        NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+        id stat = [resultDict objectForKey:@""];
+        InboxMessage *list = stat;
+        
+        return list.status;
+    }
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag {
+    if(tag == messageListTag) {
+        _objectmanager =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageResult class]];
+        
+        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
+        
+        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxMessageList class]];
+        [listMapping addAttributeMappingsFromArray:@[
+                                                     KTKPDMESSAGE_IDKEY,
+                                                     KTKPDMESSAGE_USERFULLNAMEKEY,
+                                                     KTKPDMESSAGE_CREATETIMEKEY,
+                                                     KTKPDMESSAGE_READSTATUSKEY,
+                                                     KTKPDMESSAGE_TITLEKEY,
+                                                     KTKPDMESSAGE_USERIDKEY,
+                                                     KTKPDMESSAGE_MESSAGEREPLYKEY,
+                                                     KTKPDMESSAGE_INBOXIDKEY,
+                                                     KTKPDMESSAGE_USERIMAGEKEY,
+                                                     KTKPDMESSAGE_JSONDATAKEY
+                                                     ]];
+        
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
+        [resultMapping addPropertyMapping:pageRel];
+        
+        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
+        [resultMapping addPropertyMapping:listRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:KTKPDMESSAGE_PATHURL
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+        return _objectmanager;
+    }
+    
+    return nil;
+}
+
+- (void)actionBeforeRequest:(int)tag {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
+    if(tag == messageListTag) {
+        if (_navthatwillrefresh || !_isrefreshview) {
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+        } else {
+            _table.tableFooterView = nil;
+            [_act stopAnimating];
+        }
+
+    }
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    if(tag == messageListTag) {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        InboxMessage *message = [result objectForKey:@""];
+        
+        [_messages addObjectsFromArray: message.result.list];
+        
+        if (_messages.count >0) {
+            _isnodata = NO;
+            _urinext =  message.result.paging.uri_next;
+            _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+        } else {
+            _isnodata = YES;
+            _table.tableFooterView = _noresult;
+        }
+        
+        if(_refreshControl.isRefreshing) {
+            [_refreshControl endRefreshing];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
+        [_table reloadData];
+        
+        if(_iseditmode) {
+            for (NSIndexPath *indexpath in _messages_selected) {
+                [_table selectRowAtIndexPath:indexpath animated:YES scrollPosition:UITableViewScrollPositionTop];
+            }
+            
+        }
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    if(tag == messageListTag) {
+        
+    }
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    if(tag == messageListTag) {
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        _table.tableFooterView = _loadingView.view;
+
+    }
+}
+
+#pragma mark - Retry Delegate
+- (void)pressRetryButton {
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
+    [_networkManager doRequest];
+}
+
+
 
 @end

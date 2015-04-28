@@ -119,6 +119,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 }
 
 #pragma mark - Life Cycle
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [tokopediaNetworkManager requestCancel];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -146,6 +150,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if (_data) {
         [_params addEntriesFromDictionary:_data];
     }
+    
     
     _table.tableFooterView = _footer;
     [_act startAnimating];
@@ -1034,10 +1039,19 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
+    
 }
 
 - (void)actionBeforeRequest:(int)tag
 {
+    if (!_isrefreshview) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
+    else{
+        _table.tableFooterView = nil;
+        [_act stopAnimating];
+    }
 }
 
 - (void)actionRequestAsync:(int)tag

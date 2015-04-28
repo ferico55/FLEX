@@ -419,7 +419,11 @@
                 if (_product.count >0) {
                     
                     _urinext =  _searchitem.result.paging.uri_next;
-                    _page = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
+                    
+                    NSInteger tempInt = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
+                    if(tempInt == _page)
+                        _urinext = nil;
+                    _page = tempInt;
                     
                     NSLog(@"next page : %zd",_page);
                     _isnodata = NO;

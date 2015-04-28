@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) NSString *user_id;
 @property (nonatomic, strong) NSString *device_token_id;
+@property (nonatomic, strong) NSString *shop_has_terms;
 @property (nonatomic, strong) NSString *full_name;
 @property (nonatomic, strong) NSString *user_image;
 

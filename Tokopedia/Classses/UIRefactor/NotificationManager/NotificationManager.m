@@ -11,6 +11,8 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "NotificationState.h"
 
+#import "HomeTabViewController.h"
+
 @interface NotificationManager () <NotificationDelegate, NotificationViewDelegate>
 
 @end
@@ -26,6 +28,8 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotification) name:@"resetNotification" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUnreadNotification:) name:@"setUnreadNotification" object:nil];
+        
+
     }
     return self;
 }
@@ -173,7 +177,11 @@
 //    } else {
         _notificationButton.enabled = YES;
         _notificationButton.badgeLabel.hidden = NO;
-        _notificationButton.badgeLabel.text = [_notification.result.total_notif  stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+        //TODO::removing price alert was here
+        NSString *notifWithNoPriceAlert = [NSString stringWithFormat:@"%d", ([_notification.result.total_notif integerValue] - [_notification.result.inbox.inbox_wishlist integerValue])];
+    
+        _notificationButton.badgeLabel.text = [notifWithNoPriceAlert  stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSInteger totalNotif = [_notification.result.total_notif integerValue];
         CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
         if (totalNotif >= 10 && totalNotif < 100) {
@@ -204,6 +212,7 @@
         [[_attachedViewController.tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
 }
+
 
 #pragma mark - Notification view delegate
 

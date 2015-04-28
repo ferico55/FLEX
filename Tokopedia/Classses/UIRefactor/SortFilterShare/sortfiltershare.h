@@ -47,6 +47,7 @@ typedef enum
 
 #define kTKPDFILTER_DATACOLUMNKEY @"column"
 #define kTKPDFILTER_DATAINDEXPATHKEY @"indexpath"
+#define ETALASE_OBJECT_SELECTED_KEY @"object_selected"
 #define kTKPDFILTERSORT_DATAINDEXPATHKEY @"sortindexpath"
 #define kTKPDFILTERLOCATION_DATAINDEXPATHKEY @"locationindexpath"
 #define kTKPDFILTERCONDITION_DATAINDEXPATHKEY @"conditionindexpath"

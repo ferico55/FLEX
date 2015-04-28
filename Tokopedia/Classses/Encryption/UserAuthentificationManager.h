@@ -19,7 +19,9 @@
 - (id)getUserLoginData;
 - (NSString*)getUserId;
 - (NSString*)getShopId;
+- (NSString*)getShopHasTerm;
 - (NSString*)getMyDeviceToken;
+- (NSString*)getMyDeviceIdToken;
 - (BOOL)isMyShopWithShopId:(NSString*)shopId;
 - (NSString*)addParameterAndConvertToString:(id)params;
 

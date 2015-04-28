@@ -34,6 +34,8 @@
 @property (nonatomic, assign) IBOutlet id<GenerateHostDelegate> delegate;
 #endif
 
+@property NSString *prodct_id;
+
 - (void)configureRestkitGenerateHost;
 - (void)requestGenerateHost;
 

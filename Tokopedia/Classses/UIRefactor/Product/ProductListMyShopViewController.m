@@ -238,6 +238,7 @@
     
     ManageProductList *list = _list[indexPath.row];
     DetailProductViewController *detailProductVC = [DetailProductViewController new];
+    detailProductVC.hidesBottomBarWhenPushed = YES;
     detailProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
                              kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                              DATA_PRODUCT_DETAIL_KEY : list,
@@ -878,13 +879,6 @@
 #pragma mark - UISearchBar Delegate
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [_list removeAllObjects];
-    [self.table reloadData];
-    
-    [_request cancel];
-    
-    [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
-    [self refreshView:nil];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -906,6 +900,15 @@
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
+    
+    [_list removeAllObjects];
+    [self.table reloadData];
+    
+    [_request cancel];
+    
+    [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
+    [self refreshView:nil];
+    
     return YES;
 }
 

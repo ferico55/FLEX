@@ -45,6 +45,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *avatarIndicator;
 @property (weak, nonatomic) IBOutlet UIView *manipulatedView;
+@property (weak, nonatomic) IBOutlet UIView *shopClosedView;
+@property (weak, nonatomic) IBOutlet UILabel *shopClosedReason;
+@property (weak, nonatomic) IBOutlet UILabel *shopClosedUntil;
 
 
 @end
@@ -242,6 +245,17 @@
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover?:@""]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    if([[_shop.result.is_open stringValue] isEqualToString:@"2"]) {
+        _shopClosedView.hidden = NO;
+        NSString *until = [NSString stringWithFormat:@"Toko ini akan tutup sampai : %@",_shop.result.closed_info.until];
+        NSString *reason = [NSString stringWithFormat:@"Alasan : %@",_shop.result.closed_info.note];
+        [_shopClosedReason setText:reason];
+        [_shopClosedUntil setText:until];
+    } else {
+        _shopClosedView.hidden = YES;
+    }
+
     if(_shop.result.info.shop_is_gold == 1) {
         [_coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
