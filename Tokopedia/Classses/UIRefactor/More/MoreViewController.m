@@ -163,7 +163,7 @@
     [super viewWillAppear:animated];
     
     self.navigationController.title = @"More";
-
+    [self initNotificationManager];
     
 
 
@@ -491,10 +491,9 @@
     }
     
     else if (indexPath.section == 6) {
-        [Helpshift logout];
-        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
-        [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                                                            object:nil
+                                                          userInfo:@{}];
     }
 
     self.hidesBottomBarWhenPushed = NO;
