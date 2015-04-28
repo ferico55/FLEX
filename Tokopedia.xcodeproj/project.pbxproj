@@ -3674,8 +3674,6 @@
 				FC765AC01AEE586200ED6FCA /* Encryption */,
 				FC765AC81AEE586200ED6FCA /* Object */,
 				FC765D941AEE586500ED6FCA /* UIRefactor */,
-				FC7661831AEE586900ED6FCA /* untitled folder */,
-				FC7661841AEE586900ED6FCA /* untitled folder 2 */,
 			);
 			path = Classses;
 			sourceTree = "<group>";
@@ -6857,20 +6855,6 @@
 				FC76617C1AEE586900ED6FCA /* WebViewInvoiceViewController.xib */,
 			);
 			path = PaymentConfirmed;
-			sourceTree = "<group>";
-		};
-		FC7661831AEE586900ED6FCA /* untitled folder */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "untitled folder";
-			sourceTree = "<group>";
-		};
-		FC7661841AEE586900ED6FCA /* untitled folder 2 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "untitled folder 2";
 			sourceTree = "<group>";
 		};
 		FC7661851AEE586900ED6FCA /* Resources */ = {

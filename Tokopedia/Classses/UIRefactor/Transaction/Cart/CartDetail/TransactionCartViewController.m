@@ -488,7 +488,18 @@
 
         //adjust height error message by shop
         if (indexPath.row < indexPathFirstObjectProduct.row) {
-            return ((UITableViewCell*)_errorCells[0]).frame.size.height;
+            ((UILabel*)_errorLabel[0]).text = list.cart_error_message_1;
+            NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
+            NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
+            NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
+            CGSize maximumLabelSize = CGSizeMake(290,9999);
+            UILabel *errorLabel = (UILabel*)_errorLabel[0];
+            [errorLabel setCustomAttributedText:string];
+            CGSize expectedLabelSize = [string sizeWithFont:errorLabel.font
+                                              constrainedToSize:maximumLabelSize
+                                                  lineBreakMode:errorLabel.lineBreakMode];
+            
+            return expectedLabelSize.height+40;
         }
         else if (labs(indexPathFirstObjectProduct.row-indexPath.row)<products.count) {
             return CELL_PRODUCT_ROW_HEIGHT;
@@ -2688,7 +2699,7 @@
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(-44.0, 0.0, kbSize.height, 0.0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(-22.0, 0.0, kbSize.height, 0.0);
     _tableView.contentInset = contentInsets;
     _tableView.scrollIndicatorInsets = contentInsets;
     
@@ -3261,6 +3272,10 @@
         cell.errorProductLabel.hidden = NO;
         if ([product.product_error_msg isEqualToString:@"Produk ini berada di gudang"]) {
             cell.errorProductLabel.text = @"GUDANG";
+        }
+        else if ([product.product_error_msg isEqualToString:@"Produk ini dalam moderasi"])
+        {
+            cell.errorProductLabel.text = @"MODERASI";
         }
         else
             cell.errorProductLabel.text = @"HAPUS";
