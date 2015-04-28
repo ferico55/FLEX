@@ -12,5 +12,6 @@
 
 @property NSInteger deadline_process_day_left;
 @property NSInteger deadline_shipping_day_left;
+@property NSString *finish_deadline_date;
 
 @end

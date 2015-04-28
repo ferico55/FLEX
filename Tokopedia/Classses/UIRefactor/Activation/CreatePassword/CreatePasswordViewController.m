@@ -112,6 +112,7 @@
     _emailTextField.enabled = NO;
     _emailTextField.layer.opacity = 0.7;
     
+    _dateOfBirthTextField.text = [_facebookUser objectForKey:@"birthday"];
     _dateOfBirthTextField.delegate = self;
     
     _activityIndicatorView.hidden = YES;
