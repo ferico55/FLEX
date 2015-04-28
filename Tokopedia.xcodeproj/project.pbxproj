@@ -1345,6 +1345,10 @@
 		7ABF55521AEDD577006555B7 /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = 7ABF501D1AEDD577006555B7 /* zbar-help.html */; };
 		7ABF55531AEDD577006555B7 /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABF501E1AEDD577006555B7 /* zbar-helpicons.png */; };
 		7ABF55541AEDD577006555B7 /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABF501F1AEDD577006555B7 /* zbar-samples.png */; };
+		7AD0EEE81AEF6C7800B44CBE /* icon_camera_album.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AD0EEE41AEF6C7800B44CBE /* icon_camera_album.png */; };
+		7AD0EEE91AEF6C7800B44CBE /* icon_camera_album@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AD0EEE51AEF6C7800B44CBE /* icon_camera_album@2x.png */; };
+		7AD0EEEA1AEF6C7800B44CBE /* icon_upload_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AD0EEE61AEF6C7800B44CBE /* icon_upload_image.png */; };
+		7AD0EEEB1AEF6C7800B44CBE /* icon_upload_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AD0EEE71AEF6C7800B44CBE /* icon_upload_image@2x.png */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3456,6 +3460,10 @@
 		7ABF501E1AEDD577006555B7 /* zbar-helpicons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-helpicons.png"; sourceTree = "<group>"; };
 		7ABF501F1AEDD577006555B7 /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
 		7AC084E31AE49EE400CAB2DC /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
+		7AD0EEE41AEF6C7800B44CBE /* icon_camera_album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_camera_album.png; sourceTree = "<group>"; };
+		7AD0EEE51AEF6C7800B44CBE /* icon_camera_album@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera_album@2x.png"; sourceTree = "<group>"; };
+		7AD0EEE61AEF6C7800B44CBE /* icon_upload_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_upload_image.png; sourceTree = "<group>"; };
+		7AD0EEE71AEF6C7800B44CBE /* icon_upload_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_upload_image@2x.png"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -6781,6 +6789,10 @@
 		7ABF4E1F1AEDD576006555B7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AD0EEE41AEF6C7800B44CBE /* icon_camera_album.png */,
+				7AD0EEE51AEF6C7800B44CBE /* icon_camera_album@2x.png */,
+				7AD0EEE61AEF6C7800B44CBE /* icon_upload_image.png */,
+				7AD0EEE71AEF6C7800B44CBE /* icon_upload_image@2x.png */,
 				7A2EB7851AEE4EF200E72E58 /* icon_category_list_white.png */,
 				7A2EB7861AEE4EF200E72E58 /* icon_category_list_white@2x.png */,
 				7ABF4E201AEDD576006555B7 /* balloon_read_left.png */,
@@ -7680,6 +7692,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ABF53C81AEDD577006555B7 /* icon_2@2x.png in Resources */,
+				7AD0EEE81AEF6C7800B44CBE /* icon_camera_album.png in Resources */,
 				7ABF53801AEDD577006555B7 /* TxOrderConfirmationDetailHeaderView.xib in Resources */,
 				7ABF52301AEDD577006555B7 /* ResolutionCenterDetailViewController.xib in Resources */,
 				7ABF55161AEDD577006555B7 /* icon_info_grey_small.png in Resources */,
@@ -7879,6 +7892,7 @@
 				7ABF54061AEDD577006555B7 /* icon_checkmark_green@2x-01.png in Resources */,
 				7ABF54AE1AEDD577006555B7 /* icon_category_active@2x.png in Resources */,
 				7ABF528C1AEDD577006555B7 /* ProductListMyShopFilterViewController.xib in Resources */,
+				7AD0EEEA1AEF6C7800B44CBE /* icon_upload_image.png in Resources */,
 				7ABF535C1AEDD577006555B7 /* TransactionCartEditViewController.xib in Resources */,
 				7ABF552E1AEDD577006555B7 /* HS-delete-button@2x.png in Resources */,
 				7ABF55181AEDD577006555B7 /* icon_info_white.png in Resources */,
@@ -7929,6 +7943,7 @@
 				7ABF51B51AEDD577006555B7 /* CategoryMenuViewController.xib in Resources */,
 				7ABF52E61AEDD577006555B7 /* SettingAddressEditViewController.xib in Resources */,
 				7ABF54EC1AEDD577006555B7 /* icon_cart@2x.png in Resources */,
+				7AD0EEEB1AEF6C7800B44CBE /* icon_upload_image@2x.png in Resources */,
 				7ABF552A1AEDD577006555B7 /* HS-camera-button.png in Resources */,
 				7ABF54581AEDD577006555B7 /* icon_order_check@2x.png in Resources */,
 				7ABF550A1AEDD577006555B7 /* icon_camera_grey_active.png in Resources */,
@@ -8174,6 +8189,7 @@
 				7ABF543B1AEDD577006555B7 /* icon_love_active.png in Resources */,
 				7ABF52C51AEDD577006555B7 /* CancelShipmentViewController.xib in Resources */,
 				7ABF54501AEDD577006555B7 /* icon_no_data_grey_2x.png in Resources */,
+				7AD0EEE91AEF6C7800B44CBE /* icon_camera_album@2x.png in Resources */,
 				7ABF529B1AEDD577006555B7 /* ProfileFavoriteShopViewController.xib in Resources */,
 				7ABF533C1AEDD577006555B7 /* FilterLocationViewCell.xib in Resources */,
 				7ABF547E1AEDD577006555B7 /* icon_shop_unfavorite_2x.png in Resources */,

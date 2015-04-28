@@ -255,9 +255,9 @@
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
             
             if([list.review_response.response_message isEqualToString:@"0"]) {
-                [((GeneralReviewCell*)cell).commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
+                [((GeneralReviewCell*)cell).commentbutton setTitle:@"0 Komentar" forState:UIControlStateNormal];
             } else {
-                [((GeneralReviewCell*)cell).commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
+                [((GeneralReviewCell*)cell).commentbutton setTitle:@"1 Komentar" forState:UIControlStateNormal];
             }
             
     

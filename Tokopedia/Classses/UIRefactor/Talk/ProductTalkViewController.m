@@ -270,7 +270,7 @@
             }
             
             NSString *commentstring = [list.talk_total_comment?:0 stringByAppendingFormat:
-                                 @" Comment"];
+                                 @" Komentar"];
             [((GeneralTalkCell*)cell).commentbutton setTitle:commentstring forState:UIControlStateNormal];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];

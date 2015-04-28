@@ -95,7 +95,7 @@
     UIImage * imageUser = [UIImage imageWithData:imageUserData];
     _userimage.image = imageUser;
     
-    _commentbutton.text = [response.response_message isEqualToString:@"0"] ? @"0 Comment" : @"1 Comment";
+    _commentbutton.text = [response.response_message isEqualToString:@"0"] ? @"0 Komentar" : @"1 Komentar";
 
     if([response.response_message isEqualToString:@"0"]) {
         _responseView.hidden = YES;

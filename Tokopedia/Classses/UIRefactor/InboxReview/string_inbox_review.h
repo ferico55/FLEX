@@ -34,7 +34,7 @@
 #define UNREAD_REVIEW @"Belum Dibaca "
 
 #define EDIT_TALK @"Edit"
-#define COMMENT_TALK @"Comment"
+#define COMMENT_TALK @"Komentar"
 
 #define PAGE_TO_CACHE 1
 

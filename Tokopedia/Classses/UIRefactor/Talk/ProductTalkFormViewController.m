@@ -61,12 +61,12 @@
     UIBarButtonItem *barbuttonright;
     //NSBundle* bundle = [NSBundle mainBundle];
     
-    barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbuttonleft setTintColor:[UIColor whiteColor]];
     [barbuttonleft setTag:10];
     self.navigationItem.leftBarButtonItem = barbuttonleft;
     
-    barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbuttonright setTintColor:[UIColor blackColor]];
     [barbuttonright setTag:11];
     

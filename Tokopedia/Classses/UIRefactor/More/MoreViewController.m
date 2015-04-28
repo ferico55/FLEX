@@ -153,6 +153,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [self initNotificationManager];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    
     if(hasLoadViewWillAppear) {
         return;
     }
@@ -163,7 +165,7 @@
     self.navigationController.title = @"More";
 
     
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadNotification)
