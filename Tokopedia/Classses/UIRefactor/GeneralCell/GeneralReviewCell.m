@@ -1,3 +1,4 @@
+
 //
 //  GeneralReviewCell.m
 //  Tokopedia
@@ -9,7 +10,7 @@
 #import "GeneralReviewCell.h"
 #import "ReviewFormViewController.h"
 #import "ReviewList.h"
-
+#import "stringrestkit.h"
 #import "NavigateViewController.h"
 
 #pragma mark - General Review Cell
@@ -62,8 +63,10 @@
         switch (btn.tag) {
             case 10:
             {
+                
                 NSIndexPath* indexpath = _indexpath;
                 [_delegate GeneralReviewCell:self withindexpath:indexpath];
+
                 break;
             }
             case 11 :
@@ -134,7 +137,21 @@
 - (void)tapReview {
     NSIndexPath* indexpath = _indexpath;
     
-    [_delegate GeneralReviewCell:self withindexpath:indexpath];
+    ReviewList *list = (ReviewList*)_data;
+    if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
+        NSIndexPath* indexpath = _indexpath;
+        
+        ReviewFormViewController *vc = [ReviewFormViewController new];
+        
+        UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+        vc.data = _data;
+        vc.reviewIndex = indexpath.row;
+        [nav.navigationController pushViewController:vc animated:YES];
+    } else {
+        [_delegate GeneralReviewCell:self withindexpath:indexpath];
+    }
+    
+
 }
 
 - (void)tapUser {

@@ -15,6 +15,7 @@
 #import "MyShopPaymentViewController.h"
 #import "MyShopShipmentTableViewController.h"
 #import "MyShopNoteViewController.h"
+#import "ShopEditViewController.h"
 
 @interface ShopSettingViewController ()
 <
@@ -37,7 +38,7 @@
     [super viewDidLoad];
     self.title = @"Pengaturan Toko";
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
-    _menus = @[@"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Pembayaran", @"Catatan"];
+    _menus = @[@"Atur Toko", @"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Pembayaran", @"Catatan"];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
@@ -68,7 +69,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
-        case 0:
+        case 0 : {
+            ShopEditViewController *vc = [ShopEditViewController new];
+            vc.data = @{
+                        kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                        kTKPDDETAIL_DATASHOPSKEY : _shop?:@{}
+                        };
+            [self.navigationController pushViewController:vc animated:YES];
+
+            break;
+        }
+        case 1:
         {
             //Etalase
             MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
@@ -76,7 +87,7 @@
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 1:
+        case 2:
         {
             //Product
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
@@ -84,7 +95,7 @@
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 2:
+        case 3:
         {
             //Location
             MyShopAddressViewController *vc = [MyShopAddressViewController new];
@@ -92,14 +103,14 @@
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 3:
+        case 4:
         {
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             MyShopShipmentTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
-        case 4:
+        case 5:
         {
             //Payment
             MyShopPaymentViewController *vc = [MyShopPaymentViewController new];
@@ -107,7 +118,7 @@
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 5:
+        case 6:
         {
             //Notes
             MyShopNoteViewController *vc = [MyShopNoteViewController new];

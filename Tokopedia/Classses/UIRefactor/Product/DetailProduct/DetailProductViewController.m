@@ -28,6 +28,7 @@
 #import "RKObjectManager.h"
 
 #import "StarsRateView.h"
+#import "MarqueeLabel.h"
 
 #import "DetailProductViewController.h"
 #import "DetailProductWholesaleCell.h"
@@ -192,6 +193,10 @@ TokopediaNetworkManagerDelegate
 @end
 
 @implementation DetailProductViewController
+{
+    IBOutlet UIView *viewContentTokoTutup;
+    BOOL hasSetTokoTutup;
+}
 
 @synthesize data = _data;
 
@@ -315,6 +320,11 @@ TokopediaNetworkManagerDelegate
         [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }];
     
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [tokopediaNetworkManager requestCancel];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -803,7 +813,7 @@ TokopediaNetworkManagerDelegate
         DetailProductInfoCell *productInfoCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if (productInfoCell == nil) {
             productInfoCell = [DetailProductInfoCell newcell];
-            ((DetailProductInfoCell*)cell).delegate = self;
+            ((DetailProductInfoCell*)productInfoCell).delegate = self;
         }
         [self productinfocell:productInfoCell withtableview:tableView];
         _informationHeight = productInfoCell.productInformationView.frame.size.height;
@@ -1013,6 +1023,10 @@ TokopediaNetworkManagerDelegate
                                                               kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
                                                               API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPSTATUSKEY:kTKPDDETAILPRODUCT_APISHOPSTATUSKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPCLOSEDUNTIL:kTKPDDETAILPRODUCT_APISHOPCLOSEDUNTIL,
+                                                              kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON:kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON,
+                                                              kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE:kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE,
                                                               kTKPDDETAILPRODUCT_APISHOPURLKEY:kTKPDDETAILPRODUCT_APISHOPURLKEY
                                                               }];
         
@@ -1465,6 +1479,18 @@ TokopediaNetworkManagerDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
+        if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
+            [self initViewTokoTutup];
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, [lblDescTokoTutup sizeThatFits:CGSizeMake(lblDescTokoTutup.bounds.size.width, 9999)].height+16+viewTableContentHeader.bounds.size.height);
+        }
+        else {
+            [viewContentTokoTutup addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentTokoTutup(==0)]"
+                                                                                         options:0
+                                                                                         metrics:nil
+                                                                                           views:NSDictionaryOfVariableBindings(viewContentTokoTutup)]];
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+        }
+        _table.tableHeaderView = _header;        
         [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
         [_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data to plist
@@ -1562,13 +1588,34 @@ TokopediaNetworkManagerDelegate
             
             _table.hidden = NO;
             
-            if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
-                _dinkButton.hidden = NO;
-                _buyButton.hidden = YES;
-            } else {
-                _buyButton.hidden = NO;
+            if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
+                if(hasSetTokoTutup){
+                    return;
+                }
+                
+                hasSetTokoTutup = !hasSetTokoTutup;
                 _dinkButton.hidden = YES;
+                _buyButton.hidden = YES;
+                [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
+                                                                               options:0
+                                                                               metrics:nil
+                                                                                 views:NSDictionaryOfVariableBindings(_dinkButton)]];
+                
+                [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
+                                                                                    options:0
+                                                                                    metrics:nil
+                                                                                      views:NSDictionaryOfVariableBindings(_buyButton)]];
             }
+            else {
+                if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
+                    _dinkButton.hidden = NO;
+                    _buyButton.hidden = YES;
+                } else {
+                    _buyButton.hidden = NO;
+                    _dinkButton.hidden = YES;
+                }
+            }
+
             
             
             if(_product.result.shop_info.shop_already_favorited == 1) {
@@ -1635,8 +1682,8 @@ TokopediaNetworkManagerDelegate
     [c setNavigationTitle:breadcrumb.department_name];
     [self.navigationController pushViewController:c animated:YES];
 }
--(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index
-{
+
+-(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index {
     switch (index) {
         case 10: {
             [self gotToSearchWithDepartment:10];
@@ -1685,13 +1732,23 @@ TokopediaNetworkManagerDelegate
 }
 
 #pragma mark - Methods
-- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText
+- (void)initViewTokoTutup
+{
+    if(hasSetTokoTutup){
+        return;
+    }
+    lblDescTokoTutup.backgroundColor = [UIColor clearColor];
+    [self initAttributeText:lblDescTokoTutup withStrText:[NSString stringWithFormat:CStringDescTokoTutup, _product.result.shop_info.shop_is_closed_note, _product.result.shop_info.shop_is_closed_until] withColor:[UIColor blackColor]];
+}
+
+
+- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     style.alignment = NSTextAlignmentLeft;
     NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName: [UIColor whiteColor],
+                                 NSForegroundColorAttributeName: color,
                                  NSFontAttributeName: fontDesc,
                                  NSParagraphStyleAttributeName: style,
                                  };
@@ -1704,7 +1761,7 @@ TokopediaNetworkManagerDelegate
 {
     if(strText == nil)  return 0.0f;
     UILabel *lblSize = [[UILabel alloc] init];
-    [self initAttributeText:lblSize withStrText:strText];
+    [self initAttributeText:lblSize withStrText:strText withColor:[UIColor whiteColor]];
     lblSize.numberOfLines = 0;
     
     return [lblSize sizeThatFits:size].height;
@@ -1720,7 +1777,7 @@ TokopediaNetworkManagerDelegate
     UILabel *lblDescription = [[UILabel alloc] initWithFrame:rectLblDesc];
     lblDescription.backgroundColor = [UIColor clearColor];
     [lblDescription setNumberOfLines:0];
-    [self initAttributeText:lblDescription withStrText:strText];
+    [self initAttributeText:lblDescription withStrText:strText withColor:[UIColor whiteColor]];
     lblDescription.textColor = [UIColor lightGrayColor];
     [mView addSubview:lblDescription];
     
@@ -1768,11 +1825,14 @@ TokopediaNetworkManagerDelegate
     
     NSString *productName = _product.result.product.product_name?:@"";
     
+
+    CGRect labelCGRectFrame = CGRectMake(0, 0, 480, 44);
+    MarqueeLabel *productLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:6.0 andFadeLength:10.0f];
     
-    UILabel *productLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
+
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
-    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:13];
+    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:15];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;
@@ -2024,6 +2084,11 @@ TokopediaNetworkManagerDelegate
             BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
+                [_otherProductObj removeAllObjects];
+                
+                for(int i=0;i<_otherproductviews.count;i++)
+                    [[_otherproductviews objectAtIndex:i] removeFromSuperview];
+                [_otherproductviews removeAllObjects];
                 [_otherProductObj addObjectsFromArray: otherProduct.result.other_product];
                 [self setOtherProducts];
             }

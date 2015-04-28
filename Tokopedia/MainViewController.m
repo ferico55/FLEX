@@ -478,15 +478,16 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
                                                         object:nil];
 
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
+    if ([FBSession activeSession].state == FBSessionStateOpen &&
+        [FBSession activeSession].state == FBSessionStateOpenTokenExtended) {
+        [FBSession.activeSession closeAndClearTokenInformation];
+    }
     
     [_logoutRequestManager doRequest];
 
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    [_cacheController initCacheWithDocumentPath:path];
-    [_cacheController clearCache];
+//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+//    [_cacheController initCacheWithDocumentPath:path];
+//    [_cacheController clearCache];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
     [storage resetKeychain];

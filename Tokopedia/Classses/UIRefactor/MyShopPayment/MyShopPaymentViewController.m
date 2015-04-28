@@ -944,7 +944,7 @@
 #pragma mark - RequestUploadImage delegate
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
-    filePath = uploadImage.result.file_path;
+    filePath = uploadImage.result.file_th;
     [[self getNetworkManager] doRequest];
     
     uploadImageRequest.delegate = nil;

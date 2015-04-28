@@ -11,9 +11,11 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController : UIViewController
 {
+    IBOutlet UIView *viewTableContentHeader;
     IBOutlet UIButton *btnWishList, *btnShare;
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;
+    IBOutlet UILabel *lblDescTokoTutup;
 }
 @property (strong,nonatomic) NSDictionary *data;
 

@@ -168,11 +168,18 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                                                          action:@selector(tap:)];
     backBarButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    NSBundle* bundle = [NSBundle mainBundle];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
+    
 
-    _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Kategori"
-                                                          style:UIBarButtonItemStyleBordered
-                                                         target:self
-                                                         action:@selector(tap:)];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    
     _barbuttoncategory.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttoncategory;
     
@@ -204,12 +211,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 {
     [super viewWillAppear:animated];
     
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self request];
-        }
+
+    [self configureRestKit];
+    if (_isnodata) {
+        [self request];
     }
+
     
     self.hidesBottomBarWhenPushed = YES;
 }
