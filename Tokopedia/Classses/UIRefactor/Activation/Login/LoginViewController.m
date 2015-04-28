@@ -130,7 +130,7 @@
     [_cheatView setUserInteractionEnabled:YES];
     
     _loginView = [[FBLoginView alloc] init];
-    _loginView.readPermissions = @[@"public_profile", @"email"];
+    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
     _loginView.frame = CGRectMake(0, 0,
                                  _facebookLoginButton.frame.size.width,
                                  _facebookLoginButton.frame.size.height);
@@ -287,10 +287,6 @@
     _facebookLoginButton.hidden = NO;
     
     [_activityIndicator stopAnimating];
-
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
 }
 
 - (void)configureRestKitLogin
@@ -703,8 +699,7 @@
 
 // Call method when user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
-    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
-    if (authManager.isLogin == NO && [[FBSession activeSession] isOpen]) {
+    if ([[FBSession activeSession] state] == FBSessionStateOpen) {
         [self requestLoginFacebookUser:user];
 
         _facebookUser = user;
@@ -727,7 +722,9 @@
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
 {
-    [self cancelLogin];    
+    if ([[FBSession activeSession] state] != FBSessionStateCreated) {
+        [self cancelLogin];
+    }
 }
 
 // Handle possible errors that can occur during login
