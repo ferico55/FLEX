@@ -168,11 +168,18 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                                                          action:@selector(tap:)];
     backBarButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    NSBundle* bundle = [NSBundle mainBundle];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
+    
 
-    _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Kategori"
-                                                          style:UIBarButtonItemStyleBordered
-                                                         target:self
-                                                         action:@selector(tap:)];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    
     _barbuttoncategory.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttoncategory;
     
@@ -204,12 +211,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 {
     [super viewWillAppear:animated];
     
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self request];
-        }
+
+    [self configureRestKit];
+    if (_isnodata) {
+        [self request];
     }
+
     
     self.hidesBottomBarWhenPushed = YES;
 }
@@ -230,16 +237,27 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSInteger count = 0;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         count = _product.count;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
     } else if (self.cellType == UITableViewCellTypeThreeColumn) {
         count = (_product.count%3==0)?_product.count/3:_product.count/3+1;
+        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
+            count = _isnodata?1:count;
+        #else
+            count = _isnodata?0:count;
+        #endif
     }
-#ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    return _isnodata?1:count;
-#else
-    return _isnodata?0:count;
-#endif
+    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -826,38 +844,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 -(void)requestfailure:(id)object
 {
-    if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+    
+    if (_isrefreshview) {
         [self requestprocess:object];
     }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id info = [result objectForKey:@""];
-            _hotlistdetail = info;
-            NSString *statusstring = _hotlistdetail.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
+    
 }
 
 -(void)requestprocess:(id)object

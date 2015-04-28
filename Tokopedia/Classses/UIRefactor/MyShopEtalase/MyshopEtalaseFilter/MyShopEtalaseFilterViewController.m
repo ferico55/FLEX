@@ -15,6 +15,7 @@
 
 #import "URLCacheController.h"
 
+#define ETALASE_OBJECT_SELECTED_KEY @"object_selected"
 @interface MyShopEtalaseFilterViewController ()<UITableViewDataSource, UITableViewDelegate, MyShopEtalaseFilterCellDelegate, MyShopEtalaseEditViewControllerDelegate>{
     BOOL _isnodata;
     
@@ -34,6 +35,8 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    
+    EtalaseList *_selectedEtalase;
 }
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -71,13 +74,14 @@
     
     _table.tableFooterView = _footer;
     
-
-    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                        style:UIBarButtonItemStyleBordered
-                                                                       target:self
-                                                                       action:@selector(tap:)];
-    cancelBarButton.tag = 10;
-    self.navigationItem.leftBarButtonItem = cancelBarButton;
+    if (self.navigationController.isBeingPresented) {
+        UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                            style:UIBarButtonItemStyleBordered
+                                                                           target:self
+                                                                           action:@selector(tap:)];
+        cancelBarButton.tag = 10;
+        self.navigationItem.leftBarButtonItem = cancelBarButton;
+    }
     
     UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                                         style:UIBarButtonItemStyleDone
@@ -96,11 +100,27 @@
             etalase.etalase_id = [kTKPDSHOP_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASEIDKEY];
             [_etalaseList addObject:etalase];
         }
+    } else if (presentedEtalaseType == PRESENTED_ETALASE_MANAGE_PRODUCT) {
+        int etalaseArrayCount = (int)kTKPDMANAGEPRODUCT_ETALASEARRAY.count;
+        for (int i = 0;i<etalaseArrayCount;i++) {
+            EtalaseList *etalase = [EtalaseList new];
+            etalase.etalase_name = [kTKPDMANAGEPRODUCT_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+            etalase.etalase_id = [kTKPDMANAGEPRODUCT_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASEIDKEY];
+            [_etalaseList addObject:etalase];
+        }        
     }
     
     NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
     
+    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+    if (!selectedEtalase) {
+        _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
+    }
+    else
+    {
+        _selectedEtalase = selectedEtalase;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -218,12 +238,16 @@
             ((MyShopEtalaseFilterCell*)cell).delegate = self;
         }
         if (_etalaseList.count > indexPath.row) {
-            if (indexPath.row != ((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row) {
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+            EtalaseList *list =_etalaseList[indexPath.row];
+
+            if ([list.etalase_id integerValue] == [_selectedEtalase.etalase_id integerValue]) {
+                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
             }
             else
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
-            EtalaseList *list =_etalaseList[indexPath.row];
+            {
+                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+            }
+            
             ((MyShopEtalaseFilterCell*)cell).label.text = list.etalase_name;
             ((MyShopEtalaseFilterCell*)cell).indexpath = indexPath;
         }
@@ -415,7 +439,7 @@
                     etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
                     etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
                     [_etalaseList addObject:etalase];
-                }
+                } 
                 
                 if (_etalaseList.count >0) {
                     _isnodata = NO;
@@ -463,6 +487,7 @@
 -(void)MyShopEtalaseFilterCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
+    _selectedEtalase = _etalaseList[indexpath.row];
     [_table reloadData];
 }
 

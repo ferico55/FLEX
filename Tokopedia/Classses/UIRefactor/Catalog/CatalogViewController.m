@@ -22,6 +22,7 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
+    UIScrollViewDelegate,
     LoginViewDelegate
 >
 {
@@ -48,6 +49,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productPriceLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *productPhotoScrollView;
+@property (weak, nonatomic) IBOutlet UIImageView *placeholderImageView;
 @property (weak, nonatomic) IBOutlet UIPageControl *productPhotoPageControl;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 
@@ -126,13 +128,6 @@
     
     self.productPriceLabel.text = catalogPrice;
     [self.productPriceLabel sizeToFit];
-
-    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width);
-    UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
-    catalogImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [catalogImageView setImageWithURL:[NSURL URLWithString:catalogImageURL]
-                     placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"]];
-    [_productPhotoScrollView addSubview:catalogImageView];
     
     [self request];
 }
@@ -267,16 +262,18 @@
                                                                API_MIN_PRICE_KEY]];
     
     RKObjectMapping *catalogShopsMapping = [RKObjectMapping mappingForClass:[CatalogShops class]];
-    [catalogShopsMapping addAttributeMappingsFromArray:@[@"shop_id",
+    [catalogShopsMapping addAttributeMappingsFromArray:@[
+                                                         API_SHOP_ID_NUMBER_KEY,
                                                          API_SHOP_NAME_KEY,
-                                                         API_SHOP_RATE_ACCURACY_KEY,
+                                                         API_SHOP_TOTAL_ADDRESS_KEY,
                                                          API_SHOP_IMAGE_KEY,
                                                          API_SHOP_LOCATION_KEY,
-                                                         API_SHOP_RATE_SPEED_KEY,
-                                                         API_SHOP_TOTAL_ADDRESS_KEY,
                                                          @"shop_total_product",
                                                          API_SHOP_RATE_SERVICE_KEY,
-                                                         API_IS_GOLD_SHOP_KEY]];
+                                                         API_SHOP_RATE_ACCURACY_KEY,
+                                                         API_SHOP_RATE_SPEED_KEY,
+                                                         API_IS_GOLD_SHOP_KEY,
+                                                         ]];
 
     RKObjectMapping *productListMapping = [RKObjectMapping mappingForClass:[ProductList class]];
     [productListMapping addAttributeMappingsFromArray:@[API_PRODUCT_CONDITION_KEY,
@@ -294,8 +291,8 @@
                                                                                 withMapping:catalogInfoMapping]];
     
     [catalogInfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_PRICE_KEY
-                                                                                       toKeyPath:API_CATALOG_PRICE_KEY
-                                                                                     withMapping:catalogPriceMapping]];
+                                                                                  toKeyPath:API_CATALOG_PRICE_KEY
+                                                                                withMapping:catalogPriceMapping]];
     
     [catalogInfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_IMAGE_KEY
                                                                                        toKeyPath:API_CATALOG_IMAGE_KEY
@@ -432,27 +429,30 @@
             [_specificationTitles addObject:catalog_specs.spec_header];
         }
         
-        if (![_catalog.result.catalog_market_price.min_price isEqualToString:@"0"] &&
-            ![_catalog.result.catalog_market_price.max_price isEqualToString:@"0"]) {
+        if (![_catalog.result.catalog_info.catalog_price.price_min isEqualToString:@"0"] &&
+            ![_catalog.result.catalog_info.catalog_price.price_max isEqualToString:@"0"]) {
             _productPriceLabel.text = [NSString stringWithFormat:@"%@ - %@",
-                                       _catalog.result.catalog_market_price.min_price,
-                                       _catalog.result.catalog_market_price.max_price];
+                                       _catalog.result.catalog_info.catalog_price.price_min,
+                                       _catalog.result.catalog_info.catalog_price.price_max];
         }
 
         if (_catalog.result.catalog_info.catalog_images.count > 0) {
-            for(UIView *subview in [_productPhotoScrollView subviews]) {
-                [subview removeFromSuperview];
-            }
-
+            _placeholderImageView.hidden = YES;
             NSInteger x = 0;
             for (CatalogImages *image in _catalog.result.catalog_info.catalog_images) {
                 CGRect frame = CGRectMake(x, 0, self.view.frame.size.width, self.view.frame.size.width);
                 UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
-                [catalogImageView setImageWithURL:[NSURL URLWithString:image.image_src]
-                                 placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"]];
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image_src]];
+                UIImage *image = [UIImage imageWithData:data];
+                catalogImageView.image = image;
+                catalogImageView.contentMode = UIViewContentModeScaleAspectFit;
                 [_productPhotoScrollView addSubview:catalogImageView];
                 x += self.view.frame.size.width;
             }
+            _productPhotoScrollView.contentSize = CGSizeMake(x, _productPhotoScrollView.frame.size.height);
+            _productPhotoPageControl.numberOfPages = _catalog.result.catalog_info.catalog_images.count;
+        } else {
+            _productPhotoPageControl.hidden = YES;
         }
         
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -507,6 +507,7 @@
     } else if ([sender isKindOfClass:[UIButton class]]) {
         CatalogShopViewController *controller = [CatalogShopViewController new];
         controller.catalog = _catalog;
+        controller.catalog_shops = _catalog.result.catalog_shops;
         [self.navigationController pushViewController:controller animated:YES];
     } else if ([sender isKindOfClass:[UISegmentedControl class]]) {
         UISegmentedControl *control = (UISegmentedControl *)sender;
@@ -526,6 +527,18 @@
 - (void)redirectViewController:(id)viewController
 {
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+#pragma mark - Scroll view delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.x == 0) {
+        _productPhotoPageControl.currentPage = 0;
+    } else {
+        NSInteger index = scrollView.contentOffset.x / self.view.frame.size.width;
+        _productPhotoPageControl.currentPage = index;
+    }
 }
 
 @end

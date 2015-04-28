@@ -371,6 +371,7 @@
         if (button.tag == sender.tag)
         {
             button.hidden = NO;
+            button.enabled = YES;
         }
     }
 }
@@ -678,6 +679,7 @@
                 {
                     if (image.image == nil) {
                         button.hidden = NO;
+                        button.enabled = YES;
                     }
                 }
             }
@@ -846,6 +848,7 @@
         if (button.tag == imageView.tag)
         {
             button.hidden = NO;
+            button.enabled = YES;
         }
     }
     
@@ -860,6 +863,7 @@
     for (UIButton *button in _uploadButtons) {
         if (button.tag == imageView.tag) {
             button.hidden = NO;
+            button.enabled = YES;
         }
     }
     for (UIButton *button in _cancelButtons) {

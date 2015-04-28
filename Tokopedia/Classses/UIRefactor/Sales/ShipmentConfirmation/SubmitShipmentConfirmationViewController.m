@@ -296,7 +296,7 @@
         } else if (button.tag == 2) {
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
-            if (textField.text.length >=8 && textField.text.length <=17) {
+            if (textField.text.length >= 9 && textField.text.length <= 17) {
                 if (_changeCourier) {
                     [self.delegate submitConfirmationReceiptNumber:textField.text
                                                            courier:_selectedCourier

@@ -19,7 +19,7 @@
 
 #define kTKPDREQUESTCOUNTMAX 3
 
-#define kTKPDREQUEST_TIMEOUTINTERVAL 10.0
+#define kTKPDREQUEST_TIMEOUTINTERVAL 20.0
 #define kTKPDREQUEST_STICKYFADEOUTINTERVAL 3.0
 #define kTKPDREQUEST_DELAYINTERVAL 3.0
 
@@ -49,6 +49,8 @@
 #define CStringBerhasilMenambahUlasan @"Anda berhasil menambahkan ulasan"
 #define CStringGagalMemperbaharuiUlasan @"Gagal memperbaharui ulasan"
 #define CStringGagalMenambahUlasan @"Gagal menambahkan ulasan"
+
+#define CStringBerhasilMenghapusKomentarDiskusi @"Anda telah berhasil menghapus komentar"
 
 #define kTKPDNETWORK_ERRORTITLE @"Network Error"
 #define kTKPDNETWORK_ERRORDESCS @"The Internet connection appears to be offline."

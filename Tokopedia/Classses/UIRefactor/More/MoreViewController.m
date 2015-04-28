@@ -100,6 +100,20 @@
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"user_image"]]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_profilePictureImageView setImageWithURLRequest:request
+                          placeholderImage:[UIImage imageNamed:@"nil"]
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                       //NSLOG(@"thumb: %@", thumb);
+                                       [_profilePictureImageView setImage:image];
+#pragma clang diagnostic pop
+                                   } failure: nil];
+    
     if([_auth objectForKey:@"shop_id"]) {
         if([_auth objectForKey:@"shop_name"])
             _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
@@ -138,6 +152,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     if(hasLoadViewWillAppear) {
         return;
     }
@@ -369,15 +385,18 @@
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
             salesController.notification = _notifManager.notification;
+            salesController.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
+            vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
             MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
             vc.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID]?:@{},
                         kTKPD_AUTHKEY:_auth?:@{}};
+            vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }
 
@@ -401,6 +420,7 @@
             TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
             [inboxController setSelectedIndex:2];
             [inboxController setViewControllers:vcs];
+            inboxController.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:inboxController animated:YES];
         } else if(indexPath.row == 1) {
             InboxTalkViewController *vc = [InboxTalkViewController new];
@@ -417,6 +437,7 @@
             TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
+            nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
         } else if (indexPath.row == 2) {
             InboxReviewViewController *vc = [InboxReviewViewController new];
@@ -469,13 +490,9 @@
     }
     
     else if (indexPath.section == 6) {
-        [Helpshift logout];
-        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
-        [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
-        
-        TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-        [storage resetKeychain];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                                                            object:nil
+                                                          userInfo:@{}];
     }
 
     self.hidesBottomBarWhenPushed = NO;

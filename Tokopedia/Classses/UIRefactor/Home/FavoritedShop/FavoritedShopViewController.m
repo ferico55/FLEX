@@ -44,7 +44,8 @@
     /** url to the next page **/
     NSString *_urinext;
     NSTimer *_timer;
-    
+    BOOL hasInitData;
+    NSString *strUserID;
     
     UIRefreshControl *_refreshControl;
     __weak RKObjectManager *_objectmanager;
@@ -120,6 +121,33 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //Check Difference userID
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    
+    if(hasInitData)
+    {
+        hasInitData = !hasInitData;
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+    }
+    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+        _page = 1;
+        _isnodata = YES;
+        _shop = [NSMutableArray new];
+        _goldshop = [NSMutableArray new];
+        _isrefreshview = NO;
+        _urinext = nil;
+        [self configureRestKit];
+        [self request];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [tokopediaNetworkManager requestCancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -479,6 +507,10 @@
                        };
     [self.navigationController pushViewController:container animated:YES];
     //
+    //Check Difference userID
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
     //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     //    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
     //    shopViewController.data = @{

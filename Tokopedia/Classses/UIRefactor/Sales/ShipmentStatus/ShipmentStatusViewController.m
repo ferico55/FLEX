@@ -174,6 +174,7 @@
             OrderHistory *history = [order.order_history objectAtIndex:0];
             cell.dateFinishLabel.text = [history.history_status_date_full substringToIndex:[history.history_status_date_full length]-6];
         }
+        
     }
     
     if (order.order_history.count > 0) {
@@ -183,6 +184,27 @@
         [cell setStatusLabelText:@"-"];
     }
 
+    cell.invoiceDateLabel.text = order.order_payment.payment_verify_date;
+    
+    if ((order.order_detail.detail_order_status == ORDER_DELIVERED ||
+         order.order_detail.detail_order_status == ORDER_DELIVERED_DUE_DATE) &&
+         order.order_deadline.finish_deadline_date) {
+        cell.dateFinishLabel.hidden = NO;
+        cell.dateFinishLabel.text = @"Selesai Otomatis";
+        cell.dateFinishLabel.font = [UIFont fontWithName:@"GothamBook" size:9];
+        cell.finishLabel.hidden = NO;
+        if ([order.order_deadline.finish_deadline_date isEqualToString:@"0"]) {
+            cell.finishLabel.text = @"Besok";
+        } else if ([order.order_deadline.finish_deadline_date isEqualToString:@"1"]) {
+            cell.finishLabel.text = @"Hari Ini";
+        } else if ([order.order_deadline.finish_deadline_date integerValue] > 1) {
+            cell.finishLabel.text = [NSString stringWithFormat:@"%@ Hari Lagi",
+                                     order.order_deadline.finish_deadline_date];
+        } else {
+            cell.finishLabel.text = @"Expired";
+        }
+    }
+    
     return cell;
 }
 
@@ -313,6 +335,7 @@
     [orderDeadlineMapping addAttributeMappingsFromDictionary:@{
                                                                API_DEADLINE_PROCESS_DAY_LEFT  : API_DEADLINE_PROCESS_DAY_LEFT,
                                                                API_DEADLINE_SHIPPING_DAY_LEFT : API_DEADLINE_SHIPPING_DAY_LEFT,
+                                                               API_DEADLINE_FINISH_DATE       : API_DEADLINE_FINISH_DATE,
                                                                }];
     
     RKObjectMapping *orderProductMapping = [RKObjectMapping mappingForClass:[OrderProduct class]];

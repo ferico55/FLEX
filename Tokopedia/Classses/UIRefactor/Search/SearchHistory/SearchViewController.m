@@ -315,10 +315,12 @@
         
         /** Goto result page **/
         SearchResultViewController *vc = [SearchResultViewController new];
+        vc.delegate = self;
         vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         SearchResultViewController *vc1 = [SearchResultViewController new];
+        vc.delegate = self;
         vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                     kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
                     kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};

@@ -24,11 +24,13 @@
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
 #import "UserAuthentificationManager.h"
 
 #import "ProductTalkViewController.h"
+#import "InboxTalkViewController.h"
 
 #import "stringrestkit.h"
 #import "string_more.h"
@@ -92,6 +94,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *reportButton;
 @property (weak, nonatomic) IBOutlet UIButton *talkProductName;
 @property (weak, nonatomic) IBOutlet UIView *userArea;
+@property (weak, nonatomic) IBOutlet UIView *buttonsDividers;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
 
@@ -168,13 +171,27 @@
     
     //validate previous class so it can use several URL path
     NSArray *vcs = self.navigationController.viewControllers;
-    if([vcs[[vcs count] - 2] isKindOfClass:[ProductTalkViewController class]]) {
-        _urlPath = kTKPDDETAILTALK_APIPATH;
-        _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
-    } else {
+    if([vcs[[vcs count] - 2] isKindOfClass:[TKPDTabInboxTalkNavigationController class]]) {
+        
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
+        
+    } else {
+        _urlPath = kTKPDDETAILTALK_APIPATH;
+        _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
     }
+    
+    if([_userManager isLogin]) {
+        _reportButton.hidden = NO;
+    } else {
+        _reportButton.hidden = YES;
+        _buttonsDividers.hidden = YES;
+        
+        CGRect newFrame = _talktotalcommentlabel.frame;
+        newFrame.origin.x = 120;
+        _talktotalcommentlabel.frame = newFrame;
+    }
+    
     
     
     //UIBarButtonItem *barbutton1;
@@ -290,6 +307,8 @@
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
+            
+
             
             if(list.is_not_delivered) {
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = NO;
@@ -474,8 +493,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    if([_userManager getUserId]) {
+    _userManager = [UserAuthentificationManager new];
+    if([_userManager isLogin]) {
         [_talkInputView setHidden:NO];
         [_sendButton setEnabled:NO];
     } else {
@@ -1032,7 +1051,13 @@
 #pragma mark - Swipe Delegate
 -(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
 {
-    return YES;
+
+    if([_userManager isLogin]) {
+        return YES;
+    }
+    
+    return NO;
+
 }
 
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
@@ -1181,7 +1206,7 @@
                     
                 }
                 if ([generalaction.result.is_success isEqualToString:@"1"]) {
-                    NSArray *array =  [[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                    NSArray *array =  [[NSArray alloc] initWithObjects:CStringBerhasilMenghapusKomentarDiskusi, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                     

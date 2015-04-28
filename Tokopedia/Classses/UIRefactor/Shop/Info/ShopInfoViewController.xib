@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -49,7 +49,6 @@
                 <outlet property="addressoffview" destination="Yyz-rC-cuj" id="946-Y2-X3D"/>
                 <outlet property="buttonArrowLocation" destination="nQA-wk-ijR" id="hqL-Rf-Btl"/>
                 <outlet property="buttonfav" destination="Twr-cV-LWn" id="pS7-sO-sZY"/>
-                <outlet property="buttonitemsold" destination="8uq-Zo-ZDV" id="AYn-Tg-rVd"/>
                 <outlet property="buttonofflocation" destination="NXr-90-gzo" id="EWR-Mm-kDF"/>
                 <outlet property="containerview" destination="SPN-F6-FwN" id="Ava-I5-27P"/>
                 <outlet property="labeletalase" destination="LKB-Ns-97P" id="U9S-tV-GqZ"/>
@@ -175,9 +174,6 @@
                                 <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="CSw-af-WEH"/>
-                            </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Barang Terjual" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="s7m-SU-M1n">
                             <rect key="frame" x="189" y="44" width="101" height="14"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
@@ -510,8 +510,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akun QC tidak boleh membeli barang dari luar" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idp-IE-Bsj">
                         <rect key="frame" x="15" y="0.0" width="290" height="49"/>
                         <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="8vm-KL-IIv"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="gbb-Ki-W02"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="49" id="dRg-U1-5Z6"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                         <color key="textColor" red="1" green="0.0" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
@@ -519,10 +518,10 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="idp-IE-Bsj" secondAttribute="trailing" constant="15" id="Khi-mE-ikt"/>
-                    <constraint firstItem="idp-IE-Bsj" firstAttribute="leading" secondItem="vTj-hg-W4a" secondAttribute="leading" constant="15" id="cSh-Yv-tuA"/>
-                    <constraint firstItem="idp-IE-Bsj" firstAttribute="top" secondItem="vTj-hg-W4a" secondAttribute="top" id="lw9-tM-eMJ"/>
-                    <constraint firstAttribute="bottom" secondItem="idp-IE-Bsj" secondAttribute="bottom" id="u3h-wK-8wY"/>
+                    <constraint firstAttribute="bottom" secondItem="idp-IE-Bsj" secondAttribute="bottom" id="52p-FW-qXj"/>
+                    <constraint firstItem="idp-IE-Bsj" firstAttribute="leading" secondItem="vTj-hg-W4a" secondAttribute="leading" constant="15" id="Qbn-JZ-PGs"/>
+                    <constraint firstAttribute="trailing" secondItem="idp-IE-Bsj" secondAttribute="trailing" constant="15" id="dB3-fX-abX"/>
+                    <constraint firstItem="idp-IE-Bsj" firstAttribute="top" secondItem="vTj-hg-W4a" secondAttribute="top" id="ylI-RN-t3Z"/>
                 </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="535" y="-80"/>

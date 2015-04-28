@@ -66,6 +66,9 @@
 #pragma mark - Initialization
 - (void)initNavigationBar {
     UIBarButtonItem *barbutton1;
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
+                                                         forBarMetrics:UIBarMetricsDefault];
+    
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
@@ -76,7 +79,9 @@
     else
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     [barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+
+    [self.navigationItem setBackBarButtonItem:barbutton1];
+
     
 }
 
@@ -235,7 +240,19 @@
         _deleteReviewButton.hidden = YES;
     }
     
-    _qualityrate.starscount = [_review.review_rate_product integerValue];
+    @try {
+        if(_review.review_rate_product) {
+            _qualityrate.starscount = [_review.review_rate_product integerValue];
+        } else {
+            _qualityrate.starscount = [_review.review_rate_quality integerValue];
+        }
+
+    }
+    @catch (NSException *exception) {
+            _qualityrate.starscount = [_review.review_rate_quality integerValue];
+    }
+
+
     _speedrate.starscount = [_review.review_rate_speed integerValue];
     _servicerate.starscount = [_review.review_rate_service integerValue];
     _accuracyrate.starscount = [_review.review_rate_accuracy integerValue];

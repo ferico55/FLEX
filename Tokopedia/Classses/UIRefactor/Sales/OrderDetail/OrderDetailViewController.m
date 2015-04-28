@@ -224,7 +224,7 @@
         [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
         [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
 
-        if (_transaction.order_payment.payment_process_day_left < 0) {
+        if (_transaction.order_deadline.deadline_shipping_day_left < 0) {
             _acceptButton.enabled = NO;
             _acceptButton.layer.opacity = 0.25;
         }

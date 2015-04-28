@@ -105,7 +105,7 @@
     _messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
     _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
-
+    
     
     _auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
     if ([_auth count] > 0) {
@@ -115,12 +115,12 @@
         } else {
             self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
         }
-
+        
     } else {
-            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
     }
     
-
+    
 }
 
 - (UIBarButtonItem*)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action {
@@ -151,7 +151,7 @@
     _cacheController = [URLCacheController new];
     _cacheController.URLCacheInterval = 86400.0;
     _cacheConnection = [URLCacheConnection new];
-
+    
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
@@ -178,7 +178,7 @@
     
     [self addChildViewController:self.pageController];
     [self.view addSubview:[self.pageController view]];
-
+    
     NSArray *subviews = self.pageController.view.subviews;
     UIPageControl *thisControl = nil;
     for (int i=0; i<[subviews count]; i++) {
@@ -193,7 +193,7 @@
     
     [self configureRestKit];
     [self request];
-
+    
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
 }
@@ -239,7 +239,7 @@
     else if ([viewController isKindOfClass:[ShopNotesPageViewController class]]) {
         return nil;
     }
-
+    
     return nil;
     
 }
@@ -257,10 +257,10 @@
 #pragma mark - Init Notification
 - (void)initNotificationCenter {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-
+    
     [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
- }
+}
 
 
 
@@ -333,7 +333,8 @@
                                                           kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
                                                           kTKPDDETAILSHOP_APISHOPISGOLD:kTKPDDETAILSHOP_APISHOPISGOLD,
                                                           kTKPDDETAILSHOP_APISHOPURLKEY:kTKPDDETAILSHOP_APISHOPURLKEY,
-                                                          API_IS_OWNER_SHOP_KEY:API_IS_OWNER_SHOP_KEY
+                                                          API_IS_OWNER_SHOP_KEY:API_IS_OWNER_SHOP_KEY,
+                                                          @"shop_has_terms" : @"shop_has_terms"
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
@@ -451,8 +452,6 @@
             [_timer invalidate];
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            
-            // Failure
             app.networkActivityIndicatorVisible = NO;
             [self requestFailure:error];
             [_timer invalidate];
@@ -555,7 +554,9 @@
                     }
                 }
                 
-                
+                TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
                 _isNoData = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
             }
@@ -565,7 +566,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestCount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestCount);
                     [self performSelector:@selector(configureRestKit)
                                withObject:nil
                                afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -659,7 +660,7 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-    
+        
         self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
     }
     else {
@@ -809,9 +810,9 @@
                             @"shop_id"              :   shop_id};
     
     _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:@"action/favorite-shop.pl"
-                                                                parameters:[param encrypt]];
+                                                                                    method:RKRequestMethodPOST
+                                                                                      path:@"action/favorite-shop.pl"
+                                                                                parameters:[param encrypt]];
     
     [_requestFavorite setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestFavoriteResult:mappingResult withOperation:operation];
@@ -828,10 +829,10 @@
     [_operationFavoriteQueue addOperation:_requestFavorite];
     
     _timerFavorite = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requestTimeout)
-                                            userInfo:nil
-                                             repeats:NO];
+                                                      target:self
+                                                    selector:@selector(requestTimeout)
+                                                    userInfo:nil
+                                                     repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timerFavorite forMode:NSRunLoopCommonModes];
 }
 

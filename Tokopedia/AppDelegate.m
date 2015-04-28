@@ -132,8 +132,10 @@
     //opened when application is on background
     if(application.applicationState == UIApplicationStateInactive ||
        application.applicationState == UIApplicationStateBackground) {
-        NotificationManager *notifManager = [NotificationManager new];
-        [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
+//        NotificationManager *notifManager = [NotificationManager new];
+//        [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"redirectNotification" object:nil userInfo:userInfo];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotification" object:self];
     }
@@ -152,7 +154,7 @@
 #pragma mark - methods
 - (void)adjustnavigationbar
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+//#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
     //navigation background
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage* image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]];
@@ -173,7 +175,7 @@
                                          kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil];
 	[proxy setTitleTextAttributes:titleTextAttributes];
 	proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
-#endif
+//#endif
 }
 
 - (id) init

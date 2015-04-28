@@ -55,7 +55,7 @@
     __weak RKObjectManager *_objectManagerActionAddProductValidation;
     __weak RKManagedObjectRequestOperation *_requestActionAddProductValidation;
     
-    __weak RKObjectManager *_objectManagerActionAddProductPicture;
+    RKObjectManager *_objectManagerActionAddProductPicture;
     __weak RKManagedObjectRequestOperation *_requestActionAddProductPicture;
     
     __weak RKObjectManager *_objectManagerActionAddProductSubmit;
@@ -71,6 +71,7 @@
     
     BOOL _isNodata;
     BOOL _isBeingPresented;
+    EtalaseList *_selectedEtalase;
 }
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1TableViewCell;
@@ -160,6 +161,10 @@
                            selector:@selector(didEditNote:)
                                name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY
                              object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(didUpdateShopHasTerms:)
+                               name:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME
+                             object:nil];
 }
 
 
@@ -238,8 +243,8 @@
         if (gesture.view.tag == GESTURE_PRODUCT_EDIT_WHOLESALE) {
             ProductEditWholesaleViewController *editWholesaleVC = [ProductEditWholesaleViewController new];
             editWholesaleVC.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                          DATA_INPUT_KEY : _dataInput
-                          };
+                                     DATA_INPUT_KEY : _dataInput
+                                     };
             editWholesaleVC.delegate = self;
             [self.navigationController pushViewController:editWholesaleVC animated:YES];
         }
@@ -406,13 +411,17 @@
                 case BUTTON_PRODUCT_ETALASE_DETAIL:
                 {
                     if (!isProductWarehouse) {
+                        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+                        EtalaseList *newEtalase = [EtalaseList new];
+                        newEtalase.etalase_name = product.product_etalase;
+                        newEtalase.etalase_id = [product.product_etalase_id stringValue];
                         NSIndexPath *indexpath = [_dataInput objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                         MyShopEtalaseFilterViewController *etalaseViewController = [MyShopEtalaseFilterViewController new];
                         NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
                         etalaseViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                                                        kTKPDFILTER_DATAINDEXPATHKEY: indexpath,
                                                        DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT),
-                                                       
+                                                       ETALASE_OBJECT_SELECTED_KEY : newEtalase
                                                        };
                         etalaseViewController.delegate = self;
                         [self.navigationController pushViewController:etalaseViewController animated:YES];
@@ -715,7 +724,9 @@
 
 -(void)configureRestkitActionAddProductPicture
 {
-    _objectManagerActionAddProductPicture = [RKObjectManager sharedClient];
+    //_objectManagerActionAddProductPicture = [RKObjectManager sharedClient];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generateHost.result.generated_host.upload_host];
+    _objectManagerActionAddProductPicture = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductPicture class]];
@@ -760,7 +771,6 @@
                             API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc,
                             API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
                             API_IS_DUPLICATE_KEY :@(duplicate),
-                            @"web_service" : @(1)
                             };
     
     _requestActionAddProductPicture = [_objectManagerActionAddProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
@@ -789,6 +799,10 @@
     
     if (status) {
         [self requestProcessActionAddProductPicture:object];
+    }
+    else
+    {
+        _saveBarButtonItem.enabled = YES;
     }
 }
 
@@ -1118,7 +1132,6 @@
         [timer invalidate];
         _saveBarButtonItem.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
         [self requestFailureActionEditProduct:error];
         [timer invalidate];
         _saveBarButtonItem.enabled = YES;
@@ -1441,12 +1454,19 @@
 }
 
 #pragma mark - Methods
--(void)setData:(NSDictionary *)data
+-(void)setShopHasTerm:(NSString *)shopHasTerm
 {
-    _data = data;
-    if (data) {
-        [self setDefaultData:_data];
+    _shopHasTerm = shopHasTerm;
+    if (shopHasTerm) {
+        if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
+            _returnableProductSwitch.enabled = NO;
+        }
+        else
+        {
+            _returnableProductSwitch.enabled = YES;
+        }
     }
+
 }
 
 -(void)setDefaultData:(NSDictionary*)data
@@ -1465,6 +1485,7 @@
         _returnableProductSwitch.on = isProductReturnable;
         
         NSString *productDescription = [NSString convertHTML:product.product_short_desc]?:@"";
+        productDescription = ([productDescription isEqualToString:@"0"])?@"":productDescription;
         _productDescriptionTextView.text = productDescription;
         
         NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
@@ -1480,7 +1501,9 @@
             [_dataInput setObject:_wholesaleList forKey:DATA_WHOLESALE_LIST_KEY];
         }
         
-        NSString *shopHasTerm = [_data objectForKey:DATA_SHOP_HAS_TERM_KEY];
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        NSString *shopHasTerm = [auth getShopHasTerm];
+
         if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
             _returnableProductSwitch.enabled = NO;
         }
@@ -1545,6 +1568,22 @@
 -(void)didEditNote:(NSNotification*)notification
 {
     [_delegate DidEditReturnableNote];
+}
+
+-(void)didUpdateShopHasTerms:(NSNotification*)notification
+{
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *shopHasTerm = [auth getShopHasTerm];
+    
+    if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
+        _returnableProductSwitch.enabled = NO;
+    }
+    else
+    {
+        _returnableProductSwitch.enabled = YES;
+    }
+    
+    [_tableView reloadData];
 }
 
 @end

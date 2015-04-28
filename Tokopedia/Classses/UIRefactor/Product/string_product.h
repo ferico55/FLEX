@@ -157,6 +157,13 @@ typedef enum
 #define API_PRODUCT_QUANTITY_KEY @"product_quantity"
 #define API_PRODUCT_CART_ID_KEY @"product_cart_id"
 
+#define API_MANAGE_PRODUCT_KEYWORD_KEY          @"keyword"
+#define API_MANAGE_PRODUCT_ETALASE_ID_KEY       @"etalase_id"
+#define API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY    @"etalase_id"
+#define API_MANAGE_PRODUCT_CATALOG_ID_KEY       @"catalog_id"
+#define API_MANAGE_PRODUCT_PICTURE_STATUS_KEY   @"picture_status"
+#define API_MANAGE_PRODUCT_CONDITION_KEY        @"condition"
+
 #define API_WHOLESALE_QUANTITY_MINIMUM_KEY @"qty_min_"
 #define API_WHOLESALE_QUANTITY_MAXIMUM_KEY @"qty_max_"
 #define API_WHOLESALE_PRICE @"prd_prc_"
@@ -170,7 +177,7 @@ typedef enum
 #define CONFIRMATIONMESSAGE_DELETE_PRODUCT_IMAGE @"Apakah Anda ingin menghapus gambar ini?"
 
 #define SUCCESSMESSAGE_ADD_PRODUCT @"Sukses menambahkan product."
-#define SUCCESSMESSAGE_EDIT_PRODUCT @"Sukses merubah product."
+#define SUCCESSMESSAGE_EDIT_PRODUCT @"Anda telah berhasil memperbaharui produk."
 #define SUCCESSMESSAGE_COPY_PRODUCT @"Sukses mensalin product"
 
 #define SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE @"Sukses menghapus gambar"
@@ -203,7 +210,7 @@ typedef enum
 #define ERRORMESSAGE_NULL_PRODUCT_NAME @"Nama Produk harus diisi."
 #define ERRORMESSAGE_NULL_PRICE @"Harga harus diisi."
 #define ERRORMESSAGE_NULL_CATEGORY @"Kategori tidak benar."
-#define ERRORMESSAGE_NULL_IMAGE @"Gambar harus diisi."
+#define ERRORMESSAGE_NULL_IMAGE @"Gambar harus tersedia."
 #define ERRORMESSAGE_INVALID_PRICE_RUPIAH @"Rentang Harga 100 - 50000000."
 #define ERRORMESSAGE_INVALID_PRICE_USD @"Rentang Harga 1 - 4000."
 #define ERRORMESSAGE_INVALID_WEIGHT_GRAM @"Berat harus diisi antara 1 - 35000."

@@ -28,12 +28,17 @@
 #define kTKPDCREATE_PASSWORD_IS_SUCCESS @"is_success"
 
 #define kTKPDLOGIN_APIPATH @"login.pl"
+#define kTKPDLOGOUT_APIPATH @"logout.pl"
+
 #define kTKPDLOGIN_FACEBOOK_APIPATH @"login-third-app.pl"
 #define kTKPDREGISTER_APIPATH @"action/register.pl"
 
 #define kTKPDLOGIN_APIUSEREMAILKEY @"user_email"
 #define kTKPDLOGIN_APIUSERPASSKEY @"user_password"
 #define kTKPDLOGIN_APIISLOGINKEY @"is_login"
+
+#define kTKPDLOGOUT_ISLOGOUT @"is_logout"
+#define kTKPDLOGOUT_ISDELETEDEVICE @"is_delete_device"
 
 #define kTKPDLOGIN_APIUSERIDKEY @"user_id"
 #define kTKPDLOGIN_APIFULLNAMEKEY @"full_name"
@@ -48,6 +53,7 @@
 #define kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY @"msisdn_is_verified"
 #define kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY @"msisdn_show_dialog"
 #define kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY @"device_token_id"
+#define kTKPDLOGIN_API_HAS_TERM_KEY @"shop_has_terms"
 
 #define kTKPDLOGIN_API_APP_TYPE_KEY @"app_type"
 #define kTKPDLOGIN_API_EMAIL_KEY    @"email"

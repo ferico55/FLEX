@@ -103,6 +103,11 @@
             _sortarray = kTKPDSORT_SEARCHPRODUCTSHOPSORTARRAY;
             break;
         }
+        case 8:
+        {
+            _sortarray = kTKPDSORT_SHOP_MANAGE_PRODUCT_ARAY;
+            break;
+        }
         default:
             break;
     }

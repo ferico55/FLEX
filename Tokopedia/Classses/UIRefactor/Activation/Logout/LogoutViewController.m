@@ -35,11 +35,12 @@
 
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
-    return @{
-             
-             @"device_token_id" : @"", //auto increment from database that had been saved in secure storage
+    NSDictionary *param =  @{
+             @"device_token_id" : [_userManager getMyDeviceIdToken],
              @"device_id" : [_userManager getMyDeviceToken] //token device from ios
              };
+    
+    return param;
 }
 
 - (NSString *)getPath:(int)tag {

@@ -55,6 +55,8 @@ typedef enum TagRequest {
     
     //NSMutableArray *_hotlist;
     NSMutableDictionary *_paging;
+    BOOL hasInitData;
+    NSString *strUserID;
     
     /** url to the next page **/
     NSString *_urinext;
@@ -144,6 +146,27 @@ typedef enum TagRequest {
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
                                                                          action:nil];
+    
+    //Check Difference userID
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    
+    if(hasInitData)
+    {
+        hasInitData = !hasInitData;
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+    }
+    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+        _page = 1;
+        _isnodata = YES;
+        _product = [NSMutableArray new];
+        _isrefreshview = NO;
+        _urinext = nil;
+        [_networkManager doRequest];
+    }
+    
     self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 

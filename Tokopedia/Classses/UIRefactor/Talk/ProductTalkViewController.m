@@ -192,7 +192,7 @@
     [super viewWillAppear:animated];
     if (!_isrefreshview) {
         [self configureRestKit];
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+        if (_isnodata) {
             [self loadData];
         }
     }
@@ -241,7 +241,7 @@
             }
             [((GeneralTalkCell*)cell).unfollowButton setTitle:followStatus forState:UIControlStateNormal];
             
-            if(![list.talk_own isEqualToString:@"1"]) {
+            if(![list.talk_own isEqualToString:@"1"] && [_userManager isLogin]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
@@ -250,6 +250,13 @@
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
                 newFrame.origin.x = 75;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+            }
+            
+
+            if([_userManager isLogin]) {
+                ((GeneralTalkCell*)cell).moreActionButton.hidden = NO;
+            } else {
+                ((GeneralTalkCell*)cell).moreActionButton.hidden = YES;
             }
             ((GeneralTalkCell*)cell).productViewIsHidden = YES;
             ((GeneralTalkCell*)cell).messageLabel.hidden = NO;
@@ -272,10 +279,10 @@
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
+                NSLog(@"thumb: %@", thumb);
                 [thumb setImage:image];
                 
 #pragma clang diagnostic pop
@@ -778,6 +785,7 @@
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY] attributes:attributes];
     
     _productnamelabel.attributedText = attributedText;
+    _productnamelabel.numberOfLines = 3;
     
     _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
     _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];

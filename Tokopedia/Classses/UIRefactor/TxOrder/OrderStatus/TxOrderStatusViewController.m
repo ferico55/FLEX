@@ -114,11 +114,13 @@
     [_networkManager doRequest];
 
     if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
-        _filterView.hidden = NO;
-        UIEdgeInsets inset = _tableView.contentInset;
-        inset.bottom += _filterView.frame.size.height;
-        _tableView.contentInset = inset;
-        _tableView.scrollIndicatorInsets = inset;
+//        _filterView.hidden = NO;
+//        UIEdgeInsets inset = _tableView.contentInset;
+//        inset.bottom += _filterView.frame.size.height;
+//        _tableView.contentInset = inset;
+//        _tableView.scrollIndicatorInsets = inset;
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithTitle:@"Filter" style:UIBarButtonItemStyleDone target:self action:@selector(tap:)];
+        self.navigationItem.rightBarButtonItem = barButton;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -159,31 +161,28 @@
 
 -(IBAction)tap:(id)sender
 {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)sender;
-        if (button.tag == 1) {
-            
-            NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
-            NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
-            NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
-            NSString *filterStatus = [_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-            navigationController.navigationBar.translucent = NO;
-            navigationController.navigationBar.tintColor = [UIColor whiteColor];
-            
-            FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
-            controller.invoiceMark = filterInvoice;
-            controller.startDateMark = filterStartDate;
-            controller.endDateMark = filterEndDate;
-            controller.transactionStatusMark = filterStatus;
-            controller.isOrderTransaction = YES;
-            controller.delegate = self;
-            navigationController.viewControllers = @[controller];
-            
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        }
+
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
+        NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
+        NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
+        NSString *filterStatus = [_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
+        controller.invoiceMark = filterInvoice;
+        controller.startDateMark = filterStartDate;
+        controller.endDateMark = filterEndDate;
+        controller.transactionStatusMark = filterStatus;
+        controller.isOrderTransaction = YES;
+        controller.delegate = self;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
 
@@ -220,13 +219,18 @@
     [_dataInput setObject:startDate?:@"" forKey:API_TRANSACTION_START_DATE_KEY];
     [_dataInput setObject:endDate?:@"" forKey:API_TRANSACTION_END_DATE_KEY];
 
+    [_refreshControll beginRefreshing];
+    [self.tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [self refreshRequest];
+
 }
 
 #pragma mark - Track Order delegate
 -(void)shouldRefreshRequest
 {
     [_refreshControll beginRefreshing];
+    [self.tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
+    [self refreshRequest];
 }
 
 #pragma mark - Table View Data Source
@@ -564,8 +568,11 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
+    if (![_refreshControll isRefreshing]) {
+        _tableView.tableFooterView = _footer;
+        [_act startAnimating];
+        
+    }
 }
 
 -(NSString *)getRequestStatus:(id)result withTag:(int)tag
@@ -580,6 +587,7 @@
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
     [_act stopAnimating];
+    [_refreshControll endRefreshing];
     NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
     TxOrderStatus *order = stat;
@@ -635,6 +643,7 @@
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_act stopAnimating];
+    [_refreshControll endRefreshing];
 }
 
 
@@ -1194,6 +1203,7 @@
 {
     _page = 1;
 
+    _networkManager.delegate = self;
     [_networkManager doRequest];
 }
 
