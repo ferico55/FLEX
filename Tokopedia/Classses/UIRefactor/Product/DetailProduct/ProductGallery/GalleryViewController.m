@@ -90,7 +90,8 @@
         btnCancel.backgroundColor = [UIColor clearColor];
         btnCancel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
         [btnCancel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [btnCancel setTitle:@"X" forState:UIControlStateNormal];
+//        [btnCancel setTitle:@"X" forState:UIControlStateNormal];
+        [btnCancel setImage:[UIImage imageNamed:@"icon_close_white.png"] forState:UIControlStateNormal];
         btnCancel.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width-49, 0, 49, 49);
         
         lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, btnCancel.frame.origin.x-10, btnCancel.bounds.size.height)];

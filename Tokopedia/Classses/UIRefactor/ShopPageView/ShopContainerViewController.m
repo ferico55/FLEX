@@ -260,6 +260,8 @@
     
     [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
+    [nc addObserver:self selector:@selector(reloadShop) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
+    
 }
 
 
@@ -852,6 +854,12 @@
     NSDictionary *tempAuth = [secureStorage keychainDictionary];
     _auth = [tempAuth mutableCopy];
     
+    [self configureRestKit];
+    [self request];
+}
+
+#pragma mark - Reload Shop
+- (void)reloadShop {
     [self configureRestKit];
     [self request];
 }

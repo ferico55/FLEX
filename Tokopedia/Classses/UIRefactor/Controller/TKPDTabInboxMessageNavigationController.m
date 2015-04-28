@@ -610,7 +610,7 @@
             }
             case 11:
             {
-                barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                               style:UIBarButtonItemStyleDone
                                                              target:(self)
                                                              action:@selector(tapbutton:)];

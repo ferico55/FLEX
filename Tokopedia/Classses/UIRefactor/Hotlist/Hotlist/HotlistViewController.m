@@ -122,6 +122,12 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [_networkManager requestCancel];
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -449,6 +455,8 @@
             }
         }
         
+
+        
         for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
             NSString *key = [[parameter componentsSeparatedByString:@"="] objectAtIndex:0];
             if ([key isEqualToString:kTKPDSEARCH_APIMINPRICEKEY]) {
@@ -463,9 +471,11 @@
                 [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIGOLDMERCHANTKEY];
             }
         }
-        
+        [parameters setValue:@"search_product" forKey:kTKPDSEARCH_DATATYPE];
+
         SearchResultViewController *controller = [SearchResultViewController new];
         controller.data = parameters;
+        controller.title = hotlist.title;
         [self.delegate pushViewController:controller];
         
     } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
