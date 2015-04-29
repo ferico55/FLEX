@@ -38,11 +38,11 @@
 {
     _productimageview.multipleTouchEnabled = NO;
     _productimageview.exclusiveTouch = YES;
-    
-    _contentSubview.layer.shadowColor = [UIColor blackColor].CGColor;
-    _contentSubview.layer.shadowOffset = CGSizeMake(0, 0.3);
-    _contentSubview.layer.shadowOpacity = 0.2;
-    _contentSubview.layer.shadowRadius = 0.5;
+//    
+//    _contentSubview.layer.shadowColor = [UIColor blackColor].CGColor;
+//    _contentSubview.layer.shadowOffset = CGSizeMake(0, 0.3);
+//    _contentSubview.layer.shadowOpacity = 0.2;
+//    _contentSubview.layer.shadowRadius = 0.5;
 }
 
 
