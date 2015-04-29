@@ -94,7 +94,11 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager.delegate = nil;
+    tokopediaNetworkManager = nil;
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

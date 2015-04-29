@@ -762,4 +762,14 @@
     tokopediaNetworkManager.tagRequest = CTagRequest;
     [tokopediaNetworkManager doRequest];
 }
+
+#pragma mark - Dealloc
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager.delegate = nil;
+    tokopediaNetworkManager = nil;
+}
+
 @end

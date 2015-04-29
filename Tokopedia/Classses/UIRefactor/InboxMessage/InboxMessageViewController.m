@@ -748,7 +748,12 @@ typedef enum TagRequest {
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
 }
+
+
 
 #pragma mark - InboxMessageCell Delegate
 -(void)InboxMessageCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath

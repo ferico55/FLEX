@@ -150,8 +150,13 @@
 }
 
 #pragma mark - Memory Management
--(void)dealloc{
+- (void)dealloc
+{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
 }
 
 
@@ -476,6 +481,8 @@
         SearchResultViewController *controller = [SearchResultViewController new];
         controller.data = parameters;
         controller.title = hotlist.title;
+        controller.hidesBottomBarWhenPushed = YES;
+        
         [self.delegate pushViewController:controller];
         
     } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
