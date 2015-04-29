@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+<<<<<<< HEAD
+		85134C4F1AF0D37C00E4EAA6 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85134C4E1AF0D37C00E4EAA6 /* MarqueeLabel.m */; };
+=======
 		7A60DD251AEA555B0041522F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A60DD241AEA555B0041522F /* FacebookSDK.framework */; };
 		7AC588F71AF083EA00BF3C64 /* UserContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC588F21AF083EA00BF3C64 /* UserContainerViewController.m */; };
 		7AC588F81AF083EB00BF3C64 /* UserContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AC588F31AF083EA00BF3C64 /* UserContainerViewController.xib */; };
@@ -1353,6 +1356,7 @@
 		7AD00B5D1AEF7E3300B44CBE /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AD006211AEF7E3200B44CBE /* zbar-help.html */; };
 		7AD00B5E1AEF7E3300B44CBE /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AD006221AEF7E3200B44CBE /* zbar-helpicons.png */; };
 		7AD00B5F1AEF7E3300B44CBE /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AD006231AEF7E3200B44CBE /* zbar-samples.png */; };
+>>>>>>> 0e829ff280e9783950c2016381faff5f76ea6be9
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1400,6 +1404,10 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+<<<<<<< HEAD
+		85134C4D1AF0D37C00E4EAA6 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
+		85134C4E1AF0D37C00E4EAA6 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
+=======
 		7A60DD241AEA555B0041522F /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 		7AC084E31AE49EE400CAB2DC /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		7AC588F11AF083EA00BF3C64 /* UserContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserContainerViewController.h; path = UserPageView/UserContainerViewController.h; sourceTree = "<group>"; };
@@ -3474,6 +3482,7 @@
 		7AD0FFFD1AEF7E3000B44CBE /* TxOrderPaymentEditMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderPaymentEditMethod.m; sourceTree = "<group>"; };
 		7AD0FFFE1AEF7E3000B44CBE /* TxOrderPaymentEditOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderPaymentEditOrder.h; sourceTree = "<group>"; };
 		7AD0FFFF1AEF7E3000B44CBE /* TxOrderPaymentEditOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderPaymentEditOrder.m; sourceTree = "<group>"; };
+>>>>>>> 0e829ff280e9783950c2016381faff5f76ea6be9
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -7029,6 +7038,19 @@
 		7AD0FEF51AEF7E3000B44CBE /* SearchItem */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
+				85134C4D1AF0D37C00E4EAA6 /* MarqueeLabel.h */,
+				85134C4E1AF0D37C00E4EAA6 /* MarqueeLabel.m */,
+				FC7663221AEE586B00ED6FCA /* GoogleAnalytics */,
+				FC76632E1AEE586B00ED6FCA /* Helpshift */,
+				FC7663671AEE586B00ED6FCA /* HPGrowingTextView.h */,
+				FC7663681AEE586B00ED6FCA /* HPGrowingTextView.m */,
+				FC7663691AEE586B00ED6FCA /* HPTextViewInternal.h */,
+				FC76636A1AEE586B00ED6FCA /* HPTextViewInternal.m */,
+				FC76636B1AEE586B00ED6FCA /* libGoogleAnalyticsServices.a */,
+				FC76636C1AEE586B00ED6FCA /* MGSwipeTableCell */,
+				FC7663751AEE586B00ED6FCA /* Zbar */,
+=======
 				7AD0FEF61AEF7E3000B44CBE /* HotlistDetail.h */,
 				7AD0FEF71AEF7E3000B44CBE /* HotlistDetail.m */,
 				7AD0FEF81AEF7E3000B44CBE /* List.h */,
@@ -7042,6 +7064,7 @@
 				7AD0FF011AEF7E3000B44CBE /* SearchRedirect.m */,
 				7AD0FF021AEF7E3000B44CBE /* SearchResult.h */,
 				7AD0FF031AEF7E3000B44CBE /* SearchResult.m */,
+>>>>>>> 0e829ff280e9783950c2016381faff5f76ea6be9
 			);
 			path = SearchItem;
 			sourceTree = "<group>";
@@ -8500,6 +8523,186 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
+				FC7664441AEE586B00ED6FCA /* ProductTalkCommentActionResult.m in Sources */,
+				FC7665B01AEE586B00ED6FCA /* FilterComplainViewController.m in Sources */,
+				85134C4F1AF0D37C00E4EAA6 /* MarqueeLabel.m in Sources */,
+				FC7666F91AEE586B00ED6FCA /* TransactionCartResultPaymentCell.m in Sources */,
+				FC7665111AEE586B00ED6FCA /* AlertListView.m in Sources */,
+				FC7663FF1AEE586B00ED6FCA /* Favorited.m in Sources */,
+				FC7664461AEE586B00ED6FCA /* ProductTalkFormResult.m in Sources */,
+				FC76647B1AEE586B00ED6FCA /* List.m in Sources */,
+				FC7664CA1AEE586B00ED6FCA /* OrderShop.m in Sources */,
+				FC76651F1AEE586B00ED6FCA /* CameraController.m in Sources */,
+				FC7663FE1AEE586B00ED6FCA /* WholesalePrice.m in Sources */,
+				FC76651E1AEE586B00ED6FCA /* TKPDAlertView.m in Sources */,
+				FC7665F21AEE586B00ED6FCA /* NotificationRequest.m in Sources */,
+				FC7663B21AEE586B00ED6FCA /* DBManager.m in Sources */,
+				FC7665791AEE586B00ED6FCA /* GeneralList1GestureCell.m in Sources */,
+				FC7663F11AEE586B00ED6FCA /* ReviewResult.m in Sources */,
+				FC7664AE1AEE586B00ED6FCA /* ShopShipping.m in Sources */,
+				FC7664A11AEE586B00ED6FCA /* SettingLocationResult.m in Sources */,
+				FC76662D1AEE586B00ED6FCA /* ReputationDetailFormViewController.m in Sources */,
+				FC7663B81AEE586B00ED6FCA /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
+				FC7665711AEE586B00ED6FCA /* DepositSummaryViewController.m in Sources */,
+				FC7663C61AEE586B00ED6FCA /* CreatePassword.m in Sources */,
+				FC7665991AEE586B00ED6FCA /* HomeTabViewController.m in Sources */,
+				FC76667C1AEE586B00ED6FCA /* SettingBankNameViewController.m in Sources */,
+				FC7666261AEE586B00ED6FCA /* GoldShopView.m in Sources */,
+				FC7665461AEE586B00ED6FCA /* ContactUsViewController.m in Sources */,
+				FC7665F01AEE586B00ED6FCA /* NotificationBarButton.m in Sources */,
+				FC7663E71AEE586B00ED6FCA /* Product.m in Sources */,
+				FC76645B1AEE586B00ED6FCA /* BankAccountFormResult.m in Sources */,
+				FC7664161AEE586B00ED6FCA /* InboxMessageActionResult.m in Sources */,
+				FC7663E41AEE586B00ED6FCA /* DetailProductResult.m in Sources */,
+				FC76647A1AEE586B00ED6FCA /* HotlistDetail.m in Sources */,
+				FC7665561AEE586B00ED6FCA /* BackgroundLayer.m in Sources */,
+				FC7663C81AEE586B00ED6FCA /* Login.m in Sources */,
+				FC7664151AEE586B00ED6FCA /* InboxMessageAction.m in Sources */,
+				FC76648C1AEE586B00ED6FCA /* NoteDetail.m in Sources */,
+				FC76671C1AEE586B00ED6FCA /* TxOrderConfirmedBankCell.m in Sources */,
+				FC7664B31AEE586B00ED6FCA /* TrackOrderHistory.m in Sources */,
+				FC7664791AEE586B00ED6FCA /* OrderTransaction.m in Sources */,
+				FC7665191AEE586B00ED6FCA /* StickyAlert.m in Sources */,
+				FC76665E1AEE586B00ED6FCA /* DetailShipmentStatusCell.m in Sources */,
+				FC7666E21AEE586B00ED6FCA /* TrackOrderViewController.m in Sources */,
+				FC7663D31AEE586B00ED6FCA /* DepositSummary.m in Sources */,
+				FC7664E31AEE586B00ED6FCA /* TxOrderConfirmedDetailResult.m in Sources */,
+				FC7664E61AEE586B00ED6FCA /* SystemBankAcount.m in Sources */,
+				FC7664741AEE586B00ED6FCA /* OrderOrder.m in Sources */,
+				FC7665881AEE586B00ED6FCA /* GeneralTalkCell.m in Sources */,
+				FC7665391AEE586B00ED6FCA /* FilterCatalogViewController.m in Sources */,
+				FC7664B61AEE586B00ED6FCA /* TransactionActionResult.m in Sources */,
+				FC7663E01AEE586B00ED6FCA /* DetailCatalogResult.m in Sources */,
+				FC7668DF1AEE586C00ED6FCA /* MGSwipeTableCell.m in Sources */,
+				FC76653D1AEE586B00ED6FCA /* CategoryViewCell.m in Sources */,
+				FC7666AF1AEE586B00ED6FCA /* ShopNotesDetailViewController.m in Sources */,
+				FC7664A31AEE586B00ED6FCA /* SettingPaymentResult.m in Sources */,
+				FC7663B11AEE586B00ED6FCA /* URLCacheController.m in Sources */,
+				FC7665051AEE586B00ED6FCA /* AddressCell.m in Sources */,
+				FC7664A91AEE586B00ED6FCA /* PosMinWeight.m in Sources */,
+				FC76652B1AEE586B00ED6FCA /* CatalogProductCell.m in Sources */,
+				FC7665B61AEE586B00ED6FCA /* InboxResolutionCenterObjectMapping.m in Sources */,
+				FC7663EF1AEE586B00ED6FCA /* ReviewProductOwner.m in Sources */,
+				FC7665B21AEE586B00ED6FCA /* InboxResolutionCenterComplainCell.m in Sources */,
+				FC7666EE1AEE586B00ED6FCA /* TransactionCartHeaderView.m in Sources */,
+				FC76653F1AEE586B00ED6FCA /* CategoryViewController.m in Sources */,
+				FC7663C71AEE586B00ED6FCA /* CreatePasswordResult.m in Sources */,
+				FC7663D11AEE586B00ED6FCA /* DepositFormBankAccountList.m in Sources */,
+				FC76656D1AEE586B00ED6FCA /* DepositListBankViewController.m in Sources */,
+				FC7667161AEE586B00ED6FCA /* TxOrderConfirmationShipmentCell.m in Sources */,
+				FC7666451AEE586B00ED6FCA /* SalesNewOrderViewController.m in Sources */,
+				FC76666C1AEE586B00ED6FCA /* SearchResultShopCell.m in Sources */,
+				FC7664751AEE586B00ED6FCA /* OrderPayment.m in Sources */,
+				FC7666BF1AEE586B00ED6FCA /* ShopPageHeader.m in Sources */,
+				FC7664CC1AEE586B00ED6FCA /* TxOrderConfirmationList.m in Sources */,
+				FC7663FD1AEE586B00ED6FCA /* TheOtherProductResult.m in Sources */,
+				FC76640D1AEE586B00ED6FCA /* DepartmentChild2.m in Sources */,
+				FC7666071AEE586B00ED6FCA /* ProductReviewDetailViewController.m in Sources */,
+				FC7664AD1AEE586B00ED6FCA /* ShippingInfoShipments.m in Sources */,
+				FC7663D21AEE586B00ED6FCA /* DepositFormResult.m in Sources */,
+				FC7664881AEE586B00ED6FCA /* AddShopResult.m in Sources */,
+				FC7664B91AEE586B00ED6FCA /* TransactionAddressShippingResult.m in Sources */,
+				FC7665FC1AEE586B00ED6FCA /* DetailProductWholesaleCell.m in Sources */,
+				FC7666DE1AEE586B00ED6FCA /* TokopediaCacheManager.m in Sources */,
+				FC7664BD1AEE586B00ED6FCA /* TransactionBuy.m in Sources */,
+				FC7665D01AEE586B00ED6FCA /* MoreNavigationController.m in Sources */,
+				FC7664961AEE586B00ED6FCA /* Payment.m in Sources */,
+				FC7665CE1AEE586B00ED6FCA /* InboxTalkViewController.m in Sources */,
+				FC76664B1AEE586B00ED6FCA /* OrderDetailViewController.m in Sources */,
+				FC7665031AEE586B00ED6FCA /* RegisterViewController.m in Sources */,
+				FC7663BC1AEE586B00ED6FCA /* NSUserDefaultCategory.m in Sources */,
+				FC7664101AEE586B00ED6FCA /* Hotlist.m in Sources */,
+				FC7664481AEE586B00ED6FCA /* ChangePhoneNumberResult.m in Sources */,
+				FC7666E61AEE586B00ED6FCA /* TransactionCartCell.m in Sources */,
+				FC7664D51AEE586B00ED6FCA /* TransactionVoucherResult.m in Sources */,
+				FC7664221AEE586B00ED6FCA /* ResolutionAttachment.m in Sources */,
+				FC7664B71AEE586B00ED6FCA /* TransactionAddressShipping.m in Sources */,
+				FC7666531AEE586B00ED6FCA /* CancelShipmentViewController.m in Sources */,
+				FC7664931AEE586B00ED6FCA /* ClosedInfo.m in Sources */,
+				FC7664B51AEE586B00ED6FCA /* TransactionAction.m in Sources */,
+				FC7666E01AEE586B00ED6FCA /* TrackOrderHistoryCell.m in Sources */,
+				FC7664F61AEE586B00ED6FCA /* GenerateHost.m in Sources */,
+				FC76649E1AEE586B00ED6FCA /* AddProductValidation.m in Sources */,
+				FC76662B1AEE586B00ED6FCA /* ReputationCell.m in Sources */,
+				FC7664FD1AEE586B00ED6FCA /* WishListObjectResult.m in Sources */,
+				FC7665861AEE586B00ED6FCA /* GeneralSwitchCell.m in Sources */,
+				FC7666CD1AEE586B00ED6FCA /* FilterLocationViewCell.m in Sources */,
+				FC7664E41AEE586B00ED6FCA /* MethodList.m in Sources */,
+				FC7664671AEE586B00ED6FCA /* Reputation.m in Sources */,
+				FC7664AA1AEE586B00ED6FCA /* ShippingInfo.m in Sources */,
+				FC76642E1AEE586B00ED6FCA /* ResolutionShop.m in Sources */,
+				FC7668E11AEE586C00ED6FCA /* README.md in Sources */,
+				FC7666641AEE586B00ED6FCA /* ShipmentStatusCell.m in Sources */,
+				FC7666091AEE586B00ED6FCA /* ProductReviewViewController.m in Sources */,
+				FC7663EE1AEE586B00ED6FCA /* ReviewList.m in Sources */,
+				FC7664201AEE586B00ED6FCA /* InboxResolutionCenterList.m in Sources */,
+				FC7664921AEE586B00ED6FCA /* Address.m in Sources */,
+				FC7666A91AEE586B00ED6FCA /* ShopInfoPaymentCell.m in Sources */,
+				FC7663D41AEE586B00ED6FCA /* DepositSummaryDetail.m in Sources */,
+				FC7664141AEE586B00ED6FCA /* InboxMessage.m in Sources */,
+				FC7667101AEE586B00ED6FCA /* TxOrderConfirmationDetailViewController.m in Sources */,
+				FC7663DE1AEE586B00ED6FCA /* CatalogShops.m in Sources */,
+				FC76645E1AEE586B00ED6FCA /* BankAccountGetDefaultFormResult.m in Sources */,
+				FC76668C1AEE586B00ED6FCA /* SettingPrivacyViewController.m in Sources */,
+				FC7665D11AEE586B00ED6FCA /* MoreNavigationViewController.m in Sources */,
+				FC7666511AEE586B00ED6FCA /* SalesTransactionListViewController.m in Sources */,
+				FC7663EB1AEE586B00ED6FCA /* AdvanceReview.m in Sources */,
+				FC7663E51AEE586B00ED6FCA /* Info.m in Sources */,
+				FC7663CD1AEE586B00ED6FCA /* RegisterResult.m in Sources */,
+				FC7664011AEE586B00ED6FCA /* ListFavorited.m in Sources */,
+				FC7664FA1AEE586B00ED6FCA /* UploadImageResult.m in Sources */,
+				FC7666011AEE586B00ED6FCA /* GalleryPhotoView.m in Sources */,
+				FC76657E1AEE586B00ED6FCA /* GeneralProductCell.m in Sources */,
+				FC76646B1AEE586B00ED6FCA /* ActionOrder.m in Sources */,
+				FC76664F1AEE586B00ED6FCA /* FilterSalesTransactionListViewController.m in Sources */,
+				FC7664621AEE586B00ED6FCA /* PrivacyForm.m in Sources */,
+				FC7664711AEE586B00ED6FCA /* OrderDetail.m in Sources */,
+				FC7665BE1AEE586B00ED6FCA /* ResolutionCenterDetailViewController.m in Sources */,
+				FC7664121AEE586B00ED6FCA /* HotlistList.m in Sources */,
+				FC7663D91AEE586B00ED6FCA /* CatalogInfo.m in Sources */,
+				FC76671E1AEE586B00ED6FCA /* TxOrderConfirmedButtonArrowCell.m in Sources */,
+				FC7665A01AEE586B00ED6FCA /* HotlistCell.m in Sources */,
+				FC76668A1AEE586B00ED6FCA /* SettingPrivacyCell.m in Sources */,
+				FC7665C81AEE586B00ED6FCA /* InboxReviewViewController.m in Sources */,
+				FC7664281AEE586B00ED6FCA /* ResolutionConversation.m in Sources */,
+				FC7666B11AEE586B00ED6FCA /* ShopNotesViewController.m in Sources */,
+				FC7663ED1AEE586B00ED6FCA /* Review.m in Sources */,
+				FC7665E11AEE586B00ED6FCA /* MyShopEtalaseFilterViewController.m in Sources */,
+				FC76669E1AEE586B00ED6FCA /* ShopFavoritedCell.m in Sources */,
+				FC7664F41AEE586B00ED6FCA /* TxOrderStatusResult.m in Sources */,
+				FC7665E91AEE586B00ED6FCA /* MyShopPaymentCell.m in Sources */,
+				FC7666491AEE586B00ED6FCA /* OrderDetailProductInformationCell.m in Sources */,
+				FC76669C1AEE586B00ED6FCA /* ShopEditViewController.m in Sources */,
+				FC7666721AEE586B00ED6FCA /* SettingAddressDetailViewController.m in Sources */,
+				FC7663BB1AEE586B00ED6FCA /* NSStringCategory.m in Sources */,
+				FC7665661AEE586B00ED6FCA /* TKPDTextView.m in Sources */,
+				FC7664031AEE586B00ED6FCA /* FavoritedShopList.m in Sources */,
+				FC7664E21AEE586B00ED6FCA /* TxOrderConfirmedDetailPayment.m in Sources */,
+				FC76670E1AEE586B00ED6FCA /* TxOrderConfirmationDetailHeaderView.m in Sources */,
+				FC7665551AEE586B00ED6FCA /* TKPDTabShopViewController.m in Sources */,
+				FC7666241AEE586B00ED6FCA /* ProfileContactViewController.m in Sources */,
+				FC7664941AEE586B00ED6FCA /* DetailShopResult.m in Sources */,
+				FC7664041AEE586B00ED6FCA /* FavoritedShopResult.m in Sources */,
+				FC7663B71AEE586B00ED6FCA /* NSDictionaryCategory.m in Sources */,
+				FC7665371AEE586B00ED6FCA /* CatalogViewController.m in Sources */,
+				FC7663C41AEE586B00ED6FCA /* RSA.m in Sources */,
+				FC7664841AEE586B00ED6FCA /* ShipmentCourierPackage.m in Sources */,
+				FC7664C41AEE586B00ED6FCA /* TransactionCartList.m in Sources */,
+				FC7663D81AEE586B00ED6FCA /* CatalogImages.m in Sources */,
+				FC7663CC1AEE586B00ED6FCA /* Register.m in Sources */,
+				FC7663D01AEE586B00ED6FCA /* DepositForm.m in Sources */,
+				FC7663E31AEE586B00ED6FCA /* Breadcrumb.m in Sources */,
+				FC7665EB1AEE586B00ED6FCA /* MyShopPaymentViewController.m in Sources */,
+				FC7667041AEE586B00ED6FCA /* TxOrderStatusDetailViewController.m in Sources */,
+				FC7664821AEE586B00ED6FCA /* SendMessageResult.m in Sources */,
+				FC7664471AEE586B00ED6FCA /* ChangePhoneNumber.m in Sources */,
+				FC7666B31AEE586B00ED6FCA /* ShopReviewViewController.m in Sources */,
+				FC7666A21AEE586B00ED6FCA /* ShopDescriptionView.m in Sources */,
+				FC7665E71AEE586B00ED6FCA /* MyShopNoteViewController.m in Sources */,
+				FC7666A71AEE586B00ED6FCA /* ShopInfoAddressView.m in Sources */,
+				FC76640C1AEE586B00ED6FCA /* DepartmentChild.m in Sources */,
+=======
 				7AD006B91AEF7E3200B44CBE /* ProductTalkCommentActionResult.m in Sources */,
 				7AD008251AEF7E3200B44CBE /* FilterComplainViewController.m in Sources */,
 				7AD0096E1AEF7E3200B44CBE /* TransactionCartResultPaymentCell.m in Sources */,
@@ -8676,6 +8879,7 @@
 				7AD0085C1AEF7E3200B44CBE /* MyShopNoteViewController.m in Sources */,
 				7AD0091C1AEF7E3200B44CBE /* ShopInfoAddressView.m in Sources */,
 				7AD006811AEF7E3200B44CBE /* DepartmentChild.m in Sources */,
+>>>>>>> 0e829ff280e9783950c2016381faff5f76ea6be9
 				FCAAEA4619F7534B00904AFB /* MainViewController.m in Sources */,
 				7AD0092A1AEF7E3200B44CBE /* SendMessageViewController.m in Sources */,
 				7AD0066B1AEF7E3200B44CBE /* TalkComment.m in Sources */,
