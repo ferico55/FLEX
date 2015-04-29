@@ -44,10 +44,10 @@ typedef enum
 #define kTKPDTITLE_SHOP_NOTES @"Catatan Toko"
 #define kTKPDTITLE_SEND_MESSAGE @"Kirim Pesan"
 #define kTKPDTITLE_NEW_TALK @"Diskusi Baru"
-#define kTKPDTITLE_SHOP_INFO @"Informasi Toko"
+#define kTKPDTITLE_SHOP_INFO @"INFORMASI TOKO"
 #define KTKPDTITLE_FAV_THIS_SHOP @"Yang Memfavoritkan"
 #define KTKPDTITLE_PEOPLE @"Informasi Pengguna"
-#define KTKPDTITLE_BIODATA @"Biodata"
+#define KTKPDTITLE_BIODATA @"BIODATA"
 
 #define TITLE_SHOP_SETTING @"Pengaturan Toko"
 

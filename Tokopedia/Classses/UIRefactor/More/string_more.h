@@ -7,6 +7,7 @@
 //
 
 #define MORE_USER_ID @"user_id"
+#define MORE_USER_NAME @"user_name"
 #define MORE_SHOP_ID @"shop_id"
 #define MORE_SHOP_NAME @"shop_name"
 #define MORE_AUTH @"auth"

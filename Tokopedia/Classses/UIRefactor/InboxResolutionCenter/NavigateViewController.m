@@ -13,7 +13,7 @@
 #import "WebViewInvoiceViewController.h"
 #import "ShopContainerViewController.h"
 #import "string_more.h"
-#import "ProfileBiodataViewController.h"
+#import "UserContainerViewController.h"
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "TKPDTabProfileNavigationController.h"
@@ -45,32 +45,13 @@
 
 -(void)navigateToProfileFromViewController:(UIViewController *)viewController withUserID:(NSString *)userID
 {
-    NSMutableArray *viewControllers = [NSMutableArray new];
     
-    ProfileBiodataViewController *biodataController = [ProfileBiodataViewController new];
-    [viewControllers addObject:biodataController];
+    UserContainerViewController *container = [UserContainerViewController new];
+    container.data = @{
+                       @"user_id" : userID
+                       };
     
-    ProfileFavoriteShopViewController *favoriteController = [ProfileFavoriteShopViewController new];
-    favoriteController.data = @{MORE_USER_ID:(userID)?:@""};
-    [viewControllers addObject:favoriteController];
-    
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    if([userID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
-        ProfileContactViewController *contactController = [ProfileContactViewController new];
-        [viewControllers addObject:contactController];
-    }
-    else {
-        biodataController.isNotMyBiodata = YES;
-    }
-    
-    TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
-    profileController.data = @{MORE_USER_ID:(userID)?:@""};
-    profileController.isOtherProfile = biodataController.isNotMyBiodata;
-    [profileController setViewControllers:viewControllers animated:YES];
-    [profileController setSelectedIndex:0];
-    
-    [viewController.navigationController pushViewController:profileController animated:YES];
+    [viewController.navigationController pushViewController:container animated:YES];
 }
 
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings indexImage:(NSInteger)index

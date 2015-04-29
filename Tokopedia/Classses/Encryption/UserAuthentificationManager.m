@@ -97,5 +97,18 @@
     return NO;
 }
 
+- (BOOL)isMyUser:(id)userId {
+    userId = [NSString stringWithFormat:@"%@", userId];
+    if([userId isEqualToString:[NSString stringWithFormat:@"%@", [self getUserId]]]) {
+        return YES;
+    } else {
+        return NO;
+    }
+    
+    return NO;
+}
+
+
+
 
 @end

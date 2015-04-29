@@ -735,6 +735,7 @@
                 TKPD_TALK_CREATE_TIME:list.talk_create_time?:0,
                 TKPD_TALK_USER_NAME:list.talk_user_name?:0,
                 TKPD_TALK_ID:list.talk_id?:0,
+                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id],
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,

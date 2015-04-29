@@ -162,8 +162,8 @@
     [barbuttonleft setTag:10];
     self.navigationItem.leftBarButtonItem = barbuttonleft;
     
-    barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbuttonright setTintColor:[UIColor blackColor]];
+    barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
+    [barbuttonright setTintColor:[UIColor whiteColor]];
     [barbuttonright setTag:11];
     
     self.navigationItem.rightBarButtonItem = barbuttonright;
