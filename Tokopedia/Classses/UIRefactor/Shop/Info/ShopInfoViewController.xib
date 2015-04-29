@@ -49,6 +49,7 @@
                 <outlet property="addressoffview" destination="Yyz-rC-cuj" id="946-Y2-X3D"/>
                 <outlet property="buttonArrowLocation" destination="nQA-wk-ijR" id="hqL-Rf-Btl"/>
                 <outlet property="buttonfav" destination="Twr-cV-LWn" id="pS7-sO-sZY"/>
+                <outlet property="buttonitemsold" destination="8uq-Zo-ZDV" id="dSH-B6-jrU"/>
                 <outlet property="buttonofflocation" destination="NXr-90-gzo" id="EWR-Mm-kDF"/>
                 <outlet property="containerview" destination="SPN-F6-FwN" id="Ava-I5-27P"/>
                 <outlet property="labeletalase" destination="LKB-Ns-97P" id="U9S-tV-GqZ"/>

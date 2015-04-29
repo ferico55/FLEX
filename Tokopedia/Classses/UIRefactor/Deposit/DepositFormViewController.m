@@ -109,7 +109,7 @@
 - (void)initBarButton {
     //NSBundle* bundle = [NSBundle mainBundle];
     
-    _barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    _barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_barbuttonleft setTintColor:[UIColor whiteColor]];
     [_barbuttonleft setTag:10];
     self.navigationItem.leftBarButtonItem = _barbuttonleft;

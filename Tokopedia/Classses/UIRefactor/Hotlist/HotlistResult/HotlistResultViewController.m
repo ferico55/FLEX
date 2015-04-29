@@ -227,6 +227,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [self cancel];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self cancel];
+}
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));

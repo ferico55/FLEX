@@ -154,7 +154,7 @@
 #pragma mark - methods
 - (void)adjustnavigationbar
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+//#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
     //navigation background
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage* image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]];
@@ -168,6 +168,11 @@
     
     [proxy setTintColor:[UIColor whiteColor]];
     [proxy setBackgroundColor:[UIColor colorWithRed:(18/255.0) green:(199/255.0) blue:(0/255.0) alpha:1]];
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
+                                      forBarPosition:UIBarPositionAny
+                                          barMetrics:UIBarMetricsDefault];
+    
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     
     NSDictionary *titleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
                                          kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,
@@ -175,7 +180,7 @@
                                          kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil];
 	[proxy setTitleTextAttributes:titleTextAttributes];
 	proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
-#endif
+//#endif
 }
 
 - (id) init

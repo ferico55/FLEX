@@ -431,7 +431,7 @@
     
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
     _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
-    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
     NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
@@ -1150,7 +1150,7 @@
     
     _requestDeleteComment = [_objectDeleteCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
     
-    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Comment", (unsigned long)[_list count]];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Komentar", (unsigned long)[_list count]];
     
     [_requestDeleteComment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessDeleteComment:mappingResult withOperation:operation];
@@ -1232,7 +1232,7 @@
 {
     NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
     [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Comment",(unsigned long)[_list count]];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Komentar",(unsigned long)[_list count]];
     [_table reloadData];
 }
 

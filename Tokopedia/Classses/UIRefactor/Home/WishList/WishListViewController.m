@@ -78,9 +78,13 @@
     [tblWishList addSubview:refreshControl];
 }
 
-- (void)dealloc
+-(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [tokoPediaNetworkManager requestCancel];
+    tokoPediaNetworkManager.delegate = nil;
+    tokoPediaNetworkManager = nil;
 }
 
 - (void)didReceiveMemoryWarning {

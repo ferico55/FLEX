@@ -154,9 +154,14 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
 }
 
 -(IBAction)tap:(id)sender

@@ -270,7 +270,7 @@
             }
             
             NSString *commentstring = [list.talk_total_comment?:0 stringByAppendingFormat:
-                                 @" Comment"];
+                                 @" Komentar"];
             [((GeneralTalkCell*)cell).commentbutton setTitle:commentstring forState:UIControlStateNormal];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -466,10 +466,16 @@
     
 }
 
+
 #pragma mark - Memory Management
-- (void)dealloc{
+-(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [tokopediaNetworkManagerDeleteMessage requestCancel];
+    tokopediaNetworkManagerDeleteMessage.delegate = nil;
+    tokopediaNetworkManagerDeleteMessage = nil;
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -784,8 +790,8 @@
                                  };
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY] attributes:attributes];
     
-    _productnamelabel.attributedText = attributedText;
-    _productnamelabel.numberOfLines = 3;
+    _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    _productnamelabel.numberOfLines = 1;
     
     _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
     _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];

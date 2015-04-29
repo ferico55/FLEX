@@ -289,10 +289,20 @@
     
 }
 
--(void)dealloc
-{
+
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
+    
     _detailVC = nil;
 }
+
+
+
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
