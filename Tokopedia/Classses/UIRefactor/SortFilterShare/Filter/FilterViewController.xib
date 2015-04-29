@@ -380,7 +380,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="5AQ-G2-6sV" firstAttribute="top" secondItem="bge-G7-b8U" secondAttribute="bottom" id="0AE-47-SQA"/>
                 <constraint firstItem="bge-G7-b8U" firstAttribute="leading" secondItem="jun-4h-yur" secondAttribute="leading" id="4P7-Eg-zhk"/>

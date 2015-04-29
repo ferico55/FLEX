@@ -327,7 +327,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.cellType == UITableViewCellTypeOneColumn) {
-        return 400;
+        return 390;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         return 205;
     } else {
@@ -378,7 +378,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     cell.productNameLabel.text = list.product_name;
     cell.productPriceLabel.text = list.product_price;
-    cell.productShopLabel.text = list.shop_name;
+    cell.productShopLabel.text = @"";
+    cell.infoLabelConstraint.constant = 0;
     
     UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
     
