@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		85134C4F1AF0D37C00E4EAA6 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85134C4E1AF0D37C00E4EAA6 /* MarqueeLabel.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1393,6 +1394,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		85134C4D1AF0D37C00E4EAA6 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
+		85134C4E1AF0D37C00E4EAA6 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -7408,6 +7411,8 @@
 		FC7663211AEE586B00ED6FCA /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				85134C4D1AF0D37C00E4EAA6 /* MarqueeLabel.h */,
+				85134C4E1AF0D37C00E4EAA6 /* MarqueeLabel.m */,
 				FC7663221AEE586B00ED6FCA /* GoogleAnalytics */,
 				FC76632E1AEE586B00ED6FCA /* Helpshift */,
 				FC7663671AEE586B00ED6FCA /* HPGrowingTextView.h */,
@@ -8686,6 +8691,7 @@
 			files = (
 				FC7664441AEE586B00ED6FCA /* ProductTalkCommentActionResult.m in Sources */,
 				FC7665B01AEE586B00ED6FCA /* FilterComplainViewController.m in Sources */,
+				85134C4F1AF0D37C00E4EAA6 /* MarqueeLabel.m in Sources */,
 				FC7666F91AEE586B00ED6FCA /* TransactionCartResultPaymentCell.m in Sources */,
 				FC7665111AEE586B00ED6FCA /* AlertListView.m in Sources */,
 				FC7663FF1AEE586B00ED6FCA /* Favorited.m in Sources */,
