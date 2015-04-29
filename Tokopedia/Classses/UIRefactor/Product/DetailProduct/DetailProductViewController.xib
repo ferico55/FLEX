@@ -380,9 +380,11 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="PXi-mL-NyL" firstAttribute="top" secondItem="U7y-jr-OJ5" secondAttribute="top" id="MQC-ce-qsA"/>
+                <constraint firstAttribute="trailing" secondItem="7az-US-WYX" secondAttribute="trailing" id="V7j-Vb-AYZ"/>
                 <constraint firstItem="7az-US-WYX" firstAttribute="top" secondItem="PXi-mL-NyL" secondAttribute="bottom" id="XpR-0e-pp0"/>
                 <constraint firstItem="PXi-mL-NyL" firstAttribute="leading" secondItem="U7y-jr-OJ5" secondAttribute="leading" id="h9e-x4-hg7"/>
                 <constraint firstAttribute="trailing" secondItem="PXi-mL-NyL" secondAttribute="trailing" id="q5L-I8-S20"/>
+                <constraint firstItem="7az-US-WYX" firstAttribute="leading" secondItem="U7y-jr-OJ5" secondAttribute="leading" id="xGQ-Pr-1RM"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
