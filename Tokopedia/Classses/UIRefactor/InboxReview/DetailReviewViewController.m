@@ -158,7 +158,7 @@
     [_timelabel setText:_review.review_create_time];
     
     if([_review.review_response.response_message isEqualToString:@"0"]) {
-        [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
+        [_commentbutton setTitle:@"0 Komentar" forState:UIControlStateNormal];
         
         if([[_userManager getUserId] isEqualToString:@"0"] || ![_userManager isMyShopWithShopId:_review.review_shop_id]) {
             [self hideInputView];
@@ -167,7 +167,7 @@
         _respondView.hidden = YES;
         
     } else {
-        [_commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
+        [_commentbutton setTitle:@"1 Komentar" forState:UIControlStateNormal];
         
         _respondView.hidden = NO;
         [self hideInputView];
@@ -309,7 +309,7 @@
                 [_growingtextview resignFirstResponder];
                 _respondView.hidden = NO;
                 _talkInputView.hidden = YES;
-                [_commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
+                [_commentbutton setTitle:@"1 Komentar" forState:UIControlStateNormal];
                 [self sendComment];
                 break;
             }
@@ -628,7 +628,7 @@
     //delete talk
     if(buttonIndex == 1) {
         _respondView.hidden = YES;
-        [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
+        [_commentbutton setTitle:@"0 Komentar" forState:UIControlStateNormal];
         
         [self configureDeleteCommentRestkit];
         [self doDeleteComment];

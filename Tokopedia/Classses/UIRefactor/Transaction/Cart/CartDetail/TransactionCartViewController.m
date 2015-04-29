@@ -2368,7 +2368,7 @@
 #pragma mark - Cell Delegate
 -(void)tapMoreButtonActionAtIndexPath:(NSIndexPath*)indexPath
 {
-    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
+    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
                             @"Hapus",
                             @"Edit",
                             nil];
@@ -3289,6 +3289,10 @@
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
 }
 
 - (IBAction)switchUsingSaldo:(id)sender {

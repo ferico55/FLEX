@@ -1504,4 +1504,13 @@
     return _objectManagerFormATC;
 }
 
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
+}
+
+
 @end

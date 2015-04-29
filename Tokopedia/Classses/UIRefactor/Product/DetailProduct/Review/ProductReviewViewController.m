@@ -222,7 +222,7 @@
             
             
             ReviewResponse *review_response = list.review_response;
-            [((GeneralProductReviewCell *)cell).commentbutton setTitle:([review_response.response_message isEqualToString:@"0"] ? @"0 Comment" : @"1 Comment") forState:UIControlStateNormal];
+            [((GeneralProductReviewCell *)cell).commentbutton setTitle:([review_response.response_message isEqualToString:@"0"] ? @"0 Komentar" : @"1 Komentar") forState:UIControlStateNormal];
             
             ((GeneralProductReviewCell *)cell).qualityrate.starscount = [list.review_rate_product integerValue];
             ((GeneralProductReviewCell *)cell).speedrate.starscount = [list.review_rate_speed integerValue];

@@ -11,8 +11,8 @@
 #define kTKPDMAIN_PRESENTATIONDELAY 1
 #define kTKPDMAIN_AUTHENTICATIONDIDBECOMEINVALIDNOTIFICATION @"tokopedia.kTKPDMAIN_AUTHENTICATIONDIDBECOMEINVALIDNOTIFICATION"
 
-#define kTKPD_HOMETITLEISAUTHARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
-#define kTKPD_HOMETITLEARRAY @[@"Hotlist"]
+#define kTKPD_HOMETITLEISAUTHARRAY @[@"Hot List",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
+#define kTKPD_HOMETITLEARRAY @[@"Hot List"]
 
 #define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Beranda", @"Kategori", @"Cari", @"Keranjang", @"More", @"Login"]
 #define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor blackColor]

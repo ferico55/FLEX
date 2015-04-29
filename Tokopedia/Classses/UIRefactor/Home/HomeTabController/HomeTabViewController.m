@@ -157,6 +157,7 @@
     frame.origin.x = self.view.frame.size.width/2 - 6.5f;
     frame.origin.y = 64;
     greenArrowImageView.frame = frame;
+//    [self.navigationController.navigationBar addSubview:greenArrowImageView];
     [self.view addSubview:greenArrowImageView];
 }
 

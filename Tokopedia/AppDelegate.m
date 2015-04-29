@@ -168,6 +168,11 @@
     
     [proxy setTintColor:[UIColor whiteColor]];
     [proxy setBackgroundColor:[UIColor colorWithRed:(18/255.0) green:(199/255.0) blue:(0/255.0) alpha:1]];
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
+                                      forBarPosition:UIBarPositionAny
+                                          barMetrics:UIBarMetricsDefault];
+    
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     
     NSDictionary *titleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
                                          kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,

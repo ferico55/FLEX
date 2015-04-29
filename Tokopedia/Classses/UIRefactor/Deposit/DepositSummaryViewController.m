@@ -528,8 +528,12 @@
 }
 
 #pragma mark - Memory Manage
-- (void)dealloc {
-    
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [tokopediaNetWorkManager requestCancel];
+    tokopediaNetWorkManager.delegate = nil;
+    tokopediaNetWorkManager = nil;
 }
 
 - (void)didReceiveMemoryWarning {

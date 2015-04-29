@@ -216,7 +216,7 @@
     int buttonCount = 0;
     if (_resolution.resolution_can_conversation == 1) {
         buttonCount+=1;
-        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
         [barButtonItem setTintColor:[UIColor whiteColor]];
         barButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_SEND;
         self.navigationItem.rightBarButtonItem = barButtonItem;

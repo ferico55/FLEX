@@ -150,12 +150,17 @@
     [super viewWillDisappear:animated];
 }
 
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager.delegate = nil;
+    tokopediaNetworkManager = nil;
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
