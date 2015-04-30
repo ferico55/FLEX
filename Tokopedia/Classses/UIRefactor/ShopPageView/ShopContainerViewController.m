@@ -103,9 +103,17 @@
     _settingBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting_2x.png"] withAction:@selector(settingTap:)];
     
     _messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
+
     _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
+
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
     
+    _unfavoriteBarButton.enabled = NO;
+    _favoriteBarButton.enabled = NO;
+    _messageBarButton.enabled = NO;
+    _settingBarButton.enabled = NO;
+    _addProductBarButton.enabled = NO;
+    _infoBarButton.enabled = NO;
     
     _auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
     if ([_auth count] > 0) {
@@ -555,6 +563,13 @@
                         self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
                     }
                 }
+                
+                _unfavoriteBarButton.enabled = YES;
+                _favoriteBarButton.enabled = YES;
+                _messageBarButton.enabled = YES;
+                _settingBarButton.enabled = YES;
+                _addProductBarButton.enabled = YES;
+                _infoBarButton.enabled = YES;
                 
                 TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
                 [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];

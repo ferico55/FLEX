@@ -85,15 +85,45 @@
     
     ReviewResponse *response = [data objectForKey:kTKPDREVIEW_APIREVIEWRESPONSEKEY];
     
-    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
-    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
-    UIImage * image = [UIImage imageWithData:imageData];
+//    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
+//    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
+//    UIImage * image = [UIImage imageWithData:imageData];
+//    
+//    _productimage.image = image;
     
-    _productimage.image = image;
-    NSURL * imageUserURL = [NSURL URLWithString:[data objectForKey:kTKPDREVIEW_APIREVIEWUSERIMAGEKEY]];
-    NSData * imageUserData = [NSData dataWithContentsOfURL:imageUserURL];
-    UIImage * imageUser = [UIImage imageWithData:imageUserData];
-    _userimage.image = imageUser;
+    NSURLRequest* requestProduct = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]]  cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_productimage setImageWithURLRequest:requestProduct placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        [_productimage setImage:image];
+        
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
+    
+    
+//    NSURL * imageUserURL = [NSURL URLWithString:[data objectForKey:kTKPDREVIEW_APIREVIEWUSERIMAGEKEY]];
+//    NSData * imageUserData = [NSData dataWithContentsOfURL:imageUserURL];
+//    UIImage * imageUser = [UIImage imageWithData:imageUserData];
+//    _userimage.image = imageUser;
+    
+    NSURLRequest* requestUser = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:kTKPDREVIEW_APIREVIEWUSERIMAGEKEY]]  cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_userimage setImageWithURLRequest:requestUser placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        [_userimage setImage:image];
+        
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
     
     _commentbutton.text = [response.response_message isEqualToString:@"0"] ? @"0 Komentar" : @"1 Komentar";
 

@@ -23,6 +23,7 @@
 
 #import "URLCacheController.h"
 #import "NoResultView.h"
+#import "DetailProductViewController.h"
 
 @interface InboxTalkViewController ()
 <
@@ -593,6 +594,9 @@
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:0,
                 TKPD_TALK_PRODUCT_NAME:list.talk_product_name
                 };
+    
+//    DetailProductViewController *vc = [DetailProductViewController new];
+//    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : @"11957147"};
     [self.navigationController pushViewController:vc animated:YES];
     
 }
