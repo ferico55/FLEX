@@ -10,7 +10,7 @@
 #define Tokopedia_Tkpd_h
 
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 
 //#if DEBUG
 //    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
