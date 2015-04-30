@@ -872,7 +872,7 @@
         expansionSettings.fillOnTrigger = YES;
         expansionSettings.threshold = 1.1;
         
-        CGFloat padding = 1;
+        CGFloat padding = 0;
         NSIndexPath *indexPath = ((ProductListMyShopCell*) cell).indexpath;
         ManageProductList *list = _list[indexPath.row];
         [_datainput setObject:@(list.product_id) forKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY];
@@ -888,6 +888,7 @@
             [alert show];
             return YES;
         }];
+        
         MGSwipeButton * etalase = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_ETALASE backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             // Move To Etalase
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
@@ -900,6 +901,7 @@
             [self.navigationController pushViewController:controller animated:YES];
             return YES;
         }];
+        
         MGSwipeButton * duplicate = [MGSwipeButton buttonWithTitle:BUTTON_DUPLICATE_PRODUCT backgroundColor:[UIColor colorWithRed:199.0/255 green:199.0/255.0 blue:199.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             ManageProductList *list = _list[indexPath.row];
             ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
@@ -915,6 +917,13 @@
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             return YES;
         }];
+        
+        [etalase.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+        CGRect frame = etalase.frame;
+        warehouse.frame = frame;
+        [warehouse.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+        [duplicate.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+        [delete.titleLabel setFont:FONT_GOTHAM_BOOK_13];
         
         if ([list.product_status integerValue] == PRODUCT_STATE_WAREHOUSE)
             return @[delete, duplicate, etalase];
