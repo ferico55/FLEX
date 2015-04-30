@@ -2293,18 +2293,21 @@
     }
     
     for (int i = 0; i<_isDropshipper.count; i++) {
-        if (_isDropshipper[i]) {
+        if ([_isDropshipper[i] boolValue] == 1) {
             if ([_senderNameDropshipper[i] isEqualToString:@""] || _senderNameDropshipper[i]==nil) {
                 isValid = NO;
-                [messageError addObject:ERRORMESSAGE_SENDER_NAME_NILL];
+                if (![messageError containsObject:ERRORMESSAGE_SENDER_NAME_NILL])
+                    [messageError addObject:ERRORMESSAGE_SENDER_NAME_NILL];
             }
             if ([_senderPhoneDropshipper[i] isEqualToString:@""] || _senderPhoneDropshipper[i]==nil) {
                 isValid = NO;
-                [messageError addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
+                if (![messageError containsObject:ERRORMESSAGE_SENDER_PHONE_NILL])
+                    [messageError addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
             }
             else if (((NSString*)_senderPhoneDropshipper[i]).length < 6) {
                 isValid = NO;
-                [messageError addObject:@"Nomor Telephon Harus Lebih Dari 6 Karakter"];
+                if (![messageError containsObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT])
+                    [messageError addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
             }
         }
     }

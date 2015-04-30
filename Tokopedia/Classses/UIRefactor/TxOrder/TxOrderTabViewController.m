@@ -85,6 +85,7 @@
     [super viewWillDisappear:animated];
     
     self.title = @" ";
+
 }
 
 - (IBAction)tap:(UISegmentedControl*)sender {
