@@ -944,7 +944,6 @@
 {
     if(alertView.tag == CTagDeleteAlert) {
         if(buttonIndex == 1) {
-            self.navigationController.view.userInteractionEnabled = NO;
             [[self getNetworkManager:CTagDeleteMessage] doRequest];
         }
         else {
@@ -1024,7 +1023,6 @@
         [_list removeObjectAtIndex:selectedIndexPath.row];
         [_table reloadData];
         selectedIndexPath = nil;
-        self.navigationController.view.userInteractionEnabled = YES;
     }
 }
 
@@ -1046,7 +1044,6 @@
         selectedIndexPath = nil;
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedDeleteMessage] delegate:self];
         [stickyAlertView show];
-        self.navigationController.view.userInteractionEnabled = YES;
     }
 }
 @end
