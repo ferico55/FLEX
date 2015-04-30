@@ -9,38 +9,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Talk/ProductTalkViewController.m"
-            timestampString = "451558252.667358"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "894"
-            endingLineNumber = "894"
-            landmarkName = "-insertList:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Talk/ProductTalkViewController.m"
-            timestampString = "451558774.288261"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "808"
-            endingLineNumber = "808"
-            landmarkName = "-setHeaderData:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
             timestampString = "451880008.977332"
             startingColumnNumber = "9223372036854775807"
@@ -95,8 +63,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "275"
             endingLineNumber = "275"
-            landmarkName = "@implementation HomeTabViewController"
-            landmarkType = "3">
+            landmarkName = "-tapWindowBar"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -281,13 +249,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/MainViewController.m"
-            timestampString = "451985717.712194"
+            filePath = "Tokopedia/Classses/UIRefactor/Talk/ProductTalkViewController.m"
+            timestampString = "452059657.547196"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "401"
-            endingLineNumber = "401"
-            landmarkName = "-applicationLogin:"
+            startingLineNumber = "1023"
+            endingLineNumber = "1023"
+            landmarkName = "-actionAfterRequest:withOperation:withTag:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -297,29 +265,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/MainViewController.m"
-            timestampString = "451985720.905023"
+            filePath = "Tokopedia/Classses/UIRefactor/Talk/ProductTalkViewController.m"
+            timestampString = "452059669.591556"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "445"
-            endingLineNumber = "445"
-            landmarkName = "-updateTabBarMore:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Home/ProdukFeed/ProductFeedViewController.m"
-            timestampString = "451985780.305295"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "-viewWillAppear:"
+            startingLineNumber = "1043"
+            endingLineNumber = "1043"
+            landmarkName = "-actionAfterFailRequestMaxTries:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

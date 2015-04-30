@@ -175,6 +175,7 @@ typedef enum
 #define ACTION_ADD_PRODUCT_SUBMIT @"add_product_submit"
 #define ACTION_EDIT_PRODUCT_KEY @"edit_product"
 #define ACTION_MOVE_TO_WAREHOUSE @"move_to_warehouse"
+#define ACTION_EDIT_ETALASE @"edit_etalase"
 #define kTKPDDETAIL_APIDELETEPRODUCTKEY @"delete_product"
 #define ACTION_UPLOAD_PRODUCT_IMAGE @"upload_product_image"
 #define ACTION_DELETE_IMAGE @"delete_product_pic"
