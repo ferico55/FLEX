@@ -25,4 +25,6 @@
 
 @property (strong, nonatomic) NSDictionary* data;
 
+@property NSInteger tag;
+
 @end

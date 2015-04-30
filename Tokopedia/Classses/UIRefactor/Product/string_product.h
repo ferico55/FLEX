@@ -168,9 +168,11 @@ typedef enum
 #define API_WHOLESALE_QUANTITY_MAXIMUM_KEY @"qty_max_"
 #define API_WHOLESALE_PRICE @"prd_prc_"
 
-#define BUTTON_DELETE_TITLE @"Delete"
-#define BUTTON_EDIT_PRODUCT @"  Edit  "
-#define BUTTON_DUPLICATE_PRODUCT @" Salin "
+#define BUTTON_DELETE_TITLE @"Hapus"
+#define BUTTON_MOVE_TO_WAREHOUSE @"Gudangkan"
+#define BUTTON_MOVE_TO_ETALASE @"Pindah ke\nEtalase"
+#define BUTTON_EDIT_PRODUCT @" Edit "
+#define BUTTON_DUPLICATE_PRODUCT @"Salin"
 #define BUTTON_MOVE_ETALASE @"Ubah\nEtalase"
 #define BUTTON_MOVETO_WAREHOUSE_TITLE @"Pindah ke\nGudang"
 
