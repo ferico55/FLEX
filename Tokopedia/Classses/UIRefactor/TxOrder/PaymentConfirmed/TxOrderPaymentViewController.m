@@ -113,29 +113,7 @@
     
     self.title = _isConfirmed?TITLE_PAYMENT_EDIT_CONFIRMATION_FORM:TITLE_PAYMENT_CONFIRMATION_FORM;
     
-    if (_isConfirmed) {
-        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [backBarButtonItem setTintColor:[UIColor whiteColor]];
-        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-        self.navigationItem.backBarButtonItem = backBarButtonItem;
-        
-        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [backBarButtonItem setTintColor:[UIColor whiteColor]];
-        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-        self.navigationItem.rightBarButtonItem = backBarButtonItem;
-    }
-    else
-    {
-        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tidak" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [backBarButtonItem setTintColor:[UIColor whiteColor]];
-        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-        self.navigationItem.leftBarButtonItem = backBarButtonItem;
-        
-        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ya" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [backBarButtonItem setTintColor:[UIColor whiteColor]];
-        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-        self.navigationItem.rightBarButtonItem = backBarButtonItem;
-    }
+
     
     [_infoNominalLabel setCustomAttributedText:_infoNominalLabel.text];
     [_infoConfirmation setCustomAttributedText:_infoConfirmation.text];
@@ -168,6 +146,30 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    if (_isConfirmed) {
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
+        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+        self.navigationItem.backBarButtonItem = backBarButtonItem;
+        
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
+        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+        self.navigationItem.rightBarButtonItem = backBarButtonItem;
+    }
+    else
+    {
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tidak" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
+        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+        self.navigationItem.leftBarButtonItem = backBarButtonItem;
+        
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ya" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
+        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+        self.navigationItem.rightBarButtonItem = backBarButtonItem;
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -176,6 +178,12 @@
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)didReceiveMemoryWarning {
