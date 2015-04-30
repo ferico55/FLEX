@@ -25,6 +25,7 @@
 #import "WishListObjectResult.h"
 #import "WishListObject.h"
 #import "GeneralAction.h"
+#import "ShopSettings.h"
 #import "RKObjectManager.h"
 
 #import "StarsRateView.h"
@@ -63,6 +64,11 @@
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
 
+#import "MyShopEtalaseFilterViewController.h"
+
+#import "RequestMoveTo.h"
+#import "EtalaseList.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -85,7 +91,10 @@ UITableViewDataSource,
 DetailProductInfoCellDelegate,
 DetailProductOtherViewDelegate,
 LoginViewDelegate,
-TokopediaNetworkManagerDelegate
+TokopediaNetworkManagerDelegate,
+MyShopEtalaseFilterViewControllerDelegate,
+RequestMoveToDelegate,
+UIAlertViewDelegate
 >
 {
     NSMutableDictionary *_datatalk;
@@ -130,6 +139,12 @@ TokopediaNetworkManagerDelegate
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     NSOperationQueue *operationWishList;
     
+    __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
+    __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
+    
+    __weak RKObjectManager *_objectmanagerActionMoveToEtalase;
+    __weak RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
+    
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
@@ -144,6 +159,8 @@ TokopediaNetworkManagerDelegate
     UIImage *imgWishList, *imgUnWishList;
     UIActivityIndicatorView *activityIndicator;
     UIFont *fontDesc;
+    
+    RequestMoveTo *_requestMoveTo;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -237,6 +254,9 @@ TokopediaNetworkManagerDelegate
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
     
+    _requestMoveTo =[RequestMoveTo new];
+    _requestMoveTo.delegate = self;
+    
     tokopediaNetworkManagerFavorite = [TokopediaNetworkManager new];
     tokopediaNetworkManagerFavorite.delegate = self;
     tokopediaNetworkManagerFavorite.tagRequest = CTagFavorite;
@@ -306,6 +326,10 @@ TokopediaNetworkManagerDelegate
     UITapGestureRecognizer *tapShareGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionShare:)];
     [_shareClickView addGestureRecognizer:tapShareGes];
     [_shareClickView setUserInteractionEnabled:YES];
+    
+    //Add observer
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(refreshRequest:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
 }
 
 
@@ -401,6 +425,13 @@ TokopediaNetworkManagerDelegate
                 nav.navigationBar.translucent = NO;
                 
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+            case 23:
+            {
+                // Move To warehouse
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                [alert show];
                 break;
             }
         }
@@ -584,7 +615,7 @@ TokopediaNetworkManagerDelegate
     }
 }
 
--(IBAction)gesture:(id)sender
+-(IBAction)gestureMoveToWarehouse:(id)sender
 {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
@@ -596,8 +627,62 @@ TokopediaNetworkManagerDelegate
                 break;
             }
             case UIGestureRecognizerStateEnded: {
-                // go to shop
+                // Move To warehouse
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                [alert show];
+                break;
+            }
+        }
+    }
+}
+
+-(IBAction)gestureMoveToEtalase:(id)sender
+{
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                // Move To Etalase
+                MyShopEtalaseFilterViewController *controller = [MyShopEtalaseFilterViewController new];
+                controller.delegate = self;
+                controller.data = @{kTKPD_SHOPIDKEY:_product.result.shop_info.shop_id,
+                                    DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT)};
+                [self.navigationController pushViewController:controller animated:YES];
+                break;
+            }
+        }
+    }
+}
+
+-(IBAction)gestureSetting:(id)sender
+{
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
+                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.result.product.product_id,
+                                       kTKPD_AUTHKEY : _auth?:@{},
+                                       DATA_PRODUCT_DETAIL_KEY : _product.result.product,
+                                       DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
+                                       DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
+                                       };
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editProductVC];
+                nav.navigationBar.translucent = NO;
                 
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
         }
@@ -881,7 +966,10 @@ TokopediaNetworkManagerDelegate
         button.hidden = NO;
         [button setTitle:breadcrumb.department_name forState:UIControlStateNormal];
     }
-    [cell.etalasebutton setTitle:_product.result.product.product_etalase?:@"-" forState:UIControlStateNormal];
+    if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE)
+        [cell.etalasebutton setTitle:@"-" forState:UIControlStateNormal];
+    else
+        [cell.etalasebutton setTitle:_product.result.product.product_etalase?:@"-" forState:UIControlStateNormal];
     cell.etalasebutton.hidden = NO;
 }
 
@@ -1433,6 +1521,8 @@ TokopediaNetworkManagerDelegate
     
     tokopediaOtherProduct.delegate = nil;
     [tokopediaOtherProduct requestCancel];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1519,19 +1609,24 @@ TokopediaNetworkManagerDelegate
             
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
             if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
-                NSBundle* bundle = [NSBundle mainBundle];
-                UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_setting" ofType:@"png"]];
-                
+                //MyShop
                 UIBarButtonItem *barbutton;
-                if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-                    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-                    barbutton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-                }
-                else
-                    barbutton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+                barbutton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting.png"] withAction:@selector(gestureSetting:)];
                 
                 [barbutton setTag:22];
-                self.navigationItem.rightBarButtonItem = barbutton;
+
+                UIBarButtonItem *barbutton1;
+                if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE) {
+                    barbutton1 = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_move_etalase.png"] withAction:@selector(gestureMoveToEtalase:)];
+                    [barbutton1 setTag:23];
+                }
+                else
+                {
+                    barbutton1 = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_move_gudang.png"] withAction:@selector(gestureMoveToWarehouse:)];
+                    [barbutton1 setTag:24];
+                }
+                
+                self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
                 [btnWishList removeFromSuperview];
             } else {
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
@@ -2254,7 +2349,10 @@ TokopediaNetworkManagerDelegate
     [self.navigationController pushViewController:container animated:YES];
 }
 
-
+-(void)refreshRequest:(NSNotification*)notification
+{
+    [tokopediaNetworkManager doRequest];
+}
 
 #pragma mark - GalleryPhoto Delegate
 - (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
@@ -2294,6 +2392,32 @@ TokopediaNetworkManagerDelegate
 
 - (void)handleEditCaptionButtonTouch:(id)sender {
     // here we could implement some code to change the caption for a stored image
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [_requestMoveTo requestActionMoveToWarehouse:_product.result.product.product_id];
+    }
+}
+
+-(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    EtalaseList *etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
+    [_requestMoveTo requestActionMoveToEtalase:_product.result.product.product_id etalaseID:etalase.etalase_id etalaseName:etalase.etalase_name];
+}
+
+
+-(void)successMoveToWithMessages:(NSArray *)successMessages
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successMessages delegate:self];
+    [alert show];
+}
+
+-(void)failedMoveToWithMessages:(NSArray *)errorMessages
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
 }
 
 @end

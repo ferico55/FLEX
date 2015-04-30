@@ -93,8 +93,9 @@
     NSInteger gateway = [_gateway integerValue];
     if ( gateway == TYPE_GATEWAY_CLICK_BCA)
     {
+        [_act startAnimating];
         if ([request.URL.absoluteString isEqualToString:_BCAParam.callback]) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             [_delegate shouldDoRequestBCAClickPay];
             return NO;
         }
@@ -120,7 +121,7 @@
     {
         //if ([request.URL.absoluteString rangeOfString:@"ws-new"].location != NSNotFound) {
             if ([request.URL.absoluteString rangeOfString:@"http://www.tokopedia.com/ws-new/tx-payment-emoney.pl?id="].location != NSNotFound) {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 [_delegate shouldDoRequestEMoney:YES];
             }
         //}
@@ -174,7 +175,7 @@
 {
     if (buttonIndex == 1) {
         [_delegate refreshCartAfterCancelPayment];
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

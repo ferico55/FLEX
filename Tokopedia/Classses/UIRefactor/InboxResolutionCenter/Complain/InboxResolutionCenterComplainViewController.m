@@ -568,6 +568,7 @@
                 }
                 
                 _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
+                _tableView.tableFooterView = nil;
             }
             else
             {
@@ -580,7 +581,6 @@
     }
     [_refreshControl endRefreshing];
     [_act stopAnimating];
-    _tableView.tableFooterView = nil;
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag

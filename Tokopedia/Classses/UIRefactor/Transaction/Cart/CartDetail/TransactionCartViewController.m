@@ -1444,7 +1444,11 @@
                             vc.cartDetail = _cartSummary;
                             vc.emoney_code = cart.result.transaction.emoney_code;
                             vc.delegate = self;
-                            [self.navigationController pushViewController:vc animated:YES];
+                            UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                            navigationController.navigationBar.translucent = NO;
+                            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                         }
                             break;
                         default:
@@ -2088,7 +2092,11 @@
                     vc.token = _cartSummary.token;
                     vc.cartDetail = _cartSummary;
                     vc.delegate = self;
-                    [self.navigationController pushViewController:vc animated:YES];
+                    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                     break;
                 }
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
@@ -2189,7 +2197,10 @@
     NSInteger indexProduct = indexPath.row;
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
-    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    
+    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    }
 }
 
 -(void)didTapProductAtIndexPath:(NSIndexPath *)indexPath
@@ -2198,7 +2209,11 @@
     NSInteger indexProduct = indexPath.row;
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
-    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    
+    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+
+        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    }
 }
 
 #pragma mark - Methods
@@ -2615,7 +2630,7 @@
         [_dataInput setObject:textField.text forKey:API_PASSWORD_KEY];
     }
     
-    _checkoutButton.enabled = isValid;
+    //_checkoutButton.enabled = isValid;
 
     [self adjustDropshipperListParam];
     return YES;
@@ -2699,7 +2714,7 @@
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(-22.0, 0.0, kbSize.height, 0.0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     _tableView.contentInset = contentInsets;
     _tableView.scrollIndicatorInsets = contentInsets;
     
@@ -2709,7 +2724,7 @@
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(22.0, 0.0, 0.0, 0.0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut

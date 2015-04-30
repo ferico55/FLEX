@@ -109,18 +109,6 @@
             [_etalaseList addObject:etalase];
         }        
     }
-    
-    NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
-    
-    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
-    if (!selectedEtalase) {
-        _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
-    }
-    else
-    {
-        _selectedEtalase = selectedEtalase;
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -443,7 +431,21 @@
                 
                 if (_etalaseList.count >0) {
                     _isnodata = NO;
+                    
+                    NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
+                    
+                    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+                    if (!selectedEtalase) {
+                        _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
+                    }
+                    else
+                    {
+                        _selectedEtalase = selectedEtalase;
+                    }
+                    
                     [_table reloadData];
+                    
                 }
             }
         }

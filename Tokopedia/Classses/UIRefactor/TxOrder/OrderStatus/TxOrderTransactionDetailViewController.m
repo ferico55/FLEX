@@ -231,6 +231,7 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
+    _transactionDateLabel.text = _order.order_detail.detail_order_date;
     _subtotalLabel.text = _order.order_detail.detail_product_price_idr;
     _insurancePriceLabel.text = _order.order_detail.detail_insurance_price_idr;
     _shipmentPriceLabel.text = _order.order_detail.detail_shipping_price_idr;
