@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#define kTKPDHOTLISTCELL_IDENTIFIER @"HotListCellIdentifier"
+#define kTKPDHOTLISTCELL_IDENTIFIER @"HotlistCellIdentifier"
 
 #import <UIKit/UIKit.h>
 

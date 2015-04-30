@@ -8,7 +8,6 @@
 
 #import "GeneralTalkCell.h"
 #import "ProductTalkDetailViewController.h"
-#import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
@@ -170,34 +169,9 @@
             {
                 TalkList *talkList = (TalkList *)_data;
 
-                TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                NSDictionary* auth = [secureStorage keychainDictionary];
-                auth = [auth mutableCopy];
-
-                NSMutableArray *viewcontrollers = [NSMutableArray new];
-    
-                /** create new view controller **/
-                ProfileBiodataViewController *v = [ProfileBiodataViewController new];
-                [viewcontrollers addObject:v];
-                
-                ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
-                v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(talkList.talk_user_id),
-                            kTKPDDETAIL_APISHOPIDKEY:talkList.talk_shop_id,
-                            kTKPD_AUTHKEY:auth};
-                [viewcontrollers addObject:v1];
-                
-                ProfileContactViewController *v2 = [ProfileContactViewController new];
-                [viewcontrollers addObject:v2];
-
-                TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
-                tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(talkList.talk_user_id),
-                                   kTKPD_AUTHKEY:auth};
-                [tapnavcon setViewControllers:viewcontrollers animated:YES];
-                [tapnavcon setSelectedIndex:0];
-                
                 UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
-                
-                [nav.navigationController pushViewController:tapnavcon animated:YES];
+                NSString *userId = [NSString stringWithFormat:@"%d", talkList.talk_user_id];
+                [_navigateController navigateToProfileFromViewController:nav withUserID:userId];
                 break;
             }
                 

@@ -32,10 +32,10 @@
     _operationQueue = [NSOperationQueue new];
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim"
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(tapBar:)];
-    doneButton.tintColor = [UIColor blackColor];
+    doneButton.tintColor = [UIColor whiteColor];
     doneButton.tag = 2;
     self.navigationItem.rightBarButtonItem = doneButton;
 

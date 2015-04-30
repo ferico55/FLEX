@@ -43,6 +43,7 @@
     _contentSubview.layer.shadowOffset = CGSizeMake(0, 0.3);
     _contentSubview.layer.shadowOpacity = 0.2;
     _contentSubview.layer.shadowRadius = 0.5;
+    _contentSubview.layer.shadowPath = [UIBezierPath bezierPathWithRect:_contentSubview.bounds].CGPath;
 }
 
 

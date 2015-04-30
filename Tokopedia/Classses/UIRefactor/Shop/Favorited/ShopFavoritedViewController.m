@@ -14,10 +14,11 @@
 
 #import "TKPDTabProfileNavigationController.h"
 #import "ProfileFavoriteShopViewController.h"
-#import "ProfileBiodataViewController.h"
 #import "ProfileContactViewController.h"
 
 #import "URLCacheController.h"
+#import "UserContainerViewController.h"
+#import "NavigateViewController.h"
 
 @interface ShopFavoritedViewController ()<UITableViewDataSource, UITableViewDelegate, ShopFavoritedCellDelegate>
 {
@@ -443,24 +444,9 @@
     NSArray *favs = _list;
     ListFavorited *fav = favs[indexpath.row];
     NSInteger userid = fav.user_id;
-    NSMutableArray *viewcontrollers = [NSMutableArray new];
-    /** create new view controller **/
-    ProfileBiodataViewController *v = [ProfileBiodataViewController new];
-    [viewcontrollers addObject:v];
-    ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
-    v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(userid),
-                kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]),
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    [viewcontrollers addObject:v1];
-    ProfileContactViewController *v2 = [ProfileContactViewController new];
-    [viewcontrollers addObject:v2];
-    TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
-    tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(userid),
-                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    [tapnavcon setViewControllers:viewcontrollers animated:YES];
-    [tapnavcon setSelectedIndex:0];
     
-    [self.navigationController pushViewController:tapnavcon animated:YES];
+    NavigateViewController *navigateController = [NavigateViewController new];
+    [navigateController navigateToProfileFromViewController:self withUserID:[NSString stringWithFormat:@"%ld", (long)userid]];
     
 }
 

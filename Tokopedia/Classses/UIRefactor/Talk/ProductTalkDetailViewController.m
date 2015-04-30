@@ -20,7 +20,7 @@
 #import "DetailProductViewController.h"
 #import "LoginViewController.h"
 
-#import "ProfileBiodataViewController.h"
+//#import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
@@ -31,6 +31,7 @@
 
 #import "ProductTalkViewController.h"
 #import "InboxTalkViewController.h"
+#import "UserContainerViewController.h"
 
 #import "stringrestkit.h"
 #import "string_more.h"
@@ -431,7 +432,7 @@
     
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
     _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
-    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
     NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
@@ -749,7 +750,14 @@
 }
 
 - (void)tapUser {
-    [_navigateController navigateToProfileFromViewController:self withUserID:[_data objectForKey:@"user_id"]];
+    NSString *userId = [_data objectForKey:@"user_id"];
+    if(!userId) {
+        userId = [_data objectForKey:@"talk_user_id"];
+    }
+    
+    [_navigateController navigateToProfileFromViewController:self withUserID:userId];
+
+
 }
 
 -(IBAction)tap:(id)sender {
@@ -849,27 +857,29 @@
             }
                 
             case 12 : {
-                NSMutableArray *viewControllers = [NSMutableArray new];
+//                NSMutableArray *viewControllers = [NSMutableArray new];
+//                
+//                ProfileBiodataViewController *biodataController = [ProfileBiodataViewController new];
+//                [viewControllers addObject:biodataController];
+//                
+//                ProfileFavoriteShopViewController *favoriteController = [ProfileFavoriteShopViewController new];
+//                favoriteController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
+//                                            MORE_SHOP_ID:[_auth objectForKey:MORE_SHOP_ID],
+//                                            MORE_AUTH:_auth?:[NSNull null]};
+//                [viewControllers addObject:favoriteController];
+//                
+//                ProfileContactViewController *contactController = [ProfileContactViewController new];
+//                [viewControllers addObject:contactController];
+//                
+//                TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
+//                profileController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
+//                                           MORE_AUTH:_auth?:[NSNull null]};
+//                [profileController setViewControllers:viewControllers animated:YES];
+//                [profileController setSelectedIndex:0];
+//                
+//                [self.navigationController pushViewController:profileController animated:YES];
                 
-                ProfileBiodataViewController *biodataController = [ProfileBiodataViewController new];
-                [viewControllers addObject:biodataController];
-                
-                ProfileFavoriteShopViewController *favoriteController = [ProfileFavoriteShopViewController new];
-                favoriteController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
-                                            MORE_SHOP_ID:[_auth objectForKey:MORE_SHOP_ID],
-                                            MORE_AUTH:_auth?:[NSNull null]};
-                [viewControllers addObject:favoriteController];
-                
-                ProfileContactViewController *contactController = [ProfileContactViewController new];
-                [viewControllers addObject:contactController];
-                
-                TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
-                profileController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
-                                           MORE_AUTH:_auth?:[NSNull null]};
-                [profileController setViewControllers:viewControllers animated:YES];
-                [profileController setSelectedIndex:0];
-                
-                [self.navigationController pushViewController:profileController animated:YES];
+                [self tapUser];
                 
                 break;
             }
@@ -1150,7 +1160,7 @@
     
     _requestDeleteComment = [_objectDeleteCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
     
-    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Comment", (unsigned long)[_list count]];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Komentar", (unsigned long)[_list count]];
     
     [_requestDeleteComment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessDeleteComment:mappingResult withOperation:operation];
@@ -1232,7 +1242,7 @@
 {
     NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
     [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Comment",(unsigned long)[_list count]];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Komentar",(unsigned long)[_list count]];
     [_table reloadData];
 }
 

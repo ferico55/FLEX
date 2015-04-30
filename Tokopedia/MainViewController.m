@@ -101,12 +101,18 @@ typedef enum TagRequest {
     _userManager = [UserAuthentificationManager new];
 }
 
+
 #pragma mark - Memory Management
--(void)dealloc
-{
+-(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_logoutRequestManager requestCancel];
+    _logoutRequestManager.delegate = nil;
+    _logoutRequestManager = nil;
 }
+
+
+
 
 - (void)didReceiveMemoryWarning
 {

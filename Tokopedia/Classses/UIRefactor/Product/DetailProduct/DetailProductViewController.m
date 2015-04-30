@@ -1518,6 +1518,7 @@ UIAlertViewDelegate
     
     tokopediaNetworkManager.delegate = nil;
     [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager = nil;
     
     tokopediaOtherProduct.delegate = nil;
     [tokopediaOtherProduct requestCancel];

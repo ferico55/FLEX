@@ -49,7 +49,7 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Nsd-Xa-ZQO">
                                 <rect key="frame" x="131" y="49" width="37" height="37"/>
                             </activityIndicatorView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="7411DC85-FBB6-445D-A02B-B9B08FA2FCFD" translatesAutoresizingMaskIntoConstraints="NO" id="s7f-1u-P6T" userLabel="Toped Icon">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="F4B8DF46-E5F7-49BC-80FC-60B5853233F2" translatesAutoresizingMaskIntoConstraints="NO" id="s7f-1u-P6T" userLabel="Toped Icon">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="141"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
@@ -113,7 +113,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="7411DC85-FBB6-445D-A02B-B9B08FA2FCFD" width="30" height="30">
+        <image name="F4B8DF46-E5F7-49BC-80FC-60B5853233F2" width="30" height="30">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

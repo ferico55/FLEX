@@ -260,6 +260,8 @@
     
     [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
+    [nc addObserver:self selector:@selector(reloadShop) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
+    
 }
 
 
@@ -631,13 +633,27 @@
 }
 
 - (IBAction)messageTap:(id)sender {
-    if (_auth) {
+    if(_auth!=nil && _auth.count>0) {
         SendMessageViewController *messageController = [SendMessageViewController new];
         messageController.data = @{
                                    kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                                    kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
                                    };
         [self.navigationController pushViewController:messageController animated:YES];
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
 
@@ -852,6 +868,12 @@
     NSDictionary *tempAuth = [secureStorage keychainDictionary];
     _auth = [tempAuth mutableCopy];
     
+    [self configureRestKit];
+    [self request];
+}
+
+#pragma mark - Reload Shop
+- (void)reloadShop {
     [self configureRestKit];
     [self request];
 }

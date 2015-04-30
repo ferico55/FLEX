@@ -133,6 +133,11 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [_networkManager requestCancel];
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -268,9 +273,15 @@
 
 
 #pragma mark - Memory Management
--(void)dealloc{
+- (void)dealloc
+{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
 }
+
 
 #pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

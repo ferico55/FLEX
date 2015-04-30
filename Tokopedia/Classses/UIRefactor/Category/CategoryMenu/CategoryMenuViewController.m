@@ -62,7 +62,7 @@
 
     _isBeingPresented = self.navigationController.isBeingPresented;
     if (_isBeingPresented) {
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(tap:)];

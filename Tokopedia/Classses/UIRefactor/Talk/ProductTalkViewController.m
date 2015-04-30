@@ -270,7 +270,7 @@
             }
             
             NSString *commentstring = [list.talk_total_comment?:0 stringByAppendingFormat:
-                                 @" Comment"];
+                                 @" Komentar"];
             [((GeneralTalkCell*)cell).commentbutton setTitle:commentstring forState:UIControlStateNormal];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -466,10 +466,16 @@
     
 }
 
+
 #pragma mark - Memory Management
-- (void)dealloc{
+-(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [tokopediaNetworkManagerDeleteMessage requestCancel];
+    tokopediaNetworkManagerDeleteMessage.delegate = nil;
+    tokopediaNetworkManagerDeleteMessage = nil;
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -729,6 +735,7 @@
                 TKPD_TALK_CREATE_TIME:list.talk_create_time?:0,
                 TKPD_TALK_USER_NAME:list.talk_user_name?:0,
                 TKPD_TALK_ID:list.talk_id?:0,
+                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id],
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
@@ -784,8 +791,8 @@
                                  };
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY] attributes:attributes];
     
-    _productnamelabel.attributedText = attributedText;
-    _productnamelabel.numberOfLines = 3;
+    _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    _productnamelabel.numberOfLines = 1;
     
     _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
     _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
