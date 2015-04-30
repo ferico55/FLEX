@@ -65,7 +65,6 @@
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     NSString *product_id;
-    NSMutableDictionary *_auth;
     UserAuthentificationManager *_userManager;
     ReportViewController *_reportController;
     NoResultView *_noResultView;
@@ -842,7 +841,9 @@
 
 - (void) updateTalk:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
-    
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    auth = [auth mutableCopy];
    
     
     if([userinfo objectForKey:@"talk_id"]) {
@@ -854,6 +855,7 @@
             list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
             list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
             list.disable_comment = NO;
+            list.talk_user_id = [[auth objectForKey:kTKPD_USERIDKEY] intValue];
         }
         else {
             TalkList *list = _list[row];
@@ -864,11 +866,13 @@
                 list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
                 list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
                 list.disable_comment = NO;
+                list.talk_user_id = [[auth objectForKey:kTKPD_USERIDKEY] intValue];
             }
             else {
                 list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
                 list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
                 list.disable_comment = NO;
+                list.talk_user_id = [[auth objectForKey:kTKPD_USERIDKEY] intValue];
             }
         }
     } else {
@@ -890,6 +894,7 @@
     list.talk_user_name = [auth objectForKey:kTKPD_FULLNAMEKEY];
     list.talk_total_comment = kTKPD_NULLCOMMENTKEY;
     list.talk_user_image = [auth objectForKey:kTKPD_USERIMAGEKEY];
+    list.talk_user_id = [[auth objectForKey:kTKPD_USERIDKEY] intValue];
     
     NSDate *today = [NSDate date];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
