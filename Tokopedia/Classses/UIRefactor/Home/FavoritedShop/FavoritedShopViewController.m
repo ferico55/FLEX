@@ -314,8 +314,8 @@
                                      [NSIndexPath indexPathForRow:indexpath.row inSection:0], nil
                                      ];
         
-//        [self configureRestkitFav];
-//        [self pressFavoriteAction:list.shop_id withIndexPath:indexpath];
+        [self configureRestkitFav];
+        [self pressFavoriteAction:list.shop_id withIndexPath:indexpath];
         
         [_table beginUpdates];
         [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationRight];
