@@ -561,7 +561,7 @@
             _shop = stats;
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
-                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+                if ([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
                     self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
                     _addProductBarButton.enabled = YES;
                     _settingBarButton.enabled = YES;
