@@ -15,6 +15,7 @@
 #import "DepositResult.h"
 #import "string_deposit.h"
 #import "string_more.h"
+#import "WebViewController.h"
 
 
 #import "SalesViewController.h"
@@ -457,19 +458,15 @@
             [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         } else if(indexPath.row == 1) {
-            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 568)];
-            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_HELP_URL]]];
-            UIViewController *controller = [UIViewController new];
-            controller.title = kTKPDMORE_HELP_TITLE;
-            [controller.view addSubview:webView];
-            [self.navigationController pushViewController:controller animated:YES];
+            WebViewController *webViewController = [WebViewController new];
+            webViewController.strURL = kTKPDMORE_HELP_URL;
+            webViewController.strTitle = kTKPDMORE_HELP_TITLE;
+            [self.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 2) {
-            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
-            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_PRIVACY_URL]]];
-            UIViewController *controller = [UIViewController new];
-            controller.title = kTKPDMORE_PRIVACY_TITLE;
-            [controller.view addSubview:webView];
-            [self.navigationController pushViewController:controller animated:YES];
+            WebViewController *webViewController = [WebViewController new];
+            webViewController.strURL = kTKPDMORE_PRIVACY_URL;
+            webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
+            [self.navigationController pushViewController:webViewController animated:YES];
         }
     }
     

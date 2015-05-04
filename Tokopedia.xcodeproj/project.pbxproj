@@ -14,6 +14,8 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		85C04BA21AF70ED3008ABC2F /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C04BA01AF70ED3008ABC2F /* WebViewController.m */; };
+		85C04BA31AF70ED3008ABC2F /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C04BA11AF70ED3008ABC2F /* WebViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1411,6 +1413,9 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		85C04B9F1AF70ED3008ABC2F /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		85C04BA01AF70ED3008ABC2F /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		85C04BA11AF70ED3008ABC2F /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -5811,6 +5816,9 @@
 				FC8573661AF1CE34005C9FB0 /* SalesViewController.h */,
 				FC8573671AF1CE34005C9FB0 /* SalesViewController.m */,
 				FC8573681AF1CE34005C9FB0 /* string_more.h */,
+				85C04B9F1AF70ED3008ABC2F /* WebViewController.h */,
+				85C04BA01AF70ED3008ABC2F /* WebViewController.m */,
+				85C04BA11AF70ED3008ABC2F /* WebViewController.xib */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -8366,6 +8374,7 @@
 				FC857A401AF1CE36005C9FB0 /* MyShopEtalaseViewController.xib in Resources */,
 				FC857C1F1AF1CE36005C9FB0 /* icon_home_active@2x (deleted c926c3cec83acdad76005f4c6bce9d3c).png in Resources */,
 				FC8579A31AF1CE36005C9FB0 /* ContactUsViewController.xib in Resources */,
+				85C04BA31AF70ED3008ABC2F /* WebViewController.xib in Resources */,
 				FC857BB71AF1CE36005C9FB0 /* icon_21@2x.png in Resources */,
 				FC857CA71AF1CE36005C9FB0 /* icon_category_active.png in Resources */,
 				FC857C301AF1CE36005C9FB0 /* icon_love_active@2x.png in Resources */,
@@ -9205,6 +9214,7 @@
 				FC85781B1AF1CE36005C9FB0 /* UIImage+ImageEffects.m in Sources */,
 				FC8579571AF1CE36005C9FB0 /* WishListObject.m in Sources */,
 				FC8578BF1AF1CE36005C9FB0 /* PrivacyFormPrivacy.m in Sources */,
+				85C04BA21AF70ED3008ABC2F /* WebViewController.m in Sources */,
 				FC857A351AF1CE36005C9FB0 /* MyShopAddressViewController.m in Sources */,
 				FC8579851AF1CE36005C9FB0 /* RequestGenerateHost.m in Sources */,
 				FC857B721AF1CE36005C9FB0 /* TxOrderConfirmedButtonCell.m in Sources */,

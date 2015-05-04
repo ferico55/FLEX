@@ -358,9 +358,9 @@ UIAlertViewDelegate
     _promoteNetworkManager.delegate = self;
     
     self.hidesBottomBarWhenPushed = YES;
-    UIEdgeInsets inset = _table.contentInset;
-    inset.bottom += 20;
-    _table.contentInset = inset;
+//    UIEdgeInsets inset = _table.contentInset;
+//    inset.bottom += 20;
+//    _table.contentInset = inset;
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     
