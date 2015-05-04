@@ -103,13 +103,6 @@
 }
 
 - (void)initBarButton {
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(tap:)];
-    barButtonItem.tag = 1;
-    [self.navigationItem setBackBarButtonItem:barButtonItem];
-    
     UIBarButtonItem *barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     
     if([_userManager isLogin]) {
