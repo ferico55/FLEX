@@ -1801,12 +1801,14 @@ UIAlertViewDelegate
         case 13:
         {
             // Etalase
-            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            if(_product.result.product.product_etalase_id != nil) {
+                ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
             
-            container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
                                kTKPD_AUTHKEY:_auth?:[NSNull null],
                                @"product_etalase_id" : _product.result.product.product_etalase_id};
-            [self.navigationController pushViewController:container animated:YES];
+                [self.navigationController pushViewController:container animated:YES];
+            }
             
             break;
         }
@@ -2186,6 +2188,12 @@ UIAlertViewDelegate
                     [[_otherproductviews objectAtIndex:i] removeFromSuperview];
                 [_otherproductviews removeAllObjects];
                 [_otherProductObj addObjectsFromArray: otherProduct.result.other_product];
+                
+                if(_otherProductObj.count == 0) {
+                    lblOtherProductTitle.hidden = YES;
+                    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, lblOtherProductTitle.frame.origin.y);
+                    _table.tableFooterView = _shopinformationview;
+                }
                 [self setOtherProducts];
             }
         }
