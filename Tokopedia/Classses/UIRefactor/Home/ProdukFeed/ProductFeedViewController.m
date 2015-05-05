@@ -100,7 +100,8 @@ typedef enum TagRequest {
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
     /** create new **/
     _product = [NSMutableArray new];

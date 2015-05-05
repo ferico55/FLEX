@@ -32,6 +32,7 @@
     
     LoadingView *loadingView;
     UIRefreshControl *refreshControl;
+    NoResultView *_noResult;
 }
 @synthesize delegate;
 
@@ -43,7 +44,9 @@
     tokoPediaNetworkManager = [TokopediaNetworkManager new];
     tokoPediaNetworkManager.delegate = self;
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
     loadingView = [LoadingView new];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
     /** create new **/
     product = [NSMutableArray new];
@@ -348,7 +351,7 @@
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
     [self requestsuccess:successResult withOperation:operation];
-    [tblWishList reloadData];
+//    [tblWishList reloadData];
     isRefreshView = NO;
     [refreshControl endRefreshing];
 
@@ -400,12 +403,12 @@
 {
     [self cancel];
     /** clear object **/
-    [product removeAllObjects];
+//    [product removeAllObjects];
     page = 1;
     requestCount = 0;
     isRefreshView = YES;
     
-    [tblWishList reloadData];
+//    [tblWishList reloadData];
     /** request data **/
     [self configureRestKit];
     [self loadData];
@@ -450,25 +453,35 @@
         
         if (status)
         {
-            [product addObjectsFromArray:wishListObject.result.list];
+//            [product addObjectsFromArray:wishListObject.result.list];
+//            
+//            if (product.count > 0) {
+//                isNoData = NO;
+//                uriNext =  wishListObject.result.paging.uri_next;
+//                page = [[tokoPediaNetworkManager splitUriToPage:uriNext] intValue];
+//            }
+            if(page == 1) {
+                product = [wishListObject.result.list mutableCopy];
+            } else {
+                [product addObjectsFromArray: wishListObject.result.list];
+            }
             
-            if (product.count > 0) {
+            if (product.count >0) {
                 isNoData = NO;
                 uriNext =  wishListObject.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:uriNext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
-                    
-                    [queries setObject:value forKey:key];
-                }
-                
-                page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] intValue];
+                page = [[tokoPediaNetworkManager splitUriToPage:uriNext] intValue];
+            } else {
+                isNoData = YES;
+                tblWishList.tableFooterView = _noResult;
+            }
+            
+            
+            
+            if(refreshControl.isRefreshing) {
+                [refreshControl endRefreshing];
+                [tblWishList reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            } else  {
+                [tblWishList reloadData];
             }
         }
         else
