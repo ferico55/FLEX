@@ -95,7 +95,7 @@
     
     _table.contentInset = UIEdgeInsetsMake(-34, 0, 53, 0);
     
-    if (_shop.count > 0) {
+    if (_shop.count + _goldshop.count > 0) {
         _isnodata = NO;
     }
     
@@ -170,11 +170,7 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//    if (_shop.count > 0 && _goldshop.count > 0) {
-        return 2;
-//    } else {
-//        return 1;
-//    }
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -182,26 +178,14 @@
     NSInteger rows = 0;
     if (section == 0) {
         // Normal shops
-        NSArray *shops = _shopdictionary[@"a"];
-        rows = [shops count];
+        NSArray *goldShops = _shopdictionary[@"a"];
+        rows = [goldShops count];
     } else {
         // Gold shops
-        NSArray *goldShops = _shopdictionary[@"b"];
-        rows = [goldShops count];
+        NSArray *shops = _shopdictionary[@"b"];
+        rows = [shops count];
     }
     return rows;
-    
-    
-    // What is this? (this causes a crash)
-//    if (tableView.numberOfSections == 2) {
-    if(_shopdictionary.count == 0)
-        return 0;
-
-    NSArray *keys = [_shopdictionary allKeys];
-    return [[_shopdictionary objectForKey:[keys objectAtIndex:section]] count];
-//    } else {
-//        return _shop.count;
-//    }
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -331,10 +315,14 @@
         [self configureRestkitFav];
         [self pressFavoriteAction:list.shop_id withIndexPath:indexpath];
         
+        _shopdictionary[@"a"] = _goldshop;
+        _shopdictionary[@"b"] = _shop;
+        
         [_table beginUpdates];
         [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationRight];
         [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationFade];
         [_table endUpdates];
+        
         
         if(_goldshop.count < 2) {
             NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
@@ -452,7 +440,7 @@
             
             _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
             
-            if (_shop.count >0) {
+            if (_shop.count + _goldshop.count > 0) {
                 _isnodata = NO;
                 _urinext =  favoritedshop.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
