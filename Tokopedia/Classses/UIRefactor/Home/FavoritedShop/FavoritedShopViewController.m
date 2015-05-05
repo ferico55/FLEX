@@ -95,7 +95,7 @@
     
     _table.contentInset = UIEdgeInsetsMake(-34, 0, 53, 0);
     
-    if (_shop.count > 0) {
+    if (_shop.count + _goldshop.count > 0) {
         _isnodata = NO;
     }
     
@@ -170,24 +170,22 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//    if (_shop.count > 0 && _goldshop.count > 0) {
-        return 2;
-//    } else {
-//        return 1;
-//    }
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    if (tableView.numberOfSections == 2) {
-    if(_shopdictionary.count == 0)
-        return 0;
-
-    NSArray *keys = [_shopdictionary allKeys];
-    return [[_shopdictionary objectForKey:[keys objectAtIndex:section]] count];
-//    } else {
-//        return _shop.count;
-//    }
+    NSInteger rows = 0;
+    if (section == 0) {
+        // Normal shops
+        NSArray *goldShops = _shopdictionary[@"a"];
+        rows = [goldShops count];
+    } else {
+        // Gold shops
+        NSArray *shops = _shopdictionary[@"b"];
+        rows = [shops count];
+    }
+    return rows;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -229,7 +227,7 @@
             UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
             thumb.image = nil;
             
-            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop@2x.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [thumb setImage:image animated:YES];
@@ -317,10 +315,14 @@
         [self configureRestkitFav];
         [self pressFavoriteAction:list.shop_id withIndexPath:indexpath];
         
+        _shopdictionary[@"a"] = _goldshop;
+        _shopdictionary[@"b"] = _shop;
+        
         [_table beginUpdates];
         [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationRight];
         [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationFade];
         [_table endUpdates];
+        
         
         if(_goldshop.count < 2) {
             NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
@@ -438,7 +440,7 @@
             
             _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
             
-            if (_shop.count >0) {
+            if (_shop.count + _goldshop.count > 0) {
                 _isnodata = NO;
                 _urinext =  favoritedshop.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];

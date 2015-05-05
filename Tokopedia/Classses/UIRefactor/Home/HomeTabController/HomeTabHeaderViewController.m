@@ -27,10 +27,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSwipeHomeTab:)
                                                  name:@"didSwipeHomeTab" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setStateLogout)
-                                                 name:@"setStateLogout" object:nil];
 }
 
 - (void)initButton {
@@ -92,7 +88,6 @@
     [super viewWillAppear:animated];
     
     _userManager = [UserAuthentificationManager new];
-    [self initButton];
     if([[_userManager getUserId] isEqualToString:@"0"]) {
         _isAbleToSwipe = NO;
         [self removeButton];
@@ -101,17 +96,6 @@
 
 
     }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-#pragma mark - Scroll Delegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
 }
 
 #pragma mark _ Tap Action
@@ -201,15 +185,5 @@
 }
 
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
