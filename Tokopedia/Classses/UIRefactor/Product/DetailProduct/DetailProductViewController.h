@@ -11,7 +11,7 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController : UIViewController
 {
-    IBOutlet UIView *viewTableContentHeader, *viewContentDescToko;
+    IBOutlet UIView *viewTableContentHeader, *viewContentDescToko, *viewTidakAdaData;
     IBOutlet UIButton *btnWishList, *btnShare;
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;

@@ -1588,6 +1588,16 @@ UIAlertViewDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
+        if(_product.result == nil) {
+            [self.view addSubview:viewTidakAdaData];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:viewTidakAdaData attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:0.5 constant:0]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:viewTidakAdaData attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:0.5 constant:0]];
+            
+            _act.hidden = YES;
+            [_act stopAnimating];
+            return;
+        }
+        
         if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
             [self initViewTokoTutup];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, [lblDescTokoTutup sizeThatFits:CGSizeMake(lblDescTokoTutup.bounds.size.width, 9999)].height+16+viewTableContentHeader.bounds.size.height);
