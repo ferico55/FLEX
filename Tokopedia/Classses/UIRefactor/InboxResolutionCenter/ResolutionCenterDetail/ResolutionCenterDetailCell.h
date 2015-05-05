@@ -20,11 +20,7 @@
 
 @interface ResolutionCenterDetailCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<ResolutionCenterDetailCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<ResolutionCenterDetailCellDelegate> delegate;
-#endif
 
 @property (weak, nonatomic) IBOutlet UILabel *buyerNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeRemainingLabel;

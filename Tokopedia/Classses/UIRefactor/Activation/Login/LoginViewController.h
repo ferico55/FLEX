@@ -18,7 +18,7 @@
 
 @property (strong,nonatomic) NSDictionary *data;
 @property BOOL isPresentedViewController;
-@property (strong, nonatomic) id<LoginViewDelegate> delegate;
-@property (strong, nonatomic) id redirectViewController;
+@property (weak, nonatomic) id<LoginViewDelegate> delegate;
+@property (weak, nonatomic) id redirectViewController;
 
 @end

@@ -19,12 +19,7 @@
 
 @interface TxOrderStatusDetailViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<TxOrderStatusDetailViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TxOrderStatusDetailViewControllerDelegate> delegate;
-#endif
-
 @property (nonatomic , strong) TxOrderStatusList *order;
 
 @property (nonatomic) BOOL isComplain;

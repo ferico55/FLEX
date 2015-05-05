@@ -20,7 +20,7 @@
 
 @interface SubmitShipmentConfirmationViewController : UIViewController
 
-@property (strong, nonatomic) id<SubmitShipmentConfirmationDelegate> delegate;
+@property (weak, nonatomic) id<SubmitShipmentConfirmationDelegate> delegate;
 @property (strong, nonatomic) NSArray *shipmentCouriers;
 
 @end

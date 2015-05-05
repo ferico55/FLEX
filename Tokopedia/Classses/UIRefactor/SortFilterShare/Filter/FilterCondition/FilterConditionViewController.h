@@ -19,12 +19,8 @@
 #pragma mark - Filter Condition View Controller
 @interface FilterConditionViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<FilterConditionViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<FilterConditionViewControllerDelegate> delegate;
-#endif
 
+@property (nonatomic, weak) IBOutlet id<FilterConditionViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSDictionary *data;
 
 @end

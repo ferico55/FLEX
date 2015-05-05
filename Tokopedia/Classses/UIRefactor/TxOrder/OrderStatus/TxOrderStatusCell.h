@@ -28,12 +28,8 @@
 
 @interface TxOrderStatusCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<TxOrderStatusCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TxOrderStatusCellDelegate> delegate;
-#endif
 
+@property (nonatomic, weak) IBOutlet id<TxOrderStatusCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UILabel *invoiceNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *invoiceDateLabel;
 

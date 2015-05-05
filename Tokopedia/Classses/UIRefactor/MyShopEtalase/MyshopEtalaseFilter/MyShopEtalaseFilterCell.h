@@ -19,11 +19,8 @@
 
 @interface MyShopEtalaseFilterCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<MyShopEtalaseFilterCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<MyShopEtalaseFilterCellDelegate> delegate;
-#endif
 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;

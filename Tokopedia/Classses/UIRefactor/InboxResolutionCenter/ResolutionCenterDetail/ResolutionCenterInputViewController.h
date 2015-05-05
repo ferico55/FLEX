@@ -19,11 +19,9 @@
 
 @interface ResolutionCenterInputViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<ResolutionCenterInputViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<ResolutionCenterInputViewControllerDelegate> delegate;
-#endif
+
 
 @property (nonatomic) ResolutionDetailConversation *resolution;
 

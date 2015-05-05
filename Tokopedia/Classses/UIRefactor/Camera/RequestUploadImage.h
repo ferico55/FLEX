@@ -23,11 +23,8 @@
 
 @interface RequestUploadImage : NSObject
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<RequestUploadImageDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<RequestUploadImageDelegate> delegate;
-#endif
 
 -(void)configureRestkitUploadPhoto;
 - (void)requestActionUploadPhoto;

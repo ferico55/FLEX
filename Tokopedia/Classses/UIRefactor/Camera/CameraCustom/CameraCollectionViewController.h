@@ -19,11 +19,8 @@
 @end
 
 @interface CameraCollectionViewController : UIViewController
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TOKOPEDIA_MINIMUMIOSVERSION
+
 @property (weak, nonatomic) id<CameraCollectionViewControllerDelegate> delegate;
-#else
-@property (assign, nonatomic) id<CameraCollectionViewControllerDelegate> delegate;
-#endif
 
 @property (nonatomic, strong) ALAssetsGroup *assetsGroup;
 

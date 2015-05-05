@@ -19,11 +19,9 @@
 
 @interface MyShopPaymentCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<MyShopPaymentCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<MyShopPaymentCellDelegate> delegate;
-#endif
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;

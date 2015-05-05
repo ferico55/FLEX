@@ -20,11 +20,8 @@
 #pragma mark - Filter Location View Cell
 @interface FilterConditionCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<FilterConditionCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<FilterConditionCellDelegate> delegate;
-#endif
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;

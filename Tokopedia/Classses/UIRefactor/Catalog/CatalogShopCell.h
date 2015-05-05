@@ -35,7 +35,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *masking;
 
-@property (strong, nonatomic) id<CatalogShopDelegate> delegate;
+@property (weak, nonatomic) id<CatalogShopDelegate> delegate;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *stars;

@@ -20,11 +20,8 @@
 #pragma mark - Hotlist Result Cell
 @interface GeneralProductCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<GeneralProductCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<GeneralProductCellDelegate> delegate;
-#endif
+
 
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *viewcell;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumb;

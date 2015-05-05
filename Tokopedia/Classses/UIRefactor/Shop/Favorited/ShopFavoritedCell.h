@@ -18,11 +18,7 @@
 
 @interface ShopFavoritedCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<ShopFavoritedCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<ShopFavoritedCellDelegate> delegate;
-#endif
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 @property (weak, nonatomic) IBOutlet UILabel *label;

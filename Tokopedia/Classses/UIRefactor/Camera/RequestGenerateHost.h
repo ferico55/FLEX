@@ -28,11 +28,9 @@
 
 @interface RequestGenerateHost : NSObject
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<GenerateHostDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<GenerateHostDelegate> delegate;
-#endif
+
 
 @property NSString *prodct_id;
 

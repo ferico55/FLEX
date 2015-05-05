@@ -16,11 +16,9 @@
 
 @interface ShopEditStatusViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<ShopEditStatusViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<ShopEditStatusViewControllerDelegate> delegate;
-#endif
+
 
 @property (strong, nonatomic) NSDictionary *data;
 

@@ -18,11 +18,8 @@
 
 @interface TransactionCartHeaderView : UIView
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<TransactionCartHeaderViewDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TransactionCartHeaderViewDelegate> delegate;
-#endif
 
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;

@@ -319,7 +319,7 @@ typedef enum TagRequest {
     _requestcount = 0;
     _isrefreshview = YES;
     
-    [_table reloadData];
+//    [_table reloadData];
     /** request data **/
     [_networkManager doRequest];
 }
@@ -454,14 +454,10 @@ typedef enum TagRequest {
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
+        [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else  {
+        [_table reloadData];
     }
-    
-//    [_table reloadData];
-//    if(_page == 1) {
-        [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
-//    } else {
-//        [_table reloadData];
-//    }
 
 }
 

@@ -18,11 +18,8 @@
 
 @interface SettingAddressViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<SettingAddressViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<SettingAddressViewControllerDelegate> delegate;
-#endif
 
 @property(strong, nonatomic) NSDictionary *data;
 @property (nonatomic, strong) NSMutableArray *list;

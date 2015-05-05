@@ -48,7 +48,7 @@
     
 }
 
-@property (assign, nonatomic) id<TokopediaNetworkManagerDelegate> delegate;
+@property (weak, nonatomic) id<TokopediaNetworkManagerDelegate> delegate;
 @property (nonatomic) int tagRequest;
 
 - (void)doRequest;

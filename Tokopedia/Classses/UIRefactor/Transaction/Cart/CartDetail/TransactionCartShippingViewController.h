@@ -20,11 +20,9 @@
 
 @interface TransactionCartShippingViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<TransactionCartShippingViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TransactionCartShippingViewControllerDelegate> delegate;
-#endif
+
 
 @property (nonatomic) NSInteger indexPage;
 @property (strong,nonatomic)NSDictionary *data;

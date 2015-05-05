@@ -16,11 +16,9 @@
 
 @interface CameraController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TOKOPEDIA_MINIMUMIOSVERSION
+
 @property (weak, nonatomic) id<CameraControllerDelegate> delegate;
-#else
-@property (assign, nonatomic) id<CameraControllerDelegate> delegate;
-#endif
+
 @property (nonatomic, strong) NSDictionary *data;
 @property (nonatomic, strong) UIImage* snappedImage;
 @property NSInteger tag;

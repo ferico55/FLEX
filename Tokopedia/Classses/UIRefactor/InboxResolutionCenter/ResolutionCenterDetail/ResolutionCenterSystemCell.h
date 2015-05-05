@@ -18,11 +18,8 @@
 
 @interface ResolutionCenterSystemCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<ResolutionCenterSystemCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<ResolutionCenterSystemCellDelegate> delegate;
-#endif
 
 @property (weak, nonatomic) IBOutlet UILabel *buyerSellerLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeDateLabel;

@@ -16,11 +16,8 @@
 
 @interface SettingBankDetailViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<SettingBankDetailViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<SettingBankDetailViewControllerDelegate> delegate;
-#endif
 
 @property (strong, nonatomic) NSDictionary *data;
 

@@ -16,11 +16,8 @@
 
 @interface TxOrderPaymentConfirmationSuccessViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<SuccessPaymentConfirmationDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<SuccessPaymentConfirmationDelegate> delegate;
-#endif
 
 @property (nonatomic, strong) NSString *totalPaymentValue;
 @property (nonatomic, strong) NSString *methodName;

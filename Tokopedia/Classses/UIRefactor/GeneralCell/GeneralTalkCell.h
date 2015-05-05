@@ -30,11 +30,9 @@
 #pragma mark - General Talk Cell
 @interface GeneralTalkCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<GeneralTalkCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<GeneralTalkCellDelegate> delegate;
-#endif
+
 
 @property (strong, nonatomic) IBOutlet UIView *subContentView;
 

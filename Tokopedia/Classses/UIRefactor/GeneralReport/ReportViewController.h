@@ -18,6 +18,6 @@
 
 @interface ReportViewController : UIViewController
 
-@property (assign, nonatomic) id<ReportViewControllerDelegate> delegate;
+@property (weak, nonatomic) id<ReportViewControllerDelegate> delegate;
 
 @end

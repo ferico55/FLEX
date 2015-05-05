@@ -20,11 +20,8 @@
 
 @interface TxOrderConfirmedButtonCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<TxOrderConfirmedButtonCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TxOrderConfirmedButtonCellDelegate> delegate;
-#endif
 
 @property (strong,nonatomic) NSIndexPath *indexPath;
 

@@ -18,6 +18,6 @@
 @interface FilterCatalogViewController : UITableViewController
 
 @property (strong, nonatomic) Catalog *catalog;
-@property (strong, nonatomic) id<FilterCatalogDelegate> delegate;
+@property (weak, nonatomic) id<FilterCatalogDelegate> delegate;
 
 @end

@@ -17,7 +17,7 @@
 @property (nonatomic, retain) IBOutlet UIView *view;
 @property (nonatomic, retain) IBOutlet UIButton *buttonRetry;
 
-@property (assign, nonatomic) id<LoadingViewDelegate> delegate;
+@property (weak, nonatomic) id<LoadingViewDelegate> delegate;
 
 
 - (void)setNoResultText:(NSString*)string;

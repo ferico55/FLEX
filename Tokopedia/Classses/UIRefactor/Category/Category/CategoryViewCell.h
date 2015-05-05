@@ -17,12 +17,7 @@
 
 @interface CategoryViewCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<CategoryViewCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<CategoryViewCellDelegate> delegate;
-#endif
-
 
 @property (strong,nonatomic) NSDictionary *data;
 

@@ -20,12 +20,8 @@
 #pragma mark - SettingAddress Location Cell
 @interface AddressCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<AddressCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<AddressCellDelegate> delegate;
-#endif
 
+@property (nonatomic, weak) IBOutlet id<AddressCellDelegate> delegate;
 @property (strong,nonatomic) NSDictionary *data;
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
 

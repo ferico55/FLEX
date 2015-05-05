@@ -19,11 +19,8 @@
 
 @interface ProductTalkCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<ProductTalkCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<ProductTalkCellDeletgate> delegate;
-#endif
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 @property (weak, nonatomic) IBOutlet UILabel *namelabel;

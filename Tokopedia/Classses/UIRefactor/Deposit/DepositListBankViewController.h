@@ -17,12 +17,8 @@
 
 @interface DepositListBankViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<DepositListBankViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<DepositListBankViewControllerDelegate> delegate;
-#endif
 
+@property (nonatomic, weak) IBOutlet id<DepositListBankViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSDictionary *data;
 @property (nonatomic, strong) NSArray *listBankAccount;
 
