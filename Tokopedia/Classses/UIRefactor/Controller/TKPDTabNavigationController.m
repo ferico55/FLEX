@@ -245,6 +245,9 @@
 		selectframe = _tabbar.frame;
 		
 		UIViewController* deselect = _selectedViewController;
+        if (selectedIndex < 0) {
+            selectedIndex = 0;
+        }
 		UIViewController* select = _viewControllers[selectedIndex];
 		
 		UIEdgeInsets inset = [self contentInsetForContainerController];
