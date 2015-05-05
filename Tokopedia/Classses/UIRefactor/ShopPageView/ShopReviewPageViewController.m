@@ -513,6 +513,9 @@ UIAlertViewDelegate>
     else{
         NSError* error;
         NSData *data = [NSData dataWithContentsOfFile:_cachePath];
+        if(data == nil)
+            return;
+        
         id parsedData = [RKMIMETypeSerialization objectFromData:data
                                                        MIMEType:RKMIMETypeJSON
                                                           error:&error];
