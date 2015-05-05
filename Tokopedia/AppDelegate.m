@@ -99,8 +99,8 @@
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary* application = [defaults dictionaryForKey:kTKPD_APPLICATIONKEY];
     
-    BOOL installed = [[application objectForKey:kTKPD_INSTALLEDKEY]boolValue];
-    if (!installed) {
+    BOOL isInstalled = [[application objectForKey:kTKPD_INSTALLEDKEY]boolValue];
+    if (!isInstalled) {
         NSMutableDictionary* mutable = (application != nil) ? [application mutableCopy] : [[NSMutableDictionary alloc] initWithCapacity:1];
         [mutable setValue:@(YES) forKey:kTKPD_INSTALLEDKEY];
         [defaults setObject:mutable forKey:kTKPD_APPLICATIONKEY];
