@@ -257,10 +257,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (_shop.count > 0) {
-        return 33;
-    } else {
-        return 0;
+    if(section == 0) {
+        if (_goldshop.count > 0) {
+            return 33;
+        } else {
+            return 0;
+        }
+    }
+    else {
+        if (_shop.count > 0) {
+            return 33;
+        } else {
+            return 0;
+        }
     }
 }
 
