@@ -2292,6 +2292,26 @@
         }
     }
     
+    for (int i = 0; i<_isDropshipper.count; i++) {
+        if ([_isDropshipper[i] boolValue] == 1) {
+            if ([_senderNameDropshipper[i] isEqualToString:@""] || _senderNameDropshipper[i]==nil) {
+                isValid = NO;
+                if (![messageError containsObject:ERRORMESSAGE_SENDER_NAME_NILL])
+                    [messageError addObject:ERRORMESSAGE_SENDER_NAME_NILL];
+            }
+            if ([_senderPhoneDropshipper[i] isEqualToString:@""] || _senderPhoneDropshipper[i]==nil) {
+                isValid = NO;
+                if (![messageError containsObject:ERRORMESSAGE_SENDER_PHONE_NILL])
+                    [messageError addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
+            }
+            else if (((NSString*)_senderPhoneDropshipper[i]).length < 6) {
+                isValid = NO;
+                if (![messageError containsObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT])
+                    [messageError addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
+            }
+        }
+    }
+    
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messageError delegate:self];
         [alert show];
@@ -2383,14 +2403,29 @@
 #pragma mark - Cell Delegate
 -(void)tapMoreButtonActionAtIndexPath:(NSIndexPath*)indexPath
 {
-    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
-                            @"Hapus",
-                            @"Edit",
-                            nil];
-    popup.tag = 1;
-    [popup showInView:[UIApplication sharedApplication].keyWindow];
-    [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
+    TransactionCartList *list = _list[indexPath.section];
+    NSInteger indexProduct = indexPath.row;
+    NSArray *listProducts = list.cart_products;
+    ProductDetail *product = listProducts[indexProduct];
     
+    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+        UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
+                                @"Hapus",
+                                @"Edit",
+                                nil];
+        popup.tag = 1;
+        [popup showInView:[UIApplication sharedApplication].keyWindow];
+        [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
+    }
+    else
+    {
+        UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
+                                @"Hapus",
+                                nil];
+        popup.tag = 1;
+        [popup showInView:[UIApplication sharedApplication].keyWindow];
+        [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
+    }
 }
 
 -(void)GeneralSwitchCell:(GeneralSwitchCell *)cell withIndexPath:(NSIndexPath *)indexPath
@@ -2476,11 +2511,13 @@
         }
         case 1:
         {
-            TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
-            editViewController.data = _dataInput;
-            editViewController.delegate = self;
-            [self.navigationController pushViewController:editViewController animated:YES];
+            if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+                TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
+                [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+                editViewController.data = _dataInput;
+                editViewController.delegate = self;
+                [self.navigationController pushViewController:editViewController animated:YES];
+            }
             break;
         }
         default:
@@ -2607,19 +2644,9 @@
     if (textField.tag > 0 )
     {
         [_senderNameDropshipper replaceObjectAtIndex:textField.tag-1 withObject:textField.text];
-        if (textField.text.length < 1) {
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Nama Pengirim Harus diisi"] delegate: self];
-            [alert show];
-            isValid = NO;
-        }
     }
     else if (textField.tag < 0)
     {
-        if (textField.text.length < 6) {
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Nomor Telephon Harus Lebih Dari 6 Karakter"] delegate: self];
-            [alert show];
-            isValid = NO;
-        }
         [_senderPhoneDropshipper replaceObjectAtIndex:-textField.tag-1 withObject:textField.text];
     }
     if (textField == _saldoTokopediaAmountTextField) {

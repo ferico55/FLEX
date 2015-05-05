@@ -229,7 +229,7 @@
             UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
             thumb.image = nil;
             
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop@2x.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [thumb setImage:image animated:YES];

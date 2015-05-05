@@ -615,6 +615,24 @@ UIAlertViewDelegate
     }
 }
 
+-(IBAction)gesture:(id)sender
+{
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                
+            }
+        }
+    }
+}
+
 -(IBAction)gestureMoveToWarehouse:(id)sender
 {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
