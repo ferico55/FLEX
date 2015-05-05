@@ -65,7 +65,7 @@
     self.navigationController.navigationBarHidden = NO;
     
     self.title = @"Etalase";
-
+    
     _etalaseList = [NSMutableArray new];
     _selecteddata = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -107,19 +107,7 @@
             etalase.etalase_name = [kTKPDMANAGEPRODUCT_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
             etalase.etalase_id = [kTKPDMANAGEPRODUCT_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASEIDKEY];
             [_etalaseList addObject:etalase];
-        }        
-    }
-    
-    NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
-    
-    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
-    if (!selectedEtalase) {
-        _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
-    }
-    else
-    {
-        _selectedEtalase = selectedEtalase;
+        }
     }
 }
 
@@ -181,7 +169,7 @@
                 NSIndexPath *indexpath =[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 EtalaseList *etalase = _etalaseList[indexpath.row];
                 NSDictionary *userinfo = @{DATA_ETALASE_KEY:etalase,kTKPDDETAILETALASE_DATAINDEXPATHKEY:indexpath};
-
+                
                 if ([etalase.etalase_id integerValue] == DATA_ADD_NEW_ETALASE_ID) {
                     MyShopEtalaseEditViewController *newEtalaseVC = [MyShopEtalaseEditViewController new];
                     newEtalaseVC.delegate = self;
@@ -205,7 +193,7 @@
                         [self.navigationController popViewControllerAnimated:YES];
                     }
                 }
-
+                
                 break;
             }
             default:
@@ -231,7 +219,7 @@
     if (!_isnodata) {
         
         NSString *cellid = kTKPDMYSHOPETALASEFILTER_IDENTIFIER;
-		
+        
         cell = (MyShopEtalaseFilterCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if (cell == nil) {
             cell = [MyShopEtalaseFilterCell newcell];
@@ -239,8 +227,8 @@
         }
         if (_etalaseList.count > indexPath.row) {
             EtalaseList *list =_etalaseList[indexPath.row];
-
-            if ([list.etalase_id integerValue] == [_selectedEtalase.etalase_id integerValue]) {
+            
+            if ([list.etalase_name isEqualToString:_selectedEtalase.etalase_name]) {
                 ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
             }
             else
@@ -251,22 +239,22 @@
             ((MyShopEtalaseFilterCell*)cell).label.text = list.etalase_name;
             ((MyShopEtalaseFilterCell*)cell).indexpath = indexPath;
         }
-	}
-	return cell;
+    }
+    return cell;
 }
 
 #pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
+    if (_isnodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
-	}
+    if (row == indexPath.row) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        
+    }
 }
 
 #pragma mark - Request + Mapping Etalase
@@ -318,16 +306,16 @@
     
     _requestcount ++;
     
-	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
                             kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                             };
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:[param encrypt]];
     
-	[_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    [_cachecontroller getFileModificationDate];
+    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+    if (_timeinterval > _cachecontroller.URLCacheInterval) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
         
@@ -346,7 +334,7 @@
         }];
         [_operationQueue addOperation:_request];
         
-
+        
     }
     else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -355,7 +343,7 @@
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
         [self requestfailure:nil];
-	}
+    }
 }
 
 
@@ -373,7 +361,7 @@
         [_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data
         [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-    
+        
         [self requestprocess:object];
     }
 }
@@ -439,11 +427,25 @@
                     etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
                     etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
                     [_etalaseList addObject:etalase];
-                } 
+                }
                 
                 if (_etalaseList.count >0) {
                     _isnodata = NO;
+                    
+                    NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
+                    
+                    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+                    if (!selectedEtalase) {
+                        _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
+                    }
+                    else
+                    {
+                        _selectedEtalase = selectedEtalase;
+                    }
+                    
                     [_table reloadData];
+                    
                 }
             }
         }

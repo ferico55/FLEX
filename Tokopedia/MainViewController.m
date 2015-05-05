@@ -84,14 +84,29 @@ typedef enum TagRequest {
     _logoutRequestManager.delegate = self;
     _logoutRequestManager.tagRequest = LogoutTag;
     
-    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
-    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(applicationLogin:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil];
-    [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
-    
-    [center addObserver:self selector:@selector(redirectNotification:) name:@"redirectNotification" object:nil];
+    //app launch delay presentation
 
-    [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
+    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
+
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    
+    [center addObserver:self
+               selector:@selector(applicationLogin:)
+                   name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(applicationlogout:)
+                   name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(redirectNotification:)
+                   name:@"redirectNotification" object:nil];
+
+    [center addObserver:self
+               selector:@selector(updateTabBarMore:)
+                   name:UPDATE_TABBAR object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -507,6 +522,7 @@ typedef enum TagRequest {
                                                         object:nil
                                                       userInfo:@{}];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
 }

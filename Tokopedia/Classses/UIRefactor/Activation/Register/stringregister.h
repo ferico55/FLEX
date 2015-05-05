@@ -11,7 +11,7 @@
 
 #define ERRORMESSAGE_NULL_FULL_NAME @"Nama lengkap harus diisi."
 #define ERRORMESSAGE_INVALID_FULL_NAME  @"Nama lengkap hanya boleh diisi dengan huruf a-z."
-#define ERRORMESSAGE_NULL_PHONE__NUMBER @"Nomer telepon harus diisi."
+#define ERRORMESSAGE_NULL_PHONE__NUMBER @"Nomor telepon harus diisi."
 #define ERRORMESSAGE_NULL_EMAIL @"Email harus diisi."
 #define ERRORMESSAGE_NULL_GENDER @"Gender harus diisi."
 #define ERRORMESSAGE_NULL_BIRTHDATE @"Tanggal lahir harus diisi."

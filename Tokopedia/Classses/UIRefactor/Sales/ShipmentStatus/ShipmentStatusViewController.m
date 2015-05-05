@@ -188,21 +188,12 @@
     
     if ((order.order_detail.detail_order_status == ORDER_DELIVERED ||
          order.order_detail.detail_order_status == ORDER_DELIVERED_DUE_DATE) &&
-         order.order_deadline.finish_deadline_date) {
+         order.order_deadline.deadline_finish_day_left) {
         cell.dateFinishLabel.hidden = NO;
         cell.dateFinishLabel.text = @"Selesai Otomatis";
         cell.dateFinishLabel.font = [UIFont fontWithName:@"GothamBook" size:9];
         cell.finishLabel.hidden = NO;
-        if ([order.order_deadline.finish_deadline_date isEqualToString:@"0"]) {
-            cell.finishLabel.text = @"Besok";
-        } else if ([order.order_deadline.finish_deadline_date isEqualToString:@"1"]) {
-            cell.finishLabel.text = @"Hari Ini";
-        } else if ([order.order_deadline.finish_deadline_date integerValue] > 1) {
-            cell.finishLabel.text = [NSString stringWithFormat:@"%@ Hari Lagi",
-                                     order.order_deadline.finish_deadline_date];
-        } else {
-            cell.finishLabel.text = @"Expired";
-        }
+        cell.finishLabel.text = order.order_deadline.deadline_finish_date;        
     }
     
     return cell;
@@ -335,6 +326,7 @@
     [orderDeadlineMapping addAttributeMappingsFromDictionary:@{
                                                                API_DEADLINE_PROCESS_DAY_LEFT  : API_DEADLINE_PROCESS_DAY_LEFT,
                                                                API_DEADLINE_SHIPPING_DAY_LEFT : API_DEADLINE_SHIPPING_DAY_LEFT,
+                                                               API_DEADLINE_FINISH_DAY_LEFT   : API_DEADLINE_FINISH_DAY_LEFT,
                                                                API_DEADLINE_FINISH_DATE       : API_DEADLINE_FINISH_DATE,
                                                                }];
     

@@ -72,7 +72,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -566,6 +566,12 @@
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
 
+                if (_list.count == 0) {
+                    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                    NoResultView *resultView = [[NoResultView alloc] initWithFrame:frame];
+                    _table.tableFooterView = resultView;
+                }
+                
             }
         }
         else{
