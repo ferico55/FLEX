@@ -71,9 +71,6 @@
     Product *_product;
     ShopSettings *_setting;
     
-    NSOperationQueue *_operationQueue;
-    NSOperationQueue *_operationQueueUploadImage;
-    
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     
@@ -108,6 +105,8 @@
     
     TokopediaNetworkManager *_networkManager;
     ProductAddEditDetailViewController *_detailVC;
+    
+    UIAlertView *_alertProcessing;
 }
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -163,8 +162,6 @@
     _section2TableViewCell = [NSArray sortViewsWithTagInArray:_section2TableViewCell];
     _section3TableViewCell = [NSArray sortViewsWithTagInArray:_section3TableViewCell];
     
-    _operationQueue = [NSOperationQueue new];
-    _operationQueueUploadImage = [NSOperationQueue new];
     _dataInput = [NSMutableDictionary new];
     _errorMessage = [NSMutableArray new];
     _cacheconnection = [URLCacheConnection new];
@@ -177,6 +174,10 @@
     _productImageURLs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _productImageIDs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _productImageDesc = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
+    
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _networkManager.delegate = self;
     
     _isBeingPresented = self.navigationController.isBeingPresented;
     if (_isBeingPresented) {
@@ -233,6 +234,8 @@
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
         _productNameTextField.enabled = NO;
     }
+    
+    [_productImageScrollView addSubview:_productImagesContentView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -261,14 +264,13 @@
         default:
             break;
     }
+    
 }
 
 -(void)viewDidLayoutSubviews
 {
-    [super viewDidLayoutSubviews];
-    
-    _networkManager.delegate = self;
     _productImageScrollView.contentSize = _productImagesContentView.frame.size;
+    
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -277,32 +279,23 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    
     self.title = @"";
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-}
-
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     _networkManager = nil;
     
     _detailVC = nil;
 }
-
-
-
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
@@ -767,14 +760,22 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-    [self enableButtonBeforeSuccessRequest:NO];
+    if (tag == TAG_REQUEST_DETAIL) {
+        [self enableButtonBeforeSuccessRequest:NO];
+        
+        _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+        [_alertProcessing show];
+    }
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    [self enableButtonBeforeSuccessRequest:YES];
-    [self requestsuccess:successResult withOperation:operation];
-    
+    if (tag == TAG_REQUEST_DETAIL) {
+        [self enableButtonBeforeSuccessRequest:YES];
+        [self requestsuccess:successResult withOperation:operation];
+        
+        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+    }
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -900,9 +901,6 @@
     else
     {
         _isFinishedUploadImages = YES;
-        
-        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-
     }
     
     
@@ -968,7 +966,7 @@
         [timer invalidate];
     }];
     
-    [_operationQueue addOperation:_requestDeleteImage];
+    [[[RKObjectManager sharedClient]operationQueue] addOperation:_requestDeleteImage];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutDeleteImage) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
@@ -1087,7 +1085,7 @@
         [timer invalidate];
     }];
     
-    [_operationQueue addOperation:_requestEditProductPicture];
+    [[[RKObjectManager sharedClient] operationQueue] addOperation:_requestEditProductPicture];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutEditProductPicture) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
@@ -1116,6 +1114,7 @@
             NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
             [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
             NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
+            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
          }
     }
 }

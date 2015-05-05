@@ -39,7 +39,8 @@
     MyShopEtalaseFilterViewControllerDelegate,
     ProductListMyShopFilterDelegate,
     MyShopEtalaseFilterViewControllerDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    RequestMoveToDelegate
 >
 {
     NSInteger _page;
@@ -116,6 +117,7 @@
     _cachecontroller = [URLCacheController new];
     
     _requestMoveTo = [RequestMoveTo new];
+    _requestMoveTo.delegate = self;
     
     _listNetworkManager = [TokopediaNetworkManager new];
     _listNetworkManager.tagRequest = TAG_LIST_REQUEST;

@@ -239,7 +239,8 @@
     _networkManager.tagRequest = TAG_REQUEST_CART;
     _networkManager.delegate = self;
 
-    
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -1169,7 +1170,6 @@
     [param addEntriesFromDictionary:partialDetail];
     
     _checkoutButton.enabled = NO;
-    _checkoutButton.layer.opacity = 0.8;
     _requestActionCheckout = [_objectManagerActionCheckout appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
     [_checkoutButton setTitle:@"Processing" forState:UIControlStateNormal];
     [_requestActionCheckout setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -3296,14 +3296,9 @@
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = cell.productThumbImageView;
-    thumb.image = nil;
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-#pragma clang diagnosti c pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {}];
+    
     cell.editButton.hidden = (_indexPage == 1);
     
     if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
@@ -3332,6 +3327,8 @@
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     _networkManager = nil;
