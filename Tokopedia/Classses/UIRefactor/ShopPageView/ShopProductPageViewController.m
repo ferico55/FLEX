@@ -216,11 +216,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     searchView.backgroundColor = [UIColor clearColor];
     
     CGRect newFrame = _header.frame;
-    newFrame.size.height += 22;
+    newFrame.size.height += searchView.bounds.size.height;
     _header.frame = newFrame;
-    
     [_header addSubview:searchView];
-    
+
     _table.tableFooterView = _footer;
     _table.tableHeaderView = _header;
     
