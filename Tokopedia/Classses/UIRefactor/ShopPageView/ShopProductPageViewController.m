@@ -215,14 +215,19 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     searchView.frame = newHeaderPosition;
     searchView.backgroundColor = [UIColor clearColor];
     
-    CGRect newFrame = _header.frame;
-    newFrame.size.height += 22;
+    CGRect newFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, _header.frame.size.height + searchView.frame.size.height);
     _header.frame = newFrame;
     
     [_header addSubview:searchView];
     
+    [_header setClipsToBounds:YES];
+    [_header.layer setMasksToBounds:YES];
+    UIView *header = [[UIView alloc] initWithFrame:_header.frame];
+    [header setBackgroundColor:[UIColor whiteColor]];
+    [header addSubview:_header];
+    _table.tableHeaderView = header;
     _table.tableFooterView = _footer;
-    _table.tableHeaderView = _header;
+    
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];

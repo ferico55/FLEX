@@ -314,7 +314,7 @@ typedef enum TagRequest {
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
-    [_product removeAllObjects];
+//    [_product removeAllObjects];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
@@ -435,7 +435,11 @@ typedef enum TagRequest {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
     
-    [_product addObjectsFromArray: feed.result.list];
+    if(_page == 1) {
+        _product = [feed.result.list mutableCopy];
+    } else {
+        [_product addObjectsFromArray: feed.result.list];
+    }
     
     if (_product.count >0) {
         _isnodata = NO;
@@ -445,12 +449,20 @@ typedef enum TagRequest {
         _isnodata = YES;
         _table.tableFooterView = _noResult;
     }
+
+    
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
     }
     
-    [_table reloadData];
+//    [_table reloadData];
+//    if(_page == 1) {
+        [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+//    } else {
+//        [_table reloadData];
+//    }
+
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {

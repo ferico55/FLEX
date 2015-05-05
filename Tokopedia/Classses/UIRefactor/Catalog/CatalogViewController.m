@@ -546,7 +546,6 @@
 }
 
 #pragma mark - Scroll view delegate
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.contentOffset.x == 0) {
@@ -556,5 +555,8 @@
         _productPhotoPageControl.currentPage = index;
     }
 }
+
+#pragma mark - Notification Center Handler
+
 
 @end
