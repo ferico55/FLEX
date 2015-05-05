@@ -179,6 +179,20 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSInteger rows = 0;
+    if (section == 0) {
+        // Normal shops
+        NSArray *shops = _shopdictionary[@"a"];
+        rows = [shops count];
+    } else {
+        // Gold shops
+        NSArray *goldShops = _shopdictionary[@"b"];
+        rows = [goldShops count];
+    }
+    return rows;
+    
+    
+    // What is this? (this causes a crash)
 //    if (tableView.numberOfSections == 2) {
     if(_shopdictionary.count == 0)
         return 0;
@@ -229,7 +243,7 @@
             UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
             thumb.image = nil;
             
-            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop@2x.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [thumb setImage:image animated:YES];
