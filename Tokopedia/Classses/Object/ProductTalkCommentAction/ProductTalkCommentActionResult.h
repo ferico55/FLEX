@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#define CFieldCommentID @"comment_id"
 
 
 
@@ -14,5 +15,6 @@
 
 @property (nonatomic, strong) NSString *is_success;
 //@property (nonatomic, strong) NSString *comment_talk_id;
+@property(nonatomic, strong) NSString *comment_id;
 
 @end

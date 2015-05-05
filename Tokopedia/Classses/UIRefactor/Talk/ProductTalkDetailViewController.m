@@ -924,7 +924,7 @@
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success", CFieldCommentID:CFieldCommentID}];
     
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
@@ -986,12 +986,15 @@
         if([commentaction.result.is_success isEqualToString:@"0"]) {
             TalkCommentList *commentlist = _list[_list.count-1];
             commentlist.is_not_delivered = @"1";
+            commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
         } else {
             NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
             _talktotalcommentlabel.text = totalcomment;
             
             TalkCommentList *commentlist = _list[_list.count-1];
             commentlist.is_just_sent = NO;
+            commentlist.comment_id = commentaction.result.comment_id;
+            commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
             
             NSDictionary *userinfo;
             userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
@@ -1100,6 +1103,9 @@
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralTalkCommentCell*) cell).indexpath;
         TalkCommentList *list = _list[indexPath.row];
+        if(list.comment_user_id == nil)
+            return nil;
+        
         [_datainput setObject:list.comment_id forKey:@"comment_id"];
         [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
         
@@ -1236,7 +1242,7 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                     
                     NSDictionary *userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment" object:nil userInfo:info];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment" object:nil userInfo:userinfo];
                 }
             }
         }
