@@ -160,7 +160,7 @@
                     {
                         data = @{kTKPDLOCATION_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
                                  kTKPDLOCATION_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
-                                 kTKPDLOCATION_DATACITYINDEXPATHKEY:indexpath,
+                                 kTKPDLOCATION_DATADISTRICTINDEXPATHKEY:indexpath,
                                  kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type)
                                  };
                         break;

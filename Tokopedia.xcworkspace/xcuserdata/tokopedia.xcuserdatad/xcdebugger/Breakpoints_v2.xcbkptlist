@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Settings/Address/SettingAddressEditViewController.m"
-            timestampString = "452503931.617666"
+            filePath = "Tokopedia/Classses/UIRefactor/Settings/Address/SettingAddressViewController.m"
+            timestampString = "452509013.924056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
-            landmarkName = "-tap:"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,29 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Settings/Address/SettingAddressEditViewController.m"
-            timestampString = "452504161.558411"
+            filePath = "Tokopedia/Classses/UIRefactor/Settings/Address/SettingAddressViewController.m"
+            timestampString = "452509017.130317"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "590"
-            endingLineNumber = "590"
-            landmarkName = "-SettingAddressLocationView:withData:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Settings/Address/SettingAddressEditViewController.m"
-            timestampString = "452504166.601828"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "587"
-            endingLineNumber = "587"
-            landmarkName = "-SettingAddressLocationView:withData:"
+            startingLineNumber = "525"
+            endingLineNumber = "525"
+            landmarkName = "-requestProcess:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
