@@ -10,6 +10,8 @@
 #import "CameraController.h"
 #import "CameraCollectionViewController.h"
 #import "CameraCollectionCell.h"
+#import "TKPDLiveCameraTableViewCell.h"
+NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumListLiveVideoCellIdentifier";
 
 @interface ALAssetsLibrary (TkpdCategory)
 
@@ -44,6 +46,7 @@
     NSMutableArray *_selectedImages;
     
     BOOL _isNeedDismiss;
+    BOOL _didPresentPicker;
     
 }
 
@@ -79,6 +82,7 @@
     
     [_collectionview registerNib:[UINib nibWithNibName:@"CameraCollectionCell" bundle:[NSBundle mainBundle]]
         forCellWithReuseIdentifier:@"CameraCollectionCellIdentifier"];
+    [_collectionview registerClass:[TKPDLiveCameraTableViewCell class] forCellWithReuseIdentifier:TKPDCameraAlbumListLiveVideoCellIdentifier];
     
     if (!self.assets) {
         _assets = [[NSMutableArray alloc] init];
@@ -97,6 +101,20 @@
     _groupAlbums = [NSMutableArray new];
     
     [_selectedImages addObjectsFromArray:_selectedImagesArray];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (_didPresentPicker) {
+        TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[_collectionview cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+        [cameraCell restartCaptureSession];
+        [cameraCell startLiveVideo];
+        _didPresentPicker = NO;
+    }
 }
 
 -(void)getAllPictures
@@ -199,13 +217,16 @@
     if (!_isnodata) {
         NSString *cellid = @"CameraCollectionCellIdentifier";
 
-		cell = (CameraCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-        ((CameraCollectionCell*)cell).checkmarkImageView.hidden = YES;
         
         if (indexPath.row == 0) {
-            ((CameraCollectionCell*)cell).thumb.image = [UIImage imageNamed:@"icon_camera_album.png"];
+            
+            TKPDLiveCameraTableViewCell *cameraCell = [_collectionview dequeueReusableCellWithReuseIdentifier:TKPDCameraAlbumListLiveVideoCellIdentifier forIndexPath:indexPath];
+            cell = cameraCell;
         }
         else{
+            cell = (CameraCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+            ((CameraCollectionCell*)cell).checkmarkImageView.hidden = YES;
+            
             for (NSIndexPath *selected in _selectedIndexPath) {
                 ((CameraCollectionCell*)cell).checkmarkImageView.hidden = !([indexPath isEqual:selected]);
                 if (([indexPath isEqual:selected])) {
@@ -278,6 +299,19 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([cell isKindOfClass:[TKPDLiveCameraTableViewCell class]]) {
+        TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)cell;
+        [cameraCell startLiveVideo];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([cell isKindOfClass:[TKPDLiveCameraTableViewCell class]]) {
+        TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)cell;
+        [cameraCell stopLiveVideo];
+    }
+}
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -287,11 +321,16 @@
         c.delegate = self;
         c.isTakePicture = YES;
         c.tag = self.tag;
+        _didPresentPicker = YES;
+        TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+        [cameraCell freezeCapturedContent];
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
         nav.wantsFullScreenLayout = YES;
         nav.modalPresentationStyle = UIModalPresentationFullScreen;
         nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        [self.navigationController presentViewController:nav animated:YES completion:^{
+
+        }];
     }
     else
     {

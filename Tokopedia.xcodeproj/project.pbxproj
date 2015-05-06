@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		5952A9641AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5952A9631AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.m */; };
+		5952A9671AFA11F900DC345C /* TKPDPhotoPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5952A9661AFA11F900DC345C /* TKPDPhotoPicker.m */; };
 		7A97B22E1AF244490025915B /* icon_0@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A97B2181AF244490025915B /* icon_0@3x.png */; };
 		7A97B22F1AF244490025915B /* icon_10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A97B2191AF244490025915B /* icon_10@3x.png */; };
 		7A97B2301AF244490025915B /* icon_11@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A97B21A1AF244490025915B /* icon_11@3x.png */; };
@@ -1448,6 +1450,10 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		5952A9621AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDLiveCameraTableViewCell.h; sourceTree = "<group>"; };
+		5952A9631AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDLiveCameraTableViewCell.m; sourceTree = "<group>"; };
+		5952A9651AFA11F900DC345C /* TKPDPhotoPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDPhotoPicker.h; sourceTree = "<group>"; };
+		5952A9661AFA11F900DC345C /* TKPDPhotoPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDPhotoPicker.m; sourceTree = "<group>"; };
 		7A97B2181AF244490025915B /* icon_0@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_0@3x.png"; sourceTree = "<group>"; };
 		7A97B2191AF244490025915B /* icon_10@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_10@3x.png"; sourceTree = "<group>"; };
 		7A97B21A1AF244490025915B /* icon_11@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_11@3x.png"; sourceTree = "<group>"; };
@@ -5422,6 +5428,8 @@
 				FC8572331AF1CE33005C9FB0 /* RequestGenerateHost.m */,
 				FC8572341AF1CE33005C9FB0 /* RequestUploadImage.h */,
 				FC8572351AF1CE33005C9FB0 /* RequestUploadImage.m */,
+				5952A9651AFA11F900DC345C /* TKPDPhotoPicker.h */,
+				5952A9661AFA11F900DC345C /* TKPDPhotoPicker.m */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -5441,6 +5449,8 @@
 				FC85722F1AF1CE33005C9FB0 /* CameraCollectionViewController.h */,
 				FC8572301AF1CE33005C9FB0 /* CameraCollectionViewController.m */,
 				FC8572311AF1CE33005C9FB0 /* CameraCollectionViewController.xib */,
+				5952A9621AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.h */,
+				5952A9631AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.m */,
 			);
 			path = CameraCustom;
 			sourceTree = "<group>";
@@ -8988,6 +8998,7 @@
 				FC85793F1AF1CE36005C9FB0 /* TxOrderConfirmedDetailResult.m in Sources */,
 				FC8579421AF1CE36005C9FB0 /* SystemBankAcount.m in Sources */,
 				FC8578D01AF1CE36005C9FB0 /* OrderOrder.m in Sources */,
+				5952A9641AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.m in Sources */,
 				FC8579E41AF1CE36005C9FB0 /* GeneralTalkCell.m in Sources */,
 				FC857B6D1AF1CE36005C9FB0 /* TableViewCell.m in Sources */,
 				FC8579951AF1CE36005C9FB0 /* FilterCatalogViewController.m in Sources */,
@@ -9474,6 +9485,7 @@
 				FC857B131AF1CE36005C9FB0 /* ShopProductPageViewController.m in Sources */,
 				FC857A781AF1CE36005C9FB0 /* ProductListMyShopViewController.m in Sources */,
 				FC8578E31AF1CE36005C9FB0 /* AddShop.m in Sources */,
+				5952A9671AFA11F900DC345C /* TKPDPhotoPicker.m in Sources */,
 				FC857B6A1AF1CE36005C9FB0 /* TxOrderConfirmationViewController.m in Sources */,
 				FC857ACE1AF1CE36005C9FB0 /* SettingBankNameViewController.m in Sources */,
 				FC8578CE1AF1CE36005C9FB0 /* OrderHistory.m in Sources */,
