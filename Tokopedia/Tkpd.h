@@ -26,6 +26,7 @@
 #define kTKPD_USERIDKEY @"user_id"
 #define kTKPD_FULLNAMEKEY @"full_name"
 #define kTKPD_SHOPIDKEY @"shop_id"
+#define kTKPD_PRODUCTIDKEY @"product_id"
 #define kTKPD_SHOPNAMEKEY @"shop_name"
 #define kTKPD_SHOPIMAGEKEY @"shop_avatar"
 #define kTKPD_SHOPURL @"shop_url"

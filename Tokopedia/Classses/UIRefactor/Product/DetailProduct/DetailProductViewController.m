@@ -65,7 +65,7 @@
 #import "ProductGalleryViewController.h"
 
 #import "MyShopEtalaseFilterViewController.h"
-
+#import "NoResultView.h"
 #import "RequestMoveTo.h"
 #import "EtalaseList.h"
 
@@ -1589,10 +1589,9 @@ UIAlertViewDelegate
     
     if (status) {
         if(_product.result == nil) {
-            [self.view addSubview:viewTidakAdaData];
-            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:viewTidakAdaData attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:0.5 constant:0]];
-            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:viewTidakAdaData attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:0.5 constant:0]];
-            
+            NoResultView *temp = [NoResultView new];
+            [self.view addSubview:temp.view];
+            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
             _act.hidden = YES;
             [_act stopAnimating];
             return;

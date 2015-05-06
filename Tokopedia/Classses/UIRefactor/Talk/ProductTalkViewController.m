@@ -906,6 +906,8 @@
     
     list.disable_comment = YES;
     [_list insertObject:list atIndex:0];
+    _isnodata = NO;
+    _table.tableFooterView = nil;
 }
 
 #pragma mark - General Cell Comment Delegate
