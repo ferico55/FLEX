@@ -18,7 +18,6 @@
 #import "AlertDatePickerView.h"
 #import "AlertListView.h"
 #import "AlertPickerView.h"
-#import "CameraController.h"
 #import "RequestUploadImage.h"
 #import "RequestGenerateHost.h"
 
@@ -26,20 +25,22 @@
 #import "SettingUserPhoneViewController.h"
 #import "TokopediaNetworkManager.h"
 
+#import "TKPDPhotoPicker.h"
+
 #import "UIImage+ImageEffects.h"
 #define CTagProfile 2
 
 #pragma mark - Profile Edit View Controller
 @interface SettingUserProfileViewController ()
 <
-    CameraControllerDelegate,
     TKPDAlertViewDelegate,
     RequestUploadImageDelegate,
     GenerateHostDelegate,
     UITextFieldDelegate,
     UIScrollViewDelegate,
     UITextViewDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    TKPDPhotoPickerDelegate
 >
 {
     NSMutableDictionary *_datainput;
@@ -92,6 +93,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIButton *editProfilePictButton;
+@property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
 
 - (IBAction)tap:(id)sender;
 - (IBAction)gesture:(id)sender;
@@ -223,14 +225,8 @@
         switch (btn.tag) {
             case 10:
             {   //edit thumbnail
-                CameraController* c = [CameraController new];
-                c.delegate = self;
-                [c snap];
-                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:c];
-                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self.navigationController presentViewController:nav
-                                                        animated:NO
-                                                      completion:nil];
+                _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+                [_photoPicker setDelegate:self];
                 break;
             }
             case 11:
@@ -675,34 +671,6 @@
     self.scrollview.contentInset = UIEdgeInsetsZero;
 }
 
-#pragma mark - Delegate Camera Controller
-
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
-{
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:userinfo forKey:DATA_SELECTED_PHOTO_KEY];
-
-    UIImageView *imageView = _thumb;
-    
-    
-    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    
-    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    
-    imageView.image = image;
-    imageView.hidden = NO;
-    imageView.alpha = 0.5f;
-    
-    [self actionUploadImage:object];
-}
-
 #pragma mark - Delegate Alert View
 
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -849,4 +817,34 @@
         _barbuttonsave.enabled = YES;
     }
 }
+
+// MARK: TKPDPhotoPickerControllerDelegate methods
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:userInfo forKey:DATA_SELECTED_PHOTO_KEY];
+    
+    UIImageView *imageView = _thumb;
+    
+    
+    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    
+    NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    
+    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
+    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
+    imageView.image = image;
+    imageView.hidden = NO;
+    imageView.alpha = 0.5f;
+    
+    [self actionUploadImage:object];
+
+}
+
+
 @end
