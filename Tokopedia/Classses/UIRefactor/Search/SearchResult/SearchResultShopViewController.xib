@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -25,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="singleLineEtched" rowHeight="83" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DEU-dk-S8H">
-                    <rect key="frame" x="0.0" y="30" width="320" height="480"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -40,6 +40,9 @@
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m3O-OD-9Qo">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="eOC-Y8-F3d"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="4" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="Filter Hasil Pencarian">
@@ -53,33 +56,32 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nGU-1p-eDC" userLabel="Top Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="hDc-z4-2kX"/>
-                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="nGU-1p-eDC" secondAttribute="trailing" id="0E1-3y-8LP"/>
-                        <constraint firstAttribute="height" constant="45" id="8vh-zv-ppJ"/>
-                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="Qf6-Ve-2Vk"/>
-                        <constraint firstItem="nGU-1p-eDC" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="U18-ha-YM0"/>
-                        <constraint firstItem="nGU-1p-eDC" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="bDH-Ew-JMc"/>
-                        <constraint firstAttribute="bottom" secondItem="m3O-OD-9Qo" secondAttribute="bottom" id="ipu-gA-IrX"/>
-                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="mxT-iy-6zp"/>
-                        <constraint firstAttribute="trailing" secondItem="m3O-OD-9Qo" secondAttribute="trailing" id="zmT-sY-7HH"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="2Bk-8a-4oQ"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="nGU-1p-eDC" secondAttribute="top" id="5zS-7e-bfY"/>
+                        <constraint firstAttribute="trailing" secondItem="m3O-OD-9Qo" secondAttribute="trailing" id="EaA-oS-TFd"/>
+                        <constraint firstAttribute="bottom" secondItem="nGU-1p-eDC" secondAttribute="bottom" constant="44" id="MAk-FA-Mvl"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="trailing" secondItem="nGU-1p-eDC" secondAttribute="trailing" id="Rry-YU-0hk"/>
+                        <constraint firstAttribute="bottom" secondItem="m3O-OD-9Qo" secondAttribute="bottom" id="WKa-n4-fgZ"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="nGU-1p-eDC" secondAttribute="leading" id="ae8-fU-3eR"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="zIv-Td-Oye"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="r0y-ak-8VP" secondAttribute="bottom" id="B8t-Lo-68J"/>
-                <constraint firstItem="DEU-dk-S8H" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="JbI-Z3-cGL"/>
-                <constraint firstAttribute="trailing" secondItem="r0y-ak-8VP" secondAttribute="trailing" id="QbD-iu-2xt"/>
-                <constraint firstItem="DEU-dk-S8H" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="nKg-Hf-CJ3"/>
-                <constraint firstAttribute="bottom" secondItem="DEU-dk-S8H" secondAttribute="bottom" constant="-30" id="oc4-xC-j6t"/>
-                <constraint firstItem="DEU-dk-S8H" firstAttribute="trailing" secondItem="r0y-ak-8VP" secondAttribute="trailing" id="xnO-K9-Sff"/>
-                <constraint firstItem="r0y-ak-8VP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zBo-MN-48d"/>
+                <constraint firstItem="r0y-ak-8VP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7Qd-Ev-i9m"/>
+                <constraint firstItem="r0y-ak-8VP" firstAttribute="leading" secondItem="DEU-dk-S8H" secondAttribute="leading" id="8Z3-JC-NJ2"/>
+                <constraint firstItem="r0y-ak-8VP" firstAttribute="trailing" secondItem="DEU-dk-S8H" secondAttribute="trailing" id="DbO-gG-o3I"/>
+                <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="DEU-dk-S8H" secondAttribute="bottom" constant="-45" id="L0F-Xa-zRF"/>
+                <constraint firstItem="r0y-ak-8VP" firstAttribute="bottom" secondItem="DEU-dk-S8H" secondAttribute="bottom" id="MhM-Io-dRL"/>
+                <constraint firstAttribute="trailing" secondItem="r0y-ak-8VP" secondAttribute="trailing" id="kJs-5O-ewP"/>
+                <constraint firstItem="r0y-ak-8VP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="435" id="nA7-CN-iJA"/>
+                <constraint firstItem="DEU-dk-S8H" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="oL4-W5-7hq"/>
+                <constraint firstAttribute="bottom" secondItem="r0y-ak-8VP" secondAttribute="bottom" id="tiO-LG-XjX"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
