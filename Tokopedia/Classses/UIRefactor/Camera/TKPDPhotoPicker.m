@@ -15,11 +15,13 @@
     UIModalTransitionStyle _transitionStyle;
 }
 
+// MARK: Initialisation
+
 - (instancetype)initWithParentViewController:(UIViewController *)parentViewController pickerTransistionStyle:(UIModalTransitionStyle)transitionStyle {
     self = [super init];
     if (self != nil) {
         _parentViewController = parentViewController;
-        
+        _transitionStyle = transitionStyle;
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             UIActionSheet *actionSheet  = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Library", @"Camera", nil];
             [actionSheet showInView:_parentViewController.view];
@@ -33,6 +35,26 @@
     return self;
 }
 
+- (instancetype)initWithSourceType:(UIImagePickerControllerSourceType)sourceType parentViewController:(UIViewController *)controller pickerTransitionStyle:(UIModalTransitionStyle)transitionStyle {
+    self = [super init];
+    if (self != nil) {
+        _parentViewController = controller;
+        _transitionStyle = transitionStyle;
+        
+        if ([UIImagePickerController isSourceTypeAvailable:sourceType]) {
+            [self presentPickerWithCamera:(sourceType == UIImagePickerControllerSourceTypeCamera)];
+            _data = [[NSMutableDictionary alloc] init];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Camera not available" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    }
+    
+    return self;
+}
+
+// MARK: Public methods
+
 - (void)setData:(NSDictionary *)data
 {
     if(data)
@@ -45,6 +67,8 @@
         }
     }
 }
+
+// MARK: Private methods
 
 - (void)presentPickerWithCamera:(BOOL)shouldPresentWithCamera {
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];

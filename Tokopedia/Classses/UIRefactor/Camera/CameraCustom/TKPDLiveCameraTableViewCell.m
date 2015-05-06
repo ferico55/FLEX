@@ -19,7 +19,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil) {
-        [self.contentView setBackgroundColor:[UIColor whiteColor]];
+        [self.contentView setBackgroundColor:[UIColor blackColor]];
         [self configureCaptureSession];
         
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"icon_camera_album.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
@@ -68,13 +68,12 @@
     
     AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
     [previewLayer setFrame:self.contentView.layer.bounds];
-    [self.contentView.layer addSublayer:previewLayer];
+    [self.contentView.layer insertSublayer:previewLayer atIndex:0];
     [previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     
     _previewLayer = previewLayer;
     
     _captureSession = captureSession;
-    [self bringSubviewToFront:_icon];
 }
 
 - (void)startLiveVideo {
@@ -92,18 +91,9 @@
 }
 
 - (void)freezeCapturedContent {
-    UIGraphicsBeginImageContext(_previewLayer.bounds.size);
-    CGContextRef currentContext = UIGraphicsGetCurrentContext();
-    [self.contentView.layer renderInContext:currentContext];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     [_captureSession stopRunning];
     _captureSession = nil;
     [_previewLayer removeFromSuperlayer];
-    [self.contentView.layer setContents:(id)image.CGImage];
-}
-
-- (void)captureSessionDidFailToStart:(NSNotification *)notification {
-    NSLog(@"%@", notification.userInfo);
 }
 
 

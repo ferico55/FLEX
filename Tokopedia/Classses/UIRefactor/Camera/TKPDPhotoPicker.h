@@ -14,6 +14,7 @@
 @interface TKPDPhotoPicker : NSObject <UIActionSheetDelegate, UIImagePickerControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (instancetype)initWithParentViewController:(UIViewController *)parentViewController pickerTransistionStyle:(UIModalTransitionStyle)transitionStyle;
+- (instancetype)initWithSourceType:(UIImagePickerControllerSourceType)sourceType parentViewController:(UIViewController *)controller pickerTransitionStyle:(UIModalTransitionStyle)transitionStyle;
 
 @property (strong, nonatomic) NSDictionary *data;
 
@@ -22,6 +23,9 @@
 @end
 
 @protocol TKPDPhotoPickerDelegate <NSObject>
+
 @optional
+
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo;
+
 @end
