@@ -20,11 +20,12 @@
 
 //profile
 #import "TKPDTabProfileNavigationController.h"
-#import "ProfileBiodataViewController.h"
+//#import "ProfileBiodataViewController.h"
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 
 #import "NavigateViewController.h"
+#import "UserContainerViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -97,7 +98,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = kTKPDTITLE_SHOP_INFO;
+    self.title = @"Informasi Toko";
     
     _navigateController = [NavigateViewController new];
     
@@ -203,26 +204,10 @@
             case 13:
             {
                 // go to pofile shop owner (transparant button)
-                NSMutableArray *viewcontrollers = [NSMutableArray new];
-                /** create new view controller **/
-                ProfileBiodataViewController *v = [ProfileBiodataViewController new];
-                [viewcontrollers addObject:v];
-                ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
-                v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
-                            kTKPDDETAIL_APISHOPIDKEY:_shop.result.info.shop_id?:@"",
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
-                            };
-                [viewcontrollers addObject:v1];
-                ProfileContactViewController *v2 = [ProfileContactViewController new];
-                [viewcontrollers addObject:v2];
-                // Adjust View Controller
-                TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
-                tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
-                                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [tapnavcon setViewControllers:viewcontrollers animated:YES];
-                [tapnavcon setSelectedIndex:0];
+                NSString *userId = [NSString stringWithFormat:@"%d",_shop.result.owner.owner_id];
+                NavigateViewController *navigateController = [NavigateViewController new];
+                [navigateController navigateToProfileFromViewController:self withUserID:userId];
                 
-                [self.navigationController pushViewController:tapnavcon animated:YES];
                 break;
             }
             default:

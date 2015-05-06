@@ -386,6 +386,7 @@
 }
 
 - (void)tapNotificationBar {
+    [_searchbar resignFirstResponder];
     [_notifManager tapNotificationBar];
 }
 

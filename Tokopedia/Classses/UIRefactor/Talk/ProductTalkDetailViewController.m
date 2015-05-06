@@ -20,7 +20,7 @@
 #import "DetailProductViewController.h"
 #import "LoginViewController.h"
 
-#import "ProfileBiodataViewController.h"
+//#import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
@@ -31,6 +31,7 @@
 
 #import "ProductTalkViewController.h"
 #import "InboxTalkViewController.h"
+#import "UserContainerViewController.h"
 
 #import "stringrestkit.h"
 #import "string_more.h"
@@ -434,17 +435,32 @@
     _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
-    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
-    UIImage * image;
-    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
-    if(imageData) {
-        image = [UIImage imageWithData:imageData];
-    } else {
-        image = [UIImage imageNamed:@"default-boy.png"];
-    }
+//    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
+//    UIImage * image;
+//    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
+//    if(imageData) {
+//        image = [UIImage imageWithData:imageData];
+//    } else {
+//        image = [UIImage imageNamed:@"default-boy.png"];
+//    }
+//    
+//    _talkuserimage.image = image;
+//    _talkuserimage = [UIImageView circleimageview:_talkuserimage];
+//
     
-    _talkuserimage.image = image;
-    _talkuserimage = [UIImageView circleimageview:_talkuserimage];
+    NSURLRequest* requestUserImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [_talkuserimage setImageWithURLRequest:requestUserImage placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        [_talkuserimage setImage:image];
+        _talkuserimage = [UIImageView circleimageview:_talkuserimage];
+        
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:TKPD_TALK_PRODUCT_IMAGE]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [_talkProductImage setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -749,7 +765,14 @@
 }
 
 - (void)tapUser {
-    [_navigateController navigateToProfileFromViewController:self withUserID:[_data objectForKey:@"user_id"]];
+    NSString *userId = [_data objectForKey:@"user_id"];
+    if(!userId) {
+        userId = [_data objectForKey:@"talk_user_id"];
+    }
+    
+    [_navigateController navigateToProfileFromViewController:self withUserID:userId];
+
+
 }
 
 -(IBAction)tap:(id)sender {
@@ -849,27 +872,29 @@
             }
                 
             case 12 : {
-                NSMutableArray *viewControllers = [NSMutableArray new];
+//                NSMutableArray *viewControllers = [NSMutableArray new];
+//                
+//                ProfileBiodataViewController *biodataController = [ProfileBiodataViewController new];
+//                [viewControllers addObject:biodataController];
+//                
+//                ProfileFavoriteShopViewController *favoriteController = [ProfileFavoriteShopViewController new];
+//                favoriteController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
+//                                            MORE_SHOP_ID:[_auth objectForKey:MORE_SHOP_ID],
+//                                            MORE_AUTH:_auth?:[NSNull null]};
+//                [viewControllers addObject:favoriteController];
+//                
+//                ProfileContactViewController *contactController = [ProfileContactViewController new];
+//                [viewControllers addObject:contactController];
+//                
+//                TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
+//                profileController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
+//                                           MORE_AUTH:_auth?:[NSNull null]};
+//                [profileController setViewControllers:viewControllers animated:YES];
+//                [profileController setSelectedIndex:0];
+//                
+//                [self.navigationController pushViewController:profileController animated:YES];
                 
-                ProfileBiodataViewController *biodataController = [ProfileBiodataViewController new];
-                [viewControllers addObject:biodataController];
-                
-                ProfileFavoriteShopViewController *favoriteController = [ProfileFavoriteShopViewController new];
-                favoriteController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
-                                            MORE_SHOP_ID:[_auth objectForKey:MORE_SHOP_ID],
-                                            MORE_AUTH:_auth?:[NSNull null]};
-                [viewControllers addObject:favoriteController];
-                
-                ProfileContactViewController *contactController = [ProfileContactViewController new];
-                [viewControllers addObject:contactController];
-                
-                TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
-                profileController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
-                                           MORE_AUTH:_auth?:[NSNull null]};
-                [profileController setViewControllers:viewControllers animated:YES];
-                [profileController setSelectedIndex:0];
-                
-                [self.navigationController pushViewController:profileController animated:YES];
+                [self tapUser];
                 
                 break;
             }

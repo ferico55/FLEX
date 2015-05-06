@@ -159,7 +159,7 @@ typedef enum
 
 #define API_MANAGE_PRODUCT_KEYWORD_KEY          @"keyword"
 #define API_MANAGE_PRODUCT_ETALASE_ID_KEY       @"etalase_id"
-#define API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY    @"etalase_id"
+#define API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY    @"department_id"
 #define API_MANAGE_PRODUCT_CATALOG_ID_KEY       @"catalog_id"
 #define API_MANAGE_PRODUCT_PICTURE_STATUS_KEY   @"picture_status"
 #define API_MANAGE_PRODUCT_CONDITION_KEY        @"condition"
@@ -168,9 +168,11 @@ typedef enum
 #define API_WHOLESALE_QUANTITY_MAXIMUM_KEY @"qty_max_"
 #define API_WHOLESALE_PRICE @"prd_prc_"
 
-#define BUTTON_DELETE_TITLE @"Delete"
-#define BUTTON_EDIT_PRODUCT @"  Edit  "
-#define BUTTON_DUPLICATE_PRODUCT @" Salin "
+#define BUTTON_DELETE_TITLE @"Hapus"
+#define BUTTON_MOVE_TO_WAREHOUSE @"Gudangkan"
+#define BUTTON_MOVE_TO_ETALASE @"Pindah ke\nEtalase"
+#define BUTTON_EDIT_PRODUCT @" Edit "
+#define BUTTON_DUPLICATE_PRODUCT @"Salin"
 #define BUTTON_MOVE_ETALASE @"Ubah\nEtalase"
 #define BUTTON_MOVETO_WAREHOUSE_TITLE @"Pindah ke\nGudang"
 

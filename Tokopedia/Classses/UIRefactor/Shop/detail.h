@@ -44,10 +44,10 @@ typedef enum
 #define kTKPDTITLE_SHOP_NOTES @"Catatan Toko"
 #define kTKPDTITLE_SEND_MESSAGE @"Kirim Pesan"
 #define kTKPDTITLE_NEW_TALK @"Diskusi Baru"
-#define kTKPDTITLE_SHOP_INFO @"Informasi Toko"
+#define kTKPDTITLE_SHOP_INFO @"INFORMASI TOKO"
 #define KTKPDTITLE_FAV_THIS_SHOP @"Yang Memfavoritkan"
 #define KTKPDTITLE_PEOPLE @"Informasi Pengguna"
-#define KTKPDTITLE_BIODATA @"Biodata"
+#define KTKPDTITLE_BIODATA @"BIODATA"
 
 #define TITLE_SHOP_SETTING @"Pengaturan Toko"
 
@@ -175,6 +175,7 @@ typedef enum
 #define ACTION_ADD_PRODUCT_SUBMIT @"add_product_submit"
 #define ACTION_EDIT_PRODUCT_KEY @"edit_product"
 #define ACTION_MOVE_TO_WAREHOUSE @"move_to_warehouse"
+#define ACTION_EDIT_ETALASE @"edit_etalase"
 #define kTKPDDETAIL_APIDELETEPRODUCTKEY @"delete_product"
 #define ACTION_UPLOAD_PRODUCT_IMAGE @"upload_product_image"
 #define ACTION_DELETE_IMAGE @"delete_product_pic"

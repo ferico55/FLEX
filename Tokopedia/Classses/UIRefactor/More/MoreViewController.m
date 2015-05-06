@@ -20,7 +20,7 @@
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
 
-#import "ProfileBiodataViewController.h"
+//#import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
@@ -42,11 +42,13 @@
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
+#import "UserContainerViewController.h"
 #import "ReputationPageViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "Helpshift.h"
+#import "NavigateViewController.h"
 
 @interface MoreViewController () <NotificationManagerDelegate> {
     NSDictionary *_auth;
@@ -343,27 +345,8 @@
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
-        NSMutableArray *viewControllers = [NSMutableArray new];
-        
-        ProfileBiodataViewController *biodataController = [ProfileBiodataViewController new];
-        [viewControllers addObject:biodataController];
-        
-        ProfileFavoriteShopViewController *favoriteController = [ProfileFavoriteShopViewController new];
-        favoriteController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
-                                    MORE_SHOP_ID:[_auth objectForKey:MORE_SHOP_ID],
-                                    MORE_AUTH:_auth?:[NSNull null]};
-        [viewControllers addObject:favoriteController];
-        
-        ProfileContactViewController *contactController = [ProfileContactViewController new];
-        [viewControllers addObject:contactController];
-        
-        TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
-        profileController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
-                                   MORE_AUTH:_auth?:[NSNull null]};
-        [profileController setViewControllers:viewControllers animated:YES];
-        [profileController setSelectedIndex:0];
-        
-        [self.navigationController pushViewController:profileController animated:YES];
+        NavigateViewController *navigateController = [NavigateViewController new];
+        [navigateController navigateToProfileFromViewController:self withUserID:[_auth objectForKey:MORE_USER_ID]];
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {

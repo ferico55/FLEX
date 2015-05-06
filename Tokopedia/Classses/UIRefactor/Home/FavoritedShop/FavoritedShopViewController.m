@@ -170,21 +170,24 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (_shop.count > 0 && _goldshop.count > 0) {
+//    if (_shop.count > 0 && _goldshop.count > 0) {
         return 2;
-    } else {
-        return 1;
-    }
+//    } else {
+//        return 1;
+//    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView.numberOfSections == 2) {
-        NSArray *keys = [_shopdictionary allKeys];
-        return [[_shopdictionary objectForKey:[keys objectAtIndex:section]] count];
-    } else {
-        return _shop.count;
-    }
+//    if (tableView.numberOfSections == 2) {
+    if(_shopdictionary.count == 0)
+        return 0;
+
+    NSArray *keys = [_shopdictionary allKeys];
+    return [[_shopdictionary objectForKey:[keys objectAtIndex:section]] count];
+//    } else {
+//        return _shop.count;
+//    }
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -226,7 +229,7 @@
             UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
             thumb.image = nil;
             
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop@2x.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [thumb setImage:image animated:YES];
@@ -314,12 +317,16 @@
         [self configureRestkitFav];
         [self pressFavoriteAction:list.shop_id withIndexPath:indexpath];
         
-        
         [_table beginUpdates];
         [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationRight];
         [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationFade];
         [_table endUpdates];
         
+        if(_goldshop.count < 2) {
+            NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
+            [section addIndex:0];
+            [_table reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
+        }
     } else {
         //        [_shop removeObjectAtIndex:indexpath.row];
     }

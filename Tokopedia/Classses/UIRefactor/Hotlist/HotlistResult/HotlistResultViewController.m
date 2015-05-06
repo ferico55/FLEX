@@ -437,6 +437,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     NSUInteger index = indexPath.row * 3;
     
+    for (UIView *view in ((GeneralPhotoProductCell*)cell).viewcell ) {
+        view.hidden = YES;
+    }
+    
     for (int i = 0; i < cell.productImageViews.count; i++) {
         NSUInteger indexProduct = index + i;
         if (indexProduct < _product.count) {
@@ -582,19 +586,18 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 case 12:
                 {
                     // SHARE
-                    NSString *activityItem;
+                    NSString *title;
+                    NSURL *url;
                     if ([_data objectForKey:@"title"] && [_data objectForKey:@"url"]) {
-                        activityItem = [NSString stringWithFormat:@"Jual %@ | Tokopedia %@",
-                                        [_data objectForKey:@"title"],
-                                        [_data objectForKey:@"url"]];
+                        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", [_data objectForKey:@"title"]];
+                        url = [NSURL URLWithString:[_data objectForKey:@"url"]];
                     } else if (_hotlistdetail) {
-                        activityItem = [NSString stringWithFormat:@"Jual %@ | Tokopedia %@",
-                                        _hotlistdetail.result.info.title_enc,
-                                        _hotlistdetail.result.hotlist_url];
+                        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _hotlistdetail.result.info.title_enc];
+                        url = [NSURL URLWithString:_hotlistdetail.result.hotlist_url];
                     }
 
-                    if (activityItem) {
-                        UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                    if (title && url) {
+                        UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                           applicationActivities:nil];
                         act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
                         [self presentViewController:act animated:YES completion:nil];

@@ -208,6 +208,12 @@
             {
                 self.navigationItem.rightBarButtonItem = nil;
             }
+            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                           style:UIBarButtonItemStyleBordered
+                                                                          target:self
+                                                                          action:@selector(tap:)];
+            backButton.tag = 2;
+            self.navigationItem.backBarButtonItem = backButton;
             break;
         }
         case 1:
@@ -226,8 +232,13 @@
                 ((UIButton*)_pageButtons[index]).backgroundColor = COLOR_SELECTED_BUTTON;
             } completion:^(BOOL finished) {
             }];
-            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-            [backBarButtonItem setTintColor:[UIColor whiteColor]];
+            
+            //UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+            //[backBarButtonItem setTintColor:[UIColor whiteColor]];
+            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali"
+                                                                           style:UIBarButtonItemStyleBordered
+                                                                          target:self
+                                                                          action:@selector(tap:)];
             backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
             self.navigationItem.leftBarButtonItem = backBarButtonItem;
             self.navigationItem.rightBarButtonItem = nil;

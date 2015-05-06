@@ -23,12 +23,17 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKS-Gs-pBP">
-                        <rect key="frame" x="68" y="18" width="244" height="21"/>
+                    <button opaque="NO" tag="16" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vq3-Bw-YG3">
+                        <rect key="frame" x="68" y="10" width="237" height="30"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                        <state key="normal" title="Button">
+                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="tapButton:" destination="-2" eventType="touchUpInside" id="NsT-aX-vRC"/>
+                        </connections>
+                    </button>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="p3M-tL-azv">
                         <rect key="frame" x="25" y="25" width="20" height="20"/>
                     </activityIndicatorView>
@@ -37,8 +42,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZbE-RC-Dpf">
-                        <rect key="frame" x="86" y="35" width="226" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                        <rect key="frame" x="86" y="38" width="226" height="21"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -114,7 +119,7 @@
                         </connections>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="9WE-FG-GEI">
-                        <rect key="frame" x="68" y="38" width="15" height="15"/>
+                        <rect key="frame" x="68" y="39" width="15" height="15"/>
                     </imageView>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e0h-Xq-DcR">
                         <rect key="frame" x="10" y="70" width="300" height="1"/>
@@ -152,8 +157,8 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="act" destination="p3M-tL-azv" id="s8P-k4-Xly"/>
+                <outlet property="buttonName" destination="Vq3-Bw-YG3" id="3L0-Xb-5SE"/>
                 <outlet property="labellocation" destination="ZbE-RC-Dpf" id="Sfz-fl-hUb"/>
-                <outlet property="labelname" destination="iKS-Gs-pBP" id="fHP-Lh-BC4"/>
                 <outlet property="rateaccuracy" destination="VNC-c6-uUg" id="Q4U-rE-Dtm"/>
                 <outlet property="rateservice" destination="Uzr-KN-ion" id="nSR-hQ-ujf"/>
                 <outlet property="ratespeed" destination="Mty-47-1sY" id="5y9-ua-hqS"/>

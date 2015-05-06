@@ -13,6 +13,7 @@
 #import "WishListViewController.h"
 #import "WishListObject.h"
 #import "WishListObjectList.h"
+#import "NoResultView.h"
 #import "WishListObjectResult.h"
 @interface WishListViewController()<LoadingViewDelegate>
 
@@ -60,11 +61,7 @@
     /** set table footer view (loading act) **/
     tblWishList.tableFooterView = footer;
     [activityIndicator startAnimating];
-    tblWishList.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
-    CGRect rectTable = tblWishList.frame;
-    rectTable.size.height -= 105;
-    tblWishList.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
-    tblWishList.frame = rectTable;
+//    tblWishList.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
     
     if (product.count > 0) {

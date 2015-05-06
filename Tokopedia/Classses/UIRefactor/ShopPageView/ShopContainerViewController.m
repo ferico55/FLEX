@@ -23,6 +23,7 @@
 #import "string_product.h"
 
 #import "FavoriteShopAction.h"
+#import "UserAuthentificationManager.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
@@ -55,7 +56,7 @@
     UIBarButtonItem *_addProductBarButton;
     UIBarButtonItem *_settingBarButton;
     UIBarButtonItem *_messageBarButton;
-    
+    UserAuthentificationManager *_userManager;
 }
 
 @property (strong, nonatomic) ShopProductPageViewController *shopProductViewController;
@@ -103,14 +104,23 @@
     _settingBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting_2x.png"] withAction:@selector(settingTap:)];
     
     _messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
+
     _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
+
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
     
+    _unfavoriteBarButton.enabled = NO;
+    _favoriteBarButton.enabled = NO;
+    _messageBarButton.enabled = NO;
+    _settingBarButton.enabled = NO;
+    _addProductBarButton.enabled = NO;
+    _infoBarButton.enabled = NO;
     
-    _auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
-    if ([_auth count] > 0) {
+
+    if ([_userManager isLogin]) {
         //toko sendiri dan login
-        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+        if([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
+//        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
             self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
         } else {
             self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
@@ -134,6 +144,10 @@
     return infoBarButton;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    _userManager = [UserAuthentificationManager new];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -152,6 +166,7 @@
     _cacheController.URLCacheInterval = 86400.0;
     _cacheConnection = [URLCacheConnection new];
     
+    _userManager = [UserAuthentificationManager new];
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
@@ -546,15 +561,25 @@
             _shop = stats;
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
-                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+                if ([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
                     self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
+                    _addProductBarButton.enabled = YES;
+                    _settingBarButton.enabled = YES;
                 } else {
                     if(_shop.result.info.shop_already_favorited == 1) {
                         self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
+                        _favoriteBarButton.enabled = YES;
+                        _messageBarButton.enabled = YES;
                     } else {
                         self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
+                        _messageBarButton.enabled = YES;
+                        _unfavoriteBarButton.enabled = YES;
+
                     }
                 }
+                
+
+                _infoBarButton.enabled = YES;
                 
                 TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
                 [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];
@@ -633,20 +658,34 @@
 }
 
 - (IBAction)messageTap:(id)sender {
-    if (_auth) {
+    if([_userManager isLogin]) {
         SendMessageViewController *messageController = [SendMessageViewController new];
         messageController.data = @{
                                    kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                                    kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
                                    };
         [self.navigationController pushViewController:messageController animated:YES];
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
 
 - (IBAction)favoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
     
-    if(_auth) {
+    if([_userManager isLogin]) {
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
@@ -658,7 +697,7 @@
 - (IBAction)unfavoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
     
-    if(_auth!=nil && _auth.count>0) {
+    if([_userManager isLogin]) {
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];

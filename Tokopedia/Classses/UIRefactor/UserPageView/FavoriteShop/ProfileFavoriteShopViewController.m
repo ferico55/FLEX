@@ -7,6 +7,7 @@
 //
 
 #import "FavoriteShop.h"
+#import "ProfileInfo.h"
 #import "detail.h"
 
 #import "profile.h"
@@ -19,9 +20,11 @@
 #import "ShopTalkViewController.h"
 
 #import "URLCacheController.h"
+#import "UserPageHeader.h"
+#import "ShopContainerViewController.h"
 
 #pragma mark - Profile Favorite Shop View Controller
-@interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate>
+@interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate, UIScrollViewDelegate, UserPageHeaderDelegate>
 {
     NSInteger _page;
     NSString *_urinext;
@@ -36,6 +39,7 @@
     UIRefreshControl *_refreshControl;
     
     FavoriteShop *_favoriteshop;
+    ProfileInfo *_profile;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -46,10 +50,14 @@
     URLCacheConnection *_cacheconnection;
     NoResultView *_noResultView;
     NSTimeInterval _timeinterval;
+    UserPageHeader *_userHeader;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
+@property (strong, nonatomic) IBOutlet UIView *header;
+@property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
+@property (strong, nonatomic) IBOutlet UIView *stickyTab;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 -(void)cancel;
@@ -84,7 +92,7 @@
     _cachecontroller = [URLCacheController new];
     _noResultView = [NoResultView new];
     _list = [NSMutableArray new];
-    
+    [self initNotification];
     _page = 1;
     
     _table.tableFooterView = _footer;
@@ -101,10 +109,30 @@
     
     //cache
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDPROFILE_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY] integerValue]]];
+    _cachepath = [path stringByAppendingPathComponent:_profile.result.user_info.user_id];
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    _userHeader = [UserPageHeader new];
+    _userHeader.delegate = self;
+    _userHeader.data = _data;
+    
+    _header = _userHeader.view;
+    UIView *btmGreenLine = (UIView *)[_header viewWithTag:20];
+    [btmGreenLine setHidden:NO];
+    
+    _stickyTab = [(UIView *)_header viewWithTag:18];
+
+    _table.tableHeaderView = _header;
+    _table.tableFooterView = _footer;
+    _table.delegate = self;
+}
+
+- (void)initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateFavoriteShopScroll:)
+                                                 name:@"updateFavoriteShopScroll" object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -112,7 +140,7 @@
     [super viewWillAppear:animated];
     if (!_isrefreshview) {
         [self configureRestKit];
-        if (_isnodata) {
+        if (_isnodata && _profile) {
             [self loadData];
         }
     }
@@ -162,7 +190,7 @@
             UIActivityIndicatorView *act = (UIActivityIndicatorView*)((ProfileFavoriteShopCell*)cell).act;
             [act startAnimating];
             
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop@2x.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 //NSLOG(@"thumb: %@", thumb);
@@ -259,6 +287,13 @@
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIURINEXTKEY:kTKPDPROFILE_APIURINEXTKEY}];
+    
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+
+    
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDPROFILE_PEOPLEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -273,48 +308,38 @@
     
 	NSDictionary* param = @{
                             kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETFAVORITESHOPKEY,
-                            kTKPDPROFILE_APIPROFILEUSERIDKEY : [_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]?:@(0),
-                            kTKPDPROFILE_APIPAGEKEY : @(_page)
+                            kTKPDPROFILE_APIPROFILEUSERIDKEY : _profile.result.user_info.user_id?:@"",
+                            kTKPDPROFILE_APIPAGEKEY : @(_page),
                             };
     
-	[_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
-        if (!_isrefreshview) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-        }
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PEOPLEAPIPATH parameters:[param encrypt]];
+    if (!_isrefreshview) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PEOPLEAPIPATH parameters:[param encrypt]];
+
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [_timer invalidate];
+        _timer = nil;
+        [_act stopAnimating];
+        _table.hidden = NO;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [self requestsuccess:mappingResult withOperation:operation];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [_timer invalidate];
+        _timer = nil;
+        [_act stopAnimating];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [self requestfailure:error];
+    }];
+    [_operationQueue addOperation:_request];
     
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [_timer invalidate];
-            _timer = nil;
-            [_act stopAnimating];
-            _table.hidden = NO;
-            _isrefreshview = NO;
-            [_refreshControl endRefreshing];
-            [self requestsuccess:mappingResult withOperation:operation];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            [_timer invalidate];
-            _timer = nil;
-            [_act stopAnimating];
-            _isrefreshview = NO;
-            [_refreshControl endRefreshing];
-            [self requestfailure:error];
-        }];
-        [_operationQueue addOperation:_request];
-        
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-	}
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -325,13 +350,6 @@
     BOOL status = [_favoriteshop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if (_page<=1) {
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-            [_cachecontroller connectionDidFinish:_cacheconnection];
-            //save response data
-            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        }
-
         [self requestprocess:object];
     }
 }
@@ -473,27 +491,67 @@
 #pragma mark - Cell Delegate
 -(void)ProfileFavoriteShopCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    ListFavoriteShop *list = _favoriteshop.result.list[indexpath.row];
+    ListFavoriteShop *list = _list[indexpath.row];
     
-    //shop id yg difavoritkan profile ini dan yang me-triger profile ini
-    NSInteger shopidbefore = [[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue];
-    // shop id yg difavoritkan profile ini dan yg sedang dipilih
-    NSInteger shopid = [list.shop_id integerValue];
-    if (shopidbefore == shopid) {
-        NSArray *viewcontrollers = self.navigationController.viewControllers;
-        NSInteger index = viewcontrollers.count - 4;
-        [self.navigationController popToViewController:viewcontrollers[index] animated:YES];
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id,
+                       kTKPD_AUTHKEY:[_data objectForKey:@"auth"]?:@{}};
+    [self.navigationController pushViewController:container animated:YES];
+    
+}
+
+#pragma mark - UserPageHeader Delegate
+- (void)didReceiveProfile:(ProfileInfo *)profile {
+    _profile = profile;
+    
+    if(_profile && _page == 1) {
+        [self configureRestKit];
+        [self loadData];
     }
-    else
-    {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-        shopViewController.data = @{
-                                    kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
-                                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
-                                    };
-        [self.navigationController pushViewController:shopViewController animated:YES];
+}
+
+- (void)didLoadImage:(UIImage *)image {
+    
+}
+
+- (id)didReceiveNavigationController {
+    return nil;
+}
+
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
+    
+    if(isFakeStickyVisible) {
+        _fakeStickyTab.hidden = NO;
+    } else {
+        _fakeStickyTab.hidden = YES;
     }
+    [self determineOtherScrollView:scrollView];
+}
+
+- (void)determineOtherScrollView:(UIScrollView *)scrollView {
+    NSDictionary *userInfo = @{@"y_position" : [NSNumber numberWithFloat:scrollView.contentOffset.y]};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateInfoProfileScroll" object:nil userInfo:userInfo];
+}
+
+
+- (void)updateFavoriteShopScroll:(NSNotification *)notification
+{
+    id userinfo = notification.userInfo;
+    float ypos;
+    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
+        ypos = 0;
+    } else {
+        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+    }
+    
+    CGPoint cgpoint = CGPointMake(0, ypos);
+    _table.contentOffset = cgpoint;
+    
 }
 
 @end

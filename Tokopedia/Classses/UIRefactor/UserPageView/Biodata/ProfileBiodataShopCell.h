@@ -30,6 +30,7 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UILabel *labelname;
+@property (weak, nonatomic) IBOutlet UIButton *buttonName;
 @property (weak, nonatomic) IBOutlet UILabel *labellocation;
 @property (weak, nonatomic) IBOutlet StarsRateView *ratespeed;
 @property (weak, nonatomic) IBOutlet StarsRateView *rateaccuracy;

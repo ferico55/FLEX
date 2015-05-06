@@ -79,6 +79,15 @@ typedef enum {
     RESOLUTION_FINISHED     = 500
 } DISPUTE_STATUS;
 
+typedef enum {
+    PRODUCT_STATE_DELETED       = 0,
+    PRODUCT_STATE_ACTIVE        = 1,
+    PRODUCT_STATE_BEST          = 2,
+    PRODUCT_STATE_WAREHOUSE     = 3,
+    PRODUCT_STATE_PENDING       = -1,
+    PRODUCT_STATE_BANNED        = -2,
+} PRODUCT_STATUS;
+
 #define is4inch  ([[UIScreen mainScreen] bounds].size.height == 568)?TRUE:FALSE
 
 #define kTkpdIndexSetStatusCodeOK [NSIndexSet indexSetWithIndex:200] //statuscode 200 = OK

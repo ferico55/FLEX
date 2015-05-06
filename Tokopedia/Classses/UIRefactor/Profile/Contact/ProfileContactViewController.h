@@ -14,4 +14,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelmesseger;
 @property (strong, nonatomic) IBOutlet UILabel *labelmobile;
 
+@property (strong, nonatomic) NSDictionary *data;
+
+
 @end

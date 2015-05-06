@@ -105,6 +105,7 @@ typedef enum
 #define kTKPDPROFILE_APISHOPTOTALSOLDKEY @"shop_total_sold"
 #define kTKPDPROFILE_APISHOPTOTALPRODUCTKEY @"shop_total_product"
 #define kTKPDPROFILE_APISHOPNAMEKEY @"shop_name"
+#define kTKPDPROFILE_APIURINEXTKEY @"uri_next"
 
 #define kTKPDPROFILE_APIUSERINFOKEY @"user_info"
 #define kTKPDPROFILE_APIDATAUSERKEY @"data_user"

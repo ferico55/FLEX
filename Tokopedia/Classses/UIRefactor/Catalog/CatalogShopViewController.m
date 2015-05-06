@@ -170,13 +170,14 @@
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 
         } else if (button.tag == 3) {
-            
-            NSArray *items = @[_catalog.result.catalog_info.catalog_url,];
-            UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:items
-                                                                                     applicationActivities:nil];
-            controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-            [self presentViewController:controller animated:YES completion:nil];
-        
+            if (_catalog) {
+                NSString *title = _catalog.result.catalog_info.catalog_name;
+                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
+                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                         applicationActivities:nil];
+                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:controller animated:YES completion:nil];
+            }
         }
     }
 }

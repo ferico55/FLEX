@@ -78,7 +78,7 @@
                 NSLog(@"Error Code : %ld", (long)[(NSError*)error code]) ;
                 NSString *errorDescription = error.localizedDescription;
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                if(![errorAlert isVisible]) {
+                if(![errorAlert isVisible] && [(NSError*)error code] != -999) {
                     [errorAlert show];
                 }
                 
