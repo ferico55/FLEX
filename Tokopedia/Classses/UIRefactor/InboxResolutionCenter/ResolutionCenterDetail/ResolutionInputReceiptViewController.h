@@ -18,11 +18,9 @@
 
 @interface ResolutionInputReceiptViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<ResolutionInputReceiptViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<ResolutionInputReceiptViewControllerDelegate> delegate;
-#endif
+
 
 @property (nonatomic) NSString *action;
 

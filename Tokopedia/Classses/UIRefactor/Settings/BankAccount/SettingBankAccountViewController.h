@@ -19,11 +19,9 @@
 
 @interface SettingBankAccountViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<SettingBankAccountViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<SettingBankAccountViewControllerDelegate> delegate;
-#endif
+
 
 @property (nonatomic, strong) NSDictionary *data;
 @property BankAccountFormList *selectedObject;

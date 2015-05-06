@@ -17,6 +17,6 @@
 @interface ProductQuantityViewController : UIViewController
 
 @property (strong, nonatomic) NSArray *products;
-@property (strong, nonatomic) id<ProductQuantityDelegate> delegate;
+@property (weak, nonatomic) id<ProductQuantityDelegate> delegate;
 
 @end

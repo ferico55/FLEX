@@ -17,12 +17,8 @@
 
 @interface AddressViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<SettingAddressLocationViewDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<SettingAddressLocationViewDelegate> delegate;
-#endif
 
+@property (nonatomic, weak) IBOutlet id<SettingAddressLocationViewDelegate> delegate;
 @property (nonatomic, strong)NSDictionary *data;
 
 @end

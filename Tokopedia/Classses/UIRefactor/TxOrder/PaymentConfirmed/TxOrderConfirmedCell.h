@@ -19,11 +19,8 @@
 
 @interface TxOrderConfirmedCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<TxOrderConfirmedCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TxOrderConfirmedCellDelegate> delegate;
-#endif
 
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;

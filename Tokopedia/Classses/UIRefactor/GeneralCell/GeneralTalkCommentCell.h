@@ -26,12 +26,7 @@
 #pragma mark - General Talk Comment Cell
 @interface GeneralTalkCommentCell : MGSwipeTableCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<GeneralTalkCommentCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<GeneralTalkCommentCellDelegate> delegate;
-#endif
-
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
 @property (weak, nonatomic) IBOutlet UILabel *user_name;
 @property (weak, nonatomic) IBOutlet UILabel *create_time;

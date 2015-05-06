@@ -21,11 +21,9 @@
 
 @interface TxOrderConfirmationCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<TxOrderConfirmationCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TxOrderConfirmationCellDelegate> delegate;
-#endif
+
 
 @property (weak, nonatomic) IBOutlet UILabel *totalInvoiceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;

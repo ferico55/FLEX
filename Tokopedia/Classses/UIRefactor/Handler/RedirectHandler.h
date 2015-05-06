@@ -17,7 +17,7 @@
     UINavigationController *_navigationController;
 }
 
-@property (assign, nonatomic) id<RedirectHandlerDelegate> delegate;
+@property (weak, nonatomic) id<RedirectHandlerDelegate> delegate;
 
 - (void)proxyRequest:(int)state;
 

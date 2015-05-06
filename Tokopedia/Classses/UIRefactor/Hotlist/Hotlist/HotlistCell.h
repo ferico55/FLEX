@@ -19,12 +19,8 @@
 
 @interface HotlistCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<HotlistCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<HotlistCellDelegate> delegate;
-#endif
 
+@property (nonatomic, weak) IBOutlet id<HotlistCellDelegate> delegate;
 @property (strong,nonatomic) NSDictionary *data;
 
 +(id)newcell;

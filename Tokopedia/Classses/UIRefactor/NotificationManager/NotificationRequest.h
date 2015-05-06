@@ -18,7 +18,7 @@
 
 @interface NotificationRequest : NSObject
 
-@property (weak) id<NotificationDelegate> delegate;
+@property (weak, nonatomic) id<NotificationDelegate> delegate;
 
 - (void)loadNotification;
 - (void)deleteCache;

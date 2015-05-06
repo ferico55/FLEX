@@ -17,6 +17,6 @@
 @interface MyShopNoteDetailViewController : UIViewController
 
 @property (nonatomic,strong) NSDictionary *data;
-@property (nonatomic, retain) id<MyShopNoteDetailDelegate> delegate;
+@property (nonatomic, weak) id<MyShopNoteDetailDelegate> delegate;
 
 @end

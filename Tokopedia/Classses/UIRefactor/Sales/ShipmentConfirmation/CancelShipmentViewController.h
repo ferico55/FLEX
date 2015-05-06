@@ -16,6 +16,6 @@
 
 @interface CancelShipmentViewController : UIViewController
 
-@property (strong, nonatomic) id<CancelShipmentConfirmationDelegate> delegate;
+@property (weak, nonatomic) id<CancelShipmentConfirmationDelegate> delegate;
 
 @end

@@ -17,11 +17,9 @@
 
 @interface MyShopEtalaseFilterViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<MyShopEtalaseFilterViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<MyShopEtalaseFilterViewControllerDelegate> delegate;
-#endif
+
 
 @property (strong, nonatomic) NSDictionary* data;
 

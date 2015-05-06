@@ -17,6 +17,6 @@
 @interface SettingUserProfileViewController : UIViewController
 
 @property (strong, nonatomic) NSDictionary *data;
-@property (assign, nonatomic) id<SettingUserProfileDelegate> delegate;
+@property (weak, nonatomic) id<SettingUserProfileDelegate> delegate;
 
 @end

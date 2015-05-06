@@ -19,12 +19,8 @@
 
 @interface SettingBankNameCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<SettingBankNameCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<SettingBankNameCellDelegate> delegate;
-#endif
 
+@property (nonatomic, weak) IBOutlet id<SettingBankNameCellDelegate> delegate;
 @property (strong,nonatomic) NSDictionary *data;
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
 

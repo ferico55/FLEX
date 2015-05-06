@@ -26,11 +26,9 @@
 
 @interface ProductEditWholesaleCell : UITableViewCell <UITextFieldDelegate>
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<ProductEditWholesaleCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<ProductEditWholesaleCellDelegate> delegate;
-#endif
+
 
 @property (weak, nonatomic) IBOutlet UITextField *minimumProductTextField;
 @property (weak, nonatomic) IBOutlet UITextField *maximumProductTextField;

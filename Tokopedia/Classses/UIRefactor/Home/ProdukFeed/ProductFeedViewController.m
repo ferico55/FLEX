@@ -100,7 +100,8 @@ typedef enum TagRequest {
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -314,12 +315,12 @@ typedef enum TagRequest {
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
-    [_product removeAllObjects];
+//    [_product removeAllObjects];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
     
-    [_table reloadData];
+//    [_table reloadData];
     /** request data **/
     [_networkManager doRequest];
 }
@@ -435,7 +436,11 @@ typedef enum TagRequest {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
     
-    [_product addObjectsFromArray: feed.result.list];
+    if(_page == 1) {
+        _product = [feed.result.list mutableCopy];
+    } else {
+        [_product addObjectsFromArray: feed.result.list];
+    }
     
     if (_product.count >0) {
         _isnodata = NO;
@@ -445,12 +450,16 @@ typedef enum TagRequest {
         _isnodata = YES;
         _table.tableFooterView = _noResult;
     }
+
+    
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
+        [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else  {
+        [_table reloadData];
     }
-    
-    [_table reloadData];
+
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {

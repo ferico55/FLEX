@@ -91,7 +91,8 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
     /** set first page become 1 **/
     _page = 1;
@@ -480,12 +481,12 @@
 {
     [self cancel];
     /** clear object **/
-    [_product removeAllObjects];
+//    [_product removeAllObjects];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
     
-    [_table reloadData];
+//    [_table reloadData];
     /** request data **/
 //    [self configureRestKit];
 //    [self loadData];
@@ -583,23 +584,29 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     HistoryProduct *feed = [result objectForKey:@""];
     
-    [_product addObjectsFromArray: feed.result.list];
+    if(_page == 1) {
+        _product = [feed.result.list mutableCopy];
+    } else {
+        [_product addObjectsFromArray: feed.result.list];
+    }
     
     if (_product.count >0) {
         _isnodata = NO;
         _urinext =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
-        [_act stopAnimating];
     } else {
         _isnodata = YES;
         _table.tableFooterView = _noResult;
     }
     
+    
+    
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
+        [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else  {
+        [_table reloadData];
     }
-    
-    [_table reloadData];
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag

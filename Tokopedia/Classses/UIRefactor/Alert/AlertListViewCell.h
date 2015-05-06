@@ -17,11 +17,8 @@
 
 @interface AlertListViewCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<AlertListViewCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<AlertListViewCellDelegate> delegate;
-#endif
 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 

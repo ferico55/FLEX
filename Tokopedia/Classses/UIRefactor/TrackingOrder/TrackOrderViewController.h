@@ -17,11 +17,8 @@
 
 @interface TrackOrderViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<TrackOrderViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TrackOrderViewControllerDelegate> delegate;
-#endif
 
 @property (strong, nonatomic) OrderTransaction *order;
 @property (nonatomic) NSInteger orderID;

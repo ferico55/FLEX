@@ -20,12 +20,8 @@
 
 @interface FavoritedShopCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<FavoritedShopCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<FavoritedShopCellDelegate> delegate;
-#endif
 
+@property (nonatomic, weak) IBOutlet id<FavoritedShopCellDelegate> delegate;
 @property (strong,nonatomic) NSDictionary *data;
 
 +(id)newcell;

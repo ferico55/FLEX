@@ -76,6 +76,7 @@ typedef enum TagRequest {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self adjustnavigationbar];
     
     _auth = [NSMutableDictionary new];
     _cacheController = [URLCacheController new];
@@ -241,6 +242,35 @@ typedef enum TagRequest {
     _tabBarController.delegate = self;
     //tabBarController.tabBarItem.title = nil;
     [self adjusttabbar];
+}
+
+- (void)adjustnavigationbar
+{
+    // Move to root view controller
+    NSBundle* bundle = [NSBundle mainBundle];
+    UIImage* image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]];
+    
+    id proxy = [UINavigationBar appearance];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) { // iOS 7
+        [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
+    } else {
+        [proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+    }
+    
+    [proxy setTintColor:[UIColor whiteColor]];
+    [proxy setBackgroundColor:[UIColor colorWithRed:(18/255.0) green:(199/255.0) blue:(0/255.0) alpha:1]];
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
+                                      forBarPosition:UIBarPositionAny
+                                          barMetrics:UIBarMetricsDefault];
+    
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+    
+    NSDictionary *titleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                         kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,
+                                         kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor,
+                                         kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil];
+    [proxy setTitleTextAttributes:titleTextAttributes];
+    proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
 }
 
 -(void)adjusttabbar

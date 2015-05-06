@@ -42,11 +42,9 @@
 	UITapGestureRecognizer* _gesture;
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<TKPDAlertViewDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TKPDAlertViewDelegate> delegate;
-#endif
+
 @property (nonatomic, strong, setter = setData:) NSDictionary* data;
 
 + (id)newview;

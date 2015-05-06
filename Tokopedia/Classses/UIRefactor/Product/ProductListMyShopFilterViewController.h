@@ -21,7 +21,7 @@
 
 @interface ProductListMyShopFilterViewController : UITableViewController
 
-@property (assign, nonatomic) id<ProductListMyShopFilterDelegate> delegate;
+@property (weak, nonatomic) id<ProductListMyShopFilterDelegate> delegate;
 @property (strong, nonatomic) NSString *shopID;
 
 @end

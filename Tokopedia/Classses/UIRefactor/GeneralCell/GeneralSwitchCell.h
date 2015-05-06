@@ -21,11 +21,9 @@
 
 @interface GeneralSwitchCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<GeneralSwitchCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<GeneralSwitchCellDelegate> delegate;
-#endif
+
 
 @property (weak, nonatomic) IBOutlet UISwitch *settingSwitch;
 @property (weak, nonatomic) IBOutlet UILabel *textCellLabel;

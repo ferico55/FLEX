@@ -28,17 +28,13 @@
 
 @interface InboxResolutionCenterOpenViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<InboxResolutionCenterOpenViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<InboxResolutionCenterOpenViewControllerDelegate> delegate;
-#endif
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+@property (nonatomic, weak) IBOutlet id<InboxResolutionCenterOpenViewControllerDelegate> delegate;
+
+
+
 @property (nonatomic, weak) IBOutlet id<SyncroDelegate> syncroDelegate;
-#else
-@property (nonatomic, assign) IBOutlet id<SyncroDelegate> syncroDelegate;
-#endif
+
 
 @property (weak, nonatomic) IBOutlet UILabel *buyerSellerLabel;
 

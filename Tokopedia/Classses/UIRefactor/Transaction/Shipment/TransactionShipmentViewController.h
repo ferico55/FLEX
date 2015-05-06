@@ -17,11 +17,9 @@
 
 @interface TransactionShipmentViewController : UIViewController
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+
 @property (nonatomic, weak) IBOutlet id<TransactionShipmentViewControllerDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<TransactionShipmentViewControllerDelegate> delegate;
-#endif
+
 
 @property (nonatomic,strong)NSDictionary *data;
 
