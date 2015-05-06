@@ -328,9 +328,18 @@ UIAlertViewDelegate
     [_shareClickView setUserInteractionEnabled:YES];
     
     //Add observer
+    [self initNotification];
+}
+
+- (void)initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshRequest:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
+
 
 
 - (void)setButtonFav {
@@ -361,8 +370,6 @@ UIAlertViewDelegate
     UIEdgeInsets inset = _table.contentInset;
     inset.bottom += 20;
     _table.contentInset = inset;
-    _userManager = [UserAuthentificationManager new];
-    _auth = [_userManager getUserLoginData];
     
     [self configureRestKit];
     
@@ -2435,6 +2442,16 @@ UIAlertViewDelegate
 {
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
     [alert show];
+}
+
+- (void)userDidLogin:(NSNotification*)notification {
+    _userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
+}
+
+- (void)userDidLogout:(NSNotification*)notification {
+    _userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
 }
 
 @end

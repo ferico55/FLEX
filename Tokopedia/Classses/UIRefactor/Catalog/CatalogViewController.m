@@ -34,8 +34,6 @@
     
     BOOL _hideTableRows;
     
-    UserAuthentificationManager *_userManager;
-    
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
 
@@ -137,8 +135,6 @@
     [super viewWillAppear:animated];
     _tableView.tableHeaderView = _headerView;
     _tableView.tableFooterView = _footerView;
-    
-    _userManager = [UserAuthentificationManager new];
 }
 
 - (void)didReceiveMemoryWarning {

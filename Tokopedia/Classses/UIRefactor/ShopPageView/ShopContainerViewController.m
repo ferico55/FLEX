@@ -144,9 +144,7 @@
     return infoBarButton;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    _userManager = [UserAuthentificationManager new];
-}
+
 
 - (void)viewDidLoad
 {
@@ -276,6 +274,10 @@
     [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(reloadShop) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+
     
 }
 
@@ -902,4 +904,17 @@
     [self configureRestKit];
     [self request];
 }
+
+
+#pragma mark - Notification Center Action
+
+#pragma mark - Notification Delegate
+- (void)userDidLogin:(NSNotification*)notification {
+    _userManager = [UserAuthentificationManager new];
+}
+
+- (void)userDidLogout:(NSNotification*)notification {
+    _userManager = [UserAuthentificationManager new];
+}
+
 @end
