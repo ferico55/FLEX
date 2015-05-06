@@ -7,10 +7,11 @@
 //
 
 #import "camera.h"
-#import "CameraController.h"
 #import "CameraCollectionViewController.h"
 #import "CameraCollectionCell.h"
 #import "TKPDLiveCameraTableViewCell.h"
+#import "TKPDPhotoPicker.h"
+
 NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumListLiveVideoCellIdentifier";
 
 @interface ALAssetsLibrary (TkpdCategory)
@@ -34,7 +35,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 
 @end
 
-@interface CameraCollectionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate, CameraControllerDelegate>
+@interface CameraCollectionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate, TKPDPhotoPickerDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_groupAlbums;
@@ -47,6 +48,8 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     
     BOOL _isNeedDismiss;
     BOOL _didPresentPicker;
+    
+    TKPDPhotoPicker *_photoPicker;
     
 }
 
@@ -316,21 +319,14 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        CameraController* c = [CameraController new];
-        [c snap];
-        c.delegate = self;
-        c.isTakePicture = YES;
-        c.tag = self.tag;
         _didPresentPicker = YES;
-        TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-        [cameraCell freezeCapturedContent];
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-        nav.wantsFullScreenLayout = YES;
-        nav.modalPresentationStyle = UIModalPresentationFullScreen;
-        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:nav animated:YES completion:^{
-
-        }];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+            [cameraCell freezeCapturedContent];
+        });
+        
+        _photoPicker = [[TKPDPhotoPicker alloc] initWithSourceType:UIImagePickerControllerSourceTypeCamera parentViewController:self pickerTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [_photoPicker setDelegate:self];
     }
     else
     {
@@ -376,31 +372,6 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
             }
             
         }
-        //cell.checkmarkImageView.hidden = !cell.checkmarkImageView.hidden;
-        //NSMutableArray *selectedTemp= [NSMutableArray new];
-        
-        //if ([[_selectedImages copy] containsObject:selectedImage]) {
-        //if ([self Array:[_selectedImages copy] containObject:selectedImage]) {
-        //    for (NSDictionary *objectInArray in [_selectedImages copy]) {
-        //        NSDictionary *photoObjectInArray = [objectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-        //        NSDictionary *photoObject = [selectedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-        //        if (![self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
-        //            [selectedTemp addObject:objectInArray];
-        //        }
-        //    }
-        //    cell.checkmarkImageView.hidden = YES;
-        //    //[_selectedImages removeObject:selectedImage];
-        //    [_selectedImages removeAllObjects];
-        //    [_selectedImages addObjectsFromArray:selectedTemp];
-        //}
-        //else
-        //{
-        //    if (_selectedImages.count < 5)
-        //        cell.checkmarkImageView.hidden = NO;
-        //        [_selectedImages addObject:selectedImage];
-        //}
-
-        //[_collectionview reloadData];
     }
 }
 
@@ -446,16 +417,20 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     return resizedImage;
 }
 
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
-{
-    NSDictionary *userInfoDict = @{@"selected_images":@[userinfo]};
-    [_delegate didDismissController:self withUserInfo:userInfoDict];
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
 
 -(void)dissmissViewController:(id)sender
 {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+// MARK: TKPDPhotoPickerDelegate methods
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
+    NSDictionary *userInfoDict = @{@"selected_images":@[userInfo]};
+    [_delegate didDismissController:self withUserInfo:userInfoDict];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    
+    _photoPicker = nil;
 }
 
 @end
