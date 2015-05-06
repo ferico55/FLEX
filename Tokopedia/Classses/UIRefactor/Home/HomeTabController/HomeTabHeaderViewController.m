@@ -91,6 +91,11 @@
         _loggedIn = NO;
     }
     
+    [self.view.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [self.view.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [self.view.layer setShadowRadius:1];
+    [self.view.layer setShadowOpacity:0.3];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
