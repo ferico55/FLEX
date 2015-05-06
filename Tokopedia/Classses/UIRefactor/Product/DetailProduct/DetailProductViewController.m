@@ -1428,9 +1428,7 @@ UIAlertViewDelegate
     }
     else if(tag == CTagTokopediaNetworkManager)
     {
-        [_act stopAnimating];
-        _buyButton.enabled = YES;
-//        [self requestfailure:errorResult];
+
     }
     else if(tag == CTagOtherProduct)
         [self requestFailureOtherProduct:errorResult];
