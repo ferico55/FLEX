@@ -587,6 +587,8 @@
                                                                     object:nil
                                                                   userInfo:nil];
             }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else
         {
