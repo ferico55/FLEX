@@ -594,6 +594,11 @@
         _isnodata = NO;
         _urinext =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+        
+        if(!_page) {
+            _table.tableFooterView = nil;
+            [_act stopAnimating];
+        }
     } else {
         _isnodata = YES;
         _table.tableFooterView = _noResult;
