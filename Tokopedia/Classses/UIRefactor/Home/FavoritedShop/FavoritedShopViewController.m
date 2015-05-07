@@ -93,7 +93,7 @@
     tokopediaNetworkManager = [TokopediaNetworkManager new];
     tokopediaNetworkManager.delegate = self;
     
-    _table.contentInset = UIEdgeInsetsMake(-34, 0, 53, 0);
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
     
     if (_shop.count + _goldshop.count > 0) {
         _isnodata = NO;
@@ -253,7 +253,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (_shop.count > 0) {
+    if (_shop.count + _goldshop.count > 0) {
         return 33;
     } else {
         return 0;
@@ -263,7 +263,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
-    [view setBackgroundColor:tableView.backgroundColor];
+    [view setBackgroundColor:[UIColor redColor]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
     [label setFont:[UIFont fontWithName:@"GothamBook" size:15]];
     [label setTextColor:[UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1]];
