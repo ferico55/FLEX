@@ -1356,7 +1356,7 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-#define PRODUCT_DESCRIPTION_CHARACTER_LIMIT 200
+#define PRODUCT_DESCRIPTION_CHARACTER_LIMIT 2000
     return textView.text.length + (text.length - range.length) <= PRODUCT_DESCRIPTION_CHARACTER_LIMIT;
 }
 

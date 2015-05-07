@@ -227,7 +227,11 @@
         }
         if (_etalaseList.count > indexPath.row) {
             EtalaseList *list =_etalaseList[indexPath.row];
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> ee42d20ae48e4ebfa8d7f0ebb7628bd13bbb3840
             if ([list.etalase_name isEqualToString:_selectedEtalase.etalase_name]) {
                 ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
             }
