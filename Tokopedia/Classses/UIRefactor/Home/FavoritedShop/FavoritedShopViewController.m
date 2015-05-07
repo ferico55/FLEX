@@ -421,8 +421,11 @@
         BOOL status = [favoritedshop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
-            [_shop addObjectsFromArray: favoritedshop.result.list];
-            if(!is_already_updated && _page == 1) {
+            if(_page == 1) {
+                _shop = [favoritedshop.result.list mutableCopy];
+                _goldshop = [favoritedshop.result.list_gold mutableCopy];
+            } else {
+                [_shop addObjectsFromArray: favoritedshop.result.list];
                 [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
             }
             
@@ -437,8 +440,9 @@
             }
             
             _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
+
             
-            if (_shop.count + _goldshop.count > 0) {
+            if (_shop.count + _goldshop.count >0) {
                 _isnodata = NO;
                 _urinext =  favoritedshop.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
@@ -456,7 +460,57 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+            } else {
+                _isnodata = YES;
+//                _table.tableFooterView = _noResult;
             }
+            
+            
+            
+            if(_refreshControl.isRefreshing) {
+                [_refreshControl endRefreshing];
+                [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            } else  {
+                [_table reloadData];
+            }
+
+            //
+//            [_shop addObjectsFromArray: favoritedshop.result.list];
+//            if(!is_already_updated && _page == 1) {
+//                [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
+//            }
+//            
+//            _shopdictionary = [NSMutableDictionary new];
+//            
+//            if (_goldshop.count > 0) {
+//                [_shopdictionary setObject:_goldshop forKey:@"a"];
+//            }
+//            
+//            if (_shop.count > 0) {
+//                [_shopdictionary setObject:_shop forKey:@"b"];
+//            }
+//            
+//            _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
+//            
+//            if (_shop.count + _goldshop.count > 0) {
+//                _isnodata = NO;
+//                _urinext =  favoritedshop.result.paging.uri_next;
+//                NSURL *url = [NSURL URLWithString:_urinext];
+//                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+//                
+//                NSMutableDictionary *queries = [NSMutableDictionary new];
+//                [queries removeAllObjects];
+//                for (NSString *keyValuePair in querry)
+//                {
+//                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+//                    NSString *key = [pairComponents objectAtIndex:0];
+//                    NSString *value = [pairComponents objectAtIndex:1];
+//                    
+//                    [queries setObject:value forKey:key];
+//                }
+//                
+//                _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+//            }
         }
         else{
             
@@ -535,14 +589,14 @@
 {
     [self cancel];
     /** clear object **/
-    [_shop removeAllObjects];
-    [_goldshop removeAllObjects];
+//    [_shop removeAllObjects];
+//    [_goldshop removeAllObjects];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
     is_already_updated = NO;
     
-    [_table reloadData];
+//    [_table reloadData];
     /** request data **/
     [self configureRestKit];
     [self request];
