@@ -784,14 +784,16 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         }
         case 12:
         {
-            NSString *shareText = @"";
+            NSString *title;
             if ([_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]) {
-                shareText = [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY];
+                title = [NSString stringWithFormat:@"Jual %@ | Tokopedia",
+                         [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]];
             } else if ([_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
-                shareText = [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString];
+                title = [NSString stringWithFormat:@"Jual %@ | Tokopedia",
+                         [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString]];
             }
-            NSString *activityItem = [NSString stringWithFormat:@"Jual %@ | Tokopedia %@", shareText, _searchitem.result.search_url?:@"www.tokopedia.com"];
-            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+            NSURL *url = [NSURL URLWithString: _searchitem.result.search_url?:@"www.tokopedia.com"];
+            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                              applicationActivities:nil];
             activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
             [self presentViewController:activityController animated:YES completion:nil];

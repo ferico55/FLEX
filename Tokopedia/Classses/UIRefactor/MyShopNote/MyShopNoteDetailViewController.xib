@@ -31,19 +31,39 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwF-Iv-Mle">
+                    <rect key="frame" x="17" y="19" width="286" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Qg3-zb-jsB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Judul" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1gX-EH-jNo">
+                    <rect key="frame" x="17" y="19" width="286" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="i1a-Ga-4Kf"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="sEL-UK-xHt"/>
+                    </connections>
+                </textField>
                 <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="September 3, 2014, 1:19" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tww-wo-38B" userLabel="Label Time">
                     <rect key="frame" x="17" y="45" width="286" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="DaF-SB-WbB"/>
+                        <constraint firstAttribute="height" constant="21" id="lVK-gm-iJM"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3CR-Go-hoS">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3CR-Go-hoS" userLabel="Border">
                     <rect key="frame" x="0.0" y="82" width="320" height="4"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="4" id="cZT-j3-c8o"/>
+                        <constraint firstAttribute="height" constant="4" id="caY-Lk-548"/>
                     </constraints>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7v-o7-4nJ" customClass="TKPDTextView">
@@ -55,47 +75,26 @@
                         <outlet property="delegate" destination="-1" id="MuQ-r8-gRb"/>
                     </connections>
                 </textView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Judul" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1gX-EH-jNo">
-                    <rect key="frame" x="17" y="15" width="291" height="30"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="7vh-2u-a2S"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="sEL-UK-xHt"/>
-                    </connections>
-                </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Judul" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwF-Iv-Mle">
-                    <rect key="frame" x="17" y="19" width="291" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="VIm-Vt-YIV"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="nwF-Iv-Mle" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="24b-cp-OqB"/>
-                <constraint firstAttribute="bottom" secondItem="Q7v-o7-4nJ" secondAttribute="bottom" id="5I3-62-gXz"/>
-                <constraint firstItem="3CR-Go-hoS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CgW-cO-gds"/>
-                <constraint firstItem="Tww-wo-38B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="GmN-u1-pD0"/>
-                <constraint firstAttribute="trailing" secondItem="1gX-EH-jNo" secondAttribute="trailing" constant="12" id="HqM-PL-ygj"/>
-                <constraint firstItem="nwF-Iv-Mle" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="Iql-V0-Oac"/>
-                <constraint firstAttribute="trailing" secondItem="Tww-wo-38B" secondAttribute="trailing" constant="17" id="LFh-iF-QzN"/>
-                <constraint firstItem="1gX-EH-jNo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="LSD-Dq-hyG"/>
-                <constraint firstAttribute="trailing" secondItem="Q7v-o7-4nJ" secondAttribute="trailing" id="SxF-sB-ywK"/>
-                <constraint firstAttribute="trailing" secondItem="nwF-Iv-Mle" secondAttribute="trailing" constant="12" id="URH-jj-T56"/>
-                <constraint firstItem="Tww-wo-38B" firstAttribute="top" secondItem="nwF-Iv-Mle" secondAttribute="bottom" constant="5" id="Ve9-AA-SMG"/>
-                <constraint firstAttribute="trailing" secondItem="3CR-Go-hoS" secondAttribute="trailing" id="aYc-jp-gds"/>
-                <constraint firstItem="1gX-EH-jNo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="i93-ig-PsN"/>
-                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="ksI-Uh-ANd"/>
-                <constraint firstItem="3CR-Go-hoS" firstAttribute="top" secondItem="Tww-wo-38B" secondAttribute="bottom" constant="16" id="kwV-O5-gFC"/>
-                <constraint firstItem="Tww-wo-38B" firstAttribute="top" secondItem="1gX-EH-jNo" secondAttribute="bottom" id="s4O-FY-V5Z"/>
-                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="top" secondItem="3CR-Go-hoS" secondAttribute="bottom" id="uxM-dX-iKE"/>
+                <constraint firstItem="1gX-EH-jNo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="6IH-rb-ZUt"/>
+                <constraint firstItem="1gX-EH-jNo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="BHY-PJ-Ujs"/>
+                <constraint firstAttribute="trailing" secondItem="Q7v-o7-4nJ" secondAttribute="trailing" id="CsA-qh-C6o"/>
+                <constraint firstAttribute="trailing" secondItem="Tww-wo-38B" secondAttribute="trailing" constant="17" id="DLV-MW-sUN"/>
+                <constraint firstItem="3CR-Go-hoS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="FWz-F9-z74"/>
+                <constraint firstAttribute="trailing" secondItem="nwF-Iv-Mle" secondAttribute="trailing" constant="17" id="JUr-54-8kB"/>
+                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="top" secondItem="3CR-Go-hoS" secondAttribute="bottom" id="L4J-MG-blZ"/>
+                <constraint firstAttribute="trailing" secondItem="3CR-Go-hoS" secondAttribute="trailing" id="PkW-LG-d24"/>
+                <constraint firstAttribute="bottom" secondItem="Q7v-o7-4nJ" secondAttribute="bottom" id="UZt-gk-AgC"/>
+                <constraint firstItem="Tww-wo-38B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="cNz-Dx-zUt"/>
+                <constraint firstItem="Tww-wo-38B" firstAttribute="top" secondItem="nwF-Iv-Mle" secondAttribute="bottom" constant="5" id="cbr-fZ-lGU"/>
+                <constraint firstItem="nwF-Iv-Mle" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="eBl-cC-b3b"/>
+                <constraint firstAttribute="trailing" secondItem="1gX-EH-jNo" secondAttribute="trailing" constant="17" id="eaA-gf-BAj"/>
+                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="hD9-dc-oCV"/>
+                <constraint firstItem="3CR-Go-hoS" firstAttribute="top" secondItem="Tww-wo-38B" secondAttribute="bottom" constant="16" id="xAU-8i-6fl"/>
+                <constraint firstItem="nwF-Iv-Mle" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="y6O-th-Lfq"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
