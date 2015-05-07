@@ -152,6 +152,8 @@ typedef enum {
 #define kTKPD_REACHABILITYURL @"http://www.google.com"
 #else
 #define kTKPD_REACHABILITYURL @"http://www.google.com"
+#define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
+
 #endif
 #define kTKPD_REACHABILITYDELAY 3.0
 

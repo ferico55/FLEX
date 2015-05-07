@@ -145,12 +145,7 @@
 {
     [super viewWillAppear:animated];
 
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
-    
-//    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-//    [storage resetKeychain];
+    [FBSession.activeSession closeAndClearTokenInformation];
     
     _loginButton.layer.cornerRadius = 2;
     
@@ -161,6 +156,8 @@
     _passwordTextField.isBottomRoundCorner = YES;
     
     _loginView.delegate = self;
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -576,22 +573,20 @@
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                    object:nil
-                                                                  userInfo:nil];
             } else {
                 [self.tabBarController setSelectedIndex:0];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                    object:nil
-                                                                  userInfo:nil];
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else
         {
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                object:nil
+                                                              userInfo:nil];
+
+        } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                            delegate:self];
             [alert show];
@@ -671,30 +666,13 @@
     return YES;
 }
 
-// Called when the UIKeyboardWillShowNotification is sent
 - (void)keyboardWillShow:(NSNotification *)notification {
     
-    NSDictionary* info = [notification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-//    _container.contentInset = contentInsets;
-//    _container.scrollIndicatorInsets = contentInsets;
-    
-    // If active text field is hidden by keyboard, scroll it so it's visible
-    // Your application might not need or want this behavior.
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= kbSize.height;
-    if (!CGRectContainsPoint(aRect, _activetextfield.frame.origin) ) {
-        CGPoint scrollPoint = CGPointMake(0.0, _activetextfield.frame.origin.y-kbSize.height);
-//        [_container setContentOffset:scrollPoint animated:YES];
-    }
 }
-// Called when the UIKeyboardWillHideNotification is sent
+
 - (void)keyboardWillHidden:(NSNotification*)aNotification
 {
-//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-//    _container.contentInset = contentInsets;
-//    _container.scrollIndicatorInsets = contentInsets;
+
 }
 
 #pragma mark - Facebook login delegate
@@ -779,7 +757,8 @@
         [self.delegate redirectViewController:_redirectViewController];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {
-        [self.tabBarController setSelectedIndex:0];        
+        [self.tabBarController setSelectedIndex:0];
+         
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                             object:nil
                                                           userInfo:nil];

@@ -82,7 +82,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -203,19 +203,20 @@
                                                       timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
             UIImageView *thumb = ((ProductListMyShopCell*)cell).thumb;
-            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey"];
+            thumb.image = nil;
             [thumb setImageWithURLRequest:request
-                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"]
+                         placeholderImage:nil
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
-                [thumb setContentMode:UIViewContentModeScaleAspectFill];
+                thumb.image = image;
+                thumb.contentMode = UIViewContentModeScaleAspectFill;
 #pragma clang diagnosti c pop
                 [act stopAnimating];
                 [act setHidden:YES];
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey"];
+                thumb.image = [UIImage imageNamed:@"Icon_no_photo_transparan"];
+                thumb.contentMode = UIViewContentModeScaleAspectFill;
                 [act stopAnimating];
                 [act setHidden:YES];
             }];
@@ -389,6 +390,7 @@
 {
     if (tag == TAG_LIST_REQUEST) {
         if (![_refreshControl isRefreshing]) {
+            _table.tableFooterView = nil;
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
@@ -423,8 +425,8 @@
 {
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     NSInteger shopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
-    NSInteger orderByID = [[_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]integerValue];
-    NSInteger etalaseID = [[_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]integerValue];
+    NSString *orderByID = [_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]?:@"";
+    NSString *etalase = [_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]?:@"";
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
     
     NSString *departmentID = [_dataFilter objectForKey:API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY]?:@"";
@@ -437,8 +439,8 @@
                             kTKPDDETAIL_APISHOPIDKEY : @(shopID),
                             kTKPDDETAIL_APILIMITKEY : @(_limit),
                             kTKPDDETAIL_APIPAGEKEY : @(_page),
-                            kTKPDDETAIL_APISORTKEY : @(orderByID),
-                            kTKPDSHOP_APIETALASEIDKEY:@(etalaseID),
+                            kTKPDDETAIL_APISORTKEY : orderByID,
+                            kTKPDSHOP_APIETALASEIDKEY:etalase,
                             API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY : departmentID,
                             API_MANAGE_PRODUCT_CATALOG_ID_KEY : catalogID,
                             API_MANAGE_PRODUCT_PICTURE_STATUS_KEY : pictureStatus,
@@ -549,10 +551,17 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+
+                if (_list.count == 0) {
+                    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                    NoResultView *resultView = [[NoResultView alloc] initWithFrame:frame];
+                    _table.tableFooterView = resultView;
+                }
+                
             }
             else
             {
-                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
+                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 156)];
                 _table.tableFooterView = noResultView;
             }
         }

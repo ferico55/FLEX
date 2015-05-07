@@ -3011,7 +3011,7 @@
                 if (indexPath.row == indexPathFirstObjectProduct.row+productCount+3)
                     cell = [self cellTextFieldPlaceholder:@"Nama Pengirim" atIndexPath:indexPath withText:_senderNameDropshipper[indexPath.section]];
                 else if (indexPath.row == indexPathFirstObjectProduct.row+productCount+4)
-                    cell = [self cellTextFieldPlaceholder:@"Nomer Telepon" atIndexPath:indexPath withText:_senderPhoneDropshipper[indexPath.section]];
+                    cell = [self cellTextFieldPlaceholder:@"Nomor Telepon" atIndexPath:indexPath withText:_senderPhoneDropshipper[indexPath.section]];
             }
         }
     }

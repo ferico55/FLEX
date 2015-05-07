@@ -334,7 +334,7 @@
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
     }
-    
+        
     if(_isNeedToRemoveAllObject) {
        [_product removeAllObjects];
         _isNeedToRemoveAllObject = NO;
