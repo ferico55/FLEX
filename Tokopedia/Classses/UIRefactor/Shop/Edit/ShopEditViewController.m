@@ -20,8 +20,17 @@
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
 
+#import "TKPDTextView.h"
+
 #pragma mark - Shop Edit View Controller
-@interface ShopEditViewController () <UITextViewDelegate, ShopEditStatusViewControllerDelegate,CameraControllerDelegate, GenerateHostDelegate, RequestUploadImageDelegate>
+@interface ShopEditViewController ()
+<
+    UITextViewDelegate,
+    ShopEditStatusViewControllerDelegate,
+    CameraControllerDelegate,
+    GenerateHostDelegate,
+    RequestUploadImageDelegate
+>
 {
     UITextView *_activetextview;
     
@@ -59,22 +68,16 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewmembership;
 @property (weak, nonatomic) IBOutlet UILabel *labelmembership;
-@property (weak, nonatomic) IBOutlet UILabel *labelregularmembership;
 @property (weak, nonatomic) IBOutlet UIView *viewcontent;
-@property (weak, nonatomic) IBOutlet UIButton *buttonlearnmore;
-@property (weak, nonatomic) IBOutlet UIView *viewotherdesc;
-@property (weak, nonatomic) IBOutlet UIImageView *thumb;
+@property (strong, nonatomic) IBOutlet UIImageView *thumb;
 @property (weak, nonatomic) IBOutlet UIButton *buttoneditimage;
 @property (weak, nonatomic) IBOutlet UILabel *labelshopname;
-@property (weak, nonatomic) IBOutlet UITextView *textviewslogan;
+@property (weak, nonatomic) IBOutlet TKPDTextView *textviewslogan;
 @property (weak, nonatomic) IBOutlet UILabel *labelslogancharcount;
-@property (weak, nonatomic) IBOutlet UITextView *textviewdesc;
+@property (weak, nonatomic) IBOutlet TKPDTextView *textviewdesc;
 @property (weak, nonatomic) IBOutlet UILabel *labeldesccharcount;
 @property (weak, nonatomic) IBOutlet UIButton *buttonshopstatus;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
-@property (weak, nonatomic) IBOutlet UILabel *labelsloganplaceholder;
-@property (weak, nonatomic) IBOutlet UILabel *labeldeskripsiplaceholder;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actthumb;
 @property (weak, nonatomic) IBOutlet UIImageView *badgesMembership;
 
 -(void)cancel;
@@ -116,7 +119,7 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
     [_barbuttonsave setTintColor:[UIColor whiteColor]];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
@@ -134,27 +137,10 @@
     _buttoneditimage.enabled = NO;
     
     [self setDefaultData:_data];
-
-}
-
-- (void)textView:(UITextView*)textView setPlaceholder:(NSString *)placeholderText
-{
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
-    placeholderLabel.text = placeholderText;
-    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
-    placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
-    placeholderLabel.tag = 1;
-    [textView addSubview:placeholderLabel];
-}
-
-- (void)textViewDidChange:(UITextView *)textView
-{
-    UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
-    if (textView.text.length > 0) {
-        placeholderLabel.hidden = YES;
-    } else {
-        placeholderLabel.hidden = NO;
-    }
+    
+    _textviewdesc.placeholder = @"Tulis Deskripsi";
+    _textviewslogan.placeholder = @"Tulis Slogan";
+    
 }
 
 -(void)viewDidLayoutSubviews
@@ -298,15 +284,11 @@
 
         if (status) {
             if (_settings.message_status) {
-                NSArray *array = [[NSArray alloc] initWithObjects:KTKPDSHOP_SUCCESSEDIT, nil];
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-            }
-            else if(_settings.message_error)
-            {
-                NSArray *array = _settings.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[KTKPDSHOP_SUCCESSEDIT] delegate:self];
+                [alert show];
+            } else if(_settings.message_error) {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_settings.message_error delegate:self];
+                [alert show];
             }
             if (_settings.result.is_success) {
                 UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 3];
@@ -320,7 +302,11 @@
             NSError *error = object;
             if (!([error code] == NSURLErrorCancelled)){
                 NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
+                                                                    message:errorDescription
+                                                                   delegate:self
+                                                          cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
+                                                          otherButtonTitles:nil];
                 [errorAlert show];
             }
         }
@@ -370,16 +356,16 @@
     UIImageView *thumb = _thumb;
     thumb.image = nil;
     
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [thumb setImageWithURLRequest:request
+                 placeholderImage:[UIImage imageNamed:@"icon_default_shop"]
+                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                        //NSLOG(@"thumb: %@", thumb);
-                        [thumb setImage:image];
+        [thumb setImage:image];
 #pragma clang diagnostic pop
-                        
-                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    }];
-                    
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [thumb setImage:[UIImage imageNamed:@"icon_default_shop"]];
+    }];
 }
 
 #pragma mark - View Action
@@ -418,8 +404,8 @@
                     }
                 }
                 if (message.count>0) {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:message ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:message delegate:self];
+                    [alert show];
                 }
                 break;
             }
@@ -485,37 +471,34 @@
         NSString *string = _shop.info.shop_tagline;
         _textviewslogan.text = string?:@"";
         if (string) {
-            _labelslogancharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewslogan.text.length + (string.length - string.length)];
+            _labelslogancharcount.text = [NSString stringWithFormat:@"%lu", limit - _textviewslogan.text.length];
         }
-        else
-          [self textView:_textviewslogan setPlaceholder:@"Slogan"];
         
         limit = 140;
         string = _shop.info.shop_description;
         _textviewdesc.text = string?:@"";
         if (string) {
-            _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewslogan.text.length + (string.length - string.length)];
+            _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewdesc.text.length];
         }
-        else [self textView:_textviewdesc setPlaceholder:@"Deskripsi"];
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
-        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.info.shop_avatar]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+
         UIImageView *thumb = _thumb;
-        thumb.image = nil;
-        
         [UIImageView circleimageview:thumb];
         
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [thumb setImageWithURLRequest:request
+                     placeholderImage:[UIImage imageNamed:@"icon_default_shop"]
+                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image];
-            
-            [_actthumb stopAnimating];
+            [thumb setImage:image];                                  
 #pragma clang diagnosti c pop
-            
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            [thumb setImage:[UIImage imageNamed:@"icon_default_shop"]];
+            thumb.layer.borderColor = [UIColor colorWithRed:199.0/255.0 green:200.0/255.0 blue:204.0/255.0 alpha:1].CGColor;
+            thumb.layer.borderWidth = 1;
         }];
         
         NSUInteger type = [[_datainput objectForKey:kTKPDSHOPEDIT_APISTATUSKEY]integerValue]?:[_shop.is_open integerValue];
@@ -550,12 +533,11 @@
 }
 
 #pragma mark - TextView Delegate
+
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     _activetextview = textView;
-    
     return YES;
 }
-
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
@@ -563,9 +545,7 @@
         if(textView.text.length != 0 && ![textView.text isEqualToString:@""]){
             [_datainput setObject:textView.text forKey:kTKPDSHOPEDIT_APITAGLINEKEY];
         }
-    }
-    else if (textView == _textviewdesc)
-    {
+    } else if (textView == _textviewdesc) {
         if(textView.text.length != 0 && ![textView.text isEqualToString:@""]){
             [_datainput setObject:textView.text forKey:kTKPDSHOPEDIT_APISHORTDESCKEY];
         }
@@ -578,18 +558,19 @@
     int limit = 0;
     if (textView == _textviewslogan) {
         limit = 48;
-        if (textView.text.length + (text.length - range.length) <= limit) {
-            _labelslogancharcount.text = [NSString stringWithFormat:@"%zd", limit - (textView.text.length + (text.length - range.length))];
-        }
-    }
-    else if (textView == _textviewdesc)
-    {
+    } else if (textView == _textviewdesc) {
         limit = 140;
-        if (textView.text.length + (text.length - range.length) <= limit) {
-            _labeldesccharcount.text = [NSString stringWithFormat:@"%zd",limit - (textView.text.length + (text.length - range.length))];
-        }
     }
     return textView.text.length + (text.length - range.length) <= limit;
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    if (textView == _textviewslogan) {
+        _labelslogancharcount.text = [NSString stringWithFormat:@"%zd", 48 - textView.text.length];
+    } else if (textView == _textviewdesc) {
+        _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", 140 - textView.text.length];
+    }
 }
 
 #pragma mark - ShopEditStatusViewController Delegate
