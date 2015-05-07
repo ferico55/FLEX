@@ -92,7 +92,9 @@
     if ([shopId respondsToSelector:@selector(integerValue)]) {
         shopID = [shopId integerValue];
     }
-    return shopId > 0;
+    
+    NSInteger myShopID = [[self getShopId] integerValue];
+    return shopID == myShopID;
 }
 
 - (BOOL)isMyUser:(id)userId {
