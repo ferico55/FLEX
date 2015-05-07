@@ -169,7 +169,7 @@
         [backBarButtonItem setTintColor:[UIColor whiteColor]];
         backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
         self.navigationItem.rightBarButtonItem = backBarButtonItem;
-    }
+    } 
 }
 
 -(void)viewWillDisappear:(BOOL)animated
