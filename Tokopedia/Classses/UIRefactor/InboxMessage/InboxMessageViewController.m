@@ -321,7 +321,7 @@ typedef enum TagRequest {
             cell = [InboxMessageCell newcell];
             ((InboxMessageCell*)cell).delegate = self;
         }
-        
+
         if (_messages.count > indexPath.row ) {
             InboxMessageList *list = _messages[indexPath.row];
             
