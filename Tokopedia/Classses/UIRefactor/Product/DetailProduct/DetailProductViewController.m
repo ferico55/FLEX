@@ -1726,7 +1726,7 @@ UIAlertViewDelegate
                                                                                       views:NSDictionaryOfVariableBindings(_buyButton)]];
             }
             else {
-                if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
+                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
                     _dinkButton.hidden = NO;
                     _buyButton.hidden = YES;
                 } else {
