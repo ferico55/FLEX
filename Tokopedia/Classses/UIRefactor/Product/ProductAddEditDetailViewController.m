@@ -1573,7 +1573,7 @@
 -(void)didUpdateShopHasTerms:(NSNotification*)notification
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *shopHasTerm = [auth getShopHasTerm];
+    NSString *shopHasTerm = [auth getShopHasTerm];  
     
     if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
         _returnableProductSwitch.enabled = NO;
