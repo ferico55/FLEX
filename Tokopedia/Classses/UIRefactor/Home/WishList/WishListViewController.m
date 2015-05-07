@@ -357,10 +357,10 @@
 
     if(tblWishList.contentSize.height <= tblWishList.bounds.size.height)
         [activityIndicator setHidden:YES];
-    if(product.count == 0)
-        [self.view addSubview:viewNoData];
-    else
-        [viewNoData removeFromSuperview];
+
+    if([product count] == 0) {
+        tblWishList.tableFooterView = _noResult;
+    }
 }
 
 

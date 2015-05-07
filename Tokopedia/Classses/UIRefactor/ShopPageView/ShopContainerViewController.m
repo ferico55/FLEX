@@ -571,12 +571,13 @@
                     if(_shop.result.info.shop_already_favorited == 1) {
                         self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
                         _favoriteBarButton.enabled = YES;
+                        _unfavoriteBarButton.enabled = YES;
                         _messageBarButton.enabled = YES;
                     } else {
                         self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
                         _messageBarButton.enabled = YES;
                         _unfavoriteBarButton.enabled = YES;
-
+                        _favoriteBarButton.enabled = YES;
                     }
                 }
                 
