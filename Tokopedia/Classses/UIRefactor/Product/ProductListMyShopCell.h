@@ -10,7 +10,7 @@
 #import "MGSwipeTableCell.h"
 #import "MarqueeLabel.h"
 
-#define kTKPDSETTINGPRODUCTCELL_IDENTIFIER @"ProductListMyShopCellIdentifier"
+#define kTKPDSETTINGPRODUCTCELL_IDENTIFIER @"SettingProductCellIdentifier"
 
 @interface ProductListMyShopCell : MGSwipeTableCell
 
