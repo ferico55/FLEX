@@ -116,6 +116,15 @@
     _dateOfBirthTextField.delegate = self;
     
     _activityIndicatorView.hidden = YES;
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:)
+               name:UIKeyboardWillShowNotification
+             object:nil];
+    
+    [nc addObserver:self selector:@selector(keyboardWillHide:)
+               name:UIKeyboardWillHideNotification
+             object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -168,24 +177,29 @@
             
             NSMutableArray *errorMessages = [NSMutableArray new];
 
-            NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z]*"];
-            if (![test evaluateWithObject:_fullNameTextField.text]) {
+            NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
+            if ([_fullNameTextField.text isEqualToString:@""]) {
+                [errorMessages addObject:ERRORMESSAGE_NULL_FULL_NAME];
+            } else if (![test evaluateWithObject:_fullNameTextField.text]) {
                 [errorMessages addObject:ERRORMESSAGE_INVALID_FULL_NAME];
             }
             
-            if ([_fullNameTextField.text isEqualToString:@""]) {
-                [errorMessages addObject:ERRORMESSAGE_NULL_FULL_NAME];
-            }
-            
-            if (_passwordTextField.text.length < 6) {
+            if ([_passwordTextField.text isEqualToString:@""]) {
+                [errorMessages addObject:@"Kata Sandi harus diisi"];
+            } else if (_passwordTextField.text.length < 6) {
                 [errorMessages addObject:@"Kata Sandi terlalu pendek, minimum 6 karakter"];
             }
-            if (_confirmPasswordTextfield.text.length < 6) {
+            
+            if ([_confirmPasswordTextfield.text isEqualToString:@""]) {
+                [errorMessages addObject:@"Konfirmasi Kata Sandi harus diisi"];
+            } else if (_confirmPasswordTextfield.text.length < 6) {
                 [errorMessages addObject:@"Konfirmasi Kata Sandi terlalu pendek, minimum 6 karakter"];
             }
+            
             if ([_dateOfBirthTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Tanggal lahir harus diisi"];
             }
+            
             if ([_phoneNumberTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Nomor HP harus diisi"];
             }
@@ -398,6 +412,20 @@
     
     _signupButton.enabled = YES;
     _signupButton.layer.opacity = 1;
+}
+
+#pragma mark - Keyboard Notification
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+    self.scrollView.contentInset = UIEdgeInsetsZero;
 }
 
 #pragma mark - Scroll delegate

@@ -479,7 +479,6 @@
                 // etalase button action
                 NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
-                //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 vc.delegate = self;
@@ -490,12 +489,16 @@
             }
             case 7:
             {
-                NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _shop.result.info.shop_name,
-                                          _shop.result.info.shop_location, _shop.result.info.shop_url];
-                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
-                                                                                                 applicationActivities:nil];
-                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                [self presentViewController:activityController animated:YES completion:nil];
+                if (_shop) {
+                    NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
+                                       _shop.result.info.shop_name,
+                                       _shop.result.info.shop_location];
+                    NSURL *url = [NSURL URLWithString:_shop.result.info.shop_url];
+                    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                                     applicationActivities:nil];
+                    activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                    [self presentViewController:activityController animated:YES completion:nil];
+                }
                 break;
             }
             default:

@@ -88,16 +88,11 @@
 }
 
 - (BOOL)isMyShopWithShopId:(id)shopId {
-    if(![shopId isKindOfClass:[NSString class]]) {
-        shopId = [NSString stringWithFormat:@"%@", shopId];
+    NSInteger shopID = 0;
+    if ([shopId respondsToSelector:@selector(integerValue)]) {
+        shopID = [shopId integerValue];
     }
-    if([shopId isEqualToString:[NSString stringWithFormat:@"%@", [self getShopId]]]) {
-        return YES;
-    } else {
-        return NO;
-    }
-    
-    return NO;
+    return shopId > 0;
 }
 
 - (BOOL)isMyUser:(id)userId {

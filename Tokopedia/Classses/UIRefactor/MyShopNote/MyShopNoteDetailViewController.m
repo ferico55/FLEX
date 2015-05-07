@@ -54,7 +54,7 @@
     BOOL _isNewNoteReturnableProduct;
 }
 
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *titleNoteTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeNoteLabel;
 @property (weak, nonatomic) IBOutlet UITextView *contentNoteTextView;
@@ -133,41 +133,58 @@
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
             self.title = kTKPDTITLE_NEW_NOTE;
             _barbuttonedit.tag = 11;
+            _titleNoteTextField.hidden = NO;
+            [_titleNoteTextField becomeFirstResponder];
+            _timeNoteLabel.hidden = NO;
             break;
         case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
             self.title = kTKPDTILTE_EDIT_NOTE;
             _barbuttonedit.tag = 11;
+            _timeNoteLabel.hidden = NO;
+            [_titleNoteTextField becomeFirstResponder];
             break;
         case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
             self.title = kTKPDTILTE_EDIT_NOTE;
             _barbuttonedit.tag = 11;
             _barbuttonedit.enabled = NO;
+            _timeNoteLabel.hidden = NO;
+            [_titleNoteTextField becomeFirstResponder];
             break;
         case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
             self.title = [_data objectForKey:kTKPDNOTES_APINOTETITLEKEY];
             _barbuttonedit.tag = 12;
             _barbuttonedit.enabled = NO;
+            _titleNoteTextField.hidden = YES;
             break;
         case NOTES_RETURNABLE_PRODUCT:
             self.title = @"Tambah Catatan";
             _barbuttonedit.tag = 11;
+            _titleNoteTextField.hidden = YES;
             break;
         default:
             break;
     }
     
-    
     NSString *shopId;
     if([[_data objectForKey:@"shop_id"] isKindOfClass:[NSString class]]) {
         shopId = [_data objectForKey:@"shop_id"];
+    } else if ([[_data objectForKey:@"auth"] objectForKey:@"shop_id"]) {
+        shopId = [[[_data objectForKey:@"auth"] objectForKey:@"shop_id"] stringValue];
     } else {
         shopId = [[_data objectForKey:@"shop_id"] stringValue];
     }
     
+    if ([[_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY] isEqualToString:@"2"]) {
+        _titleNoteTextField.enabled = NO;
+    }
+
     if([_userManager isMyShopWithShopId:shopId] || _type == NOTES_RETURNABLE_PRODUCT) {
         self.navigationItem.rightBarButtonItem = _barbuttonedit;
     }
-
+    
+    [_titleNoteTextField addTarget:self
+                            action:@selector(textFieldValueChanged:)
+                  forControlEvents:UIControlEventEditingChanged];
 
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue]]];
@@ -195,12 +212,6 @@
                            selector:@selector(didEditNote:)
                                name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY
                              object:nil];
-    
-    if ([[_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY] isEqualToString:@"2"]) {
-        _titleNoteTextField.enabled = NO;
-    }
-    
-    [_titleNoteTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     
     _isNewNoteReturnableProduct = NO;
 
@@ -465,18 +476,29 @@
                     _note.result.detail.notes_update_time = _note.result.detail.notes_create_time;
                 }
                 _barbuttonedit.enabled = YES;
-                _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                NSString *note = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                _titleLabel.text = [NSString convertHTML:note];
-                _titleLabel.numberOfLines = 0;
-                [_titleLabel sizeToFit];
-                _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
                 
-                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+                _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
+                
+                NSString *note = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
                 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
-                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+                
+                NSDictionary *titleAttributes = @{NSParagraphStyleAttributeName : style,
+                                                  NSFontAttributeName : [UIFont fontWithName:@"GothamMedium" size:15]};
+                
+                _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:note]
+                                                                             attributes:titleAttributes];
+                _titleLabel.numberOfLines = 2;
+                [_titleLabel sizeToFit];
+            
+                
+                
+                _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
+                _timeNoteLabel.hidden = NO;
+                _titleNoteTextField.hidden = NO;
+
+                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
                 [attributes setObject:font forKey:NSFontAttributeName];
@@ -487,9 +509,20 @@
                     _isNewNoteReturnableProduct = YES;
                 }
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:contentNote] attributes:attributes];
+                NSData *data = [_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding];
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
+                                                                                                      options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+                                                                                           documentAttributes:nil
+                                                                                                        error:nil];
+                NSRange range = (NSRange){0,[attributedString length]};
+                [attributedString enumerateAttribute:NSFontAttributeName
+                                             inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                                          usingBlock:^(id value, NSRange range, BOOL *stop) {
+                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
+                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
+                }];
                 _contentNoteTextView.attributedText = attributedString;
-                
+
                 if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
                     _barbuttonedit.enabled = YES;
                     _barbuttonedit.tintColor = [UIColor whiteColor];
@@ -519,6 +552,31 @@
                     _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
                                            day, monthString, year, currentTime];
                     [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
+                }
+                
+                switch (_type) {
+                    case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
+                        _titleNoteTextField.hidden = NO;
+                        _titleLabel.hidden = YES;
+                        break;
+                    case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
+                        _titleNoteTextField.hidden = NO;
+                        _titleLabel.hidden = YES;
+                        break;
+                    case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+                        _titleNoteTextField.hidden = NO;
+                        _titleLabel.hidden = YES;
+                        break;
+                    case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
+                        _titleNoteTextField.hidden = YES;
+                        _titleLabel.hidden = NO;
+                        break;
+                    case NOTES_RETURNABLE_PRODUCT:
+                        _titleNoteTextField.hidden = YES;
+                        _titleLabel.hidden = NO;
+                        break;
+                    default:
+                        break;
                 }
             }
         } else {
@@ -793,7 +851,19 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                NSData *data = [_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding];
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
+                                                                                                      options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+                                                                                           documentAttributes:nil
+                                                                                                        error:nil];
+                NSRange range = (NSRange){0,[attributedString length]};
+                [attributedString enumerateAttribute:NSFontAttributeName
+                                             inRange:range
+                                             options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                                          usingBlock:^(id value, NSRange range, BOOL *stop) {
+                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
+                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
+                }];
                 _contentNoteTextView.attributedText = attributedString;
                 
                [self setTimeLabelBecomeCurrentDate];
@@ -810,20 +880,30 @@
                 _contentNoteTextView.editable = NO;
                 
                 _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
+
                 _titleNoteTextField.text = _note.result.detail.notes_title;
                 _titleNoteTextField.enabled = NO;
-
+                
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
 
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
-                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                [attributes setObject:font forKey:NSFontAttributeName];
-
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                NSData *data = [_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding];
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
+                                                                                                      options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+                                                                                           documentAttributes:nil
+                                                                                                        error:nil];
+                NSRange range = (NSRange){0,[attributedString length]};
+                [attributedString enumerateAttribute:NSFontAttributeName
+                                             inRange:range
+                                             options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                                          usingBlock:^(id value, NSRange range, BOOL *stop) {
+                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
+                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
+                }];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 [self configureRestKit];

@@ -68,8 +68,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setTranslucent:NO];
     
+    [self.navigationController.navigationBar setTranslucent:NO];
+        
     _type = [[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] integerValue]?:0;
     switch (_type) {
         case kTKPDFILTER_DATATYPEHOTLISTVIEWKEY:

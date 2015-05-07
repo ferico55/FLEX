@@ -116,7 +116,8 @@
 
 #define API_DEADLINE_PROCESS_DAY_LEFT   @"deadline_process_day_left"
 #define API_DEADLINE_SHIPPING_DAY_LEFT  @"deadline_shipping_day_left"
-#define API_DEADLINE_FINISH_DATE        @"finish_deadline_date"
+#define API_DEADLINE_FINISH_DAY_LEFT    @"deadline_finish_day_left"
+#define API_DEADLINE_FINISH_DATE        @"deadline_finish_date"
 
 #define API_ORDER_DELIVERY_QUANTITY     @"order_deliver_quantity"
 #define API_PRODUCT_PICTURE             @"product_picture"

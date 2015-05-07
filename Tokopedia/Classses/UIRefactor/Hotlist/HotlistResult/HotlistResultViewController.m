@@ -437,6 +437,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     NSUInteger index = indexPath.row * 3;
     
+    for (UIView *view in ((GeneralPhotoProductCell*)cell).viewcell ) {
+        view.hidden = YES;
+    }
+    
     for (int i = 0; i < cell.productImageViews.count; i++) {
         NSUInteger indexProduct = index + i;
         if (indexProduct < _product.count) {
@@ -582,11 +586,23 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 case 12:
                 {
                     // SHARE
-                    NSString *activityItem = [NSString stringWithFormat:@"Jual %@ | Tokopedia %@", [_data objectForKey:@"title"], [_data objectForKey:@"url"]];
-                    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
-                                                                                                     applicationActivities:nil];
-                    activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                    [self presentViewController:activityController animated:YES completion:nil];
+                    NSString *title;
+                    NSURL *url;
+                    if ([_data objectForKey:@"title"] && [_data objectForKey:@"url"]) {
+                        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", [_data objectForKey:@"title"]];
+                        url = [NSURL URLWithString:[_data objectForKey:@"url"]];
+                    } else if (_hotlistdetail) {
+                        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _hotlistdetail.result.info.title_enc];
+                        url = [NSURL URLWithString:_hotlistdetail.result.hotlist_url];
+                    }
+
+                    if (title && url) {
+                        UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                          applicationActivities:nil];
+                        act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                        [self presentViewController:act animated:YES completion:nil];
+                    }
+                    
                     break;
                 }
                 case 13:
@@ -690,7 +706,33 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistDetailResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY,
-                                                        KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTION1KEY}];
+                                                        KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTION1KEY,
+                                                        kTKPDHOME_APIHOTLISTURLKEY:kTKPDHOME_APIHOTLISTURLKEY}];
+
+    RKObjectMapping *resultInfoMapping = [RKObjectMapping mappingForClass:[HotlistResultInfo class]];
+    [resultInfoMapping addAttributeMappingsFromDictionary:@{
+        kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY   : kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY,
+        kTKPDHOMEHOTLIST_KEYWORD_KEY            : kTKPDHOMEHOTLIST_KEYWORD_KEY,
+        kTKPDHOMEHOTLIST_TITLE_ENC              : kTKPDHOMEHOTLIST_TITLE_ENC,
+        kTKPDHOMEHOTLIST_CATALOG_KEY            : kTKPDHOMEHOTLIST_CATALOG_KEY,
+        kTKPDHOMEHOTLIST_MIN_PRICE_KEY          : kTKPDHOMEHOTLIST_MIN_PRICE_KEY,
+        kTKPDHOMEHOTLIST_HASHTAG_KEY            : kTKPDHOMEHOTLIST_HASHTAG_KEY,
+        kTKPDHOMEHOTLIST_FILE_NAME_KEY          : kTKPDHOMEHOTLIST_FILE_NAME_KEY,
+        kTKPDHOMEHOTLIST_ALIAS_KEY              : kTKPDHOMEHOTLIST_ALIAS_KEY,
+        kTKPDHOMEHOTLIST_COVER_IMG_KEY          : kTKPDHOMEHOTLIST_COVER_IMG_KEY,
+        kTKPDHOMEHOTLIST_URL_KEY                : kTKPDHOMEHOTLIST_URL_KEY,
+        kTKPDHOMEHOTLIST_ID_KEY                 : kTKPDHOMEHOTLIST_ID_KEY,
+        kTKPDHOMEHOTLIST_D_ID_KEY               : kTKPDHOMEHOTLIST_D_ID_KEY,
+        kTKPDHOMEHOTLIST_FILE_PATH_KEY          : kTKPDHOMEHOTLIST_FILE_PATH_KEY,
+        kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY   : kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY,
+        kTKPDHOMEHOTLIST_SORT_BY_KEY            : kTKPDHOMEHOTLIST_SORT_BY_KEY,
+        kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY    : kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY,
+        kTKPDHOMEHOTLIST_DESCRIPTION_KEY        : kTKPDHOMEHOTLIST_HOTLIST_DESCRIPTION_KEY,
+        kTKPDHOMEHOTLIST_MAX_PRICE_KEY          : kTKPDHOMEHOTLIST_MAX_PRICE_KEY,
+        kTKPDHOMEHOTLIST_SHOP_KEY               : kTKPDHOMEHOTLIST_SHOP_KEY,
+        kTKPDHOMEHOTLIST_TITLE_KEY              : kTKPDHOMEHOTLIST_TITLE_KEY,
+        kTKPDHOMEHOTLIST_SHARE_FILE_NAME        : kTKPDHOMEHOTLIST_SHARE_FILE_NAME,
+    }];
     
     // list mapping
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
@@ -746,6 +788,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     // departmentchild relationship
     RKRelationshipMapping *deptchildRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APICHILDTREEKEY toKeyPath:kTKPDHOME_APICHILDTREEKEY withMapping:departmentMapping];
     [departmentMapping addPropertyMapping:deptchildRel];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOMEHOTLIST_INFO_KEY
+                                                                                  toKeyPath:kTKPDHOMEHOTLIST_INFO_KEY
+                                                                                withMapping:resultInfoMapping]];
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping

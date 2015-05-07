@@ -331,7 +331,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.cellType == UITableViewCellTypeOneColumn) {
-        return 400;
+        return 390;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         return 205;
     } else {
@@ -382,7 +382,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     cell.productNameLabel.text = list.product_name;
     cell.productPriceLabel.text = list.product_price;
-    cell.productShopLabel.text = list.shop_name;
+    cell.productShopLabel.text = @"";
+    cell.infoLabelConstraint.constant = 0;
     
     UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
     
@@ -501,7 +502,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
     
     for (UIView *view in ((GeneralPhotoProductCell*)cell).viewcell ) {
-//        view.hidden = YES;
+        view.hidden = YES;
     }
     
     for (int i = 0; (indexsegment + i) < indexlimit; i++) {
@@ -942,14 +943,16 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             }
                 
             case 12 : {
-                NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@",
-                                          _shop.result.info.shop_name,
-                                          _shop.result.info.shop_location,
-                                          _shop.result.info.shop_url];
-                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
-                                                                                                 applicationActivities:nil];
-                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                [self presentViewController:activityController animated:YES completion:nil];
+                if (_shop) {
+                    NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
+                                       _shop.result.info.shop_name,
+                                       _shop.result.info.shop_location];
+                    NSURL *url = [NSURL URLWithString:_shop.result.info.shop_url];
+                    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                                     applicationActivities:nil];
+                    activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                    [self presentViewController:activityController animated:YES completion:nil];
+                }
                 break;
             }
             case 13:

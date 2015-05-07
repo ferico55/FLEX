@@ -12,6 +12,7 @@
 #import "Hashtags.h"
 #import "DepartmentTree.h"
 #import "List.h"
+#import "HotlistResultInfo.h"
 
 @interface HotlistDetailResult : NSObject
 
@@ -21,5 +22,7 @@
 @property (nonatomic, strong) NSArray *hashtags;
 @property (nonatomic, strong) NSArray *department_tree;
 @property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSString *hotlist_url;
+@property (nonatomic, strong) HotlistResultInfo *info;
 
 @end
