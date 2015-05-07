@@ -116,19 +116,17 @@
     _addProductBarButton.enabled = NO;
     _infoBarButton.enabled = NO;
     
-
-    if ([_userManager isLogin]) {
-        //toko sendiri dan login
-        if([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
-//        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-            self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
-        } else {
-            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
-        }
-        
-    } else {
-        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
-    }
+//
+//    if ([_userManager isLogin]) {
+//        if([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
+//            self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
+//        } else {
+//            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
+//        }
+//        
+//    } else {
+//        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
+//    }
     
     
 }
@@ -150,7 +148,7 @@
 {
     [super viewDidLoad];
     [self initNotificationCenter];
-    [self initBarButton];
+
     // Do any additional setup after loading the view from its nib.
     
     _isNoData = YES;
@@ -217,7 +215,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self initBarButton];
+}
 
 #pragma  - UIPageViewController Methods
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
