@@ -14,6 +14,7 @@
 #define CTagCell @"cell"
 #define CFont_Gotham_Book @"Gotham Book"
 #define kTKPMYSHOP_APIPATH @"myshop.pl"
+#define kTKPD_OPEN_SHOP_PICTURE @"open_shop_picture"
 #define kTKPD_APIACTIONKEY @"action"
 #define kTKPD_CHECK_DOMAIN @"check_domain"
 #define CStatusDomain @"status_domain"
