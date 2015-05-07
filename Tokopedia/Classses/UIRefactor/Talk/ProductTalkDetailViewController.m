@@ -132,6 +132,11 @@
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
     }
 
     return self;
@@ -509,7 +514,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _userManager = [UserAuthentificationManager new];
     if([_userManager isLogin]) {
         [_talkInputView setHidden:NO];
         [_sendButton setEnabled:NO];
@@ -1321,5 +1325,14 @@
     } else {
         _sendButton.enabled = YES;
     }
+}
+
+#pragma mark - Notification Delegate
+- (void)userDidLogin:(NSNotification*)notification {
+    _userManager = [UserAuthentificationManager new];
+}
+
+- (void)userDidLogout:(NSNotification*)notification {
+    _userManager = [UserAuthentificationManager new];    
 }
 @end

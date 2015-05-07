@@ -184,4 +184,7 @@ typedef enum {
 #define TokopediaNotificationRedirect @"redirectNotification"
 #define TokopediaNotificationReload @"reloadNotification"
 
+#define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
+
+
 #endif

@@ -12,8 +12,8 @@
 @interface HomeTabHeaderViewController () <UIScrollViewDelegate> {
     CGFloat _totalOffset;
     NSInteger _viewControllerIndex;
-    UserAuthentificationManager *_userManager;
     BOOL _isAbleToSwipe;
+    BOOL _loggedIn;
 }
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -27,6 +27,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSwipeHomeTab:)
                                                  name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
 
 - (void)initButton {
@@ -77,25 +79,46 @@
     [self initNotificationCenter];
     
     _scrollView.contentSize = CGSizeMake((self.view.frame.size.width/3)*6, self.view.frame.size.height);
+    
     [_scrollView setShowsHorizontalScrollIndicator:NO];
     _scrollView.delegate = self;
     [self initButton];
     
+    UserAuthentificationManager *manager = [[UserAuthentificationManager alloc] init];
+    _loggedIn = YES;
+    if (![manager isLogin]) {
+        [self userDidLogout:nil];
+        _loggedIn = NO;
+    }
+    
+    [self.view.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [self.view.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [self.view.layer setShadowRadius:1];
+    [self.view.layer setShadowOpacity:0.3];
+    
 }
-
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    _userManager = [UserAuthentificationManager new];
-    if([[_userManager getUserId] isEqualToString:@"0"]) {
-        _isAbleToSwipe = NO;
-        [self removeButton];
-    } else {
-        _isAbleToSwipe = YES;
-
-
+    if (!_loggedIn) {
+        [_scrollView setContentOffset:CGPointMake(0, _scrollView.contentOffset.y)];
+        [self tap:1];
+        [self setActiveButton];
     }
+}
+
+- (void)userDidLogin:(NSNotification *)notification {
+    [_scrollView setScrollEnabled:YES];
+    [_scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self initButton];
+    _loggedIn = YES;
+}
+
+- (void)userDidLogout:(NSNotification *)notification {
+    [self removeButton];
+    [_scrollView setScrollEnabled:NO];
+    _loggedIn = NO;
 }
 
 #pragma mark _ Tap Action
@@ -182,6 +205,13 @@
             [button removeFromSuperview];
         }
     }
+}
+
+// MARK: Cleanup
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_scrollView setDelegate:nil];
 }
 
 

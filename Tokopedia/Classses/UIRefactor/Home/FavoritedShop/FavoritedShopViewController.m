@@ -177,13 +177,11 @@
 {
     NSInteger rows = 0;
     if (section == 0) {
-        // Normal shops
-        NSArray *goldShops = _shopdictionary[@"a"];
-        rows = [goldShops count];
-    } else {
         // Gold shops
-        NSArray *shops = _shopdictionary[@"b"];
-        rows = [shops count];
+        rows = [_goldshop count];
+    } else {
+        // Normal shops
+        rows = [_shop count];
     }
     return rows;
 }
@@ -201,13 +199,13 @@
         
         
         //if (_shop.count > indexPath.row ) {
-            NSArray *sectionDictionary;
+            NSArray *shops;
             if (indexPath.section == 0) {
-                sectionDictionary = [_shopdictionary objectForKey:@"a"];
+                shops = _goldshop;
             } else {
-                sectionDictionary = [_shopdictionary objectForKey:@"b"];
+                shops = _shop;
             }
-            FavoritedShopList *shop = sectionDictionary[indexPath.row];
+            FavoritedShopList *shop = shops[indexPath.row];
             
             ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
             ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
@@ -274,6 +272,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
+    [view setBackgroundColor:tableView.backgroundColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
     [label setFont:[UIFont fontWithName:@"GothamBook" size:15]];
     [label setTextColor:[UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1]];
@@ -324,12 +323,11 @@
         [self configureRestkitFav];
         [self pressFavoriteAction:list.shop_id withIndexPath:indexpath];
         
-        _shopdictionary[@"a"] = _goldshop;
-        _shopdictionary[@"b"] = _shop;
+        
         
         [_table beginUpdates];
-        [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationRight];
-        [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
+        [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
         [_table endUpdates];
         
         
@@ -380,8 +378,8 @@
     
     
     [_table beginUpdates];
-    [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationRight];
-    [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+    [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+    [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
     [_table endUpdates];
 }
 

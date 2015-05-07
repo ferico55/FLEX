@@ -106,7 +106,6 @@
     CGRect frame = CGRectMake(0, 0, 20, 20);
     UIButton* button = [[UIButton alloc] initWithFrame:frame];
     [button setBackgroundImage:infoImage forState:UIControlStateNormal];
-    [button setShowsTouchWhenHighlighted:YES];
     [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchDown];
     [button setTag:14];
     
