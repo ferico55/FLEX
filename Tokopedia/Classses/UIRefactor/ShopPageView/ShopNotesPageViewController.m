@@ -167,6 +167,11 @@ UIAlertViewDelegate>
         _isNoData = NO;
     }
     
+    [_fakeStickytab.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_fakeStickytab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_fakeStickytab.layer setShadowRadius:1];
+    [_fakeStickytab.layer setShadowOpacity:0.3];
+    
     [self initNotification];
     [self configureRestKit];
     [self loadData];
@@ -174,8 +179,7 @@ UIAlertViewDelegate>
 }
 
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (!_isrefreshview) {
         [self configureRestKit];
@@ -187,8 +191,7 @@ UIAlertViewDelegate>
     
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
 }
@@ -200,8 +203,7 @@ UIAlertViewDelegate>
 
 #pragma mark - TableView Delegate
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NotesList *list = _list[indexPath.row];
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
@@ -216,8 +218,7 @@ UIAlertViewDelegate>
     
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_isNoData) {
         cell.backgroundColor = [UIColor whiteColor];
     }

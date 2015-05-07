@@ -45,6 +45,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *avatarIndicator;
 @property (weak, nonatomic) IBOutlet UIView *manipulatedView;
+@property (weak, nonatomic) IBOutlet UIView *navigationTab;
 @property (weak, nonatomic) IBOutlet UIView *shopClosedView;
 @property (weak, nonatomic) IBOutlet UILabel *shopClosedReason;
 @property (weak, nonatomic) IBOutlet UILabel *shopClosedUntil;
@@ -151,6 +152,11 @@
     self.scrollView.hidden = YES;
     self.scrollView.delegate = self;
     _operationQueue = [NSOperationQueue new];
+    
+    [_navigationTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_navigationTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_navigationTab.layer setShadowRadius:1];
+    [_navigationTab.layer setShadowOpacity:0.3];
     
     [self.scrollView setContentSize:CGSizeMake(640, 77)];
     

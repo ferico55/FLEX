@@ -179,6 +179,11 @@ UIAlertViewDelegate>
         _isNoData = NO;
     }
     
+    [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_fakeStickyTab.layer setShadowRadius:1];
+    [_fakeStickyTab.layer setShadowOpacity:0.3];
+    
     [self initNotification];
     [self configureRestKit];
 

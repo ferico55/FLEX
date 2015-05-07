@@ -21,6 +21,7 @@
                 <outlet property="coverImageView" destination="Ds4-4z-ewW" id="y0p-sJ-c4j"/>
                 <outlet property="goldBadgeView" destination="O6E-Mc-A4O" id="rvB-63-SSG"/>
                 <outlet property="manipulatedView" destination="nZg-u9-ck3" id="fyU-4C-jGb"/>
+                <outlet property="navigationTab" destination="x2A-bO-C2I" id="Uj9-A7-t93"/>
                 <outlet property="pageControl" destination="I7q-OB-Pdg" id="EqG-Iq-sek"/>
                 <outlet property="scrollView" destination="kC0-PI-J9V" id="fnd-6o-RT7"/>
                 <outlet property="searchBar" destination="kam-AH-hOM" id="Bqb-IU-fA4"/>

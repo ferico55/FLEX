@@ -116,6 +116,8 @@
             [self request];
         }
     }
+    
+    _table.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 0)];
 }
 
 -(void)viewWillAppear:(BOOL)animated

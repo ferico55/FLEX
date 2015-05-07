@@ -153,7 +153,7 @@
     UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
     CGRect frame = greenArrowImageView.frame;
     frame.size.width = 13;
-    frame.size.height = 13;
+    frame.size.height = 7;
     frame.origin.x = self.view.frame.size.width/2 - 6.5f;
     frame.origin.y = 64;
     greenArrowImageView.frame = frame;
