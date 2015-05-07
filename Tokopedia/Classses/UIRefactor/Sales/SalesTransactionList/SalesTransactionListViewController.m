@@ -698,8 +698,7 @@
             StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil merubah nomor resi."] delegate:self];
             [alert show];
             
-            OrderTransaction *order = _selectedOrder;
-            order.order_detail.detail_ship_ref_num = receiptNumber;
+            _selectedOrder.order_detail.detail_ship_ref_num = receiptNumber;
             
         } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
