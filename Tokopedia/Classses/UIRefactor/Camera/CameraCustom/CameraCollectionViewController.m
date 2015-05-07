@@ -320,10 +320,10 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 {
     if (indexPath.row == 0) {
         _didPresentPicker = YES;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-            [cameraCell freezeCapturedContent];
-        });
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+//            [cameraCell freezeCapturedContent];
+//        });
         
         _photoPicker = [[TKPDPhotoPicker alloc] initWithSourceType:UIImagePickerControllerSourceTypeCamera parentViewController:self pickerTransitionStyle:UIModalTransitionStyleCrossDissolve];
         [_photoPicker setDelegate:self];
@@ -427,8 +427,8 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
     NSDictionary *userInfoDict = @{@"selected_images":@[userInfo]};
-    [_delegate didDismissController:self withUserInfo:userInfoDict];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [_delegate didDismissController:self withUserInfo:userInfoDict];
     
     _photoPicker = nil;
 }

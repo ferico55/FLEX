@@ -11,8 +11,9 @@
 #import "camera.h"
 
 @implementation TKPDPhotoPicker {
-    __weak UIViewController *_parentViewController;
     UIModalTransitionStyle _transitionStyle;
+    __weak UIActivityIndicatorView *_spinner;
+    __weak UIImagePickerController *_picker;
 }
 
 // MARK: Initialisation
@@ -94,6 +95,17 @@
     [imagePicker setDelegate:self];
     [imagePicker setModalTransitionStyle:_transitionStyle];
     [_parentViewController presentViewController:imagePicker animated:YES completion:nil];
+    
+    if (_spinner == nil) {
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [imagePicker.view addSubview:spinner];
+        [spinner setHidesWhenStopped:YES];
+        [spinner sizeToFit];
+        [spinner setCenter:imagePicker.view.center];
+        _spinner = spinner;
+    }
+    
+    _picker = imagePicker;
 
 }
 
@@ -123,77 +135,81 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage* rawImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    
-    NSURL *imagePath = [info objectForKey:UIImagePickerControllerReferenceURL];
-    
-    float actualHeight = rawImage.size.height;
-    float actualWidth = rawImage.size.width;
-    float imgRatio = actualWidth/actualHeight;
-    float widthView = _parentViewController.view.frame.size.width;
-    float heightView = _parentViewController.view.frame.size.height;
-    float maxRatio = widthView/heightView;
-    
-    if(imgRatio!=maxRatio){
-        if(imgRatio < maxRatio){
-            imgRatio = heightView / actualHeight;
-            actualWidth = imgRatio * actualWidth;
-            actualHeight = heightView;
+    [_spinner startAnimating];
+    __weak typeof(self) wself = self;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        UIImage* rawImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+        NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+        
+        NSURL *imagePath = [info objectForKey:UIImagePickerControllerReferenceURL];
+        
+        float actualHeight = rawImage.size.height;
+        float actualWidth = rawImage.size.width;
+        float imgRatio = actualWidth/actualHeight;
+        float widthView = wself.parentViewController.view.frame.size.width;
+        float heightView = wself.parentViewController.view.frame.size.height;
+        float maxRatio = widthView/heightView;
+        
+        if(imgRatio!=maxRatio){
+            if(imgRatio < maxRatio){
+                imgRatio = heightView / actualHeight;
+                actualWidth = imgRatio * actualWidth;
+                actualHeight = heightView;
+            }
+            else{
+                imgRatio = widthView / actualWidth;
+                actualHeight = imgRatio * actualHeight;
+                actualWidth = widthView;
+            }
+        }
+        NSString *imageName;
+        NSData* imageDataRawImage;
+        if (imagePath) {
+            imageName = [imagePath lastPathComponent];
+            
+            NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
+            if ([extensionOFImage isEqualToString:@"jpg"])
+                imageDataRawImage =  UIImagePNGRepresentation(rawImage);
+            else
+                imageDataRawImage = UIImageJPEGRepresentation(rawImage, 1.0);
         }
         else{
-            imgRatio = widthView / actualWidth;
-            actualHeight = imgRatio * actualHeight;
-            actualWidth = widthView;
-        }
-    }
-    NSString *imageName;
-    NSData* imageDataRawImage;
-    if (imagePath) {
-        imageName = [imagePath lastPathComponent];
-        
-        NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
-        if ([extensionOFImage isEqualToString:@"jpg"])
             imageDataRawImage =  UIImagePNGRepresentation(rawImage);
-        else
-            imageDataRawImage = UIImageJPEGRepresentation(rawImage, 1.0);
-    }
-    else{
-        imageDataRawImage =  UIImagePNGRepresentation(rawImage);
-    }
-    
-    CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
-    UIGraphicsBeginImageContext(rect.size);
-    [rawImage drawInRect:rect];
-    UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    //NSString *imageName;
-    NSData* imageDataResizedImage;
-    if (imagePath) {
-        imageName = [imagePath lastPathComponent];
+        }
         
-        NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
-        if ([extensionOFImage isEqualToString:@"jpg"])
+        CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+        UIGraphicsBeginImageContext(rect.size);
+        [rawImage drawInRect:rect];
+        UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        NSData* imageDataResizedImage;
+        if (imagePath) {
+            imageName = [imagePath lastPathComponent];
+            
+            NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
+            if ([extensionOFImage isEqualToString:@"jpg"])
+                imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
+            else
+                imageDataResizedImage = UIImageJPEGRepresentation(resizedImage, 1.0);
+        }
+        else{
             imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
-        else
-            imageDataResizedImage = UIImageJPEGRepresentation(resizedImage, 1.0);
-    }
-    else{
-        imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
-    }
-    
-    [_data setValue:@{
-                      kTKPDCAMERA_DATARAWPHOTOKEY:rawImage?:@"",
-                      kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
-                      kTKPDCAMERA_DATAPHOTOKEY:resizedImage?:@"",
-                      DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
-                      DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@""
-                      } forKey:kTKPDCAMERA_DATAPHOTOKEY];
-    
-    [_delegate photoPicker:self didDismissCameraControllerWithUserInfo:_data];
-    
-    [_parentViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+        [wself.data setValue:@{
+                          kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
+                          kTKPDCAMERA_DATAPHOTOKEY:resizedImage?:@"",
+                          DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
+                          DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@""
+                          } forKey:kTKPDCAMERA_DATAPHOTOKEY];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [wself.parentViewController dismissViewControllerAnimated:YES completion:nil];
+            [wself.delegate photoPicker:wself didDismissCameraControllerWithUserInfo:wself.data];
+        });
+        
+    });
 }
 
 @end

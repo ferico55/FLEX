@@ -85,10 +85,9 @@ typedef enum TagRequest {
     _logoutRequestManager.delegate = self;
     _logoutRequestManager.tagRequest = LogoutTag;
     
-    //app launch delay presentation
-
-    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
-
+    [[UISegmentedControl appearance] setTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
+    
+    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self

@@ -205,6 +205,15 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    if (selectedIndexPath != nil) {
+        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+    }
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -480,8 +489,6 @@
     }
 
     self.hidesBottomBarWhenPushed = NO;
-
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Reskit

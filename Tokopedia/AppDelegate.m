@@ -48,7 +48,7 @@
         [GAI sharedInstance].trackUncaughtExceptions = YES;
         [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
         [GAI sharedInstance].dispatchInterval = 20;
-        id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
+        [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
         [self preparePersistData];

@@ -189,14 +189,14 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        NSString *cellid = kTKPDGENERALREVIEWCELLIDENTIFIER;
+        static NSString *ProductReviewCellIdentifier = @"GeneralReviewCellIdentifier";
 		
-		cell = (GeneralProductReviewCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+		cell = (GeneralProductReviewCell *)[tableView dequeueReusableCellWithIdentifier:ProductReviewCellIdentifier];
 		if (cell == nil) {
 			cell = [GeneralProductReviewCell newcell];
 			((GeneralProductReviewCell *)cell).delegate = self;
 		}
-        
+
         if (_list.count > indexPath.row) {
             ReviewList *list = _list[indexPath.row];
 
