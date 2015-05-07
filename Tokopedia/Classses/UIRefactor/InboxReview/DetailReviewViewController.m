@@ -157,16 +157,16 @@
         [self hideInputView];
         _reviewCreateTimeLabel.text = _review.review_response.response_create_time;
         
+        NSString *reviewMessage = _review.review_response.response_message;
+        NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 3.0;
+        [attributes setObject:style forKey:NSParagraphStyleAttributeName];
         
-        NSString *reviewMessage = _review.review_response.response_message;
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[reviewMessage dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-        NSRange range = (NSRange){0,[attributedString length]};
-        [attributedString enumerateAttribute:NSFontAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id value, NSRange range, BOOL *stop) {
-            [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamBook" size:13] range:range];
-            [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-        }];
+        UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+        [attributes setObject:font forKey:NSFontAttributeName];
+        
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:reviewMessage] attributes:attributes];
         _reviewRespondLabel.attributedText = attributedString;
         _reviewRespondLabel.numberOfLines = 0;
         [_reviewRespondLabel sizeToFit];

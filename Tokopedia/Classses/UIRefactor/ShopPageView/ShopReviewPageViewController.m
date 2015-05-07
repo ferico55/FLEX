@@ -186,7 +186,7 @@ UIAlertViewDelegate>
     
     [self initNotification];
     [self configureRestKit];
-  
+    
     [self loadData];
     
 }
@@ -214,6 +214,24 @@ UIAlertViewDelegate>
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - Method
+- (NSString *)convertHTML:(NSString *)html
+{
+    NSScanner *myScanner;
+    NSString *text = nil;
+    myScanner = [NSScanner scannerWithString:html];
+    
+    while ([myScanner isAtEnd] == NO) {
+        [myScanner scanUpToString:@"<" intoString:NULL];
+        [myScanner scanUpToString:@">" intoString:&text];
+        html = [html stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@>", text] withString:@""];
+    }
+    html = [html stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    return html;
 }
 
 #pragma mark - TableView Delegate
@@ -281,9 +299,9 @@ UIAlertViewDelegate>
             if ([list.review_message length] > 50) {
                 NSRange stringRange = {0, MIN([list.review_message length], 50)};
                 stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
+                ((GeneralReviewCell *)cell).commentlabel.text = [self convertHTML:[NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]]];
             } else {
-                ((GeneralReviewCell *)cell).commentlabel.text = list.review_message?:@"";
+                ((GeneralReviewCell *)cell).commentlabel.text = [self convertHTML:list.review_message?:@""];
             }
             
             if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
@@ -455,8 +473,8 @@ UIAlertViewDelegate>
                             kTKPDDETAIL_APIPAGEKEY      :   @(_page),
                             kTKPDDETAIL_APILIMITKEY     :   @(kTKPDDETAILREVIEW_LIMITPAGE)};
     
-
-
+    
+    
     if (!_isRefreshView) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
@@ -490,7 +508,7 @@ UIAlertViewDelegate>
                                             userInfo:nil repeats:NO];
     
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-
+    
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -695,11 +713,11 @@ UIAlertViewDelegate>
     } else {
         ypos = [[userinfo objectForKey:@"y_position"] floatValue];
     }
-
+    
     CGPoint cgpoint = CGPointMake(0, ypos);
     _table.contentOffset = cgpoint;
-
-
+    
+    
 }
 
 

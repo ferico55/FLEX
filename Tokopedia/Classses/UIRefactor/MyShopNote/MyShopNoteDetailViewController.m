@@ -487,13 +487,7 @@
                     _isNewNoteReturnableProduct = YES;
                 }
                 
-//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-                NSRange range = (NSRange){0,[attributedString length]};
-                [attributedString enumerateAttribute:NSFontAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id value, NSRange range, BOOL *stop) {
-                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
-                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-                }];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:contentNote] attributes:attributes];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
@@ -799,13 +793,7 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
-//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-                NSRange range = (NSRange){0,[attributedString length]};
-                [attributedString enumerateAttribute:NSFontAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id value, NSRange range, BOOL *stop) {
-                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
-                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-                }];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
                 _contentNoteTextView.attributedText = attributedString;
                 
                [self setTimeLabelBecomeCurrentDate];
@@ -827,21 +815,15 @@
 
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
 
+                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
-//                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+                [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-//                [attributes setObject:font forKey:NSFontAttributeName];
+                [attributes setObject:font forKey:NSFontAttributeName];
 
-//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
-                
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-                NSRange range = (NSRange){0,[attributedString length]};
-                [attributedString enumerateAttribute:NSFontAttributeName inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id value, NSRange range, BOOL *stop) {
-                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
-                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-                }];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 [self configureRestKit];
