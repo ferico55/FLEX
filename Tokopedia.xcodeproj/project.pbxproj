@@ -57,6 +57,8 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		85A7E8DE1AFB2AC100E35A72 /* TKPDPhotoPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A7E8DD1AFB2AC100E35A72 /* TKPDPhotoPicker.m */; };
+		85A7E8E11AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A7E8E01AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.m */; };
 		85C04BA21AF70ED3008ABC2F /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C04BA01AF70ED3008ABC2F /* WebViewController.m */; };
 		85C04BA31AF70ED3008ABC2F /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C04BA11AF70ED3008ABC2F /* WebViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
@@ -1499,6 +1501,10 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		85A7E8DC1AFB2AC100E35A72 /* TKPDPhotoPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDPhotoPicker.h; sourceTree = "<group>"; };
+		85A7E8DD1AFB2AC100E35A72 /* TKPDPhotoPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDPhotoPicker.m; sourceTree = "<group>"; };
+		85A7E8DF1AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDLiveCameraTableViewCell.h; sourceTree = "<group>"; };
+		85A7E8E01AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDLiveCameraTableViewCell.m; sourceTree = "<group>"; };
 		85C04B9F1AF70ED3008ABC2F /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		85C04BA01AF70ED3008ABC2F /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		85C04BA11AF70ED3008ABC2F /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
@@ -5418,6 +5424,8 @@
 		FC8572201AF1CE33005C9FB0 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				85A7E8DC1AFB2AC100E35A72 /* TKPDPhotoPicker.h */,
+				85A7E8DD1AFB2AC100E35A72 /* TKPDPhotoPicker.m */,
 				FC8572211AF1CE33005C9FB0 /* camera.h */,
 				FC8572221AF1CE33005C9FB0 /* CameraController.h */,
 				FC8572231AF1CE33005C9FB0 /* CameraController.m */,
@@ -5434,6 +5442,8 @@
 		FC8572251AF1CE33005C9FB0 /* CameraCustom */ = {
 			isa = PBXGroup;
 			children = (
+				85A7E8DF1AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.h */,
+				85A7E8E01AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.m */,
 				FC8572261AF1CE33005C9FB0 /* CameraAlbumListCell.h */,
 				FC8572271AF1CE33005C9FB0 /* CameraAlbumListCell.m */,
 				FC8572281AF1CE33005C9FB0 /* CameraAlbumListCell.xib */,
@@ -9230,6 +9240,7 @@
 				FC857B301AF1CE36005C9FB0 /* TokopediaCacheManager.m in Sources */,
 				FC857A201AF1CE36005C9FB0 /* ResolutionInputReceiptViewController.m in Sources */,
 				FC8579BD1AF1CE36005C9FB0 /* ScrollViewSimultaneousGesture.m in Sources */,
+				85A7E8E11AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.m in Sources */,
 				FC857AA91AF1CE36005C9FB0 /* RequestShipmentCourier.m in Sources */,
 				FC857AFF1AF1CE36005C9FB0 /* ShopInfoViewController.m in Sources */,
 				FC8579411AF1CE36005C9FB0 /* OrderDetailForm.m in Sources */,
@@ -9484,6 +9495,7 @@
 				FC857B131AF1CE36005C9FB0 /* ShopProductPageViewController.m in Sources */,
 				FC857A781AF1CE36005C9FB0 /* ProductListMyShopViewController.m in Sources */,
 				FC8578E31AF1CE36005C9FB0 /* AddShop.m in Sources */,
+				85A7E8DE1AFB2AC100E35A72 /* TKPDPhotoPicker.m in Sources */,
 				FC857B6A1AF1CE36005C9FB0 /* TxOrderConfirmationViewController.m in Sources */,
 				FC857ACE1AF1CE36005C9FB0 /* SettingBankNameViewController.m in Sources */,
 				FC8578CE1AF1CE36005C9FB0 /* OrderHistory.m in Sources */,

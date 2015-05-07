@@ -157,7 +157,9 @@
 {
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
+    if(! self.view.isUserInteractionEnabled)
+        self.view.userInteractionEnabled = YES;
+        
     if(hasLoadViewWillAppear) {
         return;
     }
@@ -471,6 +473,7 @@
     }
     
     else if (indexPath.section == 6) {
+        self.view.userInteractionEnabled = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                             object:nil
                                                           userInfo:@{}];
