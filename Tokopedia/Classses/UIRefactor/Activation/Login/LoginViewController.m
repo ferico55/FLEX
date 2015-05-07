@@ -586,7 +586,6 @@
                                                                 object:nil
                                                               userInfo:nil];
 
-        } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                            delegate:self];
             [alert show];

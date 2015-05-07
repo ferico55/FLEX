@@ -186,6 +186,7 @@ typedef enum {
 #define TokopediaNotificationReload @"reloadNotification"
 
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
+#define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
 
 #endif
