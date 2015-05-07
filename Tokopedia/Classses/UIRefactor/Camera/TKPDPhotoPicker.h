@@ -17,6 +17,7 @@
 - (instancetype)initWithSourceType:(UIImagePickerControllerSourceType)sourceType parentViewController:(UIViewController *)controller pickerTransitionStyle:(UIModalTransitionStyle)transitionStyle;
 
 @property (strong, nonatomic) NSDictionary *data;
+@property (weak, nonatomic, readonly) UIViewController *parentViewController;
 
 @property (weak, nonatomic) id <TKPDPhotoPickerDelegate> delegate;
 
@@ -27,5 +28,6 @@
 @optional
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo;
+- (void)photoPicker:(TKPDPhotoPicker *)picker didFinishPickingImage:(UIImage *)image;
 
 @end
