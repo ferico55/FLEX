@@ -230,9 +230,7 @@
             
             if ([list.etalase_name isEqualToString:_selectedEtalase.etalase_name]) {
                 ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
-            }
-            else
-            {
+            } else {
                 ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
             }
             
