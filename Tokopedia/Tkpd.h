@@ -9,8 +9,9 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-//#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
+//#define kTkpdBaseURLString @"www.tokopedia.dev/ws"
 
 //#if DEBUG
 //    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
@@ -151,7 +152,7 @@ typedef enum {
 
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
-#endif
+//#endif
 #define kTKPD_REACHABILITYDELAY 3.0
 
 #define kTKPD_APSKEY @"aps"

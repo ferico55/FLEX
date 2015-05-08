@@ -1,13 +1,13 @@
 //
-//  OpenShopPicture.m
+//  Upload.h
 //  Tokopedia
 //
 //  Created by Tokopedia on 5/8/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "OpenShopPicture.h"
+#import <Foundation/Foundation.h>
 
-@implementation OpenShopPicture
-
+@interface Upload : NSObject
+@property (nonatomic, strong) NSString *src;
 @end

@@ -12,7 +12,7 @@
 
 #import "detail.h"
 #import "camera.h"
-
+#import "Upload.h"
 
 @implementation RequestUploadImage
 {
@@ -45,7 +45,13 @@
                                                         @"pic_obj" : @"pic_obj"
                                                         }];
     
+
+    RKObjectMapping *subResultMapping = [RKObjectMapping mappingForClass:[Upload class]];
+    [subResultMapping addAttributeMappingsFromDictionary:@{kTKPD_SRC:kTKPD_SRC}];
+    
+    
     // Relationship Mapping
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIUPLOADKEY toKeyPath:kTKPD_APIUPLOADKEY withMapping:subResultMapping]];
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -146,7 +152,7 @@
                        [self showErrorMessages:array?:@[]];
                        [_delegate failedUploadObject:_imageObject];
                    }
-                   else if (images.result.file_path) {
+                   else if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)) {
                        [_delegate successUploadObject:_imageObject withMappingResult:images];
                    }
                    else

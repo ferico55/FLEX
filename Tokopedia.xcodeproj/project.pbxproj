@@ -57,9 +57,12 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		85A347281AFC61D90076DE06 /* Upload.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A347271AFC61D90076DE06 /* Upload.m */; };
+		85A3472B1AFC778D0076DE06 /* OpenShopPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A3472A1AFC778D0076DE06 /* OpenShopPicture.m */; };
 		85A7E8DE1AFB2AC100E35A72 /* TKPDPhotoPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A7E8DD1AFB2AC100E35A72 /* TKPDPhotoPicker.m */; };
 		85A7E8E11AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A7E8E01AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.m */; };
-		85A7E8E41AFB4F9B00E35A72 /* OpenShopPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A7E8E31AFB4F9B00E35A72 /* OpenShopPicture.m */; };
+		85A7E8E41AFB4F9B00E35A72 /* OpenShopPictureResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A7E8E31AFB4F9B00E35A72 /* OpenShopPictureResult.m */; };
+		85A7E8E71AFB6ABD00E35A72 /* HotlistResultInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A7E8E61AFB6ABD00E35A72 /* HotlistResultInfo.m */; };
 		85C04BA21AF70ED3008ABC2F /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C04BA01AF70ED3008ABC2F /* WebViewController.m */; };
 		85C04BA31AF70ED3008ABC2F /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C04BA11AF70ED3008ABC2F /* WebViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
@@ -1502,12 +1505,18 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		85A347261AFC61D90076DE06 /* Upload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Upload.h; sourceTree = "<group>"; };
+		85A347271AFC61D90076DE06 /* Upload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Upload.m; sourceTree = "<group>"; };
+		85A347291AFC778D0076DE06 /* OpenShopPicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopPicture.h; sourceTree = "<group>"; };
+		85A3472A1AFC778D0076DE06 /* OpenShopPicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopPicture.m; sourceTree = "<group>"; };
 		85A7E8DC1AFB2AC100E35A72 /* TKPDPhotoPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDPhotoPicker.h; sourceTree = "<group>"; };
 		85A7E8DD1AFB2AC100E35A72 /* TKPDPhotoPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDPhotoPicker.m; sourceTree = "<group>"; };
 		85A7E8DF1AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDLiveCameraTableViewCell.h; sourceTree = "<group>"; };
 		85A7E8E01AFB2B1B00E35A72 /* TKPDLiveCameraTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDLiveCameraTableViewCell.m; sourceTree = "<group>"; };
-		85A7E8E21AFB4F9B00E35A72 /* OpenShopPicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopPicture.h; sourceTree = "<group>"; };
-		85A7E8E31AFB4F9B00E35A72 /* OpenShopPicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopPicture.m; sourceTree = "<group>"; };
+		85A7E8E21AFB4F9B00E35A72 /* OpenShopPictureResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopPictureResult.h; sourceTree = "<group>"; };
+		85A7E8E31AFB4F9B00E35A72 /* OpenShopPictureResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopPictureResult.m; sourceTree = "<group>"; };
+		85A7E8E51AFB6ABD00E35A72 /* HotlistResultInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistResultInfo.h; sourceTree = "<group>"; };
+		85A7E8E61AFB6ABD00E35A72 /* HotlistResultInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistResultInfo.m; sourceTree = "<group>"; };
 		85C04B9F1AF70ED3008ABC2F /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		85C04BA01AF70ED3008ABC2F /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		85C04BA11AF70ED3008ABC2F /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
@@ -4270,6 +4279,8 @@
 		FC856FB71AF1CE32005C9FB0 /* Hotlist */ = {
 			isa = PBXGroup;
 			children = (
+				85A7E8E51AFB6ABD00E35A72 /* HotlistResultInfo.h */,
+				85A7E8E61AFB6ABD00E35A72 /* HotlistResultInfo.m */,
 				FC856FB81AF1CE32005C9FB0 /* DepartmentChild.h */,
 				FC856FB91AF1CE32005C9FB0 /* DepartmentChild.m */,
 				FC856FBA1AF1CE32005C9FB0 /* DepartmentChild2.h */,
@@ -4781,8 +4792,10 @@
 				FC8570D41AF1CE33005C9FB0 /* AddShop.m */,
 				FC8570D51AF1CE33005C9FB0 /* AddShopResult.h */,
 				FC8570D61AF1CE33005C9FB0 /* AddShopResult.m */,
-				85A7E8E21AFB4F9B00E35A72 /* OpenShopPicture.h */,
-				85A7E8E31AFB4F9B00E35A72 /* OpenShopPicture.m */,
+				85A7E8E21AFB4F9B00E35A72 /* OpenShopPictureResult.h */,
+				85A7E8E31AFB4F9B00E35A72 /* OpenShopPictureResult.m */,
+				85A347291AFC778D0076DE06 /* OpenShopPicture.h */,
+				85A3472A1AFC778D0076DE06 /* OpenShopPicture.m */,
 			);
 			path = CreateShop;
 			sourceTree = "<group>";
@@ -5238,6 +5251,8 @@
 				FC8571D71AF1CE33005C9FB0 /* UploadImageParams.m */,
 				FC8571D81AF1CE33005C9FB0 /* UploadImageResult.h */,
 				FC8571D91AF1CE33005C9FB0 /* UploadImageResult.m */,
+				85A347261AFC61D90076DE06 /* Upload.h */,
+				85A347271AFC61D90076DE06 /* Upload.m */,
 			);
 			path = UploadImage;
 			sourceTree = "<group>";
@@ -9121,6 +9136,7 @@
 				FC85785F1AF1CE36005C9FB0 /* FavoritedShopList.m in Sources */,
 				FC85793E1AF1CE36005C9FB0 /* TxOrderConfirmedDetailPayment.m in Sources */,
 				FC8579B11AF1CE36005C9FB0 /* TKPDTabShopViewController.m in Sources */,
+				85A3472B1AFC778D0076DE06 /* OpenShopPicture.m in Sources */,
 				FC8578F01AF1CE36005C9FB0 /* DetailShopResult.m in Sources */,
 				FC8578601AF1CE36005C9FB0 /* FavoritedShopResult.m in Sources */,
 				FC8578131AF1CE36005C9FB0 /* NSDictionaryCategory.m in Sources */,
@@ -9348,7 +9364,7 @@
 				FC8578151AF1CE36005C9FB0 /* NSString+HTML.m in Sources */,
 				FC8579FE1AF1CE36005C9FB0 /* HotlistViewController.m in Sources */,
 				FC8579181AF1CE36005C9FB0 /* TransactionATCFormResult.m in Sources */,
-				85A7E8E41AFB4F9B00E35A72 /* OpenShopPicture.m in Sources */,
+				85A7E8E41AFB4F9B00E35A72 /* OpenShopPictureResult.m in Sources */,
 				FC8578A11AF1CE36005C9FB0 /* ProductTalkForm.m in Sources */,
 				FC8579271AF1CE36005C9FB0 /* TxOrderConfirmation.m in Sources */,
 				FC857A411AF1CE36005C9FB0 /* MyShopNoteDetailViewController.m in Sources */,
@@ -9360,6 +9376,7 @@
 				FC8578101AF1CE36005C9FB0 /* NSArray+PerformSelector.m in Sources */,
 				FC8579EA1AF1CE36005C9FB0 /* GeneralTableViewController.m in Sources */,
 				FC8579A81AF1CE36005C9FB0 /* TKPDTabInboxReviewNavigationController.m in Sources */,
+				85A347281AFC61D90076DE06 /* Upload.m in Sources */,
 				FC8579A61AF1CE36005C9FB0 /* TKPDTabInboxMessageNavigationController.m in Sources */,
 				FC857B191AF1CE36005C9FB0 /* FilterConditionCell.m in Sources */,
 				FC857A081AF1CE36005C9FB0 /* InboxMessageDetailViewController.m in Sources */,
@@ -9535,6 +9552,7 @@
 				FC8578461AF1CE36005C9FB0 /* Rating.m in Sources */,
 				FC8578421AF1CE36005C9FB0 /* OtherProduct.m in Sources */,
 				FC8578DF1AF1CE36005C9FB0 /* ShipmentCourier.m in Sources */,
+				85A7E8E71AFB6ABD00E35A72 /* HotlistResultInfo.m in Sources */,
 				FC8578FE1AF1CE36005C9FB0 /* SettingPayment.m in Sources */,
 				FC8578851AF1CE36005C9FB0 /* ResolutionCustomer.m in Sources */,
 				FC857B4F1AF1CE36005C9FB0 /* TransactionCartRootViewController.m in Sources */,

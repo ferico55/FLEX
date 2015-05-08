@@ -34,6 +34,7 @@
 #define API_TOKEN_KEY @"token"
 
 #define kTKPD_APIRESULTKEY @"result"
+#define kTKPD_APIUPLOADKEY @"upload"
 #define kTKPD_APIPAGINGKEY @"paging"
 #define API_PAGE_KEY @"page"
 #define kTKPD_APIURINEXTKEY @"uri_next"
