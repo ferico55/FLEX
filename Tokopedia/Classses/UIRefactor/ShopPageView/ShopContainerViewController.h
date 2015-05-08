@@ -16,3 +16,4 @@
 @property CGPoint contentOffset;
 @property (strong, nonatomic) Shop *shop;
 @end
+

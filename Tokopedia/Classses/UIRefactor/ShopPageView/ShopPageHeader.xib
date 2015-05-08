@@ -37,7 +37,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Ds4-4z-ewW">
-                    <rect key="frame" x="-30" y="-15" width="381" height="180"/>
+                    <rect key="frame" x="0.0" y="-64" width="320" height="225"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
@@ -63,7 +63,7 @@
                     <color key="backgroundColor" red="1" green="0.96470588235294119" blue="0.74901960784313726" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view contentMode="scaleToFill" id="nZg-u9-ck3">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="305"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="304"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="N39-0E-mg9">

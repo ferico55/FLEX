@@ -10,6 +10,8 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		5952A9641AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5952A9631AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.m */; };
 		5952A9671AFA11F900DC345C /* TKPDPhotoPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5952A9661AFA11F900DC345C /* TKPDPhotoPicker.m */; };
+		5957183A1AFC8779003032E2 /* UIImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 595718391AFC8779003032E2 /* UIImageEffects.m */; };
+		5957183D1AFC8961003032E2 /* NavigationBarBlurController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5957183C1AFC8961003032E2 /* NavigationBarBlurController.m */; };
 		7A97B22E1AF244490025915B /* icon_0@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A97B2181AF244490025915B /* icon_0@3x.png */; };
 		7A97B22F1AF244490025915B /* icon_10@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A97B2191AF244490025915B /* icon_10@3x.png */; };
 		7A97B2301AF244490025915B /* icon_11@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A97B21A1AF244490025915B /* icon_11@3x.png */; };
@@ -1454,6 +1456,10 @@
 		5952A9631AF9EA8D00DC345C /* TKPDLiveCameraTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDLiveCameraTableViewCell.m; sourceTree = "<group>"; };
 		5952A9651AFA11F900DC345C /* TKPDPhotoPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDPhotoPicker.h; sourceTree = "<group>"; };
 		5952A9661AFA11F900DC345C /* TKPDPhotoPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDPhotoPicker.m; sourceTree = "<group>"; };
+		595718381AFC8779003032E2 /* UIImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageEffects.h; sourceTree = "<group>"; };
+		595718391AFC8779003032E2 /* UIImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageEffects.m; sourceTree = "<group>"; };
+		5957183B1AFC8961003032E2 /* NavigationBarBlurController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationBarBlurController.h; sourceTree = "<group>"; };
+		5957183C1AFC8961003032E2 /* NavigationBarBlurController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationBarBlurController.m; sourceTree = "<group>"; };
 		7A97B2181AF244490025915B /* icon_0@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_0@3x.png"; sourceTree = "<group>"; };
 		7A97B2191AF244490025915B /* icon_10@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_10@3x.png"; sourceTree = "<group>"; };
 		7A97B21A1AF244490025915B /* icon_11@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_11@3x.png"; sourceTree = "<group>"; };
@@ -6691,6 +6697,8 @@
 		FC8574F61AF1CE34005C9FB0 /* ShopPageView */ = {
 			isa = PBXGroup;
 			children = (
+				595718381AFC8779003032E2 /* UIImageEffects.h */,
+				595718391AFC8779003032E2 /* UIImageEffects.m */,
 				FC8574F71AF1CE34005C9FB0 /* ShopContainerViewController.h */,
 				FC8574F81AF1CE34005C9FB0 /* ShopContainerViewController.m */,
 				FC8574F91AF1CE34005C9FB0 /* ShopContainerViewController.xib */,
@@ -6709,6 +6717,8 @@
 				FC8575061AF1CE34005C9FB0 /* ShopTalkPageViewController.h */,
 				FC8575071AF1CE34005C9FB0 /* ShopTalkPageViewController.m */,
 				FC8575081AF1CE34005C9FB0 /* ShopTalkPageViewController.xib */,
+				5957183B1AFC8961003032E2 /* NavigationBarBlurController.h */,
+				5957183C1AFC8961003032E2 /* NavigationBarBlurController.m */,
 			);
 			path = ShopPageView;
 			sourceTree = "<group>";
@@ -9422,6 +9432,7 @@
 				FC857A9F1AF1CE36005C9FB0 /* SalesOrderCell.m in Sources */,
 				FC857A5C1AF1CE36005C9FB0 /* GalleryPhoto.m in Sources */,
 				FC85791A1AF1CE36005C9FB0 /* TransactionBuyResult.m in Sources */,
+				5957183D1AFC8961003032E2 /* NavigationBarBlurController.m in Sources */,
 				FC8578191AF1CE36005C9FB0 /* RKObjectManagerCategory.m in Sources */,
 				FC85794A1AF1CE36005C9FB0 /* TxOrderPaymentEditOrder.m in Sources */,
 				FC857B031AF1CE36005C9FB0 /* ShopNotesViewController.m in Sources */,
@@ -9587,6 +9598,7 @@
 				FC857A891AF1CE36005C9FB0 /* ReputationPageViewController.m in Sources */,
 				FC8579431AF1CE36005C9FB0 /* TxOrderConfirmPaymentForm.m in Sources */,
 				FC85793A1AF1CE36005C9FB0 /* TxOrderConfirmedResult.m in Sources */,
+				5957183A1AFC8779003032E2 /* UIImageEffects.m in Sources */,
 				FC8578871AF1CE36005C9FB0 /* ResolutionDispute.m in Sources */,
 				FC857AE41AF1CE36005C9FB0 /* SettingUserProfileViewController.m in Sources */,
 				FC857B561AF1CE36005C9FB0 /* TxOrderStatusDetailViewController.m in Sources */,

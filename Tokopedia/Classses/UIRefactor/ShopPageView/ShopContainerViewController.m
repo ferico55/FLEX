@@ -24,6 +24,7 @@
 
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
+#import "NavigationBarBlurController.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
@@ -57,6 +58,8 @@
     UIBarButtonItem *_settingBarButton;
     UIBarButtonItem *_messageBarButton;
     UserAuthentificationManager *_userManager;
+    
+    NavigationBarBlurController *_blurController;
 }
 
 @property (strong, nonatomic) ShopProductPageViewController *shopProductViewController;
@@ -149,6 +152,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _blurController = [[NavigationBarBlurController alloc] init];
+    
     [self initNotificationCenter];
     [self initBarButton];
     // Do any additional setup after loading the view from its nib.
@@ -173,6 +179,7 @@
     
     _shopProductViewController = [ShopProductPageViewController new];
     _shopProductViewController.data = _data;
+    [_shopProductViewController setBlurController:_blurController];
     
     _shopTalkViewController = [ShopTalkPageViewController new];
     _shopTalkViewController.data = _data;
@@ -209,6 +216,12 @@
     
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [_blurController setNavigationBar:self.navigationController.navigationBar];
 }
 
 - (void)didReceiveMemoryWarning
@@ -280,10 +293,6 @@
 
     
 }
-
-
-
-
 
 - (void)postNotificationSetShopHeader {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
@@ -613,14 +622,11 @@
     [self cancel];
 }
 
-
-
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
-
 
 #pragma mark - Notification Action
 
@@ -841,8 +847,6 @@
     [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-
-
 -(void)favoriteShop:(NSString*)shop_id
 {
     if (_requestFavorite.isExecuting) return;
@@ -887,7 +891,6 @@
     
 }
 
-
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController
 {
@@ -904,7 +907,6 @@
     [self configureRestKit];
     [self request];
 }
-
 
 #pragma mark - Notification Center Action
 
