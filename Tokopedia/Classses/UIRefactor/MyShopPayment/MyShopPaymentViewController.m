@@ -755,6 +755,27 @@
 
 
 #pragma mark - Method
+- (void)successCreateShop:(AddShop *)addShop {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    if(secureStorage != nil)
+    {
+        [secureStorage setKeychainWithValue:addShop.result.shop_id withKey:kTKPD_SHOPIDKEY];
+        [secureStorage setKeychainWithValue:[myShopShipmentTableViewController.createShopViewController getNamaToko] withKey:kTKPD_SHOPNAMEKEY];
+        [secureStorage setKeychainWithValue:addShop.result.shop_url withKey:kTKPD_SHOPIMAGEKEY];
+        [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+        [myShopShipmentTableViewController.createShopViewController.moreViewController updateKeyChain];
+    }
+    
+    strFileUploaded = filePath = strPostKey = nil;
+    [self isLoading:NO];
+    
+    NSDictionary *tempDict = [NSDictionary dictionaryWithObjectsAndKeys:[myShopShipmentTableViewController.createShopViewController getNamaToko], kTKPD_SHOPNAMEKEY, addShop.result.shop_url, kTKPD_SHOPURL, nil];
+    
+    BerhasilBukaTokoViewController *berhasilBukaTokoViewController = [BerhasilBukaTokoViewController new];
+    berhasilBukaTokoViewController.dictData = tempDict;
+    [self.navigationController pushViewController:berhasilBukaTokoViewController animated:YES];
+}
+
 - (void)failedCreateShop {
     StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedCreateShop] delegate:self];
     [stickyAlertView show];
@@ -933,6 +954,10 @@
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:kTKPD_OPEN_SHOP_SUBMIT forKey:kTKPDDETAIL_ACTIONKEY];
         [param setObject:strPostKey forKey:CPostKey];
+        
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *tempAuth = [secureStorage keychainDictionary];
+        [param setObject:[[tempAuth objectForKey:kTKPD_USERIDKEY] stringValue] forKey:MORE_USER_ID];
         [param setObject:strFileUploaded forKey:kTKPD_FILE_UPLOADED];
         
         return param;
@@ -1032,24 +1057,7 @@
         }
         else if([addShop.result.is_success isEqualToString:@"1"])
         {
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            if(secureStorage != nil)
-            {
-                [secureStorage setKeychainWithValue:addShop.result.shop_id withKey:kTKPD_SHOPIDKEY];
-                [secureStorage setKeychainWithValue:[myShopShipmentTableViewController.createShopViewController getNamaToko] withKey:kTKPD_SHOPNAMEKEY];
-                [secureStorage setKeychainWithValue:addShop.result.shop_url withKey:kTKPD_SHOPIMAGEKEY];
-                [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
-                [myShopShipmentTableViewController.createShopViewController.moreViewController updateKeyChain];
-            }
-            
-            strFileUploaded = filePath = strPostKey = nil;
-            [self isLoading:NO];
-            
-            NSDictionary *tempDict = [NSDictionary dictionaryWithObjectsAndKeys:[myShopShipmentTableViewController.createShopViewController getNamaToko], kTKPD_SHOPNAMEKEY, addShop.result.shop_url, kTKPD_SHOPURL, nil];
-            
-            BerhasilBukaTokoViewController *berhasilBukaTokoViewController = [BerhasilBukaTokoViewController new];
-            berhasilBukaTokoViewController.dictData = tempDict;
-            [self.navigationController pushViewController:berhasilBukaTokoViewController animated:YES];
+            [self successCreateShop:addShop];
         }
         else
         {
@@ -1083,15 +1091,34 @@
             [stickAlert show];
             [self isLoading:NO];
         }
-        else if(addShop.result.post_key != nil)
-        {
-            strPostKey = addShop.result.post_key;
-            [[self getNetworkManager:([myShopShipmentTableViewController.createShopViewController getDictContentPhoto]!=nil? CTagOpenShopPicture:CTagOpenShopSubmit)] doRequest];
-        }
-        else
-        {
-            strPostKey = filePath = strFileUploaded = nil;
-            [self failedCreateShop];
+        else {
+            BOOL isError = NO;
+            if([myShopShipmentTableViewController.createShopViewController getDictContentPhoto] != nil) {
+                if(addShop.result.post_key != nil)
+                {
+                    strPostKey = addShop.result.post_key;
+                    [[self getNetworkManager:CTagOpenShopPicture] doRequest];
+                }
+                else {
+                    isError = YES;
+                }
+            }
+            else {
+                if(addShop.result.shop_id != nil) {
+                    [self successCreateShop:addShop];
+                }
+                else {
+                    isError = YES;
+                }
+            }
+            
+            
+            
+            
+            if(isError) {
+                strPostKey = filePath = strFileUploaded = nil;
+                [self failedCreateShop];
+            }
         }
     }
 }
