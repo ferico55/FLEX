@@ -112,7 +112,7 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AFF512AF-1A5B-49C9-B9E5-5B5EFFC5FB89" id="y2i-en-h5n">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EF065638-DC08-411D-B444-93C4B87EF3FA" id="y2i-en-h5n">
                     <rect key="frame" x="31" y="202" width="15" height="15"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
@@ -192,7 +192,7 @@
         </view>
     </objects>
     <resources>
-        <image name="AFF512AF-1A5B-49C9-B9E5-5B5EFFC5FB89" width="14" height="14">
+        <image name="EF065638-DC08-411D-B444-93C4B87EF3FA" width="14" height="14">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

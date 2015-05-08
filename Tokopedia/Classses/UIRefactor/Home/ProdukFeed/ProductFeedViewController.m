@@ -446,6 +446,11 @@ typedef enum TagRequest {
         _isnodata = NO;
         _urinext =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+        
+        if(_urinext!=nil && [_urinext isEqualToString:@"0"]) {
+            [_act stopAnimating];
+            _table.tableFooterView = nil;
+        }
     } else {
         _isnodata = YES;
         _table.tableFooterView = _noResult;

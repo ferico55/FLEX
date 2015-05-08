@@ -271,6 +271,10 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if(section==1 && _shop.count==0) {
+        return nil;
+    }
+    
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
     [view setBackgroundColor:tableView.backgroundColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
@@ -445,7 +449,7 @@
                 [_shopdictionary setObject:_shop forKey:@"b"];
             }
             
-            _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
+            _shopdictionarytitle = @[@"Rekomendasi",@"Toko Favoritku"];
             
             if (_shop.count + _goldshop.count > 0) {
                 _isnodata = NO;
