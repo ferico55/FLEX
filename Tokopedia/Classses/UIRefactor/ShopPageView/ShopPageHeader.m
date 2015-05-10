@@ -136,6 +136,9 @@
 
 - (void)viewDidLoad
 {
+    [_shopImageView.layer setCornerRadius:(_shopImageView.bounds.size.width / 2.0f)];
+    [_shopImageView.layer setMasksToBounds:YES];
+    
     [super viewDidLoad];
     _userManager = [UserAuthentificationManager new];
     
@@ -166,6 +169,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (UIImage *)coverScreenshot {
+    UIGraphicsBeginImageContext(_coverImageView.bounds.size);
+    [_coverImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 - (void)setHeaderData {
@@ -269,6 +280,7 @@
             
             _coverImageView.image = image;
             _coverImageView.hidden = NO;
+            [self.delegate didLoadImage:image];
             
             
 #pragma clang diagnostic pop
