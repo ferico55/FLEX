@@ -171,14 +171,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (UIImage *)coverScreenshot {
-    UIGraphicsBeginImageContext(_coverImageView.bounds.size);
-    [_coverImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
-}
-
 - (void)setHeaderData {
     _scrollView.hidden = NO;
     _leftButton.enabled = YES;
@@ -280,8 +272,6 @@
             
             _coverImageView.image = image;
             _coverImageView.hidden = NO;
-            [self.delegate didLoadImage:image];
-            
             
 #pragma clang diagnostic pop
         } failure:nil];

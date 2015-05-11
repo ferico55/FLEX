@@ -37,7 +37,6 @@
 #import "DetailProductViewController.h"
 
 #import "NoResult.h"
-#import "NavigationBarBlurController.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -835,10 +834,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
     [self determineOtherScrollView:scrollView];
     [self determineNavTitle:scrollView];
-    
-    
-    [self.blurController setContentOffset:scrollView.contentOffset];
-    [self.blurController setNavigationBarTitle:_shop.result.info.shop_name withContentOffSet:scrollView.contentOffset];
 }
 
 - (void)determineNavTitle:(UIScrollView*)scrollView {
@@ -998,8 +993,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void)didLoadImage:(UIImage *)image
 {
 //    _navigationImageView.image = [image applyLightEffect];
-    
-    [_blurController setBackgroundImage:[_shopPageHeader coverScreenshot]];
 }
 
 - (void)didReceiveShop:(Shop *)shop
