@@ -57,6 +57,11 @@
     [self.scrollView addSubview:_contentView];
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width,
                                              self.view.frame.size.height-63);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didEditBankAccount:)
+                                                 name:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -137,7 +142,7 @@
     _data = data;
     if (data) {
         BankAccountFormList *list = [_data objectForKey:kTKPDPROFILE_DATABANKKEY];
-        self.title = list.bank_account_name ?: TITLE_DETAIL_BANK_DEFAULT;
+        self.title = list.bank_account_name ?:TITLE_DETAIL_BANK_DEFAULT;
         _labelaccountowner.text = list.bank_account_name?:@"";
         _labelaccountnumber.text = [NSString stringWithFormat:@"%@",list.bank_account_number];
         _labelbankname.text = list.bank_name?:@"";
@@ -146,6 +151,16 @@
         _viewdefault.hidden = !isdefault;
         _viewsetasdefault.hidden = isdefault;
     }
+}
+
+- (void)didEditBankAccount:(NSNotification *)notification
+{
+    BankAccountFormList *bankAccount = [notification.userInfo objectForKey:kTKPDPROFILE_DATABANKKEY];
+    self.title = bankAccount.bank_account_name?:TITLE_DETAIL_BANK_DEFAULT;
+    _labelaccountowner.text = bankAccount.bank_account_name;
+    _labelaccountnumber.text = bankAccount.bank_account_number;
+    _labelbankname.text = bankAccount.bank_name;
+    _labelbranch.text = bankAccount.bank_branch;
 }
 
 @end
