@@ -113,7 +113,7 @@
 
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
     _fixedSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
-    _fixedSpace.width = 20;
+    _fixedSpace.width = 15;
     
     _unfavoriteBarButton.enabled = NO;
     _favoriteBarButton.enabled = NO;
@@ -148,7 +148,11 @@
     return infoBarButton;
 }
 
-
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [_blurController removeNavigationImage];
+}
 
 - (void)viewDidLoad
 {

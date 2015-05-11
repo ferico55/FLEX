@@ -22,15 +22,36 @@
         _threshold = 0.5f;
         _maxOffset = 240.0f;
         _minimumOffset = 1.0f;
+        _titleOffset = 170.0f;
     }
     
     return self;
+}
+
+- (void)setNavigationBarTitle:(NSString *)navigationBarTitle withContentOffSet:(CGPoint)contentOffset{
+    if(contentOffset.y < _titleOffset) {
+        self.navigationBar.topItem.title = @"";
+    } else {
+        self.navigationBar.topItem.title = navigationBarTitle;
+        NSDictionary *settings = @{
+//                                   UITextAttributeFont                 :  [UIFont fontWithName:@"Gotham Medium" size:15],
+                                   UITextAttributeTextColor            :  [UIColor whiteColor],
+                                   UITextAttributeTextShadowColor      :  [UIColor blackColor],
+                                   UITextAttributeTextShadowOffset     :  [NSValue valueWithUIOffset:UIOffsetZero]};
+
+        self.navigationBar.titleTextAttributes = settings;
+    }
+}
+
+- (void)removeNavigationImage {
+    [self.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)setContentOffset:(CGPoint)contentOffset {
     if (contentOffset.y < _maxOffset) {
         if (contentOffset.y < _minimumOffset) {
             [self.navigationBar setBackgroundImage:_initialImage forBarMetrics:UIBarMetricsDefault];
+
         } else {
             if (abs(_contentOffset.y - contentOffset.y) > self.threshold) {
                 _contentOffset = contentOffset;

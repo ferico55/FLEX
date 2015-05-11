@@ -838,6 +838,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     
     [self.blurController setContentOffset:scrollView.contentOffset];
+    [self.blurController setNavigationBarTitle:_shop.result.info.shop_name withContentOffSet:scrollView.contentOffset];
 }
 
 - (void)determineNavTitle:(UIScrollView*)scrollView {
