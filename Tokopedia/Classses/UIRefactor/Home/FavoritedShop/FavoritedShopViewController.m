@@ -566,6 +566,7 @@
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+                       kTKPDDETAIL_APISHOPNAMEKEY:list.shop_name?:@"",
                        kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
                        };
     [self.navigationController pushViewController:container animated:YES];

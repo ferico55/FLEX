@@ -593,11 +593,6 @@
         }
         else
         {
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                object:nil
-                                                              userInfo:nil];
-
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                            delegate:self];
             [alert show];

@@ -588,6 +588,7 @@ UIAlertViewDelegate
                     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
                     
                     container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
+                                       kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
                                        kTKPD_AUTHKEY:_auth?:@{}};
                     [self.navigationController pushViewController:container animated:YES];
                     
@@ -1814,6 +1815,7 @@ UIAlertViewDelegate
             ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
             
             container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                               kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
                                kTKPD_AUTHKEY:_auth?:[NSNull null],
                                @"product_etalase_id" : _product.result.product.product_etalase_id};
             [self.navigationController pushViewController:container animated:YES];
@@ -2362,6 +2364,7 @@ UIAlertViewDelegate
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                       kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
                        kTKPD_AUTHKEY:_auth?:[NSNull null]};
     [self.navigationController pushViewController:container animated:YES];
 }

@@ -119,20 +119,6 @@
     _settingBarButton.enabled = NO;
     _addProductBarButton.enabled = NO;
     _infoBarButton.enabled = NO;
-    
-//
-//    if ([_userManager isLogin]) {
-//        if([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
-//            self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
-//        } else {
-//            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
-//        }
-//        
-//    } else {
-//        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
-//    }
-    
-    
 }
 
 - (UIBarButtonItem*)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action {
@@ -149,7 +135,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [_blurController removeNavigationImage];
+//    [_blurController removeNavigationImage];
 }
 
 - (void)viewDidLoad
@@ -636,7 +622,7 @@
 - (void)showNavigationShopTitle:(NSNotification *)notification
 {
     [UIView animateWithDuration:0.2 animations:^(void) {
-        self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
+        self.title = _shop.result.info.shop_name;
     } completion:^(BOOL finished) {
         
     }];

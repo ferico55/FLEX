@@ -439,7 +439,7 @@
 {
     ShopContainerViewController *controller = [[ShopContainerViewController alloc] init];
     CatalogShops *shop = [_catalog.result.catalog_shops objectAtIndex:indexPath.row];
-    controller.data = @{@"shop_id" : shop.shop_id};
+    controller.data = @{@"shop_id" : shop.shop_id, @"shop_name" : shop.shop_name};
     [self.navigationController pushViewController:controller animated:YES];
 }
 
