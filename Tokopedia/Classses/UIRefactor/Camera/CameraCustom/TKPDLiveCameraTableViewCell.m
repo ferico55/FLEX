@@ -13,13 +13,15 @@
     AVCaptureSession *_captureSession;
     AVCaptureVideoPreviewLayer *_previewLayer;
     UIImageView *_icon;
+    dispatch_queue_t _captureSessionQueue;
+    AVCaptureDeviceInput *_cameraInput;
 }
 
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil) {
-        [self.contentView setBackgroundColor:[UIColor blackColor]];
+        _captureSessionQueue = dispatch_queue_create("com.tokopedia.captureSessionQueue", DISPATCH_QUEUE_SERIAL);
         [self configureCaptureSession];
         
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"icon_camera_album.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
@@ -36,64 +38,103 @@
 }
 
 - (void)configureCaptureSession {
+    __weak typeof(self) wself = self;
     [_previewLayer removeFromSuperlayer];
-    [_captureSession stopRunning];
-    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    if ([devices count] == 0) {
-        return;
-    }
-    AVCaptureDevice *backCamera = nil;
-    for (AVCaptureDevice *device in devices) {
-        if (device.position == AVCaptureDevicePositionBack) {
-            backCamera = device;
-            break;
+    dispatch_async(_captureSessionQueue, ^{
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            [sself->_captureSession stopRunning];
+            NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+            if ([devices count] == 0) {
+                return;
+            }
+            AVCaptureDevice *backCamera = nil;
+            for (AVCaptureDevice *device in devices) {
+                if (device.position == AVCaptureDevicePositionBack) {
+                    backCamera = device;
+                    break;
+                }
+            }
+            if (backCamera == nil) {
+                backCamera = [devices firstObject];
+            }
+            NSError *error = nil;
+            AVCaptureDeviceInput *cameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:backCamera error:nil];
+            sself->_cameraInput = cameraInput;
+            if (error != nil) {
+                return;
+            }
+            AVCaptureSession *captureSession = [[AVCaptureSession alloc] init];
+            if ([captureSession canAddInput:cameraInput]) {
+                [captureSession addInput:cameraInput];
+            } else {
+                return;
+            }
+            
+            [captureSession setSessionPreset:AVCaptureSessionPreset352x288];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
+                [previewLayer setFrame:wself.contentView.layer.bounds];
+                [wself.contentView.layer insertSublayer:previewLayer atIndex:0];
+                [previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+                
+                sself->_previewLayer = previewLayer;
+                
+                sself->_captureSession = captureSession;
+                
+                [wself startLiveVideo];
+            });
         }
-    }
-    if (backCamera == nil) {
-        backCamera = [devices firstObject];
-    }
-    NSError *error = nil;
-    AVCaptureDeviceInput *cameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:backCamera error:nil];
-    if (error != nil) {
-        return;
-    }
-    AVCaptureSession *captureSession = [[AVCaptureSession alloc] init];
-    if ([captureSession canAddInput:cameraInput]) {
-        [captureSession addInput:cameraInput];
-    } else {
-        return;
-    }
-    
-    [captureSession setSessionPreset:AVCaptureSessionPreset352x288];
-    
-    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
-    [previewLayer setFrame:self.contentView.layer.bounds];
-    [self.contentView.layer insertSublayer:previewLayer atIndex:0];
-    [previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    
-    _previewLayer = previewLayer;
-    
-    _captureSession = captureSession;
+    });
 }
 
 - (void)startLiveVideo {
-    [_captureSession startRunning];
+    __weak typeof(self) wself = self;
+    dispatch_async(_captureSessionQueue, ^{
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            if (![sself->_captureSession isRunning]) {
+                [sself->_captureSession startRunning];
+            }
+        }
+    });
 }
 
 - (void)restartCaptureSession {
-    [self configureCaptureSession];
+    __weak typeof(self) wself = self;
+    dispatch_async(_captureSessionQueue, ^{
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            if ([sself->_captureSession canAddInput:sself->_cameraInput]) {
+                [sself->_captureSession addInput:sself->_cameraInput];
+                [sself->_captureSession startRunning];
+            }
+        }
+    });
 }
 
 - (void)stopLiveVideo {
     if (![_captureSession isRunning]) {
-        [_captureSession stopRunning];
+        __weak typeof(self) wself = self;
+        dispatch_async(_captureSessionQueue, ^{
+            if (wself != nil) {
+                typeof(self) sself = wself;
+                [sself->_captureSession stopRunning];
+            }
+        });
     }
 }
 
 - (void)freezeCapturedContent {
-    [_captureSession stopRunning];
-    _captureSession = nil;
-    [_previewLayer removeFromSuperlayer];
+    __weak typeof(self) wself = self;
+    dispatch_async(_captureSessionQueue, ^{
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            [sself->_captureSession stopRunning];
+            [sself->_captureSession removeInput:sself->_cameraInput];
+        }
+    });
 }
 
 
