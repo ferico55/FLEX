@@ -60,6 +60,7 @@
     UserAuthentificationManager *_userManager;
     
     NavigationBarBlurController *_blurController;
+    UIBarButtonItem *_fixedSpace;
 }
 
 @property (strong, nonatomic) ShopProductPageViewController *shopProductViewController;
@@ -111,6 +112,8 @@
     _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
 
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
+    _fixedSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
+    _fixedSpace.width = 20;
     
     _unfavoriteBarButton.enabled = NO;
     _favoriteBarButton.enabled = NO;
@@ -574,17 +577,17 @@
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
                 if ([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
-                    self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
+                    self.navigationItem.rightBarButtonItems = @[_settingBarButton,_fixedSpace, _addProductBarButton,_fixedSpace, _infoBarButton];
                     _addProductBarButton.enabled = YES;
                     _settingBarButton.enabled = YES;
                 } else {
                     if(_shop.result.info.shop_already_favorited == 1) {
-                        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
+                        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton,_fixedSpace, _messageBarButton,_fixedSpace, _infoBarButton];
                         _favoriteBarButton.enabled = YES;
                         _unfavoriteBarButton.enabled = YES;
                         _messageBarButton.enabled = YES;
                     } else {
-                        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
+                        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton,_fixedSpace, _messageBarButton, _fixedSpace, _infoBarButton];
                         _messageBarButton.enabled = YES;
                         _unfavoriteBarButton.enabled = YES;
                         _favoriteBarButton.enabled = YES;
@@ -700,7 +703,7 @@
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
         
-        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
+        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _fixedSpace, _messageBarButton, _fixedSpace, _infoBarButton];
     }
 }
 
@@ -712,7 +715,7 @@
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
         
-        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton,_fixedSpace, _messageBarButton,_fixedSpace, _infoBarButton];
     }
     else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
