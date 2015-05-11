@@ -662,17 +662,17 @@
         [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
         [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
 
-        LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
-        if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)])
-        {
-            [loginController.delegate redirectViewController:loginController.redirectViewController];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            [self.tabBarController setSelectedIndex:0];
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                object:nil
-                                                              userInfo:nil];
-        }
+//        LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
+//        if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)])
+//        {
+//            [loginController.delegate redirectViewController:loginController.redirectViewController];
+//            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+//        } else {
+//            [self.tabBarController setSelectedIndex:0];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+//                                                                object:nil
+//                                                              userInfo:nil];
+//        }
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                        delegate:self];

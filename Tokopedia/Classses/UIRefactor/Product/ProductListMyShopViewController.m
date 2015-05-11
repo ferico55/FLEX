@@ -61,8 +61,6 @@
     ManageProduct*_product;
     
     BOOL _isaddressexpanded;
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
     
     __weak RKObjectManager *_objectmanagerActionDelete;
     __weak RKManagedObjectRequestOperation *_requestActionDelete;
@@ -78,7 +76,7 @@
     NSDictionary *_auth;
     RequestMoveTo *_requestMoveTo;
     
-    TokopediaNetworkManager *_listNetworkManager;
+    TokopediaNetworkManager *_networkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -117,9 +115,9 @@
     
     _requestMoveTo = [RequestMoveTo new];
     
-    _listNetworkManager = [TokopediaNetworkManager new];
-    _listNetworkManager.tagRequest = TAG_LIST_REQUEST;
-    _listNetworkManager.delegate = self;
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.tagRequest = TAG_LIST_REQUEST;
+    _networkManager.delegate = self;
     
     _page = 1;
     _limit = kTKPDDETAILDEFAULT_LIMITPAGE;
@@ -148,22 +146,18 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     
-    [_listNetworkManager doRequest];
+    [_networkManager doRequest];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    _listNetworkManager.delegate = self;
+    _networkManager.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [_listNetworkManager requestCancel];
-    _listNetworkManager.delegate = nil;
 }
 
 #pragma mark - Table View Data Source
@@ -273,7 +267,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            [_listNetworkManager doRequest];
+            [_networkManager doRequest];
         }
 	}
 }
@@ -339,6 +333,9 @@
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -453,7 +450,7 @@
 - (RKObjectManager*)objectManagerList
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ManageProduct class]];
@@ -493,18 +490,28 @@
                                                  ]];
     
     //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
+                                                                                 toKeyPath:kTKPD_APILISTKEY
+                                                                               withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY toKeyPath:kTKPD_APIPAGINGKEY withMapping:pagingMapping];
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                 toKeyPath:kTKPD_APIPAGINGKEY
+                                                                               withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    [objectManager addResponseDescriptor:responseDescriptorStatus];
     
-    return _objectmanager;
+    return objectManager;
 }
 
 -(void)requestprocess:(id)object
@@ -557,11 +564,9 @@
                     NoResultView *resultView = [[NoResultView alloc] initWithFrame:frame];
                     _table.tableFooterView = resultView;
                 }
-                
-            }
-            else
-            {
-                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 156)];
+            } else {
+                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
                 _table.tableFooterView = noResultView;
             }
         }
@@ -734,7 +739,7 @@
     _page = 1;
     [_refreshControl beginRefreshing];
     [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-    [_listNetworkManager doRequest];
+    [_networkManager doRequest];
 }
 
 #pragma mark - UISearchBar Delegate
@@ -765,7 +770,7 @@
     [_list removeAllObjects];
     [self.table reloadData];
     
-    [_request cancel];
+    [_networkManager requestCancel];
     
     [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
     [self refreshView:nil];
@@ -824,8 +829,7 @@
     return YES;
 }
 
--(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
-             swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
+-(NSArray*)swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
     [_searchbar resignFirstResponder];
     
@@ -912,7 +916,13 @@
  
     [_list removeAllObjects];
     [self.table reloadData];
-    [self refreshView:nil];
+
+    _requestcount = 0;
+    _page = 1;
+    
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    [_networkManager doRequest];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

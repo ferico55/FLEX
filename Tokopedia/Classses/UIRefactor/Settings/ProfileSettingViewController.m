@@ -15,6 +15,7 @@
 #import "SettingPrivacyViewController.h"
 #import "SettingNotificationViewController.h"
 #import "SettingUserProfileViewController.h"
+#import "UserContainerViewController.h"
 
 #pragma mark - Profile Setting View Controller
 @interface ProfileSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -166,33 +167,40 @@
     }
     else{
         switch (indexPath.row) {
-            case 0:
-            {
+            case 0: {
+                //button edit profile action
+                SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
+
+                if ([[self.navigationController.viewControllers objectAtIndex:1] isKindOfClass:[UserContainerViewController class]]) {
+                    UserContainerViewController *userContainer = [self.navigationController.viewControllers objectAtIndex:1];
+                    vc.delegate = userContainer;
+                }
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 1: {
                 //address list
                 SettingAddressViewController *vc = [SettingAddressViewController new];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 1:
-            {
+            case 2: {
                 //bank account
                 SettingBankAccountViewController *vc = [SettingBankAccountViewController new];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 2:
-            {
+            case 3: {
                 //notification
                 SettingNotificationViewController *vc = [SettingNotificationViewController new];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 3:
-            {
+            case 4: {
                 //privacy settings
                 SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
                 [self.navigationController pushViewController:vc animated:YES];
-                break;
             }
             default:
                 break;
