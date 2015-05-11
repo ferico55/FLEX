@@ -189,6 +189,13 @@
         cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
+    
+    if (self.shouldPopBack) {
+        if ([self.delegate respondsToSelector:@selector(didSelectObject:senderIndexPath:)]) {
+            [self.delegate didSelectObject:_selectedObject senderIndexPath:_senderIndexPath];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - Search bar delegate

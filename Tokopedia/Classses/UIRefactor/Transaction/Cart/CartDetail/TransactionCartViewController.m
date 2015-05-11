@@ -2144,6 +2144,7 @@
     GeneralTableViewController *vc = [GeneralTableViewController new];
     vc.selectedObject = selectedGateway.gateway_name;
     vc.objects = gatewayListWithoutCreditCart;
+    vc.shouldPopBack = YES;
     vc.delegate = self;
     vc.title = @"Metode Pembayaran";
     [self.navigationController pushViewController:vc animated:YES];
