@@ -183,6 +183,9 @@
             }
             case 13:
             {
+                if(_delegate!=nil && [_delegate respondsToSelector:@selector(cancelLoginView)]) {
+                    [_delegate cancelLoginView];
+                }
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }

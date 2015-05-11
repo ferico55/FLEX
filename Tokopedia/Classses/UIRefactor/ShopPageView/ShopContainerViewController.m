@@ -28,7 +28,7 @@
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
-    BOOL _isNoData;
+    BOOL _isNoData, isDoingFavorite, isDoingMessage;
     BOOL _isRefreshView;
     
     NSInteger _requestCount;
@@ -583,11 +583,30 @@
                         _favoriteBarButton.enabled = YES;
                         _unfavoriteBarButton.enabled = YES;
                         _messageBarButton.enabled = YES;
+                        
+                        if(isDoingFavorite) {
+                            isDoingFavorite = !isDoingFavorite;
+                        
+                            [self favoriteTap:nil];
+                        }
+                        else if(isDoingMessage) {
+                            isDoingMessage = !isDoingMessage;
+                            [self messageTap:nil];
+                        }
                     } else {
                         self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
                         _messageBarButton.enabled = YES;
                         _unfavoriteBarButton.enabled = YES;
                         _favoriteBarButton.enabled = YES;
+                        
+                        if(isDoingFavorite) {
+                            isDoingFavorite = !isDoingFavorite;
+                            [self unfavoriteTap:nil];
+                        }
+                        else if(isDoingMessage) {
+                            isDoingMessage = !isDoingMessage;
+                            [self messageTap:nil];
+                        }
                     }
                 }
                 
@@ -687,7 +706,7 @@
         controller.isPresentedViewController = YES;
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
-        
+        isDoingMessage = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
@@ -726,7 +745,7 @@
         controller.isPresentedViewController = YES;
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
-        
+        isDoingFavorite = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }

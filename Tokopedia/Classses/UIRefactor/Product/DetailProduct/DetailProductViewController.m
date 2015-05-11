@@ -107,6 +107,7 @@ UIAlertViewDelegate
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
+    BOOL isDoingWishList, isDoingFavorite;
     
     NSInteger _requestcount;
     
@@ -389,11 +390,6 @@ UIAlertViewDelegate
         }
         [self.table reloadData];
     }
-    else if(isNeedLogin)
-    {
-        isNeedLogin = !isNeedLogin;
-        [self loadData];
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -537,7 +533,7 @@ UIAlertViewDelegate
                     controller.isPresentedViewController = YES;
                     controller.redirectViewController = self;
                     navigationController.viewControllers = @[controller];
-                    
+                    isDoingFavorite = isNeedLogin = YES;
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
                 break;
@@ -571,7 +567,7 @@ UIAlertViewDelegate
                     controller.isPresentedViewController = YES;
                     controller.redirectViewController = self;
                     navigationController.viewControllers = @[controller];
-                    
+                    isDoingFavorite = isNeedLogin = YES;
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
                 break;
@@ -1337,6 +1333,20 @@ UIAlertViewDelegate
         [self configureGetOtherProductRestkit];
         [self loadDataOtherProduct];
         [self requestsuccess:successResult withOperation:operation];
+        
+        
+        
+        if(isNeedLogin) {
+            isNeedLogin = !isNeedLogin;
+            if(isDoingWishList) {
+                isDoingWishList = !isDoingWishList;
+                [btnWishList sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
+            else if(isDoingFavorite) {
+                isDoingFavorite = !isDoingFavorite;
+                [_favButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
+        }
     }
     else if(tag == CTagOtherProduct)
     {
@@ -1727,7 +1737,7 @@ UIAlertViewDelegate
                 _favButton.tag = 17;
             }
             
-            if([[_auth objectForKey:@"shop_id"] isEqualToString:_product.result.shop_info.shop_id]) {
+            if([[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_id"]] isEqualToString:_product.result.shop_info.shop_id]) {
                 _favButton.hidden = YES;
             } else {
                 _favButton.hidden = NO;
@@ -1903,6 +1913,7 @@ UIAlertViewDelegate
         [self presentViewController:activityController animated:YES completion:nil];
     }
 }
+
 
 - (IBAction)actionWishList:(UIButton *)sender
 {
@@ -2277,7 +2288,7 @@ UIAlertViewDelegate
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
         isNeedLogin = YES;
-        
+        isDoingWishList = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
@@ -2304,7 +2315,7 @@ UIAlertViewDelegate
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
         isNeedLogin = YES;
-        
+        isDoingWishList = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
@@ -2332,6 +2343,10 @@ UIAlertViewDelegate
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController{
     
+}
+
+- (void)cancelLoginView {
+    isDoingWishList = isDoingFavorite = isNeedLogin = NO;
 }
 
 #pragma mark - Tap View
@@ -2434,6 +2449,10 @@ UIAlertViewDelegate
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+
+    if(isNeedLogin) {
+        [self loadData];
+    }
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
