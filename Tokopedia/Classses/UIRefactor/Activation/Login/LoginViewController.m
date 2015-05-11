@@ -286,6 +286,14 @@
     [_activityIndicator stopAnimating];
 }
 
+- (void)setLoggingInState {
+    [_loginButton setTitle:@"Loading.." forState:UIControlStateNormal];
+}
+
+- (void)unsetLoggingInState {
+    [_loginButton setTitle:@"Masuk" forState:UIControlStateNormal];
+}
+
 - (void)configureRestKitLogin
 {
     // initialize RestKit
@@ -371,8 +379,7 @@
 - (void)requestActionLogin:(NSDictionary *)data
 {
     if (_request.isExecuting) return;
-    [_loginButton setTitle:@"Loading.." forState:UIControlStateNormal];
- 
+    [self setLoggingInState];
     [self configureRestKitLogin];
     
     _requestcount++;
@@ -400,11 +407,12 @@
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
-        [_loginButton setTitle:@"Masuk" forState:UIControlStateNormal];
+        [self unsetLoggingInState];
         [self requestSuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
+        [self unsetLoggingInState];
         [self requestFailureLogin:error];
     }];
     
