@@ -19,8 +19,6 @@
 
 @interface ShopPageHeader : UIViewController<UIPageViewControllerDataSource>
 
-- (UIImage *)coverScreenshot;
-
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) NSDictionary *data;
 @property CGPoint contentOffset;

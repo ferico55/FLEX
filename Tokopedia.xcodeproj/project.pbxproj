@@ -781,7 +781,6 @@
 		7AB93FB01AFF9A3B0060A4C9 /* ShopSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB9397A1AFF9A3A0060A4C9 /* ShopSettingViewController.xib */; };
 		7AB93FB11AFF9A3B0060A4C9 /* ShopTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB9397E1AFF9A3A0060A4C9 /* ShopTalkViewController.m */; };
 		7AB93FB21AFF9A3B0060A4C9 /* ShopTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB9397F1AFF9A3A0060A4C9 /* ShopTalkViewController.xib */; };
-		7AB93FB31AFF9A3B0060A4C9 /* NavigationBarBlurController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB939821AFF9A3A0060A4C9 /* NavigationBarBlurController.m */; };
 		7AB93FB41AFF9A3B0060A4C9 /* ShopContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB939841AFF9A3A0060A4C9 /* ShopContainerViewController.m */; };
 		7AB93FB51AFF9A3B0060A4C9 /* ShopContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB939851AFF9A3A0060A4C9 /* ShopContainerViewController.xib */; };
 		7AB93FB61AFF9A3B0060A4C9 /* ShopNotesPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB939871AFF9A3A0060A4C9 /* ShopNotesPageViewController.m */; };
@@ -794,7 +793,6 @@
 		7AB93FBD1AFF9A3B0060A4C9 /* ShopReviewPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB939911AFF9A3A0060A4C9 /* ShopReviewPageViewController.xib */; };
 		7AB93FBE1AFF9A3B0060A4C9 /* ShopTalkPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB939931AFF9A3A0060A4C9 /* ShopTalkPageViewController.m */; };
 		7AB93FBF1AFF9A3B0060A4C9 /* ShopTalkPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB939941AFF9A3A0060A4C9 /* ShopTalkPageViewController.xib */; };
-		7AB93FC01AFF9A3B0060A4C9 /* UIImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB939961AFF9A3A0060A4C9 /* UIImageEffects.m */; };
 		7AB93FC11AFF9A3B0060A4C9 /* FilterConditionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB9399B1AFF9A3A0060A4C9 /* FilterConditionCell.m */; };
 		7AB93FC21AFF9A3B0060A4C9 /* FilterConditionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB9399C1AFF9A3A0060A4C9 /* FilterConditionCell.xib */; };
 		7AB93FC31AFF9A3B0060A4C9 /* FilterConditionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB9399E1AFF9A3A0060A4C9 /* FilterConditionViewController.m */; };
@@ -2832,8 +2830,6 @@
 		7AB9397D1AFF9A3A0060A4C9 /* ShopTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopTalkViewController.h; sourceTree = "<group>"; };
 		7AB9397E1AFF9A3A0060A4C9 /* ShopTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopTalkViewController.m; sourceTree = "<group>"; };
 		7AB9397F1AFF9A3A0060A4C9 /* ShopTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopTalkViewController.xib; sourceTree = "<group>"; };
-		7AB939811AFF9A3A0060A4C9 /* NavigationBarBlurController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationBarBlurController.h; sourceTree = "<group>"; };
-		7AB939821AFF9A3A0060A4C9 /* NavigationBarBlurController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationBarBlurController.m; sourceTree = "<group>"; };
 		7AB939831AFF9A3A0060A4C9 /* ShopContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopContainerViewController.h; sourceTree = "<group>"; };
 		7AB939841AFF9A3A0060A4C9 /* ShopContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopContainerViewController.m; sourceTree = "<group>"; };
 		7AB939851AFF9A3A0060A4C9 /* ShopContainerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopContainerViewController.xib; sourceTree = "<group>"; };
@@ -2852,8 +2848,6 @@
 		7AB939921AFF9A3A0060A4C9 /* ShopTalkPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopTalkPageViewController.h; sourceTree = "<group>"; };
 		7AB939931AFF9A3A0060A4C9 /* ShopTalkPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopTalkPageViewController.m; sourceTree = "<group>"; };
 		7AB939941AFF9A3A0060A4C9 /* ShopTalkPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopTalkPageViewController.xib; sourceTree = "<group>"; };
-		7AB939951AFF9A3A0060A4C9 /* UIImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageEffects.h; sourceTree = "<group>"; };
-		7AB939961AFF9A3A0060A4C9 /* UIImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageEffects.m; sourceTree = "<group>"; };
 		7AB9399A1AFF9A3A0060A4C9 /* FilterConditionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterConditionCell.h; sourceTree = "<group>"; };
 		7AB9399B1AFF9A3A0060A4C9 /* FilterConditionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterConditionCell.m; sourceTree = "<group>"; };
 		7AB9399C1AFF9A3A0060A4C9 /* FilterConditionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterConditionCell.xib; sourceTree = "<group>"; };
@@ -6532,8 +6526,6 @@
 		7AB939801AFF9A3A0060A4C9 /* ShopPageView */ = {
 			isa = PBXGroup;
 			children = (
-				7AB939811AFF9A3A0060A4C9 /* NavigationBarBlurController.h */,
-				7AB939821AFF9A3A0060A4C9 /* NavigationBarBlurController.m */,
 				7AB939831AFF9A3A0060A4C9 /* ShopContainerViewController.h */,
 				7AB939841AFF9A3A0060A4C9 /* ShopContainerViewController.m */,
 				7AB939851AFF9A3A0060A4C9 /* ShopContainerViewController.xib */,
@@ -6552,8 +6544,6 @@
 				7AB939921AFF9A3A0060A4C9 /* ShopTalkPageViewController.h */,
 				7AB939931AFF9A3A0060A4C9 /* ShopTalkPageViewController.m */,
 				7AB939941AFF9A3A0060A4C9 /* ShopTalkPageViewController.xib */,
-				7AB939951AFF9A3A0060A4C9 /* UIImageEffects.h */,
-				7AB939961AFF9A3A0060A4C9 /* UIImageEffects.m */,
 			);
 			path = ShopPageView;
 			sourceTree = "<group>";
@@ -8998,7 +8988,6 @@
 				7AB93CBA1AFF9A3B0060A4C9 /* NSStringCategory.m in Sources */,
 				7AB93FF91AFF9A3C0060A4C9 /* TransactionShipmentViewController.m in Sources */,
 				7AB93F801AFF9A3B0060A4C9 /* SettingPasswordViewController.m in Sources */,
-				7AB93FC01AFF9A3B0060A4C9 /* UIImageEffects.m in Sources */,
 				7AB93ED91AFF9A3B0060A4C9 /* MyShopAddressEditViewController.m in Sources */,
 				7AB93D461AFF9A3B0060A4C9 /* ProductTalkFormResult.m in Sources */,
 				7AB93D641AFF9A3B0060A4C9 /* PrivacyFormResult.m in Sources */,
@@ -9218,7 +9207,6 @@
 				7AB93F841AFF9A3B0060A4C9 /* SettingPrivacyViewController.m in Sources */,
 				7AB93F501AFF9A3B0060A4C9 /* ShipmentConfirmationViewController.m in Sources */,
 				7AB93DB31AFF9A3B0060A4C9 /* TrackOrderHistory.m in Sources */,
-				7AB93FB31AFF9A3B0060A4C9 /* NavigationBarBlurController.m in Sources */,
 				7AB93DF11AFF9A3B0060A4C9 /* OrderButton.m in Sources */,
 				7AB93E731AFF9A3B0060A4C9 /* DepositSummaryViewController.m in Sources */,
 				7AB93D151AFF9A3B0060A4C9 /* InboxMessageAction.m in Sources */,

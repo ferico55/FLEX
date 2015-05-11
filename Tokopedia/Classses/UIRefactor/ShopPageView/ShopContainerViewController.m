@@ -24,7 +24,6 @@
 
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
-#import "NavigationBarBlurController.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
@@ -58,8 +57,6 @@
     UIBarButtonItem *_settingBarButton;
     UIBarButtonItem *_messageBarButton;
     UserAuthentificationManager *_userManager;
-    
-    NavigationBarBlurController *_blurController;
 }
 
 @property (strong, nonatomic) ShopProductPageViewController *shopProductViewController;
@@ -151,8 +148,6 @@
 {
     [super viewDidLoad];
     
-    _blurController = [[NavigationBarBlurController alloc] init];
-    
     [self initNotificationCenter];
 
     // Do any additional setup after loading the view from its nib.
@@ -177,7 +172,6 @@
     
     _shopProductViewController = [ShopProductPageViewController new];
     _shopProductViewController.data = _data;
-    [_shopProductViewController setBlurController:_blurController];
     
     _shopTalkViewController = [ShopTalkPageViewController new];
     _shopTalkViewController.data = _data;
@@ -214,12 +208,6 @@
     
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [_blurController setNavigationBar:self.navigationController.navigationBar];
 }
 
 - (void)didReceiveMemoryWarning
