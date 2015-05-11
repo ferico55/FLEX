@@ -15,4 +15,8 @@
 @synthesize product_image = _product_image;
 @synthesize product_name = _product_name;
 
+- (NSString*)product_name {
+    return  [_product_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

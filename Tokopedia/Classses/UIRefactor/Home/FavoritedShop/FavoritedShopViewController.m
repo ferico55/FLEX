@@ -627,7 +627,7 @@
     }
     else
         return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
-                 kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
+                 kTKPDHOME_APILIMITPAGEKEY : @(10),
                  kTKPDHOME_APIPAGEKEY:@(_page)};
 }
 

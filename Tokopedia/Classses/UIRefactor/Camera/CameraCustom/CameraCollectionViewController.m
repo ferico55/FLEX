@@ -108,17 +108,20 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[_collectionview cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    [cameraCell freezeCapturedContent];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if (_didPresentPicker) {
         TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[_collectionview cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
         [cameraCell restartCaptureSession];
-        [cameraCell startLiveVideo];
         _didPresentPicker = NO;
     }
 }
+
 
 -(void)getAllPictures
 {
@@ -225,6 +228,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
             
             TKPDLiveCameraTableViewCell *cameraCell = [_collectionview dequeueReusableCellWithReuseIdentifier:TKPDCameraAlbumListLiveVideoCellIdentifier forIndexPath:indexPath];
             cell = cameraCell;
+            [cameraCell startLiveVideo];
         }
         else{
             cell = (CameraCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -302,12 +306,6 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([cell isKindOfClass:[TKPDLiveCameraTableViewCell class]]) {
-        TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)cell;
-        [cameraCell startLiveVideo];
-    }
-}
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([cell isKindOfClass:[TKPDLiveCameraTableViewCell class]]) {
