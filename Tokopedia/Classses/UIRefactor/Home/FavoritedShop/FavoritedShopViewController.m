@@ -471,7 +471,7 @@
             
             if(_refreshControl.isRefreshing) {
                 [_refreshControl endRefreshing];
-                [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [_table reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
             } else  {
                 [_table reloadData];
             }
