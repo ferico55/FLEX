@@ -17,20 +17,18 @@
 
 #import "UserAuthentificationManager.h"
 
+#import "TokopediaNetworkManager.h"
+
 @interface TrackOrderViewController ()
 <
     UITableViewDataSource,
-    UITableViewDelegate
+    UITableViewDelegate,
+    TokopediaNetworkManagerDelegate
 >
 {
-
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
-    RKResponseDescriptor *_responseDescriptorStatus;
-    NSOperationQueue *_operationQueue;
-    
     TrackOrder *_trackingOrder;
-
+    TokopediaNetworkManager *_networkManager;
+    Track *_track;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -53,9 +51,10 @@
     [super viewDidLoad];
     
     self.title = @"Lacak Pengiriman";
-        
-    _objectManager =  [RKObjectManager sharedClient];
-    _operationQueue = [NSOperationQueue new];
+    
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    [_networkManager doRequest];
     
     _tableView.tableFooterView = _footerView;
     [_activityIndicator startAnimating];
@@ -79,13 +78,190 @@
     _invalidStatusDescLabel.text = invalidDetail;
     [_invalidStatusDescLabel setCustomAttributedText:invalidDetail];
     [_invalidStatusTitle setCustomAttributedText:invalidTitle];
-    
-    [self configureRestKit];
-    [self request];    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    if (_track) {
+        if ([_track.result.track_order.order_status integerValue] == ORDER_DELIVERED &&
+            [self.delegate respondsToSelector:@selector(shouldRefreshRequest)]) {
+            [_delegate shouldRefreshRequest];
+        }
+    }
+}
+
+#pragma mark - Tokopedia network delegate
+
+- (id)getObjectManager:(int)tag
+{
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Track class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{
+                                                        kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TrackOrderResult class]];
+    
+    RKObjectMapping *trackOrderMapping = [RKObjectMapping mappingForClass:[TrackOrder class]];
+    [trackOrderMapping addAttributeMappingsFromDictionary:@{
+                                                            API_CHANGE_KEY              : API_CHANGE_KEY,
+                                                            API_NO_HISTORY_KEY          : API_NO_HISTORY_KEY,
+                                                            API_RECEIVER_NAME_KEY       : API_RECEIVER_NAME_KEY,
+                                                            API_ORDER_STATUS_KEY        : API_ORDER_STATUS_KEY,
+                                                            API_SHIPPING_REF_NUM_KEY    : API_SHIPPING_REF_NUM_KEY,
+                                                            API_INVALID_KEY             : API_INVALID_KEY,
+                                                            }];
+    
+    RKObjectMapping *trackHistoryMapping = [RKObjectMapping mappingForClass:[TrackOrderHistory class]];
+    [trackHistoryMapping addAttributeMappingsFromDictionary:@{
+                                                              API_DATE_KEY      : API_DATE_KEY,
+                                                              API_STATUS_KEY    : API_STATUS_KEY,
+                                                              API_CITY_KEY      : API_CITY_KEY,
+                                                              }];
+    
+    RKObjectMapping *trackDetailMapping = [RKObjectMapping mappingForClass:[TrackOrderDetail class]];
+    [trackDetailMapping addAttributeMappingsFromDictionary:@{
+                                                             API_SHIPPER_CITY_KEY   : API_SHIPPER_CITY_KEY,
+                                                             API_SHIPPER_NAME_KEY   : API_SHIPPER_NAME_KEY,
+                                                             API_RECEIVER_CITY_KEY  : API_RECEIVER_CITY_KEY,
+                                                             API_SEND_DATE_KEY      : API_SEND_DATE_KEY,
+                                                             API_RECEIVER_NAME_KEY  : API_RECEIVER_NAME_KEY,
+                                                             API_SERVICE_CODE_KEY   : API_SERVICE_CODE_KEY,
+                                                             }];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:_isShippingTracking?API_TRACK_SHIPPING_KEY:API_TRACK_ORDER_KEY
+                                                                                  toKeyPath:API_TRACK_ORDER_KEY
+                                                                                withMapping:trackOrderMapping]];
+    
+    [trackOrderMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRACK_HISTORY_KEY
+                                                                                      toKeyPath:API_TRACK_HISTORY_KEY
+                                                                                    withMapping:trackHistoryMapping]];
+    
+    [trackOrderMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DETAIL_KEY
+                                                                                      toKeyPath:API_DETAIL_KEY
+                                                                                    withMapping:trackDetailMapping]];
+    
+    
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH: API_TRACKING_ORDER_PATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptorStatus];
+    return objectManager;
+}
+
+- (NSDictionary *)getParameter:(int)tag {
+    //www.tkpdevel-pg.ekarisky/ws/inbox-resolution-center.pl?action=track_shipping_ref&shipping_ref=ASD134567898&shipment_id=2
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userID = [auth getUserId];
+    NSDictionary *param = @{
+        API_ACTION_KEY           : _isShippingTracking?API_ACTION_TRACK_SHIPPING_REF:API_ACTION_TRACK_ORDER,
+        API_ORDER_ID_KEY         : _order.order_detail.detail_order_id?:@(_orderID)?:@"",
+        API_USER_ID_KEY          : userID?:@"",
+        API_SHIPPING_REF_KEY     : _shippingRef?:@"",
+        API_SHIPMENT_ID_KEY      : _shipmentID?:@""
+    };
+    return param;
+}
+
+- (NSString *)getPath:(int)tag {
+    return _isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH:API_TRACKING_ORDER_PATH;
+}
+
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
+    Track *track = [((RKMappingResult *) result).dictionary objectForKey:@""];
+    return track.status;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
+    _track = [result objectForKey:@""];
+    BOOL status = [_track.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    if (status && _track.result.track_order) {
+        _trackingOrder = _track.result.track_order;
+        
+        _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
+        [_tableView reloadData];
+        
+        if (_trackingOrder.detail.shipper_name) {
+            
+            _tableView.tableHeaderView = _headerViewComplete;
+            
+            UILabel *receiptNumberLabel = (UILabel *)[_headerViewComplete viewWithTag:1];
+            receiptNumberLabel.text = _trackingOrder.shipping_ref_num;
+            
+            UILabel *sendDateLabel = (UILabel *)[_headerViewComplete viewWithTag:2];
+            sendDateLabel.text = _trackingOrder.detail.send_date;
+            
+            UILabel *serviceCodeLabel = (UILabel *)[_headerViewComplete viewWithTag:3];
+            serviceCodeLabel.text = _trackingOrder.detail.service_code;
+            
+            UILabel *statusLabel = (UILabel *)[_headerViewComplete viewWithTag:4];
+            if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_REF_NUM_EDITED) {
+                statusLabel.text = @"Nomor Resi diganti oleh penjual";
+            } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
+                statusLabel.text = @"Delivered";
+            } else {
+                statusLabel.text = @"On Process";
+            }
+            
+        }else {
+            
+            _tableView.tableHeaderView = _headerView;
+            
+            UILabel *receiptNumberLabel = (UILabel *)[_headerView viewWithTag:1];
+            receiptNumberLabel.text = _trackingOrder.shipping_ref_num;
+            
+            UILabel *statusLabel = (UILabel *)[_headerView viewWithTag:4];
+            if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_REF_NUM_EDITED) {
+                statusLabel.text = @"Nomor Resi diganti oleh penjual";
+            } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
+                statusLabel.text = @"Delivered";
+            } else if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_WAITING) {
+                statusLabel.text = @"Belum ada update status pengiriman dari kurir";
+            } else {
+                statusLabel.text = @"On Process";
+            }
+            
+        }
+    }
+    
+    if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
+        _tableView.tableHeaderView = _invalidHeaderView;
+    }
+    
+    [_activityIndicator stopAnimating];
+    _tableView.tableFooterView = nil;
+}
+
+- (void)actionBeforeRequest:(int)tag
+{
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    [_activityIndicator stopAnimating];
+    _tableView.tableFooterView = nil;
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    [_activityIndicator stopAnimating];
+    _tableView.tableFooterView = nil;
 }
 
 #pragma mark - Table view data source
@@ -279,179 +455,6 @@
     TrackOrderHistory *history = [_trackingOrder.track_history objectAtIndex:indexPath.row];
     cell.textLabel.text = history.status;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", history.city, history.date];
-}
-
-- (void)configureRestKit
-{
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Track class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                        kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TrackOrderResult class]];
-    
-    RKObjectMapping *trackOrderMapping = [RKObjectMapping mappingForClass:[TrackOrder class]];
-    [trackOrderMapping addAttributeMappingsFromDictionary:@{
-                                                        API_CHANGE_KEY              : API_CHANGE_KEY,
-                                                        API_NO_HISTORY_KEY          : API_NO_HISTORY_KEY,
-                                                        API_RECEIVER_NAME_KEY       : API_RECEIVER_NAME_KEY,
-                                                        API_ORDER_STATUS_KEY        : API_ORDER_STATUS_KEY,
-                                                        API_SHIPPING_REF_NUM_KEY    : API_SHIPPING_REF_NUM_KEY,
-                                                        API_INVALID_KEY             : API_INVALID_KEY,
-                                                        }];
-
-    RKObjectMapping *trackHistoryMapping = [RKObjectMapping mappingForClass:[TrackOrderHistory class]];
-    [trackHistoryMapping addAttributeMappingsFromDictionary:@{
-                                                              API_DATE_KEY      : API_DATE_KEY,
-                                                              API_STATUS_KEY    : API_STATUS_KEY,
-                                                              API_CITY_KEY      : API_CITY_KEY,
-                                                              }];
-    
-    RKObjectMapping *trackDetailMapping = [RKObjectMapping mappingForClass:[TrackOrderDetail class]];
-    [trackDetailMapping addAttributeMappingsFromDictionary:@{
-                                                             API_SHIPPER_CITY_KEY   : API_SHIPPER_CITY_KEY,
-                                                             API_SHIPPER_NAME_KEY   : API_SHIPPER_NAME_KEY,
-                                                             API_RECEIVER_CITY_KEY  : API_RECEIVER_CITY_KEY,
-                                                             API_SEND_DATE_KEY      : API_SEND_DATE_KEY,
-                                                             API_RECEIVER_NAME_KEY  : API_RECEIVER_NAME_KEY,
-                                                             API_SERVICE_CODE_KEY   : API_SERVICE_CODE_KEY,
-                                                             }];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:_isShippingTracking?API_TRACK_SHIPPING_KEY:API_TRACK_ORDER_KEY
-                                                                                  toKeyPath:API_TRACK_ORDER_KEY
-                                                                                withMapping:trackOrderMapping]];
-    
-    [trackOrderMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRACK_HISTORY_KEY
-                                                                                      toKeyPath:API_TRACK_HISTORY_KEY
-                                                                                    withMapping:trackHistoryMapping]];
-    
-    [trackOrderMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DETAIL_KEY
-                                                                                      toKeyPath:API_DETAIL_KEY
-                                                                                    withMapping:trackDetailMapping]];
-    
- 
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH: API_TRACKING_ORDER_PATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
-
-}
-
-- (void)request
-{
-    //www.tkpdevel-pg.ekarisky/ws/inbox-resolution-center.pl?action=track_shipping_ref&shipping_ref=ASD134567898&shipment_id=2
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-   
-    NSString *userID = [auth getUserId];
-    
-    NSDictionary* param = @{
-                            API_ACTION_KEY           : _isShippingTracking?API_ACTION_TRACK_SHIPPING_REF:API_ACTION_TRACK_ORDER,
-                            API_ORDER_ID_KEY         : _order.order_detail.detail_order_id?:@(_orderID)?:@"",
-                            API_USER_ID_KEY          : userID?:@"",
-                            API_SHIPPING_REF_KEY     : _shippingRef?:@"",
-                            API_SHIPMENT_ID_KEY      : _shipmentID?:@""
-                            };
-    
-//#if DEBUG
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    
-//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-//                                                                    method:RKRequestMethodGET
-//                                                                      path:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH:API_TRACKING_ORDER_PATH
-//                                                                parameters:paramDictionary];
-//#else
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH:API_TRACKING_ORDER_PATH
-                                                                parameters:[param encrypt]];
-//#endif
-
-
-
-    [_operationQueue addOperation:_request];
-
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
-        NSDictionary *result = ((RKMappingResult *) mappingResult).dictionary;
-        Track *track = [result objectForKey:@""];
-        BOOL status = [track.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        if (status && track.result.track_order) {
-            
-            if ([track.result.track_order.order_status integerValue] == ORDER_DELIVERED)
-            {
-                [_delegate shouldRefreshRequest];
-            }
-            _trackingOrder = track.result.track_order;
-            
-            _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
-            [_tableView reloadData];
-
-            if (_trackingOrder.detail.shipper_name) {
-                
-                _tableView.tableHeaderView = _headerViewComplete;
-                
-                UILabel *receiptNumberLabel = (UILabel *)[_headerViewComplete viewWithTag:1];
-                receiptNumberLabel.text = _trackingOrder.shipping_ref_num;
-                
-                UILabel *sendDateLabel = (UILabel *)[_headerViewComplete viewWithTag:2];
-                sendDateLabel.text = _trackingOrder.detail.send_date;
-                
-                UILabel *serviceCodeLabel = (UILabel *)[_headerViewComplete viewWithTag:3];
-                serviceCodeLabel.text = _trackingOrder.detail.service_code;
-                
-                UILabel *statusLabel = (UILabel *)[_headerViewComplete viewWithTag:4];
-                if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_REF_NUM_EDITED) {
-                    statusLabel.text = @"Nomor Resi diganti oleh penjual";
-                } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
-                    statusLabel.text = @"Delivered";
-                } else {
-                    statusLabel.text = @"On Process";
-                }
-
-            }else {
-                
-                _tableView.tableHeaderView = _headerView;
-
-                UILabel *receiptNumberLabel = (UILabel *)[_headerView viewWithTag:1];
-                receiptNumberLabel.text = _trackingOrder.shipping_ref_num;
-
-                UILabel *statusLabel = (UILabel *)[_headerView viewWithTag:4];
-                if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_REF_NUM_EDITED) {
-                    statusLabel.text = @"Nomor Resi diganti oleh penjual";
-                } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
-                    statusLabel.text = @"Delivered";
-                } else if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_WAITING) {
-                    statusLabel.text = @"Belum ada update status pengiriman dari kurir";
-                } else {
-                    statusLabel.text = @"On Process";
-                }
-                
-            }
-        }
-        
-        if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
-            _tableView.tableHeaderView = _invalidHeaderView;
-        }
-        
-        [_activityIndicator stopAnimating];
-        _tableView.tableFooterView = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-       
-        [_activityIndicator stopAnimating];
-        _tableView.tableFooterView = nil;        
-        
-    }];
 }
 
 @end

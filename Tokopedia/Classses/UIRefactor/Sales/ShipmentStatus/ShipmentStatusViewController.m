@@ -29,7 +29,8 @@
     UITableViewDelegate,
     ShipmentStatusCellDelegate,
     FilterShipmentStatusDelegate,
-    ChangeReceiptNumberDelegate
+    ChangeReceiptNumberDelegate,
+    TrackOrderViewControllerDelegate
 >
 {
     NSMutableArray *_shipments;
@@ -667,6 +668,7 @@
     TrackOrderViewController *controller = [TrackOrderViewController new];
     controller.order = _selectedOrder;
     controller.hidesBottomBarWhenPushed = YES;
+    controller.delegate = self;
     
     [self.navigationController pushViewController:controller animated:YES];
 }   
@@ -745,6 +747,15 @@
 - (void)changeReceiptNumber:(NSString *)receiptNumber
 {
     [self requestChangeReceiptNumber:receiptNumber];
+}
+
+#pragma mark - Track order delegate
+
+- (void)shouldRefreshRequest
+{
+    _page = 1;
+    [self configureRestKit];
+    [self requestInvoice:nil];
 }
 
 @end

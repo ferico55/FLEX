@@ -171,10 +171,11 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 //    if (_shop.count > 0 && _goldshop.count > 0) {
-        return 2;
+//        return 2;
 //    } else {
 //        return 1;
 //    }
+    return _shopdictionary.count;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
