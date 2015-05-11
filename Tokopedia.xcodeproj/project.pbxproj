@@ -65,6 +65,8 @@
 		85A7E8E71AFB6ABD00E35A72 /* HotlistResultInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A7E8E61AFB6ABD00E35A72 /* HotlistResultInfo.m */; };
 		85C04BA21AF70ED3008ABC2F /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C04BA01AF70ED3008ABC2F /* WebViewController.m */; };
 		85C04BA31AF70ED3008ABC2F /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C04BA11AF70ED3008ABC2F /* WebViewController.xib */; };
+		85C313AD1B0053BF00E4E501 /* NavigationBarBlurController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C313AA1B0053BF00E4E501 /* NavigationBarBlurController.m */; };
+		85C313AE1B0053BF00E4E501 /* UIImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C313AC1B0053BF00E4E501 /* UIImageEffects.m */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1520,6 +1522,10 @@
 		85C04B9F1AF70ED3008ABC2F /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		85C04BA01AF70ED3008ABC2F /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		85C04BA11AF70ED3008ABC2F /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		85C313A91B0053BF00E4E501 /* NavigationBarBlurController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationBarBlurController.h; sourceTree = "<group>"; };
+		85C313AA1B0053BF00E4E501 /* NavigationBarBlurController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationBarBlurController.m; sourceTree = "<group>"; };
+		85C313AB1B0053BF00E4E501 /* UIImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageEffects.h; sourceTree = "<group>"; };
+		85C313AC1B0053BF00E4E501 /* UIImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageEffects.m; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -6719,6 +6725,10 @@
 		FC8574F61AF1CE34005C9FB0 /* ShopPageView */ = {
 			isa = PBXGroup;
 			children = (
+				85C313A91B0053BF00E4E501 /* NavigationBarBlurController.h */,
+				85C313AA1B0053BF00E4E501 /* NavigationBarBlurController.m */,
+				85C313AB1B0053BF00E4E501 /* UIImageEffects.h */,
+				85C313AC1B0053BF00E4E501 /* UIImageEffects.m */,
 				FC8574F71AF1CE34005C9FB0 /* ShopContainerViewController.h */,
 				FC8574F81AF1CE34005C9FB0 /* ShopContainerViewController.m */,
 				FC8574F91AF1CE34005C9FB0 /* ShopContainerViewController.xib */,
@@ -9432,6 +9442,7 @@
 				FC857A831AF1CE36005C9FB0 /* ReputationShopHeader.m in Sources */,
 				FC85791D1AF1CE36005C9FB0 /* TransactionCalculatePriceResult.m in Sources */,
 				FC8578571AF1CE36005C9FB0 /* TheOtherProduct.m in Sources */,
+				85C313AE1B0053BF00E4E501 /* UIImageEffects.m in Sources */,
 				FC85788B1AF1CE36005C9FB0 /* InboxReview.m in Sources */,
 				FC857A301AF1CE36005C9FB0 /* SalesViewController.m in Sources */,
 				FC857AD41AF1CE36005C9FB0 /* SettingBankEditViewController.m in Sources */,
@@ -9465,6 +9476,7 @@
 				FC8579541AF1CE36005C9FB0 /* UploadImage.m in Sources */,
 				FC857A701AF1CE36005C9FB0 /* ProductEditWholesaleCell.m in Sources */,
 				FC85781E1AF1CE36005C9FB0 /* EncodeDecoderManager.m in Sources */,
+				85C313AD1B0053BF00E4E501 /* NavigationBarBlurController.m in Sources */,
 				FC857A611AF1CE36005C9FB0 /* ProductReviewCell.m in Sources */,
 				FC8578C11AF1CE36005C9FB0 /* Promote.m in Sources */,
 				FC857A761AF1CE36005C9FB0 /* ProductListMyShopFilterViewController.m in Sources */,
