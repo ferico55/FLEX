@@ -48,7 +48,7 @@
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:API_UPLOAD_IMAGE_PATH
+                                                                                       pathPattern:API_UPLOAD_GENERATE_HOST_PATH
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -80,7 +80,7 @@
                             @"new_add" : @(1) //product,contact
                             };
     
-    _requestGenerateHost = [_objectManagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_UPLOAD_IMAGE_PATH parameters:param];
+    _requestGenerateHost = [_objectManagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_UPLOAD_GENERATE_HOST_PATH parameters:param];
     
     [_requestGenerateHost setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -143,6 +143,7 @@
                         }
                         else{
                             //error
+                            [_delegate failedGenerateHost];
                         }
                     }
                     else{
