@@ -105,6 +105,7 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
+    [_scrollView setFrame:self.view.frame];
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
     [_scrollView setPagingEnabled:YES];
     _scrollView.delegate = self;
@@ -120,6 +121,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [_scrollView setFrame:self.view.frame];
     self.navigationController.title = @"Beranda";
     
     [self goToPage:_page];
@@ -177,7 +179,7 @@
     
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
     NSInteger page = lround(fractionalPage);
-    NSLog(@"Current Page %d", page);
+    NSLog(@"Current Page %zd", page);
     [self goToPage:page];
 }
 

@@ -24,22 +24,28 @@
 }
 
 - (void)awakeFromNib {
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    
     CGRect frame = _oneButtonView.frame;
+    frame.size.width = screenSize.width;
     frame.origin.y = _statusView.frame.origin.y + _statusView.frame.size.height;
     _oneButtonView.frame = frame;
     [_containerView addSubview:_oneButtonView];
     
     frame = _oneButtonReOrderView.frame;
+    frame.size.width = screenSize.width;
     frame.origin.y = _statusView.frame.origin.y + _statusView.frame.size.height;
     _oneButtonReOrderView.frame = frame;
     [_containerView addSubview:_oneButtonReOrderView];
     
     frame = _twoButtonsView.frame;
+    frame.size.width = screenSize.width;
     frame.origin.y = _statusView.frame.origin.y + _statusView.frame.size.height;
     _twoButtonsView.frame = frame;
     [_containerView addSubview:_twoButtonsView];
     
     frame = _threeButtonsView.frame;
+    frame.size.width = screenSize.width;
     frame.origin.y = _statusView.frame.origin.y + _statusView.frame.size.height;
     _threeButtonsView.frame = frame;
     [_containerView addSubview:_threeButtonsView];

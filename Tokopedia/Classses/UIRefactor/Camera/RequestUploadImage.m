@@ -51,9 +51,6 @@
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectManagerUploadPhoto addResponseDescriptor:responseDescriptor];
-    
-    //[_objectManagerUploadPhoto setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
-    //[_objectManagerUploadPhoto setRequestSerializationMIMEType:RKMIMETypeJSON];
 }
 
 

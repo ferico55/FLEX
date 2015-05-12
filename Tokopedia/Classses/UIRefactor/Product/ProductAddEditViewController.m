@@ -177,7 +177,10 @@
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _networkManager.tagRequest = TAG_REQUEST_DETAIL;
     _networkManager.delegate = self;
+    
+    _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
     _isBeingPresented = self.navigationController.isBeingPresented;
     if (_isBeingPresented) {
@@ -206,7 +209,7 @@
     for (UIButton *buttonAdd in _addImageButtons) {
         buttonAdd.enabled = NO;
     }
-    ((UIButton*)_addImageButtons[0]).enabled = NO;
+    
     [_thumbProductImageViews makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
     for (UIImageView *productImageView in _thumbProductImageViews) {
         productImageView.userInteractionEnabled = NO;
@@ -280,6 +283,12 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
     self.title = @"";
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    barButtonItem.tag = 10;
+    self.navigationItem.backBarButtonItem = barButtonItem;
 }
 
 #pragma mark - Memory Management
@@ -289,7 +298,6 @@
     
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
-    
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     _networkManager = nil;
@@ -338,8 +346,10 @@
                                            DATA_PRODUCT_DETAIL_KEY: productDetail,
                                            DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0"
                                             };
+                        _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
                         _detailVC.generateHost = _generateHost;
                         _detailVC.delegate = self;
+                        _detailVC.isNeedRequestAddProductPicture = YES;
                         [self.navigationController pushViewController:_detailVC animated:YES];
                     }
                     else
@@ -482,6 +492,7 @@
                             DATA_IS_DEFAULT_IMAGE : @(isDefaultImage),
                             DATA_PRODUCT_IMAGE_NAME_KEY : _productImageDesc[indexImage]?:@""
                             };
+                vc.uploadedImage = ((UIImageView*)_thumbProductImageViews[indexImage]).image;
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
             }
@@ -762,8 +773,6 @@
 {
     if (tag == TAG_REQUEST_DETAIL) {
         [self enableButtonBeforeSuccessRequest:NO];
-        
-        _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
         [_alertProcessing show];
     }
 }
@@ -815,10 +824,12 @@
                                DATA_INPUT_KEY : _dataInput,
                                DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
                                DATA_PRODUCT_DETAIL_KEY: productDetail,
-                               DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms
+                               DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@""
                                };
+            _detailVC.shopHasTerm = _product.result.info.shop_has_terms;
             _detailVC.generateHost = _generateHost;
             _detailVC.delegate = self;
+            _detailVC.isNeedRequestAddProductPicture = YES;
         }
         
 
@@ -831,6 +842,7 @@
 {
     _generateHost = generateHost;
     ((UIButton*)_addImageButtons[0]).enabled = YES;
+    [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 -(void)failedGenerateHost
@@ -1285,6 +1297,7 @@
 -(void)actionUploadImage:(id)object
 {
     _isFinishedUploadImages = NO;
+    [_uploadingImages addObject:object];
     RequestUploadImage *uploadImage = [RequestUploadImage new];
     uploadImage.imageObject = object;
     uploadImage.delegate = self;
@@ -1644,7 +1657,9 @@
         NSArray *images = result.product_images;
         NSInteger imageCount = images.count;
         NSInteger addProductImageCount = (imageCount<_addImageButtons.count)?imageCount:imageCount-1;
-        ((UIButton*)_addImageButtons[addProductImageCount]).enabled = YES;
+        if (_generateHost.result.generated_host != nil) {
+            ((UIButton*)_addImageButtons[addProductImageCount]).enabled = YES;
+        }
         
         NSMutableDictionary *productImageDescription = [NSMutableDictionary new];
         for (int i = 0 ; i<imageCount;i++) {

@@ -49,6 +49,16 @@
 
 @implementation TransactionCartResultViewController
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.hidesBottomBarWhenPushed = YES;
+
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -92,8 +102,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    _tableView.contentOffset = CGPointZero;
     [self setDataDefault];
     [_tableView reloadData];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -186,6 +202,7 @@
     UIButton *button = (UIButton*)sender;
     if (button == _confirmPaymentButton || button.tag == 10) {
         TxOrderTabViewController *vc = [TxOrderTabViewController new];
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (button == _paymentStatusButton)
@@ -193,7 +210,6 @@
         TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
         vc.action = @"get_tx_order_status";
         vc.viewControllerTitle = @"Status Pemesanan";
-        vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else

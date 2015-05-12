@@ -233,14 +233,17 @@
             } completion:^(BOOL finished) {
             }];
             
-            //UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-            //[backBarButtonItem setTintColor:[UIColor whiteColor]];
-            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali"
-                                                                           style:UIBarButtonItemStyleBordered
-                                                                          target:self
-                                                                          action:@selector(tap:)];
-            backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-            self.navigationItem.leftBarButtonItem = backBarButtonItem;
+            UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+            [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+            [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+            [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+            
+            UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+            
+            self.navigationItem.leftBarButtonItem = barButton;
+            self.navigationItem.hidesBackButton = YES;
+            
             self.navigationItem.rightBarButtonItem = nil;
             break;
         }
@@ -385,6 +388,15 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
         
+    }
+}
+
+-(void)tapBackButton:(id)sender
+{
+    if (_index == 1)
+    {
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
     }
 }
 

@@ -73,6 +73,7 @@ typedef enum
 #define ACTION_GET_TX_ORDER_DELIVER @"get_tx_order_deliver"
 #define ACTION_GET_TX_ORDER_LIST @"get_tx_order_list"
 #define ACTION_RE_ORDER @"reorder"
+#define ACTION_DETIVERY_CONFIRM @"delivery_confirm"
 #pragma mark -
 
 #define API_ACTION_KEY @"action"

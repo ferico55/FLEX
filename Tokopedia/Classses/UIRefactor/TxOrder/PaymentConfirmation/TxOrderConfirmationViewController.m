@@ -513,9 +513,10 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
+    if(!_refreshControl.isRefreshing) {
+        _tableView.tableFooterView = _footer;
+        [_act startAnimating];
+    }
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
@@ -555,9 +556,15 @@
     [_tableView reloadData];
 }
 
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    [self actionAfterFailRequestMaxTries:tag];
+}
+
 - (void)actionAfterFailRequestMaxTries:(int)tag {
-    [_refreshControl endRefreshing];
-    _tableView.tableFooterView = _act;
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    }
 }
 
 #pragma mark - Request Cancel Payment Confirmation

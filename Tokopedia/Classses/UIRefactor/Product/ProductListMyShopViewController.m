@@ -153,28 +153,10 @@
     [_listNetworkManager doRequest];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    _listNetworkManager.delegate = self;
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [_listNetworkManager requestCancel];
-    _listNetworkManager.delegate = nil;
-}
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    return _isnodata?1:_list.count;
-#else
     return _isnodata?0:_list.count;
-#endif
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -340,6 +322,12 @@
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+    [_listNetworkManager requestCancel];
+    _listNetworkManager.delegate = nil;
+    
+    _table.delegate = nil;
+    _table.dataSource = nil;
 }
 
 - (void)didReceiveMemoryWarning

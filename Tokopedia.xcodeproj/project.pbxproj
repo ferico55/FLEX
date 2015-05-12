@@ -477,8 +477,6 @@
 		FC8579961AF1CE36005C9FB0 /* CatalogSellerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC85724F1AF1CE33005C9FB0 /* CatalogSellerCell.xib */; };
 		FC8579971AF1CE36005C9FB0 /* CatalogSellerHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC8572501AF1CE33005C9FB0 /* CatalogSellerHeaderView.xib */; };
 		FC8579981AF1CE36005C9FB0 /* CatalogSellerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC8572511AF1CE33005C9FB0 /* CatalogSellerViewController.xib */; };
-		FC8579991AF1CE36005C9FB0 /* CategoryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8572561AF1CE33005C9FB0 /* CategoryViewCell.m */; };
-		FC85799A1AF1CE36005C9FB0 /* CategoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC8572571AF1CE33005C9FB0 /* CategoryViewCell.xib */; };
 		FC85799B1AF1CE36005C9FB0 /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8572591AF1CE33005C9FB0 /* CategoryViewController.m */; };
 		FC85799C1AF1CE36005C9FB0 /* CategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC85725A1AF1CE33005C9FB0 /* CategoryViewController.xib */; };
 		FC85799D1AF1CE36005C9FB0 /* CategoryMenuViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC85725E1AF1CE33005C9FB0 /* CategoryMenuViewCell.m */; };
@@ -1432,6 +1430,8 @@
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCAAEA4619F7534B00904AFB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
+		FCC137C11AF9B78100141726 /* CategoryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC137BF1AF9B78100141726 /* CategoryViewCell.m */; };
+		FCC137C21AF9B78100141726 /* CategoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCC137C01AF9B78100141726 /* CategoryViewCell.xib */; };
 		FCFF56EF1AB6D5CD0076000E /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF56EE1AB6D5CD0076000E /* MainViewController.xib */; };
 		FCFF63561ABA79660076000E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCFF63551ABA79660076000E /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
@@ -2306,9 +2306,6 @@
 		FC8572501AF1CE33005C9FB0 /* CatalogSellerHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CatalogSellerHeaderView.xib; sourceTree = "<group>"; };
 		FC8572511AF1CE33005C9FB0 /* CatalogSellerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CatalogSellerViewController.xib; sourceTree = "<group>"; };
 		FC8572521AF1CE33005C9FB0 /* string_catalog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_catalog.h; sourceTree = "<group>"; };
-		FC8572551AF1CE33005C9FB0 /* CategoryViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewCell.h; sourceTree = "<group>"; };
-		FC8572561AF1CE33005C9FB0 /* CategoryViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewCell.m; sourceTree = "<group>"; };
-		FC8572571AF1CE33005C9FB0 /* CategoryViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryViewCell.xib; sourceTree = "<group>"; };
 		FC8572581AF1CE33005C9FB0 /* CategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewController.h; sourceTree = "<group>"; };
 		FC8572591AF1CE33005C9FB0 /* CategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewController.m; sourceTree = "<group>"; };
 		FC85725A1AF1CE33005C9FB0 /* CategoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryViewController.xib; sourceTree = "<group>"; };
@@ -3615,6 +3612,9 @@
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		FCAAEA4419F7534B00904AFB /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		FCAAEA4819F7536D00904AFB /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
+		FCC137BE1AF9B78100141726 /* CategoryViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewCell.h; sourceTree = "<group>"; };
+		FCC137BF1AF9B78100141726 /* CategoryViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewCell.m; sourceTree = "<group>"; };
+		FCC137C01AF9B78100141726 /* CategoryViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryViewCell.xib; sourceTree = "<group>"; };
 		FCFF56EE1AB6D5CD0076000E /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainViewController.xib; path = Tokopedia/MainViewController.xib; sourceTree = SOURCE_ROOT; };
 		FCFF63551ABA79660076000E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -5501,12 +5501,12 @@
 		FC8572541AF1CE33005C9FB0 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				FC8572551AF1CE33005C9FB0 /* CategoryViewCell.h */,
-				FC8572561AF1CE33005C9FB0 /* CategoryViewCell.m */,
-				FC8572571AF1CE33005C9FB0 /* CategoryViewCell.xib */,
 				FC8572581AF1CE33005C9FB0 /* CategoryViewController.h */,
 				FC8572591AF1CE33005C9FB0 /* CategoryViewController.m */,
 				FC85725A1AF1CE33005C9FB0 /* CategoryViewController.xib */,
+				FCC137BE1AF9B78100141726 /* CategoryViewCell.h */,
+				FCC137BF1AF9B78100141726 /* CategoryViewCell.m */,
+				FCC137C01AF9B78100141726 /* CategoryViewCell.xib */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -8440,6 +8440,7 @@
 				FC857B2C1AF1CE36005C9FB0 /* ProductTalkFormViewController.xib in Resources */,
 				FC857CB91AF1CE36005C9FB0 /* launch_image@2x.png in Resources */,
 				FC857AD51AF1CE36005C9FB0 /* SettingBankEditViewController.xib in Resources */,
+				FCC137C21AF9B78100141726 /* CategoryViewCell.xib in Resources */,
 				FC857C5B1AF1CE36005C9FB0 /* icon_search.png in Resources */,
 				FC857D2C1AF1CE36005C9FB0 /* HS-powered-by-logo.png in Resources */,
 				FC857CD61AF1CE36005C9FB0 /* person2.png in Resources */,
@@ -8522,7 +8523,6 @@
 				FC857C3E1AF1CE36005C9FB0 /* icon_move_gudang.png in Resources */,
 				FC857B8B1AF1CE36005C9FB0 /* UserContainerViewController.xib in Resources */,
 				FC857CF71AF1CE36005C9FB0 /* icon_search@2x.png in Resources */,
-				FC85799A1AF1CE36005C9FB0 /* CategoryViewCell.xib in Resources */,
 				FC857C2D1AF1CE36005C9FB0 /* icon_love.png in Resources */,
 				FC857D241AF1CE36005C9FB0 /* HS-camera-button.png in Resources */,
 				FC857CB51AF1CE36005C9FB0 /* icon_signin.png in Resources */,
@@ -8993,7 +8993,6 @@
 				FC8579951AF1CE36005C9FB0 /* FilterCatalogViewController.m in Sources */,
 				FC8579121AF1CE36005C9FB0 /* TransactionActionResult.m in Sources */,
 				FC85783C1AF1CE36005C9FB0 /* DetailCatalogResult.m in Sources */,
-				FC8579991AF1CE36005C9FB0 /* CategoryViewCell.m in Sources */,
 				FC8578FF1AF1CE36005C9FB0 /* SettingPaymentResult.m in Sources */,
 				FC85780D1AF1CE36005C9FB0 /* URLCacheController.m in Sources */,
 				FC8579611AF1CE36005C9FB0 /* AddressCell.m in Sources */,
@@ -9493,6 +9492,7 @@
 				FC8578C01AF1CE36005C9FB0 /* PrivacyFormResult.m in Sources */,
 				FC85794F1AF1CE36005C9FB0 /* TxOrderStatusList.m in Sources */,
 				FC857AEB1AF1CE36005C9FB0 /* ShopDeliveryCell.m in Sources */,
+				FCC137C11AF9B78100141726 /* CategoryViewCell.m in Sources */,
 				FC8578CA1AF1CE36005C9FB0 /* OrderCustomer.m in Sources */,
 				FC857B3A1AF1CE36005C9FB0 /* TransactionCartCostView.m in Sources */,
 				FC85791B1AF1CE36005C9FB0 /* TransactionSystemBank.m in Sources */,

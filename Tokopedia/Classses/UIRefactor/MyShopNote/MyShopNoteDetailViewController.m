@@ -671,9 +671,6 @@
             
             if (status) {
                 if (setting.result.is_success == 1) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY
-                                                                        object:nil
-                                                                      userInfo:nil];
                     
                     NSArray *defaultMessage;
                     switch (_type) {
@@ -686,8 +683,15 @@
                         case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
                             defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
                             break;
+                        case NOTES_RETURNABLE_PRODUCT:
+                        {
+                            TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                            [secureStorage setKeychainWithValue:@"100" withKey:@"shop_has_terms"];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
+                        }
+                            break;
                         default:
-                            defaultMessage = @[@"Success"];
+                            defaultMessage = @[@"Sukses"];
                             break;
                     }
 

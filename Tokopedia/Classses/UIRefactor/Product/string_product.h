@@ -178,13 +178,13 @@ typedef enum
 
 #define CONFIRMATIONMESSAGE_DELETE_PRODUCT_IMAGE @"Apakah Anda ingin menghapus gambar ini?"
 
-#define SUCCESSMESSAGE_ADD_PRODUCT @"Sukses menambahkan product."
-#define SUCCESSMESSAGE_EDIT_PRODUCT @"Anda telah berhasil memperbaharui produk."
-#define SUCCESSMESSAGE_COPY_PRODUCT @"Sukses mensalin product"
+#define SUCCESSMESSAGE_ADD_PRODUCT @"Anda telah berhasil menambah produk"
+#define SUCCESSMESSAGE_EDIT_PRODUCT @"Anda telah berhasil memperbaharui produk"
+#define SUCCESSMESSAGE_COPY_PRODUCT @"Anda telah berhasil menyalin produk"
 
-#define SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE @"Sukses menghapus gambar"
-#define ERRORMESSAGE_DELETE_PRODUCT_IMAGE @"Gagal menghapus gambar"
-#define ERRORMESSAGE_INVALID_DELETE_PRODUCT_IMAGE @"Tidak dapat menghapus gambar utama"
+#define SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE @"Anda telah berhasil menghapus gambar"
+#define ERRORMESSAGE_DELETE_PRODUCT_IMAGE @"Anda gagal menghapus gambar"
+#define ERRORMESSAGE_INVALID_DELETE_PRODUCT_IMAGE @"Anda tidak dapat menghapus gambar utama"
 
 #define ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME @"Nama produk bersifat permanen dan tidak dapat diubah"
 
@@ -201,26 +201,26 @@ typedef enum
 #define CStringKatalog @"Katalog"
 #define CStringGambar @"Gambar"
 #define CStringKondisi @"Kondisi"
-#define CStringPending @"pending"
+#define CStringPending @"Pending"
 #define CStringUnderReview @"Under Review"
 #define CStringWareHouse @"Warehouse"
-#define CStringEtalase @"etalase"
+#define CStringEtalase @"Etalase"
 #define CStringAllEtalase @"All Etalase"
 #define CStringAllProduct @"All Products"
 #define CStringAllCategory @"All Category"
 
-#define ERRORMESSAGE_NULL_PRODUCT_NAME @"Nama Produk harus diisi."
-#define ERRORMESSAGE_NULL_PRICE @"Harga harus diisi."
-#define ERRORMESSAGE_NULL_CATEGORY @"Kategori tidak benar."
-#define ERRORMESSAGE_NULL_IMAGE @"Gambar harus tersedia."
-#define ERRORMESSAGE_INVALID_PRICE_RUPIAH @"Rentang Harga 100 - 50000000."
-#define ERRORMESSAGE_INVALID_PRICE_USD @"Rentang Harga 1 - 4000."
-#define ERRORMESSAGE_INVALID_WEIGHT_GRAM @"Berat harus diisi antara 1 - 35000."
-#define ERRORMESSAGE_INVALID_WEIGHT_KILOGRAM @"Berat harus diisi antara 1 - 35."
-#define ERRORMESSAGE_INVALID_QUANTITY_WHOLESALE @"Total produk tidak valid."
+#define ERRORMESSAGE_NULL_PRODUCT_NAME @"Nama Produk harus diisi"
+#define ERRORMESSAGE_NULL_PRICE @"Harga harus diisi"
+#define ERRORMESSAGE_NULL_CATEGORY @"Kategori tidak benar"
+#define ERRORMESSAGE_NULL_IMAGE @"Gambar harus tersedia"
+#define ERRORMESSAGE_INVALID_PRICE_RUPIAH @"Rentang Harga 100 - 50000000"
+#define ERRORMESSAGE_INVALID_PRICE_USD @"Rentang Harga 1 - 4000"
+#define ERRORMESSAGE_INVALID_WEIGHT_GRAM @"Berat harus diisi antara 1 - 35000"
+#define ERRORMESSAGE_INVALID_WEIGHT_KILOGRAM @"Berat harus diisi antara 1 - 35"
+#define ERRORMESSAGE_INVALID_QUANTITY_WHOLESALE @"Total produk tidak valid"
 #define ERRORMESSAGE_INVALID_QUANTITY_MINIMUM_WHOLESALE_COMPARE_MINIMUM_ORDER @"Jumlah barang grosir harus lebih besar dari minimum pemesanan"
-#define ERRORMESSAGE_INVALID_PRICE_WHOLESALE @"Harga harus lebih murah dari harga grosir sebelumnya."
-#define ERRORMESSAGE_INVALID_PRICE_WHOLESALE_COMPARE_NET @"Harga grosir harus lebih murah dari harga pas."
+#define ERRORMESSAGE_INVALID_PRICE_WHOLESALE @"Harga harus lebih murah dari harga grosir sebelumnya"
+#define ERRORMESSAGE_INVALID_PRICE_WHOLESALE_COMPARE_NET @"Harga grosir harus lebih murah dari harga pas"
 #define ERRORMESSAGE_MAXIMAL_WHOLESALE_LIST @"Hanya boleh menambahkan 5 harga grosir"
 #define kTKPDSUCCESS_ADD_WISHLIST @"Anda berhasil menambah wishlist"
 #define kTKPDSUCCESS_REMOVE_WISHLIST @"Anda berhasil menghapus wishlist"
@@ -229,16 +229,16 @@ typedef enum
 #define kTKPDTIDAK_ADA_WISHLIST @"Tidak ada wishlist"
 
 
-#define ERRORMESSAGE_FAILED_IMAGE_UPLOAD @"Gagal menambah image produk. Silahkan coba kembali."
+#define ERRORMESSAGE_FAILED_IMAGE_UPLOAD @"Anda telah gagal menambah gambar produk. Silahkan coba kembali."
 
 #define ERRORMESSAGE_INVALID_PRICE_CURRENCY_USD @"Untuk mengaktifkan fitur ini anda harus menjadi Gold Merchant"
 
-#define ERRORMESSAGE_PROCESSING_UPLOAD_IMAGE @"Belum Selesai Mengupload Image"
+#define ERRORMESSAGE_PROCESSING_UPLOAD_IMAGE @"Anda belum selesai mengunggah gambar"
 
 #define ARRAY_PRICE_CURRENCY @[@{DATA_NAME_KEY:@"Rp", DATA_VALUE_KEY:@(PRICE_CURRENCY_ID_RUPIAH)}, @{DATA_NAME_KEY:@"US$", DATA_VALUE_KEY:@(PRICE_CURRENCY_ID_USD)}]
 
 #define ARRAY_WEIGHT_UNIT @[@{DATA_NAME_KEY:@"Gram (g)", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Kilogram (kg)", DATA_VALUE_KEY:@(2)}]
-#define ARRAY_PRODUCT_INSURACE @[@{DATA_NAME_KEY:@"Optional", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Yes", DATA_VALUE_KEY:@(2)}]
+#define ARRAY_PRODUCT_INSURACE @[@{DATA_NAME_KEY:@"Opsional", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(2)}]
 #define ARRAY_PRODUCT_CONDITION @[@{DATA_NAME_KEY:@"Baru", DATA_VALUE_KEY:@(PRODUCT_CONDITION_NEW_ID)}, @{DATA_NAME_KEY:@"Bekas", DATA_VALUE_KEY:@(PRODUCT_CONDITION_SECOND_ID)}]
 #define ARRAY_PRODUCT_MOVETO_ETALASE @[@{DATA_NAME_KEY:@"Gudang", DATA_VALUE_KEY:@(2)}, @{DATA_NAME_KEY:@"Etalase", DATA_VALUE_KEY:@(1)}]
 #define ARRAY_PRODUCT_RETURNABLE @[@{DATA_NAME_KEY:@"Not Set", DATA_VALUE_KEY:@(0)}, @{DATA_NAME_KEY:@"Yes", DATA_VALUE_KEY:@(RETURNABLE_YES_ID)}, @{DATA_NAME_KEY:@"No", DATA_VALUE_KEY:@(RETURNABLE_NO_ID)}]

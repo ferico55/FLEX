@@ -31,5 +31,6 @@
 #endif
 
 @property (nonatomic,strong) NSDictionary *data;
+@property (nonatomic, strong) UIImage *uploadedImage;
 
 @end
