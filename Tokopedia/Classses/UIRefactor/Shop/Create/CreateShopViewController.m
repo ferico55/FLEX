@@ -181,7 +181,8 @@
     RKObjectManager *objectManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSMutableDictionary *dictContentPhoto;
-
+    MyShopShipmentTableViewController *controller;
+    
     UIImageView *tempImage;
     UIActivityIndicatorView *loadViewCheckDomain;
     UIView *viewImgGambar;
@@ -411,8 +412,10 @@
         [stickyAlertView show];
     }
     else {
-        MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
-        controller.createShopViewController = self;
+        if(controller == nil) {
+            controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+            controller.createShopViewController = self;
+        }
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
