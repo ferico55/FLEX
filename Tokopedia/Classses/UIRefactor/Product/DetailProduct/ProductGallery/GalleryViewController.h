@@ -52,6 +52,7 @@ typedef enum
 @property (nonatomic,readonly) UIView* thumbsView;
 @property (nonatomic) BOOL useThumbnailView;
 @property (nonatomic) BOOL beginsInThumbnailView;
+@property (nonatomic) BOOL canDownload;
 
 @end
 

@@ -493,12 +493,12 @@
             
             if (status) {
                 if(_editform.message_error) {
-                    NSArray *errorMessages = _editform.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    NSArray *errorMessages = _editform.message_error?:@[kTKPDMESSAGE_ERROREDITPROFILEMESSAGEKEY];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
                     [alert show];
                 }
                 if ([_editform.result.is_success boolValue]) {
-                    NSArray *successMessages = _editform.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    NSArray *successMessages = _editform.message_status?:@[kTKPDMESSAGE_SUCCESSEDITPROFILEMESSAGEKEY];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                     [alert show];
                     
@@ -518,7 +518,11 @@
         {
             NSError *error = object;
             NSString *errorDescription = error.localizedDescription;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:@"ERROR" message:errorDescription delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:@"ERROR"
+                                                                message:errorDescription
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
             [errorAlert show];
         }
     }

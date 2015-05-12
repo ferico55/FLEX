@@ -30,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *deleteImageButton;
+@property (weak, nonatomic) IBOutlet UILabel *defaultPictLabel;
+@property (weak, nonatomic) IBOutlet UIButton *setDefaultButton;
 
 - (IBAction)tap:(id)sender;
 
@@ -49,6 +51,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = @"Edit Gambar";
     
     _dataInput = [NSMutableDictionary new];
     
@@ -97,27 +101,29 @@
 {
     _data = data;
     if (data) {
-        NSString *urlstring = [_data objectForKey:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY];
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
+//        NSString *urlstring = [_data objectForKey:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY];
+//        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+//        //request.URL = url;
+//        
+//        UIImageView *thumb = _productImageView;
+//        
+//        thumb.image = nil;
+//        //thumb.hidden = YES;	//@prepareforreuse then @reset
+//        
+//        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Warc-retain-cycles"
+//            [thumb setImage:image];
+//#pragma clang diagnostic pop
+//            
+//        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+//        }];
         
-        UIImageView *thumb = _productImageView;
-        
-        thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
-        
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image];
-#pragma clang diagnostic pop
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        }];
+        _productImageView.image = _uploadedImage;
         
         BOOL isDefaultImage = [[_data objectForKey:DATA_IS_DEFAULT_IMAGE]boolValue];
-        _defaultPictureSwitch.on =isDefaultImage;
-        _defaultPictureSwitch.enabled= !isDefaultImage;
+        _defaultPictLabel.hidden = !isDefaultImage;
+        _setDefaultButton.hidden = isDefaultImage;
         
         NSString *productName = [_data objectForKey:DATA_PRODUCT_IMAGE_NAME_KEY];
         _productNameTextField.text = productName;
@@ -193,6 +199,13 @@
 }
 - (IBAction)gesture:(id)sender {
     [_activeTextField resignFirstResponder];
+}
+- (IBAction)tapDefaultPict:(UIButton*)sender {
+    NSInteger indexImage = [[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    [_delegate setDefaultImageAtIndex:indexImage];
+    
+    sender.hidden = YES;
+    _defaultPictLabel.hidden = NO;
 }
 
 #pragma mark - Camera Controller Delegate
