@@ -319,8 +319,8 @@
                 }
                 else
                 {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:_form.message_error ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_form.message_error delegate:self];
+                    [alert show];
                 }
             }
         }
@@ -451,15 +451,14 @@
             
             if (status) {
                 if (setting.result.is_success == 1) {
-
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_status ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:setting.message_status delegate:self];
+                    [stickyAlertView show];
                     [self.navigationController popViewControllerAnimated:YES];
                 }
                 else
                 {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_error ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error delegate:self];
+                    [alert show];
                 }
             }
         }

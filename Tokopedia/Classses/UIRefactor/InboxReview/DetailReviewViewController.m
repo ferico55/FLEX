@@ -556,9 +556,8 @@
                 {
                     [self cancelDeleteRow];
                     NSArray *array = generalaction.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 } else {
                     NSDictionary *userinfo;
                     [_talkInputView setHidden:NO];

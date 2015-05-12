@@ -183,15 +183,14 @@
                 if(generalaction.message_error)
                 {
                     NSArray *array = generalaction.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 } else {
                     //success
                     if ([generalaction.result.is_success isEqualToString:@"1"]) {
                         NSArray *array = generalaction.message_status?:[[NSArray alloc] initWithObjects:SUCCESS_REPORT_TALK, nil];
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                        [stickyAlertView show];
                         UINavigationController *nav = _delegate;
                         [nav.navigationController popViewControllerAnimated:YES];
                     }

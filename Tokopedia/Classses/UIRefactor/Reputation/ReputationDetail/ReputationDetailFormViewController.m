@@ -262,8 +262,8 @@
         if([generalaction.result.is_success isEqualToString:@"1"]) {
             
         } else {
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:generalaction.message_error,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:generalaction.message_error delegate:self];
+            [alert show];
         }
     }
     
@@ -327,8 +327,8 @@
                     
                     [self doSendReview];
                 } else {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:_errorMessages,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_errorMessages delegate:self];
+                    [alert show];
                 }
                 break;
             }
