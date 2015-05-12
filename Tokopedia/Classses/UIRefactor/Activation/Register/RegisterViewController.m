@@ -115,9 +115,7 @@
 
     _operationQueue =[NSOperationQueue new];
     
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
+    [FBSession.activeSession closeAndClearTokenInformation];
     
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage *img;
@@ -256,9 +254,6 @@
                 NSString *confirmpass = [_datainput objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY];
                 BOOL isagree = [[_datainput objectForKey:kTKPDACTIVATION_DATAISAGREEKEY]boolValue];
                 
-                NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-                NSInteger passCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-                
                 if (fullname && ![fullname isEqualToString:@""] &&
                     phone &&
                     email && [email isEmail] &&
@@ -266,29 +261,27 @@
                     birthday && birthmonth && birthyear &&
                     pass && ![pass isEqualToString:@""] &&
                     confirmpass && ![confirmpass isEqualToString:@""]&&
-                    [pass isEqualToString:confirmpass] && phoneCharCount>=6 && passCharCount >=6 &&
+                    [pass isEqualToString:confirmpass] &&
+                    phone.length >= 6 &&
+                    pass.length >= 6 &&
                     isagree) {
                     [self configureRestKit];
                     [self LoadDataAction:_datainput];
                 }
                 else
                 {
+                    NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
+
                     if (!fullname || [fullname isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_FULL_NAME];
-                    }
-                    
-                    NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z]*"];
-                    if (![test evaluateWithObject:fullname]) {
+                    } else if (![test evaluateWithObject:fullname]) {
                         [messages addObject:ERRORMESSAGE_INVALID_FULL_NAME];
                     }
                     
-                    if (!phone) {
+                    if (!phone || [phone isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PHONE__NUMBER];
-                    }
-                    else{
-                        if (phoneCharCount<6) {
-                            [messages addObject:ERRORMESSAGE_INVALID_PHONE_COUNT];
-                        }
+                    } else if (phone.length < 6) {
+                        [messages addObject:ERRORMESSAGE_INVALID_PHONE_COUNT];
                     }
                     if (!email || [email isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_EMAIL];
@@ -310,7 +303,7 @@
                     }
                     else
                     {
-                        if (passCharCount < 6) {
+                        if (pass.length < 6) {
                             [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_COUNT];
                         }
                     }
@@ -669,17 +662,17 @@
         [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
         [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
 
-        LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
-        if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)])
-        {
-            [loginController.delegate redirectViewController:loginController.redirectViewController];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            [self.tabBarController setSelectedIndex:0];
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                object:nil
-                                                              userInfo:nil];
-        }
+//        LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
+//        if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)])
+//        {
+//            [loginController.delegate redirectViewController:loginController.redirectViewController];
+//            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+//        } else {
+//            [self.tabBarController setSelectedIndex:0];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+//                                                                object:nil
+//                                                              userInfo:nil];
+//        }
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                        delegate:self];
@@ -752,48 +745,17 @@
 }
 
 #pragma mark - Keyboard Notification
-// Called when the UIKeyboardWillShowNotification is sent
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        _scrollviewContentSize = [_container contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_container setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             _scrollviewContentSize = [_container contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             if ((self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height)> _keyboardPosition.y) {
-                                 UIEdgeInsets inset = _container.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height + 10));
-                                 [_container setContentInset:inset];
-                             }
-                         }
-                         completion:^(BOOL finished){
-                         }];
-    }
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    self.container.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         _container.contentInset = contentInsets;
-                         _container.scrollIndicatorInsets = contentInsets;
-                     }
-                     completion:^(BOOL finished){
-                     }];
+    self.container.contentInset = UIEdgeInsetsZero;
 }
 
 #pragma mark - Alert View Delegate
@@ -927,6 +889,7 @@
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.tabBarController setSelectedIndex:0];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                             object:nil
                                                           userInfo:nil];

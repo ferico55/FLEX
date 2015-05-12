@@ -100,19 +100,22 @@
         lblTitle.backgroundColor = [UIColor clearColor];
         lblTitle.textColor = btnCancel.titleLabel.textColor;
         
-        btnDownload = [UIButton buttonWithType:UIButtonTypeCustom];
-        btnDownload.titleLabel.font = [UIFont fontWithName:CFont_Gotham_book size:13.0f];
-        [btnDownload addTarget:self action:@selector(actionDownload:) forControlEvents:UIControlEventTouchUpInside];
-        btnDownload.backgroundColor = [UIColor lightGrayColor];
-        btnDownload.frame = CGRectMake(([[UIScreen mainScreen] bounds].size.width-100)/2.0f, [[UIScreen mainScreen] bounds].size.height-40, 100, 30);
-        btnDownload.layer.cornerRadius = 5.0f;
-        btnDownload.layer.masksToBounds = YES;
-        btnDownload.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth;
-        [btnDownload setTitle:@"Download" forState:UIControlStateNormal];
-        [btnDownload setTitleColor:btnCancel.titleLabel.textColor forState:UIControlStateNormal];
         
         [self.view addSubview:lblTitle];
         [self.view addSubview:btnCancel];
+        if(self.canDownload) {
+            btnDownload = [UIButton buttonWithType:UIButtonTypeCustom];
+            btnDownload.titleLabel.font = [UIFont fontWithName:CFont_Gotham_book size:13.0f];
+            [btnDownload addTarget:self action:@selector(actionDownload:) forControlEvents:UIControlEventTouchUpInside];
+            btnDownload.backgroundColor = [UIColor lightGrayColor];
+            btnDownload.frame = CGRectMake(([[UIScreen mainScreen] bounds].size.width-100)/2.0f, [[UIScreen mainScreen] bounds].size.height-40, 100, 30);
+            btnDownload.layer.cornerRadius = 5.0f;
+            btnDownload.layer.masksToBounds = YES;
+            btnDownload.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth;
+            [btnDownload setTitle:@"Download" forState:UIControlStateNormal];
+            [btnDownload setTitleColor:btnCancel.titleLabel.textColor forState:UIControlStateNormal];
+        }
+        
         [self.view addSubview:btnDownload];
 	}
     

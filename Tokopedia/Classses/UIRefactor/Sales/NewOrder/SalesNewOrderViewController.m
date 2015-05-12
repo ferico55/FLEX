@@ -1041,10 +1041,15 @@
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
         [alert show];
         [_orderInProcess removeObjectForKey:orderId];
+
+        if (_transactions.count == 0) {
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            self.tableView.tableFooterView = noResultView;
+        }
+    
     } else {
-        
         NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_status);
-        
         [self performSelector:@selector(restoreData:) withObject:orderId];
     }
 }

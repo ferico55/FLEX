@@ -476,17 +476,18 @@ UIAlertViewDelegate
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 14:
-            {
-                
-            }
             case 15:
             {
-                NSString *activityItem = [NSString stringWithFormat:@"Jual %@ - %@ | Tokopedia %@", _product.result.product.product_name,_product.result.shop_info.shop_name, _product.result.product.product_url];
-                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
-                                                                                                 applicationActivities:nil];
-                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                [self presentViewController:activityController animated:YES completion:nil];
+                if (_product) {
+                    NSString *title = [NSString stringWithFormat:@"Jual %@ - %@ | Tokopedia ",
+                                       _product.result.product.product_name,
+                                       _product.result.shop_info.shop_name];
+                    NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
+                    UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                      applicationActivities:nil];
+                    act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                    [self presentViewController:act animated:YES completion:nil];
+                }
                 break;
             }
             case 16:
@@ -502,7 +503,6 @@ UIAlertViewDelegate
                     navigationController.navigationBar.translucent = NO;
                     navigationController.navigationBar.tintColor = [UIColor whiteColor];
                     
-                    
                     LoginViewController *controller = [LoginViewController new];
                     controller.delegate = self;
                     controller.isPresentedViewController = YES;
@@ -510,21 +510,12 @@ UIAlertViewDelegate
                     navigationController.viewControllers = @[controller];
                     
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                    
-                    //                    LoginViewController *loginVc = [LoginViewController new];
-                    //                    loginVc.isPresentedViewController = YES;
-                    //                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginVc];
-                    //                    [self.navigationController presentViewController:nav animated:YES completion:nil];
                 }
-                
                 break;
             }
-                
             case 17 : {
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
-                    //Love Shop
-                    //                    [self configureFavoriteRestkit];
                     [self favoriteShop:_product.result.shop_info.shop_id];
                     [self setButtonFav];
                 } else {
@@ -542,12 +533,8 @@ UIAlertViewDelegate
                     
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
-                
-                
                 break;
-                
             }
-                
             case 18 : {
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
@@ -580,11 +567,8 @@ UIAlertViewDelegate
                     
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
-                
-                
                 break;
             }
-                
             case 20 : {
                 NSString *shopid = _product.result.shop_info.shop_id;
                 if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] isEqualToString:shopid]) {
@@ -599,7 +583,6 @@ UIAlertViewDelegate
                     [self.navigationController pushViewController:container animated:YES];
                     
                 }
-                
                 break;
             }
             case 21 : {
@@ -607,8 +590,6 @@ UIAlertViewDelegate
                 [_promoteNetworkManager doRequest];
                 break;
             }
-                
-                
             default:
                 break;
         }
@@ -1721,7 +1702,7 @@ UIAlertViewDelegate
                                                                                       views:NSDictionaryOfVariableBindings(_buyButton)]];
             }
             else {
-                if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
+                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
                     _dinkButton.hidden = NO;
                     _buyButton.hidden = YES;
                 } else {
@@ -1906,10 +1887,16 @@ UIAlertViewDelegate
 
 - (IBAction)actionShare:(id)sender
 {
-    NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _product.result.shop_info.shop_name, _product.result.shop_info.shop_location, _product.result.shop_info.shop_url];
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem] applicationActivities:nil];
-    activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-    [self presentViewController:activityController animated:YES completion:nil];
+    if (_product) {
+        NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
+                                  _product.result.shop_info.shop_name,
+                                  _product.result.shop_info.shop_location];
+        NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
+        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                         applicationActivities:nil];
+        activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+        [self presentViewController:activityController animated:YES completion:nil];
+    }
 }
 
 - (IBAction)actionWishList:(UIButton *)sender

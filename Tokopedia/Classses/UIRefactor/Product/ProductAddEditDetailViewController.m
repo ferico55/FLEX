@@ -169,6 +169,7 @@
     
     _addPictureNetworkManager = [TokopediaNetworkManager new];
     _addPictureNetworkManager.delegate = self;
+    _addPictureNetworkManager.isParameterNotEncrypted = YES;
     _addPictureNetworkManager.tagRequest = TAG_REQUEST_PICTURE;
     
     _submitNetworkManager = [TokopediaNetworkManager new];
@@ -754,6 +755,17 @@
     
     [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
     
+    NSString *myString = productImage;
+    NSArray *productImages = [myString componentsSeparatedByCharactersInSet:
+                              [NSCharacterSet characterSetWithCharactersInString:@"~"]
+                              ];
+    
+    for (int i = 0; i<productImages.count; i++) {
+        if ([productImages[i] isEqualToString:photoDefault]) {
+            photoDefault = [NSString stringWithFormat:@"%d",i];
+        }
+    }
+    
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action,
                                       API_PRODUCT_ID_KEY: productID,
                                       API_SERVER_ID_KEY : @(serverID)?:@(0),
@@ -1075,6 +1087,7 @@
     NSString *productImage = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
+
     
     NSString *productID = product.product_id?:@"";
     NSString *returnableProduct = [_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]?:product.product_returnable?:@"";

@@ -349,7 +349,7 @@
                         _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
                         _detailVC.generateHost = _generateHost;
                         _detailVC.delegate = self;
-                        _detailVC.isNeedRequestAddProductPicture = YES;
+                        //_detailVC.isNeedRequestAddProductPicture = YES;
                         [self.navigationController pushViewController:_detailVC animated:YES];
                     }
                     else
@@ -829,7 +829,7 @@
             _detailVC.shopHasTerm = _product.result.info.shop_has_terms;
             _detailVC.generateHost = _generateHost;
             _detailVC.delegate = self;
-            _detailVC.isNeedRequestAddProductPicture = YES;
+            //_detailVC.isNeedRequestAddProductPicture = YES;
         }
         
 
@@ -1492,10 +1492,10 @@
         NSInteger currency = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
         BOOL isIDRCurrency = (currency == PRICE_CURRENCY_ID_RUPIAH);
         if (isIDRCurrency)
-           productPrice = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+           productPrice = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
         else
         {
-            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
             
         }
         product.product_price = productPrice;
@@ -1521,25 +1521,25 @@
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             if([string length]==0)
             {
-                [formatter setGroupingSeparator:@","];
+                [formatter setGroupingSeparator:@"."];
                 [formatter setGroupingSize:4];
                 [formatter setUsesGroupingSeparator:YES];
                 [formatter setSecondaryGroupingSize:3];
                 NSString *num = textField.text ;
-                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                 NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                 textField.text = str;
                 return YES;
             }
             else {
-                [formatter setGroupingSeparator:@","];
+                [formatter setGroupingSeparator:@"."];
                 [formatter setGroupingSize:2];
                 [formatter setUsesGroupingSeparator:YES];
                 [formatter setSecondaryGroupingSize:3];
                 NSString *num = textField.text ;
                 if(![num isEqualToString:@""])
                 {
-                    num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                    num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                     NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                     textField.text = str;
                 }

@@ -175,7 +175,7 @@
                                 <constraint firstAttribute="width" constant="1" id="giy-GN-7aR"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transfer Bank" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tD-sh-mFY">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tD-sh-mFY">
                             <rect key="frame" x="161" y="11" width="151" height="22"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -235,7 +235,7 @@
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="1" id="ofC-YA-iTr"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transfer Bank" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nQx-0u-MkH">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nQx-0u-MkH">
                             <rect key="frame" x="161" y="11" width="151" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="Hea-B2-rd0"/>

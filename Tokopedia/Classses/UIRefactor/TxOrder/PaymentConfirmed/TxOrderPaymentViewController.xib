@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
@@ -556,7 +556,7 @@ Contoh : 157500</string>
             </tableViewCellContentView>
             <point key="canvasLocation" x="150" y="474"/>
         </tableViewCell>
-        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1sV-Kr-wps" userLabel="nomer rekening Table View Cell">
+        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1sV-Kr-wps" userLabel="nomor rekening Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1sV-Kr-wps" id="mhy-zy-ctN">

@@ -37,6 +37,9 @@
     RKObjectManager *_facebookObjectManager;
     RKManagedObjectRequestOperation *_requestFacebookLogin;
     NSOperationQueue *_operationQueueFacebookLogin;
+
+    RKObjectManager *_objectManagerLogin;
+    RKManagedObjectRequestOperation *_requestLogin;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -116,6 +119,15 @@
     _dateOfBirthTextField.delegate = self;
     
     _activityIndicatorView.hidden = YES;
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:)
+               name:UIKeyboardWillShowNotification
+             object:nil];
+    
+    [nc addObserver:self selector:@selector(keyboardWillHide:)
+               name:UIKeyboardWillHideNotification
+             object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -168,24 +180,29 @@
             
             NSMutableArray *errorMessages = [NSMutableArray new];
 
-            NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z]*"];
-            if (![test evaluateWithObject:_fullNameTextField.text]) {
+            NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
+            if ([_fullNameTextField.text isEqualToString:@""]) {
+                [errorMessages addObject:ERRORMESSAGE_NULL_FULL_NAME];
+            } else if (![test evaluateWithObject:_fullNameTextField.text]) {
                 [errorMessages addObject:ERRORMESSAGE_INVALID_FULL_NAME];
             }
             
-            if ([_fullNameTextField.text isEqualToString:@""]) {
-                [errorMessages addObject:ERRORMESSAGE_NULL_FULL_NAME];
-            }
-            
-            if (_passwordTextField.text.length < 6) {
+            if ([_passwordTextField.text isEqualToString:@""]) {
+                [errorMessages addObject:@"Kata Sandi harus diisi"];
+            } else if (_passwordTextField.text.length < 6) {
                 [errorMessages addObject:@"Kata Sandi terlalu pendek, minimum 6 karakter"];
             }
-            if (_confirmPasswordTextfield.text.length < 6) {
+            
+            if ([_confirmPasswordTextfield.text isEqualToString:@""]) {
+                [errorMessages addObject:@"Konfirmasi Kata Sandi harus diisi"];
+            } else if (_confirmPasswordTextfield.text.length < 6) {
                 [errorMessages addObject:@"Konfirmasi Kata Sandi terlalu pendek, minimum 6 karakter"];
             }
+            
             if ([_dateOfBirthTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Tanggal lahir harus diisi"];
             }
+            
             if ([_phoneNumberTextField.text isEqualToString:@""]) {
                 [errorMessages addObject:@"Nomor HP harus diisi"];
             }
@@ -334,15 +351,17 @@
         [secureStorage setKeychainWithValue:_fullNameTextField.text withKey:kTKPD_FULLNAMEKEY];
         [secureStorage setKeychainWithValue:@(YES) withKey:kTKPD_ISLOGINKEY];
 
-        if (self.delegate && [self.delegate respondsToSelector:@selector(createPasswordSuccess)]) {
-            [self.view layoutSubviews];
+//        if (self.delegate && [self.delegate respondsToSelector:@selector(createPasswordSuccess)]) {
+//            [self.view layoutSubviews];
+//
+//            TKPDAlert *alert = [TKPDAlert newview];
+//            alert.text = @"Anda telah berhasil membuat akun Tokopedia";
+//            alert.tag = 12;
+//            alert.delegate = self;
+//            [alert show];
+//        }
 
-            TKPDAlert *alert = [TKPDAlert newview];
-            alert.text = @"Anda telah berhasil membuat akun Tokopedia";
-            alert.tag = 12;
-            alert.delegate = self;
-            [alert show];
-        }
+        [self requestActionLogin];
         
     } else if (_createPassword.message_error) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_createPassword.message_error
@@ -400,6 +419,20 @@
     _signupButton.layer.opacity = 1;
 }
 
+#pragma mark - Keyboard Notification
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+    self.scrollView.contentInset = UIEdgeInsetsZero;
+}
+
 #pragma mark - Scroll delegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -446,6 +479,122 @@
 {
     [self.delegate createPasswordSuccess];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Login methods
+
+
+- (void)configureRestKitLogin
+{
+    // initialize RestKit
+    _objectManagerLogin =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Login class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LoginResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY    : kTKPDLOGIN_APIISLOGINKEY,
+                                                        kTKPDLOGIN_APISHOPIDKEY     : kTKPDLOGIN_APISHOPIDKEY,
+                                                        kTKPDLOGIN_APIUSERIDKEY     : kTKPDLOGIN_APIUSERIDKEY,
+                                                        kTKPDLOGIN_APIFULLNAMEKEY   : kTKPDLOGIN_APIFULLNAMEKEY,
+                                                        kTKPDLOGIN_APIIMAGEKEY      : kTKPDLOGIN_APIIMAGEKEY,
+                                                        kTKPDLOGIN_APISHOPNAMEKEY   : kTKPDLOGIN_APISHOPNAMEKEY,
+                                                        kTKPDLOGIN_APISHOPAVATARKEY : kTKPDLOGIN_APISHOPAVATARKEY,
+                                                        kTKPDLOGIN_APISHOPISGOLDKEY : kTKPDLOGIN_APISHOPISGOLDKEY,
+                                                        kTKPDLOGIN_API_STATUS_KEY               : kTKPDLOGIN_API_STATUS_KEY,
+                                                        kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
+                                                        kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
+                                                        kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
+                                                        kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
+                                                        }];
+    //add relationship mapping
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDLOGIN_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManagerLogin addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)requestActionLogin
+{
+    if (_request.isExecuting) return;
+    
+    [self configureRestKitLogin];
+    
+    NSDictionary* param = @{kTKPDLOGIN_APIUSEREMAILKEY : _emailTextField.text?:@(0),
+                            kTKPDLOGIN_APIUSERPASSKEY : _passwordTextField.text?:@(0)};
+    
+    _requestLogin = [_objectManagerLogin appropriateObjectRequestOperationWithObject:self
+                                                                              method:RKRequestMethodPOST
+                                                                                path:kTKPDLOGIN_APIPATH
+                                                                          parameters:[param encrypt]];
+    
+    [_requestLogin setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestSuccessLogin:mappingResult withOperation:operation];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self requestFailureLogin:error];
+    }];
+    
+    [_operationQueue addOperation:_requestLogin];
+}
+
+- (void)requestSuccessLogin:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation*)operation
+{
+    _login = [mappingResult.dictionary objectForKey:@""];
+    BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    if (status) {
+        if (_login.result.is_login) {
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+            [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
+            [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+            
+            [self.tabBarController setSelectedIndex:0];
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                object:nil
+                                                              userInfo:nil];
+            
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            
+        } else {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
+                                                                           delegate:self];
+            [alert show];
+        }
+    }
+    else
+    {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                       delegate:self];
+        [alert show];
+    }
+}
+
+-(void)requestFailureLogin:(id)object {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                   delegate:self];
+    [alert show];
 }
 
 @end

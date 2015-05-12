@@ -62,8 +62,6 @@
     ManageProduct*_product;
     
     BOOL _isaddressexpanded;
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
     
     __weak RKObjectManager *_objectmanagerActionDelete;
     __weak RKManagedObjectRequestOperation *_requestActionDelete;
@@ -79,11 +77,11 @@
     NSDictionary *_auth;
     RequestMoveTo *_requestMoveTo;
     
-    TokopediaNetworkManager *_listNetworkManager;
+    TokopediaNetworkManager *_networkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -119,9 +117,9 @@
     _requestMoveTo = [RequestMoveTo new];
     _requestMoveTo.delegate = self;
     
-    _listNetworkManager = [TokopediaNetworkManager new];
-    _listNetworkManager.tagRequest = TAG_LIST_REQUEST;
-    _listNetworkManager.delegate = self;
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.tagRequest = TAG_LIST_REQUEST;
+    _networkManager.delegate = self;
     
     _page = 1;
     _limit = kTKPDDETAILDEFAULT_LIMITPAGE;
@@ -150,7 +148,7 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     
-    [_listNetworkManager doRequest];
+    [_networkManager doRequest];
 }
 
 
@@ -193,13 +191,14 @@
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
-                [thumb setContentMode:UIViewContentModeScaleAspectFill];
+                thumb.image = image;
+                thumb.contentMode = UIViewContentModeScaleAspectFill;
 #pragma clang diagnosti c pop
                 [act stopAnimating];
                 [act setHidden:YES];
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey"];
+                thumb.image = [UIImage imageNamed:@"Icon_no_photo_transparan"];
+                thumb.contentMode = UIViewContentModeScaleAspectFill;
                 [act stopAnimating];
                 [act setHidden:YES];
             }];
@@ -256,7 +255,7 @@
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            [_listNetworkManager doRequest];
+            [_networkManager doRequest];
         }
 	}
 }
@@ -323,8 +322,8 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     
-    [_listNetworkManager requestCancel];
-    _listNetworkManager.delegate = nil;
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
     
     _table.delegate = nil;
     _table.dataSource = nil;
@@ -379,6 +378,7 @@
 {
     if (tag == TAG_LIST_REQUEST) {
         if (![_refreshControl isRefreshing]) {
+            _table.tableFooterView = nil;
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
@@ -413,8 +413,8 @@
 {
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     NSInteger shopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
-    NSInteger orderByID = [[_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]integerValue];
-    NSInteger etalaseID = [[_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]integerValue];
+    NSString *orderByID = [_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]?:@"";
+    NSString *etalase = [_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]?:@"";
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
     
     NSString *departmentID = [_dataFilter objectForKey:API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY]?:@"";
@@ -427,8 +427,8 @@
                             kTKPDDETAIL_APISHOPIDKEY : @(shopID),
                             kTKPDDETAIL_APILIMITKEY : @(_limit),
                             kTKPDDETAIL_APIPAGEKEY : @(_page),
-                            kTKPDDETAIL_APISORTKEY : @(orderByID),
-                            kTKPDSHOP_APIETALASEIDKEY:@(etalaseID),
+                            kTKPDDETAIL_APISORTKEY : orderByID,
+                            kTKPDSHOP_APIETALASEIDKEY:etalase,
                             API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY : departmentID,
                             API_MANAGE_PRODUCT_CATALOG_ID_KEY : catalogID,
                             API_MANAGE_PRODUCT_PICTURE_STATUS_KEY : pictureStatus,
@@ -441,7 +441,7 @@
 - (RKObjectManager*)objectManagerList
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ManageProduct class]];
@@ -481,18 +481,28 @@
                                                  ]];
     
     //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
+                                                                                 toKeyPath:kTKPD_APILISTKEY
+                                                                               withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY toKeyPath:kTKPD_APIPAGINGKEY withMapping:pagingMapping];
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                 toKeyPath:kTKPD_APIPAGINGKEY
+                                                                               withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    [objectManager addResponseDescriptor:responseDescriptorStatus];
     
-    return _objectmanager;
+    return objectManager;
 }
 
 -(void)requestprocess:(id)object
@@ -539,10 +549,15 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-            }
-            else
-            {
-                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
+
+                if (_list.count == 0) {
+                    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                    NoResultView *resultView = [[NoResultView alloc] initWithFrame:frame];
+                    _table.tableFooterView = resultView;
+                }
+            } else {
+                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
                 _table.tableFooterView = noResultView;
             }
         }
@@ -715,7 +730,7 @@
     _page = 1;
     [_refreshControl beginRefreshing];
     [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-    [_listNetworkManager doRequest];
+    [_networkManager doRequest];
 }
 
 #pragma mark - UISearchBar Delegate
@@ -746,7 +761,7 @@
     [_list removeAllObjects];
     [self.table reloadData];
     
-    [_request cancel];
+    [_networkManager requestCancel];
     
     [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
     [self refreshView:nil];
@@ -805,8 +820,7 @@
     return YES;
 }
 
--(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
-             swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
+-(NSArray*)swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
     [_searchbar resignFirstResponder];
     
@@ -893,7 +907,13 @@
  
     [_list removeAllObjects];
     [self.table reloadData];
-    [self refreshView:nil];
+
+    _requestcount = 0;
+    _page = 1;
+    
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    [_networkManager doRequest];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

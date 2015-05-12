@@ -84,7 +84,12 @@
 
     _filter = @"search_product";
     
-    [self LoadHistory];
+    [self loadHistory];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clearHistory)
+                                                 name:kTKPD_REMOVE_SEARCH_HISTORY
+                                               object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -112,14 +117,13 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Memory Management
 
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];    
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,7 +149,7 @@
     }
 }
 
--(void)LoadHistory
+-(void)loadHistory
 {
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
@@ -160,7 +164,7 @@
     }
 }
 
--(void)ClearHistories
+-(void)clearHistory
 {
     [_historysearch removeAllObjects];
     
@@ -190,7 +194,7 @@
 #pragma mark - View Gesture
 - (IBAction)tap:(id)sender {
     [_searchbar resignFirstResponder];
-    [self ClearHistories];
+    [self clearHistory];
 }
 - (IBAction)gesture:(id)sender {
     [_searchbar resignFirstResponder];
@@ -298,11 +302,12 @@
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [_searchresultarray removeAllObjects];
-    [_searchbar resignFirstResponder];
     NSArray *histories = _historysearch;
+    NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ([searchString length]) {
     
-    if (![_searchbar.text isEqualToString: @""]&&![searchBar.text isEqualToString: @" "]) {
+        [_searchresultarray removeAllObjects];
+        [_searchbar resignFirstResponder];
         
         if (histories.count == 0 || [histories isEqualToArray: @[]]) {
             [self SaveHistory:searchBar.text];
@@ -382,6 +387,7 @@
 }
 
 - (void)tapNotificationBar {
+    [_searchbar resignFirstResponder];
     [_notifManager tapNotificationBar];
 }
 

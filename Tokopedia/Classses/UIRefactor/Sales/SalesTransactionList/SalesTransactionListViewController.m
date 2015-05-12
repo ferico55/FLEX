@@ -29,7 +29,8 @@
     UITableViewDelegate,
     ShipmentStatusCellDelegate,
     FilterSalesTransactionListDelegate,
-    ChangeReceiptNumberDelegate
+    ChangeReceiptNumberDelegate,
+    TrackOrderViewControllerDelegate
 >
 {
     __weak RKObjectManager *_objectManager;
@@ -167,7 +168,8 @@
     
     cell.invoiceNumberLabel.text = order.order_detail.detail_invoice;
     cell.buyerNameLabel.text = order.order_customer.customer_name;
-
+    cell.invoiceDateLabel.text = order.order_detail.detail_order_date;
+    
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:order.order_customer.customer_image]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -269,6 +271,7 @@
     TrackOrderViewController *controller = [TrackOrderViewController new];
     controller.order = _selectedOrder;
     controller.hidesBottomBarWhenPushed = YES;
+    controller.delegate = self;
     
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -698,6 +701,8 @@
             StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil merubah nomor resi."] delegate:self];
             [alert show];
             
+            _selectedOrder.order_detail.detail_ship_ref_num = receiptNumber;
+            
         } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
             [alert show];
@@ -742,6 +747,15 @@
     [_orders removeAllObjects];
     [_tableView reloadData];
     
+    [self configureRestKit];
+    [self request];
+}
+
+#pragma mark - Track order delegate
+
+- (void)shouldRefreshRequest
+{
+    _page = 1;
     [self configureRestKit];
     [self request];
 }

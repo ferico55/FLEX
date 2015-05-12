@@ -17,13 +17,15 @@
 #import "CatalogShopViewController.h"
 #import "LoginViewController.h"
 #import "ProductAddEditViewController.h"
+#import "GalleryViewController.h"
 
 @interface CatalogViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     UIScrollViewDelegate,
-    LoginViewDelegate
+    LoginViewDelegate,
+    GalleryViewControllerDelegate
 >
 {
     Catalog *_catalog;
@@ -128,6 +130,10 @@
     
     self.productPriceLabel.text = catalogPrice;
     [self.productPriceLabel sizeToFit];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    [self.productPhotoScrollView setUserInteractionEnabled:YES];
+    [self.productPhotoScrollView addGestureRecognizer:tap];
     
     [self request];
 }
@@ -514,11 +520,14 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
-            NSArray *items = @[_catalog.result.catalog_info.catalog_url,];
-            UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:items
-                                                                                     applicationActivities:nil];
-            controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-            [self presentViewController:controller animated:YES completion:nil];
+            if (_catalog) {
+                NSString *title = _catalog.result.catalog_info.catalog_name;
+                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
+                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                         applicationActivities:nil];
+                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:controller animated:YES completion:nil];
+            }
         }
     } else if ([sender isKindOfClass:[UIButton class]]) {
         CatalogShopViewController *controller = [CatalogShopViewController new];
@@ -535,6 +544,12 @@
             _tableView.tableFooterView = _descriptionView;
         }
         [_tableView reloadData];
+    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        NSInteger startingIndex = _productPhotoPageControl.currentPage;
+        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
+        controller.canDownload = NO;
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.navigationController presentViewController:controller animated:YES completion:nil];
     }
 }
 
@@ -555,6 +570,23 @@
         NSInteger index = scrollView.contentOffset.x / self.view.frame.size.width;
         _productPhotoPageControl.currentPage = index;
     }
+}
+
+#pragma mark - Gallery delegate
+
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
+{
+    return _catalog.result.catalog_info.catalog_images.count;
+}
+
+- (NSString *)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index
+{
+    if(((int) index) < 0)
+        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:0]).image_src;
+    else if(((int)index) > _catalog.result.catalog_info.catalog_images.count-1)
+        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:_catalog.result.catalog_info.catalog_images.count-1]).image_src;
+    
+    return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:index]).image_src;
 }
 
 @end

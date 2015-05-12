@@ -43,6 +43,7 @@
     NSDictionary *_parameter;
     NSOperationQueue *_operationQueue;
     
+    
     BOOL _isNoData;
     NSMutableArray *objectArray;
     
@@ -50,6 +51,7 @@
 
 @property (assign, nonatomic) id<TokopediaNetworkManagerDelegate> delegate;
 @property (nonatomic) int tagRequest;
+@property (nonatomic) BOOL isParameterNotEncrypted;
 
 - (void)doRequest;
 - (void)requestProcess:(id)processResult;

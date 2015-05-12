@@ -53,6 +53,8 @@
     __weak RKObjectManager *_objectmanager;
     
     NSString *_persistToken;
+    
+    UIAlertView *_logingOutAlertView;
 }
 
 @end
@@ -84,14 +86,29 @@ typedef enum TagRequest {
     _logoutRequestManager.delegate = self;
     _logoutRequestManager.tagRequest = LogoutTag;
     
-    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
-    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(applicationLogin:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil];
-    [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
-    
-    [center addObserver:self selector:@selector(redirectNotification:) name:@"redirectNotification" object:nil];
+    //app launch delay presentation
 
-    [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
+    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
+
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    
+    [center addObserver:self
+               selector:@selector(applicationLogin:)
+                   name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(applicationlogout:)
+                   name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(redirectNotification:)
+                   name:@"redirectNotification" object:nil];
+
+    [center addObserver:self
+               selector:@selector(updateTabBarMore:)
+                   name:UPDATE_TABBAR object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -404,6 +421,11 @@ typedef enum TagRequest {
 
 - (void)applicationLogin:(NSNotification*)notification
 {
+    if (_logingOutAlertView) {
+        [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        _logingOutAlertView = nil;
+    }
+    
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     
@@ -479,6 +501,14 @@ typedef enum TagRequest {
 }
 
 - (void)doApplicationLogout {
+    
+    _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Logging out"
+                                                     message:nil
+                                                    delegate:self
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:nil, nil];
+    [_logingOutAlertView show];
+    
     [Helpshift logout];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
@@ -507,6 +537,7 @@ typedef enum TagRequest {
                                                         object:nil
                                                       userInfo:@{}];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
 }
@@ -617,8 +648,6 @@ typedef enum TagRequest {
 
 
 - (void)redirectNotification:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    
     _tabBarController.selectedIndex = 0;
     for(UIViewController *viewController in _tabBarController.viewControllers) {
         if([viewController isKindOfClass:[UINavigationController class]]) {

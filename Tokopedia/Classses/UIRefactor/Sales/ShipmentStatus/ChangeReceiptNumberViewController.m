@@ -58,7 +58,7 @@
                 [self.delegate changeReceiptNumber:_textField.text];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 9 - 17 karakter"]
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 8 - 17 karakter"]
                                                                                delegate:self];
                 [alert show];
             }

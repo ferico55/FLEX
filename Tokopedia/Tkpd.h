@@ -150,4 +150,6 @@ typedef enum {
 
 #define TKPD_ISLOGINNOTIFICATIONNAME @"setlogin"
 
+#define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
+
 #endif
