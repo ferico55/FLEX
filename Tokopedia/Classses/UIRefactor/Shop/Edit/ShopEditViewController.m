@@ -21,6 +21,7 @@
 #import "RequestUploadImage.h"
 
 #import "TKPDTextView.h"
+#import "TKPDPhotoPicker.h"
 
 #pragma mark - Shop Edit View Controller
 @interface ShopEditViewController ()
@@ -29,7 +30,8 @@
     ShopEditStatusViewControllerDelegate,
     CameraControllerDelegate,
     GenerateHostDelegate,
-    RequestUploadImageDelegate
+    RequestUploadImageDelegate,
+    TKPDPhotoPickerDelegate
 >
 {
     UITextView *_activetextview;
@@ -64,6 +66,8 @@
     NSOperationQueue *_operationQueue;
     
     UIImage *_snappedImage;
+    
+    TKPDPhotoPicker *_photoPicker;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *viewmembership;
@@ -423,15 +427,21 @@
             }
             case 11:
             {   //edit thumbnail
-                CameraController* c = [CameraController new];
-                [c snap];
-                c.delegate = self;
+
+                _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
+                                                              pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+                [_photoPicker setDelegate:self];
+
                 
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-                nav.wantsFullScreenLayout = YES;
-                nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
+//                CameraController* c = [CameraController new];
+//                [c snap];
+//                c.delegate = self;
+//                
+//                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+//                nav.wantsFullScreenLayout = YES;
+//                nav.modalPresentationStyle = UIModalPresentationFullScreen;
+//                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
             case 12:
@@ -596,6 +606,27 @@
     [self actionUploadImage:object];
 }
 
+#pragma mark - Photo picker delegate
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
+
+    NSDictionary *object = @{DATA_SELECTED_PHOTO_KEY : userInfo,
+                             DATA_SELECTED_IMAGE_VIEW_KEY : _thumb};
+    
+    NSDictionary *photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
+    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    _thumb.image = image;
+    _thumb.hidden = NO;
+    _thumb.alpha = 0.5f;
+    
+    [self actionUploadImage:object];
+}
+
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)info {
     _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
@@ -608,4 +639,5 @@
 - (void)keyboardWillHide:(NSNotification *)info {
     _scrollview.contentOffset = CGPointZero;
 }
+
 @end
