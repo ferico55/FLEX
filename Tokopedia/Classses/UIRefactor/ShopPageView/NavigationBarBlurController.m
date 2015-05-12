@@ -7,7 +7,7 @@
 //
 
 #import "NavigationBarBlurController.h"
-#import "UIImageEffects.h"
+//#import "UIImageEffects.h"
 
 @implementation NavigationBarBlurController {
     CGPoint _contentOffset;
@@ -94,7 +94,7 @@
     if (self.backgroundImage != nil) {
         UIImage *imageToBlur;
         imageToBlur = [self croppedImageWithOffset:-MIN(_contentOffset.y, _backgroundImage.size.height - 64)];
-        blurredImage = [UIImageEffects imageByApplyingBlurToImage:imageToBlur withRadius:blurRadius tintColor:nil saturationDeltaFactor:1.0 maskImage:nil];
+//        blurredImage = [UIImageEffects imageByApplyingBlurToImage:imageToBlur withRadius:blurRadius tintColor:nil saturationDeltaFactor:1.0 maskImage:nil];
     }
     return blurredImage;
 }
