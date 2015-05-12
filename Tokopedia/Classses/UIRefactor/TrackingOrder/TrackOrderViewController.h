@@ -10,8 +10,10 @@
 #import "OrderTransaction.h"
 
 @protocol TrackOrderViewControllerDelegate <NSObject>
-@required
+
+@optional
 - (void)shouldRefreshRequest;
+- (void)updateDeliveredOrder;
 
 @end
 

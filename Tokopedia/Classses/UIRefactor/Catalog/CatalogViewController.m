@@ -238,7 +238,8 @@
     
     RKObjectMapping *catalogImageMapping = [RKObjectMapping mappingForClass:[CatalogImages class]];
     [catalogImageMapping addAttributeMappingsFromArray:@[API_IMAGE_PRIMARY_KEY,
-                                                         API_IMAGE_SRC_KEY]];
+                                                         API_IMAGE_SRC_KEY,
+                                                         API_IMAGE_SRC_FULL_KEY]];
     
     RKObjectMapping *catalogSpecificationMapping = [RKObjectMapping mappingForClass:[CatalogSpecs class]];
     [catalogSpecificationMapping addAttributeMappingsFromArray:@[API_SPEC_HEADER_KEY,]];
@@ -449,10 +450,6 @@
                 CGRect frame = CGRectMake(x, 0, self.view.frame.size.width, self.view.frame.size.width);
                 UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
                 
-//                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image_src]];
-//                UIImage *image = [UIImage imageWithData:data];
-//                catalogImageView.image = image;
-                
                 NSURLRequest* requestCatalogImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src]  cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                                                      
                 [catalogImageView setImageWithURLRequest:requestCatalogImage placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -582,11 +579,11 @@
 - (NSString *)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index
 {
     if(((int) index) < 0)
-        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:0]).image_src;
+        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:0]).image_src_full;
     else if(((int)index) > _catalog.result.catalog_info.catalog_images.count-1)
-        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:_catalog.result.catalog_info.catalog_images.count-1]).image_src;
+        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:_catalog.result.catalog_info.catalog_images.count-1]).image_src_full;
     
-    return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:index]).image_src;
+    return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:index]).image_src_full;
 }
 
 @end
