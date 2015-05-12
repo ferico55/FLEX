@@ -40,7 +40,7 @@ static CGFloat messageTextSize = 15.0;
 
 + (id)newcell
 {
-    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"HotlistCell" owner:nil options:0];
+    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"messagingCell" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
             return o;

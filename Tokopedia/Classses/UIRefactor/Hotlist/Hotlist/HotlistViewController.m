@@ -108,6 +108,11 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+               selector:@selector(userDidTappedTabBar:)
+                   name:@"TKPDUserDidTappedTapBar" object:nil];
+    
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
@@ -501,6 +506,11 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 //    NSLog(@"scrolling %f Y", scrollView.contentOffset.y);
 //    NSLog(@"scrolling %f X", scrollView.contentOffset.x);
+}
+
+#pragma mark - Notification Action
+- (void)userDidTappedTabBar:(NSNotification*)notification {
+    [_table scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
 }
 
 @end

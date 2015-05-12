@@ -12,6 +12,7 @@
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
+
 //#if DEBUG
 //    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
 //#else
@@ -186,6 +187,7 @@ typedef enum {
 #define TokopediaNotificationReload @"reloadNotification"
 
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
+#define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
 
