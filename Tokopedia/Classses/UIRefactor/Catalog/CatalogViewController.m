@@ -450,18 +450,20 @@
                 CGRect frame = CGRectMake(x, 0, self.view.frame.size.width, self.view.frame.size.width);
                 UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
                 
-                NSURLRequest* requestCatalogImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src]  cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                NSURLRequest* requestCatalogImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src]
+                                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                                                      
-                [catalogImageView setImageWithURLRequest:requestCatalogImage placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [catalogImageView setImageWithURLRequest:requestCatalogImage
+                                        placeholderImage:nil
+                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
                     [catalogImageView setImage:image];
-                    
 #pragma clang diagnostic pop
-                    
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    
+                    [catalogImageView setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+                    [catalogImageView setContentMode:UIViewContentModeCenter];
                 }];
                 
                 catalogImageView.contentMode = UIViewContentModeScaleAspectFit;
