@@ -138,6 +138,11 @@
 - (void)successEditEtalase:(NSString *)etalaseName
 {
     self.labelname.text = etalaseName;
+    
+    EtalaseList *tempEtalase = [_data objectForKey:DATA_ETALASE_KEY];
+    if(tempEtalase != nil) {
+        tempEtalase.etalase_name = self.labelname.text;
+    }
 }
 
 @end

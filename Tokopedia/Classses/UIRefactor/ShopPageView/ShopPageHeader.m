@@ -146,6 +146,7 @@
     [self initButton];
     
     _descriptionView = [ShopDescriptionView newView];
+    _descriptionView.frame = CGRectMake(_descriptionView.frame.origin.x, _descriptionView.frame.origin.y, _descriptionView.bounds.size.width, self.scrollView.bounds.size.height);
     [self.scrollView addSubview:_descriptionView];
     
     _statView = [ShopStatView newView];

@@ -136,12 +136,7 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    self.navigationItem.backBarButtonItem = backBarButton;
-    
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE
                                                       style:UIBarButtonItemStyleDone
                                                      target:(self)

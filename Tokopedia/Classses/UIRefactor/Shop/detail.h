@@ -473,6 +473,7 @@ typedef enum
 #define kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY @"file_path"
 #define kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY @"file_th"
 #define API_UPLOAD_PHOTO_ID_KEY @"pic_id"
+#define kTKPD_SRC @"src"
 
 #pragma mark -- Shop  Location
 #define kTKPDSHOP_APICITYNAMEKEY @"location_city_name"

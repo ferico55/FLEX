@@ -886,6 +886,7 @@
                 
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
 
+                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
                 

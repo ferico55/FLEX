@@ -218,7 +218,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     CGRect newFrame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, _header.frame.size.height + searchView.frame.size.height);
     _header.frame = newFrame;
-    
     [_header addSubview:searchView];
     
     [_header setClipsToBounds:YES];

@@ -292,7 +292,7 @@
 
 - (void)checkValidation:(NSString *)strNamaToko withSlogan:(NSString *)strSlogan withDesc:(NSString *)strDesc
 {
-    if(isValidDomain && hasSetImgGambar)
+    if(isValidDomain)
     {
         if(strNamaToko == nil)
             strNamaToko = [self getNamaToko];
@@ -544,7 +544,8 @@
         [tempView removeFromSuperview];
         tempView = [cell.contentView viewWithTag:CTagNamaToko];
         [tempView removeFromSuperview];
-        
+        [lblCountSlogan removeFromSuperview];
+        [lblCountDescripsi removeFromSuperview];
         
         [cell getLblDomain].hidden = NO;
         if(txtDomain == nil)

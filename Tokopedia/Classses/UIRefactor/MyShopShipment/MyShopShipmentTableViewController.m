@@ -169,10 +169,15 @@
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:(createShopViewController!=nil? CStringLanjut:@"Simpan")
-                                                                   style:UIBarButtonItemStyleDone
+                                                                   style:(createShopViewController!=nil? UIBarButtonItemStylePlain:UIBarButtonItemStyleDone)
                                                                   target:self
                                                                   action:@selector(tap:)];
-    saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+    
+    
+    if(createShopViewController == nil) {
+        saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+    }
+    
     saveButton.enabled = NO;
     self.navigationItem.rightBarButtonItem = saveButton;
     
