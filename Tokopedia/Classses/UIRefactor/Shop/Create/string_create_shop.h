@@ -37,6 +37,7 @@
 #define CTagSlogan 124
 #define CTagNamaToko 234
 #define CTagDeskripsi 125
+#define CTagCheckList 126
 #define CTagContentViewHeader 222
 #define CHeaderFooterCell [UIColor colorWithRed:66/255.0f green:66/255.0f blue:66/255.0f alpha:1.0f]
 #define CBackgroundBtnCheckDomain [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f]
@@ -49,6 +50,7 @@
 #define CStringKotaAsal @"Kota Asal"
 #define CStringKodePos @"Kode Pos"
 #define CStringLanjut @"Lanjut"
+#define CStringBukaToko @"Buka Toko"
 #define CStringValidDomain @"Valid Domain"
 #define CStringValidationNamaToko @"Nama toko harus diisi"
 #define CStringNotValidDomainName @"Nama domain yang anda pilih tidak tersedia."

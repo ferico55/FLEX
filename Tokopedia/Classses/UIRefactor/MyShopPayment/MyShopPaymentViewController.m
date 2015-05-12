@@ -141,7 +141,7 @@
     }
     else
     {
-        btnLanjut = [[UIBarButtonItem alloc] initWithTitle:CStringLanjut style:UIBarButtonItemStylePlain target:self action:@selector(lanjut:)];
+        btnLanjut = [[UIBarButtonItem alloc] initWithTitle:CStringBukaToko style:UIBarButtonItemStylePlain target:self action:@selector(lanjut:)];
         self.navigationItem.rightBarButtonItem = btnLanjut;
         _list = [arrDataPayment mutableCopy];
         if(_list!=nil && _list.count>0)

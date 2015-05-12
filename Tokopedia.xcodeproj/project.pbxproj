@@ -72,6 +72,8 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		85D164201B01F280005A360D /* icon_correct@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D1641E1B01F280005A360D /* icon_correct@2x.png */; };
+		85D164211B01F280005A360D /* icon_incorrect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D1641F1B01F280005A360D /* icon_incorrect@2x.png */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -1531,6 +1533,8 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		85D1641E1B01F280005A360D /* icon_correct@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_correct@2x.png"; sourceTree = "<group>"; };
+		85D1641F1B01F280005A360D /* icon_incorrect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_incorrect@2x.png"; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -7185,6 +7189,8 @@
 				FC8576401AF1CE35005C9FB0 /* icon_category_list_white@2x.png */,
 				FC8576411AF1CE35005C9FB0 /* icon_category_white.png */,
 				FC8576421AF1CE35005C9FB0 /* icon_category_white@2x.png */,
+				85D1641E1B01F280005A360D /* icon_correct@2x.png */,
+				85D1641F1B01F280005A360D /* icon_incorrect@2x.png */,
 				FC8576431AF1CE35005C9FB0 /* icon_check.png */,
 				FC8576441AF1CE35005C9FB0 /* icon_check_orange.png */,
 				FC8576451AF1CE35005C9FB0 /* icon_check_orange@2x.png */,
@@ -8513,6 +8519,7 @@
 				FC85796E1AF1CE36005C9FB0 /* AlertListView.xib in Resources */,
 				FC857B081AF1CE36005C9FB0 /* SendMessageViewController.xib in Resources */,
 				FC857B841AF1CE36005C9FB0 /* ProfileBiodataShopCell.xib in Resources */,
+				85D164211B01F280005A360D /* icon_incorrect@2x.png in Resources */,
 				7A97B23E1AF244490025915B /* icon_4@3x.png in Resources */,
 				FC8579B71AF1CE36005C9FB0 /* NoResult.xib in Resources */,
 				FC857BF01AF1CE36005C9FB0 /* icon_category_white.png in Resources */,
@@ -8585,6 +8592,7 @@
 				85C04BA31AF70ED3008ABC2F /* WebViewController.xib in Resources */,
 				FC857BB71AF1CE36005C9FB0 /* icon_21@2x.png in Resources */,
 				FC857CA71AF1CE36005C9FB0 /* icon_category_active.png in Resources */,
+				85D164201B01F280005A360D /* icon_correct@2x.png in Resources */,
 				FC857C301AF1CE36005C9FB0 /* icon_love_active@2x.png in Resources */,
 				FC857D391AF1CE36005C9FB0 /* HSTutorial.png in Resources */,
 				FC857BF51AF1CE36005C9FB0 /* icon_checkmark.png in Resources */,
@@ -9818,7 +9826,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5c64199a-9899-4665-99f0-073513e49ac8";
+				PROVISIONING_PROFILE = "ff7a2725-384a-451f-811b-50814642e374";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -9856,7 +9864,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5c64199a-9899-4665-99f0-073513e49ac8";
+				PROVISIONING_PROFILE = "ff7a2725-384a-451f-811b-50814642e374";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
