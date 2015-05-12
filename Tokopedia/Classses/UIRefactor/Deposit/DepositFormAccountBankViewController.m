@@ -229,8 +229,8 @@
         }
         
         NSArray *array = messages;
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+        [alert show];
         
         return NO;
     }

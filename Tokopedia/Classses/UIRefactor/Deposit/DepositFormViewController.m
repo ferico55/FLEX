@@ -237,13 +237,13 @@
                 if(action.message_error)
                 {
                     NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 }
                 if ([action.result.is_success isEqualToString:@"1"]) {
                     NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                    [stickyAlertView show];
                 }
             }
         }
@@ -510,15 +510,15 @@
                 }
                 if (action.message_status) {
                     NSArray *array = action.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                    [stickyAlertView show];
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
                 }
                 else if(action.message_error)
                 {
                     NSArray *array = action.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 }
                 
             }
@@ -769,8 +769,8 @@
         }
         
         NSArray *array = messages;
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+        [alert show];
         
         return NO;
     }

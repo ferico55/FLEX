@@ -685,8 +685,8 @@
             if (status) {
                 if ([setting.result.post_key isEqualToString:@"1"] || setting.result.post_key == nil) {
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                     _saveBarButtonItem.enabled = YES;
                 } else {
                     [_dataInput setObject:setting.result.post_key?:@"" forKey:API_POSTKEY_KEY];
@@ -971,16 +971,16 @@
                 if(setting.message_error)
                 {
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                     _saveBarButtonItem.enabled = YES;
                 }
                 if (setting.result.is_success == 1 || setting.result.product_id!=0) {
                     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
                     NSString *defaultSuccessMessage = (type == TYPE_ADD_EDIT_PRODUCT_ADD)?SUCCESSMESSAGE_ADD_PRODUCT:SUCCESSMESSAGE_EDIT_PRODUCT;SUCCESSMESSAGE_ADD_PRODUCT;
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:defaultSuccessMessage, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                    [stickyAlertView show];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                 }
@@ -1298,13 +1298,13 @@
                 if(setting.message_error)
                 {
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 }
                 if (setting.result.is_success == 1) {
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                    [stickyAlertView show];
                     
                     //if (_isBeingPresented) {
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CA1CF27833B5BDA8B7FC7393"
+               BlueprintIdentifier = "E4ACD67A991034002EA0C02A"
                BuildableName = "libPods-TokopediaTests-SOCKit.a"
                BlueprintName = "Pods-TokopediaTests-SOCKit"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -231,13 +231,13 @@
     
     if([is_success isEqualToString:kTKPD_STATUSSUCCESS]) {
         NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+        [stickyAlertView show];
     } else {
         
         NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+        [alert show];
     }
     
 }
@@ -285,18 +285,18 @@
                 if (_request.isExecuting) return;
                 if(_messagesubjectfield.text.length == 0) {
                     NSArray *array = [[NSArray alloc] initWithObjects:kTKPDSUBJECT_EMPTY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 }
                 else if(_messagefield.text.length == 0) {
                     NSArray *array = [[NSArray alloc] initWithObjects:kTKPDMESSAGE_EMPTY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 }
                 else if(_messagefield.text.length < 3 || _messagesubjectfield.text.length < 3) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 } else {
                     [self configureRestkit];
                     [self doSendMessage];

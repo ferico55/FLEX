@@ -65,7 +65,7 @@
 #import "ProductGalleryViewController.h"
 
 #import "MyShopEtalaseFilterViewController.h"
-
+#import "NoResultView.h"
 #import "RequestMoveTo.h"
 #import "EtalaseList.h"
 
@@ -107,6 +107,7 @@ UIAlertViewDelegate
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
+    BOOL isDoingWishList, isDoingFavorite;
     
     NSInteger _requestcount;
     
@@ -389,11 +390,6 @@ UIAlertViewDelegate
         }
         [self.table reloadData];
     }
-    else if(isNeedLogin)
-    {
-        isNeedLogin = !isNeedLogin;
-        [self loadData];
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -537,7 +533,7 @@ UIAlertViewDelegate
                     controller.isPresentedViewController = YES;
                     controller.redirectViewController = self;
                     navigationController.viewControllers = @[controller];
-                    
+                    isDoingFavorite = isNeedLogin = YES;
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
                 break;
@@ -571,7 +567,7 @@ UIAlertViewDelegate
                     controller.isPresentedViewController = YES;
                     controller.redirectViewController = self;
                     navigationController.viewControllers = @[controller];
-                    
+                    isDoingFavorite = isNeedLogin = YES;
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
                 break;
@@ -1337,6 +1333,20 @@ UIAlertViewDelegate
         [self configureGetOtherProductRestkit];
         [self loadDataOtherProduct];
         [self requestsuccess:successResult withOperation:operation];
+        
+        
+        
+        if(isNeedLogin) {
+            isNeedLogin = !isNeedLogin;
+            if(isDoingWishList) {
+                isDoingWishList = !isDoingWishList;
+                [btnWishList sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
+            else if(isDoingFavorite) {
+                isDoingFavorite = !isDoingFavorite;
+                [_favButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
+        }
     }
     else if(tag == CTagOtherProduct)
     {
@@ -1574,6 +1584,15 @@ UIAlertViewDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
+        if(_product.result == nil) {
+            NoResultView *temp = [NoResultView new];
+            [self.view addSubview:temp.view];
+            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
+            _act.hidden = YES;
+            [_act stopAnimating];
+            return;
+        }
+        
         if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
             [self initViewTokoTutup];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, [lblDescTokoTutup sizeThatFits:CGSizeMake(lblDescTokoTutup.bounds.size.width, 9999)].height+16+viewTableContentHeader.bounds.size.height);
@@ -1805,12 +1824,14 @@ UIAlertViewDelegate
         case 13:
         {
             // Etalase
-            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            if(_product.result.product.product_etalase_id != nil) {
+                ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
             
-            container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
                                kTKPD_AUTHKEY:_auth?:[NSNull null],
                                @"product_etalase_id" : _product.result.product.product_etalase_id};
-            [self.navigationController pushViewController:container animated:YES];
+                [self.navigationController pushViewController:container animated:YES];
+            }
             
             break;
         }
@@ -1903,6 +1924,7 @@ UIAlertViewDelegate
         [self presentViewController:activityController animated:YES completion:nil];
     }
 }
+
 
 - (IBAction)actionWishList:(UIButton *)sender
 {
@@ -2196,6 +2218,12 @@ UIAlertViewDelegate
                     [[_otherproductviews objectAtIndex:i] removeFromSuperview];
                 [_otherproductviews removeAllObjects];
                 [_otherProductObj addObjectsFromArray: otherProduct.result.other_product];
+                
+                if(_otherProductObj.count == 0) {
+                    lblOtherProductTitle.hidden = YES;
+                    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, lblOtherProductTitle.frame.origin.y);
+                    _table.tableFooterView = _shopinformationview;
+                }
                 [self setOtherProducts];
             }
         }
@@ -2277,7 +2305,7 @@ UIAlertViewDelegate
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
         isNeedLogin = YES;
-        
+        isDoingWishList = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
@@ -2304,7 +2332,7 @@ UIAlertViewDelegate
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
         isNeedLogin = YES;
-        
+        isDoingWishList = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
@@ -2332,6 +2360,10 @@ UIAlertViewDelegate
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController{
     
+}
+
+- (void)cancelLoginView {
+    isDoingWishList = isDoingFavorite = isNeedLogin = NO;
 }
 
 #pragma mark - Tap View
@@ -2434,6 +2466,10 @@ UIAlertViewDelegate
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+
+    if(isNeedLogin) {
+        [self loadData];
+    }
 }
 
 - (void)userDidLogout:(NSNotification*)notification {

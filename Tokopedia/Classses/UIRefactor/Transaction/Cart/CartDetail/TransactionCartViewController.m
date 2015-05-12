@@ -771,11 +771,13 @@
     
     if (_list.count>0) {
         _isnodata = NO;
+        _tableView.userInteractionEnabled = YES;
     }
     else
     {
         _isnodata = YES;
         _paymentMethodView.hidden = YES;
+        _tableView.userInteractionEnabled = NO;
     }
     [_delegate isNodata:_isnodata];
     

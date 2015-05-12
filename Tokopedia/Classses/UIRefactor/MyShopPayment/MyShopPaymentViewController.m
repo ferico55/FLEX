@@ -16,7 +16,10 @@
 #import "MyShopPaymentViewController.h"
 #import "MyShopPaymentCell.h"
 #import "MoreViewController.h"
+#import "OpenShopPictureResult.h"
+#import "OpenShopPicture.h"
 #import "URLCacheController.h"
+#import "Upload.h"
 #import "RequestUploadImage.h"
 #import "RequestGenerateHost.h"
 #import "ShippingInfoShipmentPackage.h"
@@ -26,6 +29,11 @@
 #import "string_more.h"
 #import "StickyAlertView.h"
 #import "TokopediaNetworkManager.h"
+
+#define CTagOpenShop 11
+#define CTagOpenShopPicture 12
+#define CTagOpenShopValidation 13
+#define CTagOpenShopSubmit 14
 
 #pragma mark - Setting Payment View Controller
 @interface MyShopPaymentViewController ()
@@ -55,15 +63,15 @@
     
     NSOperationQueue *_operationQueue;
     
-    NSString *_cachepath, *filePath;
+    NSString *_cachepath, *filePath, *strPostKey, *strFileUploaded;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     
     RequestUploadImage *uploadImageRequest;
-    RKObjectManager *objectOpenShop;
+    RKObjectManager *objectOpenShop, *objectOpenShopPicture;
     GenerateHost *_generateHost;
-    TokopediaNetworkManager *tokopediaNetworkManager;
+    TokopediaNetworkManager *tokopediaNetworkManager, *tokopediaNetworkManagerOpenShopPict, *tokopediaNetworkManagerOpenShopVal, *tokopediaNetworkMangerOpenShopSubmit;
     UIBarButtonItem *btnLanjut;
     UIActivityIndicatorView *activityIndicator;
 }
@@ -133,7 +141,7 @@
     }
     else
     {
-        btnLanjut = [[UIBarButtonItem alloc] initWithTitle:CStringLanjut style:UIBarButtonItemStylePlain target:self action:@selector(lanjut:)];
+        btnLanjut = [[UIBarButtonItem alloc] initWithTitle:CStringBukaToko style:UIBarButtonItemStylePlain target:self action:@selector(lanjut:)];
         self.navigationItem.rightBarButtonItem = btnLanjut;
         _list = [arrDataPayment mutableCopy];
         if(_list!=nil && _list.count>0)
@@ -164,6 +172,11 @@
     uploadImageRequest.delegate = nil;
     [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;
+    
+    
+    [tokopediaNetworkManagerOpenShopPict requestCancel];
+    tokopediaNetworkManagerOpenShopPict.delegate = nil;
+    tokopediaNetworkManagerOpenShopPict = nil;
 }
 
 #pragma mark - Table View Data Source
@@ -300,10 +313,17 @@
 - (void)lanjut:(id)sender
 {
     [self isLoading:YES];
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
+    
+    if([myShopShipmentTableViewController.createShopViewController getDictContentPhoto] != nil) {
+        RequestGenerateHost *requestHost = [RequestGenerateHost new];
+        [requestHost configureRestkitGenerateHost];
+        [requestHost requestGenerateHost];
+        requestHost.delegate = self;
+    }
+    else {
+        strFileUploaded = strFileUploaded = filePath = @"";
+        [[self getNetworkManager:CTagOpenShopValidation] doRequest];
+    }
 }
 
 - (IBAction)tap:(id)sender {
@@ -649,14 +669,14 @@
                 }
                 if (setting.message_status) {
                     NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                    [stickyAlertView show];
                 }
                 else if(setting.message_error)
                 {
                     NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 }
                 
             }
@@ -691,23 +711,78 @@
 
 
 
-- (TokopediaNetworkManager *)getNetworkManager
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag
 {
-    if(tokopediaNetworkManager == nil)
-    {
-        tokopediaNetworkManager = [TokopediaNetworkManager new];
-        tokopediaNetworkManager.delegate = self;
+    if(tag == CTagOpenShop) {
+        if(tokopediaNetworkManager == nil) {
+            tokopediaNetworkManager = [TokopediaNetworkManager new];
+            tokopediaNetworkManager.delegate = self;
+            tokopediaNetworkManager.tagRequest = tag;
+        }
+
+        return tokopediaNetworkManager;
+    }
+    else if(tag == CTagOpenShopPicture) {
+        if(tokopediaNetworkManagerOpenShopPict == nil) {
+            tokopediaNetworkManagerOpenShopPict = [TokopediaNetworkManager new];
+            tokopediaNetworkManagerOpenShopPict.delegate = self;
+            tokopediaNetworkManagerOpenShopPict.tagRequest = tag;
+        }
+        
+        return tokopediaNetworkManagerOpenShopPict;
+    }
+    else if(tag == CTagOpenShopValidation) {
+        if(tokopediaNetworkManagerOpenShopVal == nil) {
+            tokopediaNetworkManagerOpenShopVal = [TokopediaNetworkManager new];
+            tokopediaNetworkManagerOpenShopVal.tagRequest = tag;
+            tokopediaNetworkManagerOpenShopVal.delegate = self;
+        }
+        
+        return tokopediaNetworkManagerOpenShopVal;
+    }
+    else if(tag == CTagOpenShopSubmit) {
+        if(tokopediaNetworkMangerOpenShopSubmit == nil) {
+            tokopediaNetworkMangerOpenShopSubmit = [TokopediaNetworkManager new];
+            tokopediaNetworkMangerOpenShopSubmit.delegate = self;
+            tokopediaNetworkMangerOpenShopSubmit.tagRequest = tag;
+        }
+        
+        return tokopediaNetworkMangerOpenShopSubmit;
     }
     
-    return tokopediaNetworkManager;
+    return nil;
 }
 
 
-#pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    [param setObject:kTKPD_OPEN_SHOP forKey:kTKPDDETAIL_ACTIONKEY];
+#pragma mark - Method
+- (void)successCreateShop:(AddShop *)addShop {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    if(secureStorage != nil)
+    {
+        [secureStorage setKeychainWithValue:addShop.result.shop_id withKey:kTKPD_SHOPIDKEY];
+        [secureStorage setKeychainWithValue:[myShopShipmentTableViewController.createShopViewController getNamaToko] withKey:kTKPD_SHOPNAMEKEY];
+        [secureStorage setKeychainWithValue:addShop.result.shop_url withKey:kTKPD_SHOPIMAGEKEY];
+        [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+        [myShopShipmentTableViewController.createShopViewController.moreViewController updateKeyChain];
+    }
+    
+    strFileUploaded = filePath = strPostKey = nil;
+    [self isLoading:NO];
+    
+    NSDictionary *tempDict = [NSDictionary dictionaryWithObjectsAndKeys:[myShopShipmentTableViewController.createShopViewController getNamaToko], kTKPD_SHOPNAMEKEY, addShop.result.shop_url, kTKPD_SHOPURL, nil];
+    
+    BerhasilBukaTokoViewController *berhasilBukaTokoViewController = [BerhasilBukaTokoViewController new];
+    berhasilBukaTokoViewController.dictData = tempDict;
+    [self.navigationController pushViewController:berhasilBukaTokoViewController animated:YES];
+}
+
+- (void)failedCreateShop {
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedCreateShop] delegate:self];
+    [stickyAlertView show];
+    [self isLoading:NO];
+}
+
+- (void)setParameterOpenShop:(NSMutableDictionary *)param {
     [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaDomain] forKey:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY];
     [param setObject:filePath==nil?@"":filePath forKey:kTKPD_SHOP_LOGO];
     [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaToko] forKey:kTKPDDETAIL_APISHOPNAMEKEY];
@@ -728,7 +803,7 @@
         [param setObject:[myShopShipmentTableViewController getJneMinWeightTextField]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY];
         [param setObject:[myShopShipmentTableViewController getShipment].jne.jne_min_weight forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY];
         [param setObject:[myShopShipmentTableViewController getShipment].jne.jne_tiket forKey:kTKPDSHOPSHIPMENT_APIJNETICKETKEY];
-
+        
         
         if ([[myShopShipmentTableViewController getJnePackageYes].active boolValue]) {
             [jne setValue:@"1" forKey:[myShopShipmentTableViewController getJnePackageYes].sp_id];
@@ -841,84 +916,210 @@
     data = [NSJSONSerialization dataWithJSONObject:dictPayment options:0 error:nil];
     NSString *payment_ids = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
     [param setObject:payment_ids forKey:kTKPDSHOPSHIPMENT_APIPAYMENTIDS];
+}
+
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    if(tag == CTagOpenShop) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:kTKPD_OPEN_SHOP forKey:kTKPDDETAIL_ACTIONKEY];
+        [self setParameterOpenShop:param];
+        
+        return param;
+    }
+    else if(tag == CTagOpenShopPicture) {
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *tempAuth = [secureStorage keychainDictionary];
+        
+        //Set Parameter
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:kTKPD_OPEN_SHOP_PICTURE forKey:kTKPDDETAIL_ACTIONKEY];
+        [param setObject:filePath forKey:kTKPD_SHOP_LOGO];
+        [param setObject:[[tempAuth objectForKey:kTKPD_USERIDKEY] stringValue] forKey:MORE_USER_ID];
+        [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaDomain] forKey:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY];
+        [param setObject:_generateHost.result.generated_host.server_id==nil?@"":_generateHost.result.generated_host.server_id forKey:API_SERVER_ID_KEY];
+        
+        return param;
+    }
+    else if(tag == CTagOpenShopValidation) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:kTKPD_OPEN_SHOP_VALIDATION forKey:kTKPDDETAIL_ACTIONKEY];
+        [self setParameterOpenShop:param];
+        
+        return param;
+    }
+    else if(tag == CTagOpenShopSubmit) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:kTKPD_OPEN_SHOP_SUBMIT forKey:kTKPDDETAIL_ACTIONKEY];
+        [param setObject:strPostKey forKey:CPostKey];
+        
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *tempAuth = [secureStorage keychainDictionary];
+        [param setObject:[[tempAuth objectForKey:kTKPD_USERIDKEY] stringValue] forKey:MORE_USER_ID];
+        [param setObject:strFileUploaded forKey:kTKPD_FILE_UPLOADED];
+        
+        return param;
+    }
     
-    
-    return param;
+    return nil;
 }
 
 - (NSString*)getPath:(int)tag
 {
-    return [NSString stringWithFormat:@"action/%@", kTKPMYSHOP_APIPATH];
+    if(tag==CTagOpenShop || tag==CTagOpenShopPicture || tag==CTagOpenShopValidation || tag==CTagOpenShopSubmit) {
+        return [NSString stringWithFormat:@"action/%@", kTKPMYSHOP_APIPATH];
+    }
+    
+    return nil;
 }
 
 - (id)getObjectManager:(int)tag
 {
-    objectOpenShop =  [RKObjectManager sharedClient];
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddShop class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
+    if(tag==CTagOpenShop || tag==CTagOpenShopValidation || tag==CTagOpenShopSubmit) {
+        objectOpenShop =  [RKObjectManager sharedClient];
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddShop class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                            }];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddShopResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{CStatusDomain:CStatusDomain, CShopID:CShopID, CShopURL:CShopURL, CIsSuccess:CIsSuccess, CPostKey:CPostKey}];
+        
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:[self getPath:tag] keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [objectOpenShop addResponseDescriptor:responseDescriptorStatus];
+        
+        return objectOpenShop;
+    }
+    else if(tag == CTagOpenShopPicture) {
+        objectOpenShopPicture = [RKObjectManager sharedClient];
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[OpenShopPicture class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                            }];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[OpenShopPictureResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_FILE_UPLOADED:kTKPD_FILE_UPLOADED,
+                                                            kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+        
+        
+        //Relation
+        RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resultRel];
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:[self getPath:tag] keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        [objectOpenShopPicture addResponseDescriptor:responseDescriptorStatus];
+        
+        return objectOpenShopPicture;
+    }
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddShopResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{CStatusDomain:CStatusDomain, CShopID:CShopID, CShopURL:CShopURL, CIsSuccess:CIsSuccess}];
-    
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[self getPath:0] keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectOpenShop addResponseDescriptor:responseDescriptorStatus];
-    
-    return objectOpenShop;
+    return nil;
 }
 
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag
 {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
+
+    if(tag==CTagOpenShop || tag==CTagOpenShopValidation || tag==CTagOpenShopSubmit) {
+        return ((AddShop *) stat).status;
+    }
+    else if(tag == CTagOpenShopPicture) {
+        return ((OpenShopPicture *) stat).status;
+    }
     
-    return ((AddShop *) stat).status;
+    return nil;
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
-    NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
-    AddShop *addShop = (AddShop *)[resultDict objectForKey:@""];
-    if(addShop.message_error!=nil && addShop.message_error.count>0) {//Failed
-        StickyAlertView *stickAlert = [[StickyAlertView alloc] initWithErrorMessages:addShop.message_error delegate:self];
-        [stickAlert show];
-        [self isLoading:NO];
-    }
-    else if([addShop.result.is_success isEqualToString:@"1"])
-    {
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        if(secureStorage != nil)
-        {
-            [secureStorage setKeychainWithValue:addShop.result.shop_id withKey:kTKPD_SHOPIDKEY];
-            [secureStorage setKeychainWithValue:[myShopShipmentTableViewController.createShopViewController getNamaToko] withKey:kTKPD_SHOPNAMEKEY];
-            [secureStorage setKeychainWithValue:addShop.result.shop_url withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
-            [myShopShipmentTableViewController.createShopViewController.moreViewController updateKeyChain];
+    if(tag==CTagOpenShop || tag==CTagOpenShopSubmit) {
+        NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
+        AddShop *addShop = (AddShop *)[resultDict objectForKey:@""];
+        if(addShop.message_error!=nil && addShop.message_error.count>0) {//Failed
+            strPostKey = filePath = strFileUploaded = nil;
+            StickyAlertView *stickAlert = [[StickyAlertView alloc] initWithErrorMessages:addShop.message_error delegate:self];
+            [stickAlert show];
+            [self isLoading:NO];
         }
-        
-        [self isLoading:NO];
-        
-        NSDictionary *tempDict = [NSDictionary dictionaryWithObjectsAndKeys:[myShopShipmentTableViewController.createShopViewController getNamaToko], kTKPD_SHOPNAMEKEY, addShop.result.shop_url, kTKPD_SHOPURL, nil];
-        
-        BerhasilBukaTokoViewController *berhasilBukaTokoViewController = [BerhasilBukaTokoViewController new];
-        berhasilBukaTokoViewController.dictData = tempDict;
-        [self.navigationController pushViewController:berhasilBukaTokoViewController animated:YES];
+        else if([addShop.result.is_success isEqualToString:@"1"])
+        {
+            [self successCreateShop:addShop];
+        }
+        else
+        {
+            strPostKey = filePath = strFileUploaded = nil;
+            [self failedCreateShop];
+        }
     }
-    else
-    {
-        StickyAlertView *stickAlert = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedCreateShop] delegate:self];
-        [stickAlert show];
-        [self isLoading:NO];
+    else if(tag == CTagOpenShopPicture) {
+        NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
+        OpenShopPicture *openShopPicture = (OpenShopPicture *)[resultDict objectForKey:@""];
+        
+        if(openShopPicture.message_error!=nil && openShopPicture.message_error.count>0) {
+            StickyAlertView *stickyAleryView = [[StickyAlertView alloc] initWithErrorMessages:openShopPicture.message_error delegate:self];
+            [stickyAleryView show];
+            [self isLoading:NO];
+        }
+        else if(openShopPicture.result.file_uploaded == nil) {
+            strPostKey = filePath = strFileUploaded = nil;
+            [self failedCreateShop];
+        }
+        else {
+            strFileUploaded = openShopPicture.result.file_uploaded;
+            [[self getNetworkManager:CTagOpenShopSubmit] doRequest];
+        }
+    }
+    else if(tag == CTagOpenShopValidation) {
+        NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
+        AddShop *addShop = (AddShop *)[resultDict objectForKey:@""];
+        if(addShop.message_error!=nil && addShop.message_error.count>0) {//Failed
+            StickyAlertView *stickAlert = [[StickyAlertView alloc] initWithErrorMessages:addShop.message_error delegate:self];
+            [stickAlert show];
+            [self isLoading:NO];
+        }
+        else {
+            BOOL isError = NO;
+            if([myShopShipmentTableViewController.createShopViewController getDictContentPhoto] != nil) {
+                if(addShop.result.post_key != nil)
+                {
+                    strPostKey = addShop.result.post_key;
+                    [[self getNetworkManager:CTagOpenShopPicture] doRequest];
+                }
+                else {
+                    isError = YES;
+                }
+            }
+            else {
+                if(addShop.result.shop_id != nil) {
+                    [self successCreateShop:addShop];
+                }
+                else {
+                    isError = YES;
+                }
+            }
+            
+            
+            
+            
+            if(isError) {
+                strPostKey = filePath = strFileUploaded = nil;
+                [self failedCreateShop];
+            }
+        }
     }
 }
 
@@ -936,30 +1137,33 @@
 
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
-    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedCreateShop] delegate:nil];
-    [stickyAlertView show];
-    [self isLoading:NO];
+    filePath = strPostKey = strFileUploaded = nil;
+    if(tag==CTagOpenShop || tag==CTagOpenShopValidation) {
+        [self failedCreateShop];
+    }
+    else if(tag == CTagOpenShopPicture) {
+        [self failedGenerateHost];
+    }
+    else if(tag == CTagOpenShopSubmit) {
+        [self failedCreateShop];
+    }
 }
 
 #pragma mark - RequestUploadImage delegate
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
-    filePath = uploadImage.result.file_th;
-    [[self getNetworkManager] doRequest];
-    
+    filePath = uploadImage.result.upload.src;
     uploadImageRequest.delegate = nil;
     [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;
+    
+    //Call Open shop validation
+    [[self getNetworkManager:CTagOpenShopValidation] doRequest];
 }
 
 - (void)failedUploadObject:(id)object
 {
-//    [self successUploadObject:nil withMappingResult:nil];
-//    return;
-//    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
-//    [stickyAlertView show];
-    [self isLoading:NO];
-    
+    [self failedGenerateHost];
     uploadImageRequest.delegate = nil;
     [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;

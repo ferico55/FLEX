@@ -9,8 +9,10 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
+//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 
 //#if DEBUG
 //    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
@@ -26,6 +28,7 @@
 #define kTKPD_USERIDKEY @"user_id"
 #define kTKPD_FULLNAMEKEY @"full_name"
 #define kTKPD_SHOPIDKEY @"shop_id"
+#define kTKPD_PRODUCTIDKEY @"product_id"
 #define kTKPD_SHOPNAMEKEY @"shop_name"
 #define kTKPD_SHOPIMAGEKEY @"shop_avatar"
 #define kTKPD_SHOPURL @"shop_url"
@@ -103,8 +106,8 @@ typedef enum {
 
 #define kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY @"setetalase"
 #define kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY @"setuserinfo"
-#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
-#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
+//#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
+//#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
 
 #define kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY @"setsegmentcontrol"
 #define kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY @"setDepartmentID"
@@ -148,13 +151,9 @@ typedef enum {
 
 #define TKPD_ISLOGINNOTIFICATIONNAME @"setlogin"
 
-#ifdef DEBUG
-#define kTKPD_REACHABILITYURL @"http://www.google.com"
-#else
-#define kTKPD_REACHABILITYURL @"http://www.google.com"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
-#endif
+//#endif
 #define kTKPD_REACHABILITYDELAY 3.0
 
 #define kTKPD_APSKEY @"aps"
@@ -186,7 +185,7 @@ typedef enum {
 #define TokopediaNotificationReload @"reloadNotification"
 
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
-#define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
+
 
 
 #endif

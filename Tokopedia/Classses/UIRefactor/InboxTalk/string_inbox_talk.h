@@ -31,6 +31,9 @@
 #define BUTTON_CANCEL @"Tidak"
 #define CStringFailedDeleteMessage @"Failed delete message"
 #define BUTTON_OK @"Ya"
+#define CStringFillDescLaporan @"Isi deskripsi"
+#define CStringErrorKirimLaporan @"Gagal kirim laporan"
+
 
 
 

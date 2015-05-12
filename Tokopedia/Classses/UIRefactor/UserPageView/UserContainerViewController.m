@@ -542,12 +542,14 @@
         }
             
         case 15 : {
-            SendMessageViewController *messageController = [SendMessageViewController new];
-            messageController.data = @{
+            if(_profile != nil) {
+                SendMessageViewController *messageController = [SendMessageViewController new];
+                messageController.data = @{
                                        kTKPDSHOPEDIT_APIUSERIDKEY:[_data objectForKey:kTKPDSHOPEDIT_APIUSERIDKEY]?:@"",
                                        kTKPDDETAIL_APISHOPNAMEKEY:_profile.result.user_info.user_name
                                        };
-            [self.navigationController pushViewController:messageController animated:YES];
+                [self.navigationController pushViewController:messageController animated:YES];
+            }
             break;
         }
             

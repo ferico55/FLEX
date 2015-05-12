@@ -255,15 +255,28 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (_shop.count + _goldshop.count > 0) {
-        return 33;
-    } else {
-        return 0;
+    if(section == 0) {
+        if (_goldshop.count > 0) {
+            return 33;
+        } else {
+            return 0;
+        }
+    }
+    else {
+        if (_shop.count > 0) {
+            return 33;
+        } else {
+            return 0;
+        }
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if(section==1 && _shop.count==0) {
+        return nil;
+    }
+    
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
     [view setBackgroundColor:tableView.backgroundColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
@@ -441,8 +454,7 @@
                 [_shopdictionary setObject:_shop forKey:@"b"];
             }
             
-            _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
-
+            _shopdictionarytitle = @[@"Rekomendasi",@"Toko Favoritku"];
             
             if (_shop.count + _goldshop.count >0) {
                 _isnodata = NO;
@@ -627,7 +639,7 @@
     }
     else
         return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
-                 kTKPDHOME_APILIMITPAGEKEY : @(10),
+                 kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
                  kTKPDHOME_APIPAGEKEY:@(_page)};
 }
 

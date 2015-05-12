@@ -271,8 +271,8 @@
                 }
                 if (messages) {
                     NSArray *array = messages;
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                    [stickyAlertView show];
                 }
                 break;
             }
@@ -886,6 +886,7 @@
                 
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
 
+                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
                 
