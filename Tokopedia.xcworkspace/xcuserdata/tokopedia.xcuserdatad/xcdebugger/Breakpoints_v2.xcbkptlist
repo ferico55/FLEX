@@ -17,36 +17,6 @@
             endingLineNumber = "147"
             landmarkName = "-doProductTalkForm"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ProductTalkFormViewController doProductTalkForm]"
-                  moduleName = "Tokopedia"
-                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/Talk/ProductTalkFormViewController.m"
-                  timestampString = "453120042.673589"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147"
-                  offsetFromSymbolStart = "576">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__50-[ProductTalkFormViewController doProductTalkForm]_block_invoke"
-                  moduleName = "Tokopedia"
-                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/Talk/ProductTalkFormViewController.m"
-                  timestampString = "453120042.673906"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "147"
-                  endingLineNumber = "147"
-                  offsetFromSymbolStart = "122">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -63,36 +33,6 @@
             endingLineNumber = "153"
             landmarkName = "-doProductTalkForm"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__50-[ProductTalkFormViewController doProductTalkForm]_block_invoke"
-                  moduleName = "Tokopedia"
-                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/Talk/ProductTalkFormViewController.m"
-                  timestampString = "453120042.675187"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "153"
-                  endingLineNumber = "153"
-                  offsetFromSymbolStart = "254">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__50-[ProductTalkFormViewController doProductTalkForm]_block_invoke115"
-                  moduleName = "Tokopedia"
-                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/Talk/ProductTalkFormViewController.m"
-                  timestampString = "453120042.675527"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "153"
-                  endingLineNumber = "153"
-                  offsetFromSymbolStart = "56">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -229,13 +169,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
-            timestampString = "453119319.605396"
+            filePath = "Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaNetworkManager.m"
+            timestampString = "453124379.560782"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1161"
-            endingLineNumber = "1161"
-            landmarkName = "-successUploadObject:withMappingResult:"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "-doRequest"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -246,12 +186,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
-            timestampString = "453119321.7929"
+            timestampString = "453124475.840612"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1166"
-            endingLineNumber = "1166"
-            landmarkName = "-failedUploadObject:"
+            startingLineNumber = "945"
+            endingLineNumber = "945"
+            landmarkName = "-getParameter:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -261,29 +201,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Camera/RequestUploadImage.m"
-            timestampString = "453119334.967696"
+            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
+            timestampString = "453124747.152279"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
-            landmarkName = "-requestActionUploadPhoto"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Camera/RequestGenerateHost.m"
-            timestampString = "453119872.848791"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "-requestProcessGenerateHost:"
+            startingLineNumber = "976"
+            endingLineNumber = "976"
+            landmarkName = "-getPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -50,6 +50,7 @@
 
 @property (weak, nonatomic) id<TokopediaNetworkManagerDelegate> delegate;
 @property (nonatomic) int tagRequest;
+@property (nonatomic) BOOL notEncrypt;
 
 - (void)doRequest;
 - (void)requestProcess:(id)processResult;

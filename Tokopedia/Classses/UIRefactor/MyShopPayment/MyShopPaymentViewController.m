@@ -726,6 +726,7 @@
         if(tokopediaNetworkManagerOpenShopPict == nil) {
             tokopediaNetworkManagerOpenShopPict = [TokopediaNetworkManager new];
             tokopediaNetworkManagerOpenShopPict.delegate = self;
+            tokopediaNetworkManagerOpenShopPict.notEncrypt = YES;
             tokopediaNetworkManagerOpenShopPict.tagRequest = tag;
         }
         
@@ -968,8 +969,11 @@
 
 - (NSString*)getPath:(int)tag
 {
-    if(tag==CTagOpenShop || tag==CTagOpenShopPicture || tag==CTagOpenShopValidation || tag==CTagOpenShopSubmit) {
+    if(tag==CTagOpenShop || tag==CTagOpenShopValidation || tag==CTagOpenShopSubmit) {
         return [NSString stringWithFormat:@"action/%@", kTKPMYSHOP_APIPATH];
+    }
+    else if(tag == CTagOpenShopPicture) {
+        return [NSString stringWithFormat:@"action/%@", kTKPDUPLOAD_IMAGE];
     }
     
     return nil;
@@ -1002,7 +1006,7 @@
         return objectOpenShop;
     }
     else if(tag == CTagOpenShopPicture) {
-        objectOpenShopPicture = [RKObjectManager sharedClient];
+        objectOpenShopPicture = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/ws", _generateHost.result.generated_host.upload_host]]];
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[OpenShopPicture class]];
         [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                             kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
