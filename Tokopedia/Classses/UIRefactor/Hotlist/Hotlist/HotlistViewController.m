@@ -113,6 +113,7 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
+    _networkManager.isNeedEncryption = NO;
     
     [self initCacheHotlist];
     if([self getFromCache] && _page == 1) {
