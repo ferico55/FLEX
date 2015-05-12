@@ -12,6 +12,9 @@
 
 - (void)redirectViewController:(id)viewController;
 
+@optional
+- (void)cancelLoginView;
+
 @end
 
 @interface LoginViewController : UIViewController <UITextFieldDelegate>

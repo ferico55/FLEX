@@ -362,6 +362,9 @@
     else{
         NSError* error;
         NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        if(data == nil)
+            return;
+        
         id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
         if (parsedData == nil && error) {
             NSLog(@"parser error");

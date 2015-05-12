@@ -183,6 +183,9 @@
             }
             case 13:
             {
+                if(_delegate!=nil && [_delegate respondsToSelector:@selector(cancelLoginView)]) {
+                    [_delegate cancelLoginView];
+                }
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
@@ -585,11 +588,10 @@
                 [self.tabBarController setSelectedIndex:0];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil
                                                               userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else
         {

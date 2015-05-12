@@ -30,9 +30,11 @@
 #define kTKPD_APISTATUSKEY @"status"
 #define kTKPD_APISERVERPROCESSTIMEKEY @"server_process_time"
 #define kTKPD_APIISSUCCESSKEY @"is_success"
+#define kTKPD_FILE_UPLOADED @"file_uploaded"
 #define API_TOKEN_KEY @"token"
 
 #define kTKPD_APIRESULTKEY @"result"
+#define kTKPD_APIUPLOADKEY @"upload"
 #define kTKPD_APIPAGINGKEY @"paging"
 #define API_PAGE_KEY @"page"
 #define kTKPD_APIURINEXTKEY @"uri_next"

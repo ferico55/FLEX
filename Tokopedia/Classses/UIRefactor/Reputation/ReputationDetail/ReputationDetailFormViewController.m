@@ -165,9 +165,18 @@
         self.title = @"Lihat Ulasan";
         
         NSString *htmlString = _selectedReviewDetail.review_message;
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-        _reviewMessage.attributedText = attributedString;
+//        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//        _reviewMessage.attributedText = attributedString;
+        NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 3.0;
+        [attributes setObject:style forKey:NSParagraphStyleAttributeName];
         
+        UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+        [attributes setObject:font forKey:NSFontAttributeName];
+        
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:htmlString] attributes:attributes];
+        _reviewMessage.attributedText = attributedString;
         [self setRating];
         
         if([_selectedReviewDetail.review_is_allow_edit isEqualToString:@"1"]) {
@@ -262,8 +271,8 @@
         if([generalaction.result.is_success isEqualToString:@"1"]) {
             
         } else {
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:generalaction.message_error,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:generalaction.message_error delegate:self];
+            [alert show];
         }
     }
     
@@ -327,8 +336,8 @@
                     
                     [self doSendReview];
                 } else {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:_errorMessages,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_errorMessages delegate:self];
+                    [alert show];
                 }
                 break;
             }

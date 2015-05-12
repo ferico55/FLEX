@@ -30,6 +30,7 @@
 #import "NSDictionaryCategory.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "NoResultView.h"
 
 #import "URLCacheController.h"
 #import "ShopContainerViewController.h"
@@ -418,11 +419,11 @@
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+                    _table.tableFooterView = [NoResultView new].view;
                 }
                 
                 if (_product.count >0) {
-                    
+                    _table.tableFooterView = nil;
                     _urinext =  _searchitem.result.paging.uri_next;
                     
                     NSInteger tempInt = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];

@@ -14,9 +14,13 @@
 #define CTagCell @"cell"
 #define CFont_Gotham_Book @"Gotham Book"
 #define kTKPMYSHOP_APIPATH @"myshop.pl"
+#define kTKPD_OPEN_SHOP_PICTURE @"open_shop_picture"
+#define kTKPD_OPEN_SHOP_VALIDATION @"open_shop_validation"
+#define kTKPD_OPEN_SHOP_SUBMIT @"open_shop_submit"
 #define kTKPD_APIACTIONKEY @"action"
 #define kTKPD_CHECK_DOMAIN @"check_domain"
 #define CStatusDomain @"status_domain"
+#define CPostKey @"post_key"
 #define CShopID @"shop_id"
 #define CShopURL @"shop_url"
 #define CIsSuccess @"is_success"
@@ -33,6 +37,7 @@
 #define CTagSlogan 124
 #define CTagNamaToko 234
 #define CTagDeskripsi 125
+#define CTagCheckList 126
 #define CTagContentViewHeader 222
 #define CHeaderFooterCell [UIColor colorWithRed:66/255.0f green:66/255.0f blue:66/255.0f alpha:1.0f]
 #define CBackgroundBtnCheckDomain [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f]
@@ -45,9 +50,10 @@
 #define CStringKotaAsal @"Kota Asal"
 #define CStringKodePos @"Kode Pos"
 #define CStringLanjut @"Lanjut"
-#define CStringValidDomain @"Valid Domain"
+#define CStringBukaToko @"Buka Toko"
+#define CStringValidDomain @"Nama Domain yang Anda pilih tersedia."
 #define CStringValidationNamaToko @"Nama toko harus diisi"
-#define CStringNotValidDomainName @"Nama domain yang anda pilih tidak tersedia."
+#define CStringNotValidDomainName @"Nama domain yang Anda pilih tidak tersedia."
 #define CStringValidationFillDomain @"Isi nama domain"
 #define CStringCancel @"Batal"
 #define CStringChoose @"Pilih"
