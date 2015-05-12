@@ -745,13 +745,6 @@
     //[self cancelActionEditInsurance];
 }
 
-
-#pragma mark - View Action
--(IBAction)tap:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

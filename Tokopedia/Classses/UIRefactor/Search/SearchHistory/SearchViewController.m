@@ -302,11 +302,12 @@
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [_searchresultarray removeAllObjects];
-    [_searchbar resignFirstResponder];
     NSArray *histories = _historysearch;
+    NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ([searchString length]) {
     
-    if (![_searchbar.text isEqualToString: @""]&&![searchBar.text isEqualToString: @" "]) {
+        [_searchresultarray removeAllObjects];
+        [_searchbar resignFirstResponder];
         
         if (histories.count == 0 || [histories isEqualToArray: @[]]) {
             [self SaveHistory:searchBar.text];

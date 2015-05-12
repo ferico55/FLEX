@@ -31,4 +31,6 @@
 @property GenerateHost *generateHost;
 @property (strong,nonatomic) NSString *shopHasTerm;
 
+@property BOOL isNeedRequestAddProductPicture;
+
 @end
