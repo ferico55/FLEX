@@ -166,6 +166,7 @@ typedef enum TagRequest {
     _auth = [auth mutableCopy];
     BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     _tabBarController = [UITabBarController new];
+    _tabBarController.delegate = self;
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARTITLECOLOR }
                                              forState:UIControlStateNormal];
@@ -581,6 +582,16 @@ typedef enum TagRequest {
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    static UIViewController *previousController = nil;
+    if (previousController == viewController) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidTappedTapBar object:nil userInfo:nil];
+    }
+    previousController = viewController;
+
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    return YES;
 }
 
 -(void)redirectViewController:(id)viewController {

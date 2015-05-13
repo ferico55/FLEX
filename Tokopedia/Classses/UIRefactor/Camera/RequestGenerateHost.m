@@ -143,6 +143,7 @@
                         }
                         else{
                             //error
+                            [_delegate failedGenerateHost];
                         }
                     }
                     else{

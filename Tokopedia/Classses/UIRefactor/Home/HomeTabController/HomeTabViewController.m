@@ -121,7 +121,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [_scrollView setFrame:self.view.frame];
+//    [_scrollView setFrame:self.view.frame];
     self.navigationController.title = @"Beranda";
     
     [self goToPage:_page];
