@@ -18,6 +18,7 @@
                 <outlet property="chooseAccountButton" destination="A9A-Qc-yWv" id="LTp-5Q-LDa"/>
                 <outlet property="containerScrollView" destination="7SL-a0-BAy" id="CYV-tx-pE6"/>
                 <outlet property="contentView" destination="i5M-Pr-FkT" id="p8Z-MR-UHV"/>
+                <outlet property="imgInfo" destination="PPA-NL-YId" id="j1S-FT-1AX"/>
                 <outlet property="indicator" destination="33S-Gd-pVd" id="eK5-Qz-8CY"/>
                 <outlet property="infoButton" destination="Lf3-wF-yQw" id="Crs-kl-25L"/>
                 <outlet property="kodeOTP" destination="pxt-sn-UZW" id="ktV-1x-ka2"/>
@@ -234,10 +235,11 @@
                                     </subviews>
                                 </view>
                                 <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Lf3-wF-yQw">
-                                    <rect key="frame" x="8" y="16" width="125" height="30"/>
+                                    <rect key="frame" x="36" y="16" width="91" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <inset key="contentEdgeInsets" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="titleEdgeInsets" minX="-26" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     <state key="normal" title="Info">
                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

@@ -20,7 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = CStringBukaToko;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSelesai style:UIBarButtonItemStylePlain target:self action:@selector(actionBack:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSelesai style:UIBarButtonItemStylePlain target:self action:@selector(actionBack:)];
+    self.navigationItem.hidesBackButton = YES;
 }
 
 - (void)didReceiveMemoryWarning {
