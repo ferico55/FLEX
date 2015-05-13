@@ -14,10 +14,7 @@
 #import "URLCacheController.h"
 #import "UserAuthentificationManager.h"
 
-#import "TokopediaNetworkManager.h"
-
-@interface NotificationRequest () <TokopediaNetworkManagerDelegate>
-{
+@interface NotificationRequest () {
     
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -35,8 +32,6 @@
     NSString *_cachepath;
     NSTimeInterval _timeinterval;
     UserAuthentificationManager *_userManager;
-    
-    TokopediaNetworkManager *_networkManager;
 }
 
 @end
@@ -56,24 +51,21 @@
         _cacheconnection = [URLCacheConnection new];
         _cachecontroller = [URLCacheController new];
         _userManager = [UserAuthentificationManager new];
-        
-        _networkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
 
 - (void)loadNotification
 {
-    _networkManager.delegate = self;
-
     [self initCache];
+    [self configureReskit];
     
     NSData *data = [NSData dataWithContentsOfFile:_cachepath];
     
     if(data) {
         [self loadDataFromCache];
     }
-    [_networkManager doRequest];
+    [self loadData];
     
     
 }
@@ -98,56 +90,10 @@
     }
 }
 
--(id)getObjectManager:(int)tag
-{
-    return [self objectManagerNotification];
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-    NSDictionary *param = @{API_NOTIFICATION_ACTION : API_NOTIFICATION_GET_DETAIL};
-    return param;
-}
-
--(NSString *)getPath:(int)tag
-{
-    return API_NOTIFICATION_PATH;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    if (result) {
-        _notification = [resultDict objectForKey:@""];
-        return _notification.status;
-    }
-    return nil;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
-    
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    [self requestSuccess:successResult withOperation:operation];
-}
-
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-
-}
-
--(RKObjectManager *)objectManagerNotification
+- (void)configureReskit
 {
     // initialize RestKit
-    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
+    _objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *notificationStatusMapping = [RKObjectMapping mappingForClass:[Notification class]];
@@ -207,12 +153,31 @@
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [objectManager addResponseDescriptor:notificationDescriptorStatus];
-
-    return objectManager;
+    [_objectManager addResponseDescriptor:notificationDescriptorStatus];
 }
 
--(void)loadDataFromCache {
+- (void)loadData
+{
+    if (_request.isExecuting) return;
+    
+    _requestCount++;
+    
+    NSDictionary *param = @{API_NOTIFICATION_ACTION : API_NOTIFICATION_GET_DETAIL};
+    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:API_NOTIFICATION_PATH
+                                                                parameters:[param encrypt]];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestSuccess:mappingResult withOperation:operation];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self requestFailure:error];
+    }];
+    
+    [_operationQueue addOperation:_request];
+}
+
+- (void)loadDataFromCache {
     [_cachecontroller getFileModificationDate];
     _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
@@ -326,12 +291,6 @@
 - (void)requestResetFailure:(id)error {
     
     
-}
-
--(void)dealloc
-{
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
 }
 
 @end
