@@ -107,6 +107,7 @@
     ProductAddEditDetailViewController *_detailVC;
 
     TKPDPhotoPicker *_photoPicker;
+    UIAlertView *_alertProcessing;
 }
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

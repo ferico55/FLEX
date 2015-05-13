@@ -726,7 +726,7 @@
         if(tokopediaNetworkManagerOpenShopPict == nil) {
             tokopediaNetworkManagerOpenShopPict = [TokopediaNetworkManager new];
             tokopediaNetworkManagerOpenShopPict.delegate = self;
-            tokopediaNetworkManagerOpenShopPict.notEncrypt = YES;
+            tokopediaNetworkManagerOpenShopPict.isParameterNotEncrypted = YES;
             tokopediaNetworkManagerOpenShopPict.tagRequest = tag;
         }
         
