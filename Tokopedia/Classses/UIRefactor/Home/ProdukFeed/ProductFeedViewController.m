@@ -413,10 +413,10 @@ typedef enum TagRequest {
     return _objectmanager;
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    
-}
+//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//{
+//    
+//}
 
 - (void)actionBeforeRequest:(int)tag {
     if (!_isrefreshview) {

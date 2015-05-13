@@ -52,6 +52,7 @@
 @property (weak, nonatomic) id<TokopediaNetworkManagerDelegate> delegate;
 @property (nonatomic) int tagRequest;
 @property (nonatomic) BOOL isParameterNotEncrypted;
+@property (nonatomic) NSTimeInterval timeInterval;
 
 - (void)doRequest;
 - (void)requestSuccess:(id)successResult withOperation:(RKObjectRequestOperation*)operation;

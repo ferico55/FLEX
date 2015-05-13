@@ -366,11 +366,11 @@
 }
 
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    /** failure **/
-}
-
+//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//{
+//    /** failure **/
+//}
+//
 - (void)actionBeforeRequest:(int)tag
 {
     

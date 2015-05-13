@@ -58,7 +58,8 @@
     }
     
     [_operationQueue addOperation:_objectRequest];
-    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
+    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
 }
 
@@ -71,8 +72,25 @@
             
             
         } else {
+            NSError *error = processResult;
             if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
                 [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
+            }
+            else
+            {
+                StickyAlertView *alert = [[StickyAlertView alloc]init];
+                NSArray *errors;
+                if(error.code == -1011) {
+                    errors = @[@"Mohon maaf, terjadi kendala pada server"];
+                } else if (error.code == -1009) {
+                    errors = @[@"Tidak ada koneksi internet"];
+                } else {
+                    errors = @[error.localizedDescription];
+                }
+                
+                [alert initWithErrorMessages:errors delegate:_delegate];
+                [alert show];
+            
             }
         }
     }
@@ -110,12 +128,11 @@
 - (void)requestMaintenance  {
     //TODO:: Create MaintenanceViewController
     MaintenanceViewController *maintenanceController = [MaintenanceViewController new];
-    if ([_delegate isKindOfClass:[UIViewController class]]) {
-        UIViewController *vc = (UIViewController *)_delegate;
-        if([[vc.navigationController.viewControllers lastObject] isMemberOfClass:[MaintenanceViewController class]])
-            return;
-        [vc.navigationController pushViewController:maintenanceController animated:YES];
-    }
+    UIViewController *vc = _delegate;
+    
+    if([[vc.navigationController.viewControllers lastObject] isMemberOfClass:[MaintenanceViewController class]])
+        return;
+    [vc.navigationController pushViewController:maintenanceController animated:YES];
 }
 
 - (void)requestRetryWithButton  {

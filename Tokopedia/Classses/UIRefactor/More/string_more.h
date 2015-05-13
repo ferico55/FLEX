@@ -13,7 +13,7 @@
 #define MORE_AUTH @"auth"
 #define CFont_Gotham_Book @"Gotham Book"
 
-
+#define CStringSelesai @"Selesai"
 #define CStringBack @"Back"
 #define CStringBukaToko @"Buka Toko"
 #define CStringCongratulation @"Selamat!\nAnda telah berhasil membuka toko %@"

@@ -264,6 +264,38 @@
 
 
 #pragma mark - Method
+- (UIImage *)resizeImage:(UIImage *)chosenImage
+{
+    float actualHeight = chosenImage.size.height;
+    float actualWidth = chosenImage.size.width;
+    float imgRatio = actualWidth/actualHeight;
+    float widthView = self.view.bounds.size.width;
+    float heightView = widthView;
+    float maxRatio = widthView/heightView;
+    
+    if(imgRatio!=maxRatio){
+        if(imgRatio < maxRatio){
+            imgRatio = heightView / actualHeight;
+            actualWidth = imgRatio * actualWidth;
+            actualHeight = heightView;
+        }
+        else{
+            imgRatio = widthView / actualWidth;
+            actualHeight = imgRatio * actualHeight;
+            actualWidth = widthView;
+        }
+    }
+    
+    
+    CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+    UIGraphicsBeginImageContext(rect.size);
+    [chosenImage drawInRect:rect];
+    chosenImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return chosenImage;
+}
+
 - (NSString *)getNamaDomain
 {
     return txtDomain.text;
@@ -793,6 +825,7 @@
     {
         hasSetImgGambar = YES;
         UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+        chosenImage = [self resizeImage:chosenImage];
         imgGambar.image = chosenImage;
         [self checkValidation:nil withSlogan:nil withDesc:nil];
     }
@@ -800,6 +833,7 @@
     {
         hasSetImgGambar = YES;
         imgGambar.image = info[UIImagePickerControllerOriginalImage];
+        imgGambar.image = [self resizeImage:imgGambar.image];
         NSURL *imagePath = [info objectForKey:UIImagePickerControllerReferenceURL];
         strImageName = [imagePath lastPathComponent];
         

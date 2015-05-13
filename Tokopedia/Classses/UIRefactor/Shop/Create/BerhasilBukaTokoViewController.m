@@ -8,19 +8,22 @@
 
 #import "BerhasilBukaTokoViewController.h"
 #import "ProductAddEditViewController.h"
+#import "MoreViewController.h"
 #import "string_more.h"
 #import "string_product.h"
+#import "ShopContainerViewController.h"
 
 @interface BerhasilBukaTokoViewController ()
 
 @end
 
 @implementation BerhasilBukaTokoViewController
-@synthesize dictData;
+@synthesize dictData, isAnyImage;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = CStringBukaToko;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringBack style:UIBarButtonItemStylePlain target:self action:@selector(actionBack:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSelesai style:UIBarButtonItemStylePlain target:self action:@selector(actionBack:)];
+    self.navigationItem.hidesBackButton = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,7 +70,24 @@
 #pragma mark - Action View
 - (void)actionBack:(id)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+                       MORE_AUTH : _auth,
+                       MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+                       };
+    NSMutableArray *tempController = [self.navigationController.viewControllers mutableCopy];
+    int n = (int)tempController.count;
+    for(int i=0;i<n-1;i++) {
+        [tempController removeLastObject];
+    }
+    [tempController insertObject:container atIndex:tempController.count];
+    
+    if(isAnyImage) {
+        [((MoreViewController *) [self.navigationController.viewControllers firstObject]) updateImageURL];
+    }
+    self.navigationController.viewControllers = tempController;
 }
 
 

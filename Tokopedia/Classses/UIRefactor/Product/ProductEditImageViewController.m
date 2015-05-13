@@ -9,10 +9,10 @@
 #import "detail.h"
 #import "camera.h"
 #import "string_product.h"
-#import "CameraController.h"
 #import "ProductEditImageViewController.h"
+#import "TKPDPhotoPicker.h"
 
-@interface ProductEditImageViewController () <CameraControllerDelegate,UIAlertViewDelegate>
+@interface ProductEditImageViewController () <UIAlertViewDelegate, TKPDPhotoPickerDelegate>
 {
     NSMutableDictionary *_dataInput;
     UITextField *_activeTextField;
@@ -22,6 +22,8 @@
     
     CGRect _containerDefault;
     CGSize _scrollviewContentSize;
+    
+    TKPDPhotoPicker *_photoPicker;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
@@ -63,11 +65,6 @@
     barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-      
-//    UIBarButtonItem *saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-//    [saveBarButtonItem setTintColor:[UIColor blackColor]];
-//    saveBarButtonItem.tag = BARBUTTON_PRODUCT_SAVE;
-//    self.navigationItem.rightBarButtonItem = saveBarButtonItem;
     
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -151,14 +148,10 @@
             }
             case BUTTON_PRODUCT_UPDATE_PRODUCT_IMAGE:
             {
-                CameraController* c = [CameraController new];
-                [c snap];
-                c.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-                nav.wantsFullScreenLayout = YES;
-                nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                _photoPicker = [[TKPDPhotoPicker alloc] initWithSourceType:UIImagePickerControllerSourceTypeCamera
+                                                      parentViewController:self
+                                                     pickerTransitionStyle:UIModalTransitionStyleCrossDissolve];
+                _photoPicker.delegate = self;
                 break;
             }
             default:
@@ -208,23 +201,24 @@
     _defaultPictLabel.hidden = NO;
 }
 
-#pragma mark - Camera Controller Delegate
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+#pragma mark - Photo picker delegate
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
 {
-    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
     [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
+
     _productImageView.image = image;
-    
+
     NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA];
     [_dataInput setObject:imageData forKey:DATA_CAMERA_IMAGEDATA];
-    
+
     NSInteger indexImage = [[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-    [_delegate updateProductImage:image AtIndex:indexImage withUserInfo:userinfo];
+    [_delegate updateProductImage:image AtIndex:indexImage withUserInfo:userInfo];
 }
 
 #pragma mark - Alert View Delegate

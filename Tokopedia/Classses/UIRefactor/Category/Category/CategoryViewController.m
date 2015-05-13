@@ -138,7 +138,7 @@
     NSString *title =[_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
     NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:0.6];
+    [paragrahStyle setLineSpacing:6];
     [paragrahStyle setAlignment:NSTextAlignmentCenter];
     [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
     

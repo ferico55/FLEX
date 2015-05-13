@@ -12,5 +12,6 @@
 
 @property (nonatomic) NSInteger image_primary;
 @property (nonatomic, strong) NSString *image_src;
+@property (nonatomic, strong) NSString *image_src_full;
 
 @end
