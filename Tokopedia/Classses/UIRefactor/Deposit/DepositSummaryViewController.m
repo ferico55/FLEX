@@ -337,7 +337,7 @@
                 [_withdrawalButton addSubview:_infoReviewSaldo];
                 CGRect newFrame4 = _infoReviewSaldo.frame;
                 newFrame4.origin.y += 35;
-                newFrame4.origin.x = -60;
+                newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
                 _infoReviewSaldo.frame = newFrame4;
             }
             
