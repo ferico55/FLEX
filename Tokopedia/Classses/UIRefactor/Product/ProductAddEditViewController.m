@@ -126,13 +126,6 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumbProductImageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *defaultImageLabels;
 
--(void)cancelDeleteImage;
--(void)configureRestKitDeleteImage;
--(void)requestDeleteImage:(id)object;
--(void)requestSuccessDeleteImage:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureDeleteImage:(id)object;
--(void)requestProcessDeleteImage:(id)object;
--(void)requestTimeoutDeleteImage;
 
 @end
 
@@ -1337,6 +1330,8 @@
     [_dataInput setObject:_productImageURLs forKey:DATA_LAST_DELETED_IMAGE_PATH];
     [_dataInput setObject:@(index) forKey:DATA_LAST_DELETED_INDEX];
     [_dataInput setObject:((UIImageView*)_thumbProductImageViews[index]).image forKey:DATA_LAST_DELETED_IMAGE];
+    [_selectedIndexPathCameraController removeObjectAtIndex:index];
+    [_selectedImagesCameraController replaceObjectAtIndex:index withObject:@""];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
@@ -1675,10 +1670,10 @@
             thumb.hidden = NO;
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
+                [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
                 thumb.userInteractionEnabled = YES;
                 

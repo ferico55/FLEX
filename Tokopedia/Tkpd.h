@@ -9,8 +9,10 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-//#define kTkpdBaseURLString @"http://www.tokopedia.dev/ws"
+//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+//#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 
 //#if DEBUG
 //    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
@@ -18,8 +20,6 @@
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
 //#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
-//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
-
 
 #define kTKPD_AUTHKEY @"auth"
 #define kTKPD_ISLOGINKEY @"is_login"
@@ -28,6 +28,7 @@
 #define kTKPD_USERIDKEY @"user_id"
 #define kTKPD_FULLNAMEKEY @"full_name"
 #define kTKPD_SHOPIDKEY @"shop_id"
+#define kTKPD_PRODUCTIDKEY @"product_id"
 #define kTKPD_SHOPNAMEKEY @"shop_name"
 #define kTKPD_SHOPIMAGEKEY @"shop_avatar"
 #define kTKPD_SHOPURL @"shop_url"
@@ -105,8 +106,8 @@ typedef enum {
 
 #define kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY @"setetalase"
 #define kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY @"setuserinfo"
-#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
-#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
+//#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
+//#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
 
 #define kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY @"setsegmentcontrol"
 #define kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY @"setDepartmentID"
@@ -151,5 +152,40 @@ typedef enum {
 #define TKPD_ISLOGINNOTIFICATIONNAME @"setlogin"
 
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
+
+//#endif
+#define kTKPD_REACHABILITYDELAY 3.0
+
+#define kTKPD_APSKEY @"aps"
+#define kTKPD_BADGEKEY @"badge"
+
+#define kTKPDWINDOW_TINTLCOLOR [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]
+
+#define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor blackColor]
+#define kTKPDNAVIGATION_TABBARTITLECOLOR [UIColor blackColor]
+
+#define kTKPDNAVIGATION_BACKGROUNDINSET UIEdgeInsetsZero
+#define kTKPDNAVIGATION_TITLEFONT [UIFont fontWithName:@"Lato-Bold" size:16.0f]
+#define kTKPDNAVIGATION_TITLECOLOR [UIColor whiteColor]
+#define kTKPDNAVIGATION_TITLESHADOWCOLOR [UIColor clearColor]
+#define kTKPDNAVIGATION_BUTTONINSET UIEdgeInsetsZero
+#define kTKPDNAVIGATION_BACKBUTTONINSET UIEdgeInsetsMake(0.0f, 35.0f, 0.0f, 0.0f)
+#define kTKPD_SETUSERSTICKYMESSAGEKEY @"stickymessage"
+
+#define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]
+#define kTKPDNAVIGATION_NAVIGATIONITEMCOLOR [UIColor whiteColor]
+
+#define HelpshiftKey @"a61b53892e353d1828be5154db0ac6c2"
+#define HelpshiftDomain @"tokopedia.helpshift.com"
+#define HelpshiftAppid @"tokopedia_platform_20150407082530564-f41c14c841c644e"
+
+#define GATrackingId @"UA-9801603-10"
+
+#define TokopediaNotificationRedirect @"redirectNotification"
+#define TokopediaNotificationReload @"reloadNotification"
+
+#define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
+
+
 
 #endif
