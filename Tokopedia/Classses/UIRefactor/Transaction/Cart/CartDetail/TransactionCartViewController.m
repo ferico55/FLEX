@@ -67,29 +67,6 @@
     UIRefreshControl *_refreshControl;
     
     BOOL _isaddressexpanded;
-    __weak RKObjectManager *_objectManagerCart;
-    __weak RKManagedObjectRequestOperation *_requestCart;
-    
-    __weak RKObjectManager *_objectManagerActionCancelCart;
-    __weak RKManagedObjectRequestOperation *_requestActionCancelCart;
-    
-    __weak RKObjectManager *_objectManagerActionCheckout;
-    __weak RKManagedObjectRequestOperation *_requestActionCheckout;
-    
-    __weak RKObjectManager *_objectManagerActionBuy;
-    __weak RKManagedObjectRequestOperation *_requestActionBuy;
-    
-    __weak RKObjectManager *_objectManagerActionVoucher;
-    __weak RKManagedObjectRequestOperation *_requestActionVoucher;
-    
-    __weak RKObjectManager *_objectManagerActionEditProductCart;
-    __weak RKManagedObjectRequestOperation *_requestActionEditProductCart;
-    
-    __weak RKObjectManager *_objectManagerEMoney;
-    __weak RKManagedObjectRequestOperation *_requestEMoney;
-    
-    __weak RKObjectManager *_objectManagerBCAClickPay;
-    __weak RKManagedObjectRequestOperation *_requestBCAClickPay;
     
     NSOperationQueue *_operationQueue;
     
@@ -116,6 +93,7 @@
     BOOL _isLoadingRequest;
     
     BOOL _refreshFromShipment;
+    BOOL _popFromShipment;
     
     NavigateViewController *_navigate;
     
@@ -125,7 +103,17 @@
     NSMutableDictionary *_textAttributes;
     
     TokopediaNetworkManager *_networkManager;
+    TokopediaNetworkManager *_networkManagerCancelCart;
+    TokopediaNetworkManager *_networkManagerCheckout;
+    TokopediaNetworkManager *_networkManagerBuy;
+    TokopediaNetworkManager *_networkManagerVoucher;
+    TokopediaNetworkManager *_networkManagerEditProduct;
+    TokopediaNetworkManager *_networkManagerEMoney;
+    TokopediaNetworkManager *_networkManagerBCAClickPay;
+    
     TransactionCartShippingViewController *_shipmentViewController;
+    
+    UIAlertView *_alertLoading;
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
@@ -169,37 +157,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonVoucherInfo;
 @property (weak, nonatomic) IBOutlet UIButton *buttonCancelVoucher;
 
--(void)cancelActionCancelCartRequest;
--(void)configureRestKitActionCancelCart;
--(void)requestActionCancelCart:(id)object;
--(void)requestSuccessActionCancelCart:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionCancelCart:(id)object;
--(void)requestProcessActionCancelCart:(id)object;
--(void)requestTimeoutActionCancelCart;
 
--(void)cancelActionCheckout;
--(void)configureRestKitActionCheckout;
--(void)requestActionCheckout:(id)object;
--(void)requestSuccessActionCheckout:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionCheckout:(id)object;
--(void)requestProcessActionCheckout:(id)object;
--(void)requestTimeoutActionCheckout;
-
--(void)cancelActionBuy;
--(void)configureRestKitActionBuy;
--(void)requestActionBuy:(id)object;
--(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionBuy:(id)object;
--(void)requestProcessActionBuy:(id)object;
--(void)requestTimeoutActionBuy;
-
--(void)cancelActionEditProductCartRequest;
--(void)configureRestKitActionEditProductCart;
--(void)requestActionEditProductCart:(id)object;
--(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionEditProductCart:(id)object;
--(void)requestProcessActionEditProductCart:(id)object;
--(void)requestTimeoutActionEditProductCart;
 @property (strong, nonatomic) IBOutlet UITableViewCell *voucherUsedCell;
 
 - (IBAction)tap:(id)sender;
@@ -207,10 +165,21 @@
 
 #define TAG_ALERT_PARTIAL 13
 #define DATA_PARTIAL_SECTION @"data_partial"
-#define DATA_CART_GRAND_TOTAL_BEFORE_DECREASE @"data_grand_totoal"
+#define DATA_CART_GRAND_TOTAL @"cart_grand_total"
+#define DATA_CART_GRAND_TOTAL_BEFORE_DECREASE @"data_grand_total"
+#define DATA_VOUCHER_AMOUNT @"data_voucher_amount"
+#define DATA_CART_USED_VOUCHER_AMOUNT @"data_used_voucher_amount"
 #define DATA_DETAIL_CART_FOR_SHIPMENT @"data_detail_cart_fort_shipment"
 
 #define TAG_REQUEST_CART 10
+#define TAG_REQUEST_CANCEL_CART 11
+#define TAG_REQUEST_CHECKOUT 12
+#define TAG_REQUEST_BUY 13
+#define TAG_REQUEST_VOUCHER 14
+#define TAG_REQUEST_EDIT_PRODUCT 15
+#define TAG_REQUEST_EMONEY 16
+#define TAG_REQUEST_BCA_CLICK_PAY 17
+
 #define NOT_SELECT_GATEWAY -1
 
 @implementation TransactionCartViewController
@@ -238,8 +207,37 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.tagRequest = TAG_REQUEST_CART;
     _networkManager.delegate = self;
-
     
+    _networkManagerCancelCart = [TokopediaNetworkManager new];
+    _networkManagerCancelCart.tagRequest = TAG_REQUEST_CANCEL_CART;
+    _networkManagerCancelCart.delegate = self;
+    
+    _networkManagerCheckout = [TokopediaNetworkManager new];
+    _networkManagerCheckout.tagRequest = TAG_REQUEST_CHECKOUT;
+    _networkManagerCheckout.delegate = self;
+    
+    _networkManagerBuy = [TokopediaNetworkManager new];
+    _networkManagerBuy.tagRequest = TAG_REQUEST_BUY;
+    _networkManagerBuy.delegate = self;
+
+    _networkManagerVoucher = [TokopediaNetworkManager new];
+    _networkManagerVoucher.tagRequest = TAG_REQUEST_VOUCHER;
+    _networkManagerVoucher.delegate = self;
+    
+    _networkManagerEditProduct = [TokopediaNetworkManager new];
+    _networkManagerEditProduct.tagRequest = TAG_REQUEST_EDIT_PRODUCT;
+    _networkManagerEditProduct.delegate = self;
+    
+    _networkManagerEMoney = [TokopediaNetworkManager new];
+    _networkManagerEMoney.tagRequest = TAG_REQUEST_EMONEY;
+    _networkManagerEMoney.delegate = self;
+    
+    _networkManagerBCAClickPay = [TokopediaNetworkManager new];
+    _networkManagerBCAClickPay.tagRequest = TAG_REQUEST_BCA_CLICK_PAY;
+    _networkManagerBCAClickPay.delegate = self;
+    
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -288,6 +286,9 @@
     _buyButton.layer.opacity = 1;
     
     [self setDefaultInputData];
+    
+    _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    _popFromShipment = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -307,6 +308,13 @@
     }
     else
     {
+        if (!_popFromShipment) {
+            _tableView.contentOffset = CGPointZero;
+        }
+        if (_popFromShipment) {
+            _popFromShipment = NO;
+        }
+        
         [self adjustTableViewData:_data];
         _passwordTextField.text = @"";
         TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
@@ -318,7 +326,7 @@
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    if(!_requestCart.executing && !_isnodata) _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
+    if(!_isnodata) _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
 
     _tableView.scrollsToTop = YES;
     
@@ -348,8 +356,7 @@
     [super viewWillDisappear:animated];
     [_activeTextField resignFirstResponder];
     _activeTextField = nil;
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
+
     self.title = @"";
 }
 
@@ -451,7 +458,7 @@
     UITableViewCell* cell = nil;
 
     NSInteger shopCount = _list.count;
-    
+
     if (indexPath.section <shopCount)
         cell = [self cellListCartByShopAtIndexPath:indexPath];
     else if (indexPath.section == shopCount)
@@ -671,1353 +678,6 @@
     [_activeTextView resignFirstResponder];
 }
 
-#pragma mark - Request Cart
--(id)getObjectManager:(int)tag
-{
-    if (tag == TAG_REQUEST_CART) {
-        return [self objectManagerCart];
-    }
-    return nil;
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-    return @{};
-}
-
--(NSString *)getPath:(int)tag
-{
-    return API_TRANSACTION_PATH;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
-    if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"]) {
-        [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
-    }
-    
-    _tableView.tableFooterView = _footerView;
-    [_act startAnimating];
-    _isLoadingRequest = YES;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    TransactionCart *cart = stat;
-    
-    return cart.status;
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    [_refreshControl endRefreshing];
-    [_act stopAnimating];
-    _isLoadingRequest = NO;
-    
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionCart *cart = stat;
-    BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if(cart.message_error)
-        {
-            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-            [alert show];
-        }
-        else{
-            
-            [_list removeAllObjects];
-            
-            NSArray *list = cart.result.list;
-            [_list addObjectsFromArray:list];
-            
-            _cart = cart.result;
-            
-            [self adjustAfterUpdateList];
-            
-            if (_shipmentViewController) {
-                NSInteger index = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue];
-                _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list[index],
-                                                 DATA_INDEX_KEY : @(index)
-                                                 };
-                [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-                _shipmentViewController.indexPage = _indexPage;
-                _shipmentViewController.delegate = self;
-            }
-        }
-    }
-}
-
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    [_refreshControl endRefreshing];
-    [_act stopAnimating];
-    _isLoadingRequest = NO;
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    [_refreshControl endRefreshing];
-    [_act stopAnimating];
-    _isLoadingRequest = NO;
-}
-
--(void)adjustAfterUpdateList
-{
-    
-    if (_list.count>0) {
-        _isnodata = NO;
-        _tableView.userInteractionEnabled = YES;
-    }
-    else
-    {
-        _isnodata = YES;
-        _paymentMethodView.hidden = YES;
-        _tableView.userInteractionEnabled = NO;
-    }
-    [_delegate isNodata:_isnodata];
-    
-    
-    NSInteger listCount = _list.count;
-    
-    if (!_refreshFromShipment) {
-        [self resetAllArray];
-    }
-    [_listProductFirstObjectIndexPath removeAllObjects];
-    
-    for (int i = 0; i<listCount; i++) {
-        TransactionCartList *list = _list[i];
-        
-        NSArray *products = list.cart_products;
-        NSInteger productCount = products.count;
-        
-        NSIndexPath *firstProductIndexPath = [NSIndexPath indexPathForRow:0 inSection:i];
-        if (![list.cart_error_message_1 isEqualToString:@"0"]||![list.cart_error_message_2 isEqualToString:@"0"])
-            firstProductIndexPath = [NSIndexPath indexPathForRow:1 inSection:i];
-        [_listProductFirstObjectIndexPath addObject:firstProductIndexPath];
-        
-        if (!_refreshFromShipment) {
-            [self addArrayObjectTemp];
-        }
-        
-        if (productCount<=0) {
-            [_isDropshipper removeObjectAtIndex:i];
-            [_stockPartialStrList removeObjectAtIndex:i];
-            [_senderNameDropshipper removeObjectAtIndex:i];
-            [_senderPhoneDropshipper removeObjectAtIndex:i];
-            [_dropshipStrList removeObjectAtIndex:i];
-            [_stockPartialDetail removeObjectAtIndex:i];
-            [_listProductFirstObjectIndexPath removeObjectAtIndex:i];
-        }
-        
-    }
-    if (listCount>0) {
-        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
-        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
-
-        
-        if (_indexPage == 0) {
-            _paymentMethodView.hidden = NO;
-            _paymentMethodSelectedView.hidden = YES;
-            _checkoutView.hidden = NO;
-            _tableView.tableFooterView = _checkoutView;
-        }
-        else if (_indexPage == 1) {
-            _paymentMethodView.hidden = YES;
-            _paymentMethodSelectedView.hidden = NO;
-            _buyView.hidden = NO;
-            _tableView.tableFooterView = _buyView;
-        }
-    }
-    
-    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-    
-    NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-    NSString *depositAmount = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-    NSInteger deposit = [depositAmount integerValue];
-    NSInteger grandTotalInteger = [grandTotal integerValue] - deposit;
-    _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
-
-    _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
-    
-    _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
-    
-    if (_firstInit) _firstInit = NO;
-    
-    [self adjustDropshipperListParam];
-    [self adjustPartialListParam];
-    
-    _refreshFromShipment = NO;
-    
-    [_tableView reloadData];
-
-}
-
-#pragma mark - Request Cancel Cart
--(void)cancelActionCancelCartRequest
-{
-    [_requestActionCancelCart cancel];
-    _requestActionCancelCart = nil;
-    [_objectManagerActionCancelCart.operationQueue cancelAllOperations];
-    _objectManagerActionCancelCart = nil;
-}
-
--(void)configureRestKitActionCancelCart
-{
-    _objectManagerActionCancelCart = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_ACTION_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerActionCancelCart addResponseDescriptor:responseDescriptor];
-    
-}
-
-//# sub cancel_cart example URL
-//# www.tkpdevel-pg.ekarisky/ws/action/tx-cart.pl?action=cancel_cart&
-//# product_cart_id=&
-//# address_id=&
-//# shop_id=&
-//# shipment_id=&
-//# shipment_package_id=&
-
--(void)requestActionCancelCart:(id)object
-{
-    if (_requestActionCancelCart.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
-    
-    NSIndexPath *indexPathCancelProduct = [userInfo objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
-    
-    TransactionCartList *list = _list[indexPathCancelProduct.section];
-    NSArray *products = list.cart_products;
-    ProductDetail *product = products[indexPathCancelProduct.row];
-    
-    NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
-    
-    NSInteger productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
-    NSString *shopID = list.cart_shop.shop_id?:@"";
-    NSInteger addressID = list.cart_destination.address_id;
-    NSString *shipmentID = list.cart_shipments.shipment_id?:@"";
-    NSString *shipmentPackageID = list.cart_shipments.shipment_package_id?:@"";
-    
-    NSDictionary* param = @{API_ACTION_KEY :ACTION_CANCEL_CART,
-                            API_PRODUCT_CART_ID_KEY : @(productCartID),
-                            kTKPD_SHOPIDKEY:shopID,
-                            API_ADDRESS_ID_KEY:@(addressID),
-                            API_SHIPMENT_ID_KEY:shipmentID,
-                            API_SHIPMENT_PACKAGE_ID:shipmentPackageID
-                            };
-
-    
-    _requestActionCancelCart = [_objectManagerActionCancelCart appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_ACTION_TRANSACTION_PATH parameters:[param encrypt]];
-    [_requestActionCancelCart setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionCancelCart:mappingResult withOperation:operation];
-        [timer invalidate];
-        [_refreshControl endRefreshing];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionCancelCart:error];
-        [timer invalidate];
-        [_refreshControl endRefreshing];
-    }];
-    
-    [_operationQueue addOperation:_requestActionCancelCart];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionCancelCart) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessActionCancelCart:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *action = stat;
-    BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionCancelCart:object];
-    }
-}
-
--(void)requestFailureActionCancelCart:(id)object
-{
-    [self requestProcessActionCancelCart:object];
-}
-
--(void)requestProcessActionCancelCart:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionAction *action = stat;
-            BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(action.message_error)
-                {
-                    NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                }
-                else{
-                    if (action.result.is_success == 1) {
-
-                        NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                        [alert show];
-                        
-                        NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
-                        TransactionCartList *list = _list[indexPathCancelProduct.section];
-                        
-                        NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
-                        NSMutableArray *products = [NSMutableArray new];
-                        [products addObjectsFromArray:list.cart_products];
-                        ProductDetail *product = products[indexPathCancelProduct.row];
-                        
-                        if (type == TYPE_CANCEL_CART_PRODUCT ) {
-                            [products removeObject:product];
-                            ((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
-                            if (((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
-                                [_list removeObject:_list[indexPathCancelProduct.section]];
-                            }
-                        }
-                        else
-                        {
-                            [_list removeObject:list];
-                        }
-                        
-                        
-                        [self adjustAfterUpdateList];
-                                                
-                        [self refreshView:nil];
-                        
-                    }
-                }
-            }
-        }
-        else{
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = [[[error userInfo]objectForKey:NSUnderlyingErrorKey]localizedDescription];
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
--(void)requestTimeoutActionCancelCart
-{
-    [self cancelActionCancelCartRequest];
-}
-
-#pragma mark - Request Checkout
--(void)cancelActionCheckout
-{
-    [_requestActionCancelCart cancel];
-    _requestActionCancelCart = nil;
-    [_objectManagerActionCancelCart.operationQueue cancelAllOperations];
-    _objectManagerActionCancelCart = nil;
-}
-
--(void)configureRestKitActionCheckout
-{
-    _objectManagerActionCheckout = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionSummary class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionSummaryResult class]];
-
-    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
-    RKObjectMapping *listMapping        = [_mapping transactionCartListMapping];
-    RKObjectMapping *productMapping     = [_mapping productMapping];
-    RKObjectMapping *addressMapping     = [_mapping addressMapping];
-    RKObjectMapping *shipmentsMapping   = [_mapping shipmentsMapping];
-    RKObjectMapping *shopinfoMapping    = [_mapping shopInfoMapping];
-    
-    NSInteger gatewayID = [[_dataInput objectForKey:API_GATEWAY_LIST_ID_KEY]integerValue];
-    if(gatewayID == TYPE_GATEWAY_CLICK_BCA){
-        RKObjectMapping *BCAParamMapping = [_mapping BCAParamMapping];
-        RKRelationshipMapping *bcaParamRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_BCA_PARAM_KEY
-                                                                                         toKeyPath:API_BCA_PARAM_KEY
-                                                                                       withMapping:BCAParamMapping];
-        [transactionMapping addPropertyMapping:bcaParamRel];
-    }
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_KEY
-                                                                                  toKeyPath:API_TRANSACTION_SUMMARY_KEY
-                                                                                withMapping:transactionMapping]];
-    
-    RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
-                                                                                                 toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
-                                                                                               withMapping:listMapping];
-    [transactionMapping addPropertyMapping:listRelationshipMapping];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_DESTINATION_KEY
-                                                                                toKeyPath:API_CART_DESTINATION_KEY
-                                                                              withMapping:addressMapping]];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHOP_KEY
-                                                                                toKeyPath:API_CART_SHOP_KEY
-                                                                              withMapping:shopinfoMapping]];
-    
-    RKRelationshipMapping *productRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_PRODUCTS_KEY
-                                                                                    toKeyPath:API_CART_PRODUCTS_KEY
-                                                                                  withMapping:productMapping];
-    [listMapping addPropertyMapping:productRel];
-    
-    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHIPMENTS_KEY
-                                                                                     toKeyPath:API_CART_SHIPMENTS_KEY
-                                                                                   withMapping:shipmentsMapping];
-    [listMapping addPropertyMapping:shipmentRel];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                toKeyPath:kTKPD_APIRESULTKEY
-                                                                              withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_TRANSACTION_PATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerActionCheckout addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestActionCheckout:(id)object
-{
-    if (_requestActionCheckout.isExecuting) return;
-    
-    NSTimer *timer;
-    
-    [self adjustDropshipperListParam];
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
-    
-    NSString *token = _cart.token;
-    
-    TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    NSNumber *gatewayID = gateway.gateway;
-    
-    NSMutableArray *tempDropshipStringList = [NSMutableArray new];
-    for (NSString *dropshipString in _dropshipStrList) {
-        if (![dropshipString isEqualToString:@""]) {
-            [tempDropshipStringList addObject:dropshipString];
-        }
-    }
-    NSMutableArray *tempPartialStringList = [NSMutableArray new];
-    for (NSString *partialString in _stockPartialStrList) {
-        if (![partialString isEqualToString:@""]) {
-            [tempPartialStringList addObject:partialString];
-        }
-    }
-    
-    NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
-    NSDictionary *dropshipperDetail = [userInfo objectForKey:DATA_DROPSHIPPER_LIST_KEY]?:@{};
-    
-    NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
-    NSDictionary *partialDetail = [userInfo objectForKey:DATA_PARTIAL_LIST_KEY]?:@{};
-    
-    NSNumber *usedSaldo = _isUsingSaldoTokopedia?[_dataInput objectForKey:DATA_USED_SALDO_KEY]?:@"0":@"0";
-    
-    NSString *voucherCode = [userInfo objectForKey:API_VOUCHER_CODE_KEY]?:@"";
-    
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    NSDictionary* paramDictionary = @{API_STEP_KEY:@(STEP_CHECKOUT),
-                                      API_TOKEN_KEY:token,
-                                      API_GATEWAY_LIST_ID_KEY:gatewayID,
-                                      API_DROPSHIP_STRING_KEY:dropshipString,
-                                      API_PARTIAL_STRING_KEY :partialString,
-                                      API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
-                                      API_DEPOSIT_AMT_KEY:usedSaldo
-                                      };
-    
-    if (![voucherCode isEqualToString:@""]) {
-        [param setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
-    }
-    [param addEntriesFromDictionary:paramDictionary];
-    [param addEntriesFromDictionary:dropshipperDetail];
-    [param addEntriesFromDictionary:partialDetail];
-    
-    _checkoutButton.enabled = NO;
-    _checkoutButton.layer.opacity = 0.8;
-    _requestActionCheckout = [_objectManagerActionCheckout appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
-    [_checkoutButton setTitle:@"Processing" forState:UIControlStateNormal];
-    [_requestActionCheckout setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-         _checkoutButton.enabled = YES;
-        [self requestSuccessActionCheckout:mappingResult withOperation:operation];
-        [timer invalidate];
-        _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
-        [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-         _checkoutButton.enabled = YES;
-        [self requestFailureActionCheckout:error];
-        _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
-        [timer invalidate];
-        [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
-    }];
-    
-
-    [_operationQueue addOperation:_requestActionCheckout];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionCheckout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessActionCheckout:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionSummary *cart = stat;
-    BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionCheckout:object];
-    }
-}
-
--(void)requestFailureActionCheckout:(id)object
-{
-    [self requestProcessActionCheckout:object];
-}
-
--(void)requestProcessActionCheckout:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionSummary *cart = stat;
-            BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(cart.message_error)
-                {
-                    NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                }
-                else{
-                    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-                    NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
-                                               DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
-                                               DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
-                                               DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
-                                               DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
-                                               DATA_CART_GATEWAY_KEY :selectedGateway
-                                               };
-                    [_delegate didFinishRequestCheckoutData:userInfo];
-                }
-                if(cart.message_status)
-                {
-                    NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                    [alert show];
-                }
-            }
-        }
-        else{
-            
-            [self cancelActionCheckout];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = [[[error userInfo]objectForKey:NSUnderlyingErrorKey]localizedDescription];
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
--(void)requestTimeoutActionCheckout
-{
-    [self cancelActionCheckout];
-}
-
-#pragma mark - Request Buy
--(void)cancelActionBuy
-{
-    [_requestActionCancelCart cancel];
-    _requestActionCancelCart = nil;
-    [_objectManagerActionCancelCart.operationQueue cancelAllOperations];
-    _objectManagerActionCancelCart = nil;
-}
-
--(void)configureRestKitActionBuy
-{
-    _objectManagerActionBuy = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionBuy class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionBuyResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY,
-                                                   API_LINK_MANDIRI_KEY]];
-
-    RKObjectMapping *systemBankMapping = [_mapping systemBankMapping];
-    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
-    RKObjectMapping *listMapping = [_mapping transactionCartListMapping];
-    RKObjectMapping *productMapping = [_mapping productMapping];
-    RKObjectMapping *addressMapping = [_mapping addressMapping];
-    RKObjectMapping *shipmentsMapping = [_mapping shipmentsMapping];
-    RKObjectMapping *shopinfoMapping = [_mapping shopInfoMapping];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_KEY toKeyPath:API_TRANSACTION_SUMMARY_KEY withMapping:transactionMapping]];
-    
-    RKRelationshipMapping *systemBankRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY toKeyPath:API_SYSTEM_BANK_KEY withMapping:systemBankMapping];
-    [resultMapping addPropertyMapping:systemBankRel];
-    
-    RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET withMapping:listMapping];
-    [transactionMapping addPropertyMapping:listRelationshipMapping];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_DESTINATION_KEY toKeyPath:API_CART_DESTINATION_KEY withMapping:addressMapping]];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHOP_KEY toKeyPath:API_CART_SHOP_KEY withMapping:shopinfoMapping]];
-    
-    RKRelationshipMapping *productRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_PRODUCTS_KEY toKeyPath:API_CART_PRODUCTS_KEY withMapping:productMapping];
-    [listMapping addPropertyMapping:productRel];
-    
-    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHIPMENTS_KEY toKeyPath:API_CART_SHIPMENTS_KEY withMapping:shipmentsMapping];
-    [listMapping addPropertyMapping:shipmentRel];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerActionBuy addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestActionBuy:(id)object
-{
-    if (_requestActionBuy.isExecuting) return;
-    
-    NSTimer *timer;
-    
-    NSString *token = _cartSummary.token;
-    NSNumber *gatewayID = _cartSummary.gateway;
-    NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
-    NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
-    NSString *password = [_dataInput objectForKey:API_PASSWORD_KEY]?:@"";
-    
-    NSDictionary* param = @{API_STEP_KEY:@(STEP_BUY),
-                            API_TOKEN_KEY:token,
-                            API_GATEWAY_LIST_ID_KEY:gatewayID,
-                            API_MANDIRI_TOKEN_KEY:mandiriToken,
-                            API_CARD_NUMBER_KEY:cardNumber,
-                            API_PASSWORD_KEY:password
-                          };
-    
-    _buyButton.enabled = NO;
-    _buyButton.layer.opacity = 0.8;
-    
-    UIAlertView *alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
-    [alertLoading show];
-
-    _requestActionBuy = [_objectManagerActionBuy appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
-    [_buyButton setTitle:@"Processing" forState:UIControlStateNormal];
-    [_requestActionBuy setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionBuy:mappingResult withOperation:operation];
-        [timer invalidate];
-        _buyButton.enabled = YES;
-        _buyButton.layer.opacity = 1;
-        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
-        [alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionBuy:error];
-        [timer invalidate];
-        _buyButton.enabled = YES;
-        _buyButton.layer.opacity = 1;
-        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
-        [alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-    }];
-    
-    [_operationQueue addOperation:_requestActionBuy];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionBuy) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    
-}
-
--(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionBuy *cart = stat;
-    BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionBuy:object];
-    }
-}
-
--(void)requestFailureActionBuy:(id)object
-{
-    [self requestProcessActionBuy:object];
-}
-
--(void)requestProcessActionBuy:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionBuy *cart = stat;
-            BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(cart.message_error)
-                {
-
-                    NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                    
-                    switch ([_cartSummary.gateway integerValue]) {
-                        case TYPE_GATEWAY_TRANSFER_BANK:
-                            break;
-                        case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
-                        {
-                            //NSDictionary *data = @{DATA_KEY:_dataInput,
-                            //                      DATA_CART_SUMMARY_KEY: _cartSummary
-                            //                       };
-                            //[_delegate pushVC:self toMandiriClickPayVCwithData:data];
-                        }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                if(cart.message_status)
-                {
-                    NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                    [alert show];
-                }
-                if (cart.result.is_success == 1) {
-                    _cartBuy = cart.result;
-                    switch ([_cartSummary.gateway integerValue]) {
-                        case TYPE_GATEWAY_MANDIRI_E_CASH:
-                        {
-                            TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-                            vc.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
-                            vc.token = _cartSummary.token;
-                            vc.URLStringMandiri = cart.result.link_mandiri?:@"";
-                            vc.cartDetail = _cartSummary;
-                            vc.emoney_code = cart.result.transaction.emoney_code;
-                            vc.delegate = self;
-                            UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                            navigationController.navigationBar.translucent = NO;
-                            navigationController.navigationBar.tintColor = [UIColor whiteColor];
-                            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                        }
-                            break;
-                        default:
-                        {
-                            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
-                            [_delegate didFinishRequestBuyData:userInfo];
-                            [_dataInput removeAllObjects];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-                        }
-                            break;
-                    }
-                }
-            }
-        }
-        else{
-            
-            [self cancelActionBuy];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = [[[error userInfo]objectForKey:NSUnderlyingErrorKey]localizedDescription];
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
-
--(void)requestTimeoutActionBuy
-{
-    [self cancelActionBuy];
-}
-
-#pragma mark - Request Action Voucher
--(void)cancelActionVoucher
-{
-    [_requestActionVoucher cancel];
-    _requestActionVoucher = nil;
-    [_objectManagerActionVoucher.operationQueue cancelAllOperations];
-    _objectManagerActionVoucher = nil;
-}
-
--(void)configureRestKitActionVoucher
-{
-    _objectManagerActionVoucher = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionVoucher class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionVoucherResult class]];
-    
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[TransactionVoucherData class]];
-    [dataMapping addAttributeMappingsFromArray:@[API_DATA_VOUCHER_AMOUNT_KEY,
-                                                 API_DATA_VOUCHER_EXPIRED_KEY,
-                                                 API_DATA_VOUCHER_ID_KEY,
-                                                 API_DATA_VOUCHER_MINIMAL_AMOUNT_KEY,
-                                                 API_DATA_VOUCHER_STATUS_KEY
-                                                 ]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DATA_VOUCHER_KEY toKeyPath:API_DATA_VOUCHER_KEY withMapping:dataMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_CHECK_VOUCHER_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerActionVoucher addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestActionVoucher:(id)object
-{
-    if (_requestActionVoucher.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
-
-    NSString *voucherCode = [userInfo objectForKey:API_VOUCHER_CODE_KEY];
-    
-    NSDictionary* param = @{API_ACTION_KEY :ACTION_CECK_VOUCHER_CODE,
-                            API_VOUCHER_CODE_KEY : voucherCode
-                            };
-    
-    _requestActionVoucher = [_objectManagerActionVoucher appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_CHECK_VOUCHER_PATH parameters:[param encrypt]];
-    [_requestActionVoucher setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionVoucher:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionVoucher:error];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestActionVoucher];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionVoucher) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessActionVoucher:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionVoucher *dataVoucher = stat;
-    BOOL status = [dataVoucher.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionVoucher:object];
-    }
-}
-
--(void)requestFailureActionVoucher:(id)object
-{
-    [self requestProcessActionVoucher:object];
-}
-
--(void)requestProcessActionVoucher:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionVoucher *dataVoucher = stat;
-            BOOL status = [dataVoucher.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(dataVoucher.message_error)
-                {
-                    [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
-                    NSArray *errorMessages = dataVoucher.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                }
-                else{
-                    _voucherCodeButton.hidden = YES;
-                    _voucherAmountLabel.hidden = NO;
-                    
-                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-                    formatter.currencyCode = @"Rp ";
-                    formatter.currencyGroupingSeparator = @".";
-                    formatter.currencyDecimalSeparator = @",";
-                    formatter.maximumFractionDigits = 0;
-                    formatter.minimumFractionDigits = 0;
-                    
-                    NSInteger voucher = [dataVoucher.result.data_voucher.voucher_amount integerValue];
-                    NSString *voucherString = [formatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
-                    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
-                    _voucherAmountLabel.text = voucherString;
-                    _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-                    
-                    _buttonVoucherInfo.hidden = YES;
-                    _buttonCancelVoucher.hidden = NO;
-                }
-            }
-        }
-        else{
-            if ([object code] != NSURLErrorCancelled) {
-                
-                NSString *errorDescription = [object localizedDescription];
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-
-                [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
-            }
-        }
-    }
-}
-
--(void)requestTimeoutActionVoucher
-{
-    [self cancelActionVoucher];
-}
-
-#pragma mark - Request Edit Product
--(void)cancelActionEditProductCartRequest
-{
-    [_requestActionEditProductCart cancel];
-    _requestActionEditProductCart = nil;
-    [_objectManagerActionEditProductCart.operationQueue cancelAllOperations];
-    _objectManagerActionEditProductCart = nil;
-}
-
--(void)configureRestKitActionEditProductCart
-{
-    _objectManagerActionEditProductCart = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{API_IS_SUCCESS_KEY:API_IS_SUCCESS_KEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_ACTION_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerActionEditProductCart addResponseDescriptor:responseDescriptor];
-}
-
--(void)requestActionEditProductCart:(id)object
-{
-    if (_requestActionEditProductCart.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
-    
-    ProductDetail *product = [userInfo objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    
-    NSInteger productCartID = [product.product_cart_id integerValue];
-    NSString *productNotes = product.product_notes?:@"";
-    NSString *productQty = product.product_quantity?:@"";
-    
-    NSDictionary* param = @{API_ACTION_KEY :ACTION_EDIT_PRODUCT_CART,
-                            API_PRODUCT_CART_ID_KEY : @(productCartID),
-                            API_CART_PRODUCT_NOTES_KEY:productNotes,
-                            API_PRODUCT_QUANTITY_KEY:productQty
-                            };
-    
-    _requestActionEditProductCart = [_objectManagerActionEditProductCart appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_ACTION_TRANSACTION_PATH parameters:[param encrypt]];
-    [_requestActionEditProductCart setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionEditProductCart:mappingResult withOperation:operation];
-        [timer invalidate];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionEditProductCart:error];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestActionEditProductCart];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionEditProductCart) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *action = stat;
-    BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionEditProductCart:object];
-    }
-}
-
--(void)requestFailureActionEditProductCart:(id)object
-{
-    [self requestProcessActionEditProductCart:object];
-}
-
--(void)requestProcessActionEditProductCart:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionAction *action = stat;
-            BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(action.message_error)
-                {
-                    NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                }
-                else{
-                    if (action.result.is_success == 1) {
-                        NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                        [alert show];
-                        if (_indexPage == 0) {
-                            [_networkManager doRequest];
-                            _refreshFromShipment = YES;
-                        }
-                        [_tableView reloadData];
-                    }
-                }
-            }
-        }
-        else{
-            
-            [self cancelActionEditProductCartRequest];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = [[[error userInfo]objectForKey:NSUnderlyingErrorKey]localizedDescription];
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
--(void)requestTimeoutActionEditProductCart
-{
-    [self cancelActionEditProductCartRequest];
-}
-
-
-#pragma mark - Request E-Money
--(void)cancelEMoney
-{
-    
-}
-
--(void)configureRestKitEMoney
-{
-    _objectManagerEMoney = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxEmoney class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxEMoneyResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{API_IS_SUCCESS_KEY:API_IS_SUCCESS_KEY}];
-
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[TxEMoneyData class]];
-    [resultMapping addAttributeMappingsFromArray:@[API_TRACE_NUM_KEY,
-                                                   API_STATUS_KEY,
-                                                   API_NOMOR_HP_KEY,
-                                                   API_TRX_ID_KEY,
-                                                   API_ID_EMONEY_KEY]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_EMONEY_DATA_KEY toKeyPath:API_EMONEY_DATA_KEY withMapping:dataMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_EMONEY_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerEMoney addResponseDescriptor:responseDescriptor];
-}
-
--(void)requestEMoney:(BOOL)isWSNew
-{
-    if (_requestEMoney.isExecuting) return;
-    NSTimer *timer;
-    
-    
-    NSDictionary* param = @{//API_ACTION_KEY : isWSNew?ACTION_START_UP_EMONEY:ACTION_VALIDATE_CODE_EMONEY,
-                            API_ACTION_KEY :ACTION_START_UP_EMONEY,
-                            API_MANDIRI_ID_KEY : _cartBuy.transaction.emoney_code?:@""};
-    
-    _requestEMoney = [_objectManagerEMoney appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_EMONEY_PATH parameters:[param encrypt]];
-    
-    UIAlertView *alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
-    [alertLoading show];
-    
-    [_requestEMoney setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessEMoney:mappingResult withOperation:operation isWSNew:isWSNew];
-        [timer invalidate];
-        [_act stopAnimating];
-        [alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureEMoney:error];
-        [alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-        [timer invalidate];
-        [_act stopAnimating];
-    }];
-    
-    [_operationQueue addOperation:_requestEMoney];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutEMoney) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation isWSNew:(BOOL)isWSNew
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TxEmoney *emoney = stat;
-    BOOL status = [emoney.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-
-    if (status) {
-        //if (isWSNew) {
-            if (emoney.result.is_success == 1) {
-                NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
-                [_delegate didFinishRequestBuyData:userInfo];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-            }
-            else
-            {
-                StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:self];
-                [failedAlert show];
-                [_delegate shouldBackToFirstPage];
-            }
-        //}
-        //else
-        //{
-        //    if (emoney.result.is_success == 1) {
-        //        if ([emoney.result.data.status rangeOfString:@"FAILED"].location != NSNotFound) {
-        //            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"FAILED" message:@"Pembayaran gagal. Silahkan coba lagi." delegate:self cancelButtonTitle:@"Tutup" otherButtonTitles:nil];
-        //            [alert show];
-        //        }
-        //        else if([emoney.result.data.status rangeOfString:@"SUCCESS"].location != NSNotFound)
-        //        {
-        //            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy};
-        //            [_delegate didFinishRequestBuyData:userInfo];
-        //
-        //            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        //        }
-        //    }
-        //}
-
-    }
-}
-
--(void)requestFailureEMoney:(id)object
-{
-    [self requestProcessEMoney:object];
-}
-
--(void)requestProcessEMoney:(id)object
-{
-
-}
-
--(void)requestTimeoutEMoney
-{
-    [self cancelEMoney];
-}
-
-
-
-#pragma mark - Request BCA ClickPay
--(void)cancelBCAClickPay
-{
-    
-}
-
--(void)configureRestKitBCAClickPay
-{
-    _objectManagerBCAClickPay = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionBuy class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionBuyResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    RKObjectMapping *systemBankMapping = [_mapping systemBankMapping];
-    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
-    RKObjectMapping *listMapping = [_mapping transactionCartListMapping];
-    RKObjectMapping *productMapping = [_mapping productMapping];
-    RKObjectMapping *addressMapping = [_mapping addressMapping];
-    RKObjectMapping *shipmentsMapping = [_mapping shipmentsMapping];
-    RKObjectMapping *shopinfoMapping = [_mapping shopInfoMapping];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_KEY toKeyPath:API_TRANSACTION_SUMMARY_KEY withMapping:transactionMapping]];
-    
-    RKRelationshipMapping *systemBankRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY toKeyPath:API_SYSTEM_BANK_KEY withMapping:systemBankMapping];
-    [resultMapping addPropertyMapping:systemBankRel];
-    
-    RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET withMapping:listMapping];
-    [transactionMapping addPropertyMapping:listRelationshipMapping];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_DESTINATION_KEY toKeyPath:API_CART_DESTINATION_KEY withMapping:addressMapping]];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHOP_KEY toKeyPath:API_CART_SHOP_KEY withMapping:shopinfoMapping]];
-    
-    RKRelationshipMapping *productRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_PRODUCTS_KEY toKeyPath:API_CART_PRODUCTS_KEY withMapping:productMapping];
-    [listMapping addPropertyMapping:productRel];
-    
-    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHIPMENTS_KEY toKeyPath:API_CART_SHIPMENTS_KEY withMapping:shipmentsMapping];
-    [listMapping addPropertyMapping:shipmentRel];
-    
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_BCA_KLICK_PAY_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerBCAClickPay addResponseDescriptor:responseDescriptor];
-}
-
--(void)requestBCAClickPay
-{
-    if (_requestBCAClickPay.isExecuting) return;
-    NSTimer *timer;
-    
-    
-    NSDictionary* param = @{};
-    
-    _requestBCAClickPay = [_objectManagerBCAClickPay appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_BCA_KLICK_PAY_PATH parameters:[param encrypt]];
-    
-    UIAlertView *alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
-    [alertLoading show];
-    
-    [_requestBCAClickPay setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessBCAClickPay:mappingResult withOperation:operation];
-        [timer invalidate];
-        [_act stopAnimating];
-        [alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureBCAClickPay:error];
-        [alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-        [timer invalidate];
-        [_act stopAnimating];
-    }];
-    
-    [_operationQueue addOperation:_requestBCAClickPay];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutBCAClickPay) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionBuy *BCAClickPay = stat;
-    BOOL status = [BCAClickPay.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if (BCAClickPay.result.is_success == 1) {
-            
-            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BCAClickPay.result?:[TransactionBuyResult new]};
-            [_delegate didFinishRequestBuyData:userInfo?:@{}];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        }
-        else
-        {
-            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:self];
-            [failedAlert show];
-            [_delegate shouldBackToFirstPage];
-        }
-    }
-}
-
--(void)requestFailureBCAClickPay:(id)object
-{
-    [self requestProcessBCAClickPay:object];
-}
-
--(void)requestProcessBCAClickPay:(id)object
-{
-    
-}
-
--(void)requestTimeoutBCAClickPay
-{
-    [self cancelBCAClickPay];
-}
-
-
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     [_activeTextField resignFirstResponder];
@@ -2053,13 +713,42 @@
                     _buttonCancelVoucher.hidden = YES;
                     _buttonVoucherInfo.hidden = NO;
                     
+                    NSString *voucher = [_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT];
+                    NSInteger grandTotalFromWS = [[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
+                    
+                    NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+                    grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+                    grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                    grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
+                    NSInteger totalInteger = [grandTotal integerValue];
+                    
+                    if (totalInteger>=[voucher integerValue]) {
+                        voucher = [_dataInput objectForKey:DATA_VOUCHER_AMOUNT];
+                    }
+                    
+                    if ([voucher integerValue] == grandTotalFromWS) {
+                        NSInteger depositAmount = [[_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""] integerValue];
+                        
+                        totalInteger -= depositAmount;
+                    }
+                    
+                    totalInteger += [voucher integerValue];
+
+                    
+                    _cart.grand_total = [NSString stringWithFormat:@"%zd", totalInteger];
+                    _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
+                    
+                    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+                    
                     [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
+                    [_dataInput setObject:@(0) forKey:DATA_VOUCHER_AMOUNT];
+                    [_dataInput setObject:@"" forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+                    [_tableView reloadData];
                 }
                     break;
                 default:
                     if([self isValidInput]) {
-                        [self configureRestKitActionCheckout];
-                        [self requestActionCheckout:_dataInput];
+                        [_networkManagerCheckout doRequest];
                     }
                 break;
             }
@@ -2070,13 +759,11 @@
                 case TYPE_GATEWAY_TOKOPEDIA:
                 {
                     if ([self isValidInput]) {
-                        [self configureRestKitActionBuy];
-                        [self requestActionBuy:_dataInput];
+                        [_networkManagerBuy doRequest];
                     }
                 }
                 case TYPE_GATEWAY_TRANSFER_BANK:
-                    [self configureRestKitActionBuy];
-                    [self requestActionBuy:_dataInput];
+                    [_networkManagerBuy doRequest];
                     break;
                 case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
                 {
@@ -2103,8 +790,7 @@
                 }
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
                 {
-                    [self configureRestKitActionBuy];
-                    [self requestActionBuy:_dataInput];
+                    [_networkManagerBuy doRequest];
                     break;
                 }
                 default:
@@ -2127,9 +813,60 @@
     else
     {
         [self.tableView beginUpdates];
+        
         NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:_switchSaldoIndexPath.row+1 inSection:_switchSaldoIndexPath.section];
         [self.tableView deleteRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
         [self.tableView endUpdates];
+
+        NSInteger usedVoucherAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT] integerValue];
+        
+        NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        NSInteger depositAmount = [[_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""] integerValue];
+        NSInteger grandTotalInteger = [grandTotal integerValue] + depositAmount;
+        
+        NSInteger grandTotalCartFromWS = [[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
+        
+        NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
+        NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
+        
+        if (voucherUsedAmount<voucherAmount) {
+            if (voucherUsedAmount+ depositAmount > grandTotalCartFromWS) {
+                
+            }
+            else
+                voucherUsedAmount = voucherUsedAmount+ depositAmount;
+            
+            if (voucherUsedAmount>voucherAmount) {
+                voucherUsedAmount = voucherAmount;
+                grandTotalInteger = voucherUsedAmount - voucherAmount;
+            }
+            else
+            {
+                depositAmount = 0;
+                grandTotalInteger = 0;
+            }
+            
+
+            [_dataInput setObject:@(depositAmount) forKey:DATA_USED_SALDO_KEY];
+            [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+        }
+        
+        if (grandTotalInteger>grandTotalCartFromWS) {
+            grandTotalInteger = grandTotalCartFromWS;
+        }
+
+        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
+        
+        _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+        
+        _saldoTokopediaAmountTextField.text = @"";
+        
+        [_tableView reloadData];
+
     }
 }
 - (IBAction)tapChoosePayment:(id)sender {
@@ -2146,7 +883,6 @@
     GeneralTableViewController *vc = [GeneralTableViewController new];
     vc.selectedObject = selectedGateway.gateway_name;
     vc.objects = gatewayListWithoutCreditCart;
-    vc.shouldPopBack = YES;
     vc.delegate = self;
     vc.title = @"Metode Pembayaran";
     [self.navigationController pushViewController:vc animated:YES];
@@ -2189,8 +925,7 @@
 {
     [_dataInput addEntriesFromDictionary:userInfo];
     if (_indexPage == 0) {
-        [self configureRestKitActionEditProductCart];
-        [self requestActionEditProductCart:_dataInput];
+        [_networkManagerEditProduct doRequest];
     }
 }
 #pragma mark - Cell Delegate
@@ -2351,6 +1086,8 @@
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     _isRefreshRequest = YES;
+    [_refreshControl beginRefreshing];
+    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     _networkManager.delegate = self;
     [_networkManager doRequest];
 }
@@ -2539,6 +1276,47 @@
         }
     }
     _isRefreshRequest = NO;
+    TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    NSNumber *gatewayID = gateway.gateway;
+    if ([gatewayID integerValue] == TYPE_GATEWAY_TOKOPEDIA) {
+        NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
+        NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
+        
+        NSInteger depositAmount = [[_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""] integerValue];
+        
+        if (voucherUsedAmount<voucherAmount) {
+            voucherUsedAmount = voucherUsedAmount+ depositAmount;
+            if (voucherUsedAmount>voucherAmount) {
+                voucherUsedAmount = voucherAmount;
+                depositAmount = voucherUsedAmount - voucherAmount;
+            }
+            else
+            {
+                depositAmount = 0;
+            }
+            [_dataInput setObject:@(depositAmount) forKey:DATA_USED_SALDO_KEY];
+            [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+        }
+        
+        NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        
+        NSInteger grandTotalInteger = [grandTotal integerValue] + depositAmount;
+        
+        if (grandTotalInteger < 0) {
+            grandTotalInteger = 0;
+        }
+        
+        
+        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
+        
+        _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+        
+        _saldoTokopediaAmountTextField.text = @"";
+        
+    }
     [_tableView reloadData];
 }
 
@@ -2553,8 +1331,7 @@
                 case 1:
                 {
                     [_dataInput setObject:@(TYPE_CANCEL_CART_PRODUCT) forKey:DATA_CANCEL_TYPE_KEY];
-                    [self configureRestKitActionCancelCart];
-                    [self requestActionCancelCart:_dataInput];
+                    [_networkManagerCancelCart doRequest];
                     break;
                 }
                 default:
@@ -2566,8 +1343,7 @@
                 case 1:
                 {
                     [_dataInput setObject:@(TYPE_CANCEL_CART_SHOP) forKey:DATA_CANCEL_TYPE_KEY];
-                    [self configureRestKitActionCancelCart];
-                    [self requestActionCancelCart:_dataInput];
+                    [_networkManagerCancelCart doRequest];
                     break;
                 }
                 default:
@@ -2580,8 +1356,7 @@
                 NSString *voucherCode = [[alertView textFieldAtIndex:0] text];
                 [_dataInput setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
                 if ([self isValidInputVoucher]) {
-                    [self configureRestKitActionVoucher];
-                    [self requestActionVoucher:_dataInput];
+                    [_networkManagerVoucher doRequest];
                 }
                 else
                 {
@@ -2625,14 +1400,21 @@
 -(void)TransactionCartMandiriClickPayForm:(TransactionCartFormMandiriClickPayViewController *)VC withUserInfo:(NSDictionary *)userInfo
 {
     [_dataInput addEntriesFromDictionary:userInfo];
-    [self configureRestKitActionBuy];
-    [self requestActionBuy:_dataInput];
+    [_networkManagerBuy doRequest];
 }
 
 #pragma mark - Textfield Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
     _activeTextField = textField;
+    if (textField == _saldoTokopediaAmountTextField) {
+        NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
+        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        [_dataInput setObject:grandTotal forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    }
+
     return YES;
 }
 
@@ -2643,7 +1425,6 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    BOOL isValid = YES;
     if (textField.tag > 0 )
     {
         [_senderNameDropshipper replaceObjectAtIndex:textField.tag-1 withObject:textField.text];
@@ -2673,8 +1454,8 @@
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
         
-        NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-        
+        NSNumber * grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL];
+
         NSString *depositAmount = [textFieldValue stringByReplacingOccurrencesOfString:@"." withString:@""];
         [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
 
@@ -2682,13 +1463,37 @@
 
         if (range.length > 0)
         {
+            
             NSString *textFieldRemoveOneChar = [[textField.text substringToIndex:[textField.text length]-1] stringByReplacingOccurrencesOfString:@"." withString:@""];
-
             NSInteger deposit = [textFieldRemoveOneChar integerValue];
             NSInteger grandTotalInteger = [grandTotal integerValue] - deposit;
+                        NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
+            NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
+            NSInteger grandTotalCartFromWS = [[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
+            
+            if (grandTotalInteger<0) {
+                if (voucherUsedAmount<voucherAmount && voucherUsedAmount< grandTotalCartFromWS) {
+                    voucherUsedAmount = voucherUsedAmount+ deposit;
+                    if (voucherUsedAmount>voucherAmount) {
+                        voucherUsedAmount = voucherAmount;
+                        deposit = voucherUsedAmount - voucherAmount;
+                    }
+                    else
+                    {
+                        depositAmount = 0;
+                    }
+                    //[_dataInput setObject:@(deposit) forKey:DATA_USED_SALDO_KEY];
+                    [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+                }
+                grandTotalInteger = 0;
+            }
+            grandTotalInteger -= voucherUsedAmount;
+            if (grandTotalInteger <0) {
+                grandTotalInteger = 0;
+            }
+            
             _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
             _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
-            
             _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
             
             NSString *depositAmount = [textFieldRemoveOneChar stringByReplacingOccurrencesOfString:@"." withString:@""];
@@ -2697,12 +1502,41 @@
         }
         else if ([textFieldText integerValue] <= [grandTotal integerValue] || [textFieldText integerValue] <= [self depositAmountUser])
         {
+            grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL];
             NSInteger deposit = [depositAmount integerValue];
             NSInteger grandTotalInteger = [grandTotal integerValue] - deposit;
+            NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
+            NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
+            NSInteger grandTotalCartFromWS = [[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
+            
+            if (grandTotalInteger<0) {
+                if (voucherUsedAmount<voucherAmount && voucherUsedAmount< grandTotalCartFromWS) {
+                    voucherUsedAmount = voucherUsedAmount+ deposit;
+                    if (voucherUsedAmount>voucherAmount) {
+                        voucherUsedAmount = voucherAmount;
+                        deposit = voucherUsedAmount - voucherAmount;
+                    }
+                    else
+                    {
+                        depositAmount = 0;
+                    }
+                    //[_dataInput setObject:@(deposit) forKey:DATA_USED_SALDO_KEY];
+                    [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+                }
+                grandTotalInteger = 0;
+            }
+            grandTotalInteger -= voucherUsedAmount;
+            if (grandTotalInteger <0) {
+                grandTotalInteger = 0;
+            }
+            
+            NSLog(@"%zd",deposit);
             _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
             _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+            [_dataInput setObject:@(deposit) forKey:DATA_USED_SALDO_KEY];
             
             _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
+            
             
         }
         
@@ -2770,19 +1604,12 @@
 
 -(void)shouldDoRequestEMoney:(BOOL)isWSNew
 {
-    [self configureRestKitEMoney];
-    [self requestEMoney:isWSNew];
+    [_networkManagerEMoney doRequest];
 }
 
 -(void)shouldDoRequestBCAClickPay
 {
-    [self configureRestKitBCAClickPay];
-    [self requestBCAClickPay];
-}
-
--(void)refreshCartAfterCancelPayment
-{
-    //[_delegate shouldBackToFirstPage];
+    [_networkManagerBCAClickPay doRequest];
 }
 
 #pragma mark - Methods
@@ -2863,6 +1690,10 @@
     if (_indexPage == 0) {
         [_networkManager doRequest];
         _refreshFromShipment = YES;
+    }
+    else
+    {
+        _popFromShipment = YES;
     }
 }
 
@@ -3014,7 +1845,7 @@
                 if (indexPath.row == indexPathFirstObjectProduct.row+productCount+3)
                     cell = [self cellTextFieldPlaceholder:@"Nama Pengirim" atIndexPath:indexPath withText:_senderNameDropshipper[indexPath.section]];
                 else if (indexPath.row == indexPathFirstObjectProduct.row+productCount+4)
-                    cell = [self cellTextFieldPlaceholder:@"Nomor Telepon" atIndexPath:indexPath withText:_senderPhoneDropshipper[indexPath.section]];
+                    cell = [self cellTextFieldPlaceholder:@"Nomer Telepon" atIndexPath:indexPath withText:_senderPhoneDropshipper[indexPath.section]];
             }
         }
     }
@@ -3124,13 +1955,6 @@
         [self depositAmountUser] == 0
         )
     {
-        NSString *depositAmount = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-        NSInteger deposit = [depositAmount integerValue];
-        NSNumber *grandTotalBefore = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-        NSInteger grandTotal = [grandTotalBefore integerValue] - deposit;
-        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotal]];
-        _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotal]] stringByAppendingString:@",-"];
-        _grandTotalLabel.text = _cart.grand_total_idr;
         cell = _totalPaymentCell;
         [cell.detailTextLabel setText:_cart.grand_total_idr];
     }
@@ -3299,14 +2123,9 @@
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = cell.productThumbImageView;
-    thumb.image = nil;
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-#pragma clang diagnosti c pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {}];
+    
     cell.editButton.hidden = (_indexPage == 1);
     
     if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
@@ -3331,21 +2150,375 @@
     return cell;
 }
 
--(void)dealloc
+
+#pragma mark - Network Manager Delegate
+-(id)getObjectManager:(int)tag
 {
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
+    if (tag == TAG_REQUEST_CART) {
+        return [self objectManagerCart];
+    }
+    if (tag == TAG_REQUEST_CANCEL_CART) {
+        return [self objectManagerCancelCart];
+    }
+    if (tag == TAG_REQUEST_CHECKOUT) {
+        return [self objectManagerCheckout];
+    }
+    if (tag == TAG_REQUEST_BUY) {
+        return [self objectManagerBuy];
+    }
+    if (tag == TAG_REQUEST_VOUCHER) {
+        return  [self objectManagerVoucher];
+    }
+    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+        return [self objectMangerEditProduct];
+    }
+    if (tag == TAG_REQUEST_EMONEY) {
+        return [self objectManagerEMoney];
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        return [self objectManagerBCAClickPay];
+    }
+    return nil;
 }
 
-- (IBAction)switchUsingSaldo:(id)sender {
+-(NSDictionary *)getParameter:(int)tag
+{
+    if (tag == TAG_REQUEST_CART) {
+        return @{};
+    }
+    if (tag == TAG_REQUEST_CANCEL_CART) {
+        NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
+        
+        TransactionCartList *list = _list[indexPathCancelProduct.section];
+        NSArray *products = list.cart_products;
+        ProductDetail *product = products[indexPathCancelProduct.row];
+        
+        NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
+        
+        NSInteger productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
+        NSString *shopID = list.cart_shop.shop_id?:@"";
+        NSInteger addressID = list.cart_destination.address_id;
+        NSString *shipmentID = list.cart_shipments.shipment_id?:@"";
+        NSString *shipmentPackageID = list.cart_shipments.shipment_package_id?:@"";
+        
+        NSDictionary* param = @{API_ACTION_KEY :ACTION_CANCEL_CART,
+                                API_PRODUCT_CART_ID_KEY : @(productCartID),
+                                kTKPD_SHOPIDKEY:shopID,
+                                API_ADDRESS_ID_KEY:@(addressID),
+                                API_SHIPMENT_ID_KEY:shipmentID,
+                                API_SHIPMENT_PACKAGE_ID:shipmentPackageID
+                                };
+        return param;
+    }
+    if (tag == TAG_REQUEST_CHECKOUT) {
+        [self adjustDropshipperListParam];
+        
+        NSString *token = _cart.token;
+        
+        TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+        NSNumber *gatewayID = gateway.gateway;
+        
+        NSMutableArray *tempDropshipStringList = [NSMutableArray new];
+        for (NSString *dropshipString in _dropshipStrList) {
+            if (![dropshipString isEqualToString:@""]) {
+                [tempDropshipStringList addObject:dropshipString];
+            }
+        }
+        NSMutableArray *tempPartialStringList = [NSMutableArray new];
+        for (NSString *partialString in _stockPartialStrList) {
+            if (![partialString isEqualToString:@""]) {
+                [tempPartialStringList addObject:partialString];
+            }
+        }
+        
+        NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
+        NSDictionary *dropshipperDetail = [_dataInput objectForKey:DATA_DROPSHIPPER_LIST_KEY]?:@{};
+        
+        NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
+        NSDictionary *partialDetail = [_dataInput objectForKey:DATA_PARTIAL_LIST_KEY]?:@{};
+        
+        NSNumber *usedSaldo = _isUsingSaldoTokopedia?[_dataInput objectForKey:DATA_USED_SALDO_KEY]?:@"0":@"0";
+        
+        NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
+        
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        NSDictionary* paramDictionary = @{API_STEP_KEY:@(STEP_CHECKOUT),
+                                          API_TOKEN_KEY:token,
+                                          API_GATEWAY_LIST_ID_KEY:gatewayID,
+                                          API_DROPSHIP_STRING_KEY:dropshipString,
+                                          API_PARTIAL_STRING_KEY :partialString,
+                                          API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
+                                          API_DEPOSIT_AMT_KEY:usedSaldo
+                                          };
+        
+        if (![voucherCode isEqualToString:@""]) {
+            [param setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
+        }
+        [param addEntriesFromDictionary:paramDictionary];
+        [param addEntriesFromDictionary:dropshipperDetail];
+        [param addEntriesFromDictionary:partialDetail];
+        
+        
+        return param;
+    }
+    
+    if (tag == TAG_REQUEST_BUY) {
+        NSString *token = _cartSummary.token;
+        NSNumber *gatewayID = _cartSummary.gateway;
+        NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
+        NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
+        NSString *password = [_dataInput objectForKey:API_PASSWORD_KEY]?:@"";
+        
+        NSDictionary* param = @{API_STEP_KEY:@(STEP_BUY),
+                                API_TOKEN_KEY:token,
+                                API_GATEWAY_LIST_ID_KEY:gatewayID,
+                                API_MANDIRI_TOKEN_KEY:mandiriToken,
+                                API_CARD_NUMBER_KEY:cardNumber,
+                                API_PASSWORD_KEY:password
+                                };
+        return param;
+    }
+    
+    if (tag == TAG_REQUEST_VOUCHER) {
+        NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
+        
+        NSDictionary* param = @{API_ACTION_KEY :ACTION_CECK_VOUCHER_CODE,
+                                API_VOUCHER_CODE_KEY : voucherCode
+                                };
+        
+        return param;
+    }
+    
+    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+        
+        NSInteger productCartID = [product.product_cart_id integerValue];
+        NSString *productNotes = product.product_notes?:@"";
+        NSString *productQty = product.product_quantity?:@"";
+        
+        NSDictionary* param = @{API_ACTION_KEY :ACTION_EDIT_PRODUCT_CART,
+                                API_PRODUCT_CART_ID_KEY : @(productCartID),
+                                API_CART_PRODUCT_NOTES_KEY:productNotes,
+                                API_PRODUCT_QUANTITY_KEY:productQty
+                                };
+        return param;
+    }
+    if (tag == TAG_REQUEST_EMONEY) {
+        NSDictionary* param = @{//API_ACTION_KEY : isWSNew?ACTION_START_UP_EMONEY:ACTION_VALIDATE_CODE_EMONEY,
+                                API_ACTION_KEY :ACTION_START_UP_EMONEY,
+                                API_MANDIRI_ID_KEY : _cartBuy.transaction.emoney_code?:@""};
+        return param;
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        return @{};
+    }
+    return @{};
 }
+
+-(NSString *)getPath:(int)tag
+{
+    if (tag == TAG_REQUEST_CART) {
+        return API_TRANSACTION_PATH;
+    }
+    if (tag == TAG_REQUEST_CANCEL_CART) {
+        return API_ACTION_TRANSACTION_PATH;
+    }
+    if (tag == TAG_REQUEST_CHECKOUT) {
+        return API_TRANSACTION_PATH;
+    }
+    if (tag == TAG_REQUEST_BUY) {
+        return API_TRANSACTION_PATH;
+    }
+    if (tag == TAG_REQUEST_VOUCHER) {
+        return API_CHECK_VOUCHER_PATH;
+    }
+    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+        return API_ACTION_TRANSACTION_PATH;
+    }
+    if (tag == TAG_REQUEST_EMONEY) {
+        return API_EMONEY_PATH;
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        return API_BCA_KLICK_PAY_PATH;
+    }
+    return nil;
+}
+
+-(void)actionBeforeRequest:(int)tag
+{
+    if (tag == TAG_REQUEST_CART) {
+        if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"]) {
+            [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
+        }
+        
+        if (![_refreshControl isRefreshing]) {
+            _tableView.tableFooterView = _footerView;
+            [_act startAnimating];
+        }
+        _isLoadingRequest = YES;
+    }
+    
+    if (tag == TAG_REQUEST_CANCEL_CART) {
+        
+    }
+    
+    if (tag == TAG_REQUEST_CHECKOUT) {
+        _checkoutButton.enabled = NO;
+        [_alertLoading show];
+    }
+    
+    if (tag == TAG_REQUEST_BUY) {
+        _buyButton.enabled = NO;
+        _buyButton.layer.opacity = 0.8;
+        
+        [_alertLoading show];
+    }
+    if (tag == TAG_REQUEST_VOUCHER) {
+        
+    }
+    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+    }
+    if (tag == TAG_REQUEST_EMONEY) {
+        [_alertLoading show];
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        [_alertLoading show];
+    }
+}
+
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    if (tag == TAG_REQUEST_CART) {
+        TransactionCart *cart = stat;
+        return cart.status;
+    }
+    if (tag == TAG_REQUEST_CANCEL_CART) {
+        TransactionAction *action = stat;
+        return action.status;
+    }
+    if (tag == TAG_REQUEST_CHECKOUT) {
+        TransactionSummary *cart = stat;
+        return cart.status;
+    }
+    if (tag == TAG_REQUEST_BUY) {
+        TransactionBuy *cart = stat;
+        return cart.status;
+    }
+    
+    if (tag == TAG_REQUEST_VOUCHER) {
+        TransactionVoucher *dataVoucher = stat;
+        return dataVoucher.status;
+    }
+    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+        TransactionAction *action = stat;
+        return action.status;
+    }
+    if (tag == TAG_REQUEST_EMONEY) {
+        TxEmoney *emoney = stat;
+        return emoney.status;
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        TransactionBuy *BCAClickPay = stat;
+        return BCAClickPay.status;
+    }
+    return nil;
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    if (tag == TAG_REQUEST_CART) {
+        [self requestSuccessCart:successResult withOperation:operation];
+    }
+    if (tag == TAG_REQUEST_CANCEL_CART) {
+        [self requestSuccessActionCancelCart:successResult withOperation:operation];
+        [_refreshControl endRefreshing];
+    }
+    if (tag == TAG_REQUEST_CHECKOUT) {
+        [self requestSuccessActionCheckout:successResult withOperation:operation];
+        _checkoutButton.enabled = YES;
+        _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
+        [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    if (tag == TAG_REQUEST_BUY) {
+        [self requestSuccessActionBuy:successResult withOperation:operation];
+        _buyButton.enabled = YES;
+        _buyButton.layer.opacity = 1;
+        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    if (tag == TAG_REQUEST_VOUCHER) {
+        [self requestSuccessActionVoucher:successResult withOperation:operation];
+    }
+    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+        [self requestSuccessActionEditProductCart:successResult withOperation:operation];
+    }
+    if (tag == TAG_REQUEST_EMONEY) {
+        [self requestSuccessEMoney:successResult withOperation:operation];
+        [_act stopAnimating];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        [self requestSuccessBCAClickPay:successResult withOperation:operation];
+        [_act stopAnimating];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    [_refreshControl endRefreshing];
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    //[self actionAfterFailRequestMaxTries:tag];
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if (tag == TAG_REQUEST_CART) {
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
+        _isLoadingRequest = NO;
+    }
+    if (tag == TAG_REQUEST_CANCEL_CART) {
+        [_refreshControl endRefreshing];
+    }
+    
+    if (tag == TAG_REQUEST_CHECKOUT) {
+        _buyButton.enabled = YES;
+        _buyButton.layer.opacity = 1;
+        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    if (tag == TAG_REQUEST_BUY) {
+        _buyButton.enabled = YES;
+        _buyButton.layer.opacity = 1;
+        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    if (tag == TAG_REQUEST_VOUCHER) {
+        
+    }
+    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+        
+    }
+    if (tag == TAG_REQUEST_EMONEY) {
+        [_act stopAnimating];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [_act stopAnimating];
+    }
+    [_refreshControl endRefreshing];
+}
+
+#pragma mark - Request Cart
 
 - (RKObjectManager *)objectManagerCart
 {
-    _objectManagerCart = [RKObjectManager sharedClient];
+    RKObjectManager *objectManagerCart = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionCart class]];
@@ -3392,9 +2565,865 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManagerCart addResponseDescriptor:responseDescriptor];
+    [objectManagerCart addResponseDescriptor:responseDescriptor];
     
-    return _objectManagerCart;
-
+    return objectManagerCart;
+    
 }
+
+-(void)requestSuccessCart:(id)successResult withOperation:(RKObjectRequestOperation*)operation
+{
+    [_refreshControl endRefreshing];
+    [_act stopAnimating];
+    _isLoadingRequest = NO;
+    
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    id stat = [result objectForKey:@""];
+    TransactionCart *cart = stat;
+    BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        if(cart.message_error)
+        {
+            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        else{
+            
+            [_list removeAllObjects];
+            
+            NSArray *list = cart.result.list;
+            [_list addObjectsFromArray:list];
+            
+            _cart = cart.result;
+            [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL];
+            
+            [self adjustAfterUpdateList];
+            
+            if (_shipmentViewController) {
+                NSInteger index = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue];
+                _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list[index],
+                                                 DATA_INDEX_KEY : @(index)
+                                                 };
+                [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
+                _shipmentViewController.indexPage = _indexPage;
+                _shipmentViewController.delegate = self;
+            }
+        }
+    }
+}
+
+
+-(void)adjustAfterUpdateList
+{
+    
+    if (_list.count>0) {
+        _isnodata = NO;
+    }
+    else
+    {
+        _isnodata = YES;
+        _paymentMethodView.hidden = YES;
+        _tableView.tableFooterView = nil;
+    }
+    [_delegate isNodata:_isnodata];
+    
+    
+    NSInteger listCount = _list.count;
+    
+    if (!_refreshFromShipment) {
+        [self resetAllArray];
+    }
+    [_listProductFirstObjectIndexPath removeAllObjects];
+    
+    for (int i = 0; i<listCount; i++) {
+        TransactionCartList *list = _list[i];
+        
+        NSArray *products = list.cart_products;
+        NSInteger productCount = products.count;
+        
+        NSIndexPath *firstProductIndexPath = [NSIndexPath indexPathForRow:0 inSection:i];
+        if (![list.cart_error_message_1 isEqualToString:@"0"]||![list.cart_error_message_2 isEqualToString:@"0"])
+            firstProductIndexPath = [NSIndexPath indexPathForRow:1 inSection:i];
+        [_listProductFirstObjectIndexPath addObject:firstProductIndexPath];
+        
+        if (!_refreshFromShipment) {
+            [self addArrayObjectTemp];
+        }
+        
+        if (productCount<=0) {
+            [_isDropshipper removeObjectAtIndex:i];
+            [_stockPartialStrList removeObjectAtIndex:i];
+            [_senderNameDropshipper removeObjectAtIndex:i];
+            [_senderPhoneDropshipper removeObjectAtIndex:i];
+            [_dropshipStrList removeObjectAtIndex:i];
+            [_stockPartialDetail removeObjectAtIndex:i];
+            [_listProductFirstObjectIndexPath removeObjectAtIndex:i];
+        }
+        
+    }
+    if (listCount>0) {
+        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
+        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
+        
+        
+        if (_indexPage == 0) {
+            _paymentMethodView.hidden = NO;
+            _paymentMethodSelectedView.hidden = YES;
+            _checkoutView.hidden = NO;
+            _tableView.tableFooterView = _checkoutView;
+        }
+        else if (_indexPage == 1) {
+            _paymentMethodView.hidden = YES;
+            _paymentMethodSelectedView.hidden = NO;
+            _buyView.hidden = NO;
+            _tableView.tableFooterView = _buyView;
+        }
+    }
+    
+    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    
+    if (_firstInit) _firstInit = NO;
+    
+    [self adjustDropshipperListParam];
+    [self adjustPartialListParam];
+    
+    NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    NSString *grandTotalBefore = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"," withString:@""];
+    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    
+    NSString *deposit = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"," withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    NSInteger depositAmount = [deposit integerValue];
+    
+    NSString *voucher = [_dataInput objectForKey:DATA_VOUCHER_AMOUNT];
+    
+    NSInteger totalInteger = [grandTotal integerValue];
+    totalInteger -= [voucher integerValue];
+    if (totalInteger<0) {
+        totalInteger = 0;
+    }
+    
+    NSInteger grandTotalInteger = [grandTotalBefore integerValue] - [deposit integerValue];
+    NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
+    NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
+    NSInteger grandTotalCartFromWS = [[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
+    
+    if (grandTotalCartFromWS<voucherAmount) {
+        voucherUsedAmount = grandTotalCartFromWS;
+        if (voucherUsedAmount>voucherAmount) {
+            voucherUsedAmount = voucherAmount;
+        }
+    }
+    grandTotalInteger = 0;
+    
+    grandTotalInteger -= voucherUsedAmount;
+    
+    grandTotalInteger = totalInteger;
+    
+    
+    
+    [_dataInput setObject:@(grandTotalCartFromWS) forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    
+    [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+    
+    grandTotalInteger -= [deposit integerValue];
+    if (grandTotalInteger <0) {
+        grandTotalInteger = 0;
+    }
+    
+    _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
+    
+    _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    
+    
+    _refreshFromShipment = NO;
+    
+    [_tableView reloadData];
+    
+}
+
+
+#pragma mark - Request Cancel Cart
+-(RKObjectManager *)objectManagerCancelCart
+//-(void)configureRestKitActionCancelCart
+{
+    RKObjectManager *objectManagerActionCancelCart = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_ACTION_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManagerActionCancelCart addResponseDescriptor:responseDescriptor];
+    
+    return objectManagerActionCancelCart;
+}
+
+
+-(void)requestSuccessActionCancelCart:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    TransactionAction *action = stat;
+    BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        if(action.message_error)
+        {
+            NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        else{
+            if (action.result.is_success == 1) {
+                
+                NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                [alert show];
+                
+                NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
+                TransactionCartList *list = _list[indexPathCancelProduct.section];
+                
+                NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
+                NSMutableArray *products = [NSMutableArray new];
+                [products addObjectsFromArray:list.cart_products];
+                ProductDetail *product = products[indexPathCancelProduct.row];
+                
+                if (type == TYPE_CANCEL_CART_PRODUCT ) {
+                    [products removeObject:product];
+                    ((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
+                    if (((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
+                        [_list removeObject:_list[indexPathCancelProduct.section]];
+                    }
+                }
+                else
+                {
+                    [_list removeObject:list];
+                }
+                
+                
+                [self adjustAfterUpdateList];
+                
+                [self refreshView:nil];
+                
+            }
+        }
+    }
+}
+
+
+#pragma mark - Request Checkout
+
+-(RKObjectManager*)objectManagerCheckout
+{
+    RKObjectManager *objectManagerActionCheckout = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionSummary class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionSummaryResult class]];
+    
+    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
+    RKObjectMapping *listMapping        = [_mapping transactionCartListMapping];
+    RKObjectMapping *productMapping     = [_mapping productMapping];
+    RKObjectMapping *addressMapping     = [_mapping addressMapping];
+    RKObjectMapping *shipmentsMapping   = [_mapping shipmentsMapping];
+    RKObjectMapping *shopinfoMapping    = [_mapping shopInfoMapping];
+    
+    NSInteger gatewayID = [[_dataInput objectForKey:API_GATEWAY_LIST_ID_KEY]integerValue];
+    if(gatewayID == TYPE_GATEWAY_CLICK_BCA){
+        RKObjectMapping *BCAParamMapping = [_mapping BCAParamMapping];
+        RKRelationshipMapping *bcaParamRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_BCA_PARAM_KEY
+                                                                                         toKeyPath:API_BCA_PARAM_KEY
+                                                                                       withMapping:BCAParamMapping];
+        [transactionMapping addPropertyMapping:bcaParamRel];
+    }
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_KEY
+                                                                                  toKeyPath:API_TRANSACTION_SUMMARY_KEY
+                                                                                withMapping:transactionMapping]];
+    
+    RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
+                                                                                                 toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
+                                                                                               withMapping:listMapping];
+    [transactionMapping addPropertyMapping:listRelationshipMapping];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_DESTINATION_KEY
+                                                                                toKeyPath:API_CART_DESTINATION_KEY
+                                                                              withMapping:addressMapping]];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHOP_KEY
+                                                                                toKeyPath:API_CART_SHOP_KEY
+                                                                              withMapping:shopinfoMapping]];
+    
+    RKRelationshipMapping *productRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_PRODUCTS_KEY
+                                                                                    toKeyPath:API_CART_PRODUCTS_KEY
+                                                                                  withMapping:productMapping];
+    [listMapping addPropertyMapping:productRel];
+    
+    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHIPMENTS_KEY
+                                                                                     toKeyPath:API_CART_SHIPMENTS_KEY
+                                                                                   withMapping:shipmentsMapping];
+    [listMapping addPropertyMapping:shipmentRel];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                toKeyPath:kTKPD_APIRESULTKEY
+                                                                              withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:API_TRANSACTION_PATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManagerActionCheckout addResponseDescriptor:responseDescriptor];
+    
+    return objectManagerActionCheckout;
+}
+
+
+-(void)requestSuccessActionCheckout:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    TransactionSummary *cart = stat;
+    BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        if(cart.message_error)
+        {
+            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        else{
+            TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+            NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
+                                       DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
+                                       DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
+                                       DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
+                                       DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
+                                       DATA_CART_GATEWAY_KEY :selectedGateway
+                                       };
+            [_delegate didFinishRequestCheckoutData:userInfo];
+        }
+        if(cart.message_status)
+        {
+            NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+            [alert show];
+        }
+    }
+}
+
+
+#pragma mark - Request Buy
+
+-(RKObjectManager *)objectManagerBuy
+{
+    RKObjectManager *objectManagerActionBuy = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionBuy class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionBuyResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY,
+                                                   API_LINK_MANDIRI_KEY]];
+    
+    RKObjectMapping *systemBankMapping = [_mapping systemBankMapping];
+    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
+    RKObjectMapping *listMapping = [_mapping transactionCartListMapping];
+    RKObjectMapping *productMapping = [_mapping productMapping];
+    RKObjectMapping *addressMapping = [_mapping addressMapping];
+    RKObjectMapping *shipmentsMapping = [_mapping shipmentsMapping];
+    RKObjectMapping *shopinfoMapping = [_mapping shopInfoMapping];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_KEY toKeyPath:API_TRANSACTION_SUMMARY_KEY withMapping:transactionMapping]];
+    
+    RKRelationshipMapping *systemBankRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY toKeyPath:API_SYSTEM_BANK_KEY withMapping:systemBankMapping];
+    [resultMapping addPropertyMapping:systemBankRel];
+    
+    RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET withMapping:listMapping];
+    [transactionMapping addPropertyMapping:listRelationshipMapping];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_DESTINATION_KEY toKeyPath:API_CART_DESTINATION_KEY withMapping:addressMapping]];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHOP_KEY toKeyPath:API_CART_SHOP_KEY withMapping:shopinfoMapping]];
+    
+    RKRelationshipMapping *productRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_PRODUCTS_KEY toKeyPath:API_CART_PRODUCTS_KEY withMapping:productMapping];
+    [listMapping addPropertyMapping:productRel];
+    
+    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHIPMENTS_KEY toKeyPath:API_CART_SHIPMENTS_KEY withMapping:shipmentsMapping];
+    [listMapping addPropertyMapping:shipmentRel];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManagerActionBuy addResponseDescriptor:responseDescriptor];
+    
+    return objectManagerActionBuy;
+}
+
+-(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    if ([object isKindOfClass:[RKMappingResult class]]) {
+        NSDictionary *result = ((RKMappingResult*)object).dictionary;
+        id stat = [result objectForKey:@""];
+        TransactionBuy *cart = stat;
+        BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        
+        if (status) {
+            if(cart.message_error)
+            {
+                
+                NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                [alert show];
+                
+                switch ([_cartSummary.gateway integerValue]) {
+                    case TYPE_GATEWAY_TRANSFER_BANK:
+                        break;
+                    case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
+                    {
+                        //NSDictionary *data = @{DATA_KEY:_dataInput,
+                        //                      DATA_CART_SUMMARY_KEY: _cartSummary
+                        //                       };
+                        //[_delegate pushVC:self toMandiriClickPayVCwithData:data];
+                    }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if(cart.message_status)
+            {
+                NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                [alert show];
+            }
+            if (cart.result.is_success == 1) {
+                _cartBuy = cart.result;
+                switch ([_cartSummary.gateway integerValue]) {
+                    case TYPE_GATEWAY_MANDIRI_E_CASH:
+                    {
+                        TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+                        vc.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
+                        vc.token = _cartSummary.token;
+                        vc.URLStringMandiri = cart.result.link_mandiri?:@"";
+                        vc.cartDetail = _cartSummary;
+                        vc.emoney_code = cart.result.transaction.emoney_code;
+                        vc.delegate = self;
+                        UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                        navigationController.navigationBar.translucent = NO;
+                        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                    }
+                        break;
+                    default:
+                    {
+                        NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
+                        [_delegate didFinishRequestBuyData:userInfo];
+                        [_dataInput removeAllObjects];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+                    }
+                        break;
+                }
+            }
+        }
+    }
+}
+
+#pragma mark - Request Action Voucher
+
+-(RKObjectManager*)objectManagerVoucher
+{
+    RKObjectManager *objectManagerActionVoucher = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionVoucher class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionVoucherResult class]];
+    
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[TransactionVoucherData class]];
+    [dataMapping addAttributeMappingsFromArray:@[API_DATA_VOUCHER_AMOUNT_KEY,
+                                                 API_DATA_VOUCHER_EXPIRED_KEY,
+                                                 API_DATA_VOUCHER_ID_KEY,
+                                                 API_DATA_VOUCHER_MINIMAL_AMOUNT_KEY,
+                                                 API_DATA_VOUCHER_STATUS_KEY
+                                                 ]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DATA_VOUCHER_KEY toKeyPath:API_DATA_VOUCHER_KEY withMapping:dataMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_CHECK_VOUCHER_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManagerActionVoucher addResponseDescriptor:responseDescriptor];
+    
+    return objectManagerActionVoucher;
+}
+
+-(void)requestSuccessActionVoucher:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    TransactionVoucher *dataVoucher = stat;
+    BOOL status = [dataVoucher.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        if(dataVoucher.message_error)
+        {
+            [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
+            NSArray *errorMessages = dataVoucher.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        else{
+            _voucherCodeButton.hidden = YES;
+            _voucherAmountLabel.hidden = NO;
+            
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            formatter.currencyCode = @"Rp ";
+            formatter.currencyGroupingSeparator = @".";
+            formatter.currencyDecimalSeparator = @",";
+            formatter.maximumFractionDigits = 0;
+            formatter.minimumFractionDigits = 0;
+            
+            NSInteger voucher = [dataVoucher.result.data_voucher.voucher_amount integerValue];
+            NSString *voucherString = [formatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
+            voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
+            _voucherAmountLabel.text = voucherString;
+            _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+            
+            _buttonVoucherInfo.hidden = YES;
+            _buttonCancelVoucher.hidden = NO;
+            
+            NSString *grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"." withString:@""];
+            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"-" withString:@""];
+            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSInteger totalInteger = [grandTotal integerValue];
+            
+            if (totalInteger<=voucher) {
+                [_dataInput setObject:@(totalInteger) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+            }
+            else
+            {
+                [_dataInput setObject:@(voucher) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+            }
+            
+            
+            totalInteger -= voucher;
+            if (totalInteger <0) {
+                totalInteger = 0;
+            }
+            _cart.grand_total = [NSString stringWithFormat:@"%zd",totalInteger];
+            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
+            [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
+            [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+            [_tableView reloadData];
+        }
+    }
+    
+}
+
+
+#pragma mark - Request Edit Product
+-(RKObjectManager*)objectMangerEditProduct
+{
+    RKObjectManager *objectManagerActionEditProductCart = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{API_IS_SUCCESS_KEY:API_IS_SUCCESS_KEY}];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_ACTION_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManagerActionEditProductCart addResponseDescriptor:responseDescriptor];
+    
+    return objectManagerActionEditProductCart;
+}
+
+
+-(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    TransactionAction *action = stat;
+    BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        if(action.message_error)
+        {
+            NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        else{
+            if (action.result.is_success == 1) {
+                NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                [alert show];
+                if (_indexPage == 0) {
+                    [_networkManager doRequest];
+                    _refreshFromShipment = YES;
+                }
+                [_tableView reloadData];
+            }
+        }
+    }
+}
+
+#pragma mark - Request E-Money
+-(RKObjectManager *)objectManagerEMoney
+{
+    RKObjectManager *objectManagerEMoney = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxEmoney class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxEMoneyResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{API_IS_SUCCESS_KEY:API_IS_SUCCESS_KEY}];
+    
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[TxEMoneyData class]];
+    [resultMapping addAttributeMappingsFromArray:@[API_TRACE_NUM_KEY,
+                                                   API_STATUS_KEY,
+                                                   API_NOMOR_HP_KEY,
+                                                   API_TRX_ID_KEY,
+                                                   API_ID_EMONEY_KEY]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_EMONEY_DATA_KEY toKeyPath:API_EMONEY_DATA_KEY withMapping:dataMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_EMONEY_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManagerEMoney addResponseDescriptor:responseDescriptor];
+    
+    return objectManagerEMoney;
+}
+
+
+-(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    TxEmoney *emoney = stat;
+    BOOL status = [emoney.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        //if (isWSNew) {
+        if (emoney.result.is_success == 1) {
+            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
+            [_delegate didFinishRequestBuyData:userInfo];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+        }
+        else
+        {
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:self];
+            [failedAlert show];
+            [_delegate shouldBackToFirstPage];
+        }
+        //}
+        //else
+        //{
+        //    if (emoney.result.is_success == 1) {
+        //        if ([emoney.result.data.status rangeOfString:@"FAILED"].location != NSNotFound) {
+        //            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"FAILED" message:@"Pembayaran gagal. Silahkan coba lagi." delegate:self cancelButtonTitle:@"Tutup" otherButtonTitles:nil];
+        //            [alert show];
+        //        }
+        //        else if([emoney.result.data.status rangeOfString:@"SUCCESS"].location != NSNotFound)
+        //        {
+        //            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy};
+        //            [_delegate didFinishRequestBuyData:userInfo];
+        //
+        //            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+        //        }
+        //    }
+        //}
+        
+    }
+}
+
+
+#pragma mark - Request BCA ClickPay
+
+-(RKObjectManager*)objectManagerBCAClickPay
+{
+    RKObjectManager *objectManagerBCAClickPay = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionBuy class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionBuyResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
+    
+    RKObjectMapping *systemBankMapping = [_mapping systemBankMapping];
+    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
+    RKObjectMapping *listMapping = [_mapping transactionCartListMapping];
+    RKObjectMapping *productMapping = [_mapping productMapping];
+    RKObjectMapping *addressMapping = [_mapping addressMapping];
+    RKObjectMapping *shipmentsMapping = [_mapping shipmentsMapping];
+    RKObjectMapping *shopinfoMapping = [_mapping shopInfoMapping];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_KEY toKeyPath:API_TRANSACTION_SUMMARY_KEY withMapping:transactionMapping]];
+    
+    RKRelationshipMapping *systemBankRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY toKeyPath:API_SYSTEM_BANK_KEY withMapping:systemBankMapping];
+    [resultMapping addPropertyMapping:systemBankRel];
+    
+    RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET withMapping:listMapping];
+    [transactionMapping addPropertyMapping:listRelationshipMapping];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_DESTINATION_KEY toKeyPath:API_CART_DESTINATION_KEY withMapping:addressMapping]];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHOP_KEY toKeyPath:API_CART_SHOP_KEY withMapping:shopinfoMapping]];
+    
+    RKRelationshipMapping *productRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_PRODUCTS_KEY toKeyPath:API_CART_PRODUCTS_KEY withMapping:productMapping];
+    [listMapping addPropertyMapping:productRel];
+    
+    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_SHIPMENTS_KEY toKeyPath:API_CART_SHIPMENTS_KEY withMapping:shipmentsMapping];
+    [listMapping addPropertyMapping:shipmentRel];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_BCA_KLICK_PAY_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManagerBCAClickPay addResponseDescriptor:responseDescriptor];
+    
+    return objectManagerBCAClickPay;
+}
+
+
+-(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    TransactionBuy *BCAClickPay = stat;
+    BOOL status = [BCAClickPay.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        if (BCAClickPay.result.is_success == 1) {
+            
+            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BCAClickPay.result?:[TransactionBuyResult new]};
+            [_delegate didFinishRequestBuyData:userInfo?:@{}];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+        }
+        else
+        {
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:self];
+            [failedAlert show];
+            [_delegate shouldBackToFirstPage];
+        }
+    }
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
+    
+    [_networkManagerCancelCart requestCancel];
+    _networkManagerCancelCart.delegate = nil;
+    _networkManagerCancelCart = nil;
+    
+    [_networkManagerBuy requestCancel];
+    _networkManagerBuy.delegate = nil;
+    _networkManagerBuy = nil;
+    
+    [_networkManagerCheckout requestCancel];
+    _networkManagerCheckout.delegate = nil;
+    _networkManagerCheckout = nil;
+    
+    [_networkManagerEditProduct requestCancel];
+    _networkManagerEditProduct.delegate = nil;
+    _networkManagerEditProduct = nil;
+    
+    [_networkManagerEMoney requestCancel];
+    _networkManagerEMoney.delegate = nil;
+    _networkManagerEMoney = nil;
+    
+    [_networkManagerVoucher requestCancel];
+    _networkManagerVoucher.delegate = nil;
+    _networkManagerVoucher = nil;
+}
+
+- (IBAction)switchUsingSaldo:(id)sender {
+}
+
 @end

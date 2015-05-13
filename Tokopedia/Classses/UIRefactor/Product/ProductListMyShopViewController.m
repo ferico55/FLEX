@@ -39,7 +39,8 @@
     MyShopEtalaseFilterViewControllerDelegate,
     ProductListMyShopFilterDelegate,
     MyShopEtalaseFilterViewControllerDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    RequestMoveToDelegate
 >
 {
     NSInteger _page;
@@ -114,6 +115,7 @@
     _cachecontroller = [URLCacheController new];
     
     _requestMoveTo = [RequestMoveTo new];
+    _requestMoveTo.delegate = self;
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.tagRequest = TAG_LIST_REQUEST;
@@ -149,24 +151,10 @@
     [_networkManager doRequest];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    _networkManager.delegate = self;
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    return _isnodata?1:_list.count;
-#else
     return _isnodata?0:_list.count;
-#endif
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -197,9 +185,9 @@
                                                       timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
             UIImageView *thumb = ((ProductListMyShopCell*)cell).thumb;
-            thumb.image = nil;
+            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey"];
             [thumb setImageWithURLRequest:request
-                         placeholderImage:nil
+                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"]
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -336,6 +324,9 @@
     
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
+    
+    _table.delegate = nil;
+    _table.dataSource = nil;
 }
 
 - (void)didReceiveMemoryWarning

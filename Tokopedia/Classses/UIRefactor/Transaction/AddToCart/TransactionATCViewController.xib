@@ -47,6 +47,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionATCViewController">
             <connections>
                 <outlet property="act" destination="YTl-yM-RaU" id="gez-rT-3lZ"/>
+                <outlet property="actBuyButton" destination="guT-MQ-tD1" id="0m3-zF-bT8"/>
                 <outlet property="addressLabel" destination="bk2-Tr-a8Z" id="7eh-z0-BKv"/>
                 <outlet property="borderAddress" destination="Ea7-XM-T7k" id="tEa-u1-2bx"/>
                 <outlet property="borderFullAddress" destination="IfS-dh-V7H" id="BoO-Ps-e9E"/>
@@ -112,12 +113,21 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="EVU-33-0wi"/>
                     </connections>
                 </button>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="guT-MQ-tD1">
+                    <rect key="frame" x="74" y="534" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="Ppy-J1-DFq"/>
+                        <constraint firstAttribute="height" constant="20" id="xXf-tK-Ycc"/>
+                    </constraints>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="RoT-Rb-4aA" secondAttribute="trailing" id="LN4-pw-WPx"/>
                 <constraint firstAttribute="bottom" secondItem="ZND-e2-NEY" secondAttribute="bottom" id="RwV-qc-pRo"/>
+                <constraint firstItem="guT-MQ-tD1" firstAttribute="leading" secondItem="pLJ-Wv-IeN" secondAttribute="leading" constant="74" id="cKP-OE-HIz"/>
                 <constraint firstItem="ZND-e2-NEY" firstAttribute="top" secondItem="RoT-Rb-4aA" secondAttribute="bottom" id="cbZ-6r-BKL"/>
+                <constraint firstItem="guT-MQ-tD1" firstAttribute="top" secondItem="RoT-Rb-4aA" secondAttribute="bottom" constant="14" id="mqN-Bv-9Yb"/>
                 <constraint firstItem="RoT-Rb-4aA" firstAttribute="top" secondItem="pLJ-Wv-IeN" secondAttribute="top" id="n6D-U1-YWr"/>
                 <constraint firstItem="RoT-Rb-4aA" firstAttribute="leading" secondItem="pLJ-Wv-IeN" secondAttribute="leading" id="pA7-v0-cGS"/>
                 <constraint firstAttribute="trailing" secondItem="ZND-e2-NEY" secondAttribute="trailing" id="xvo-zq-IXj"/>
@@ -258,7 +268,7 @@
                             <constraint firstAttribute="width" constant="42" id="vgy-xi-V2k"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6x-JR-f9O" userLabel="Border">
@@ -307,7 +317,7 @@
                             <constraint firstAttribute="width" constant="103" id="gEv-uz-Uyi"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tzt-1Q-FmJ" userLabel="Border">
@@ -591,7 +601,7 @@
                             <constraint firstAttribute="width" constant="103" id="okQ-ps-8Cv"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ea7-XM-T7k" userLabel="Border">
@@ -672,7 +682,7 @@
                             <constraint firstAttribute="width" constant="123" id="2Dd-BV-14n"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qp9-t3-ouM" userLabel="Border">
@@ -731,7 +741,7 @@
                             <constraint firstAttribute="width" constant="123" id="XWL-r3-Fuc"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UeS-4C-vJi" userLabel="Border">
@@ -789,7 +799,7 @@
                             <constraint firstAttribute="width" constant="103" id="IPC-uk-nvP"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SOh-JZ-GQ1" userLabel="Border">
@@ -856,7 +866,7 @@
                             <constraint firstAttribute="width" constant="103" id="aa2-c0-QH0"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYp-3X-fRw" userLabel="Border">
@@ -904,7 +914,7 @@
                             <constraint firstAttribute="width" constant="50" id="o59-S5-h23"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndO-em-hSl">

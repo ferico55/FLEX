@@ -38,7 +38,7 @@
     _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
                                                                           method:RKRequestMethodPOST
                                                                             path:[_delegate getPath:self.tagRequest]
-                                                                      parameters:[[_delegate getParameter:self.tagRequest] encrypt]];
+                                                                      parameters:(!_isParameterNotEncrypted ? [[_delegate getParameter:self.tagRequest] encrypt] : [_delegate getParameter:self.tagRequest])];
     
     
     [_requestTimer invalidate];

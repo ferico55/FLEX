@@ -17,6 +17,7 @@
 #define API_USER_ID_KEY @"user_id"
 #define API_ACTION_GENERATE_HOST @"generate_host"
 #define API_UPLOAD_IMAGE_PATH @"action/upload-image.pl"
+#define API_UPLOAD_GENERATE_HOST_PATH @"action/generate-host.pl"
 
 #pragma mark - Generate Host Delegate
 @protocol GenerateHostDelegate <NSObject>

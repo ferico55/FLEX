@@ -2402,6 +2402,7 @@ UIAlertViewDelegate
 
 -(void)refreshRequest:(NSNotification*)notification
 {
+    tokopediaNetworkManager.delegate = self;
     [tokopediaNetworkManager doRequest];
 }
 

@@ -148,11 +148,6 @@
     }
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-}
 
 #pragma mark - Memory Management
 - (void)dealloc
