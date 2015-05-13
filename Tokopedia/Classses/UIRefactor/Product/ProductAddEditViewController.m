@@ -20,7 +20,6 @@
 #import "ProductAddEditViewController.h"
 #import "ProductAddEditDetailViewController.h"
 #import "ProductEditImageViewController.h"
-#import "CameraController.h"
 #import "CategoryMenuViewController.h"
 #import "URLCacheController.h"
 #import "StickyAlertView.h"
@@ -30,6 +29,7 @@
 #import "CameraCollectionViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
+#import "TKPDPhotoPicker.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
@@ -41,7 +41,6 @@
     UITableViewDataSource,
     UITableViewDelegate,
     TKPDAlertViewDelegate,
-    CameraControllerDelegate,
     CategoryMenuViewDelegate,
     ProductEditDetailViewControllerDelegate,
     ProductEditImageViewControllerDelegate,
@@ -49,7 +48,8 @@
     CameraCollectionViewControllerDelegate,
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
-    CameraAlbumListDelegate
+    CameraAlbumListDelegate,
+    TKPDPhotoPickerDelegate
 >
 {
     NSMutableDictionary *_dataInput;
@@ -108,6 +108,8 @@
     
     TokopediaNetworkManager *_networkManager;
     ProductAddEditDetailViewController *_detailVC;
+
+    TKPDPhotoPicker *_photoPicker;
 }
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -261,6 +263,8 @@
         default:
             break;
     }
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 -(void)viewDidLayoutSubviews
@@ -442,17 +446,10 @@
 
 -(void)didTapImageButtonSingleSelection:(UIButton*)sender
 {
-    CameraController* c = [CameraController new];
-    [c snap];
-    c.tag = sender.tag-20;
-    c.delegate = self;
-    c.isTakePicture = YES;
-    c.isTakePicture = NO;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    nav.wantsFullScreenLayout = YES;
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
+                                                  pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+    _photoPicker.tag = sender.tag - 20;
+    _photoPicker.delegate = self;
 }
 
 - (IBAction)gesture:(id)sender
@@ -1169,10 +1166,11 @@
     
 }
 
-#pragma mark - Camera Controller Delegate
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+#pragma mark - TKPDPhotoPicker delegate
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
 {
-    [self setImageData:userinfo tag:controller.tag];
+    [self setImageData:userInfo tag:picker.tag];
 }
 
 -(void)didRemoveImageDictionary:(NSDictionary *)removedImage

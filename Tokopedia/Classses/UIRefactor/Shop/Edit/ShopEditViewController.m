@@ -16,7 +16,6 @@
 
 #import "ShopEditViewController.h"
 #import "ShopEditStatusViewController.h"
-#import "CameraController.h"
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
 
@@ -28,7 +27,6 @@
 <
     UITextViewDelegate,
     ShopEditStatusViewControllerDelegate,
-    CameraControllerDelegate,
     GenerateHostDelegate,
     RequestUploadImageDelegate,
     TKPDPhotoPickerDelegate
@@ -426,22 +424,11 @@
                 break;
             }
             case 11:
-            {   //edit thumbnail
-
+            {
+                //edit thumbnail
                 _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
                                                               pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
                 [_photoPicker setDelegate:self];
-
-                
-//                CameraController* c = [CameraController new];
-//                [c snap];
-//                c.delegate = self;
-//                
-//                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-//                nav.wantsFullScreenLayout = YES;
-//                nav.modalPresentationStyle = UIModalPresentationFullScreen;
-//                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
             case 12:
@@ -588,22 +575,6 @@
 {
     [_datainput addEntriesFromDictionary:data];
     [self setDefaultData:_data];
-}
-
-#pragma mark - Delegate Camera Controller
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
-{
-    NSDictionary *object = @{DATA_SELECTED_PHOTO_KEY : userinfo,
-                             DATA_SELECTED_IMAGE_VIEW_KEY :_thumb};
-    
-    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    _thumb.image = image;
-    [self actionUploadImage:object];
 }
 
 #pragma mark - Photo picker delegate
