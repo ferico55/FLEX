@@ -315,20 +315,24 @@
             _holdDepositByTokopedia = depositsummary.result.summary.summary_deposit_hold_tx_1_day_idr;
             
             if([depositsummary.result.summary.summary_deposit_hold_tx_1_day integerValue] > 0) {
-                [_reviewSaldo setText:_holdDepositByTokopedia];
-                CGRect newFrame2 = _filterDateArea.frame;
-                newFrame2.origin.y += 40;
-                _filterDateArea.frame = newFrame2;
+                _infoReviewSaldo.tag = 121;
                 
-                CGRect newFrame3 = _table.frame;
-                newFrame3.origin.y += 40;
-                _table.frame = newFrame3;
+                if(! [_withdrawalButton viewWithTag:121]) {
+                    [_reviewSaldo setText:_holdDepositByTokopedia];
+                    CGRect newFrame2 = _filterDateArea.frame;
+                    newFrame2.origin.y += 40;
+                    _filterDateArea.frame = newFrame2;
                 
-                [_withdrawalButton addSubview:_infoReviewSaldo];
-                CGRect newFrame4 = _infoReviewSaldo.frame;
-                newFrame4.origin.y += 35;
-                newFrame4.origin.x = -60;
-                _infoReviewSaldo.frame = newFrame4;
+                    CGRect newFrame3 = _table.frame;
+                    newFrame3.origin.y += 40;
+                    _table.frame = newFrame3;
+                
+                    [_withdrawalButton addSubview:_infoReviewSaldo];
+                    CGRect newFrame4 = _infoReviewSaldo.frame;
+                    newFrame4.origin.y += 37;
+                    newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
+                    _infoReviewSaldo.frame = newFrame4;
+                }
             }
             
             if([depositsummary.result.summary.summary_today_tries integerValue] < [depositsummary.result.summary.summary_daily_tries integerValue] && [depositsummary.result.summary.summary_useable_deposit integerValue] > 0) {

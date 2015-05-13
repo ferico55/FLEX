@@ -12,4 +12,5 @@
 
 - (IBAction)actionCreateShop:(id)sender;
 - (void)updateKeyChain;
+- (void)updateImageURL;
 @end
