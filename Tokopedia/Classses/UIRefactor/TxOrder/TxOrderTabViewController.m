@@ -122,7 +122,7 @@
     }
     [self viewControllerAtIndex:_index];
     UIColor *disableColor =[UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
-    UIColor *enableColor = [UIColor colorWithRed:0/255.0f green:122.0f/255.0f blue:255.0f/255.0f alpha:1];
+    UIColor *enableColor = [UIColor colorWithRed:66.0/255.0f green:189.0/255.0f blue:65.0/255.0f alpha:1];
     if (_isMultipleSelect)[_segmentControl setTintColor:disableColor]; else [_segmentControl setTintColor:enableColor];
     _segmentControl.enabled = !_isMultipleSelect;
 }
@@ -253,7 +253,7 @@
 
     [self viewControllerAtIndex:_index];
     UIColor *disableColor =[UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
-    UIColor *enableColor = [UIColor colorWithRed:0/255.0f green:122.0f/255.0f blue:255.0f/255.0f alpha:1];
+    UIColor *enableColor = [UIColor colorWithRed:66.0/255.0f green:189.0/255.0f blue:65.0/255.0f alpha:1];
     if (_isMultipleSelect)[_segmentControl setTintColor:disableColor]; else [_segmentControl setTintColor:enableColor];
     _segmentControl.enabled = !_isMultipleSelect;
     _isRefresh = YES;
