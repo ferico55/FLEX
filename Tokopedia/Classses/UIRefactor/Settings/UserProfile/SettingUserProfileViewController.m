@@ -336,6 +336,10 @@
     _generatehost = generateHost;
 }
 
+- (void)failedGenerateHost {
+    
+}
+
 #pragma mark Request Action Upload Photo
 -(void)actionUploadImage:(id)object
 {

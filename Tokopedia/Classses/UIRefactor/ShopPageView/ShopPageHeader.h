@@ -17,7 +17,7 @@
 
 @end
 
-@interface ShopPageHeader : UIViewController<UIPageViewControllerDataSource>
+@interface ShopPageHeader : UIViewController
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) NSDictionary *data;

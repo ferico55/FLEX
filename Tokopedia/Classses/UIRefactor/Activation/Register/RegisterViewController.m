@@ -359,6 +359,9 @@
             [_activetextfield resignFirstResponder];
             break;
         }
+        
+        default:
+            break;
     }
 }
 

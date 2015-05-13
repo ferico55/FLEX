@@ -1112,4 +1112,8 @@
     }
 }
 
+- (void)failedGenerateHost {
+    
+}
+
 @end

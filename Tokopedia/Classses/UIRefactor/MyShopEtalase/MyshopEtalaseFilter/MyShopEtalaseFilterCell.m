@@ -56,6 +56,9 @@
                 [_delegate MyShopEtalaseFilterCell:self withindexpath:_indexpath ];
                 break;
             }
+                
+            default:
+                break;
         }
         
     }

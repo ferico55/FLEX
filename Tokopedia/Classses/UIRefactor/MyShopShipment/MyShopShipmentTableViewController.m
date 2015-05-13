@@ -1424,7 +1424,7 @@
                     _showJNEExtraFeeTextField = NO;
                 } else {
                     _shipmentJNEExtraFeeSwitch.on = YES;
-                    _shipmentJNEExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", _shipment.jne.jne_fee];
+                    _shipmentJNEExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.jne.jne_fee];
                     _showJNEExtraFeeTextField = YES;
                 }
             }
@@ -1454,7 +1454,7 @@
                     _showTikiExtraFee = NO;
                 } else {
                     _shipmentTikiExtraFeeSwitch.on = YES;
-                    _shipmentTikiExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", _shipment.tiki.tiki_fee];
+                    _shipmentTikiExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.tiki.tiki_fee];
                     _showTikiExtraFee = YES;
                 }
             }
@@ -1524,7 +1524,7 @@
                     _showPosMinimumWeight = NO;
                 } else {
                     _shipmentPosMinWeightSwitch.on = YES;
-                    _shipmentPosMinWeightTextField.text = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_min_weight];
+                    _shipmentPosMinWeightTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_min_weight];
                     _showPosMinimumWeight = YES;
                 }
 
@@ -1533,7 +1533,7 @@
                     _showPosExtraFee = NO;
                 } else {
                     _shipmentPosExtraFeeSwitch.on = YES;
-                    _shipmentPosExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_fee];
+                    _shipmentPosExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_fee];
                     _showPosExtraFee = YES;
                 }
             }
@@ -1835,7 +1835,7 @@
 
 - (NSDictionary *)getRequestParameters
 {
-    NSString *courier_origin = [NSString stringWithFormat:@"%ld", _shipment.shop_shipping.district_id];
+    NSString *courier_origin = [NSString stringWithFormat:@"%ld", (long)_shipment.shop_shipping.district_id];
     NSString *postal = _shipment.shop_shipping.postal_code;
 
     NSString *jne_diff_district = @"";
@@ -1848,7 +1848,7 @@
     if ([_availableShipments containsObject:_JNE.shipment_id]) {
         jne_diff_district = _shipment.jne.jne_diff_district;
         jne_fee = _showJNEExtraFeeTextField?@"1":@"0";
-        jne_fee_value = [NSString stringWithFormat:@"%ld", _shipment.jne.jne_fee];
+        jne_fee_value = [NSString stringWithFormat:@"%ld", (long)_shipment.jne.jne_fee];
         jne_min_weight  = _showJNEMinimumWeightTextField?@"1":@"0";
         jne_min_weight_value = _shipment.jne.jne_min_weight;
         jne_tiket = _shipment.jne.jne_tiket;
@@ -1861,16 +1861,16 @@
     
     if ([_availableShipments containsObject:_posIndonesia.shipment_id]) {
         pos_fee = _showPosExtraFee?@"1":@"0";
-        pos_fee_value = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_fee];
+        pos_fee_value = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_fee];
         pos_min_weight = _showPosMinimumWeight?@"1":@"0";
-        pos_min_weight_value = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_min_weight];
+        pos_min_weight_value = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_min_weight];
     }
     
     NSString *tiki_fee = @"";
     NSString *tiki_fee_value = @"";
     if ([_availableShipments containsObject:_tiki.shipment_id]) {
         tiki_fee = _showTikiExtraFee?@"1":@"0";
-        tiki_fee_value = [NSString stringWithFormat:@"%ld", _shipment.tiki.tiki_fee];
+        tiki_fee_value = [NSString stringWithFormat:@"%ld", (long)_shipment.tiki.tiki_fee];
     }
     
     NSMutableDictionary *shipments = [NSMutableDictionary new];

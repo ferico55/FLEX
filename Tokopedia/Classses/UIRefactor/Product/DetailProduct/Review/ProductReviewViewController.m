@@ -331,6 +331,9 @@
                 [self setHeaderData];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }

@@ -3395,4 +3395,8 @@
 - (IBAction)switchUsingSaldo:(id)sender {
 }
 
+- (void)refreshCartAfterCancelPayment {
+    
+}
+
 @end

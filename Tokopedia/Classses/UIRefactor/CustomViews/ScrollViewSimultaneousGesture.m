@@ -23,7 +23,7 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
         CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:self];
-        if (abs(velocity.y) * 2 < abs(velocity.x)) {
+        if (fabsf(velocity.y) * 2 < fabsf(velocity.x)) {
             return YES;
         }
     }

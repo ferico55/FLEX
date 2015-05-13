@@ -113,7 +113,9 @@
     _navigationController = (UINavigationController*)_delegate;
     
     SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
-    controller.delegate = _navigationController;
+    if ([_navigationController conformsToProtocol:@protocol(NewOrderDelegate)]) {
+        controller.delegate = (id <NewOrderDelegate>)_navigationController;
+    }
     controller.hidesBottomBarWhenPushed = YES;
     
     [nav.navigationController pushViewController:controller animated:YES];

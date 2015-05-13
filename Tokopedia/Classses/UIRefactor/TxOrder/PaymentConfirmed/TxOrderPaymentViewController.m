@@ -1130,7 +1130,7 @@
     _bankAccount = bankAccountList;
     BankAccountFormList *selectedBank;
     for (BankAccountFormList *bank in bankAccountList) {
-        if ([form.bank_account.bank_account_id_chosen integerValue] == bank.bank_account_id) {
+        if ([form.bank_account.bank_account_id_chosen integerValue] == [bank.bank_account_id integerValue]) {
             selectedBank = bank;
         }
     }

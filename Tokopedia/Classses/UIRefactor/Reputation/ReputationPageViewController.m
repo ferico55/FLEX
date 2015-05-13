@@ -11,7 +11,7 @@
 #import "ReputationMyProductViewController.h"
 #import "ReputationMyReviewViewController.h"
 
-@interface ReputationPageViewController ()
+@interface ReputationPageViewController () <UIPageViewControllerDelegate>
 
 
 @property (strong, nonatomic) ReputationMyProductViewController *myProductReputation;

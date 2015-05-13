@@ -488,7 +488,9 @@
 {
     TransactionCartFormMandiriClickPayViewController *mandiriVC = [TransactionCartFormMandiriClickPayViewController new];
     mandiriVC.data = data;
-    mandiriVC.delegate = vc;
+    if ([vc conformsToProtocol:@protocol(TransactionCartMandiriClickPayFormDelegate)]) {
+        mandiriVC.delegate = (id <TransactionCartMandiriClickPayFormDelegate>)vc;
+    }
     [self.navigationController pushViewController:mandiriVC animated:YES];
 }
 

@@ -31,7 +31,7 @@
 UITableViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
 ShopPageHeaderDelegate,
-UIAlertViewDelegate>
+UIAlertViewDelegate, MGSwipeTableCellDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -377,8 +377,6 @@ UIAlertViewDelegate>
 
 -(void)requestFailure:(id)object
 {
-    
-    NSError* error;
     
     //    NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
     //    for (RKResponseDescriptor *descriptor in _objectManager.responseDescriptors) {

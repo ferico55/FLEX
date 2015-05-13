@@ -474,27 +474,7 @@ UIAlertViewDelegate>
 
 -(void)requestFailure:(id)object
 {
-    
-    NSError* error;
-    
-    //    NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-    //    for (RKResponseDescriptor *descriptor in _objectManager.responseDescriptors) {
-    //        [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-    //    }
-    //
-    //    RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-    //    NSError *mappingError = nil;
-    //    BOOL isMapped = [mapper execute:&mappingError];
-    //    if (isMapped && !mappingError) {
-    //        RKMappingResult *mappingresult = [mapper mappingResult];
-    //        NSDictionary *result = mappingresult.dictionary;
-    //        id stats = [result objectForKey:@""];
-    //        _talk = stats;
-    //        BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    //        if (status) {
-    //            [self requestProcess:mappingresult];
-    //        }
-    //    }
+
 }
 
 -(void)requestProcess:(id)object

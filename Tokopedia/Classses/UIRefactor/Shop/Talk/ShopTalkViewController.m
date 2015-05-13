@@ -27,7 +27,7 @@
 
 #import "string_inbox_talk.h"
 
-@interface ShopTalkViewController () <UITableViewDataSource, UITableViewDelegate, ShopHeaderDelegate>
+@interface ShopTalkViewController () <UITableViewDataSource, UITableViewDelegate, ShopHeaderDelegate, GeneralTalkCellDelegate>
 {
     NSMutableArray *_list;
     NSArray *_headerImages;

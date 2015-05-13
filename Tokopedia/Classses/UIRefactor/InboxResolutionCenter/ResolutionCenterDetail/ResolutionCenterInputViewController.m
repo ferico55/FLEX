@@ -452,7 +452,9 @@
     vc.note = _messageTextView.text;
     NSArray *viewControllers = self.navigationController.viewControllers;
     UIViewController *destinationVC = viewControllers[viewControllers.count-2];
-    vc.delegate = destinationVC;
+    if ([destinationVC conformsToProtocol:@protocol(InboxResolutionCenterOpenViewControllerDelegate)]) {
+        vc.delegate = (id <InboxResolutionCenterOpenViewControllerDelegate>)destinationVC;
+    }
     vc.syncroDelegate = self;
     NSMutableArray *thumbs = [NSMutableArray new];
     for (NSString *thumb in _uploadedPhotos) {
@@ -815,6 +817,10 @@
 {
     _generatehost = generateHost;
     [_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:)withObject:@(YES)];
+}
+
+- (void)failedGenerateHost {
+    
 }
 
 

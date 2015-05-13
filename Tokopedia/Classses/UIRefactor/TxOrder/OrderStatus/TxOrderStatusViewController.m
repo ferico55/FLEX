@@ -1065,7 +1065,6 @@
         vc.isChangeSolution = NO;
         vc.isCanEditProblem = YES;
         vc.order = order;
-        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

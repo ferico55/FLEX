@@ -17,7 +17,7 @@
 
 @end
 
-@interface UserPageHeader : UIViewController<UIPageViewControllerDataSource>
+@interface UserPageHeader : UIViewController
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) NSDictionary *data;

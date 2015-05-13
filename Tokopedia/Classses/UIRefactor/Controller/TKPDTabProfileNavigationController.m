@@ -756,13 +756,10 @@
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     
     [_actpp startAnimating];
-    
+    __weak typeof(thumb) wthumb = thumb;
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
+        [wthumb setImage:image];
         [_actpp stopAnimating];
-#pragma clang diagnostic pop
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [_actpp stopAnimating];

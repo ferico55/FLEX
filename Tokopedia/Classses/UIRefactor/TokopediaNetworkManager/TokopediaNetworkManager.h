@@ -54,7 +54,6 @@
 @property (nonatomic) BOOL isParameterNotEncrypted;
 
 - (void)doRequest;
-- (void)requestProcess:(id)processResult;
 - (void)requestSuccess:(id)successResult withOperation:(RKObjectRequestOperation*)operation;
 - (void)requestFail:(id)errorResult;
 - (void)requestTimeout;

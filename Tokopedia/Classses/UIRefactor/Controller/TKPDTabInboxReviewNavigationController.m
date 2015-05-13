@@ -442,13 +442,11 @@
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        UIBarButtonItem *barbutton1;
         
         switch (btn.tag) {
             case 10:
             {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                //                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
                 

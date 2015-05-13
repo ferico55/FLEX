@@ -71,27 +71,8 @@
             
             
         } else {
-            NSError *error = processResult;
             if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
                 [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
-            }
-            else
-            {
-                StickyAlertView *alert = [[StickyAlertView alloc]init];
-                NSArray *errors;
-                if(error.code == -1011) {
-                    errors = @[@"Mohon maaf, terjadi kendala pada server"];
-                } else {
-                    errors = @[error.localizedDescription];
-                }
-                [alert initWithErrorMessages:errors delegate:_delegate];
-//                NSLog(@"Error Code : %ld", (long)[(NSError*)error code]) ;
-//                NSString *errorDescription = error.localizedDescription;
-//                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-//                if(![errorAlert isVisible] && [(NSError*)error code] != -999) {
-//                    [errorAlert show];
-//                }
-                
             }
         }
     }
@@ -129,11 +110,12 @@
 - (void)requestMaintenance  {
     //TODO:: Create MaintenanceViewController
     MaintenanceViewController *maintenanceController = [MaintenanceViewController new];
-    UIViewController *vc = _delegate;
-    
-    if([[vc.navigationController.viewControllers lastObject] isMemberOfClass:[MaintenanceViewController class]])
-        return;
-    [vc.navigationController pushViewController:maintenanceController animated:YES];
+    if ([_delegate isKindOfClass:[UIViewController class]]) {
+        UIViewController *vc = (UIViewController *)_delegate;
+        if([[vc.navigationController.viewControllers lastObject] isMemberOfClass:[MaintenanceViewController class]])
+            return;
+        [vc.navigationController pushViewController:maintenanceController animated:YES];
+    }
 }
 
 - (void)requestRetryWithButton  {

@@ -234,7 +234,9 @@
 {
     CameraController* c = [CameraController new];
     [c snap];
-    c.delegate = _ConfirmedViewController;
+    if ([_ConfirmedViewController conformsToProtocol:@protocol(CameraControllerDelegate)]) {
+        c.delegate = (id <CameraControllerDelegate>)_ConfirmedViewController;
+    }
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
     nav.wantsFullScreenLayout = YES;
     nav.modalPresentationStyle = UIModalPresentationFullScreen;

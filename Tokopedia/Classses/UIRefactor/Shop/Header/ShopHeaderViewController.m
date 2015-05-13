@@ -641,7 +641,7 @@
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperationQueue *)operation {
+-(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperation *)operation {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
 }
 

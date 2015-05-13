@@ -555,10 +555,10 @@
                 _availableCourierId = ids;
                 [self setRows];
                 
-                [_values setObject:[NSNumber numberWithInteger:_shippinginfo.result.jne.jne_min_weight]?:[NSNull null] forKey:@"MinimumPengirimanJNE"];
-                [_values setObject:[NSNumber numberWithInteger:_shippinginfo.result.jne.jne_diff_district]?:[NSNumber numberWithInteger:0] forKey:@"PengirimanLuarJNE"];
-                [_values setObject:[NSNumber numberWithInteger:_shippinginfo.result.jne.jne_fee]?:[NSNull null] forKey:@"BiayaTambahanJNE"];
-                [_values setObject:[NSNumber numberWithInteger:_shippinginfo.result.jne.jne_tiket]?:[NSNumber numberWithBool:NO] forKey:@"AWBOtomatisJNE"];
+                [_values setObject:[NSNumber numberWithInteger:[_shippinginfo.result.jne.jne_min_weight integerValue]] forKey:@"MinimumPengirimanJNE"];
+                [_values setObject:[NSNumber numberWithInteger:[_shippinginfo.result.jne.jne_diff_district integerValue]] forKey:@"PengirimanLuarJNE"];
+                [_values setObject:[NSNumber numberWithInteger:_shippinginfo.result.jne.jne_fee] forKey:@"BiayaTambahanJNE"];
+                [_values setObject:[NSNumber numberWithInteger:[_shippinginfo.result.jne.jne_tiket boolValue]] forKey:@"AWBOtomatisJNE"];
                 
                 [_values setObject:[NSNumber numberWithInteger:_shippinginfo.result.tiki.tiki_fee]?:[NSNull null] forKey:@"BiayaTambahanTiki"];
                 
@@ -582,7 +582,7 @@
                 [rows addObject:@{
                                   @"title" : package.name,
                                   @"type" : @"Switch",
-                                  @"value" : [NSNumber numberWithInteger:package.active],
+                                  @"value" : [NSNumber numberWithInteger:[package.active integerValue]],
                                   @"rowHeight" : [NSNumber numberWithInt:44],
                                   @"shipmentName" : shipment.shipment_name,
                                   @"packageId" : [NSNumber numberWithInteger:[package.sp_id integerValue]],
@@ -629,7 +629,7 @@
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Sistem AWB Otomatis",
                                                                                     @"type" : @"SwitchWithMargin",
-                                                                                    @"value" : [NSNumber numberWithInteger:_shippinginfo.result.jne.jne_tiket],
+                                                                                    @"value" : [NSNumber numberWithInteger:[_shippinginfo.result.jne.jne_tiket integerValue]],
                                                                                     @"rowHeight" : [NSNumber numberWithInt:68],
                                                                                     @"shipmentName" : shipment.shipment_name,
                                                                                     @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
@@ -638,7 +638,7 @@
                                                                                     @"title" : @"Minimum Pengiriman Layanan",
                                                                                     @"subtitle" : @"Berat Minimum (Kg)",
                                                                                     @"type" : @"Stepper",
-                                                                                    @"value" : [NSNumber numberWithInteger:_shippinginfo.result.jne.jne_min_weight],
+                                                                                    @"value" : [NSNumber numberWithInteger:[_shippinginfo.result.jne.jne_min_weight integerValue]],
                                                                                     @"expand" : [NSNumber numberWithInteger:expandMinWeightRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForMinWeightRow],
                                                                                     @"shipmentName" : shipment.shipment_name,
@@ -647,7 +647,7 @@
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Hanya Dapat Melayani Pengiriman Luar Kota",
                                                                                     @"type" : @"SwitchTwoLines",
-                                                                                    @"value" : [NSNumber numberWithInteger:_shippinginfo.result.jne.jne_diff_district],
+                                                                                    @"value" : [NSNumber numberWithInteger:[_shippinginfo.result.jne.jne_diff_district integerValue]],
                                                                                     @"rowHeight" : [NSNumber numberWithFloat:heightForRow3],
                                                                                     @"shipmentName" : shipment.shipment_name,
                                                                                     @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
@@ -655,7 +655,7 @@
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Biaya Tambahan Pengiriman",
                                                                                     @"type" : @"TextField",
-                                                                                    @"value" : [NSString stringWithFormat:@"%ld", _shippinginfo.result.jne.jne_fee],
+                                                                                    @"value" : [NSString stringWithFormat:@"%ld", (long)_shippinginfo.result.jne.jne_fee],
                                                                                     @"expand" : [NSNumber numberWithBool:showExtraFeeRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForExtraFee],
                                                                                     @"shipmentName" : shipment.shipment_name,
@@ -675,7 +675,7 @@
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Biaya Tambahan Pengiriman",
                                                                                     @"type" : @"TextField",
-                                                                                    @"value" : [NSString stringWithFormat:@"%ld", _shippinginfo.result.tiki.tiki_fee],
+                                                                                    @"value" : [NSString stringWithFormat:@"%ld", (long)_shippinginfo.result.tiki.tiki_fee],
                                                                                     @"expand" : [NSNumber numberWithBool:showExtraFeeRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForExtraFee],
                                                                                     @"shipmentName" : shipment.shipment_name,
@@ -712,7 +712,7 @@
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Biaya Tambahan Pengiriman",
                                                                                     @"type" : @"TextField",
-                                                                                    @"value" : [NSString stringWithFormat:@"%ld", _shippinginfo.result.pos.pos_fee],
+                                                                                    @"value" : [NSString stringWithFormat:@"%ld", (long)_shippinginfo.result.pos.pos_fee],
                                                                                     @"expand" : [NSNumber numberWithBool:showExtraFeeRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForExtraFee],
                                                                                     @"shipmentName" : shipment.shipment_name,

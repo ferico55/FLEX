@@ -26,7 +26,7 @@
 #import "UserAuthentificationManager.h"
 
 
-@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
+@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
     BOOL _isRefreshView;
     
@@ -278,7 +278,7 @@
 }
 
 - (void)postNotificationSetShopHeader {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:@{@"shop" : _shop}];
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
@@ -599,7 +599,7 @@
                 [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];
                 [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
                 _isNoData = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:@{@"shop" : _shop}];
             }
         }
         else{
@@ -886,7 +886,7 @@
     [[NSRunLoop currentRunLoop] addTimer:_timerFavorite forMode:NSRunLoopCommonModes];
 }
 
--(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperationQueue *)operation {
+-(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperation *)operation {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
 }
 

@@ -999,9 +999,10 @@
                                                     userInfo:@{@"orderId" : key}
                                                      repeats:NO];
     
+    __weak typeof(self) wself = self;
     [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
-        [self actionRequestSuccess:mappingResult
+        [wself actionRequestSuccess:mappingResult
                      withOperation:operation
                            orderId:key
                         actionType:type];
@@ -1009,7 +1010,7 @@
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
 
-        [self actionRequestFailure:error orderId:key];
+        [wself actionRequestFailure:error orderId:key];
         [timer invalidate];
 
     }];

@@ -659,6 +659,10 @@
     _generateHost = generateHost;
 }
 
+- (void)failedGenerateHost {
+    
+}
+
 #pragma mark - Request Action Upload Photo
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
@@ -836,6 +840,10 @@
 {
     StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:messages delegate:self];
     [alert show];
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    
 }
 
 @end

@@ -732,7 +732,7 @@
         NSDictionary* param = @{
                                 kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
                                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                                TKPD_TALK_ID:list.talk_id?:0,
+                                TKPD_TALK_ID:list.talk_id?:@0,
                                 kTKPDDETAILSHOP_APISHOPID : list.talk_shop_id
                                 };
         
