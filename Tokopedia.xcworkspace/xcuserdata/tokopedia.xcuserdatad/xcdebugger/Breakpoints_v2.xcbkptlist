@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/More/MoreViewController.m"
-            timestampString = "453198561.044159"
+            filePath = "Tokopedia/Classses/UIRefactor/Shop/Create/CreateShopViewController.m"
+            timestampString = "453201597.467371"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
-            landmarkName = "-actionAfterRequest:withOperation:withTag:"
+            startingLineNumber = "836"
+            endingLineNumber = "836"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
