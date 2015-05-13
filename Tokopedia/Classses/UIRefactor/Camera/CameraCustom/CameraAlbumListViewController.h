@@ -1,4 +1,3 @@
-//
 //  CameraAlbumListViewController.h
 //  Tokopedia
 //
@@ -9,9 +8,13 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
+@protocol CameraAlbumListDelegate <NSObject>
+
+@end
+
 @interface CameraAlbumListViewController : UIViewController
 
-@property (weak, nonatomic) id delegate;
+@property (weak, nonatomic) id<CameraAlbumListDelegate> delegate;
 
 @property (nonatomic, strong) NSMutableArray *groups;
 
