@@ -140,7 +140,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
     _isShouldRefreshingCart = NO;
 }
 

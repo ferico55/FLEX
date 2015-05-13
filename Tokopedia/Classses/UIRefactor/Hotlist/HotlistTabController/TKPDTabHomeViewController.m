@@ -67,6 +67,9 @@
 
 - (void)viewDidLoad
 {
+    
+    [super viewDidLoad];
+    
     _userManager = [UserAuthentificationManager new];
 
     self.modalPresentationStyle = UIModalPresentationCurrentContext;

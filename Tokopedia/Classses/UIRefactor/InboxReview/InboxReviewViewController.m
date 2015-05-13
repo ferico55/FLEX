@@ -300,9 +300,6 @@
             } else {
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
                 ((GeneralReviewCell *)cell).commentView.hidden = NO;
-                
-                CGRect newFrame = ((GeneralReviewCell *)cell).frame;
-                
             }
             
             
@@ -351,15 +348,6 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    InboxReviewList *list = _reviews[indexPath.row];
-    
-    int cellHeight = 0;
-    if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
-        cellHeight =  250;
-    } else {
-        cellHeight =  325;
-    }
-   
     return 325;
 }
 

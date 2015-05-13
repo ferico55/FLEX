@@ -105,6 +105,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    
+    [super viewWillAppear:animated];
+    
     self.navigationItem.title = [self.navigationTitle capitalizedString];
     self.hidesBottomBarWhenPushed = YES;
 }

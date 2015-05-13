@@ -85,7 +85,6 @@
                 
             case 12 :
             {
-                NSIndexPath *indexPath = _indexpath;
                 
                 UIAlertView *alert = [[UIAlertView alloc]
                                       initWithTitle:@"Lewati"

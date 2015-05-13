@@ -170,12 +170,6 @@
     _containerScrollView.contentSize = _contentView.frame.size;
 }
 
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-}
-
 #pragma mark - Request Send OTP 
 - (void)configureSendOTPRestkit {
     _objectSendOTPManager =  [RKObjectManager sharedClient];

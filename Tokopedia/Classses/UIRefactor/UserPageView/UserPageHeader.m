@@ -169,20 +169,7 @@
 
 - (IBAction)tapButton:(id)sender
 {
-    NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
-    
-    UIButton *button = (UIButton *)sender;
-    UINavigationController *nav = [_delegate didReceiveNavigationController];
-    switch (button.tag) {
-        case 14: {
-            
-            break;
-        }
-        
-            
-        default:
-            break;
-    }
+    [_delegate didReceiveNavigationController];
 }
 
 #pragma mark - Login Delegate

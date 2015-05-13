@@ -1163,8 +1163,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"d M yyyy"];
     NSString *dateString = [NSString stringWithFormat:@"%@ %@ %@",form.payment.order_payment_day,form.payment.order_payment_month,form.payment.order_payment_year];
-    NSDate *paymentDate = [[NSDate alloc]init];
-    paymentDate = [dateFormatter dateFromString:dateString]?:[NSDate date];
+    NSDate *paymentDate = [dateFormatter dateFromString:dateString]?:[NSDate date];
     [_dataInput setObject:paymentDate forKey:DATA_PAYMENT_DATE_KEY];
 }
 
@@ -1235,10 +1234,8 @@
 -(void)SettingBankNameViewController:(UIViewController *)vc withData:(NSDictionary *)data
 {
     BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-    NSIndexPath *indexpath;
     NSString *name;
     NSInteger bankid;
-    indexpath = [data objectForKey:API_BANK_ID_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     name = [data objectForKey:API_BANK_NAME_KEY];
     bankid = [[data objectForKey:API_BANK_ID_KEY] integerValue];
     bankAccount.bank_id = bankid;

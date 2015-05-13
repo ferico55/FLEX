@@ -499,8 +499,6 @@
     
     _statView.openStatusLabel.text = [NSString stringWithFormat:@"Terakhir Online : %@", _shop.result.info.shop_owner_last_login];
     
-    UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:13];
-    
     NSString *stats = [NSString stringWithFormat:@"%@ Favorit %@ Barang Terjual",
                        _shop.result.info.shop_total_favorit,
                        _shop.result.stats.shop_item_sold];

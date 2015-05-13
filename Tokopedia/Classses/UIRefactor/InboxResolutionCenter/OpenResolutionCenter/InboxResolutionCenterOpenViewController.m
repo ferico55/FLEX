@@ -216,7 +216,9 @@
         }
     }
     
-    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    if (imageView != nil) {
+        [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    }
     
     NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     

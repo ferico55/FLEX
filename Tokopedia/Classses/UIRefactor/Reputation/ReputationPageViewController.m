@@ -56,14 +56,6 @@
     newFrame.origin.y += 45;
     [_pageController view].frame = newFrame;
     
-    NSArray *subviews = _pageController.view.subviews;
-    UIPageControl *thisControl = nil;
-    for (int i=0; i<[subviews count]; i++) {
-        if ([[subviews objectAtIndex:i] isKindOfClass:[UIPageControl class]]) {
-            thisControl = (UIPageControl *)[subviews objectAtIndex:i];
-        }
-    }
-    
     [self setScrollEnabled:NO forPageViewController:_pageController];
     [_pageController didMoveToParentViewController:self];
 }

@@ -548,8 +548,7 @@
     }
 	if (_viewControllers != nil) {
 		
-		NSInteger index = _selectedIndex;
-        index = sender.tag;
+		NSInteger index = sender.tag;
         
         //reset tab border color and text color
         for(int i=0;i<_chevrons.count;i++) {

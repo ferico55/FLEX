@@ -610,7 +610,9 @@
                     break;
                 }
             }
-            [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+             if (imageView != nil) {
+                [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+             }
 
             [removedImages addObject:object];
             [self failedUploadObject:object];
@@ -663,8 +665,9 @@
             image.alpha = 0.5f;
         }
     }
-    
-    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    if (imageView != nil) {
+        [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];   
+    }
     
     [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
     

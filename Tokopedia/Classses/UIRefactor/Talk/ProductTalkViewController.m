@@ -448,7 +448,7 @@
     NSDictionary* param = @{
                             kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
-                            TKPD_TALK_ID:list.talk_id?:0,
+                            TKPD_TALK_ID:list.talk_id?:@0,
                             };
     
     _requestUnfollowCount ++;
@@ -729,19 +729,19 @@
     NSInteger row = indexpath.row;
     TalkList *list = _list[row];
     vc.data = @{
-                TKPD_TALK_MESSAGE:list.talk_message?:0,
-                TKPD_TALK_USER_IMG:list.talk_user_image?:0,
-                TKPD_TALK_CREATE_TIME:list.talk_create_time?:0,
-                TKPD_TALK_USER_NAME:list.talk_user_name?:0,
-                TKPD_TALK_ID:list.talk_id?:0,
+                TKPD_TALK_MESSAGE:list.talk_message?:@0,
+                TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
+                TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
+                TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
+                TKPD_TALK_ID:list.talk_id?:@0,
                 TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id],
-                TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:0,
+                TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
-                TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
+                TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
                 TKPD_TALK_PRODUCT_IMAGE:[_data objectForKey:@"talk_product_image"],
                 TKPD_TALK_PRODUCT_NAME:[_data objectForKey:@"product_name"],
                 //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
-                kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
+                kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0
                 };
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -777,19 +777,6 @@
 
 -(void)setHeaderData:(NSDictionary*)data
 {
-    UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    style.alignment = NSTextAlignmentLeft;
-    
-    NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY] attributes:attributes];
-    
     _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
     _productnamelabel.numberOfLines = 1;
     
@@ -970,7 +957,7 @@
         return @{
                  kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
                  kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
-                 TKPD_TALK_ID:list.talk_id?:0,
+                 TKPD_TALK_ID:list.talk_id?:@0,
                  kTKPDDETAILSHOP_APISHOPID : list.talk_shop_id
                  };
     }

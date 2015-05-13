@@ -998,7 +998,7 @@
 
 #pragma mark - UIPageViewController
 - (NSUInteger)getViewControllerIndex:(UIViewController*)viewController {
-    NSUInteger index;
+    NSUInteger index = 0;
     if([viewController isKindOfClass:[ShopTalkViewController class]]) {
         index = [(ShopTalkViewController *)viewController indexNumber];
     } else if([viewController isKindOfClass:[ShopReviewViewController class]]) {

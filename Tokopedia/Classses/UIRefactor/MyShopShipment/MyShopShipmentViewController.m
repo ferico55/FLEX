@@ -603,10 +603,8 @@
                 if ([shipment.shipment_name isEqualToString:@"JNE"]) {
                     
                     NSInteger heightForMinWeightRow = 0;
-                    BOOL showMinWeightRow = NO;
                     BOOL expandMinWeightRow = NO;
                     if (OKE) {
-                        showMinWeightRow = YES;
                         if (_shippinginfo.result.jne.jne_min_weight > 0) {
                             heightForMinWeightRow = 88;
                             expandMinWeightRow = YES;
