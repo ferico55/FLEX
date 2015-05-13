@@ -255,7 +255,15 @@
             {
                 NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
                 if (type == TYPE_ADD_EDIT_PRODUCT_ADD|| type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-                    [_validationNetworkManager doRequest];
+                    NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
+                    if ([postKey isEqualToString:@""]|| postKey == nil) {
+                        [_validationNetworkManager doRequest];
+                    }
+                    else
+                    {
+                        [_processingAlert show];
+                        [_addPictureNetworkManager doRequest];
+                    }
                 } else {
                     [_editNetworkManager doRequest];
                 }
