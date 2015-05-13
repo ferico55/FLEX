@@ -146,6 +146,7 @@
     [self initButton];
     
     _descriptionView = [ShopDescriptionView newView];
+    _descriptionView.frame = CGRectMake(_descriptionView.frame.origin.x, _descriptionView.frame.origin.y, _descriptionView.bounds.size.width, self.scrollView.bounds.size.height);
     [self.scrollView addSubview:_descriptionView];
     
     _statView = [ShopStatView newView];
@@ -169,14 +170,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (UIImage *)coverScreenshot {
-    UIGraphicsBeginImageContext(_coverImageView.bounds.size);
-    [_coverImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
 }
 
 - (void)setHeaderData {
@@ -280,8 +273,6 @@
             
             _coverImageView.image = image;
             _coverImageView.hidden = NO;
-            [self.delegate didLoadImage:image];
-            
             
 #pragma clang diagnostic pop
         } failure:nil];

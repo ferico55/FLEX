@@ -473,6 +473,7 @@ typedef enum
 #define kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY @"file_path"
 #define kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY @"file_th"
 #define API_UPLOAD_PHOTO_ID_KEY @"pic_id"
+#define kTKPD_SRC @"src"
 
 #pragma mark -- Shop  Location
 #define kTKPDSHOP_APICITYNAMEKEY @"location_city_name"
@@ -774,7 +775,7 @@ typedef enum
 #define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
 #define KTKPDTALK_DELIVERED @"Diskusi Anda telah terkirim!"
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
-#define KTKPDTALK_UNDELIVERED @"Diskusi Anda gagal terkirim."
+#define KTKPDTALK_UNDELIVERED @"Anda baru saja menulis komentar. Silakan coba beberapa saat lagi."
 #define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
 #define KTKPDSHOP_SUCCESSEDIT @"Anda berhasil memperbaharui informasi Toko."
 

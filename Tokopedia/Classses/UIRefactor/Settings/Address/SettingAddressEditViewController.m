@@ -486,7 +486,7 @@
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_ADDRESS];
     }
-    if (!postcode) {
+    if (!postcode || [postcode isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_POSTAL_CODE];
     }

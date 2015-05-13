@@ -25,6 +25,7 @@
 #import "Breadcrumb.h"
 #import "ProductDetail.h"
 #import "MyShopNoteDetailViewController.h"
+#import "TokopediaNetworkManager.h"
 
 @interface ProductAddEditDetailViewController ()
 <
@@ -33,7 +34,8 @@
     UITextViewDelegate,
     TKPDAlertViewDelegate,
     MyShopEtalaseFilterViewControllerDelegate,
-    ProductEditWholesaleViewControllerDelegate
+    ProductEditWholesaleViewControllerDelegate,
+    TokopediaNetworkManagerDelegate
 >
 {
     CGPoint _keyboardPosition;
@@ -51,6 +53,7 @@
     NSInteger _requestCount;
     NSOperationQueue *_operationQueue;
     
+    UIAlertView *_processingAlert;
     
     __weak RKObjectManager *_objectManagerActionAddProductValidation;
     __weak RKManagedObjectRequestOperation *_requestActionAddProductValidation;
@@ -67,10 +70,17 @@
     __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
     
+    TokopediaNetworkManager *_validationNetworkManager;
+    TokopediaNetworkManager *_addPictureNetworkManager;
+    TokopediaNetworkManager *_submitNetworkManager;
+    TokopediaNetworkManager *_editNetworkManager;
+    TokopediaNetworkManager *_moveToWarehouseNetworkManager;
+    
     UIBarButtonItem *_saveBarButtonItem;
     
     BOOL _isNodata;
     BOOL _isBeingPresented;
+    BOOL _isShopHasTerm;
     EtalaseList *_selectedEtalase;
 }
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
@@ -86,42 +96,16 @@
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
 @property (weak, nonatomic) IBOutlet UILabel *pengembalianProductLabel;
 
--(void)cancelActionAddProductValidation;
--(void)configureRestkitActionAddProductValidation;
--(void)requestActionAddProductValidation:(id)object;
--(void)requestSuccessActionAddProductValidation:(id)object withOperation:(RKObjectRequestOperation *)operation;
--(void)requestFailureActionAddProductValidation:(id)object;
--(void)requestProcessActionAddProductValidation:(id)object;
--(void)requestTimeOutActionAddProductValidation:(NSTimer*)timer;
-
--(void)cancelActionAddProductPicture;
--(void)configureRestkitActionAddProductPicture;
--(void)requestActionAddProductPicture:(id)object;
--(void)requestSuccessActionAddProductPicture:(id)object withOperation:(RKObjectRequestOperation *)operation;
--(void)requestFailureActionAddProductPicture:(id)object;
--(void)requestProcessActionAddProductPicture:(id)object;
--(void)requestTimeOutActionAddProductPicture:(NSTimer*)timer;
-
--(void)cancelActionAddProductSubmit;
--(void)configureRestkitActionAddProductSubmit;
--(void)requestActionAddProductSubmit:(id)object;
--(void)requestSuccessActionAddProductSubmit:(id)object withOperation:(RKObjectRequestOperation *)operation;
--(void)requestFailureActionAddProductSubmit:(id)object;
--(void)requestProcessActionAddProductSubmit:(id)object;
--(void)requestTimeOutActionAddProductSubmit:(NSTimer*)timer;
-
--(void)cancelActionEditProduct;
--(void)configureRestkitActionEditProduct;
--(void)requestActionEditProduct:(id)object;
--(void)requestSuccessActionEditProduct:(id)object withOperation:(RKObjectRequestOperation *)operation;
--(void)requestFailureActionEditProduct:(id)object;
--(void)requestProcessActionEditProduct:(id)object;
--(void)requestTimeOutActionEditProduct:(NSTimer*)timer;
-
 - (IBAction)gesture:(id)sender;
 - (IBAction)tap:(id)sender;
 
 @end
+
+#define TAG_REQUEST_VALIDATION 10
+#define TAG_REQUEST_PICTURE 11
+#define TAG_REQUEST_SUBMIT 12
+#define TAG_REQUEST_EDIT 13
+#define TAG_REQUEST_MOVE_TO 14
 
 @implementation ProductAddEditDetailViewController
 
@@ -145,6 +129,12 @@
     [self adjustBarButton];
     [self setDefaultData:_data];
     [self adjustReturnableNotesLabel];
+    [self initNetworkManager];
+    
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    
+    _processingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -156,23 +146,58 @@
     
     _isBeingPresented = self.navigationController.isBeingPresented;
 
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self
-                           selector:@selector(didEditNote:)
-                               name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY
-                             object:nil];
-    [notificationCenter addObserver:self
-                           selector:@selector(didUpdateShopHasTerms:)
-                               name:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME
-                             object:nil];
+
+    [nc addObserver:self
+       selector:@selector(didUpdateShopHasTerms:)
+           name:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME
+         object:nil];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    barButtonItem.tag = 10;
+    self.navigationItem.backBarButtonItem = barButtonItem;
+    
 }
 
+-(void)initNetworkManager
+{
+    _validationNetworkManager = [TokopediaNetworkManager new];
+    _validationNetworkManager.delegate = self;
+    _validationNetworkManager.tagRequest = TAG_REQUEST_VALIDATION;
+    
+    _addPictureNetworkManager = [TokopediaNetworkManager new];
+    _addPictureNetworkManager.delegate = self;
+    _addPictureNetworkManager.isParameterNotEncrypted = YES;
+    _addPictureNetworkManager.tagRequest = TAG_REQUEST_PICTURE;
+    
+    _submitNetworkManager = [TokopediaNetworkManager new];
+    _submitNetworkManager.delegate = self;
+    _submitNetworkManager.tagRequest = TAG_REQUEST_SUBMIT;
+    
+    _editNetworkManager = [TokopediaNetworkManager new];
+    _editNetworkManager.delegate = self;
+    _editNetworkManager.tagRequest = TAG_REQUEST_EDIT;
+    
+    _moveToWarehouseNetworkManager = [TokopediaNetworkManager new];
+    _moveToWarehouseNetworkManager.delegate = self;
+    _moveToWarehouseNetworkManager.tagRequest = TAG_REQUEST_MOVE_TO;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    _returnableProductSwitch.enabled = _isShopHasTerm;
+}
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     NSDictionary *userInfo = @{DATA_INPUT_KEY:_dataInput};
     [_delegate ProductEditDetailViewController:self withUserInfo:userInfo];
+    
 }
 
 #pragma mark - Memory Management
@@ -181,6 +206,24 @@
     NSDictionary *userInfo = @{DATA_INPUT_KEY:_dataInput};
     [_delegate ProductEditDetailViewController:self withUserInfo:userInfo];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    
+    [_validationNetworkManager requestCancel];
+    _validationNetworkManager.delegate = nil;
+    
+    [_addPictureNetworkManager requestCancel];
+    _addPictureNetworkManager.delegate = nil;
+    
+    [_submitNetworkManager requestCancel];
+    _submitNetworkManager.delegate = nil;
+    
+    [_editNetworkManager requestCancel];
+    _editNetworkManager.delegate = nil;
+    
+    [_moveToWarehouseNetworkManager requestCancel];
+    _moveToWarehouseNetworkManager.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -212,11 +255,17 @@
             {
                 NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
                 if (type == TYPE_ADD_EDIT_PRODUCT_ADD|| type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-                    [self configureRestkitActionAddProductValidation];
-                    [self requestActionAddProductValidation:_dataInput];
+                    NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
+                    if ([postKey isEqualToString:@""]|| postKey == nil) {
+                        [_validationNetworkManager doRequest];
+                    }
+                    else
+                    {
+                        [_processingAlert show];
+                        [_addPictureNetworkManager doRequest];
+                    }
                 } else {
-                    [self configureRestkitActionEditProduct];
-                    [self requestActionEditProduct:_dataInput];
+                    [_editNetworkManager doRequest];
                 }
                 break;
             }
@@ -472,18 +521,164 @@
     [_productDescriptionTextView resignFirstResponder];
 }
 
-#pragma mark - -Request Add Product Validation
--(void)cancelActionAddProductValidation
+#pragma mark - Network Manager
+-(id)getObjectManager:(int)tag
 {
-    [_requestActionAddProductValidation cancel];
-    _requestActionAddProductValidation = nil;
-    [_objectManagerActionAddProductValidation.operationQueue cancelAllOperations];
-    _objectManagerActionAddProductValidation = nil;
+    if (tag == TAG_REQUEST_VALIDATION) {
+        return [self objectManagerValidation];
+    }
+    if (tag == TAG_REQUEST_PICTURE) {
+        return [self objectManagerAddProductPicture];
+    }
+    if (tag == TAG_REQUEST_SUBMIT) {
+        return [self objectManagerSubmit];
+    }
+    if (tag == TAG_REQUEST_EDIT) {
+        return [self objectManagerEditProduct];
+    }
+    if (tag == TAG_REQUEST_MOVE_TO) {
+        return [self objectManagerMoveToWarehouse];
+    }
+    return nil;
 }
 
--(void)configureRestkitActionAddProductValidation
+-(NSDictionary *)getParameter:(int)tag
 {
-    _objectManagerActionAddProductValidation = [RKObjectManager sharedClient];
+    if (tag == TAG_REQUEST_VALIDATION) {
+        return [self paramValidation];
+    }
+    if (tag == TAG_REQUEST_PICTURE) {
+        return [self paramAddPicture];
+    }
+    if (tag == TAG_REQUEST_SUBMIT) {
+        return [self paramSubmit];
+    }
+    if (tag == TAG_REQUEST_EDIT) {
+        return [self paramEdit];
+    }
+    if (tag == TAG_REQUEST_MOVE_TO) {
+        return [self paramMoveToWarehouse];
+    }
+    return nil;
+}
+
+-(NSString *)getPath:(int)tag
+{
+    if (tag == TAG_REQUEST_PICTURE) {
+        return @"action/upload-image-helper.pl";
+    }
+    return kTKPDDETAILACTIONPRODUCT_APIPATH;
+}
+
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    if (tag == TAG_REQUEST_VALIDATION) {
+        AddProductValidation *setting = stat;
+        return setting.status;
+    }
+    if (tag == TAG_REQUEST_PICTURE) {
+        AddProductPicture *setting = stat;
+        return setting.status;
+    }
+    if (tag == TAG_REQUEST_SUBMIT) {
+        AddProductSubmit *setting = stat;
+        return setting.status;
+    }
+    if (tag == TAG_REQUEST_EDIT) {
+        ShopSettings *setting = stat;
+        return setting.status;
+    }
+    if (tag == TAG_REQUEST_MOVE_TO) {
+        ShopSettings *setting = stat;
+        return setting.status;
+    }
+    
+    return nil;
+}
+
+-(void)actionBeforeRequest:(int)tag
+{
+    if (tag == TAG_REQUEST_VALIDATION) {
+        [_processingAlert show];
+        _saveBarButtonItem.enabled = NO;
+    }
+    if (tag == TAG_REQUEST_PICTURE) {
+    }
+    if (tag == TAG_REQUEST_SUBMIT) {
+    }
+    if (tag == TAG_REQUEST_EDIT) {
+        [_processingAlert show];
+        _saveBarButtonItem.enabled = NO;
+    }
+    if (tag == TAG_REQUEST_MOVE_TO) {
+    }
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    if (tag == TAG_REQUEST_VALIDATION) {
+        [self requestSuccessActionAddProductValidation:successResult
+                                         withOperation:operation];
+    }
+    if (tag == TAG_REQUEST_PICTURE) {
+        [self requestSuccessActionAddProductPicture:successResult
+                                      withOperation:operation];
+
+    }
+    if (tag == TAG_REQUEST_SUBMIT) {
+        [self requestSuccessActionAddProductSubmit:successResult
+                                     withOperation:operation];
+
+    }
+    if (tag == TAG_REQUEST_EDIT) {
+        [self requestSuccessActionEditProduct:successResult
+                                withOperation:operation];
+        _saveBarButtonItem.enabled = YES;
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    if (tag == TAG_REQUEST_MOVE_TO) {
+        [self requestSuccessActionMoveToWarehouse:successResult
+                                    withOperation:operation];
+
+    }
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if (tag == TAG_REQUEST_VALIDATION) {
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        _saveBarButtonItem.enabled = YES;
+    }
+    if (tag == TAG_REQUEST_PICTURE) {
+        _saveBarButtonItem.enabled = YES;
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        
+    }
+    if (tag == TAG_REQUEST_SUBMIT) {
+        _saveBarButtonItem.enabled = YES;
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        
+    }
+    if (tag == TAG_REQUEST_EDIT) {
+        _saveBarButtonItem.enabled = YES;
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+    }
+    if (tag == TAG_REQUEST_MOVE_TO) {
+        
+    }
+}
+
+#pragma mark - -Request Add Product Validation
+-(RKObjectManager*)objectManagerValidation
+{
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductValidation class]];
@@ -503,49 +698,19 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManagerActionAddProductValidation addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
+    return objectManager;
 }
-/**
- # add product new langkah ke-1
- # sub add_product_validation example URL
- # www.tkpdevel-pg.ekarisky/ws/action/product.pl?action=add_product_validation&
- # server_id=2&
- # duplicate=0&
- # product_name=Produk%20dari%20WS%20IOS&
- # product_description=Coba%20Tambah%20Produk%20dari%20WS%20IOS&
- # product_department_id=582&
- # product_catalog_id=5312&
- # product_min_order=1&
- # product_price_currency=1&
- # product_price=1000000&
- # product_weight_unit=1&
- # product_weight=1&
- # product_photo=& (delimiternya '~')
- # product_photo_desc=& (delimiternya '~')
- # product_photo_default=&
- # product_must_insurance=0&
- # product_upload_to=1&
- # product_etalase_id=1509&
- # product_etalase_name=sdfdsfds113&
- # product_condition=1&
- # product_returnable=1&
- # qty_min_1=&
- # qty_max_1=&
- # prd_prc_1=&
- # click_name=& 
- **/
--(void)requestActionAddProductValidation:(id)object
+
+-(NSDictionary*)paramValidation
 {
-    if (_requestActionAddProductValidation.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
+    NSDictionary *userInfo = _dataInput;
 #define PRODUCT_MOVETO_WAREHOUSE_ID @"2"
     
     Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-
+    
     NSString *action = ACTION_ADD_PRODUCT_VALIDATION;
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
     NSString *productName = product.product_name?:@"";
@@ -594,9 +759,20 @@
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
-
+    
     
     [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
+    
+    NSString *myString = productImage;
+    NSArray *productImages = [myString componentsSeparatedByCharactersInSet:
+                              [NSCharacterSet characterSetWithCharactersInString:@"~"]
+                              ];
+    
+    for (int i = 0; i<productImages.count; i++) {
+        if ([productImages[i] isEqualToString:photoDefault]) {
+            photoDefault = [NSString stringWithFormat:@"%d",i];
+        }
+    }
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action,
                                       API_PRODUCT_ID_KEY: productID,
@@ -632,29 +808,9 @@
     
     NSDictionary *param = [paramMutableDict copy];
     
-    
-    _saveBarButtonItem.enabled = NO;
-    _requestActionAddProductValidation = [_objectManagerActionAddProductValidation appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
-    
-    [_requestActionAddProductValidation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionAddProductValidation:mappingResult
-                                         withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionAddProductValidation:error];
-        [timer invalidate];
-        _saveBarButtonItem.enabled = YES;
-    }];
-    
-    [_operationQueue addOperation:_requestActionAddProductValidation];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                            target:self
-                                          selector:@selector(requestTimeOutActionAddProductValidation:)
-                                          userInfo:nil
-                                           repeats:NO];
-
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    return param;
 }
+
 
 -(void)requestSuccessActionAddProductValidation:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
@@ -668,65 +824,43 @@
     }
 }
 
--(void)requestFailureActionAddProductValidation:(id)object
-{
-    [self requestProcessActionAddProductValidation:object];
-}
-
 -(void)requestProcessActionAddProductValidation:(id)object
 {
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            AddProductValidation *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    AddProductValidation *setting = stat;
+    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        if ([setting.result.post_key isEqualToString:@"1"] || setting.result.post_key == nil) {
+            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+            [alert show];
+            _saveBarButtonItem.enabled = YES;
+            [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        } else {
+            [_dataInput setObject:setting.result.post_key?:@"" forKey:API_POSTKEY_KEY];
+            NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
+            if ([uploadedFile isEqualToString:@""] || uploadedFile == nil) {
+                [_addPictureNetworkManager doRequest];
+            }
+            else
+            {
+                [_submitNetworkManager doRequest];
+            }
             
-            if (status) {
-                if ([setting.result.post_key isEqualToString:@"1"] || setting.result.post_key == nil) {
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    _saveBarButtonItem.enabled = YES;
-                } else {
-                    [_dataInput setObject:setting.result.post_key?:@"" forKey:API_POSTKEY_KEY];
-                    [self configureRestkitActionAddProductPicture];
-                    [self requestActionAddProductPicture:_dataInput];
-                }
-            }
-        }
-        else{
-            [self cancelActionAddProductValidation];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
         }
     }
 }
 
--(void)requestTimeOutActionAddProductValidation:(NSTimer *)timer
-{
-    [self cancelActionAddProductValidation];
-}
-
 
 #pragma mark -Request Action Add Product Picture
--(void)cancelActionAddProductPicture
-{
-    [_requestActionAddProductPicture cancel];
-    _requestActionAddProductPicture = nil;
-    [_objectManagerActionAddProductPicture.operationQueue cancelAllOperations];
-    _objectManagerActionAddProductPicture = nil;
-}
 
--(void)configureRestkitActionAddProductPicture
+-(RKObjectManager*)objectManagerAddProductPicture
 {
     //_objectManagerActionAddProductPicture = [RKObjectManager sharedClient];
     NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generateHost.result.generated_host.upload_host];
-    _objectManagerActionAddProductPicture = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
+    RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductPicture class]];
@@ -742,27 +876,26 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/upload-image-helper.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManagerActionAddProductPicture addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
+    return objectManager;
 }
 
--(void)requestActionAddProductPicture:(id)object
+-(NSDictionary*)paramAddPicture
 {
-    if (_requestActionAddProductPicture.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
-    
     NSString *action = ACTION_ADD_PRODUCT_PICTURE;
-    NSString *productPhoto = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
-    NSString *productPhotoDesc = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
-    NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
+    NSString *productPhoto = [_dataInput objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
+    NSString *productPhotoDesc = [_dataInput objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
+    NSString *photoDefault = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"";
-
+    
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
+    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userID = [auth getUserId]?:@"";
     
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY:action?:@"",
@@ -771,23 +904,9 @@
                             API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc,
                             API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
                             API_IS_DUPLICATE_KEY :@(duplicate),
+                            @"user_id" :userID
                             };
-    
-    _requestActionAddProductPicture = [_objectManagerActionAddProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
-    
-    [_requestActionAddProductPicture setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionAddProductPicture:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionAddProductPicture:error];
-        [timer invalidate];
-        _saveBarButtonItem.enabled = YES;
-    }];
-    
-    [_operationQueue addOperation:_requestActionAddProductPicture];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeOutActionAddProductPicture:) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    return param;
 }
 
 -(void)requestSuccessActionAddProductPicture:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -798,74 +917,33 @@
     BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessActionAddProductPicture:object];
+        if ([setting.result.file_uploaded isEqualToString:@"1"] || setting.result.file_uploaded == nil) {
+            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+            [alert show];
+            
+            _saveBarButtonItem.enabled = YES;
+            [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        }
+        else
+        {
+            [_dataInput setObject:setting.result.file_uploaded?:@"" forKey:API_FILE_UPLOADED_KEY];
+            _isNeedRequestAddProductPicture = NO;
+            [_submitNetworkManager doRequest];
+        }
     }
     else
     {
         _saveBarButtonItem.enabled = YES;
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
     }
-}
-
--(void)requestFailureActionAddProductPicture:(id)object
-{
-    [self requestProcessActionAddProductPicture:object];
-}
-
--(void)requestProcessActionAddProductPicture:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            AddProductPicture *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if ([setting.result.file_uploaded isEqualToString:@"1"] || setting.result.file_uploaded == nil) {
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-                    [alert show];
-                    
-                    _saveBarButtonItem.enabled = YES;
-                }
-                else
-                {
-                    [_dataInput setObject:setting.result.file_uploaded?:@"" forKey:API_FILE_UPLOADED_KEY];
-                    [self configureRestkitActionAddProductSubmit];
-                    [self requestActionAddProductSubmit:_dataInput];
-                }
-            }
-        }
-        else{
-            [self cancelActionAddProductPicture];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
--(void)requestTimeOutActionAddProductPicture:(NSTimer *)timer
-{
-    [self cancelActionAddProductPicture];
 }
 
 #pragma mark -Request Add Product Submit
 
--(void)cancelActionAddProductSubmit
+-(RKObjectManager*)objectManagerSubmit
 {
-    [_requestActionAddProductSubmit cancel];
-    _requestActionAddProductSubmit = nil;
-    [_objectManagerActionAddProductSubmit.operationQueue cancelAllOperations];
-    _objectManagerActionAddProductSubmit = nil;
-}
-
--(void)configureRestkitActionAddProductSubmit
-{
-    _objectManagerActionAddProductSubmit = [RKObjectManager sharedClient];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductSubmit class]];
@@ -892,22 +970,17 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManagerActionAddProductSubmit addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
+    return objectManager;
 }
 
--(void)requestActionAddProductSubmit:(id)object
+-(NSDictionary*)paramSubmit
 {
-    if (_requestActionAddProductSubmit.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
-    
-    //TODO:: catalogid
     NSString *action = ACTION_ADD_PRODUCT_SUBMIT;
     
-    NSString *postKey = [userInfo objectForKey:API_POSTKEY_KEY];
-    NSString *uploadedFile = [userInfo objectForKey:API_FILE_UPLOADED_KEY];
+    NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
+    NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
     
     NSInteger randomNumber = arc4random() % 16;
     NSString *uniqueID = [NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
@@ -921,24 +994,7 @@
                             API_UNIQUE_ID_KEY : uniqueID,
                             API_IS_DUPLICATE_KEY:@(duplicate),
                             };
-    _requestCount ++;
-    
-    _requestActionAddProductSubmit = [_objectManagerActionAddProductSubmit appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
-    
-    [_requestActionAddProductSubmit setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionAddProductSubmit:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFailureActionAddProductSubmit:error];
-        [timer invalidate];
-        _saveBarButtonItem.enabled = YES;
-    }];
-    
-    [_operationQueue addOperation:_requestActionAddProductSubmit];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeOutActionAddProductSubmit:) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    return param;
 }
 
 -(void)requestSuccessActionAddProductSubmit:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -949,58 +1005,25 @@
     BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessActionAddProductSubmit:object];
-    }
-}
-
--(void)requestFailureActionAddProductSubmit:(id)object
-{
-    [self requestProcessActionAddProductSubmit:object];
-}
-
--(void)requestProcessActionAddProductSubmit:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            AddProductSubmit *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(setting.message_error)
-                {
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    _saveBarButtonItem.enabled = YES;
-                }
-                if (setting.result.is_success == 1 || setting.result.product_id!=0) {
-                    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                    NSString *defaultSuccessMessage = (type == TYPE_ADD_EDIT_PRODUCT_ADD)?SUCCESSMESSAGE_ADD_PRODUCT:SUCCESSMESSAGE_EDIT_PRODUCT;SUCCESSMESSAGE_ADD_PRODUCT;
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:defaultSuccessMessage, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-                }
-            }
+        if(setting.message_error)
+        {
+            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+            [alert show];
+            _saveBarButtonItem.enabled = YES;
+            [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         }
-        else{
-            [self cancelActionAddProductSubmit];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
+        if (setting.result.is_success == 1 || setting.result.product_id!=0) {
+            NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+            NSString *defaultSuccessMessage = (type == TYPE_ADD_EDIT_PRODUCT_ADD)?SUCCESSMESSAGE_ADD_PRODUCT:SUCCESSMESSAGE_EDIT_PRODUCT;SUCCESSMESSAGE_ADD_PRODUCT;
+            NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:defaultSuccessMessage, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+            [alert show];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+            [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];                }
     }
-}
 
--(void)requestTimeOutActionAddProductSubmit:(NSTimer *)timer
-{
-    [self cancelActionAddProductSubmit];
 }
 
 #pragma mark -Request Edit Product
@@ -1013,9 +1036,9 @@
     _objectManagerActionEditProduct = nil;
 }
 
--(void)configureRestkitActionEditProduct
+-(RKObjectManager *)objectManagerEditProduct
 {
-    _objectManagerActionEditProduct = [RKObjectManager sharedClient];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
@@ -1033,16 +1056,14 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManagerActionEditProduct addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
+    return objectManager;
 }
 
--(void)requestActionEditProduct:(id)object
+-(NSDictionary*)paramEdit
 {
-    if (_requestActionEditProduct.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
+    NSDictionary *userInfo = _dataInput;
     
     NSString *action = ACTION_EDIT_PRODUCT_KEY;
     ProductDetail *product = [userInfo objectForKey:DATA_PRODUCT_DETAIL_KEY];
@@ -1063,10 +1084,8 @@
     
     NSNumber *etalaseUserInfoID = product.product_etalase_id;
     if ([etalaseUserInfoID isEqual:@(0)]) {
-        
-        [self configureRestKitActionMoveToWarehouse];
-        [self requestActionMoveToWarehouse:_dataInput];
-        return;
+        [_moveToWarehouseNetworkManager doRequest];
+        return @{};
     }
     BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
     NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
@@ -1076,6 +1095,7 @@
     NSString *productImage = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
+
     
     NSString *productID = product.product_id?:@"";
     NSString *returnableProduct = [_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]?:product.product_returnable?:@"";
@@ -1118,29 +1138,13 @@
     for (NSDictionary *wholesale in wholesaleList) {
         [paramMutableDict addEntriesFromDictionary:wholesale];
     }
-
+    
     NSDictionary *imageDescriptions = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
     [paramMutableDict addEntriesFromDictionary:imageDescriptions];
     
     NSDictionary *param = [paramMutableDict copy];
     
-    _saveBarButtonItem.enabled = NO;
-    _requestActionEditProduct = [_objectManagerActionEditProduct appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
-    
-    [_requestActionEditProduct setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionEditProduct:mappingResult withOperation:operation];
-        [timer invalidate];
-        _saveBarButtonItem.enabled = YES;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionEditProduct:error];
-        [timer invalidate];
-        _saveBarButtonItem.enabled = YES;
-    }];
-    
-    [_operationQueue addOperation:_requestActionEditProduct];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeOutActionEditProduct:) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    return param;
 }
 
 -(void)requestSuccessActionEditProduct:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -1151,76 +1155,35 @@
     BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessActionEditProduct:object];
-    }
-}
-
--(void)requestFailureActionEditProduct:(id)object
-{
-    [self requestProcessActionEditProduct:object];
-}
-
--(void)requestProcessActionEditProduct:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ShopSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        if(setting.message_error) {
+            NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        if (setting.result.is_success == 1) {
+            NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+            NSString *defaultSuccessMessage;
+            if (type == TYPE_ADD_EDIT_PRODUCT_ADD)defaultSuccessMessage=SUCCESSMESSAGE_ADD_PRODUCT;
+            if (type == TYPE_ADD_EDIT_PRODUCT_EDIT)defaultSuccessMessage=SUCCESSMESSAGE_EDIT_PRODUCT;
+            if (type == TYPE_ADD_EDIT_PRODUCT_COPY)defaultSuccessMessage=SUCCESSMESSAGE_COPY_PRODUCT;
             
-            if (status) {
-                if(setting.message_error) {
-                    NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                }
-                if (setting.result.is_success == 1) {
-                    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                    NSString *defaultSuccessMessage;
-                    if (type == TYPE_ADD_EDIT_PRODUCT_ADD)defaultSuccessMessage=SUCCESSMESSAGE_ADD_PRODUCT;
-                    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT)defaultSuccessMessage=SUCCESSMESSAGE_EDIT_PRODUCT;
-                    if (type == TYPE_ADD_EDIT_PRODUCT_COPY)defaultSuccessMessage=SUCCESSMESSAGE_COPY_PRODUCT;
-
-                    NSArray *successMessages = setting.message_status?:@[defaultSuccessMessage];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                    [alert show];
-
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-                }
-            }
-        }
-        else{
-            [self cancelActionEditProduct];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+            NSArray *successMessages = setting.message_status?:@[defaultSuccessMessage];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+            [alert show];
+            
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
         }
     }
-}
 
--(void)requestTimeOutActionEditProduct:(NSTimer *)timer
-{
-    [self cancelActionEditProduct];
 }
 
 #pragma mark Request Action MoveToWarehouse
--(void)cancelActionMoveToWarehouse
-{
-    [_requestActionMoveToWarehouse cancel];
-    _requestActionMoveToWarehouse = nil;
-    [_objectmanagerActionMoveToWarehouse.operationQueue cancelAllOperations];
-    _objectmanagerActionMoveToWarehouse = nil;
-}
 
--(void)configureRestKitActionMoveToWarehouse
+-(RKObjectManager*)objectManagerMoveToWarehouse
 {
-    _objectmanagerActionMoveToWarehouse = [RKObjectManager sharedClient];
+    RKObjectManager *objectmanager = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
@@ -1238,35 +1201,21 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectmanagerActionMoveToWarehouse addResponseDescriptor:responseDescriptor];
+    [objectmanager addResponseDescriptor:responseDescriptor];
     
+    return objectmanager;
 }
 
--(void)requestActionMoveToWarehouse:(id)object
+-(NSDictionary*)paramMoveToWarehouse
 {
-    if (_requestActionMoveToWarehouse.isExecuting) return;
-    
-    NSTimer *timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionMoveToWarehouse) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product.product_id?:@"",
                             };
-    _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
-    
-    [_requestActionMoveToWarehouse setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionMoveToWarehouse:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionMoveToWarehouse:error];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestActionMoveToWarehouse];
-
+    return param;
 }
+
 
 -(void)requestSuccessActionMoveToWarehouse:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
@@ -1276,63 +1225,21 @@
     BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessActionMoveToWarehouse:object];
-    }
-}
-
--(void)requestFailureActionMoveToWarehouse:(id)object
-{
-    [self requestProcessActionMoveToWarehouse:object];
-}
-
--(void)requestProcessActionMoveToWarehouse:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ShopSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        if(setting.message_error)
+        {
+            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+            [alert show];
+        }
+        if (setting.result.is_success == 1) {
+            NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
+            [alert show];
             
-            if (status) {
-                if(setting.message_error)
-                {
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                }
-                if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                    
-                    //if (_isBeingPresented) {
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    //} else {
-                    //    NSInteger indexPopViewController = self.navigationController.viewControllers.count-3;
-                    //    UIViewController *popViewController = self.navigationController.viewControllers [indexPopViewController];
-                    //    [self.navigationController popToViewController:popViewController animated:NO];
-                    //}
-                }
-            }
-        }
-        else{
-            //[self cancelActionMoveToWarehouse];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
     }
 }
-
--(void)requestTimeoutActionMoveToWarehouse
-{
-    [self cancelActionMoveToWarehouse];
-}
-
 
 #pragma mark - TextView Delegate
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
@@ -1459,11 +1366,11 @@
     _shopHasTerm = shopHasTerm;
     if (shopHasTerm) {
         if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
-            _returnableProductSwitch.enabled = NO;
+            _isShopHasTerm = NO;
         }
         else
         {
-            _returnableProductSwitch.enabled = YES;
+            _isShopHasTerm = YES;
         }
     }
 
@@ -1505,11 +1412,11 @@
         NSString *shopHasTerm = [auth getShopHasTerm];
 
         if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
-            _returnableProductSwitch.enabled = NO;
+            _isShopHasTerm = NO;
         }
         else
         {
-            _returnableProductSwitch.enabled = YES;
+            _isShopHasTerm= YES;
         }
         
         [_tableView reloadData];
@@ -1576,11 +1483,11 @@
     NSString *shopHasTerm = [auth getShopHasTerm];  
     
     if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
-        _returnableProductSwitch.enabled = NO;
+        _isShopHasTerm = NO;
     }
     else
     {
-        _returnableProductSwitch.enabled = YES;
+        _isShopHasTerm= YES;
     }
     
     [_tableView reloadData];

@@ -430,10 +430,17 @@
                                                                   animated:NO];
                         }
                         
+                        BankAccountFormList *bankAccount = [BankAccountFormList new];
+                        bankAccount.bank_account_name = _accountNameTextField.text;
+                        bankAccount.bank_account_number = _accountNumberTextField.text;
+                        bankAccount.bank_name = _bankNameButton.titleLabel.text;
+                        bankAccount.bank_branch = _bankBranchTextField.text;
+                        
                         userinfo = @{
                                      kTKPDPROFILE_DATAEDITTYPEKEY   : [_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@"",
-                                     kTKPDPROFILE_DATAINDEXPATHKEY  : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:@""
-                                     };
+                                     kTKPDPROFILE_DATAINDEXPATHKEY  : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:@"",
+                                     kTKPDPROFILE_DATABANKKEY   : bankAccount,
+                                    };
                     } else {
                         if (_isBeingPresented) {
                             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -631,7 +638,7 @@
     NSIndexPath *indexpath = [data objectForKey:kTKPDPROFILE_DATABANKINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     NSString *name = [data objectForKey:API_BANK_NAME_KEY];
     NSInteger bankid = [[data objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY] integerValue];
-    NSString *bankAccountID = [data objectForKey:API_BANK_ACCOUNT_ID_KEY];
+    NSString *bankAccountID = [data objectForKey:API_BANK_ACCOUNT_ID_KEY]?:@"";
     [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATABANKINDEXPATHKEY];
     [_bankNameButton setTitle:name forState:UIControlStateNormal];
     [_datainput setObject:name forKey:API_BANK_NAME_KEY];

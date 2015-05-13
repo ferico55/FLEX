@@ -55,6 +55,8 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Harga Grosir";
+    
     _dataInput = [NSMutableDictionary new];
     _wholesaleList = [NSMutableArray new];
     

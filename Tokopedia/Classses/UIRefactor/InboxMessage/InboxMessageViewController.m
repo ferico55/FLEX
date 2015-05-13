@@ -998,11 +998,11 @@ typedef enum TagRequest {
     }
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    if(tag == messageListTag) {
-        
-    }
-}
+//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+//    if(tag == messageListTag) {
+//        
+//    }
+//}
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == messageListTag) {

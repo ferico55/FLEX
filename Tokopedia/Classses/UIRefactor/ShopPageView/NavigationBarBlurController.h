@@ -11,10 +11,14 @@
 @interface NavigationBarBlurController : NSObject
 
 - (void)setContentOffset:(CGPoint)contentOffset;
+- (void)setNavigationBarTitle:(NSString *)navigationBarTitle withContentOffSet:(CGPoint)contentOffset;
+- (void)removeNavigationImage;
 
 @property (strong, nonatomic) UIImage *backgroundImage;
 @property (weak, nonatomic) UINavigationBar *navigationBar;
+@property (weak, nonatomic) NSString *navigationBarTitle;
 @property (nonatomic) CGFloat threshold;
+@property (nonatomic) CGFloat titleOffset;
 @property (nonatomic) CGFloat maxOffset;
 @property (nonatomic) CGFloat minimumOffset;
 

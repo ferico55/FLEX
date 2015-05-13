@@ -18,6 +18,7 @@
 #import "UserProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
+#import "ProfileSettingViewController.h"
 #import "URLCacheController.h"
 
 #import "sortfiltershare.h"
@@ -32,7 +33,14 @@
 #import "ShopContainerViewController.h"
 
 
-@interface UserContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, TokopediaNetworkManagerDelegate> {
+@interface UserContainerViewController ()
+<
+    UIScrollViewDelegate,
+    LoginViewDelegate,
+    TokopediaNetworkManagerDelegate,
+    SettingUserProfileDelegate
+>
+{
     BOOL _isNoData;
     BOOL _isRefreshView;
     
@@ -103,7 +111,17 @@
 }
 
 - (void)initBarButton {
-    UIBarButtonItem *barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
+    
+    UIBarButtonItem *barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:(self)
+                                                                      action:@selector(tap:)];
     
     if([_userManager isLogin]) {
         if([_userManager isMyUser:[_data objectForKey:@"user_id"]]) {
@@ -132,8 +150,6 @@
             self.navigationItem.rightBarButtonItem = barbuttonright;
         }
     }
-    
-    
 }
 
 - (UIBarButtonItem*)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action {
@@ -528,26 +544,24 @@
 
 - (IBAction)tapButton:(id)sender
 {
-    NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
-    
     UIButton *button = (UIButton *)sender;
     switch (button.tag) {
         case 14:
         {
-            //button edit profile action
-            SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
-            vc.delegate = self;
-            [self.navigationController pushViewController:vc animated:YES];
+            ProfileSettingViewController *controller = [[ProfileSettingViewController alloc] init];
+            [self.navigationController pushViewController:controller animated:YES];
             break;
         }
             
         case 15 : {
-            SendMessageViewController *messageController = [SendMessageViewController new];
-            messageController.data = @{
+            if(_profile != nil) {
+                SendMessageViewController *messageController = [SendMessageViewController new];
+                messageController.data = @{
                                        kTKPDSHOPEDIT_APIUSERIDKEY:[_data objectForKey:kTKPDSHOPEDIT_APIUSERIDKEY]?:@"",
                                        kTKPDDETAIL_APISHOPNAMEKEY:_profile.result.user_info.user_name
                                        };
-            [self.navigationController pushViewController:messageController animated:YES];
+                [self.navigationController pushViewController:messageController animated:YES];
+            }
             break;
         }
             
@@ -566,6 +580,11 @@
     }
 }
 
+#pragma mark - Setting user profile delegate
 
+- (void)successEditUserProfile
+{
+    [self reloadProfile];
+}
 
 @end

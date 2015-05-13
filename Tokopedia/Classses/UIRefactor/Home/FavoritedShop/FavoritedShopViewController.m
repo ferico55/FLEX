@@ -428,7 +428,7 @@
                 _goldshop = [favoritedshop.result.list_gold mutableCopy];
             } else {
                 [_shop addObjectsFromArray: favoritedshop.result.list];
-                [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
+//                [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
             }
             
             _shopdictionary = [NSMutableDictionary new];
@@ -471,7 +471,7 @@
             
             if(_refreshControl.isRefreshing) {
                 [_refreshControl endRefreshing];
-                [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [_table reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
             } else  {
                 [_table reloadData];
             }
@@ -566,6 +566,7 @@
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+                       kTKPDDETAIL_APISHOPNAMEKEY:list.shop_name?:@"",
                        kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
                        };
     [self.navigationController pushViewController:container animated:YES];
@@ -627,7 +628,7 @@
     }
     else
         return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
-                 kTKPDHOME_APILIMITPAGEKEY : @(10),
+                 kTKPDHOME_APILIMITPAGEKEY : @(5),
                  kTKPDHOME_APIPAGEKEY:@(_page)};
 }
 

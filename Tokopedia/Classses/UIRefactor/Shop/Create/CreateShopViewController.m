@@ -181,11 +181,12 @@
     RKObjectManager *objectManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSMutableDictionary *dictContentPhoto;
-
+    MyShopShipmentTableViewController *controller;
+    
     UIImageView *tempImage;
     UIActivityIndicatorView *loadViewCheckDomain;
     UIView *viewImgGambar;
-    UIImageView *imgGambar;
+    UIImageView *imgGambar, *imageCheckList;
     UITextField *txtDomain, *txtNamaToko, *activeTextField;
     CustomTxtView *txtSlogan, *txtDesc;
     UITextView *activeTextView;
@@ -292,7 +293,7 @@
 
 - (void)checkValidation:(NSString *)strNamaToko withSlogan:(NSString *)strSlogan withDesc:(NSString *)strDesc
 {
-    if(isValidDomain && hasSetImgGambar)
+    if(isValidDomain)
     {
         if(strNamaToko == nil)
             strNamaToko = [self getNamaToko];
@@ -411,8 +412,10 @@
         [stickyAlertView show];
     }
     else {
-        MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
-        controller.createShopViewController = self;
+        if(controller == nil) {
+            controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+            controller.createShopViewController = self;
+        }
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
@@ -467,7 +470,7 @@
         case 0:
         {
             float heightLblFooter = [self calculateHeight:CStringDescCheckDomain withFont:[customHeaderFooterTable getLblFooter].font andSize:CGSizeMake(widhtItem, 9999) withColor:[customHeaderFooterTable getLblFooter].textColor];
-            [customHeaderFooterTable setBtnFrame:CGRectMake(CPaddingLeft/2.0f, CPaddingLeft/2.0f, widhtItem, CHeightHeaderCell-((CPaddingLeft/2.0f)*2))];
+            [customHeaderFooterTable setBtnFrame:CGRectMake(CPaddingLeft, CPaddingLeft/2.0f, widhtItem, CHeightHeaderCell-((CPaddingLeft/2.0f)*2))];
             [customHeaderFooterTable setLblFrame:CGRectMake([customHeaderFooterTable getBtnCheckDomain].frame.origin.x, [customHeaderFooterTable getBtnCheckDomain].bounds.size.height+[customHeaderFooterTable getBtnCheckDomain].frame.origin.y+CPaddingLeft, widhtItem, heightLblFooter) isHeader:NO];
 
             //Btn Check Domain
@@ -544,19 +547,25 @@
         [tempView removeFromSuperview];
         tempView = [cell.contentView viewWithTag:CTagNamaToko];
         [tempView removeFromSuperview];
-        
+        [lblCountSlogan removeFromSuperview];
+        [lblCountDescripsi removeFromSuperview];
         
         [cell getLblDomain].hidden = NO;
         if(txtDomain == nil)
         {
-            txtDomain = [[UITextField alloc] initWithFrame:CGRectMake([cell getLblDomain].frame.origin.x + [cell getLblDomain].bounds.size.width, 0, cell.bounds.size.width-CPaddingLeft-([cell getLblDomain].frame.origin.x+[cell getLblDomain].bounds.size.width), cell.bounds.size.height)];
+            int widthCheckList = 20;
+            txtDomain = [[UITextField alloc] initWithFrame:CGRectMake([cell getLblDomain].frame.origin.x + [cell getLblDomain].bounds.size.width, 0, cell.bounds.size.width-CPaddingLeft-([cell getLblDomain].frame.origin.x+[cell getLblDomain].bounds.size.width)-widthCheckList, cell.bounds.size.height)];
             txtDomain.backgroundColor = [UIColor clearColor];
             txtDomain.tag = CTagDomain;
             txtDomain.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
             txtDomain.delegate = self;
             txtDomain.placeholder = CStringDomain;
+            imageCheckList = [[UIImageView alloc] initWithFrame:CGRectMake(txtDomain.frame.origin.x+txtDomain.bounds.size.width, (txtDomain.bounds.size.height-20)/2.0f, widthCheckList, txtDomain.bounds.size.height-(((txtDomain.bounds.size.height-20)/2.0f)*2))];
+            imageCheckList.tag = CTagCheckList;
+            imageCheckList.image = nil;
         }
         
+        [cell.contentView addSubview:imageCheckList];
         [cell.contentView addSubview:txtDomain];
     }
     else if(indexPath.section == 1)
@@ -569,6 +578,8 @@
         tempView = [cell.contentView viewWithTag:CTagDeskripsi];
         [tempView removeFromSuperview];
         tempView = [cell.contentView viewWithTag:CTagNamaToko];
+        [tempView removeFromSuperview];
+        tempView = [cell.contentView viewWithTag:CTagCheckList];
         [tempView removeFromSuperview];
         
         if(viewImgGambar == nil)
@@ -622,6 +633,8 @@
                 [tempView removeFromSuperview];
                 tempView = [cell.contentView viewWithTag:CTagDeskripsi];
                 [tempView removeFromSuperview];
+                tempView = [cell.contentView viewWithTag:CTagCheckList];
+                [tempView removeFromSuperview];
                 
                 if(txtNamaToko == nil)
                 {
@@ -644,6 +657,8 @@
                 tempView = [cell.contentView viewWithTag:CTagNamaToko];
                 [tempView removeFromSuperview];
                 tempView = [cell.contentView viewWithTag:CTagDeskripsi];
+                [tempView removeFromSuperview];
+                tempView = [cell.contentView viewWithTag:CTagCheckList];
                 [tempView removeFromSuperview];
                 
                 if(txtSlogan == nil)
@@ -674,6 +689,8 @@
                 tempView = [cell.contentView viewWithTag:CTagSlogan];
                 [tempView removeFromSuperview];
                 tempView = [cell.contentView viewWithTag:CTagNamaToko];
+                [tempView removeFromSuperview];
+                tempView = [cell.contentView viewWithTag:CTagCheckList];
                 [tempView removeFromSuperview];
                 
                 if(txtDesc == nil)
@@ -932,6 +949,7 @@
         [self checkValidation:nil withSlogan:nil withDesc:nil];
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringValidDomain] delegate:self];
         [stickyAlertView show];
+        imageCheckList.image = [UIImage imageNamed:@"icon_correct.png"];
     }
     else
     {
@@ -941,6 +959,7 @@
         
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:addShop.message_error delegate:self];
         [stickyAlertView show];
+        imageCheckList.image = [UIImage imageNamed:@"icon_incorrect.png"];
     }
 }
 

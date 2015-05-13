@@ -65,7 +65,7 @@
 #import "ProductGalleryViewController.h"
 
 #import "MyShopEtalaseFilterViewController.h"
-
+#import "NoResultView.h"
 #import "RequestMoveTo.h"
 #import "EtalaseList.h"
 
@@ -107,6 +107,7 @@ UIAlertViewDelegate
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
+    BOOL isDoingWishList, isDoingFavorite;
     
     NSInteger _requestcount;
     
@@ -213,6 +214,8 @@ UIAlertViewDelegate
 {
     IBOutlet UIView *viewContentTokoTutup;
     BOOL hasSetTokoTutup;
+    NSString *_formattedProductDescription;
+    NSString *_formattedProductTitle;
 }
 
 @synthesize data = _data;
@@ -389,11 +392,6 @@ UIAlertViewDelegate
         }
         [self.table reloadData];
     }
-    else if(isNeedLogin)
-    {
-        isNeedLogin = !isNeedLogin;
-        [self loadData];
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -455,7 +453,7 @@ UIAlertViewDelegate
                 
                 vc.data = @{
                             kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            API_PRODUCT_NAME_KEY : _product.result.product.product_name,
+                            API_PRODUCT_NAME_KEY : _formattedProductTitle,
                             kTKPDDETAILPRODUCT_APIIMAGESRCKEY : image.image_src,
                             kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
                             };
@@ -487,7 +485,7 @@ UIAlertViewDelegate
             {
                 if (_product) {
                     NSString *title = [NSString stringWithFormat:@"Jual %@ - %@ | Tokopedia ",
-                                       _product.result.product.product_name,
+                                       _formattedProductTitle,
                                        _product.result.shop_info.shop_name];
                     NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
                     UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
@@ -537,7 +535,7 @@ UIAlertViewDelegate
                     controller.isPresentedViewController = YES;
                     controller.redirectViewController = self;
                     navigationController.viewControllers = @[controller];
-                    
+                    isDoingFavorite = isNeedLogin = YES;
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
                 break;
@@ -571,7 +569,7 @@ UIAlertViewDelegate
                     controller.isPresentedViewController = YES;
                     controller.redirectViewController = self;
                     navigationController.viewControllers = @[controller];
-                    
+                    isDoingFavorite = isNeedLogin = YES;
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
                 break;
@@ -586,6 +584,7 @@ UIAlertViewDelegate
                     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
                     
                     container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
+                                       kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
                                        kTKPD_AUTHKEY:_auth?:@{}};
                     [self.navigationController pushViewController:container animated:YES];
                     
@@ -736,21 +735,21 @@ UIAlertViewDelegate
                 [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
                 
                 CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
-                if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+                if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
                 {
-                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
                     
                     [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
                 }
                 else
                 {
-                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:_product.result.product.product_description];
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:_formattedProductDescription];
                     [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
                 }
                 [expandCollapseButton removeFromSuperview];
                 
                 
-                if(_product.result.product.product_description.length > kTKPDLIMIT_TEXT_DESC) {
+                if(_formattedProductDescription.length > kTKPDLIMIT_TEXT_DESC) {
                     btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
                     [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
                     [btnExpand setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -770,19 +769,19 @@ UIAlertViewDelegate
             CGRect rectLblDesc = CGRectZero;
             CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
             
-            if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+            if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
             {
-                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
                 [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
             }
             else
             {
-                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:_product.result.product.product_description];
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:_formattedProductDescription];
                 [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
             }
             
             
-            if(_product.result.product.product_description.length > kTKPDLIMIT_TEXT_DESC)
+            if(_formattedProductDescription.length > kTKPDLIMIT_TEXT_DESC)
             {
                 btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
                 [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
@@ -820,22 +819,24 @@ UIAlertViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+//    return 200;
     if(! _isnodatawholesale)
     {
         if(section == 2)
         {
-            if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+//            return 200;
+            if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
             else
-                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_product.result.product.product_description] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
         }
     }
     else if(section == 1)
     {
-        if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+        if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
         else
-            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_product.result.product.product_description] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
     }
     
     return 40;
@@ -928,7 +929,7 @@ UIAlertViewDelegate
             if (descriptionCell == nil) {
                 descriptionCell = [DetailProductDescriptionCell newcell];
                 if(!_isnodata) {
-                    descriptionCell.descriptionText = _product.result.product.product_description;
+                    descriptionCell.descriptionText = _formattedProductDescription;
                     _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
                 }
             }
@@ -945,7 +946,7 @@ UIAlertViewDelegate
             if (descriptionCell == nil) {
                 descriptionCell = [DetailProductDescriptionCell newcell];
                 if(!_isnodata) {
-                    descriptionCell.descriptionText = _product.result.product.product_description;
+                    descriptionCell.descriptionText = _formattedProductDescription;
                     _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
                 }
             }
@@ -1317,7 +1318,7 @@ UIAlertViewDelegate
         Promote* promoteObject = [result objectForKey:@""];
         
         if([promoteObject.result.is_dink isEqualToString:@"1"]) {
-            NSString *successMessage = [NSString stringWithFormat:@"Promo pada product %@ telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko.", _product.result.product.product_name];
+            NSString *successMessage = [NSString stringWithFormat:@"Promo pada product %@ telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko.", _formattedProductTitle];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[successMessage]
                                                                              delegate:self];
             [alert show];
@@ -1337,6 +1338,20 @@ UIAlertViewDelegate
         [self configureGetOtherProductRestkit];
         [self loadDataOtherProduct];
         [self requestsuccess:successResult withOperation:operation];
+        
+        
+        
+        if(isNeedLogin) {
+            isNeedLogin = !isNeedLogin;
+            if(isDoingWishList) {
+                isDoingWishList = !isDoingWishList;
+                [btnWishList sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
+            else if(isDoingFavorite) {
+                isDoingFavorite = !isDoingFavorite;
+                [_favButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
+        }
     }
     else if(tag == CTagOtherProduct)
     {
@@ -1574,6 +1589,15 @@ UIAlertViewDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
+        if(_product.result == nil) {
+            NoResultView *temp = [NoResultView new];
+            [self.view addSubview:temp.view];
+            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
+            _act.hidden = YES;
+            [_act stopAnimating];
+            return;
+        }
+        
         if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
             [self initViewTokoTutup];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, [lblDescTokoTutup sizeThatFits:CGSizeMake(lblDescTokoTutup.bounds.size.width, 9999)].height+16+viewTableContentHeader.bounds.size.height);
@@ -1601,6 +1625,8 @@ UIAlertViewDelegate
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         id stats = [result objectForKey:@""];
         _product = stats;
+        _formattedProductDescription = _product.result.product.product_description;
+        _formattedProductTitle = _product.result.product.product_name;
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
@@ -1608,8 +1634,8 @@ UIAlertViewDelegate
             if (_product.result.wholesale_price.count > 0) {
                 _isnodatawholesale = NO;
             }
-            if([_product.result.product.product_description isEqualToString:@"0"])
-                _product.result.product.product_description = NO_DESCRIPTION;
+            if([_formattedProductDescription isEqualToString:@"0"])
+                _formattedProductDescription = NO_DESCRIPTION;
             
             
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
@@ -1672,7 +1698,7 @@ UIAlertViewDelegate
             
             //decide description height
             id cell = [DetailProductDescriptionCell newcell];
-            NSString *productdesc = _product.result.product.product_description;
+            NSString *productdesc = _formattedProductDescription;
             UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
             desclabel.text = productdesc;
             CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
@@ -1805,12 +1831,14 @@ UIAlertViewDelegate
         case 13:
         {
             // Etalase
-            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            if(_product.result.product.product_etalase_id != nil) {
+                ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
             
-            container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
                                kTKPD_AUTHKEY:_auth?:[NSNull null],
                                @"product_etalase_id" : _product.result.product.product_etalase_id};
-            [self.navigationController pushViewController:container animated:YES];
+                [self.navigationController pushViewController:container animated:YES];
+            }
             
             break;
         }
@@ -1904,6 +1932,7 @@ UIAlertViewDelegate
     }
 }
 
+
 - (IBAction)actionWishList:(UIButton *)sender
 {
     if(sender.tag == 1)
@@ -1927,9 +1956,9 @@ UIAlertViewDelegate
 -(void)setHeaderviewData{
     
     CGFloat currentLabelHeight = _productnamelabel.frame.size.height;
-    _productnamelabel.text = _product.result.product.product_name?:@"";
+    _productnamelabel.text = _formattedProductTitle?:@"";
     
-    NSString *productName = _product.result.product.product_name?:@"";
+    NSString *productName = _formattedProductTitle?:@"";
     
 
     CGRect labelCGRectFrame = CGRectMake(0, 0, 480, 44);
@@ -2040,7 +2069,7 @@ UIAlertViewDelegate
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
     _imagescrollview.showsHorizontalScrollIndicator = NO;
     
-    [_datatalk setObject:_product.result.product.product_name?:@"" forKey:API_PRODUCT_NAME_KEY];
+    [_datatalk setObject:_formattedProductTitle?:@"" forKey:API_PRODUCT_NAME_KEY];
     [_datatalk setObject:_product.result.product.product_price?:@"" forKey:API_PRODUCT_PRICE_KEY];
     [_datatalk setObject:_headerimages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
 }
@@ -2196,6 +2225,12 @@ UIAlertViewDelegate
                     [[_otherproductviews objectAtIndex:i] removeFromSuperview];
                 [_otherproductviews removeAllObjects];
                 [_otherProductObj addObjectsFromArray: otherProduct.result.other_product];
+                
+                if(_otherProductObj.count == 0) {
+                    lblOtherProductTitle.hidden = YES;
+                    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, lblOtherProductTitle.frame.origin.y);
+                    _table.tableFooterView = _shopinformationview;
+                }
                 [self setOtherProducts];
             }
         }
@@ -2277,7 +2312,7 @@ UIAlertViewDelegate
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
         isNeedLogin = YES;
-        
+        isDoingWishList = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
@@ -2304,7 +2339,7 @@ UIAlertViewDelegate
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
         isNeedLogin = YES;
-        
+        isDoingWishList = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
@@ -2334,6 +2369,10 @@ UIAlertViewDelegate
     
 }
 
+- (void)cancelLoginView {
+    isDoingWishList = isDoingFavorite = isNeedLogin = NO;
+}
+
 #pragma mark - Tap View
 - (void)tapProductGallery {
 //    NSDictionary *data = @{
@@ -2356,12 +2395,14 @@ UIAlertViewDelegate
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                       kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
                        kTKPD_AUTHKEY:_auth?:[NSNull null]};
     [self.navigationController pushViewController:container animated:YES];
 }
 
 -(void)refreshRequest:(NSNotification*)notification
 {
+    tokopediaNetworkManager.delegate = self;
     [tokopediaNetworkManager doRequest];
 }
 
@@ -2434,6 +2475,10 @@ UIAlertViewDelegate
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+
+    if(isNeedLogin) {
+        [self loadData];
+    }
 }
 
 - (void)userDidLogout:(NSNotification*)notification {

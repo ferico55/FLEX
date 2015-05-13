@@ -513,9 +513,10 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
+    if(!_refreshControl.isRefreshing) {
+        _tableView.tableFooterView = _footer;
+        [_act startAnimating];
+    }
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
@@ -555,9 +556,15 @@
     [_tableView reloadData];
 }
 
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    [self actionAfterFailRequestMaxTries:tag];
+}
+
 - (void)actionAfterFailRequestMaxTries:(int)tag {
-    [_refreshControl endRefreshing];
-    _tableView.tableFooterView = _act;
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    }
 }
 
 #pragma mark - Request Cancel Payment Confirmation
@@ -667,8 +674,8 @@
     if (status) {
         if (order.result.is_success == 1) {
             NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil membatalkan konfirmasi pembayaran", nil];
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+            [stickyAlertView show];
             
             NSDictionary *userInfo = @{DATA_PAYMENT_CONFIRMATION_COUNT_KEY:@(objects.count)};
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:userInfo];

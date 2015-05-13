@@ -3,6 +3,7 @@
 
 target "Tokopedia" do
     pod 'RestKit', '~>  0.20.0'
+    pod 'NJKWebViewProgress'
 end
 
 target "TokopediaTests" do

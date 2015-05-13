@@ -29,7 +29,18 @@
 #define DATA_SELECTED_RESOLUTION_KEY @"selected_resolution"
 #define DATA_SELECTED_INDEXPATH_RESOLUTION_KEY @"seleted_indexpath_resolution"
 
-@interface InboxResolutionCenterComplainViewController ()<UITabBarControllerDelegate, UITableViewDataSource, GeneralTableViewControllerDelegate,FilterComplainViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterComplainCellDelegate, TokopediaNetworkManagerDelegate>
+#define TAG_REQUEST_LIST 10
+#define TAG_REQUEST_CANCEL_COMPLAIN 11
+
+@interface InboxResolutionCenterComplainViewController ()<
+    UITabBarControllerDelegate,
+    UITableViewDataSource,
+    UITableViewDelegate,
+    GeneralTableViewControllerDelegate,
+    FilterComplainViewControllerDelegate,
+    ResolutionCenterDetailViewControllerDelegate,
+    InboxResolutionCenterComplainCellDelegate,
+    TokopediaNetworkManagerDelegate>
 {
     NavigateViewController *_navigate;
     NSMutableArray *_list;
@@ -49,11 +60,14 @@
     __weak RKObjectManager *_objectManagerCancelComplain;
     __weak RKManagedObjectRequestOperation *_requestCancelComplain;
     
-    NSMutableArray *_objectCancelComplain;
+    NSMutableArray *_allObjectCancelComplain;
     
     BOOL _isFirstAppear;
     
     TokopediaNetworkManager *_networkManager;
+    TokopediaNetworkManager *_networkManagerCancelComplain;
+    
+    NSDictionary *_objectCancelComplain;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -71,16 +85,24 @@
     _navigate = [NavigateViewController new];
     _operationQueue = [NSOperationQueue new];
     _mapping = [InboxResolutionCenterObjectMapping new];
-    _objectCancelComplain = [NSMutableArray new];
+    _allObjectCancelComplain = [NSMutableArray new];
     
     _networkManager = [TokopediaNetworkManager new];
+    _networkManagerCancelComplain = [TokopediaNetworkManager new];
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    
+    _networkManager.tagRequest = TAG_REQUEST_LIST;
     _networkManager.delegate = self;
+    
+    _networkManagerCancelComplain.tagRequest = TAG_REQUEST_CANCEL_COMPLAIN;
+    _networkManagerCancelComplain.delegate = self;
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
@@ -109,14 +131,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _networkManager.delegate = self;
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
 }
 
 
@@ -368,169 +387,133 @@
 #pragma mark - Delegate
 -(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath*)indexPath
 {
-    [self configureRestKitCancelComplain];
     NSMutableDictionary *object = [NSMutableDictionary new];
     [object setObject:resolution forKey:DATA_SELECTED_RESOLUTION_KEY];
     [object setObject:indexPath forKey:DATA_SELECTED_INDEXPATH_RESOLUTION_KEY];
-    [self requestCancelComplain:object];
+    _objectCancelComplain = [object copy];
+    [_networkManagerCancelComplain doRequest];
 }
 
-#pragma mark - Request List
+#pragma mark - Request
 
 -(id)getObjectManager:(int)tag
 {
-    _objectManager = [RKObjectManager sharedClient];
+    if (tag == TAG_REQUEST_LIST) {
+        return [self objectManagerList];
+    }
+    if (tag == TAG_REQUEST_CANCEL_COMPLAIN) {
+        return [self objectManagerCancelComplain];
+    }
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenter class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterResult class]];
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterList class]];
-    [listMapping addAttributeMappingsFromArray:@[API_RESOLUTION_READ_STATUS_KEY]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY,
-                                                        }];
-    RKObjectMapping *resolutionDetailMapping = [RKObjectMapping mappingForClass:[ResolutionDetail class]];
-    
-    RKObjectMapping *resolutionLastMapping = [_mapping resolutionLastMapping];
-    RKObjectMapping *resolutionOrderMapping = [_mapping resolutionOrderMapping];
-    RKObjectMapping *resolutionByMapping = [_mapping resolutionByMapping];
-    RKObjectMapping *resolutionShopMapping = [_mapping resolutionShopMapping];
-    RKObjectMapping *resolutionCustomerMapping = [_mapping resolutionCustomerMapping];
-    RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *listRel =[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                toKeyPath:kTKPD_APILISTKEY
-                                                                              withMapping:listMapping];
-    
-    RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
-                                                                                   toKeyPath:kTKPD_APIPAGINGKEY
-                                                                                 withMapping:pagingMapping];
-    
-    RKRelationshipMapping *resolutionDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DETAIL_KEY
-                                                                                              toKeyPath:API_RESOLUTION_DETAIL_KEY
-                                                                                            withMapping:resolutionDetailMapping];
-    
-    RKRelationshipMapping *resolutionLastRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_LAST_KEY
-                                                                                      toKeyPath:API_RESOLUTION_LAST_KEY
-                                                                                    withMapping:resolutionLastMapping];
-    
-    RKRelationshipMapping *resolutionOrderRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ORDER_KEY
-                                                                                          toKeyPath:API_RESOLUTION_ORDER_KEY
-                                                                                        withMapping:resolutionOrderMapping];
-    
-    RKRelationshipMapping *resolutionByRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_BY_KEY
-                                                                                          toKeyPath:API_RESOLUTION_BY_KEY
-                                                                                        withMapping:resolutionByMapping];
-    
-    RKRelationshipMapping *resolutionShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_SHOP_KEY
-                                                                                      toKeyPath:API_RESOLUTION_SHOP_KEY
-                                                                                    withMapping:resolutionShopMapping];
-    
-    RKRelationshipMapping *resolutionCustomerRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CUSTOMER_KEY
-                                                                                          toKeyPath:API_RESOLUTION_CUSTOMER_KEY
-                                                                                        withMapping:resolutionCustomerMapping];
-    
-    RKRelationshipMapping *resolutionDisputeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DISPUTE_KEY
-                                                                                          toKeyPath:API_RESOLUTION_DISPUTE_KEY
-                                                                                        withMapping:resolutionDisputeMapping];
-    
-    
-    [statusMapping addPropertyMapping:resultRel];
-    
-    [resultMapping addPropertyMapping:listRel];
-    [resultMapping addPropertyMapping:pagingRel];
-    
-    [listMapping addPropertyMapping:resolutionDetailRel];
-    
-    [resolutionDetailMapping addPropertyMapping:resolutionLastRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionOrderRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionByRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionShopRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionCustomerRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionDisputeRel];
- 
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_INBOX_RESOLUTION_CENTER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
-    return _objectManager;
+    return nil;
 }
+
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-    NSString *filterRead = ARRAY_FILTER_UNREAD[_filterReadIndex];
-    NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
-    
-    NSString *status = @"";
-    NSString *unread = @"";
-    NSString *sortType = @"";
-    
-    if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[0]])
-        status = @"0";
-    else if([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[1]])
-        status = @"1";
-    else if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[2]])
-        status = @"2";
-    
-    if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[0]])
-        unread = @"0";
-    else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[1]])
-        unread = @"1";
-    else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
-        unread = @"2";
-    
-    if ([filterSort isEqualToString:ARRAY_FILTER_SORT[0]])
-        sortType = @"2";
-    else if([filterSort isEqualToString:ARRAY_FILTER_SORT[1]])
-        sortType = @"1";
-    
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_RESOLUTION_CENTER,
-                            API_COMPLAIN_TYPE_KEY : _isMyComplain?@(0):@(1),
-                            API_STATUS_KEY : status,
-                            API_UNREAD_KEY : unread,
-                            API_SORT_KEY :sortType,
-                            API_PAGE_KEY :@(_page)
-                            };
-    return param;
+    if (tag == TAG_REQUEST_LIST) {
+        NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
+        NSString *filterRead = ARRAY_FILTER_UNREAD[_filterReadIndex];
+        NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
+        
+        NSString *status = @"";
+        NSString *unread = @"";
+        NSString *sortType = @"";
+        
+        if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[0]])
+            status = @"0";
+        else if([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[1]])
+            status = @"1";
+        else if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[2]])
+            status = @"2";
+        
+        if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[0]])
+            unread = @"0";
+        else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[1]])
+            unread = @"1";
+        else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
+            unread = @"2";
+        
+        if ([filterSort isEqualToString:ARRAY_FILTER_SORT[0]])
+            sortType = @"2";
+        else if([filterSort isEqualToString:ARRAY_FILTER_SORT[1]])
+            sortType = @"1";
+        
+        NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_RESOLUTION_CENTER,
+                                API_COMPLAIN_TYPE_KEY : _isMyComplain?@(0):@(1),
+                                API_STATUS_KEY : status,
+                                API_UNREAD_KEY : unread,
+                                API_SORT_KEY :sortType,
+                                API_PAGE_KEY :@(_page)
+                                };
+        return param;
+    }
+    if (tag == TAG_REQUEST_CANCEL_COMPLAIN) {
+        InboxResolutionCenterList *resolution = [_objectCancelComplain objectForKey:DATA_SELECTED_RESOLUTION_KEY];
+        NSDictionary* param = @{API_ACTION_KEY : ACTION_CANCEL_RESOLUTION,
+                                API_RESOLUTION_ID_KEY : resolution.resolution_detail.resolution_last.last_resolution_id?:@""
+                                };
+        return param;
+    }
+    return nil;
 }
 
 -(NSString *)getPath:(int)tag
 {
-    return API_PATH_INBOX_RESOLUTION_CENTER;
+    if (tag == TAG_REQUEST_LIST) {
+        return API_PATH_INBOX_RESOLUTION_CENTER;
+    }
+    if (tag == TAG_REQUEST_CANCEL_COMPLAIN) {
+        return API_PATH_ACTION_RESOLUTION_CENTER;
+    }
+    return nil;
 }
 
 -(NSString *)getRequestStatus:(id)result withTag:(int)tag
 {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
-    InboxResolutionCenter *order = stat;
     
-    return order.status;
+    if (tag == TAG_REQUEST_LIST)
+    {
+        InboxResolutionCenter *order = stat;
+        return order.status;
+    }
+    if (tag == TAG_REQUEST_CANCEL_COMPLAIN) {
+        ResolutionAction *resolution = stat;
+        return resolution.status;
+    }
+    return nil;
 }
 
 -(void)actionBeforeRequest:(int)tag
 {
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
+    if (tag == TAG_REQUEST_LIST) {
+        _tableView.tableFooterView = _footer;
+        [_act startAnimating];
+    }
+    
+    if (tag == TAG_REQUEST_CANCEL_COMPLAIN)
+    {
+        InboxResolutionCenterList *resolution = [_objectCancelComplain objectForKey:DATA_SELECTED_RESOLUTION_KEY];
+        [_list removeObject:resolution];
+        [_tableView reloadData];
+        [_allObjectCancelComplain addObject:_objectCancelComplain];
+    }
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    if (tag == TAG_REQUEST_LIST) {
+        [self requestSuccessList:successResult withOperation:operation];
+    }
+    if (tag == TAG_REQUEST_CANCEL_COMPLAIN) {
+        [self requestSuccessCancelComplain:successResult withOperation:operation];
+    }
+
+}
+
+-(void)requestSuccessList:(id)successResult withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
@@ -541,8 +524,8 @@
         if(order.message_error)
         {
             NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+            [alert show];
         }
         else{
             if (_page == 1) {
@@ -583,10 +566,47 @@
     [_act stopAnimating];
 }
 
+-(void)requestSuccessCancelComplain:(id)successResult withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    id stat = [result objectForKey:@""];
+    ResolutionAction *resolution = stat;
+    BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        if(resolution.message_error)
+        {
+            [self requestFailureCancelComplain:_objectCancelComplain];
+        }
+        else if (resolution.result.is_success == 1) {
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Anda telah berhasil membatalkan komplain."] delegate:self];
+            [alert show];
+            [_allObjectCancelComplain removeObject:_objectCancelComplain];
+        }
+        else
+        {
+            [self requestFailureCancelComplain:_objectCancelComplain];
+        }
+    }
+    else
+    {
+        [self requestFailureCancelComplain:_objectCancelComplain];
+    }
+    
+    [self requestProcessCancelComplain];
+}
+
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    [_refreshControl endRefreshing];
-    [_act stopAnimating];
+    if (tag == TAG_REQUEST_LIST) {
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
+    }
+    if (tag == TAG_REQUEST_CANCEL_COMPLAIN) {
+        [self requestFailureCancelComplain:_objectCancelComplain];
+        [self requestProcessCancelComplain];
+    }
+
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -595,16 +615,122 @@
     [_act stopAnimating];
 }
 
-#pragma mark - Request Cancel Complain
--(void)cancelRequestCancelComplain
+-(void)requestFailureCancelComplain:(NSDictionary*)object
 {
-    [_requestCancelComplain cancel];
-    //_requestCancelComplain = nil;
-    [_objectManagerCancelComplain.operationQueue cancelAllOperations];
-    _objectManagerCancelComplain = nil;
+    InboxResolutionCenterList *resolution = [object objectForKey:DATA_SELECTED_RESOLUTION_KEY];
+    NSIndexPath *indexPathResolution = [object objectForKey:DATA_SELECTED_INDEXPATH_RESOLUTION_KEY];
+    [_list insertObject:resolution atIndex:indexPathResolution.row];
+    [_allObjectCancelComplain removeObject:object];
+    [_tableView reloadData];
 }
 
--(void)configureRestKitCancelComplain
+-(void)requestProcessCancelComplain
+{
+    if (_allObjectCancelComplain.count>0) {
+        _objectCancelComplain = [_allObjectCancelComplain firstObject];
+        [_networkManagerCancelComplain doRequest];
+    }
+}
+
+#pragma mark - Object Manager
+
+-(RKObjectManager*)objectManagerList
+{
+    _objectManager = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenter class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterResult class]];
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterList class]];
+    [listMapping addAttributeMappingsFromArray:@[API_RESOLUTION_READ_STATUS_KEY]];
+    
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY,
+                                                        }];
+    RKObjectMapping *resolutionDetailMapping = [RKObjectMapping mappingForClass:[ResolutionDetail class]];
+    
+    RKObjectMapping *resolutionLastMapping = [_mapping resolutionLastMapping];
+    RKObjectMapping *resolutionOrderMapping = [_mapping resolutionOrderMapping];
+    RKObjectMapping *resolutionByMapping = [_mapping resolutionByMapping];
+    RKObjectMapping *resolutionShopMapping = [_mapping resolutionShopMapping];
+    RKObjectMapping *resolutionCustomerMapping = [_mapping resolutionCustomerMapping];
+    RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
+    
+    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                   toKeyPath:kTKPD_APIRESULTKEY
+                                                                                 withMapping:resultMapping];
+    
+    RKRelationshipMapping *listRel =[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
+                                                                                toKeyPath:kTKPD_APILISTKEY
+                                                                              withMapping:listMapping];
+    
+    RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                   toKeyPath:kTKPD_APIPAGINGKEY
+                                                                                 withMapping:pagingMapping];
+    
+    RKRelationshipMapping *resolutionDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DETAIL_KEY
+                                                                                             toKeyPath:API_RESOLUTION_DETAIL_KEY
+                                                                                           withMapping:resolutionDetailMapping];
+    
+    RKRelationshipMapping *resolutionLastRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_LAST_KEY
+                                                                                           toKeyPath:API_RESOLUTION_LAST_KEY
+                                                                                         withMapping:resolutionLastMapping];
+    
+    RKRelationshipMapping *resolutionOrderRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ORDER_KEY
+                                                                                            toKeyPath:API_RESOLUTION_ORDER_KEY
+                                                                                          withMapping:resolutionOrderMapping];
+    
+    RKRelationshipMapping *resolutionByRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_BY_KEY
+                                                                                        toKeyPath:API_RESOLUTION_BY_KEY
+                                                                                      withMapping:resolutionByMapping];
+    
+    RKRelationshipMapping *resolutionShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_SHOP_KEY
+                                                                                           toKeyPath:API_RESOLUTION_SHOP_KEY
+                                                                                         withMapping:resolutionShopMapping];
+    
+    RKRelationshipMapping *resolutionCustomerRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CUSTOMER_KEY
+                                                                                              toKeyPath:API_RESOLUTION_CUSTOMER_KEY
+                                                                                            withMapping:resolutionCustomerMapping];
+    
+    RKRelationshipMapping *resolutionDisputeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DISPUTE_KEY
+                                                                                              toKeyPath:API_RESOLUTION_DISPUTE_KEY
+                                                                                            withMapping:resolutionDisputeMapping];
+    
+    
+    [statusMapping addPropertyMapping:resultRel];
+    
+    [resultMapping addPropertyMapping:listRel];
+    [resultMapping addPropertyMapping:pagingRel];
+    
+    [listMapping addPropertyMapping:resolutionDetailRel];
+    
+    [resolutionDetailMapping addPropertyMapping:resolutionLastRel];
+    [resolutionDetailMapping addPropertyMapping:resolutionOrderRel];
+    [resolutionDetailMapping addPropertyMapping:resolutionByRel];
+    [resolutionDetailMapping addPropertyMapping:resolutionShopRel];
+    [resolutionDetailMapping addPropertyMapping:resolutionCustomerRel];
+    [resolutionDetailMapping addPropertyMapping:resolutionDisputeRel];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:API_PATH_INBOX_RESOLUTION_CENTER
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManager addResponseDescriptor:responseDescriptor];
+    
+    return _objectManager;
+}
+
+
+-(RKObjectManager*)objectManagerCancelComplain
+//-(void)configureRestKitCancelComplain
 {
     _objectManagerCancelComplain = [RKObjectManager sharedClient];
     
@@ -634,116 +760,21 @@
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectManagerCancelComplain addResponseDescriptor:responseDescriptor];
-}
-
--(void)requestCancelComplain:(NSDictionary *)object
-{
-    if (_requestCancelComplain.isExecuting) return;
     
-    InboxResolutionCenterList *resolution = [object objectForKey:DATA_SELECTED_RESOLUTION_KEY];
-    [_list removeObject:resolution];
-    [_tableView reloadData];
-    [_objectCancelComplain addObject:object];
-    
-    NSTimer *timer;
-    
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_CANCEL_RESOLUTION,
-                            API_RESOLUTION_ID_KEY : resolution.resolution_detail.resolution_last.last_resolution_id?:@"",
-                            };
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-//    
-//    _requestCancelComplain = [_objectManagerCancelComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-//#else
-    _requestCancelComplain = [_objectManagerCancelComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-//#endif
-    
-    [_requestCancelComplain setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessCancelComplain:object withOperation:operation withMappingResult:mappingResult];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureCancelComplain:object withErrorMessage:@[error.localizedDescription]];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestCancelComplain];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessCancelComplain:(NSDictionary*)object withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
-{
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    ResolutionAction *resolution = stat;
-    BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if(resolution.message_error)
-        {
-            [self requestFailureCancelComplain:object withErrorMessage:resolution.message_error];
-        }
-        else if (resolution.result.is_success == 1) {
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
-            [alert show];
-            [_objectCancelComplain removeObject:object];
-        }
-        else
-        {
-            [self requestFailureCancelComplain:object withErrorMessage:@[@"Error"]];
-        }
-    }
-    else
-    {
-        [self requestFailureCancelComplain:object withErrorMessage:@[resolution.status]];
-    }
-    
-    [self requestProcessCancelComplain];
-}
-
--(void)requestFailureCancelComplain:(NSDictionary*)object withErrorMessage:(NSArray*)error
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:error delegate:self];
-    [alert show];
-        
-    InboxResolutionCenterList *resolution = [object objectForKey:DATA_SELECTED_RESOLUTION_KEY];
-    NSIndexPath *indexPathResolution = [object objectForKey:DATA_SELECTED_INDEXPATH_RESOLUTION_KEY];
-    [_list insertObject:resolution atIndex:indexPathResolution.row];
-    [_objectCancelComplain removeObject:object];
-    [_tableView reloadData];
-}
-
--(void)requestProcessCancelComplain
-{
-    if (_objectCancelComplain.count>0) {
-        [self configureRestKitCancelComplain];
-        [self requestCancelComplain:[_objectCancelComplain firstObject]];
-    }
-}
-
--(void)requestTimeoutCancelComplain
-{
-    //[self cancelRequestCancelComplain];
+    return _objectManagerCancelComplain;
 }
 
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
-    _networkManager = nil;
+    _networkManagerCancelComplain.delegate = nil;
+    _tableView.dataSource = nil;
+    _tableView.delegate = nil;
 }
 
 

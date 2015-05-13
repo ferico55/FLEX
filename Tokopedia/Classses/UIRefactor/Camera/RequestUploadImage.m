@@ -12,7 +12,7 @@
 
 #import "detail.h"
 #import "camera.h"
-
+#import "Upload.h"
 
 @implementation RequestUploadImage
 {
@@ -45,15 +45,18 @@
                                                         @"pic_obj" : @"pic_obj"
                                                         }];
     
+
+    RKObjectMapping *subResultMapping = [RKObjectMapping mappingForClass:[Upload class]];
+    [subResultMapping addAttributeMappingsFromDictionary:@{kTKPD_SRC:kTKPD_SRC}];
+    
+    
     // Relationship Mapping
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIUPLOADKEY toKeyPath:kTKPD_APIUPLOADKEY withMapping:subResultMapping]];
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectManagerUploadPhoto addResponseDescriptor:responseDescriptor];
-    
-    //[_objectManagerUploadPhoto setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
-    //[_objectManagerUploadPhoto setRequestSerializationMIMEType:RKMIMETypeJSON];
 }
 
 
@@ -75,22 +78,14 @@
     NSInteger userID = _generateHost.result.generated_host.user_id;
     
     NSDictionary *param;
-    
-    if([_action isEqualToString:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY]) {
-        param = @{
-                  kTKPDDETAIL_APIACTIONKEY : _action,
-                  kTKPD_USERIDKEY : @(userID)
-                  };
-    }
-    else {
-        param = @{ kTKPDDETAIL_APIACTIONKEY: _action,
-                             kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
-                             kTKPD_USERIDKEY : @(userID),
-                             @"product_id" : _productID?:@"",
-                             @"new_add" : @(1)
-                             //@"is_temp" :@(1)
-                             };
-    }
+
+    param = @{ kTKPDDETAIL_APIACTIONKEY: _action,
+                         kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
+                         kTKPD_USERIDKEY : @(userID),
+                         @"product_id" : _productID?:@"",
+                         @"new_add" : @(1)
+                         //@"is_temp" :@(1)
+                         };
     
     
     _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
@@ -146,7 +141,7 @@
                        [self showErrorMessages:array?:@[]];
                        [_delegate failedUploadObject:_imageObject];
                    }
-                   else if (images.result.file_path) {
+                   else if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)) {
                        [_delegate successUploadObject:_imageObject withMappingResult:images];
                    }
                    else

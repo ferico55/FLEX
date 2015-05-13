@@ -7,7 +7,9 @@
 //
 
 #import "ReportViewController.h"
+#import "ProductTalkViewController.h"
 #import "string.h"
+#import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "GeneralAction.h"
 
@@ -98,8 +100,14 @@
 - (IBAction)tapBar:(UIBarButtonItem*)barButton {
     switch (barButton.tag) {
         case 2 : {
-            [self configureRestkit];
-            [self sendReport];
+            if([_messageTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0) {
+                StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFillDescLaporan] delegate:self];
+                [stickyAlertView show];
+            }
+            else {
+                [self configureRestkit];
+                [self sendReport];
+            }
             break;
         }
         default:
@@ -140,6 +148,10 @@
     [param addEntriesFromDictionary:[_delegate getParameter]];
     [param setObject:_messageTextView.text forKey:@"text_message"];
     
+    if([_delegate isMemberOfClass:[ProductTalkViewController class]]) {
+        [param setObject:[((ProductTalkViewController *) _delegate).data objectForKey:kTKPD_PRODUCTIDKEY] forKey:kTKPD_PRODUCTIDKEY];
+    }
+    
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_delegate getPath] parameters:[param encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -151,6 +163,8 @@
         [_timer invalidate];
         _timer = nil;
         [self requestFail:error];
+        StickyAlertView *stickyError = [[StickyAlertView alloc] initWithErrorMessages:@[CStringErrorKirimLaporan] delegate:self];
+        [stickyError show];
     }];
     
     [_operationQueue addOperation:_request];
@@ -183,15 +197,14 @@
                 if(generalaction.message_error)
                 {
                     NSArray *array = generalaction.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 } else {
                     //success
                     if ([generalaction.result.is_success isEqualToString:@"1"]) {
                         NSArray *array = generalaction.message_status?:[[NSArray alloc] initWithObjects:SUCCESS_REPORT_TALK, nil];
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                        [stickyAlertView show];
                         UINavigationController *nav = _delegate;
                         [nav.navigationController popViewControllerAnimated:YES];
                     }

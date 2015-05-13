@@ -155,8 +155,8 @@
                         [messages addObject:@"Catatan harus diisi."];
                     }
                     if (messages.count>0) {
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages ,@"messages", nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                        [alert show];
                     }
     
                 }

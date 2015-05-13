@@ -19,9 +19,10 @@
 
 @interface CategoryViewController ()
 <
-    CategoryViewCellDelegate,
     NotificationManagerDelegate,
-    UITableViewDelegate
+    UITableViewDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegate
 >
 {
     NSMutableArray *_category;
@@ -29,6 +30,8 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) IBOutlet UIView *cellView;
 
 
 @end
@@ -63,6 +66,27 @@
         [_category addObject:@{kTKPDCATEGORY_DATATITLEKEY : titles[i], kTKPDCATEGORY_DATADIDKEY : dataids[i],kTKPDCATEGORY_DATAICONKEY:imagename}];
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
+
+    UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
+
+
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    if (screenWidth == 414) {
+        return CGSizeMake(103, 128);
+    }
+    else
+        return CGSizeMake(106, 128);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -78,73 +102,53 @@
     
     [self initNotificationManager];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadNotification)
-                                                 name:@"reloadNotification"
-                                               object:nil];
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 }
 
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    
-    // Force your tableview margins (this may be a bad idea)
-    if ([self.table respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.table setSeparatorInset:UIEdgeInsetsZero];
-    }
- 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-    if ([self.table respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.table setLayoutMargins:UIEdgeInsetsZero];
-    }
-#endif
 }
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
 #pragma mark - Table View Data Source
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    //TODO: change to more flexible counting
-    return (_category.count+2)/3;
+- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return _category.count;
+
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellid = @"CategoryViewCellIdentifier";
+    CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
     
-    UITableViewCell* cell = nil;
-    NSString *cellid = kTKPDCATEGORYVIEWCELL_IDENTIFIER;
+    NSString *title =[_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
+    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragrahStyle setLineSpacing:6];
+    [paragrahStyle setAlignment:NSTextAlignmentCenter];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
     
-    cell = (CategoryViewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [CategoryViewCell newcell];
-        ((CategoryViewCell*)cell).delegate = self;
-    }
-
-    [((CategoryViewCell*)cell) reset];
+    cell.categoryLabel.attributedText = attributedString;
     
-    /** Flexible view count **/ //TODO::sederhanakan
-    NSInteger countdata;
-    if (_category.count > indexPath.row) {
-        if (_category.count % 3 == 0 || indexPath.row != ([_category count] - 1) / 3) {
-            countdata = 3;
-        }
-        else {
-            countdata = [_category count] % 3;
-        }
-        
-        NSArray *tempArray = [_category objectsAtIndexes:[[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(indexPath.row* 3, countdata)]];
-        ((CategoryViewCell*)cell).data = @{kTKPDCATEGORY_DATAINDEXPATHKEY: indexPath, kTKPDCATEGORY_DATACOLUMNSKEY: tempArray};
-    }
+    NSString *icon = [_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATAICONKEY];
+    cell.icon.image = [UIImage imageNamed:icon];
+    
+    cell.backgroundColor = [UIColor whiteColor];
+    
 	return cell;
 }
 
@@ -154,32 +158,11 @@
     return footerView;
 }
 
-#pragma mark - Table View Delegate
-
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Remove seperator inset
-    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-        [cell setSeparatorInset:UIEdgeInsetsZero];
-    }
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-    // Prevent the cell from inheriting the Table View's margin settings
-    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
-        [cell setPreservesSuperviewLayoutMargins:NO];
-    }
-    
-    // Explictly set your cell's layout margins
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        [cell setLayoutMargins:UIEdgeInsetsZero];
-    }
-#endif
-}
 
 #pragma mark - Delegate Cell
--(void)CategoryViewCellDelegateCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexpath.section+3*(indexpath.row);
+    NSInteger index =  indexPath.row;
     
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",

@@ -53,6 +53,8 @@
     __weak RKObjectManager *_objectmanager;
     
     NSString *_persistToken;
+    
+    UIAlertView *_logingOutAlertView;
 }
 
 @end
@@ -164,6 +166,7 @@ typedef enum TagRequest {
     _auth = [auth mutableCopy];
     BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     _tabBarController = [UITabBarController new];
+    _tabBarController.delegate = self;
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARTITLECOLOR }
                                              forState:UIControlStateNormal];
@@ -448,6 +451,11 @@ typedef enum TagRequest {
 
 - (void)applicationLogin:(NSNotification*)notification
 {
+    if (_logingOutAlertView) {
+        [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        _logingOutAlertView = nil;
+    }
+    
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     
@@ -523,6 +531,14 @@ typedef enum TagRequest {
 }
 
 - (void)doApplicationLogout {
+    
+    _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Logging out"
+                                                     message:nil
+                                                    delegate:self
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:nil, nil];
+    [_logingOutAlertView show];
+    
     [Helpshift logout];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
@@ -566,6 +582,16 @@ typedef enum TagRequest {
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    static UIViewController *previousController = nil;
+    if (previousController == viewController) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidTappedTapBar object:nil userInfo:nil];
+    }
+    previousController = viewController;
+
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    return YES;
 }
 
 -(void)redirectViewController:(id)viewController {
@@ -662,8 +688,6 @@ typedef enum TagRequest {
 
 
 - (void)redirectNotification:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    
     _tabBarController.selectedIndex = 0;
     for(UIViewController *viewController in _tabBarController.viewControllers) {
         if([viewController isKindOfClass:[UINavigationController class]]) {

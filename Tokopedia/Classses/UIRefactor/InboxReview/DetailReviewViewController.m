@@ -157,18 +157,17 @@
         [self hideInputView];
         _reviewCreateTimeLabel.text = _review.review_response.response_create_time;
         
+        NSString *reviewMessage = _review.review_response.response_message;
+        NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 3.0;
+        [attributes setObject:style forKey:NSParagraphStyleAttributeName];
         
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
-                                     NSParagraphStyleAttributeName  : style
-                                     };
+        UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+        [attributes setObject:font forKey:NSFontAttributeName];
         
-        NSString *reviewMessage = _review.review_response.response_message;
-        _reviewRespondLabel.attributedText = [[NSAttributedString alloc] initWithString:reviewMessage
-                                                                       attributes:attributes];
-        
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:reviewMessage] attributes:attributes];
+        _reviewRespondLabel.attributedText = attributedString;
         _reviewRespondLabel.numberOfLines = 0;
         [_reviewRespondLabel sizeToFit];
     }
@@ -556,9 +555,8 @@
                 {
                     [self cancelDeleteRow];
                     NSArray *array = generalaction.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 } else {
                     NSDictionary *userinfo;
                     [_talkInputView setHidden:NO];

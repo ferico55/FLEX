@@ -172,8 +172,8 @@
     
     if([is_success isEqualToString:kTKPD_STATUSSUCCESS]) {
         NSArray *array = [[NSArray alloc] initWithObjects:KTKPDTALK_DELIVERED, nil];
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+        [stickyAlertView show];
         
         //enable comment button talk
         NSDictionary *userinfo;
@@ -185,10 +185,9 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTalk" object:nil userInfo:userinfo];
         [self.navigationController popViewControllerAnimated:TRUE];
     } else {
-        
         NSArray *array = [[NSArray alloc] initWithObjects:KTKPDTALK_UNDELIVERED, nil];
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+        [alert show];
     }
     
 }
@@ -236,8 +235,8 @@
                 if (_request.isExecuting) return;
                 if(_talkfield.text.length < 6 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM2, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                    [alert show];
                 } else {
                     [self configureRestkit];
                     [self doProductTalkForm];

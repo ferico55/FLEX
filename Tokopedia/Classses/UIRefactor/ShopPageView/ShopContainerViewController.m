@@ -24,11 +24,10 @@
 
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
-#import "NavigationBarBlurController.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
-    BOOL _isNoData;
+    BOOL _isNoData, isDoingFavorite, isDoingMessage;
     BOOL _isRefreshView;
     
     NSInteger _requestCount;
@@ -59,7 +58,7 @@
     UIBarButtonItem *_messageBarButton;
     UserAuthentificationManager *_userManager;
     
-    NavigationBarBlurController *_blurController;
+    UIBarButtonItem *_fixedSpace;
 }
 
 @property (strong, nonatomic) ShopProductPageViewController *shopProductViewController;
@@ -111,6 +110,8 @@
     _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
 
     _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
+    _fixedSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
+    _fixedSpace.width = 15;
     
     _unfavoriteBarButton.enabled = NO;
     _favoriteBarButton.enabled = NO;
@@ -118,20 +119,6 @@
     _settingBarButton.enabled = NO;
     _addProductBarButton.enabled = NO;
     _infoBarButton.enabled = NO;
-    
-//
-//    if ([_userManager isLogin]) {
-//        if([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
-//            self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
-//        } else {
-//            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
-//        }
-//        
-//    } else {
-//        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
-//    }
-    
-    
 }
 
 - (UIBarButtonItem*)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action {
@@ -145,13 +132,15 @@
     return infoBarButton;
 }
 
-
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+//    [_blurController removeNavigationImage];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    _blurController = [[NavigationBarBlurController alloc] init];
     
     [self initNotificationCenter];
 
@@ -177,7 +166,6 @@
     
     _shopProductViewController = [ShopProductPageViewController new];
     _shopProductViewController.data = _data;
-    [_shopProductViewController setBlurController:_blurController];
     
     _shopTalkViewController = [ShopTalkPageViewController new];
     _shopTalkViewController.data = _data;
@@ -214,12 +202,6 @@
     
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [_blurController setNavigationBar:self.navigationController.navigationBar];
 }
 
 - (void)didReceiveMemoryWarning
@@ -574,20 +556,39 @@
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
                 if ([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
-                    self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
+                    self.navigationItem.rightBarButtonItems = @[_settingBarButton,_fixedSpace, _addProductBarButton,_fixedSpace, _infoBarButton];
                     _addProductBarButton.enabled = YES;
                     _settingBarButton.enabled = YES;
                 } else {
                     if(_shop.result.info.shop_already_favorited == 1) {
-                        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
+                        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton,_fixedSpace, _messageBarButton,_fixedSpace, _infoBarButton];
                         _favoriteBarButton.enabled = YES;
                         _unfavoriteBarButton.enabled = YES;
                         _messageBarButton.enabled = YES;
+                        
+                        if(isDoingFavorite) {
+                            isDoingFavorite = !isDoingFavorite;
+                        
+                            [self favoriteTap:nil];
+                        }
+                        else if(isDoingMessage) {
+                            isDoingMessage = !isDoingMessage;
+                            [self messageTap:nil];
+                        }
                     } else {
-                        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
+                        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton,_fixedSpace, _messageBarButton, _fixedSpace, _infoBarButton];
                         _messageBarButton.enabled = YES;
                         _unfavoriteBarButton.enabled = YES;
                         _favoriteBarButton.enabled = YES;
+                        
+                        if(isDoingFavorite) {
+                            isDoingFavorite = !isDoingFavorite;
+                            [self unfavoriteTap:nil];
+                        }
+                        else if(isDoingMessage) {
+                            isDoingMessage = !isDoingMessage;
+                            [self messageTap:nil];
+                        }
                     }
                 }
                 
@@ -640,7 +641,7 @@
 - (void)showNavigationShopTitle:(NSNotification *)notification
 {
     [UIView animateWithDuration:0.2 animations:^(void) {
-        self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
+        self.title = _shop.result.info.shop_name;
     } completion:^(BOOL finished) {
         
     }];
@@ -687,7 +688,7 @@
         controller.isPresentedViewController = YES;
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
-        
+        isDoingMessage = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
@@ -700,7 +701,7 @@
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
         
-        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
+        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _fixedSpace, _messageBarButton, _fixedSpace, _infoBarButton];
     }
 }
 
@@ -712,7 +713,7 @@
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
         
-        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton,_fixedSpace, _messageBarButton,_fixedSpace, _infoBarButton];
     }
     else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -726,7 +727,7 @@
         controller.isPresentedViewController = YES;
         controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
-        
+        isDoingFavorite = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }

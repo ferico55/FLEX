@@ -66,6 +66,10 @@
                                                                   action:@selector(tap:)];
     doneButton.tag = 1;
     self.navigationItem.rightBarButtonItem = doneButton;
+    if(_selectedObject == nil) {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+    
 
     if (_isPresentedViewController) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
@@ -162,6 +166,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if(! self.navigationItem.rightBarButtonItem.isEnabled) {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -188,6 +195,13 @@
 
         cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    
+    if (self.shouldPopBack) {
+        if ([self.delegate respondsToSelector:@selector(didSelectObject:senderIndexPath:)]) {
+            [self.delegate didSelectObject:_selectedObject senderIndexPath:_senderIndexPath];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
