@@ -18,5 +18,6 @@
 }
 
 @property (nonatomic, strong) NSDictionary *dictData;
+@property (nonatomic) BOOL isAnyImage;
 - (IBAction)actionTambahProduct:(id)sender;
 @end

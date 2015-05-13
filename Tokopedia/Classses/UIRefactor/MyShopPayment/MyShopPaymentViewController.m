@@ -770,10 +770,15 @@
     strFileUploaded = filePath = strPostKey = nil;
     [self isLoading:NO];
     
-    NSDictionary *tempDict = [NSDictionary dictionaryWithObjectsAndKeys:[myShopShipmentTableViewController.createShopViewController getNamaToko], kTKPD_SHOPNAMEKEY, addShop.result.shop_url, kTKPD_SHOPURL, nil];
     
+    
+    NSDictionary *tempDict = [NSDictionary dictionaryWithObjectsAndKeys:[myShopShipmentTableViewController.createShopViewController getNamaToko], kTKPD_SHOPNAMEKEY, addShop.result.shop_url, kTKPD_SHOPURL, nil];
     BerhasilBukaTokoViewController *berhasilBukaTokoViewController = [BerhasilBukaTokoViewController new];
     berhasilBukaTokoViewController.dictData = tempDict;
+    if([myShopShipmentTableViewController.createShopViewController getDictContentPhoto] != nil) {
+        berhasilBukaTokoViewController.isAnyImage = YES;
+    }
+    
     [self.navigationController pushViewController:berhasilBukaTokoViewController animated:YES];
 }
 

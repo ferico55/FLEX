@@ -34,6 +34,7 @@
 #define kTKPD_SHOPURL @"shop_url"
 #define kTKPD_SHOPISGOLD @"shop_is_gold"
 #define kTKPD_NULLCOMMENTKEY @"0"
+#define kTKPD_SHOP_AVATAR @"shop_avatar"
 
 #define DATA_PAYMENT_CONFIRMATION_COUNT_KEY @"data_payment_conf"
 #define DATA_STATUS_COUNT_KEY @"data_status"
