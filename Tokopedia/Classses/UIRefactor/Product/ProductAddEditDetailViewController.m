@@ -171,10 +171,12 @@
     _addPictureNetworkManager.delegate = self;
     _addPictureNetworkManager.isParameterNotEncrypted = YES;
     _addPictureNetworkManager.tagRequest = TAG_REQUEST_PICTURE;
+    _addPictureNetworkManager.timeInterval = 30;
     
     _submitNetworkManager = [TokopediaNetworkManager new];
     _submitNetworkManager.delegate = self;
     _submitNetworkManager.tagRequest = TAG_REQUEST_SUBMIT;
+    _submitNetworkManager.timeInterval = 30;
     
     _editNetworkManager = [TokopediaNetworkManager new];
     _editNetworkManager.delegate = self;
