@@ -5,12 +5,13 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "detail.h"
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
 #import "more.h"
 #import "TKPDSecureStorage.h"
 #import "stringrestkit.h"
-
+#import "profile.h"
 #import "Deposit.h"
 #import "DepositResult.h"
 #import "string_deposit.h"
@@ -50,18 +51,23 @@
 #import "InboxResolutionCenterTabViewController.h"
 #import "Helpshift.h"
 #import "NavigateViewController.h"
+#import "TokopediaNetworkManager.h"
 
-@interface MoreViewController () <NotificationManagerDelegate> {
+#define CTagProfileInfo 12
+
+@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
     NSOperationQueue *_operationQueue;
 
+    RKObjectManager *_objectmanager;
     __weak RKObjectManager *_depositObjectManager;
     __weak RKManagedObjectRequestOperation *_depositRequest;
     NSInteger _depositRequestCount;
     BOOL _isNoDataDeposit, hasLoadViewWillAppear;
     NotificationManager *_notifManager;
+    TokopediaNetworkManager *tokopediaNetworkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -75,7 +81,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *createShopButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSaldo;
-
 @property (weak, nonatomic) IBOutlet UITableViewCell *shopCell;
 
 @end
@@ -103,54 +108,7 @@
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"user_image"]]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [_profilePictureImageView setImageWithURLRequest:request
-                          placeholderImage:[UIImage imageNamed:@"nil"]
-                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                       //NSLOG(@"thumb: %@", thumb);
-                                       [_profilePictureImageView setImage:image];
-#pragma clang diagnostic pop
-                                   } failure: nil];
-    
-    if([_auth objectForKey:@"shop_id"]) {
-        if([_auth objectForKey:@"shop_name"])
-            _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
-        
-        NSString *strAvatar = [[_auth objectForKey:@"shop_avatar"] isMemberOfClass:[NSString class]]? [_auth objectForKey:@"shop_avatar"] : [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_avatar"]];        
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strAvatar]
-                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        
-        [_shopImageView setImageWithURLRequest:request
-                              placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
-                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                           //NSLOG(@"thumb: %@", thumb);
-                                           [_shopImageView setImage:image];
-#pragma clang diagnostic pop
-                                       } failure: nil];
-        
-        if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
-            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-                                         _shopIsGoldLabel.frame.origin.y,
-                                         22, 22);
-            [_shopCell addSubview:imageView];
-            _shopIsGoldLabel.text = @"        Gold Merchant";
-        } else {
-            _shopIsGoldLabel.text = @"Regular Merchant";
-            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
-            shopIsGoldLabelFrame.origin.x = 83;
-            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
-            _shopIsGoldLabel.text = @"";
-        }
-    }    
+    [self setShopImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -205,7 +163,6 @@
 //        _loadingSaldo.hidden = YES;
 //        [_loadingSaldo stopAnimating];
 //    }
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -229,7 +186,196 @@
 }
 
 
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    if(tag == CTagProfileInfo) {
+        return @{
+                 kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEINFOKEY,
+                 kTKPDPROFILE_APIPROFILEUSERIDKEY : @([[_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
+                 };
+    }
+    
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag
+{
+    if(tag == CTagProfileInfo) {
+        return kTKPDPROFILE_PEOPLEAPIPATH;
+    }
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag
+{
+    if(tag == CTagProfileInfo) {
+        // initialize RestKit
+        _objectmanager =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileInfo class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileInfoResult class]];
+        
+        RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
+        [shopinfoMapping addAttributeMappingsFromDictionary:@{
+                                                              kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY
+                                                              }];
+                // Relationship Mapping
+        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                      toKeyPath:kTKPD_APIRESULTKEY
+                                                                                    withMapping:resultMapping]];
+        
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY
+                                                                                      toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY
+                                                                                    withMapping:shopinfoMapping]];
+        
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                method:RKRequestMethodPOST
+                                                                                           pathPattern:kTKPDPROFILE_PEOPLEAPIPATH
+                                                                                               keyPath:@""
+                                                                                           statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectmanager addResponseDescriptor:responseDescriptor];
+        
+        return _objectmanager;
+    }
+    
+    return nil;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    if(tag == CTagProfileInfo) {
+        ProfileInfo *profileInfo = [((RKMappingResult *) result).dictionary objectForKey:@""];
+        return profileInfo.status;
+    }
+    
+    return nil;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    if(tag == CTagProfileInfo) {
+        ProfileInfo *profileInfo = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+        if(profileInfo.result.shop_info!=nil && profileInfo.result.shop_info.shop_avatar!=nil && ![profileInfo.result.shop_info.shop_avatar isEqualToString:@""]) {
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            if(secureStorage != nil) {
+                [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:profileInfo.result.shop_info.shop_avatar]
+                                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                          timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                
+                [_shopImageView setImageWithURLRequest:request
+                                      placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
+                                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                                   //NSLOG(@"thumb: %@", thumb);
+                                                   [_shopImageView setImage:image];
+#pragma clang diagnostic pop
+                                               } failure: nil];
+            }
+        }
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+}
+
+- (void)actionBeforeRequest:(int)tag
+{
+}
+
+
+- (void)actionRequestAsync:(int)tag
+{
+
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+
+}
+
+
 #pragma mark - Method
+- (void)setShopImage {
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"user_image"]]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_profilePictureImageView setImageWithURLRequest:request
+                                    placeholderImage:[UIImage imageNamed:@"nil"]
+                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                                 //NSLOG(@"thumb: %@", thumb);
+                                                 [_profilePictureImageView setImage:image];
+#pragma clang diagnostic pop
+                                             } failure: nil];
+    
+    if([_auth objectForKey:@"shop_id"]) {
+        if([_auth objectForKey:@"shop_name"])
+            _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
+        
+        NSString *strAvatar = [[_auth objectForKey:@"shop_avatar"] isMemberOfClass:[NSString class]]? [_auth objectForKey:@"shop_avatar"] : [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_avatar"]];
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strAvatar]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        [_shopImageView setImageWithURLRequest:request
+                              placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
+                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                           //NSLOG(@"thumb: %@", thumb);
+                                           [_shopImageView setImage:image];
+#pragma clang diagnostic pop
+                                       } failure: nil];
+        
+        if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
+            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
+                                         _shopIsGoldLabel.frame.origin.y,
+                                         22, 22);
+            [_shopCell addSubview:imageView];
+            _shopIsGoldLabel.text = @"        Gold Merchant";
+        } else {
+            _shopIsGoldLabel.text = @"Regular Merchant";
+            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
+            shopIsGoldLabelFrame.origin.x = 83;
+            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            _shopIsGoldLabel.text = @"";
+        }
+    }
+}
+
+
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag
+{
+    if(tag == CTagProfileInfo) {
+        if(tokopediaNetworkManager == nil) {
+            tokopediaNetworkManager = [TokopediaNetworkManager new];
+            tokopediaNetworkManager.tagRequest = CTagProfileInfo;
+            tokopediaNetworkManager.delegate = self;
+        }
+        
+        return tokopediaNetworkManager;
+    }
+
+    return nil;
+}
+
+- (void)updateImageURL {
+    [[self getNetworkManager:CTagProfileInfo] doRequest];
+}
+
 - (void)updateKeyChain
 {
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];

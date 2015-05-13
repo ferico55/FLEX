@@ -9,8 +9,10 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-//#define kTkpdBaseURLString @"http://www.tokopedia.dev/ws"
+//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+//#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -35,6 +37,7 @@
 #define kTKPD_SHOPURL @"shop_url"
 #define kTKPD_SHOPISGOLD @"shop_is_gold"
 #define kTKPD_NULLCOMMENTKEY @"0"
+#define kTKPD_SHOP_AVATAR @"shop_avatar"
 
 #define DATA_PAYMENT_CONFIRMATION_COUNT_KEY @"data_payment_conf"
 #define DATA_STATUS_COUNT_KEY @"data_status"
@@ -107,8 +110,8 @@ typedef enum {
 
 #define kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY @"setetalase"
 #define kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY @"setuserinfo"
-#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
-#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
+//#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
+//#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
 
 #define kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY @"setsegmentcontrol"
 #define kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY @"setDepartmentID"

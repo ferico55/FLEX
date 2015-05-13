@@ -15,7 +15,7 @@
 #import "ShopSettingViewController.h"
 #import "SendMessageViewController.h"
 #import "ProductAddEditViewController.h"
-
+#import "string_more.h"
 #import "LoginViewController.h"
 
 
