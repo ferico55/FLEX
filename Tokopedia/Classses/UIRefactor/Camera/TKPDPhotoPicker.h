@@ -18,7 +18,7 @@
 
 @property (strong, nonatomic) NSDictionary *data;
 @property (weak, nonatomic, readonly) UIViewController *parentViewController;
-
+@property NSInteger tag;
 @property (weak, nonatomic) id <TKPDPhotoPickerDelegate> delegate;
 
 @end

@@ -18,19 +18,31 @@
 #import "UploadImage.h"
 #import "GenerateHost.h"
 #import "camera.h"
-#import "CameraController.h"
 
 #import "GeneralTableViewController.h"
 #import "UserAuthentificationManager.h"
 #import "StickyAlertView.h"
 
 #import "requestGenerateHost.h"
+#import "TKPDPhotoPicker.h"
 
 #define TITLE_APPEAL @"Naik Banding"
 #define TITLE_CHANGE_SOLUTION @"Ubah Solusi"
 #define TITLE_OPEN_COMPLAIN @"Buka Komplain"
 
-@interface InboxResolutionCenterOpenViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, GeneralTableViewControllerDelegate, CameraControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, GenerateHostDelegate, RequestUploadImageDelegate, SyncroDelegate>
+@interface InboxResolutionCenterOpenViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UITextFieldDelegate,
+    UITextViewDelegate,
+    GeneralTableViewControllerDelegate,
+    InboxResolutionCenterOpenViewControllerDelegate,
+    GenerateHostDelegate,
+    RequestUploadImageDelegate,
+    SyncroDelegate,
+    TKPDPhotoPickerDelegate
+>
 {
     BOOL _isNodata;
     NSString *_URINext;
@@ -51,7 +63,10 @@
     NSURLRequest *_requestActionUploadPhoto;
     
     BOOL _isFinishUploadingImage;
+
+    TKPDPhotoPicker *_photoPicker;
 }
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewUploadPhoto;
 @property (weak, nonatomic) IBOutlet UIView *contentViewUploadPhoto;
 @property (weak, nonatomic) IBOutlet UILabel *fromTotalDescription;
@@ -204,35 +219,31 @@
 
 #pragma mark - View Action
 
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
 {
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:userinfo forKey:DATA_SELECTED_PHOTO_KEY];
     UIImageView *imageView;
     for (UIImageView *image in _uploadedImages) {
-        if (image.tag == controller.tag)
-        {
+        if (image.tag == picker.tag) {
             imageView = image;
         }
     }
     
-    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    
-    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    NSDictionary *object = @{
+                                DATA_SELECTED_PHOTO_KEY : userInfo,
+                                DATA_SELECTED_IMAGE_VIEW_KEY : imageView
+                            };
+
+    UIImage *image = [[userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
     [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     for (UIButton *button in _uploadButtons) {
-        if (button.tag == controller.tag) {
+        if (button.tag == picker.tag) {
             button.enabled = NO;
             button.hidden = YES;
-        }
-        if (button.tag == controller.tag+1)
-        {
+        } else if (button.tag == picker.tag+1) {
             button.enabled = YES;
             button.hidden = NO;
         }
@@ -244,6 +255,47 @@
     
     [self actionUploadImage:object];
 }
+
+//-(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+//{
+//    NSMutableDictionary *object = [NSMutableDictionary new];
+//    [object setObject:userinfo forKey:DATA_SELECTED_PHOTO_KEY];
+//    UIImageView *imageView;
+//    for (UIImageView *image in _uploadedImages) {
+//        if (image.tag == controller.tag)
+//        {
+//            imageView = image;
+//        }
+//    }
+//    
+//    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+//    
+//    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+//    
+//    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+//    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
+//    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+//    image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    for (UIButton *button in _uploadButtons) {
+//        if (button.tag == controller.tag) {
+//            button.enabled = NO;
+//            button.hidden = YES;
+//        }
+//        if (button.tag == controller.tag+1)
+//        {
+//            button.enabled = YES;
+//            button.hidden = NO;
+//        }
+//    }
+//    
+//    imageView.image = image;
+//    imageView.hidden = NO;
+//    imageView.alpha = 0.5f;
+//    
+//    [self actionUploadImage:object];
+//}
 
 
 -(void)viewDidLayoutSubviews
@@ -261,16 +313,10 @@
     _activeTextView = nil;
     
     if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton*)sender;
-        CameraController* c = [CameraController new];
-        [c snap];
-        c.delegate = self;
-        c.tag = button.tag;
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-        nav.wantsFullScreenLayout = YES;
-        nav.modalPresentationStyle = UIModalPresentationFullScreen;
-        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
+                                                      pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+        _photoPicker.delegate = self;
+        _photoPicker.tag = [sender tag];
     }
     else
     {

@@ -11,11 +11,13 @@
 
 #pragma mark - Transaction Cart Payment Delegate
 @protocol TxOrderConfirmedViewControllerDelegate <NSObject>
+
 @required
--(void)uploadProof;
 - (void)setIsRefresh:(BOOL)isRefresh;
+
 @optional
 -(void)editPayment:(TxOrderConfirmedList*)object;
+
 @end
 
 @interface TxOrderConfirmedViewController : UIViewController
