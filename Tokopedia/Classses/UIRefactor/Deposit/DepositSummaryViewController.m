@@ -167,11 +167,6 @@
     [self loadData];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-}
-
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [tokopediaNetWorkManager requestCancel];

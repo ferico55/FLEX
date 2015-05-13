@@ -65,11 +65,6 @@
     _datainput = [NSMutableDictionary new];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-}
-
 #pragma mark - DataSource Delegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;

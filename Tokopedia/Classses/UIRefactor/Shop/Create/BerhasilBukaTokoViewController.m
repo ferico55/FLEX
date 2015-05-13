@@ -40,6 +40,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     [self initAttributeText:lblCongratulation withStrText:[NSString stringWithFormat:CStringCongratulation, [dictData objectForKey:kTKPD_SHOPNAMEKEY]] withFont:[UIFont fontWithName:CFont_Gotham_Book size:15.0f] withColor:lblCongratulation.textColor withTextAlignment:NSTextAlignmentCenter];
     txtURL.text = [dictData objectForKey:kTKPD_SHOPURL];
     [self initAttributeText:lblSubCongratulation withStrText:lblSubCongratulation.text withFont:[UIFont fontWithName:CFont_Gotham_Book size:13.0f] withColor:lblSubCongratulation.textColor withTextAlignment:NSTextAlignmentCenter];

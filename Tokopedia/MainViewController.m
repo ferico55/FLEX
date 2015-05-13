@@ -174,20 +174,17 @@ typedef enum TagRequest {
                                              forState:UIControlStateSelected];
     
     /** TAB BAR INDEX 1 **/
-    NSArray *titles;
     /** adjust view controllers at tab bar controller **/
     NSMutableArray *viewcontrollers = [NSMutableArray new];
     /** create new view controller **/
     if (!isauth) {
         // before login
-        titles = kTKPD_HOMETITLEARRAY;
         HotlistViewController *v = [HotlistViewController new];
         v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
         [viewcontrollers addObject:v];
     }
     else{
         // after login
-        titles = kTKPD_HOMETITLEISAUTHARRAY;
         HotlistViewController *v = [HotlistViewController new];
         v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
         [viewcontrollers addObject:v];
@@ -287,7 +284,6 @@ typedef enum TagRequest {
                                          kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor,
                                          kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil];
     [proxy setTitleTextAttributes:titleTextAttributes];
-    proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
 }
 
 -(void)adjusttabbar
@@ -478,12 +474,11 @@ typedef enum TagRequest {
         ((SearchViewController*)search).data = @{kTKPD_AUTHKEY:_auth?:@{}};
     }
     
-    UINavigationController *moreNavBar = newControllers[4];
+    UINavigationController *moreNavBar = nil;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
-    }
-    else{
+    } else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
         moreNavBar = moreNavController;

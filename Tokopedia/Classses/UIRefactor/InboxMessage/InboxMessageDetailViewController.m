@@ -61,13 +61,11 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self != nil) {
         _isrefreshview = NO;
         _isnodata = YES;
-    }
-    
-    _messages = [NSMutableArray new];
-    if(self){
+        
+        _messages = [NSMutableArray new];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
                                                      name:UIKeyboardWillShowNotification
@@ -75,7 +73,7 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification 
+                                                     name:UIKeyboardWillHideNotification
                                                    object:nil];		
     }
     

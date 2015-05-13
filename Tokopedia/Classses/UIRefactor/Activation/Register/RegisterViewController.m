@@ -117,12 +117,6 @@
     
     [FBSession.activeSession closeAndClearTokenInformation];
     
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img;
-    
-    /** BACK **/
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    
     // keyboard notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)

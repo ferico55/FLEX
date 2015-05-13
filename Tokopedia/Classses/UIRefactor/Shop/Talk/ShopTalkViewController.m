@@ -818,16 +818,16 @@
     NSInteger row = indexpath.row;
     TalkList *list = _list[row];
     vc.data = @{
-                TKPD_TALK_MESSAGE:list.talk_message?:0,
-                TKPD_TALK_USER_IMG:list.talk_user_image?:0,
-                TKPD_TALK_CREATE_TIME:list.talk_create_time?:0,
-                TKPD_TALK_USER_NAME:list.talk_user_name?:0,
-                TKPD_TALK_ID:list.talk_id?:0,
-                TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:0,
+                TKPD_TALK_MESSAGE:list.talk_message?:@0,
+                TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
+                TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
+                TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
+                TKPD_TALK_ID:list.talk_id?:@0,
+                TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
+                TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
                 TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
-                kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
+                kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0
                 };
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -844,7 +844,7 @@
     NSDictionary* param = @{
                             kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                            TKPD_TALK_ID:list.talk_id?:0,
+                            TKPD_TALK_ID:list.talk_id?:@0,
                             };
     
     _requestUnfollowCount ++;
@@ -938,7 +938,7 @@
         NSDictionary* param = @{
                                 kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
                                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                                TKPD_TALK_ID:list.talk_id?:0,
+                                TKPD_TALK_ID:list.talk_id?:@0,
                                 kTKPDDETAILSHOP_APISHOPID : list.talk_shop_id
                                 };
         

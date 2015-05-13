@@ -109,16 +109,14 @@
                                                                                   alpha:1],
                                  };
     
-    NSString *catalogName, *catalogPrice, *catalogImageURL;
+    NSString *catalogName, *catalogPrice;
     
     if (_catalogID) {
         catalogName = _catalogName;
         catalogPrice = _catalogPrice;
-        catalogImageURL = _catalogImage;
     } else if (_list) {
         catalogName = _list.catalog_name;
         catalogPrice = _list.catalog_price;
-        catalogImageURL = _list.catalog_image;
     }
 
     self.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:catalogName

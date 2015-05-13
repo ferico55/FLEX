@@ -36,18 +36,6 @@
     
     if(status)
     {
-        if(!savedKeychain)
-        {
-            //keychain still empty
-            savedKeychain = [[NSDictionary alloc]init];
-            
-            if(![savedKeychain isMutable])
-            {
-                savedKeychain = [savedKeychain mutableCopy];
-            }
-            
-        }
-        
         savedKeychain = [NSMutableDictionary dictionaryWithDictionary:(__bridge_transfer NSDictionary*)(values)];
         
         status = (SecItemCopyMatching((__bridge CFDictionaryRef)kTKPDSECURESTORAGE_GLOBALQUERYDATA, &values) == noErr) ;
@@ -213,7 +201,9 @@
             
         }
         
-        [newKeychainDict setObject:valueData forKey:keyData];
+        if (valueData != nil) {
+            [newKeychainDict setObject:valueData forKey:keyData];   
+        }
         
         newKeychainDictData = [NSKeyedArchiver archivedDataWithRootObject:newKeychainDict];
         

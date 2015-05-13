@@ -478,7 +478,7 @@
     container.data = @{kTKPDDETAIL_APISHOPIDKEY : list.shop_id,
                        kTKPDDETAIL_APISHOPNAMEKEY : list.shop_name,
                        kTKPDDETAIL_APISHOPISGOLD : list.shop_gold_status,
-                       kTKPDFILTERSORT_DATAINDEXPATHKEY : indexPath?:0,
+                       kTKPDFILTERSORT_DATAINDEXPATHKEY : indexPath?:@0,
                        kTKPD_AUTHKEY:[_data objectForKey : kTKPD_AUTHKEY]?:@{}
                        };
     [self.navigationController pushViewController:container animated:YES];
@@ -495,7 +495,7 @@
             NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             SortViewController *vc = [SortViewController new];
             vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
-                        kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
+                        kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
             vc.delegate = self;
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];

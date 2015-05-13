@@ -89,9 +89,6 @@
 {
     if (_request.isExecuting) return;
     
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    
     NSDictionary* param = @{
                             API_ACTION_KEY           : API_GET_EDIT_SHIPPING_FORM,
                             };

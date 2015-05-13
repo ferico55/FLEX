@@ -386,7 +386,6 @@
                         NSInteger indexShipmentPackage = [shipmentPackageIDs indexOfObject:cart.cart_shipments.shipment_package_id];
                         if(NSNotFound == indexShipmentPackage) {
                             NSLog(@"not found");
-                            indexShipmentPackage = 0;
                         }
                         else{
                             ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];

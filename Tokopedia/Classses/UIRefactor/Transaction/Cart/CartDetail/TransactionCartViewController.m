@@ -2670,10 +2670,6 @@
     [self adjustPartialListParam];
     
     NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-    NSString *grandTotalBefore = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"," withString:@""];
-    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"-" withString:@""];
     
     NSString *deposit = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
