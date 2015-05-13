@@ -111,6 +111,7 @@
     
     _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_barbuttonright setCustomView:button];
+    [_barbuttonright setEnabled:NO];
     self.navigationItem.rightBarButtonItem = _barbuttonright;
 }
 
@@ -141,18 +142,6 @@
     _withdrawalButton.layer.cornerRadius = 3.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
-
-    
-    
-//    UIImage *searchImg = [UIImage imageNamed:@"icon_search@2x.png"];
-//    
-//    CGRect rect = CGRectMake(0.0, 0.0, _filterDateButton.frame.size.height - 10, _filterDateButton.frame.size.height -10);
-//    UIGraphicsBeginImageContext(rect.size);
-//    [searchImg drawInRect:rect];
-//    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    
-//    [_filterDateButton setImage:img forState:UIControlStateNormal];
 
     
     _page = 1;
@@ -316,6 +305,7 @@
         BOOL status = [depositsummary.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
+            [_barbuttonright setEnabled:YES];
             [_depositSummary addObjectsFromArray: depositsummary.result.list];
             _useableSaldo = depositsummary.result.summary.summary_useable_deposit;
             _useableSaldoIDR = depositsummary.result.summary.summary_useable_deposit_idr;
@@ -713,13 +703,14 @@
     [_refreshControl endRefreshing];
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
+//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//{
+//    
+//}
+
+- (void)actionBeforeRequest:(int)tag {
     
 }
-
-- (void)actionBeforeRequest:(int)tag
-{}
 
 - (void)actionRequestAsync:(int)tag
 {

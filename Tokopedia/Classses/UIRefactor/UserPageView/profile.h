@@ -57,6 +57,7 @@ typedef enum
 #define kTKPDPROFILE_DATAEDITTYPEKEY @"edittype"
 #define kTKPDPROFILE_DATABANKINDEXPATHKEY @"bankindexpath"
 #define kTKPDPROFILE_DATALOCATIONNAMEKEY @"locationname"
+#define kTKPDPROFILE_DATABANKACCOUNT @"bankaccount"
 #define kTKPDPROFILE_UNSETORIGIN @"Pilih"
 
 #define DATA_LIST_BANK_ACOUNT_KEY @"list_bank_account"
@@ -246,7 +247,7 @@ typedef enum
 #define kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT @"profilefavshop%zd"
 
 #define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Pria", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Wanita", DATA_VALUE_KEY:@(2)}]
-#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi"]]
+#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Biodata Diri" ,@"Daftar Alamat", @"Akun Bank", @"Notifikasi"]]
 
 #define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Pria",@"Wanita"]
 #define kTKPDPROFILE_DATAGENDERVALUEARRAYKEY @[@"1",@"2"]

@@ -208,7 +208,8 @@
     
     RKObjectMapping *catalogImageMapping = [RKObjectMapping mappingForClass:[CatalogImages class]];
     [catalogImageMapping addAttributeMappingsFromArray:@[API_IMAGE_PRIMARY_KEY,
-                                                         API_IMAGE_SRC_KEY]];
+                                                         API_IMAGE_SRC_KEY,
+                                                         @"image_src_full"]];
     
     RKObjectMapping *catalogSpecificationMapping = [RKObjectMapping mappingForClass:[CatalogSpecs class]];
     [catalogSpecificationMapping addAttributeMappingsFromArray:@[API_SPEC_HEADER_KEY,]];
@@ -439,7 +440,7 @@
 {
     ShopContainerViewController *controller = [[ShopContainerViewController alloc] init];
     CatalogShops *shop = [_catalog.result.catalog_shops objectAtIndex:indexPath.row];
-    controller.data = @{@"shop_id" : shop.shop_id};
+    controller.data = @{@"shop_id" : shop.shop_id, @"shop_name" : shop.shop_name};
     [self.navigationController pushViewController:controller animated:YES];
 }
 

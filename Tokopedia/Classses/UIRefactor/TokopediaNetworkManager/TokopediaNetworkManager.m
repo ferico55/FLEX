@@ -38,7 +38,7 @@
     _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
                                                                           method:RKRequestMethodPOST
                                                                             path:[_delegate getPath:self.tagRequest]
-                                                                      parameters:_notEncrypt?[_delegate getParameter:self.tagRequest]:[[_delegate getParameter:self.tagRequest] encrypt]];
+                                                                      parameters:(!_isParameterNotEncrypted ? [[_delegate getParameter:self.tagRequest] encrypt] : [_delegate getParameter:self.tagRequest])];
     
     
     [_requestTimer invalidate];
@@ -58,7 +58,8 @@
     }
     
     [_operationQueue addOperation:_objectRequest];
-    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
+    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
 }
 
@@ -81,17 +82,15 @@
                 NSArray *errors;
                 if(error.code == -1011) {
                     errors = @[@"Mohon maaf, terjadi kendala pada server"];
+                } else if (error.code == -1009) {
+                    errors = @[@"Tidak ada koneksi internet"];
                 } else {
                     errors = @[error.localizedDescription];
                 }
-                [alert initWithErrorMessages:errors delegate:_delegate];
-//                NSLog(@"Error Code : %ld", (long)[(NSError*)error code]) ;
-//                NSString *errorDescription = error.localizedDescription;
-//                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-//                if(![errorAlert isVisible] && [(NSError*)error code] != -999) {
-//                    [errorAlert show];
-//                }
                 
+                [alert initWithErrorMessages:errors delegate:_delegate];
+                [alert show];
+            
             }
         }
     }

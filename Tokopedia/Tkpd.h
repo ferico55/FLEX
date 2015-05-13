@@ -14,12 +14,15 @@
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 
+
 //#if DEBUG
 //    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
 //#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+
 
 #define kTKPD_AUTHKEY @"auth"
 #define kTKPD_ISLOGINKEY @"is_login"
@@ -185,7 +188,10 @@ typedef enum {
 #define TokopediaNotificationRedirect @"redirectNotification"
 #define TokopediaNotificationReload @"reloadNotification"
 
+
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
+#define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
+#define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
 
 

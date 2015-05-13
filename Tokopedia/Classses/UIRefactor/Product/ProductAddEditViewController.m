@@ -20,7 +20,6 @@
 #import "ProductAddEditViewController.h"
 #import "ProductAddEditDetailViewController.h"
 #import "ProductEditImageViewController.h"
-#import "CameraController.h"
 #import "CategoryMenuViewController.h"
 #import "URLCacheController.h"
 #import "StickyAlertView.h"
@@ -30,6 +29,7 @@
 #import "CameraCollectionViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
+#import "TKPDPhotoPicker.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
@@ -41,7 +41,6 @@
     UITableViewDataSource,
     UITableViewDelegate,
     TKPDAlertViewDelegate,
-    CameraControllerDelegate,
     CategoryMenuViewDelegate,
     ProductEditDetailViewControllerDelegate,
     ProductEditImageViewControllerDelegate,
@@ -49,7 +48,8 @@
     CameraCollectionViewControllerDelegate,
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
-    CameraAlbumListDelegate
+    CameraAlbumListDelegate,
+    TKPDPhotoPickerDelegate
 >
 {
     NSMutableDictionary *_dataInput;
@@ -70,9 +70,6 @@
     UploadImage *_images;
     Product *_product;
     ShopSettings *_setting;
-    
-    NSOperationQueue *_operationQueue;
-    NSOperationQueue *_operationQueueUploadImage;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -108,6 +105,8 @@
     
     TokopediaNetworkManager *_networkManager;
     ProductAddEditDetailViewController *_detailVC;
+
+    TKPDPhotoPicker *_photoPicker;
 }
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -127,13 +126,6 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumbProductImageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *defaultImageLabels;
 
--(void)cancelDeleteImage;
--(void)configureRestKitDeleteImage;
--(void)requestDeleteImage:(id)object;
--(void)requestSuccessDeleteImage:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureDeleteImage:(id)object;
--(void)requestProcessDeleteImage:(id)object;
--(void)requestTimeoutDeleteImage;
 
 @end
 
@@ -163,8 +155,6 @@
     _section2TableViewCell = [NSArray sortViewsWithTagInArray:_section2TableViewCell];
     _section3TableViewCell = [NSArray sortViewsWithTagInArray:_section3TableViewCell];
     
-    _operationQueue = [NSOperationQueue new];
-    _operationQueueUploadImage = [NSOperationQueue new];
     _dataInput = [NSMutableDictionary new];
     _errorMessage = [NSMutableArray new];
     _cacheconnection = [URLCacheConnection new];
@@ -177,6 +167,13 @@
     _productImageURLs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _productImageIDs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _productImageDesc = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
+    
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _networkManager.tagRequest = TAG_REQUEST_DETAIL;
+    _networkManager.delegate = self;
+    
+    _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
     _isBeingPresented = self.navigationController.isBeingPresented;
     if (_isBeingPresented) {
@@ -205,7 +202,7 @@
     for (UIButton *buttonAdd in _addImageButtons) {
         buttonAdd.enabled = NO;
     }
-    ((UIButton*)_addImageButtons[0]).enabled = NO;
+    
     [_thumbProductImageViews makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
     for (UIImageView *productImageView in _thumbProductImageViews) {
         productImageView.userInteractionEnabled = NO;
@@ -233,6 +230,8 @@
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
         _productNameTextField.enabled = NO;
     }
+    
+    [_productImageScrollView addSubview:_productImagesContentView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -261,14 +260,14 @@
         default:
             break;
     }
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    
-    _networkManager.delegate = self;
-    _productImageScrollView.contentSize = _productImagesContentView.frame.size;
+    _productImageScrollView.contentSize = _productImagesContentView.frame.size;    
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -277,32 +276,28 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    
     self.title = @"";
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    barButtonItem.tag = 10;
+    self.navigationItem.backBarButtonItem = barButtonItem;
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-}
-
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     _networkManager = nil;
     
     _detailVC = nil;
 }
-
-
-
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
@@ -345,8 +340,10 @@
                                            DATA_PRODUCT_DETAIL_KEY: productDetail,
                                            DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0"
                                             };
+                        _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
                         _detailVC.generateHost = _generateHost;
                         _detailVC.delegate = self;
+                        //_detailVC.isNeedRequestAddProductPicture = YES;
                         [self.navigationController pushViewController:_detailVC animated:YES];
                     }
                     else
@@ -442,17 +439,10 @@
 
 -(void)didTapImageButtonSingleSelection:(UIButton*)sender
 {
-    CameraController* c = [CameraController new];
-    [c snap];
-    c.tag = sender.tag-20;
-    c.delegate = self;
-    c.isTakePicture = YES;
-    c.isTakePicture = NO;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    nav.wantsFullScreenLayout = YES;
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
+                                                  pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+    _photoPicker.tag = sender.tag - 20;
+    _photoPicker.delegate = self;
 }
 
 - (IBAction)gesture:(id)sender
@@ -489,6 +479,7 @@
                             DATA_IS_DEFAULT_IMAGE : @(isDefaultImage),
                             DATA_PRODUCT_IMAGE_NAME_KEY : _productImageDesc[indexImage]?:@""
                             };
+                vc.uploadedImage = ((UIImageView*)_thumbProductImageViews[indexImage]).image;
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
             }
@@ -767,14 +758,20 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-    [self enableButtonBeforeSuccessRequest:NO];
+    if (tag == TAG_REQUEST_DETAIL) {
+        [self enableButtonBeforeSuccessRequest:NO];
+        [_alertProcessing show];
+    }
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    [self enableButtonBeforeSuccessRequest:YES];
-    [self requestsuccess:successResult withOperation:operation];
-    
+    if (tag == TAG_REQUEST_DETAIL) {
+        [self enableButtonBeforeSuccessRequest:YES];
+        [self requestsuccess:successResult withOperation:operation];
+        
+        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+    }
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -814,10 +811,12 @@
                                DATA_INPUT_KEY : _dataInput,
                                DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
                                DATA_PRODUCT_DETAIL_KEY: productDetail,
-                               DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms
+                               DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@""
                                };
+            _detailVC.shopHasTerm = _product.result.info.shop_has_terms;
             _detailVC.generateHost = _generateHost;
             _detailVC.delegate = self;
+            //_detailVC.isNeedRequestAddProductPicture = YES;
         }
         
 
@@ -830,6 +829,7 @@
 {
     _generateHost = generateHost;
     ((UIButton*)_addImageButtons[0]).enabled = YES;
+    [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 -(void)failedGenerateHost
@@ -900,9 +900,6 @@
     else
     {
         _isFinishedUploadImages = YES;
-        
-        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-
     }
     
     
@@ -968,7 +965,7 @@
         [timer invalidate];
     }];
     
-    [_operationQueue addOperation:_requestDeleteImage];
+    [[[RKObjectManager sharedClient]operationQueue] addOperation:_requestDeleteImage];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutDeleteImage) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
@@ -1087,7 +1084,7 @@
         [timer invalidate];
     }];
     
-    [_operationQueue addOperation:_requestEditProductPicture];
+    [[[RKObjectManager sharedClient] operationQueue] addOperation:_requestEditProductPicture];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutEditProductPicture) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
@@ -1116,6 +1113,7 @@
             NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
             [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
             NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
+            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
          }
     }
 }
@@ -1169,10 +1167,11 @@
     
 }
 
-#pragma mark - Camera Controller Delegate
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+#pragma mark - TKPDPhotoPicker delegate
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
 {
-    [self setImageData:userinfo tag:controller.tag];
+    [self setImageData:userInfo tag:picker.tag];
 }
 
 -(void)didRemoveImageDictionary:(NSDictionary *)removedImage
@@ -1286,6 +1285,7 @@
 -(void)actionUploadImage:(id)object
 {
     _isFinishedUploadImages = NO;
+    [_uploadingImages addObject:object];
     RequestUploadImage *uploadImage = [RequestUploadImage new];
     uploadImage.imageObject = object;
     uploadImage.delegate = self;
@@ -1325,6 +1325,8 @@
     [_dataInput setObject:_productImageURLs forKey:DATA_LAST_DELETED_IMAGE_PATH];
     [_dataInput setObject:@(index) forKey:DATA_LAST_DELETED_INDEX];
     [_dataInput setObject:((UIImageView*)_thumbProductImageViews[index]).image forKey:DATA_LAST_DELETED_IMAGE];
+    [_selectedIndexPathCameraController removeObjectAtIndex:index];
+    [_selectedImagesCameraController replaceObjectAtIndex:index withObject:@""];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
@@ -1480,10 +1482,10 @@
         NSInteger currency = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
         BOOL isIDRCurrency = (currency == PRICE_CURRENCY_ID_RUPIAH);
         if (isIDRCurrency)
-           productPrice = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+           productPrice = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
         else
         {
-            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
             
         }
         product.product_price = productPrice;
@@ -1509,25 +1511,25 @@
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             if([string length]==0)
             {
-                [formatter setGroupingSeparator:@","];
+                [formatter setGroupingSeparator:@"."];
                 [formatter setGroupingSize:4];
                 [formatter setUsesGroupingSeparator:YES];
                 [formatter setSecondaryGroupingSize:3];
                 NSString *num = textField.text ;
-                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                 NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                 textField.text = str;
                 return YES;
             }
             else {
-                [formatter setGroupingSeparator:@","];
+                [formatter setGroupingSeparator:@"."];
                 [formatter setGroupingSize:2];
                 [formatter setUsesGroupingSeparator:YES];
                 [formatter setSecondaryGroupingSize:3];
                 NSString *num = textField.text ;
                 if(![num isEqualToString:@""])
                 {
-                    num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                    num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                     NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                     textField.text = str;
                 }
@@ -1645,7 +1647,9 @@
         NSArray *images = result.product_images;
         NSInteger imageCount = images.count;
         NSInteger addProductImageCount = (imageCount<_addImageButtons.count)?imageCount:imageCount-1;
-        ((UIButton*)_addImageButtons[addProductImageCount]).enabled = YES;
+        if (_generateHost.result.generated_host != nil) {
+            ((UIButton*)_addImageButtons[addProductImageCount]).enabled = YES;
+        }
         
         NSMutableDictionary *productImageDescription = [NSMutableDictionary new];
         for (int i = 0 ; i<imageCount;i++) {
@@ -1661,10 +1665,10 @@
             thumb.hidden = NO;
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
+                [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
                 thumb.userInteractionEnabled = YES;
                 

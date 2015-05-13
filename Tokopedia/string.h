@@ -19,7 +19,7 @@
 
 #define kTKPDREQUESTCOUNTMAX 3
 
-#define kTKPDREQUEST_TIMEOUTINTERVAL 10.0
+#define kTKPDREQUEST_TIMEOUTINTERVAL 30.0
 #define kTKPDREQUEST_STICKYFADEOUTINTERVAL 3.0
 #define kTKPDREQUEST_DELAYINTERVAL 3.0
 
@@ -46,6 +46,9 @@
 #define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
 #define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Error"
 #define kTKPDMESSAGE_ERRORMESSAGEDATEKEY @"Rentang waktu maksimal pemeriksaan mutasi adalah 31 hari."
+
+#define kTKPDMESSAGE_SUCCESSEDITPROFILEMESSAGEKEY   @"Anda telah berhasil mengubah profil."
+#define kTKPDMESSAGE_ERROREDITPROFILEMESSAGEKEY @"Gagal mengubah profil."
 
 #define CStringBerhasilMemperbaharuiUlasan @"Anda telah berhasil memperbaharui ulasan"
 #define CStringBerhasilMenambahUlasan @"Anda berhasil menambahkan ulasan"

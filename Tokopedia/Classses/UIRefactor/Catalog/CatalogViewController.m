@@ -17,13 +17,15 @@
 #import "CatalogShopViewController.h"
 #import "LoginViewController.h"
 #import "ProductAddEditViewController.h"
+#import "GalleryViewController.h"
 
 @interface CatalogViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     UIScrollViewDelegate,
-    LoginViewDelegate
+    LoginViewDelegate,
+    GalleryViewControllerDelegate
 >
 {
     Catalog *_catalog;
@@ -127,6 +129,10 @@
     self.productPriceLabel.text = catalogPrice;
     [self.productPriceLabel sizeToFit];
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    [self.productPhotoScrollView setUserInteractionEnabled:YES];
+    [self.productPhotoScrollView addGestureRecognizer:tap];
+    
     [self request];
 }
 
@@ -134,7 +140,7 @@
 {
     [super viewWillAppear:animated];
     _tableView.tableHeaderView = _headerView;
-    _tableView.tableFooterView = _footerView;
+//    _tableView.tableFooterView = _footerView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -228,7 +234,7 @@
     
     RKObjectMapping *catalogImageMapping = [RKObjectMapping mappingForClass:[CatalogImages class]];
     [catalogImageMapping addAttributeMappingsFromArray:@[API_IMAGE_PRIMARY_KEY,
-                                                         API_IMAGE_SRC_KEY]];
+                                                         API_IMAGE_SRC_KEY, @"image_src_full"]];
     
     RKObjectMapping *catalogSpecificationMapping = [RKObjectMapping mappingForClass:[CatalogSpecs class]];
     [catalogSpecificationMapping addAttributeMappingsFromArray:@[API_SPEC_HEADER_KEY,]];
@@ -439,16 +445,13 @@
                 CGRect frame = CGRectMake(x, 0, self.view.frame.size.width, self.view.frame.size.width);
                 UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
                 
-//                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:image.image_src]];
-//                UIImage *image = [UIImage imageWithData:data];
-//                catalogImageView.image = image;
-                
-                NSURLRequest* requestCatalogImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src]  cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                NSURLRequest* requestCatalogImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src_full]  cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                                                      
-                [catalogImageView setImageWithURLRequest:requestCatalogImage placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [catalogImageView setImageWithURLRequest:requestCatalogImage placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                     //NSLOG(@"thumb: %@", thumb);
+                    catalogImageView.contentMode = UIViewContentModeScaleAspectFit;
                     [catalogImageView setImage:image];
                     
 #pragma clang diagnostic pop
@@ -457,7 +460,7 @@
                     
                 }];
                 
-                catalogImageView.contentMode = UIViewContentModeScaleAspectFit;
+
                 [_productPhotoScrollView addSubview:catalogImageView];
                 x += self.view.frame.size.width;
             }
@@ -534,6 +537,12 @@
             _tableView.tableFooterView = _descriptionView;
         }
         [_tableView reloadData];
+    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        NSInteger startingIndex = _productPhotoPageControl.currentPage;
+        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
+        controller.canDownload = NO;
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.navigationController presentViewController:controller animated:YES completion:nil];
     }
 }
 
@@ -555,7 +564,21 @@
     }
 }
 
-#pragma mark - Notification Center Handler
+#pragma mark - Gallery delegate
 
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
+{
+    return _catalog.result.catalog_info.catalog_images.count;
+}
+
+- (NSString *)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index
+{
+    if(((int) index) < 0)
+        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:0]).image_src;
+    else if(((int)index) > _catalog.result.catalog_info.catalog_images.count-1)
+        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:_catalog.result.catalog_info.catalog_images.count-1]).image_src_full;
+    
+    return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:index]).image_src_full;
+}
 
 @end

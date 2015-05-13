@@ -27,8 +27,6 @@
 
 #import "WebViewInvoiceViewController.h"
 
-#import "CameraController.h"
-
 #import "string_tx_order.h"
 #import "detail.h"
 #import "string_product.h"
@@ -39,18 +37,19 @@
 #import "NavigateViewController.h"
 
 #import "TokopediaNetworkManager.h"
+#import "TKPDPhotoPicker.h"
 
 @interface TxOrderConfirmedViewController ()
 <
     UITableViewDelegate,
     UITableViewDataSource,
+    UIAlertViewDelegate,
     TxOrderConfirmedButtonCellDelegate,
     TxOrderConfirmedCellDelegate,
-    UIAlertViewDelegate,
-    CameraControllerDelegate,
     GenerateHostDelegate,
     RequestUploadImageDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    TKPDPhotoPickerDelegate
 >
 {
     BOOL _isNodata;
@@ -86,6 +85,7 @@
     GenerateHost *_generateHost;
     
     TokopediaNetworkManager *_networkManager;
+    TKPDPhotoPicker *_photoPicker;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -143,6 +143,8 @@
         _isRefresh = NO;
         [_delegate setIsRefresh:_isRefresh];
     }
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -253,9 +255,11 @@
 
 -(void)uploadProofAtIndexPath:(NSIndexPath *)indexPath
 {
-    [_delegate uploadProof];
-    
     [_dataInput setObject:_list[indexPath.section] forKey:DATA_SELECTED_ORDER_KEY];
+    
+    _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
+                                                                  pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+    _photoPicker.delegate = self;
 }
 
 -(void)didTapInvoiceButton:(UIButton *)button atIndexPath:(NSIndexPath *)indexPath
@@ -276,22 +280,22 @@
     }
 }
 #pragma mark - Camera Controller Delegate
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
-{
-    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    NSString* imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME]?:@"";
-    
-    [_dataInput setObject:imageName forKey:API_FILE_NAME_KEY];
-    
-    RequestUploadImage *requestImage = [RequestUploadImage new];
-    requestImage.generateHost = _generateHost;
-    requestImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:userinfo};
-    requestImage.action = ACTION_UPLOAD_PROOF_IMAGE;
-    requestImage.fieldName = API_FORM_FIELD_NAME_PROOF;
-    [requestImage configureRestkitUploadPhoto];
-    [requestImage requestActionUploadPhoto];
-    requestImage.delegate = self;
-}
+//-(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+//{
+//    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+//    NSString* imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME]?:@"";
+//    
+//    [_dataInput setObject:imageName forKey:API_FILE_NAME_KEY];
+//    
+//    RequestUploadImage *requestImage = [RequestUploadImage new];
+//    requestImage.generateHost = _generateHost;
+//    requestImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:userinfo};
+//    requestImage.action = ACTION_UPLOAD_PROOF_IMAGE;
+//    requestImage.fieldName = API_FORM_FIELD_NAME_PROOF;
+//    [requestImage configureRestkitUploadPhoto];
+//    [requestImage requestActionUploadPhoto];
+//    requestImage.delegate = self;
+//}
 
 #pragma mark - Cell
 -(UITableViewCell*)cellConfirmedAtIndexPath:(NSIndexPath*)indexPath
@@ -475,6 +479,10 @@
     _tableView.tableFooterView = _act;
 }
 
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+}
+
 #pragma mark - Request Detail
 -(void)cancelDetail
 {
@@ -556,22 +564,7 @@
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
         
-//#if DEBUG
-//    
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID forKey:@"user_id"];
-//    
-//    _requestDetail = [_objectManagerDetail appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
-//#else
     _requestDetail = [_objectManagerDetail appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
-//#endif
     
     [_requestDetail setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessDetail:mappingResult withOperation:operation];
@@ -672,6 +665,10 @@
 -(void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generateHost = generateHost;
+}
+
+- (void)failedGenerateHost
+{
 }
 
 #pragma mark - Request Action Upload Photo
@@ -851,6 +848,25 @@
 {
     StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:messages delegate:self];
     [alert show];
+}
+
+#pragma mark - TKPD Camera controller delegate
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
+{
+    NSDictionary *photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    NSString *imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME]?:@"";
+
+    [_dataInput setObject:imageName forKey:API_FILE_NAME_KEY];
+
+    RequestUploadImage *requestImage = [RequestUploadImage new];
+    requestImage.generateHost = _generateHost;
+    requestImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:userInfo};
+    requestImage.action = ACTION_UPLOAD_PROOF_IMAGE;
+    requestImage.fieldName = API_FORM_FIELD_NAME_PROOF;
+    [requestImage configureRestkitUploadPhoto];
+    [requestImage requestActionUploadPhoto];
+    requestImage.delegate = self;
 }
 
 @end

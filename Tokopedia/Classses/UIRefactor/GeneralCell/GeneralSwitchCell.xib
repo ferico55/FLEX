@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -18,18 +19,32 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uhk-Gs-ILf" id="0hz-yv-mXQ">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddb-PL-2SS">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddb-PL-2SS">
                         <rect key="frame" x="15" y="11" width="218" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="Piu-wh-bFO"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <switch opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qUE-pO-Gc4">
+                    <switch opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qUE-pO-Gc4">
                         <rect key="frame" x="255" y="6" width="51" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="31" id="ByZ-Gs-LBp"/>
+                            <constraint firstAttribute="width" constant="49" id="P6z-iq-hfR"/>
+                        </constraints>
                         <connections>
                             <action selector="tap:" destination="uhk-Gs-ILf" eventType="valueChanged" id="HRv-zs-jcw"/>
                         </connections>
                     </switch>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="qUE-pO-Gc4" secondAttribute="trailing" constant="16" id="0Ak-1d-HUt"/>
+                    <constraint firstItem="Ddb-PL-2SS" firstAttribute="leading" secondItem="0hz-yv-mXQ" secondAttribute="leadingMargin" constant="7" id="Jv1-Mz-xvb"/>
+                    <constraint firstItem="qUE-pO-Gc4" firstAttribute="leading" secondItem="Ddb-PL-2SS" secondAttribute="trailing" constant="22" id="PkE-bq-3kh"/>
+                    <constraint firstItem="qUE-pO-Gc4" firstAttribute="top" secondItem="0hz-yv-mXQ" secondAttribute="top" constant="6" id="bAL-OZ-QCo"/>
+                    <constraint firstItem="Ddb-PL-2SS" firstAttribute="top" secondItem="0hz-yv-mXQ" secondAttribute="topMargin" constant="3" id="mMy-pK-4kv"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="settingSwitch" destination="qUE-pO-Gc4" id="dKj-pc-WV4"/>

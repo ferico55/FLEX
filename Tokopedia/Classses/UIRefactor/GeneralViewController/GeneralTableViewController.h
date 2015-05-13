@@ -24,6 +24,7 @@
 @property (strong, nonatomic) id selectedObject;
 @property (strong, nonatomic) NSIndexPath *senderIndexPath;
 @property (strong, nonatomic) id<GeneralTableViewControllerDelegate> delegate;
+@property (nonatomic) BOOL shouldPopBack;
 @property UITableViewCellStyle tableViewCellStyle;
 
 @property NSInteger tag;

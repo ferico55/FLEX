@@ -179,9 +179,9 @@
     
     static NSString* cellIdentifier = @"messagingCell";
     
-    InboxMessageDetailCell * cell = (InboxMessageDetailCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+//    InboxMessageDetailCell * cell = (InboxMessageDetailCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    
+    UITableViewCell *cell = nil;
     if (cell == nil) {
         cell = [[InboxMessageDetailCell alloc] initMessagingCellWithReuseIdentifier:cellIdentifier];
     }

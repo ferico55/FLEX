@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-@class NavigationBarBlurController;
 
 @interface ShopProductPageViewController : UIViewController
 
@@ -16,6 +15,5 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
 
-@property (weak, nonatomic) NavigationBarBlurController *blurController;
 
 @end

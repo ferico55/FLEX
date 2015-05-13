@@ -822,7 +822,7 @@
                 {
                     [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                     if (_isConfirmed) {
-                        NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                        NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil mengubah konfirmasi pembayaran", nil];
                         StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
                         [alert show];
                         [_delegate refreshRequest];

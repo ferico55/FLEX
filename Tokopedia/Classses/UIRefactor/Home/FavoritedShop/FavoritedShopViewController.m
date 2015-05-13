@@ -255,28 +255,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(section == 0) {
-        if (_goldshop.count > 0) {
-            return 33;
-        } else {
-            return 0;
-        }
-    }
-    else {
-        if (_shop.count > 0) {
-            return 33;
-        } else {
-            return 0;
-        }
+    if (_shop.count + _goldshop.count > 0) {
+        return 33;
+    } else {
+        return 0;
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if(section==1 && _shop.count==0) {
-        return nil;
-    }
-    
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
     [view setBackgroundColor:tableView.backgroundColor];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
@@ -441,7 +428,7 @@
                 _goldshop = [favoritedshop.result.list_gold mutableCopy];
             } else {
                 [_shop addObjectsFromArray: favoritedshop.result.list];
-                [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
+//                [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
             }
             
             _shopdictionary = [NSMutableDictionary new];
@@ -454,7 +441,8 @@
                 [_shopdictionary setObject:_shop forKey:@"b"];
             }
             
-            _shopdictionarytitle = @[@"Rekomendasi",@"Toko Favoritku"];
+            _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
+
             
             if (_shop.count + _goldshop.count >0) {
                 _isnodata = NO;
@@ -483,7 +471,7 @@
             
             if(_refreshControl.isRefreshing) {
                 [_refreshControl endRefreshing];
-                [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [_table reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
             } else  {
                 [_table reloadData];
             }
@@ -578,6 +566,7 @@
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+                       kTKPDDETAIL_APISHOPNAMEKEY:list.shop_name?:@"",
                        kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
                        };
     [self.navigationController pushViewController:container animated:YES];
@@ -639,7 +628,7 @@
     }
     else
         return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
-                 kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
+                 kTKPDHOME_APILIMITPAGEKEY : @(5),
                  kTKPDHOME_APIPAGEKEY:@(_page)};
 }
 
