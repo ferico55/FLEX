@@ -699,10 +699,10 @@
     [_refreshControl endRefreshing];
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    
-}
+//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//{
+//    
+//}
 
 - (void)actionBeforeRequest:(int)tag {
     

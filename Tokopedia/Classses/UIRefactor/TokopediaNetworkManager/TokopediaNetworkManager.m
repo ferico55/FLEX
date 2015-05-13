@@ -81,17 +81,15 @@
                 NSArray *errors;
                 if(error.code == -1011) {
                     errors = @[@"Mohon maaf, terjadi kendala pada server"];
+                } else if (error.code == -1009) {
+                    errors = @[@"Tidak ada koneksi internet"];
                 } else {
                     errors = @[error.localizedDescription];
                 }
-                [alert initWithErrorMessages:errors delegate:_delegate];
-//                NSLog(@"Error Code : %ld", (long)[(NSError*)error code]) ;
-//                NSString *errorDescription = error.localizedDescription;
-//                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-//                if(![errorAlert isVisible] && [(NSError*)error code] != -999) {
-//                    [errorAlert show];
-//                }
                 
+                [alert initWithErrorMessages:errors delegate:_delegate];
+                [alert show];
+            
             }
         }
     }

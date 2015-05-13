@@ -360,9 +360,9 @@
     _table.tableFooterView = _loadingView.view;
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
+//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+//    
+//}
 
 #pragma mark - Caching Part 
 - (void)initCacheHotlist {
