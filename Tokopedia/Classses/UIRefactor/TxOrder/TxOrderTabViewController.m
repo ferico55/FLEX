@@ -13,12 +13,17 @@
 
 #import "string_tx_order.h"
 
-#import "camera.h"
-#import "CameraController.h"
+#import "TKPDPhotoPicker.h"
 
 #import "TxOrderPaymentViewController.h"
 
-@interface TxOrderTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TxOrderConfirmedViewControllerDelegate, TxOrderConfirmationViewControllerDelegate>
+@interface TxOrderTabViewController ()
+<
+    UIPageViewControllerDataSource,
+    UIPageViewControllerDelegate,
+    TxOrderConfirmedViewControllerDelegate,
+    TxOrderConfirmationViewControllerDelegate
+>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -219,19 +224,6 @@
 }
 
 #pragma mark - Delegate
-
--(void)uploadProof
-{
-    CameraController* c = [CameraController new];
-    [c snap];
-    c.delegate = _ConfirmedViewController;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    nav.wantsFullScreenLayout = YES;
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-
-}
 
 -(void)editPayment:(TxOrderConfirmedList*)object
 {
