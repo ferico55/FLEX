@@ -249,4 +249,7 @@ typedef enum
 #define PRODUCT_INFO @"Informasi Produk"
 #define NO_DESCRIPTION @"Tidak ada deskripsi"
 
+#define CStringSuccessFavoriteShop @"Anda berhasil memfavoritkan toko ini!"
+#define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
+
 #endif

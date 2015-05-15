@@ -658,6 +658,24 @@
     
 }
 
+
+#pragma mark - Method
+- (void)setFavoriteRightButtonItem
+{
+    StickyAlertView *stickyAlertView;
+    if([self.navigationItem.rightBarButtonItems firstObject] == _favoriteBarButton) {
+        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _fixedSpace, _messageBarButton, _fixedSpace, _infoBarButton];
+        stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
+    }
+    else {
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton,_fixedSpace, _messageBarButton,_fixedSpace, _infoBarButton];
+        stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
+    }
+    
+    [stickyAlertView show];
+}
+
+
 #pragma mark - Tap Action
 - (IBAction)infoTap:(id)sender {
     if (_shop) {
@@ -700,10 +718,9 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-        
-        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _fixedSpace, _messageBarButton, _fixedSpace, _infoBarButton];
     }
 }
+
 
 - (IBAction)unfavoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
@@ -712,8 +729,6 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-        
-        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton,_fixedSpace, _messageBarButton,_fixedSpace, _infoBarButton];
     }
     else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -868,7 +883,7 @@
         [self requestFavoriteResult:mappingResult withOperation:operation];
         [_timer invalidate];
         _timer = nil;
-        
+        [self setFavoriteRightButtonItem];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFavoriteError:error];

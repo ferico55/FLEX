@@ -346,16 +346,29 @@ UIAlertViewDelegate
 
 
 - (void)setButtonFav {
-    _favButton.tag = 18;
-    [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
-    [_favButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
-    [_favButton.layer setBorderWidth:0];
-    _favButton.tintColor = [UIColor whiteColor];
-    [UIView animateWithDuration:0.3 animations:^(void) {
-        [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
-        [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }];
     
+    if(_favButton.tag == 17) {//Favorite is 17
+        _favButton.tag = 18;
+        [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+        [_favButton.layer setBorderWidth:0];
+        _favButton.tintColor = [UIColor whiteColor];
+        [UIView animateWithDuration:0.3 animations:^(void) {
+            [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
+            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        }];
+    }
+    else {
+        _favButton.tag = 17;
+        [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+        [_favButton.layer setBorderWidth:1];
+        _favButton.tintColor = [UIColor lightGrayColor];
+        [UIView animateWithDuration:0.3 animations:^(void) {
+            [_favButton setBackgroundColor:[UIColor whiteColor]];
+            [_favButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        }];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -522,7 +535,6 @@ UIAlertViewDelegate
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     [self favoriteShop:_product.result.shop_info.shop_id];
-                    [self setButtonFav];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -546,17 +558,6 @@ UIAlertViewDelegate
                     //UnLove Shop
                     [self configureFavoriteRestkit];
                     [self favoriteShop:_product.result.shop_info.shop_id];
-                    
-                    _favButton.tag = 17;
-                    
-                    [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
-                    [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-                    [_favButton.layer setBorderWidth:1];
-                    _favButton.tintColor = [UIColor lightGrayColor];
-                    [UIView animateWithDuration:0.3 animations:^(void) {
-                        [_favButton setBackgroundColor:[UIColor whiteColor]];
-                        [_favButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                    }];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -1360,7 +1361,17 @@ UIAlertViewDelegate
     }
     else if(tag == CTagFavorite)
     {
+        StickyAlertView *stickyAlertView;
+        if(_favButton.tag == 17) {//Favorite
+            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
+        }
+        else {
+            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
+        }
+        
+        [stickyAlertView show];
         [self requestFavoriteResult:successResult withOperation:operation];
+        [self setButtonFav];
     }
     else if(tag == CTagUnWishList)
     {
@@ -1745,12 +1756,11 @@ UIAlertViewDelegate
             
             
             if(_product.result.shop_info.shop_already_favorited == 1) {
+                _favButton.tag = 17;
                 [self setButtonFav];
             } else {
-                [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
-                [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-                _favButton.tintColor = [UIColor lightGrayColor];
-                _favButton.tag = 17;
+                _favButton.tag = 18;
+                [self setButtonFav];
             }
             
             if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
