@@ -2077,7 +2077,17 @@ UIAlertViewDelegate
 -(void)setFooterViewData
 {
     [_shopname setTitle:_product.result.shop_info.shop_name forState:UIControlStateNormal];
-    _shoplocation.text = _product.result.shop_info.shop_location;
+    
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = [UIImage imageNamed:@"icon_location.png"];
+    
+    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+    
+    NSMutableAttributedString *myString= [[NSMutableAttributedString alloc]initWithAttributedString:attachmentString ];
+    NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.result.shop_info.shop_location attributes:nil];
+    [myString appendAttributedString:newAttString];
+    
+    _shoplocation.attributedText = myString;
     
     if(_product.result.shop_info.shop_is_gold == 1) {
         _goldShop.hidden = NO;
