@@ -20,7 +20,6 @@
 #import "ProductAddEditViewController.h"
 #import "ProductAddEditDetailViewController.h"
 #import "ProductEditImageViewController.h"
-#import "CameraController.h"
 #import "CategoryMenuViewController.h"
 #import "URLCacheController.h"
 #import "StickyAlertView.h"
@@ -30,6 +29,7 @@
 #import "CameraCollectionViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
+#import "TKPDPhotoPicker.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
@@ -41,7 +41,6 @@
     UITableViewDataSource,
     UITableViewDelegate,
     TKPDAlertViewDelegate,
-    CameraControllerDelegate,
     CategoryMenuViewDelegate,
     ProductEditDetailViewControllerDelegate,
     ProductEditImageViewControllerDelegate,
@@ -49,7 +48,7 @@
     CameraCollectionViewControllerDelegate,
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
-    CameraAlbumListDelegate
+    TKPDPhotoPickerDelegate
 >
 {
     NSMutableDictionary *_dataInput;
@@ -105,7 +104,8 @@
     
     TokopediaNetworkManager *_networkManager;
     ProductAddEditDetailViewController *_detailVC;
-    
+
+    TKPDPhotoPicker *_photoPicker;
     UIAlertView *_alertProcessing;
 }
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
@@ -126,13 +126,6 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumbProductImageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *defaultImageLabels;
 
--(void)cancelDeleteImage;
--(void)configureRestKitDeleteImage;
--(void)requestDeleteImage:(id)object;
--(void)requestSuccessDeleteImage:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureDeleteImage:(id)object;
--(void)requestProcessDeleteImage:(id)object;
--(void)requestTimeoutDeleteImage;
 
 @end
 
@@ -268,12 +261,13 @@
             break;
     }
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 -(void)viewDidLayoutSubviews
 {
-    _productImageScrollView.contentSize = _productImagesContentView.frame.size;
-    
+    [super viewDidLayoutSubviews];
+    _productImageScrollView.contentSize = _productImagesContentView.frame.size;    
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -445,17 +439,10 @@
 
 -(void)didTapImageButtonSingleSelection:(UIButton*)sender
 {
-    CameraController* c = [CameraController new];
-    [c snap];
-    c.tag = sender.tag-20;
-    c.delegate = self;
-    c.isTakePicture = YES;
-    c.isTakePicture = NO;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    nav.wantsFullScreenLayout = YES;
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
+                                                  pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+    _photoPicker.tag = sender.tag - 20;
+    _photoPicker.delegate = self;
 }
 
 - (IBAction)gesture:(id)sender
@@ -1180,10 +1167,11 @@
     
 }
 
-#pragma mark - Camera Controller Delegate
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+#pragma mark - TKPDPhotoPicker delegate
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
 {
-    [self setImageData:userinfo tag:controller.tag];
+    [self setImageData:userInfo tag:picker.tag];
 }
 
 -(void)didRemoveImageDictionary:(NSDictionary *)removedImage
@@ -1338,6 +1326,8 @@
     [_dataInput setObject:_productImageURLs forKey:DATA_LAST_DELETED_IMAGE_PATH];
     [_dataInput setObject:@(index) forKey:DATA_LAST_DELETED_INDEX];
     [_dataInput setObject:((UIImageView*)_thumbProductImageViews[index]).image forKey:DATA_LAST_DELETED_IMAGE];
+    [_selectedIndexPathCameraController removeObjectAtIndex:index];
+    [_selectedImagesCameraController replaceObjectAtIndex:index withObject:@""];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
@@ -1676,10 +1666,10 @@
             thumb.hidden = NO;
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
+                [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
                 thumb.userInteractionEnabled = YES;
                 

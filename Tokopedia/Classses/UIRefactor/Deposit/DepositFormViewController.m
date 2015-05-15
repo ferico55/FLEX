@@ -80,6 +80,7 @@
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (strong, nonatomic) IBOutlet UIView *otpViewArea;
 @property (strong, nonatomic) IBOutlet UIView *passwordViewArea;
+@property (strong, nonatomic) IBOutlet UIImageView *imgInfo;
 
 @property (nonatomic, strong) NSDictionary *userinfo;
 @property (nonatomic, strong) NSIndexPath *accountIndexPath;
@@ -114,7 +115,7 @@
     self.navigationItem.leftBarButtonItem = _barbuttonleft;
     
     _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonright setTintColor:[UIColor blackColor]];
+    [_barbuttonright setTintColor:[UIColor whiteColor]];
     [_barbuttonright setTag:11];
     self.navigationItem.rightBarButtonItem = _barbuttonright;
 }
@@ -162,6 +163,8 @@
     _chooseAccountButton.enabled = NO;
     
     // Do any additional setup after loading the view from its nib.
+    _imgInfo.userInteractionEnabled = YES;
+    [_imgInfo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionInfo:)]];
 }
 
 -(void)viewDidLayoutSubviews
@@ -400,6 +403,11 @@
     
     [_objectDepositFormManager.operationQueue cancelAllOperations];
     _objectDepositFormManager = nil;
+}
+
+#pragma mark - Gesture Action
+- (void)actionInfo:(UIGestureRecognizer *)gesture {
+    [_infoButton sendActionsForControlEvents:UIControlEventTouchUpInside];
 }
 
 

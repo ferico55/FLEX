@@ -134,7 +134,7 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    _processingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    _processingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading..." delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -171,10 +171,12 @@
     _addPictureNetworkManager.delegate = self;
     _addPictureNetworkManager.isParameterNotEncrypted = YES;
     _addPictureNetworkManager.tagRequest = TAG_REQUEST_PICTURE;
+    _addPictureNetworkManager.timeInterval = 30;
     
     _submitNetworkManager = [TokopediaNetworkManager new];
     _submitNetworkManager.delegate = self;
     _submitNetworkManager.tagRequest = TAG_REQUEST_SUBMIT;
+    _submitNetworkManager.timeInterval = 30;
     
     _editNetworkManager = [TokopediaNetworkManager new];
     _editNetworkManager.delegate = self;
@@ -255,7 +257,15 @@
             {
                 NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
                 if (type == TYPE_ADD_EDIT_PRODUCT_ADD|| type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-                    [_validationNetworkManager doRequest];
+                    NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
+                    if ([postKey isEqualToString:@""]|| postKey == nil) {
+                        [_validationNetworkManager doRequest];
+                    }
+                    else
+                    {
+                        [_processingAlert show];
+                        [_addPictureNetworkManager doRequest];
+                    }
                 } else {
                     [_editNetworkManager doRequest];
                 }

@@ -614,10 +614,10 @@
     }
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    
-}
+//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//{
+//    
+//}
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     [_refreshControl endRefreshing];

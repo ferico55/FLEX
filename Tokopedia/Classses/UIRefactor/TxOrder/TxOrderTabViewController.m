@@ -13,12 +13,17 @@
 
 #import "string_tx_order.h"
 
-#import "camera.h"
-#import "CameraController.h"
+#import "TKPDPhotoPicker.h"
 
 #import "TxOrderPaymentViewController.h"
 
-@interface TxOrderTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TxOrderConfirmedViewControllerDelegate, TxOrderConfirmationViewControllerDelegate>
+@interface TxOrderTabViewController ()
+<
+    UIPageViewControllerDataSource,
+    UIPageViewControllerDelegate,
+    TxOrderConfirmedViewControllerDelegate,
+    TxOrderConfirmationViewControllerDelegate
+>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -127,7 +132,7 @@
     }
     [self viewControllerAtIndex:_index];
     UIColor *disableColor =[UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
-    UIColor *enableColor = [UIColor colorWithRed:0/255.0f green:122.0f/255.0f blue:255.0f/255.0f alpha:1];
+    UIColor *enableColor = [UIColor colorWithRed:66.0/255.0f green:189.0/255.0f blue:65.0/255.0f alpha:1];
     if (_isMultipleSelect)[_segmentControl setTintColor:disableColor]; else [_segmentControl setTintColor:enableColor];
     _segmentControl.enabled = !_isMultipleSelect;
 }
@@ -230,21 +235,6 @@
 
 #pragma mark - Delegate
 
--(void)uploadProof
-{
-    CameraController* c = [CameraController new];
-    [c snap];
-    if ([_ConfirmedViewController conformsToProtocol:@protocol(CameraControllerDelegate)]) {
-        c.delegate = (id <CameraControllerDelegate>)_ConfirmedViewController;
-    }
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    nav.wantsFullScreenLayout = YES;
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-
-}
-
 -(void)editPayment:(TxOrderConfirmedList*)object
 {
     TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
@@ -273,7 +263,7 @@
 
     [self viewControllerAtIndex:_index];
     UIColor *disableColor =[UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
-    UIColor *enableColor = [UIColor colorWithRed:0/255.0f green:122.0f/255.0f blue:255.0f/255.0f alpha:1];
+    UIColor *enableColor = [UIColor colorWithRed:66.0/255.0f green:189.0/255.0f blue:65.0/255.0f alpha:1];
     if (_isMultipleSelect)[_segmentControl setTintColor:disableColor]; else [_segmentControl setTintColor:enableColor];
     _segmentControl.enabled = !_isMultipleSelect;
     _isRefresh = YES;
