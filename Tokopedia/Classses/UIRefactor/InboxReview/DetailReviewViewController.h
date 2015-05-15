@@ -17,6 +17,7 @@
 @property (strong,nonatomic) Shop *shop;
 @property (strong,nonatomic) NSString *is_owner;
 @property (nonatomic) NSString *index;
+@property (nonatomic) NSIndexPath *indexPath;
 
 
 

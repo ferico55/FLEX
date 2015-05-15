@@ -19,6 +19,8 @@
 #import "DetailProductViewController.h"
 
 #import "detail.h"
+#import "string_inbox_talk.h"
+
 
 @interface GeneralTalkCell () <UIActionSheetDelegate> {
     NavigateViewController *_navigateController;
@@ -115,7 +117,10 @@
     
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : productId};
-    [nav.navigationController pushViewController:vc animated:YES];
+    
+    if(![talkList.talk_product_status isEqualToString:STATE_TALK_PRODUCT_DELETED] && ![talkList.talk_product_status isEqualToString:STATE_TALK_PRODUCT_BANNED]) {
+        [nav.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)tapMessage {

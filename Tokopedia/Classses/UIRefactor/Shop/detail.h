@@ -538,6 +538,7 @@ typedef enum
 #define kTKPDREVIEW_APIREVIEWIDKEY @"review_id"
 
 #define kTKPDREVIEW_APIPRODUCTNAMEKEY @"review_product_name"
+#define kTKPDREVIEW_APIPRODUCTSTATUSKEY @"review_product_status"
 #define kTKPDREVIEW_APIPRODUCTIDKEY @"review_product_id"
 #define kTKPDREVIEW_APIPRODUCTIMAGEKEY @"review_product_image"
 

@@ -458,9 +458,9 @@
 - (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *userinfo;
     
-    userinfo = @{@"index": _index, @"review_comment" : _commentReview, @"review_comment_time" : @"Just Now"};
+    userinfo = @{@"index": _index, @"review_comment" : _commentReview, @"review_comment_time" : @"Just Now", @"indexPath" : _indexPath};
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalComment" object:nil userInfo:userinfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalReviewComment" object:nil userInfo:userinfo];
 }
 
 #pragma mark - Action Delete Review
@@ -560,9 +560,9 @@
                 } else {
                     NSDictionary *userinfo;
                     [_talkInputView setHidden:NO];
-                    userinfo = @{@"index": _index, @"review_comment" : @"0", @"review_comment_time" : @"Just Now"};
+                    userinfo = @{@"index": _index, @"review_comment" : @"0", @"review_comment_time" : @"Just Now", @"indexPath" : _indexPath};
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalComment" object:nil userInfo:userinfo];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalReviewComment" object:nil userInfo:userinfo];
                 }
             }
         }
@@ -601,8 +601,9 @@
 }
 
 - (void)tapProduct {
-    
-    [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+    if(![_review.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![_review.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
+        [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+    }
 }
 
 #pragma mark - Alert Delegate
