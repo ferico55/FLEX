@@ -196,7 +196,8 @@
         
         if (_list.count > indexPath.row) {
             EtalaseList *list = _list[indexPath.row];
-
+            list.etalase_name = [NSString convertHTML:list.etalase_name];
+            
             if (list.etalase_name.length > 20) {
                 NSRange stringRange = {0, MIN([list.etalase_name length], 20)};
                 stringRange = [list.etalase_name rangeOfComposedCharacterSequencesForRange:stringRange];

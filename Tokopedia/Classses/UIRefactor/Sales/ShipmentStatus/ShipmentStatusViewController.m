@@ -771,6 +771,15 @@
     history.history_seller_status = sellerStatus;
     [_selectedOrder.order_history insertObject:history atIndex:0];
     _selectedOrder.order_detail.detail_order_status = ORDER_DELIVERED;
+    _selectedOrder.order_deadline.deadline_finish_day_left = 3;
+    
+    NSDate *deadlineFinishDate = [[NSDate date] dateByAddingTimeInterval:60*60*24*3];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd-MM-yyyy"];
+
+    _selectedOrder.order_deadline.deadline_finish_date = [dateFormatter stringFromDate:deadlineFinishDate];
+    
     [self.tableView reloadData];
 }
 
