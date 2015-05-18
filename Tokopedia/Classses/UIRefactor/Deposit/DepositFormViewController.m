@@ -363,7 +363,7 @@
             
             if (status) {
                 [_useableSaldoIDR setText:depositForm.result.useable_deposit_idr];
-                _useableSaldoStr = depositForm.result.useable_deposit_idr;
+                _useableSaldoStr = depositForm.result.useable_deposit;
                 _chooseAccountButton.enabled = YES;
                 [_listBankAccount addObjectsFromArray:depositForm.result.bank_account];
                 NSString *verifiedState = depositForm.result.msisdn_verified;

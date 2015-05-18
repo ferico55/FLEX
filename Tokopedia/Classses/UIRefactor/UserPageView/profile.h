@@ -18,6 +18,7 @@ typedef enum
 } TYPE_ADD_EDIT_PROFILE;
 
 #define kTKPDPROFILEEDIT_TITLE @"Atur Profil"
+#define ktkpdAddBankAccount @"Tambah Akun"
 #define kTKPDPROFILEEDITPHONEConfirmed_TITLE @"Confirmed Phone Number"
 #define kTKPDPROFILESAVE @"Simpan"
 #define kTKPDPROFILEEDIT @"Ubah"
