@@ -9,7 +9,7 @@
 #import "RequestUploadImage.h"
 
 #import "StickyAlertView.h"
-
+#import "NSString+HTML.h"
 #import "detail.h"
 #import "camera.h"
 #import "Upload.h"
@@ -179,11 +179,20 @@
 
 -(void)showErrorMessages:(NSArray*)messages
 {
-    NSArray *messagesError;
+    NSMutableArray *messagesError;
     if (messages.count == 0) {
-        messagesError = @[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."];
+        messagesError = [NSMutableArray new];
+        [messagesError addObject:@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."];
     }
-    else messagesError = messages;
+    else {
+        messagesError = [NSMutableArray new];
+        for(int i=0;i<messages.count;i++) {
+            NSString *str = [NSString stringWithFormat:@"%@", [messages objectAtIndex:i]];
+            str = [NSString convertHTML:str];
+            [messagesError addObject:str];
+        }
+    }
+    
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messagesError delegate:_delegate];
     [alert show];
 }
