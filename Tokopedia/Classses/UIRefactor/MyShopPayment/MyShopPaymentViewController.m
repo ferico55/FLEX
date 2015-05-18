@@ -1172,7 +1172,7 @@
 
 - (void)failedUploadObject:(id)object
 {
-    [self failedGenerateHost];
+    [self isLoading:NO];
     uploadImageRequest.delegate = nil;
     [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;

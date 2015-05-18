@@ -115,6 +115,9 @@ UIAlertViewDelegate>
 
 
 - (void)initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTotalReviewComment:)
+                                                 name:@"updateTotalReviewComment" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateReviewHeaderPosition:)
@@ -405,7 +408,8 @@ UIAlertViewDelegate>
                                                  kTKPDREVIEW_APIPRODUCTNAMEKEY,
                                                  kTKPDREVIEW_APIPRODUCTIDKEY,
                                                  kTKPDREVIEW_APIPRODUCTIMAGEKEY,
-                                                 kTKPDREVIEW_APIREVIEWISOWNERKEY
+                                                 kTKPDREVIEW_APIREVIEWISOWNERKEY,
+                                                 kTKPDREVIEW_APIPRODUCTSTATUSKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -648,6 +652,7 @@ UIAlertViewDelegate>
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
     vc.shop = _shop;
     vc.is_owner = _reviewIsOwner;
+    vc.indexPath = indexpath;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -660,7 +665,7 @@ UIAlertViewDelegate>
     /** clear object **/
     [self cancel];
     _requestCount = 0;
-    //    [_talks removeAllObjects];
+    [_list removeAllObjects];
     _page = 1;
     _isRefreshView = YES;
     
@@ -733,6 +738,21 @@ UIAlertViewDelegate>
     return self;
 }
 
+#pragma mark - Notification Center Action 
+- (void)updateTotalReviewComment:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger index = [[userinfo objectForKey:@"index"]integerValue];
+    
+    ReviewList *list = _list[index];
+    
+    list.review_response.response_message = [userinfo objectForKey:@"review_comment"];
+    list.review_response.response_create_time = [userinfo objectForKey:@"review_comment_time"];
+    
+    NSIndexPath *indexPath = [userinfo objectForKey:@"indexPath"];
+//    [_table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_table reloadData];
+    
+}
 
 
 /*

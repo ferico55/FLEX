@@ -34,7 +34,8 @@
 #define CStringFillDescLaporan @"Isi deskripsi"
 #define CStringErrorKirimLaporan @"Gagal kirim laporan"
 
-
+#define STATE_TALK_PRODUCT_DELETED @"0"
+#define STATE_TALK_PRODUCT_BANNED @"-2"
 
 
 #endif

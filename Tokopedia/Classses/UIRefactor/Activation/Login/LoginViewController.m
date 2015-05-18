@@ -506,6 +506,7 @@
                                                                     object:nil
                                                                   userInfo:nil];
             }
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else if ([_login.result.status isEqualToString:@"1"]) {
 

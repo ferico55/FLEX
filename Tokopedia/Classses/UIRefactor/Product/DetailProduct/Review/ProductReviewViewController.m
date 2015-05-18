@@ -138,6 +138,10 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTotalReviewComment:)
+                                                 name:@"updateTotalReviewComment" object:nil];
+    
     if (_list.count>2) {
         _isnodata = NO;
     }
@@ -679,6 +683,7 @@
     vc.data = reviewlist;
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
     vc.is_owner = _reviewIsOwner;
+    vc.indexPath = indexpath;
     
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -729,6 +734,21 @@
         default:
             break;
     }
+}
+
+#pragma mark - Notification Center Action
+- (void)updateTotalReviewComment:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger index = [[userinfo objectForKey:@"index"]integerValue];
+    NSIndexPath *indexPath = [userinfo objectForKey:@"indexPath"];
+    
+    ReviewList *list = _list[index];
+    
+    list.review_response.response_message = [userinfo objectForKey:@"review_comment"];
+    list.review_response.response_create_time = [userinfo objectForKey:@"review_comment_time"];
+//    [_table reloadData];
+    [_table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
 }
 
 @end

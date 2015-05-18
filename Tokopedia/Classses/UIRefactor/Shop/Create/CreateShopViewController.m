@@ -13,6 +13,8 @@
 #import "MyShopShipmentTableViewController.h"
 #import "RequestUploadImage.h"
 #import "string_create_shop.h"
+#import "TKPDPhotoPicker.h"
+
 @implementation CustomTxtView
 @synthesize createShopViewController;
 - (void)dealloc
@@ -172,11 +174,12 @@
 
 
 
-@interface CreateShopViewController ()
+@interface CreateShopViewController ()<TKPDPhotoPickerDelegate>
 @end
 
 @implementation CreateShopViewController
 {
+    TKPDPhotoPicker *tkpdPicker;
     BOOL hasLoadViewWillAppear, isValidDomain, hasSetImgGambar;
     RKObjectManager *objectManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
@@ -455,12 +458,9 @@
 
 - (void)showImage:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:CStringChoose
-                                                             delegate:self
-                                                    cancelButtonTitle:CStringCancel
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:CStringPickCamera, CStringPickGallery, nil];
-    [actionSheet showInView:self.view];
+    tkpdPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+    tkpdPicker.delegate = self;
+    tkpdPicker.tag = 123;
 }
 
 
@@ -813,45 +813,38 @@
 
 
 #pragma mark - UIImagePicker Delegate
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
-}
+    NSDictionary *dict = [userInfo objectForKey:@"photo"];
+    NSString *strImageName = [dict objectForKey:DATA_CAMERA_IMAGENAME];
+    hasSetImgGambar = YES;
+    imgGambar.image = [dict objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    [self checkValidation:nil withSlogan:nil withDesc:nil];
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    NSString *strImageName = @"asset.JPG";
-    if(picker.view.tag == 0) //Camera
-    {
-        hasSetImgGambar = YES;
-        UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-        chosenImage = [self resizeImage:chosenImage];
-        imgGambar.image = chosenImage;
-        [self checkValidation:nil withSlogan:nil withDesc:nil];
-    }
-    else
-    {
-        hasSetImgGambar = YES;
-        imgGambar.image = info[UIImagePickerControllerOriginalImage];
-        imgGambar.image = [self resizeImage:imgGambar.image];
-        NSURL *imagePath = [info objectForKey:UIImagePickerControllerReferenceURL];
-        strImageName = [imagePath lastPathComponent];
-        
-        [self checkValidation:nil withSlogan:nil withDesc:nil];
-    }
     
     NSMutableDictionary *dictContent = [NSMutableDictionary new];
     dictContentPhoto = [NSMutableDictionary dictionaryWithObjectsAndKeys:dictContent, DATA_SELECTED_PHOTO_KEY, nil];
     
     NSMutableDictionary *dictPhoto = [NSMutableDictionary new];
     [dictContent setObject:dictPhoto forKey:kTKPDCAMERA_DATAPHOTOKEY];
-    [dictPhoto setObject:UIImageJPEGRepresentation(imgGambar.image, 1.0f) forKey:DATA_CAMERA_IMAGEDATA];
+    [dictPhoto setObject:[dict objectForKey:DATA_CAMERA_IMAGEDATA] forKey:DATA_CAMERA_IMAGEDATA];
     [dictPhoto setObject:strImageName forKey:DATA_CAMERA_IMAGENAME];
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    
     [tempImage removeFromSuperview];
     tempImage = nil;
 }
+
+
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didFinishPickingImage:(UIImage *)image
+{
+    
+}
+
+//- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+//{
+//    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
+//}
+
 
 
 #pragma mark - UITextField Delegate

@@ -441,7 +441,7 @@
                 [_shopdictionary setObject:_shop forKey:@"b"];
             }
             
-            _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
+            _shopdictionarytitle = @[@"Rekomendasi",@""];
 
             
             if (_shop.count + _goldshop.count >0) {

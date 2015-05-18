@@ -356,7 +356,7 @@
             
             if (status) {
                 [_useableSaldoIDR setText:depositForm.result.useable_deposit_idr];
-                _useableSaldoStr = depositForm.result.useable_deposit_idr;
+                _useableSaldoStr = depositForm.result.useable_deposit;
                 _chooseAccountButton.enabled = YES;
                 [_listBankAccount addObjectsFromArray:depositForm.result.bank_account];
                 NSString *verifiedState = depositForm.result.msisdn_verified;
@@ -506,6 +506,8 @@
                     if ([action.result.is_success isEqualToString:@"1"]) {
                         [self.navigationController popViewControllerAnimated:YES];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadListDeposit" object:nil userInfo:nil];
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
                     }
                 }

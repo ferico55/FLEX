@@ -96,7 +96,7 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    _table.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
+    _table.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
     
     if (_product.count > 0) {
         _isnodata = NO;

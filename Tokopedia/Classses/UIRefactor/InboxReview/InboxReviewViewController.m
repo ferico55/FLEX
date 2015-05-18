@@ -114,8 +114,8 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateTotalComment:)
-                                                 name:@"updateTotalComment"
+                                             selector:@selector(updateTotalReviewComment:)
+                                                 name:@"updateTotalReviewComment"
                                                object:nil];
 }
 
@@ -682,6 +682,7 @@
     
     vc.data = list;
     vc.is_owner = list.review_is_owner;
+    vc.indexPath = indexpath;
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
     
     vc.hidesBottomBarWhenPushed = YES;
@@ -849,7 +850,7 @@
     [self loadData];
 }
 
-- (void)updateTotalComment:(NSNotification*)notification {
+- (void)updateTotalReviewComment:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"index"]integerValue];
     
