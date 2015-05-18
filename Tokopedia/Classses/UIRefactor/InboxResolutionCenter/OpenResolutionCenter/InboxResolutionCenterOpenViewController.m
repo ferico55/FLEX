@@ -228,32 +228,35 @@
         }
     }
     
-    NSDictionary *object = @{
-                                DATA_SELECTED_PHOTO_KEY : userInfo,
-                                DATA_SELECTED_IMAGE_VIEW_KEY : imageView
-                            };
-
-    UIImage *image = [[userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    for (UIButton *button in _uploadButtons) {
-        if (button.tag == picker.tag) {
-            button.enabled = NO;
-            button.hidden = YES;
-        } else if (button.tag == picker.tag+1) {
-            button.enabled = YES;
-            button.hidden = NO;
+    if (userInfo != nil && imageView != nil) {
+        NSDictionary *object = @{
+                                 DATA_SELECTED_PHOTO_KEY : userInfo,
+                                 DATA_SELECTED_IMAGE_VIEW_KEY : imageView
+                                 };
+        
+        UIImage *image = [[userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+        
+        UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
+        [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        for (UIButton *button in _uploadButtons) {
+            if (button.tag == picker.tag) {
+                button.enabled = NO;
+                button.hidden = YES;
+            } else if (button.tag == picker.tag+1) {
+                button.enabled = YES;
+                button.hidden = NO;
+            }
         }
+        
+        imageView.image = image;
+        imageView.hidden = NO;
+        imageView.alpha = 0.5f;
+        
+        [self actionUploadImage:object];   
     }
-    
-    imageView.image = image;
-    imageView.hidden = NO;
-    imageView.alpha = 0.5f;
-    
-    [self actionUploadImage:object];
 }
 
 //-(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo

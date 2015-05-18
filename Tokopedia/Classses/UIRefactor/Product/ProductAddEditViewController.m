@@ -48,7 +48,6 @@
     CameraCollectionViewControllerDelegate,
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
-    CameraAlbumListDelegate,
     TKPDPhotoPickerDelegate
 >
 {
