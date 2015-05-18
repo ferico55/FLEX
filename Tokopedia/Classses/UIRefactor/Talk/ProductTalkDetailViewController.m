@@ -35,6 +35,7 @@
 
 #import "stringrestkit.h"
 #import "string_more.h"
+#import "string_inbox_talk.h"
 
 @interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate>
 {
@@ -222,8 +223,15 @@
     
     [self setHeaderData:_data];
     
+    //islogin
     if([_userManager getUserId] && ![[_userManager getUserId] isEqualToString:@"0"]) {
-        [self initTalkInputView];
+        //isbanned product
+        if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
+           ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
+           ) {
+            [self initTalkInputView];
+        }
+
     }
 
     

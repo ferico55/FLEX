@@ -295,11 +295,11 @@
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
 
-            if([list.talk_product_status isEqualToString:@"0"]) {
-                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
-            } else {
-                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
-            }
+//            if([list.talk_product_status isEqualToString:@"0"]) {
+//                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
+//            } else {
+//                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
+//            }
             
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
@@ -370,7 +370,7 @@
                                                  TKPD_TALK_ID,
                                                  TKPD_TALK_PRODUCT_IMAGE,
                                                  TKPD_TALK_OWN,
-                                                 TKPD_TALK_USER_ID
+                                                 TKPD_TALK_USER_ID,
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -592,7 +592,8 @@
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
                 TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:0,
-                TKPD_TALK_PRODUCT_NAME:list.talk_product_name
+                TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
+                TKPD_TALK_PRODUCT_STATUS:list.talk_product_status
                 };
     
 //    DetailProductViewController *vc = [DetailProductViewController new];

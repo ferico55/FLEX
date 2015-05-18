@@ -12,6 +12,7 @@
 #import "ReviewList.h"
 #import "stringrestkit.h"
 #import "NavigateViewController.h"
+#import "string_inbox_review.h"
 
 #pragma mark - General Review Cell
 @implementation GeneralReviewCell
@@ -131,7 +132,10 @@
     UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
     
     ReviewList *list = (ReviewList *)_data;
-    [navigation navigateToProductFromViewController:nav withProductID:list.review_product_id];
+    if(![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
+        [navigation navigateToProductFromViewController:nav withProductID:list.review_product_id];
+    }
+
 }
 
 - (void)tapReview {
