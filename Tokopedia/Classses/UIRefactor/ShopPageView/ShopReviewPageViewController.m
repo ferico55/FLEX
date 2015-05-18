@@ -97,7 +97,6 @@ UIAlertViewDelegate>
     NSTimeInterval _timeInterval;
     Review *_review;
     Shop *_shop;
-    ShopPageHeader *_shopPageHeader;
     NoResultView *_noResult;
 }
 

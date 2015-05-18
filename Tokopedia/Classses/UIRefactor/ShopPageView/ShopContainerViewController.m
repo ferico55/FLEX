@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
 #import "LoginViewController.h"
+#import "ShopPageHeader.h"
 #import "ShopContainerViewController.h"
 #import "ShopTalkPageViewController.h"
 #import "ShopProductPageViewController.h"
@@ -277,8 +278,12 @@
     
 }
 
-- (void)postNotificationSetShopHeader {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
+- (void)updateHeaderShopPage
+{
+    [_shopNotesViewController.shopPageHeader setHeaderShopPage:_shop];
+    [_shopProductViewController.shopPageHeader setHeaderShopPage:_shop];
+    [_shopReviewViewController.shopPageHeader setHeaderShopPage:_shop];
+    [_shopTalkViewController.shopPageHeader setHeaderShopPage:_shop];
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
@@ -599,7 +604,7 @@
                 [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];
                 [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
                 _isNoData = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
+                [self updateHeaderShopPage];
             }
         }
         else{
@@ -802,20 +807,20 @@
             case 10:
             {
                 [_pageController setViewControllers:@[_shopTalkViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
+                [self updateHeaderShopPage];
                 break;
             }
             case 11:
             {
                 [_pageController setViewControllers:@[_shopReviewViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
+                [self updateHeaderShopPage];
                 break;
             }
             case 12:
             {
                 
                 [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
+                [self updateHeaderShopPage];
                 break;
             }
                 
@@ -823,7 +828,7 @@
             {
                 
                 [_pageController setViewControllers:@[_shopProductViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
+                [self updateHeaderShopPage];
                 break;
             }
             default:
