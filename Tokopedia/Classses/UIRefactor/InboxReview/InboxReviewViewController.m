@@ -196,7 +196,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    self.screenName = @"Inbox Review";
     if (!_isRefreshing) {
         [self configureRestkit];
         

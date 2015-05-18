@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProductListMyShopViewController : UIViewController
+@interface ProductListMyShopViewController : GAITrackedViewController
 
 @property (nonatomic, strong) NSDictionary *data;
 - (void)setArrayList:(NSArray *)arrList;

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InboxResolutionCenterTabViewController : UIViewController
+@interface InboxResolutionCenterTabViewController : GAITrackedViewController
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceButtons;
 

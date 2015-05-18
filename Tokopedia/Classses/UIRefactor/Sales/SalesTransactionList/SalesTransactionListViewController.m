@@ -101,6 +101,7 @@
     [super viewWillAppear:animated];
     
     self.title = @"Daftar Transaksi";
+    self.screenName = @"Transaction List";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

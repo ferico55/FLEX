@@ -49,7 +49,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    self.screenName = @"Transaction - Buy Page";
     self.hidesBottomBarWhenPushed = YES;
     
     _notificationManager = [NotificationManager new];

@@ -151,6 +151,12 @@
     [_networkManager doRequest];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.screenName = @"Shop - Manage Product";
+
+}
+
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

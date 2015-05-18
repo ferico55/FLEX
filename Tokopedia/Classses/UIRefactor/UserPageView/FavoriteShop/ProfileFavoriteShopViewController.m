@@ -138,6 +138,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.screenName = @"Profile - Favorited Shop";
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata && _profile) {

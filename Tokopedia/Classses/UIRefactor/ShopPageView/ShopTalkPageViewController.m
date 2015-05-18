@@ -195,6 +195,7 @@ UIAlertViewDelegate>
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.screenName = @"Shop - Talk List";
     _userManager = [UserAuthentificationManager new];
     if (!_isrefreshview) {
         [self configureRestKit];

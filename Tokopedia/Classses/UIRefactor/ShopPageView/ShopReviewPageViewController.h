@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShopReviewPageViewController : UIViewController
+@interface ShopReviewPageViewController : GAITrackedViewController
 
 @property (assign, nonatomic) NSInteger indexNumber;
 @property (nonatomic, strong) NSDictionary *data;

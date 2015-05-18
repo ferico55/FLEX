@@ -102,6 +102,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     _tableView.contentOffset = CGPointZero;
     [self setDataDefault];
     [_tableView reloadData];
@@ -311,6 +312,7 @@
     
      if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)])
      {
+         self.screenName = @"Thank you Page - Saldo Tokopedia";
          NSArray *detailPaymentIfUsingSaldo = @[
                                                 @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
                                                   DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
@@ -329,6 +331,7 @@
      }
     else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)])
     {
+        self.screenName = @"Thank you Page - Transfer Bank";
         if ([_cartBuy.transaction.voucher_amount integerValue]>0) {
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
@@ -357,6 +360,13 @@
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)] ||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)])
     {
+        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]) {
+            self.screenName = @"Thank you Page - Mandiri eCash";
+        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)]) {
+            self.screenName = @"Thank you Page - Mandiri ClickPay";
+        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)]) {
+            self.screenName = @"Thank you Page - KlikBca";
+        }
         NSArray *detailPaymentIfUsingSaldo = @[
                                                @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
                                                  DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""

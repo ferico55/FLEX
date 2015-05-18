@@ -107,6 +107,7 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    self.screenName = @"Home - Wishlist";
  
     //Check Difference userID
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
 
-@interface RegisterViewController : UIViewController
+@interface RegisterViewController : GAITrackedViewController
 
 @end

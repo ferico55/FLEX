@@ -150,6 +150,13 @@
     [super viewWillAppear:animated];
     
     self.title = _viewControllerTitle?:@" ";
+    if ([_action isEqualToString:@"get_tx_order_status"]) {
+        self.screenName = @"Order Status";
+    } else if ([_action isEqualToString:@"get_tx_order_deliver"]) {
+        self.screenName = @"Received Confirmation";
+    } else {
+        self.screenName = @"Transaction List";
+    }
     _networkManager.delegate = self;
 }
 

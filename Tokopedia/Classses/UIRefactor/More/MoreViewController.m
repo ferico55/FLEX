@@ -171,6 +171,11 @@
     
     [self updateSaldoTokopedia:nil];
     
+    //manual GA Track
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:@"More Navigation Page"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
 //    if (_isNoDataDeposit) {
     
 //    } else {
@@ -627,16 +632,27 @@
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker set:kGAIScreenName value:@"Contact Us"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
+            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
             [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         } else if(indexPath.row == 1) {
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker set:kGAIScreenName value:@"FAQ Center"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_HELP_URL;
             webViewController.strTitle = kTKPDMORE_HELP_TITLE;
             [self.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 2) {
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker set:kGAIScreenName value:@"Privacy Policy"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
