@@ -87,6 +87,25 @@
 
 @implementation MoreViewController
 
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self){
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadNotification)
+                                                     name:@"reloadNotification"
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateSaldoTokopedia:)
+                                                     name:@"updateSaldoTokopedia" object:nil];
+
+    }
+    return self;
+}
+
+
 - (void)viewDidLoad
 {
     
@@ -108,56 +127,52 @@
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
+    self.navigationController.title = @"More";
+    [self initNotificationManager];
+    
+    
+    
+    
+    
+    
+    
+    // Remove default table inset
+    self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
+    
+    // Set round corner profile picture
+    self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.width/2;
+    self.profilePictureImageView.layer.borderColor = [UIColor colorWithRed:(224/255) green:(224/255) blue:(224/255) alpha:(0.1)].CGColor;
+    self.profilePictureImageView.layer.borderWidth = 1.0;
+    
+    // Set round corner profile picture
+    self.shopImageView.layer.cornerRadius = self.shopImageView.frame.size.width/2;
+    self.shopImageView.layer.borderColor = [UIColor colorWithRed:(224/255) green:(224/255) blue:(224/255) alpha:(0.1)].CGColor;
+    self.shopImageView.layer.borderWidth = 1.0;
+    
+    // Set create shop button corner
+    self.createShopButton.layer.cornerRadius = 2;
+    
+    //Load Deposit
+    _depositLabel.hidden = YES;
+    _loadingSaldo.hidden = NO;
+    
+    
     [self setShopImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     if(! self.view.isUserInteractionEnabled)
         self.view.userInteractionEnabled = YES;
-        
-    if(hasLoadViewWillAppear) {
-        return;
-    }
     
-    hasLoadViewWillAppear = !hasLoadViewWillAppear;
-    [super viewWillAppear:animated];
-    
-    self.navigationController.title = @"More";
-    [self initNotificationManager];
-    
-
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadNotification)
-                                                 name:@"reloadNotification"
-                                               object:nil];
-
-    // Remove default table inset
-    self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
-
-    // Set round corner profile picture
-    self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.width/2;
-    self.profilePictureImageView.layer.borderColor = [UIColor colorWithRed:(224/255) green:(224/255) blue:(224/255) alpha:(0.1)].CGColor;
-    self.profilePictureImageView.layer.borderWidth = 1.0;
-
-    // Set round corner profile picture
-    self.shopImageView.layer.cornerRadius = self.shopImageView.frame.size.width/2;
-    self.shopImageView.layer.borderColor = [UIColor colorWithRed:(224/255) green:(224/255) blue:(224/255) alpha:(0.1)].CGColor;
-    self.shopImageView.layer.borderWidth = 1.0;
-
-    // Set create shop button corner
-    self.createShopButton.layer.cornerRadius = 2;
-    
+    [self updateSaldoTokopedia:nil];
     
 //    if (_isNoDataDeposit) {
-        _depositLabel.hidden = YES;
-        _loadingSaldo.hidden = NO;
-        
-        [self configureRestKit];
-        [self loadDataDeposit];
+    
 //    } else {
 //        _depositLabel.hidden = NO;
 //        _loadingSaldo.hidden = YES;
@@ -172,6 +187,8 @@
     if (selectedIndexPath != nil) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
+    
+//    [self updateSaldoTokopedia:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -760,4 +777,11 @@
     createShopViewController.moreViewController = self;
     [self pushViewController:createShopViewController];
 }
+
+- (void)updateSaldoTokopedia:(NSNotification*)notification {
+    [self configureRestKit];
+    [self loadDataDeposit];
+}
+
+
 @end

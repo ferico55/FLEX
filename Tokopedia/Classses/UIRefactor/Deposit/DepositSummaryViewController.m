@@ -124,6 +124,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(disableButtonWithdraw)
                                                  name:@"removeButtonWithdraw" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateSaldoTokopedia:)
+                                                 name:@"updateSaldoTokopedia" object:nil];
 }
 
 #pragma mark - ViewController Life
@@ -487,7 +491,7 @@
                 
             case 14 :  {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia" message:
-                                          [NSString stringWithFormat: @"\n \n -%@ %@\n\n-%@ %@\n%@\n\n-%@ %@\n\n-%@ %@\n\n-%@\n\n-%@",
+                                          [NSString stringWithFormat: @"\n -%@ %@\n\n-%@ %@\n%@\n\n-%@ %@\n\n-%@ %@\n\n-%@\n\n-%@",
                                            @" Total Saldo Tokopedia Anda adalah",
                                            _totalSaldoTokopedia,
                                            @" Saldo Tokopedia Anda yang sedang kami review sebesar",
@@ -727,6 +731,10 @@
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton
 {
+    [self loadData];
+}
+
+- (void)updateSaldoTokopedia:(NSNotification*)notification {
     [self loadData];
 }
 @end
