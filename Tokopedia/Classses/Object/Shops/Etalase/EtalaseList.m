@@ -10,4 +10,8 @@
 
 @implementation EtalaseList
 
+- (NSString *)etalase_name {
+    return [_etalase_name kv_decodeHTMLCharacterEntities];
+}
+
 @end
