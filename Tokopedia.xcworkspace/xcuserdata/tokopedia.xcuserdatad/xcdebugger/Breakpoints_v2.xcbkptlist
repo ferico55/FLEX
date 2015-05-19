@@ -169,7 +169,7 @@
                   symbolName = "-[TxOrderConfirmedViewController requestProof:]"
                   moduleName = "Tokopedia"
                   urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/TxOrder/PaymentConfirmed/TxOrderConfirmedViewController.m"
-                  timestampString = "453712628.160245"
+                  timestampString = "453713480.953901"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "768"
@@ -183,7 +183,7 @@
                   symbolName = "__47-[TxOrderConfirmedViewController requestProof:]_block_invoke"
                   moduleName = "Tokopedia"
                   urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/TxOrder/PaymentConfirmed/TxOrderConfirmedViewController.m"
-                  timestampString = "453712628.160507"
+                  timestampString = "453713480.95404"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "768"
@@ -199,44 +199,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Activation/Login/LoginViewController.m"
-            timestampString = "453711909.292491"
+            filePath = "Tokopedia/MainViewController.m"
+            timestampString = "453713191.263377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "410"
-            endingLineNumber = "410"
-            landmarkName = "-requestActionLogin:"
+            startingLineNumber = "683"
+            endingLineNumber = "683"
+            landmarkName = "-actionAfterRequest:withOperation:withTag:"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[LoginViewController requestActionLogin:]"
-                  moduleName = "Tokopedia"
-                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/Activation/Login/LoginViewController.m"
-                  timestampString = "453712628.161517"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "410"
-                  endingLineNumber = "410"
-                  offsetFromSymbolStart = "1200">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__42-[LoginViewController requestActionLogin:]_block_invoke"
-                  moduleName = "Tokopedia"
-                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/Activation/Login/LoginViewController.m"
-                  timestampString = "453712628.161769"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "410"
-                  endingLineNumber = "410"
-                  offsetFromSymbolStart = "86">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

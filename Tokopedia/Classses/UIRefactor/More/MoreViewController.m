@@ -166,9 +166,6 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    if(! self.view.isUserInteractionEnabled)
-        self.view.userInteractionEnabled = YES;
-    
     [self updateSaldoTokopedia:nil];
     
     //    if (_isNoDataDeposit) {
@@ -645,7 +642,6 @@
     }
     
     else if (indexPath.section == 6) {
-        self.view.userInteractionEnabled = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                             object:nil
                                                           userInfo:@{}];
