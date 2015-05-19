@@ -764,10 +764,15 @@
 
 #pragma mark - Track order delegate
 
-- (void)updateDeliveredOrder
+- (void)updateDeliveredOrder:(NSString *)receiverName
 {
     OrderHistory *history = [OrderHistory new];
-    NSString *sellerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan<br>Received by %@", _selectedOrder.order_customer.customer_name];
+    NSString *sellerStatus;
+    if ([receiverName isEqualToString:@""] || receiverName == NULL) {
+        sellerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan"];
+    } else {
+        sellerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan<br>Received by %@", receiverName];
+    }
     history.history_seller_status = sellerStatus;
     [_selectedOrder.order_history insertObject:history atIndex:0];
     _selectedOrder.order_detail.detail_order_status = ORDER_DELIVERED;

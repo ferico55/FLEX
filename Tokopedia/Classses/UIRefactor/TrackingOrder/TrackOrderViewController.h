@@ -13,7 +13,7 @@
 
 @optional
 - (void)shouldRefreshRequest;
-- (void)updateDeliveredOrder;
+- (void)updateDeliveredOrder:(NSString *)receiverName;
 
 @end
 
