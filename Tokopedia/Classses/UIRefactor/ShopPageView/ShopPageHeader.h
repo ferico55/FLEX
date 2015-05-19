@@ -30,4 +30,6 @@
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) id<ShopPageHeaderDelegate> delegate;
 
+
+- (void)setHeaderShopPage:(Shop *)userInfo;
 @end

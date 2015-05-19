@@ -82,7 +82,7 @@
                 NSArray *errors;
                 if(error.code == -1011) {
                     errors = @[@"Mohon maaf, terjadi kendala pada server"];
-                } else if (error.code == -1009) {
+                } else if (error.code==-1009 || error.code==-999) {
                     errors = @[@"Tidak ada koneksi internet"];
                 } else {
                     errors = @[error.localizedDescription];

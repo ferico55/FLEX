@@ -97,7 +97,6 @@ UIAlertViewDelegate>
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     Talk *_talk;
-    ShopPageHeader *_shopPageHeader;
     Shop *_shop;
 }
 
@@ -330,6 +329,8 @@ UIAlertViewDelegate>
             } failure:nil];
             
         }
+        
+        
         
         return cell;
         
