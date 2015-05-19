@@ -292,10 +292,8 @@
     
 }
 
-- (void)setHeaderShopPage:(NSNotification*)notification {
-    id userinfo = notification.userInfo;
-    
-    _shop = [userinfo objectForKey:@"shop"];
+- (void)setHeaderShopPage:(Shop*)shop {
+    _shop = shop;
     [self.delegate didReceiveShop:_shop];
     if(_shop) {
         [self setHeaderData];
