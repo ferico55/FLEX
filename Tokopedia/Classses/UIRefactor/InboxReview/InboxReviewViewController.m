@@ -241,6 +241,12 @@
                 [((GeneralReviewCell*)cell).commentbutton setTitle:@"1 Komentar" forState:UIControlStateNormal];
             }
             
+            if([list.review_read_status isEqualToString:@"1"]) {
+                [((GeneralReviewCell*)cell).unreadIcon setHidden:NO];
+            } else {
+                [((GeneralReviewCell*)cell).unreadIcon setHidden:YES];
+            }
+            
             //edit button visibility
             if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
