@@ -10,11 +10,16 @@
 
 @implementation ProductDetail
 
-- (NSString*) product_description {
+- (NSString *)product_description {
     return [_product_description kv_decodeHTMLCharacterEntities];
 }
 
-- (NSString*) product_name {
+- (NSString *)product_name {
     return [_product_name kv_decodeHTMLCharacterEntities];
 }
+
+- (NSString *)product_etalase {
+    return [_product_etalase kv_decodeHTMLCharacterEntities];
+}
+
 @end
