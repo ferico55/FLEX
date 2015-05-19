@@ -65,6 +65,9 @@
                 [_delegate SearchResultCell:self withindexpath:indexpath1];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }

@@ -121,12 +121,6 @@ UIAlertViewDelegate>
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateReviewHeaderPosition:)
                                                  name:@"updateReviewHeaderPosition" object:nil];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showTalkWithFilter:)
-                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
-                                               object:nil];
 }
 
 #pragma mark - Life Cycle

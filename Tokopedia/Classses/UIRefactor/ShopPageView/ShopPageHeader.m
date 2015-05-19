@@ -292,8 +292,8 @@
     
 }
 
-- (void)setHeaderShopPage:(Shop *)userInfo {
-    _shop = userInfo;
+- (void)setHeaderShopPage:(Shop*)shop {
+    _shop = shop;
     [self.delegate didReceiveShop:_shop];
     if(_shop) {
         [self setHeaderData];

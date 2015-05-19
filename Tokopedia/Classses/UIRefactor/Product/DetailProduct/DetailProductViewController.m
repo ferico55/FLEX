@@ -204,9 +204,7 @@ UIAlertViewDelegate
 -(void)configureRestKit;
 -(void)loadData;
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
--(void)requesttimeout;
 
 @end
 
@@ -617,6 +615,9 @@ UIAlertViewDelegate
             case UIGestureRecognizerStateEnded: {
                 
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -638,6 +639,9 @@ UIAlertViewDelegate
                 [alert show];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -662,6 +666,9 @@ UIAlertViewDelegate
                 [self.navigationController pushViewController:controller animated:YES];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -691,6 +698,9 @@ UIAlertViewDelegate
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -1589,7 +1599,6 @@ UIAlertViewDelegate
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
     }
 }
 
@@ -1628,6 +1637,10 @@ UIAlertViewDelegate
         
         [self requestprocess:object];
     }
+}
+
+- (void)requestfailure:(id)object {
+    
 }
 
 -(void)requestprocess:(id)object

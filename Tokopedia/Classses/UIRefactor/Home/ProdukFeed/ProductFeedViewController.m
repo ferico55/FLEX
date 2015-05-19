@@ -338,12 +338,9 @@ typedef enum TagRequest {
 #pragma mark - ScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    ScrollDirection scrollDirection;
     if (self.lastContentOffset > scrollView.contentOffset.x) {
-        scrollDirection = ScrollDirectionRight;
         NSLog(@"Scrolling direction: right");
     } else if (self.lastContentOffset < scrollView.contentOffset.x) {
-        scrollDirection = ScrollDirectionLeft;
          NSLog(@"Scrolling direction: left");
     }
     self.lastContentOffset = scrollView.contentOffset.x;

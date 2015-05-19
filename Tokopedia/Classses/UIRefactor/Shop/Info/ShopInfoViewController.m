@@ -150,6 +150,9 @@
                 [_navigateController navigateToProfileFromViewController:self withUserID:[NSString stringWithFormat:@"%ld", (long)_shop.result.owner.owner_id]];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }

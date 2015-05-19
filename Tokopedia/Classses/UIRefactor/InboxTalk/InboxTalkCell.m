@@ -62,6 +62,9 @@
                 [_delegate InboxTalkCell:self withindexpath:_indexpath];
                 break;
             }
+                
+            default:
+                break;
         }
     }
     

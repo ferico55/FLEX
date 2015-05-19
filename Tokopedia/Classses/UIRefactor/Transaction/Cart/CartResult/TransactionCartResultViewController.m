@@ -300,11 +300,6 @@
     formatter.maximumFractionDigits = 0;
     formatter.minimumFractionDigits = 0;
     
-    NSInteger totalPayment = [_cartBuy.transaction.payment_left integerValue]+ [_cartBuy.transaction.deposit_amount integerValue] + [_cartBuy.transaction.voucher_amount integerValue];
-    NSString *totalPaymentString = [formatter stringFromNumber:[NSNumber numberWithInteger:totalPayment]];
-    NSInteger depositAfter = [_cartBuy.transaction.user_deposit integerValue] - [_cartBuy.transaction.deposit_amount integerValue];
-    NSString *depositAfterString = [formatter stringFromNumber:[NSNumber numberWithInteger:depositAfter]];
-    
     if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
         [_listSystemBank addObjectsFromArray:_cartBuy.system_bank];
     }

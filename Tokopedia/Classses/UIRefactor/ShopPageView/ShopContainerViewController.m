@@ -27,7 +27,7 @@
 #import "UserAuthentificationManager.h"
 
 
-@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate> {
+@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
     BOOL _isRefreshView;
     
@@ -906,7 +906,7 @@
     [[NSRunLoop currentRunLoop] addTimer:_timerFavorite forMode:NSRunLoopCommonModes];
 }
 
--(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperationQueue *)operation {
+-(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperation *)operation {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
 }
 

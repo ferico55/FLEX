@@ -55,7 +55,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rows;
+    NSInteger rows = 0;
     if (section == 0) {
         rows = 1;
     } else if (section == 1) {

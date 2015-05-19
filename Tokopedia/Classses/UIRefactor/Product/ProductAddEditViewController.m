@@ -48,7 +48,6 @@
     CameraCollectionViewControllerDelegate,
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
-    CameraAlbumListDelegate,
     TKPDPhotoPickerDelegate
 >
 {
@@ -594,7 +593,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    float cellHeight;
+    float cellHeight = 0.0f;
     switch (indexPath.section) {
         case 0:
             cellHeight = ((UITableViewCell*)_section0TableViewCell[indexPath.row]).frame.size.height;
@@ -1249,7 +1248,6 @@
     for (UIImageView *image in _thumbProductImageViews) {
         if (image.tag == tagView)
         {
-            imageView = image;
             image.image = imagePhoto;
             image.hidden = NO;
             image.alpha = 0.5f;
@@ -1257,7 +1255,9 @@
         }
     }
     
-    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    if (imageView != nil) {
+        [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    }
     if (tag<_selectedIndexPathCameraController.count) {
         [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
     }

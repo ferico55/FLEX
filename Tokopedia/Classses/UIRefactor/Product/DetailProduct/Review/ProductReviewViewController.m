@@ -335,6 +335,9 @@
                 [self setHeaderData];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -666,13 +669,6 @@
     float ratingpoint = (_isadvreviewquality)?_review.result.advance_review.rating_quality_point:_review.result.advance_review.rating_accuracy_point;
 
     _labeltotalreview.text = [NSString stringWithFormat:@"%f out of %zd",ratingpoint,_review.result.advance_review.total_review];
-    
-    NSArray *ratinglist = _review.result.advance_review.rating_list;
-//    
-//    for (RatingList *list in ratinglist) {
-//        NSInteger starpoint = list.rating_star_point;
-//        ((ProgressBarView*)_progressviews[starpoint-1]).floatcount =(_isadvreviewquality)?list.rating_quality_point:list.rating_accuracy_point;
-//    }
 }
 
 #pragma mark - Delegate

@@ -12,17 +12,17 @@
 @implementation CreateShopCell
 - (CreateShopCell *)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    CreateShopCell *result = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if(result)
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self != nil)
     {
         lblDomain = [[UILabel alloc] initWithFrame:CGRectMake(CPaddingLeft+2, CPaddingLeft, (self.bounds.size.width/1.9f)-(CPaddingLeft*2), self.bounds.size.height-(CPaddingLeft*2))];
         lblDomain.backgroundColor = [UIColor clearColor];
         lblDomain.text = CStringRootDomain;
         lblDomain.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
-        [result.contentView addSubview:lblDomain];
+        [self.contentView addSubview:lblDomain];
     }
     
-    return result;
+    return self;
 }
 
 - (UILabel *)getLblDomain

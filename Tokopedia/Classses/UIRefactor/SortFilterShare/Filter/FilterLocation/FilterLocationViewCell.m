@@ -53,6 +53,9 @@
                 [_delegate FilterLocationViewCell:self withindexpath:indexpath];
                 break;
             }
+            
+            default:
+                break;
         }
     }
 }

@@ -53,6 +53,9 @@
                 [_delegate FavoritedShopCell:self withindexpath:_indexpath withimageview:_shopimageview];
                 break;
             }
+            
+            default:
+                break;
         }
     }
     

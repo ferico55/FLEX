@@ -43,6 +43,9 @@
                 [_delegate SearchResultShopCell:self withindexpath:_indexpath];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }

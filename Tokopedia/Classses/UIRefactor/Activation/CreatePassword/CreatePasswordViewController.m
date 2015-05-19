@@ -316,15 +316,21 @@
                                                                 parameters:[parameters encrypt]];
     
     NSLog(@"%@", _request);
-
+    __weak typeof(self) wself = self;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation* operation, RKMappingResult* mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [self requestSuccess:mappingResult withOperation:operation];
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            [sself->_timer invalidate];
+            sself->_timer = nil;
+        }
+        [wself requestSuccess:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_timer invalidate];
-        _timer = nil;
-        [self requestFailure:error];
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            [sself->_timer invalidate];
+            sself->_timer = nil;
+        }
+        [wself requestFailure:error];
     }];
     
     [_operationQueue addOperation:_request];
@@ -534,11 +540,11 @@
                                                                               method:RKRequestMethodPOST
                                                                                 path:kTKPDLOGIN_APIPATH
                                                                           parameters:[param encrypt]];
-    
+    __weak typeof(self) wself = self;
     [_requestLogin setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessLogin:mappingResult withOperation:operation];
+        [wself requestSuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureLogin:error];
+        [wself requestFailureLogin:error];
     }];
     
     [_operationQueue addOperation:_requestLogin];

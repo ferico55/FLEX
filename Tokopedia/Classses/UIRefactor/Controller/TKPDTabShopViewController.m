@@ -42,7 +42,7 @@
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
 
-@interface TKPDTabShopViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ShopHeaderDelegate, MyShopEtalaseFilterViewControllerDelegate, GeneralProductCellDelegate, UIPageViewControllerDataSource> {
+@interface TKPDTabShopViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ShopHeaderDelegate, MyShopEtalaseFilterViewControllerDelegate, GeneralProductCellDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate> {
     NSMutableArray *_product;
     
     NSInteger _page;
@@ -159,8 +159,6 @@
     [self loadData];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    //[nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
-    [nc addObserver:self selector:@selector(setDepartmentID:) name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
     
     self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
@@ -998,7 +996,7 @@
 
 #pragma mark - UIPageViewController
 - (NSUInteger)getViewControllerIndex:(UIViewController*)viewController {
-    NSUInteger index;
+    NSUInteger index = 0;
     if([viewController isKindOfClass:[ShopTalkViewController class]]) {
         index = [(ShopTalkViewController *)viewController indexNumber];
     } else if([viewController isKindOfClass:[ShopReviewViewController class]]) {

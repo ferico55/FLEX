@@ -669,6 +669,7 @@
 
 - (void)failedGenerateHost
 {
+
 }
 
 #pragma mark - Request Action Upload Photo

@@ -805,7 +805,7 @@
     if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getJne].shipment_id]) {
         [param setObject:[myShopShipmentTableViewController getShipment].jne.jne_diff_district forKey:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY];
         [param setObject:[myShopShipmentTableViewController getJneExtraFeeTextField]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIJNEFEEKEY];
-        [param setObject:[NSString stringWithFormat:@"%ld", [myShopShipmentTableViewController getShipment].jne.jne_fee] forKey:kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY];
+        [param setObject:[NSString stringWithFormat:@"%ld", (long)[myShopShipmentTableViewController getShipment].jne.jne_fee] forKey:kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY];
         [param setObject:[myShopShipmentTableViewController getJneMinWeightTextField]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY];
         [param setObject:[myShopShipmentTableViewController getShipment].jne.jne_min_weight forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY];
         [param setObject:[myShopShipmentTableViewController getShipment].jne.jne_tiket forKey:kTKPDSHOPSHIPMENT_APIJNETICKETKEY];
@@ -829,7 +829,7 @@
     NSMutableDictionary *tiki = [NSMutableDictionary new];
     if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getTiki].shipment_id]) {
         [param setObject:[myShopShipmentTableViewController getTikiExtraFee]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY];
-        [param setObject:[NSString stringWithFormat:@"%ld", [myShopShipmentTableViewController getShipment].tiki.tiki_fee] forKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY];
+        [param setObject:[NSString stringWithFormat:@"%ld", (long)[myShopShipmentTableViewController getShipment].tiki.tiki_fee] forKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY];
         
         
         if ([[myShopShipmentTableViewController getTikiPackageRegular].active boolValue]) {
@@ -872,9 +872,9 @@
     NSMutableDictionary *pos = [NSMutableDictionary new];
     if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getPosIndo].shipment_id]) {
         [param setObject:[myShopShipmentTableViewController getPosExtraFee]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY];
-        [param setObject:[NSString stringWithFormat:@"%ld", [myShopShipmentTableViewController getShipment].pos.pos_fee] forKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY];
+        [param setObject:[NSString stringWithFormat:@"%ld", (long)[myShopShipmentTableViewController getShipment].pos.pos_fee] forKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY];
         [param setObject:[myShopShipmentTableViewController getPosMinWeight]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY];
-        [param setObject:[NSString stringWithFormat:@"%ld", [myShopShipmentTableViewController getShipment].pos.pos_min_weight] forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY];
+        [param setObject:[NSString stringWithFormat:@"%ld", (long)[myShopShipmentTableViewController getShipment].pos.pos_min_weight] forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY];
         
         if ([[myShopShipmentTableViewController getPosPackageKhusus].active boolValue]) {
             [pos setObject:@"1" forKey:[myShopShipmentTableViewController getPosPackageKhusus].sp_id];

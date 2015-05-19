@@ -37,7 +37,7 @@
 #import "string_more.h"
 #import "string_inbox_talk.h"
 
-@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate>
+@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate, GeneralTalkCommentCellDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_list;
@@ -1142,6 +1142,10 @@
     }
     
     return nil;
+    
+}
+
+- (void)GeneralTalkCommentCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     
 }
 
