@@ -685,6 +685,8 @@
     NSInteger row = indexpath.row;
     
     InboxReviewList *list = _reviews[row];
+    list.review_read_status = @"2";
+    [_reviewTable reloadData];
     
     vc.data = list;
     vc.is_owner = list.review_is_owner;

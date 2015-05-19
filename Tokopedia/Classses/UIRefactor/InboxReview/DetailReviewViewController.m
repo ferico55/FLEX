@@ -670,7 +670,10 @@
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    
+    GeneralAction *action = ((GeneralAction*)successResult);
+//    if([action.result.is_success isEqualToString:@"1"]) {
+//
+//    }
 }
 
 @end
