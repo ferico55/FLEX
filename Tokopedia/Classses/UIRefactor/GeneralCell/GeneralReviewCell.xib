@@ -54,6 +54,9 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="fyS-kR-ocK">
+                                        <rect key="frame" x="280" y="5" width="10" height="10"/>
+                                    </imageView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dgi-k9-BM7" userLabel="Vertical Border">
                                         <rect key="frame" x="10" y="69" width="280" height="1"/>
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -338,6 +341,7 @@
                 <outlet property="speedrate" destination="4Es-61-x0M" id="Jfd-4D-4NY"/>
                 <outlet property="timelabel" destination="0wA-8g-UoU" id="DMJ-CB-IvJ"/>
                 <outlet property="topContent" destination="Adz-MB-5mC" id="hso-Xu-7VU"/>
+                <outlet property="unreadIcon" destination="fyS-kR-ocK" id="4cE-g8-1Zv"/>
                 <outlet property="userImageView" destination="xp4-uU-tcG" id="qIP-xQ-mhY"/>
                 <outlet property="userNamelabel" destination="Ot1-QP-SIl" id="gMa-2V-XLd"/>
                 <outlet property="userTapView" destination="1O0-4V-HYq" id="KlL-lr-RYy"/>
@@ -347,6 +351,7 @@
     </objects>
     <resources>
         <image name="icon_toped_loading_grey.png" width="20" height="20"/>
+        <image name="icon_unread.png" width="40" height="40"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

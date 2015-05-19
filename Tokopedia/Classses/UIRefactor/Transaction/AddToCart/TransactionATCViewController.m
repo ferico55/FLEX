@@ -1049,7 +1049,6 @@
 #pragma mark - Transaction Shipment Delegate
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL isValidShipment;
     ShippingInfoShipments *shipmentObject;
 
     if (indexPath.row == TAG_BUTTON_TRANSACTION_SHIPPING_AGENT) {
@@ -1068,7 +1067,6 @@
             }
         }
         if (availablePackage.count==0) {
-            isValidShipment = NO;
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipmentObject.shipment_name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
         }

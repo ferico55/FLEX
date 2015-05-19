@@ -57,6 +57,7 @@
     Order *_resultOrder;
     
     OrderTransaction *_selectedOrder;
+    NSIndexPath *_selectedIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -157,7 +158,8 @@
     cell.dateFinishLabel.hidden = YES;
     cell.finishLabel.hidden = YES;
     
-    if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
+    if ([_resultOrder.result.order.is_allow_manage_tx boolValue] &&
+        order.order_detail.detail_ship_ref_num) {
         
         if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
@@ -197,6 +199,9 @@
         cell.finishLabel.hidden = NO;
         cell.finishLabel.text = order.order_deadline.deadline_finish_date;        
     }
+    
+    NSLog(@"%@  -  %ld", order.order_detail.detail_invoice,
+          (long)order.order_deadline.deadline_finish_day_left);
     
     return cell;
 }
@@ -666,6 +671,8 @@
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     _selectedOrder = order;
     
+    _selectedIndexPath = indexPath;
+    
     TrackOrderViewController *controller = [TrackOrderViewController new];
     controller.order = _selectedOrder;
     controller.hidesBottomBarWhenPushed = YES;
@@ -678,6 +685,8 @@
 {
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     _selectedOrder = order;
+    
+    _selectedIndexPath = indexPath;
 
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -696,6 +705,8 @@
 {
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     _selectedOrder = order;
+    
+    _selectedIndexPath = indexPath;
 
     DetailShipmentStatusViewController *controller = [DetailShipmentStatusViewController new];
     controller.order = order;
@@ -706,6 +717,8 @@
 - (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath
 {
     _selectedOrder = [_shipments objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+    
     NavigateViewController *controller = [NavigateViewController new];
     [controller navigateToProfileFromViewController:self withUserID:_selectedOrder.order_customer.customer_id];
 }
@@ -752,11 +765,28 @@
 
 #pragma mark - Track order delegate
 
-- (void)shouldRefreshRequest
+- (void)updateDeliveredOrder:(NSString *)receiverName
 {
-    _page = 1;
-    [self configureRestKit];
-    [self requestInvoice:nil];
+    OrderHistory *history = [OrderHistory new];
+    NSString *sellerStatus;
+    if ([receiverName isEqualToString:@""] || receiverName == NULL) {
+        sellerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan"];
+    } else {
+        sellerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan<br>Received by %@", receiverName];
+    }
+    history.history_seller_status = sellerStatus;
+    [_selectedOrder.order_history insertObject:history atIndex:0];
+    _selectedOrder.order_detail.detail_order_status = ORDER_DELIVERED;
+    _selectedOrder.order_deadline.deadline_finish_day_left = 3;
+    
+    NSDate *deadlineFinishDate = [[NSDate date] dateByAddingTimeInterval:60*60*24*3];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd-MM-yyyy"];
+
+    _selectedOrder.order_deadline.deadline_finish_date = [dateFormatter stringFromDate:deadlineFinishDate];
+    
+    [self.tableView reloadData];
 }
 
 @end

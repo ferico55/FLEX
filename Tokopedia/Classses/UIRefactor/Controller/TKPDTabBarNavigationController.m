@@ -71,25 +71,26 @@
 {
     [super viewDidLayoutSubviews];
     
-    UIEdgeInsets inset = [self contentInsetForContainerController];
+//    Did not remove this because of the todo
+//    UIEdgeInsets inset = [self contentInsetForContainerController];
+//    
+//    UIView *tabbar;
+//    CGRect frame;
+//    tabbar = _tabbar;
+//    
+//    frame = tabbar.frame;
+//    frame.origin.y = inset.top;
+//    
+//    if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//        UINavigationController* n = (UINavigationController*)_selectedViewController;
+//        
+//        if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
+//            CGRect rect = n.navigationBar.frame;
+//            frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
+//        }
+//    }
     
-    UIView *tabbar;
-    CGRect frame;
-    tabbar = _tabbar;
-    
-    frame = tabbar.frame;
-    frame.origin.y = inset.top;
-    
-    if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-        UINavigationController* n = (UINavigationController*)_selectedViewController;
-        
-        if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
-            CGRect rect = n.navigationBar.frame;
-            frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
-        }
-    }
-    
-    inset = [self contentInsetForChildController];
+    UIEdgeInsets inset = [self contentInsetForChildController];
     if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
         [_delegate tabBarController:self childControllerContentInset:inset];
     }
@@ -195,29 +196,26 @@
     if (selectedIndex == _selectedIndex) return;
     
     if (_viewControllers != nil) {
-        
-        CGRect selectframe;
-        
-        selectframe = _tabbar.frame;
-        
+
         UIViewController* deselect = _selectedViewController;
         UIViewController* select = _viewControllers[selectedIndex];
         
-        UIEdgeInsets inset = [self contentInsetForContainerController];
-        if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-            
-            UINavigationController* n = (UINavigationController*)select;
-            if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-                
-                //CGRect rect = n.navigationBar.frame;
-                selectframe.origin.y = inset.top;
-                selectframe = CGRectZero;
-            } else {
-                selectframe = CGRectZero;
-            }
-        } else {
-            selectframe = CGRectZero;
-        }
+//      Did not remove this because of the todo
+//        UIEdgeInsets inset = [self contentInsetForContainerController];
+//        if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//            
+//            UINavigationController* n = (UINavigationController*)select;
+//            if (!n.navigationBarHidden && !n.navigationBar.hidden) {
+//                
+//                //CGRect rect = n.navigationBar.frame;
+//                selectframe.origin.y = inset.top;
+//                selectframe = CGRectZero;
+//            } else {
+//                selectframe = CGRectZero;
+//            }
+//        } else {
+//            selectframe = CGRectZero;
+//        }
         
         int navigate = 0;
         
@@ -326,8 +324,7 @@
 {
     if (_viewControllers != nil) {
         
-        NSInteger index = _selectedIndex;
-        index = sender.tag;
+        NSInteger index = sender.tag;
         
         BOOL should = YES;
         

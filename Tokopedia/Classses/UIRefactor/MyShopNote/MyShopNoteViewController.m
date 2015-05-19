@@ -429,7 +429,7 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETENOTESDETAILKEY,
-                            kTKPDNOTES_APINOTEIDKEY : [userinfo objectForKey:kTKPDNOTES_APINOTEIDKEY]?:0
+                            kTKPDNOTES_APINOTEIDKEY : [userinfo objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@0
                             };
     _requestcount ++;
     

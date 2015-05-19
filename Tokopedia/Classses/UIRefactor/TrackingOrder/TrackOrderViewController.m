@@ -92,6 +92,10 @@
             [self.delegate respondsToSelector:@selector(shouldRefreshRequest)]) {
             [_delegate shouldRefreshRequest];
         }
+        if ([_track.result.track_order.order_status integerValue] == ORDER_DELIVERED &&
+            [self.delegate respondsToSelector:@selector(updateDeliveredOrder:)]) {
+            [self.delegate updateDeliveredOrder:_trackingOrder.receiver_name?:@""];
+        }
     }
 }
 

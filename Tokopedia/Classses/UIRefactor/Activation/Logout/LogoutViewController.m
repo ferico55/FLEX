@@ -47,6 +47,26 @@
     return @"logout.pl";
 }
 
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    
+}
+
+- (id)getObjectManager:(int)tag {
+    return nil;
+}
+
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
+    return nil;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    
+}
+
 
 
 @end

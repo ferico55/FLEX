@@ -97,7 +97,6 @@ UIAlertViewDelegate>
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     Talk *_talk;
-    ShopPageHeader *_shopPageHeader;
     Shop *_shop;
 }
 
@@ -332,6 +331,8 @@ UIAlertViewDelegate>
             
         }
         
+        
+        
         return cell;
         
     } else {
@@ -476,27 +477,7 @@ UIAlertViewDelegate>
 
 -(void)requestFailure:(id)object
 {
-    
-    NSError* error;
-    
-    //    NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-    //    for (RKResponseDescriptor *descriptor in _objectManager.responseDescriptors) {
-    //        [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-    //    }
-    //
-    //    RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-    //    NSError *mappingError = nil;
-    //    BOOL isMapped = [mapper execute:&mappingError];
-    //    if (isMapped && !mappingError) {
-    //        RKMappingResult *mappingresult = [mapper mappingResult];
-    //        NSDictionary *result = mappingresult.dictionary;
-    //        id stats = [result objectForKey:@""];
-    //        _talk = stats;
-    //        BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    //        if (status) {
-    //            [self requestProcess:mappingresult];
-    //        }
-    //    }
+
 }
 
 -(void)requestProcess:(id)object
@@ -584,18 +565,18 @@ UIAlertViewDelegate>
     NSInteger row = indexpath.row;
     TalkList *list = _list[row];
     vc.data = @{
-                TKPD_TALK_MESSAGE:list.talk_message?:0,
-                TKPD_TALK_USER_IMG:list.talk_user_image?:0,
-                TKPD_TALK_CREATE_TIME:list.talk_create_time?:0,
-                TKPD_TALK_USER_NAME:list.talk_user_name?:0,
-                TKPD_TALK_ID:list.talk_id?:0,
+                TKPD_TALK_MESSAGE:list.talk_message?:@0,
+                TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
+                TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
+                TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
+                TKPD_TALK_ID:list.talk_id?:@0,
                                 TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id],
-                TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:0,
+                TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
+                TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
                 TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
                 TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
-                kTKPDDETAIL_DATAINDEXKEY : @(row)?:0,
+                kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
                 TKPD_TALK_PRODUCT_STATUS:list.talk_product_status
                 };
     [self.navigationController pushViewController:vc animated:YES];
@@ -689,7 +670,7 @@ UIAlertViewDelegate>
     NSDictionary* param = @{
                             kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                            TKPD_TALK_ID:list.talk_id?:0,
+                            TKPD_TALK_ID:list.talk_id?:@0,
                             };
     
     _requestUnfollowCount ++;
@@ -731,7 +712,7 @@ UIAlertViewDelegate>
         NSDictionary* param = @{
                                 kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
                                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                                TKPD_TALK_ID:list.talk_id?:0,
+                                TKPD_TALK_ID:list.talk_id?:@0,
                                 kTKPDDETAILSHOP_APISHOPID : list.talk_shop_id
                                 };
         

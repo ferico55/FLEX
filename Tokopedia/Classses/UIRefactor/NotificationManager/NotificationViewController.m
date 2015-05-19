@@ -24,7 +24,7 @@
 #import "TxOrderStatusViewController.h"
 
 
-@interface NotificationViewController ()
+@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *messageCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *discussionCountLabel;
@@ -392,6 +392,10 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+- (void)viewController:(UIViewController *)viewController numberOfProcessedOrder:(NSInteger)totalOrder {
+    
 }
 
 @end

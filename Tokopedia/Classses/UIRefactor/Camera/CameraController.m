@@ -83,6 +83,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+    
     if(_isFirstTimeLaunch)
     {
         _isFirstTimeLaunch = !_isFirstTimeLaunch;
@@ -184,19 +186,6 @@
         }
     }
     NSString *imageName;
-    NSData* imageDataRawImage;
-    if (imagePath) {
-        imageName = [imagePath lastPathComponent];
-        
-        NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
-        if ([extensionOFImage isEqualToString:@"jpg"])
-            imageDataRawImage =  UIImagePNGRepresentation(rawImage);
-        else
-            imageDataRawImage = UIImageJPEGRepresentation(rawImage, 1.0);
-    }
-    else{
-        imageDataRawImage =  UIImagePNGRepresentation(rawImage);
-    }
     
     CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
     UIGraphicsBeginImageContext(rect.size);

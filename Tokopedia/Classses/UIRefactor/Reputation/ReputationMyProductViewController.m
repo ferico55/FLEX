@@ -19,7 +19,7 @@
 #import "reputation_string.h"
 
 @interface ReputationMyProductViewController () <UITableViewDataSource, UITableViewDelegate,
-    ReputationCellDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate
+    ReputationCellDelegate, TokopediaNetworkManagerDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -69,7 +69,6 @@
     _networkManager.delegate = self;
     
     _loadingView = [LoadingView new];
-    _loadingView.delegate = self;
     
     _nextPage = 1;
     _reputationArray = [NSMutableArray new];
@@ -269,6 +268,10 @@
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     [_refreshControl endRefreshing];
     _table.tableFooterView = _loadingView.view;
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    
 }
 
 /*

@@ -316,15 +316,21 @@
                                                                 parameters:[parameters encrypt]];
     
     NSLog(@"%@", _request);
-
+    __weak typeof(self) wself = self;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation* operation, RKMappingResult* mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [self requestSuccess:mappingResult withOperation:operation];
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            [sself->_timer invalidate];
+            sself->_timer = nil;
+        }
+        [wself requestSuccess:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_timer invalidate];
-        _timer = nil;
-        [self requestFailure:error];
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            [sself->_timer invalidate];
+            sself->_timer = nil;
+        }
+        [wself requestFailure:error];
     }];
     
     [_operationQueue addOperation:_request];
@@ -455,8 +461,6 @@
         NSInteger day = [components day];
         
         _dateOfBirthTextField.text = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
-    } else {
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -477,8 +481,6 @@
 
 - (void)alertViewDismissed:(UIView *)alertView
 {
-    [self.delegate createPasswordSuccess];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Login methods
@@ -538,11 +540,11 @@
                                                                               method:RKRequestMethodPOST
                                                                                 path:kTKPDLOGIN_APIPATH
                                                                           parameters:[param encrypt]];
-    
+    __weak typeof(self) wself = self;
     [_requestLogin setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessLogin:mappingResult withOperation:operation];
+        [wself requestSuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureLogin:error];
+        [wself requestFailureLogin:error];
     }];
     
     [_operationQueue addOperation:_requestLogin];
@@ -574,6 +576,9 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil
                                                               userInfo:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
+                                                                object:nil];
             
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             

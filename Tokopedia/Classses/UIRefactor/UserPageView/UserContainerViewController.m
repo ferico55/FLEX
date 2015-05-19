@@ -38,7 +38,8 @@
     UIScrollViewDelegate,
     LoginViewDelegate,
     TokopediaNetworkManagerDelegate,
-    SettingUserProfileDelegate
+    SettingUserProfileDelegate,
+    UIPageViewControllerDelegate
 >
 {
     BOOL _isNoData;
@@ -285,7 +286,6 @@
     
     [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
-    [nc addObserver:self selector:@selector(reloadShop) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
     
 }
 
@@ -524,7 +524,7 @@
     _profile = [result objectForKey:@""];
     
     if(_profile.status) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage" object:nil userInfo:_profile];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage" object:nil userInfo:@{@"profile" : _profile}];
     }
 }
 
@@ -538,7 +538,7 @@
 
 #pragma mark - Notification
 - (void)postNotificationSetProfileHeader {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage" object:nil userInfo:_profile];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage" object:nil userInfo:@{@"profile" : _profile}];
 }
 
 

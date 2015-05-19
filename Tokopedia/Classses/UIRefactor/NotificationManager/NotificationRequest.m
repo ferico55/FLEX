@@ -285,7 +285,7 @@
 }
 
 - (void)requestResetSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+
 }
 
 - (void)requestResetFailure:(id)error {

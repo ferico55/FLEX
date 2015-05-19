@@ -119,6 +119,7 @@ typedef enum
 #define API_PRODUCT_WEIGHT_KEY @"product_weight"
 #define API_PRODUCT_DESCRIPTION_KEY @"product_description"
 #define API_PRODUCT_PRICE_KEY @"product_price"
+#define API_PRODUCT_IMAGE_NO_SQUARE @"product_image_no_square"
 #define API_PRICE_KEY @"price"
 #define API_PRODUCT_INSURANCE_KEY @"product_insurance"
 #define API_PRODUCT_MUST_INSURANCE_KEY @"product_must_insurance"
@@ -248,5 +249,8 @@ typedef enum
 #define PRODUCT_WHOLESALE @"Harga Grosir"
 #define PRODUCT_INFO @"Informasi Produk"
 #define NO_DESCRIPTION @"Tidak ada deskripsi"
+
+#define CStringSuccessFavoriteShop @"Anda berhasil memfavoritkan toko ini!"
+#define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
 
 #endif

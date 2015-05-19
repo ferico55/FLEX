@@ -53,6 +53,9 @@
                 [_delegate FilterConditionCell:self withindexpath:indexpath];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }

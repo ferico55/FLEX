@@ -131,25 +131,25 @@
     [super viewDidLayoutSubviews];
     _selectedViewController.view.frame = _container.bounds;
     
-    UIEdgeInsets inset = [self contentInsetForContainerController];
+//    UIEdgeInsets inset = [self contentInsetForContainerController];
+//    
+//    UIView* tabbar;
+//    CGRect frame;
+//
+//    tabbar = _tabbar;
+//    frame = tabbar.frame;
+//    frame.origin.y = inset.top;
+//    
+//    if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//        UINavigationController* n = (UINavigationController*)_selectedViewController;
+//        
+//        if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
+//            CGRect rect = n.navigationBar.frame;
+//            frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
+//        }
+//    }
     
-    UIView* tabbar;
-    CGRect frame;
-
-    tabbar = _tabbar;
-    frame = tabbar.frame;
-    frame.origin.y = inset.top;
-    
-    if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-        UINavigationController* n = (UINavigationController*)_selectedViewController;
-        
-        if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
-            CGRect rect = n.navigationBar.frame;
-            frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
-        }
-    }
-    
-    inset = [self contentInsetForChildController];
+    UIEdgeInsets inset = [self contentInsetForChildController];
     if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
         [_delegate tabBarController:self childControllerContentInset:inset];
     }
@@ -278,34 +278,28 @@
     if (selectedIndex == _selectedIndex) return;
     
     if (_viewControllers != nil) {
-        
-        //UIView* selecttabbar;
-        CGRect selectframe;
-        
-        //selecttabbar = _tabbar;
-        selectframe = _tabbar.frame;
-        
+
         UIViewController* deselect = _selectedViewController;
         UIViewController* select = _viewControllers[selectedIndex];
         
-        UIEdgeInsets inset = [self contentInsetForContainerController];
-        if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-            
-            UINavigationController* n = (UINavigationController*)select;
-            if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-                
-                CGRect rect = n.navigationBar.frame;
-                selectframe.origin.y = inset.top;
-                //selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
-                selectframe = CGRectZero;
-            } else {
-                //selectframe.origin.y = inset.top;
-                selectframe = CGRectZero;
-            }
-        } else {
-            selectframe = CGRectZero;
-            //selectframe.origin.y = inset.top;
-        }
+//        UIEdgeInsets inset = [self contentInsetForContainerController];
+//        if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//            
+//            UINavigationController* n = (UINavigationController*)select;
+//            if (!n.navigationBarHidden && !n.navigationBar.hidden) {
+//                
+//                CGRect rect = n.navigationBar.frame;
+//                selectframe.origin.y = inset.top;
+//                //selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
+//                selectframe = CGRectZero;
+//            } else {
+//                //selectframe.origin.y = inset.top;
+//                selectframe = CGRectZero;
+//            }
+//        } else {
+//            selectframe = CGRectZero;
+//            //selectframe.origin.y = inset.top;
+//        }
         
         //selecttabbar.frame = selectframe;
         
@@ -448,13 +442,11 @@
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        UIBarButtonItem *barbutton1;
         
         switch (btn.tag) {
             case 10:
             {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                //                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
                 

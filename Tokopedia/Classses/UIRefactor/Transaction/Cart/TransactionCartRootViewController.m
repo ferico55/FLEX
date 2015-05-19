@@ -140,7 +140,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
     _isShouldRefreshingCart = NO;
 }
 
@@ -488,7 +488,9 @@
 {
     TransactionCartFormMandiriClickPayViewController *mandiriVC = [TransactionCartFormMandiriClickPayViewController new];
     mandiriVC.data = data;
-    mandiriVC.delegate = vc;
+    if ([vc conformsToProtocol:@protocol(TransactionCartMandiriClickPayFormDelegate)]) {
+        mandiriVC.delegate = (id <TransactionCartMandiriClickPayFormDelegate>)vc;
+    }
     [self.navigationController pushViewController:mandiriVC animated:YES];
 }
 

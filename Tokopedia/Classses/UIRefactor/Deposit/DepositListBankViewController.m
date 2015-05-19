@@ -63,7 +63,6 @@
 -(void)loadData;
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestFailure:(id)object;
--(void)requestProcess:(id)object;
 -(void)requestTimeout:(NSTimer*)timer;
 
 
@@ -437,7 +436,7 @@
 
 -(void)requestFailure:(id)object
 {
-    [self requestProcess:object];
+//    [self requestProcess:object];
 }
 
 -(void)requestProcess:(id)object  withOperation:(RKObjectRequestOperation *)operation

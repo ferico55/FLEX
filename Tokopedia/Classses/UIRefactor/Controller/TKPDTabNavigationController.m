@@ -11,8 +11,9 @@
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
 #import "SearchResultShopViewController.h"
+#import "SearchResultViewController.h"
 
-@interface TKPDTabNavigationController () <CategoryMenuViewDelegate>{
+@interface TKPDTabNavigationController () <CategoryMenuViewDelegate, SearchResultDelegate>{
 	UIView *_tabbar;
 	NSArray *_buttons;
 	NSInteger _unloadSelectedIndex;
@@ -20,6 +21,8 @@
     BOOL _hascatalog;
     
     UIBarButtonItem *_barbuttoncategory;
+    
+    NSString *_categoryID;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *container;
@@ -105,6 +108,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    
+    [super viewWillAppear:animated];
+    
     self.navigationItem.title = [self.navigationTitle capitalizedString];
     self.hidesBottomBarWhenPushed = YES;
 }
@@ -122,25 +128,26 @@
 {
 	[super viewDidLayoutSubviews];
 	_selectedViewController.view.frame = _container.bounds;
+
+// Did not remove this because of the todo
+//	UIEdgeInsets inset = [self contentInsetForContainerController];
+//	
+//	UIView* tabbar;
+//	CGRect frame;
+//	tabbar = _tabbar;
+//	frame = tabbar.frame;
+//	frame.origin.y = inset.top;
+//	
+//	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//		UINavigationController* n = (UINavigationController*)_selectedViewController;
+//		
+//		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
+//			CGRect rect = n.navigationBar.frame;
+//			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
+//		}
+//	}
 	
-	UIEdgeInsets inset = [self contentInsetForContainerController];
-	
-	UIView* tabbar;
-	CGRect frame;
-	tabbar = _tabbar;
-	frame = tabbar.frame;
-	frame.origin.y = inset.top;
-	
-	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-		UINavigationController* n = (UINavigationController*)_selectedViewController;
-		
-		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
-			CGRect rect = n.navigationBar.frame;
-			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
-		}
-	}
-	
-	inset = [self contentInsetForChildController];
+	UIEdgeInsets inset = [self contentInsetForChildController];
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
 		[_delegate tabBarController:self childControllerContentInset:inset];
 	}
@@ -239,30 +246,26 @@
 	if (selectedIndex == _selectedIndex) return;
 	
 	if (_viewControllers != nil) {
-		
-		CGRect selectframe;
-        
-		selectframe = _tabbar.frame;
-		
 		UIViewController* deselect = _selectedViewController;
         if (selectedIndex < 0) {
             selectedIndex = 0;
         }
 		UIViewController* select = _viewControllers[selectedIndex];
-		
-		UIEdgeInsets inset = [self contentInsetForContainerController];
-		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-			
-			UINavigationController* n = (UINavigationController*)select;
-			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-				selectframe.origin.y = inset.top;
-				selectframe = CGRectZero;
-			} else {
-                selectframe = CGRectZero;
-			}
-		} else {
-            selectframe = CGRectZero;
-		}
+
+//      Did not remove this because of the todo
+//		UIEdgeInsets inset = [self contentInsetForContainerController];
+//		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//			
+//			UINavigationController* n = (UINavigationController*)select;
+//			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
+//				selectframe.origin.y = inset.top;
+//				selectframe = CGRectZero;
+//			} else {
+//                selectframe = CGRectZero;
+//			}
+//		} else {
+//            selectframe = CGRectZero;
+//		}
 		
 		int navigate = 0;
 
@@ -274,10 +277,11 @@
 		
 		_selectedIndex = selectedIndex;
 		_selectedViewController = _viewControllers[selectedIndex];
-				
+
         if ([_selectedViewController isKindOfClass:[SearchResultShopViewController class]]) {
             self.navigationItem.rightBarButtonItem = nil;
-        } else {
+        } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
+            ((SearchResultViewController *)_selectedViewController).delegate = self;
             self.navigationItem.rightBarButtonItem = _barbuttoncategory;
         }
         
@@ -444,7 +448,8 @@
             case 11:
             {
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue];
+                NSInteger categoryID = [_categoryID integerValue];
+                NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue]?:categoryID;
                 vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:@(d_id)};
                 vc.delegate = self;
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -579,6 +584,11 @@
     }    
 }
 
+- (void)updateTabCategory:(NSString *)categoryID
+{
+    _categoryID = categoryID;
+}
+
 @end
 
 #pragma mark -
@@ -620,6 +630,4 @@
 	objc_setAssociatedObject(self, @selector(TKPDTabNavigationItem), TKPDTabNavigationItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-
 @end
-

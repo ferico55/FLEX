@@ -39,13 +39,6 @@
     return self;
 }
 
-- (void)initNotificationCenter {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setHeaderShopPage:)
-                                                 name:@"setHeaderShopPage"
-                                               object:nil];
-}
-
 #pragma mark - Tap Action
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass: [UIButton class]]) {

@@ -72,17 +72,17 @@
             
             
         } else {
-            NSError *error = processResult;
+
             if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
                 [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
-            }
-            else
+            } else
             {
+                NSError *error = processResult;
                 StickyAlertView *alert = [[StickyAlertView alloc]init];
                 NSArray *errors;
                 if(error.code == -1011) {
                     errors = @[@"Mohon maaf, terjadi kendala pada server"];
-                } else if (error.code == -1009) {
+                } else if (error.code==-1009 || error.code==-999) {
                     errors = @[@"Tidak ada koneksi internet"];
                 } else {
                     errors = @[error.localizedDescription];

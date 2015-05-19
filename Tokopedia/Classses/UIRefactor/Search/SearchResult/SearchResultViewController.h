@@ -11,6 +11,7 @@
 @protocol SearchResultDelegate <NSObject>
 
 - (void)pushViewController:(id)viewController animated:(BOOL)animated;
+- (void)updateTabCategory:(NSString *)categoryID;
 
 @end
 

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ShopPageHeader;
 
 @interface ShopNotesPageViewController : GAITrackedViewController
 
@@ -14,5 +15,5 @@
 @property (nonatomic, strong) NSDictionary *data;
 
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
-
+@property (nonatomic, strong) ShopPageHeader *shopPageHeader;
 @end

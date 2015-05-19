@@ -678,12 +678,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 // redirect uri to search category
                 if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
                     NSString *departementID = _searchitem.result.department_id;
-                    //NSString *deptid = _searchitem.result.redirect_url.department_id;
                     [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
                     [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
                     [self cancel];
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
+                    
+                    if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
+                        [self.delegate updateTabCategory:departementID];
+                    }
                     
                     [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
@@ -751,10 +754,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             SortViewController *vc = [SortViewController new];
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
             else
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
             vc.delegate = self;
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {

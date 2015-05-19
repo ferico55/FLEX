@@ -95,6 +95,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     if (! isRefreshView) {
         [self configureRestKit];
         if (isNoData || (uriNext != NULL && ![uriNext isEqualToString:@"0"] && uriNext != 0)) {
