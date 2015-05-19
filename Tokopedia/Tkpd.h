@@ -11,7 +11,7 @@
 
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 
 
