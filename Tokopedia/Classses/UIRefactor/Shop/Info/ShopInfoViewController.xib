@@ -20,6 +20,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -39,7 +40,6 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -47,7 +47,6 @@
             <connections>
                 <outlet property="accuracyrate" destination="S2d-VZ-Pcd" id="urS-ri-XaY"/>
                 <outlet property="addressoffview" destination="Yyz-rC-cuj" id="946-Y2-X3D"/>
-                <outlet property="buttonArrowLocation" destination="nQA-wk-ijR" id="hqL-Rf-Btl"/>
                 <outlet property="buttonfav" destination="Twr-cV-LWn" id="pS7-sO-sZY"/>
                 <outlet property="buttonitemsold" destination="8uq-Zo-ZDV" id="dSH-B6-jrU"/>
                 <outlet property="buttonofflocation" destination="NXr-90-gzo" id="EWR-Mm-kDF"/>
@@ -388,27 +387,18 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="NXr-90-gzo">
-                            <rect key="frame" x="0.0" y="269" width="319" height="44"/>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NXr-90-gzo">
+                            <rect key="frame" x="161" y="280" width="158" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="45" maxY="0.0"/>
-                            <state key="normal" title="Button">
+                            <inset key="imageEdgeInsets" minX="80" minY="0.0" maxX="-80" maxY="0.0"/>
+                            <state key="normal" title="2 offline stores" image="icon_arrow_down">
                                 <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yvr-yh-tl6"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nQA-wk-ijR">
-                            <rect key="frame" x="275" y="269" width="45" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" image="icon_arrow_down">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="W4i-L7-3Bd"/>
                             </connections>
                         </button>
                     </subviews>

@@ -36,6 +36,7 @@
 
 #define API_IMAGE_PRIMARY_KEY           @"image_primary"
 #define API_IMAGE_SRC_KEY               @"image_src"
+#define API_IMAGE_SRC_FULL_KEY          @"image_src_full"
 
 #define API_CATALOG_SPECS_KEY           @"catalog_specs"
 #define API_SPEC_CHILDS_KEY             @"spec_childs"

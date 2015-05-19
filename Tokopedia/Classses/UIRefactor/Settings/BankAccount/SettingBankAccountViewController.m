@@ -976,13 +976,13 @@
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralList1GestureCell*) cell).indexpath;
 
-        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self deleteListAtIndexPath:indexPath];
             return YES;
         }];
         trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
 
-        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Set As\nDefault" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Jadikan\nUtama" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             //edit
             [self setAsDefaultAtIndexPath:indexPath];
             return YES;

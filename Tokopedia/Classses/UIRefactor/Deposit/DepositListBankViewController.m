@@ -436,7 +436,7 @@
 
 -(void)requestFailure:(id)object
 {
-
+//    [self requestProcess:object];
 }
 
 -(void)requestProcess:(id)object  withOperation:(RKObjectRequestOperation *)operation
