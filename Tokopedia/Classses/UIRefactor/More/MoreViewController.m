@@ -60,7 +60,7 @@
     
     Deposit *_deposit;
     NSOperationQueue *_operationQueue;
-
+    
     RKObjectManager *_objectmanager;
     __weak RKObjectManager *_depositObjectManager;
     __weak RKManagedObjectRequestOperation *_depositRequest;
@@ -100,7 +100,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateSaldoTokopedia:)
                                                      name:@"updateSaldoTokopedia" object:nil];
-
+        
     }
     return self;
 }
@@ -115,14 +115,14 @@
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
-
+    
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
     
     _isNoDataDeposit  = YES;
     _depositRequestCount = 0;
-
+    
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
@@ -171,13 +171,13 @@
     
     [self updateSaldoTokopedia:nil];
     
-//    if (_isNoDataDeposit) {
+    //    if (_isNoDataDeposit) {
     
-//    } else {
-//        _depositLabel.hidden = NO;
-//        _loadingSaldo.hidden = YES;
-//        [_loadingSaldo stopAnimating];
-//    }
+    //    } else {
+    //        _depositLabel.hidden = NO;
+    //        _loadingSaldo.hidden = YES;
+    //        [_loadingSaldo stopAnimating];
+    //    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -188,7 +188,7 @@
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
     
-//    [self updateSaldoTokopedia:nil];
+    //    [self updateSaldoTokopedia:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -242,7 +242,7 @@
         [shopinfoMapping addAttributeMappingsFromDictionary:@{
                                                               kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY
                                                               }];
-                // Relationship Mapping
+        // Relationship Mapping
         [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                       toKeyPath:kTKPD_APIRESULTKEY
                                                                                     withMapping:resultMapping]];
@@ -299,21 +299,6 @@
             }
         }
     }
-<<<<<<< Updated upstream
-=======
-    else if(tag == CTagVerificationNumber) {
-        VerificationNumber *verificationNumber = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
-        [[NSUserDefaults standardUserDefaults] setObject:verificationNumber.result.msisdn.user_phone forKey:CStringMSISDN];
-        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%f", [NSDate date].timeIntervalSince1970] forKey:CStringLastCheckVerify];
-        [[NSUserDefaults standardUserDefaults] setObject:verificationNumber.result.msisdn.is_verified forKey:CStringMSISDNIsVerify];
-        if([[NSUserDefaults standardUserDefaults] synchronize]) {
-            strLastVerification = [NSString stringWithFormat:@"%f", [NSDate date].timeIntervalSince1970];
-            strMSISDNIsVerify = verificationNumber.result.msisdn.is_verified;
-        }
-        
-        [self closeLoadingView];
-    }
->>>>>>> Stashed changes
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -327,12 +312,12 @@
 
 - (void)actionRequestAsync:(int)tag
 {
-
+    
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
-
+    
 }
 
 
@@ -400,7 +385,7 @@
         
         return tokopediaNetworkManager;
     }
-
+    
     return nil;
 }
 
@@ -463,7 +448,7 @@
         case 0:
             return 1;
             break;
-        
+            
         case 1:
             return 2;
             break;
@@ -471,14 +456,14 @@
         case 2:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
-                    return 4;
+                return 4;
             else return 0;
             break;
             
         case 3:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
-                    return 0;
+                return 0;
             else return 1;
             break;
             
@@ -573,7 +558,7 @@
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }
-
+        
     }
     
     else if (indexPath.section == 4) {
@@ -665,7 +650,7 @@
                                                             object:nil
                                                           userInfo:@{}];
     }
-
+    
     self.hidesBottomBarWhenPushed = NO;
 }
 
@@ -707,20 +692,20 @@
     if (_depositRequest.isExecuting) return;
     
     _depositRequestCount++;
-
+    
     NSDictionary *param = @{API_DEPOSIT_ACTION : API_DEPOSIT_GET_DETAIL};
     
     _depositRequest = [_depositObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:API_DEPOSIT_PATH
-                                                                parameters:[param encrypt]];
+                                                                                  method:RKRequestMethodPOST
+                                                                                    path:API_DEPOSIT_PATH
+                                                                              parameters:[param encrypt]];
     
     [_depositRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestfailure:error];
     }];
-
+    
     [_operationQueue addOperation:_depositRequest];
 }
 

@@ -5,13 +5,9 @@
 //
 
 #import <Availability.h>
-<<<<<<< Updated upstream
-=======
 #define CStringLastCheckVerify @"lastCheckVerify"
 #define CStringMSISDNIsVerify @"msisdnIsVerify"
 #define CStringMSISDN @"msisdn"
-
->>>>>>> Stashed changes
 
 #ifndef __IPHONE_3_0
 #warning "This project uses features only available in iOS SDK 3.0 and later."
