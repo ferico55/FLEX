@@ -286,7 +286,7 @@
                 TKPDTabInboxMessageNavigationController *controller = [TKPDTabInboxMessageNavigationController new];
                 [controller setSelectedIndex:2];
                 [controller setViewControllers:vcs];
-                
+                controller.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:controller];
 
                 break;
@@ -306,6 +306,7 @@
                 TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
                 [controller setSelectedIndex:2];
                 [controller setViewControllers:vcs];
+                controller.hidesBottomBarWhenPushed = YES;
 
                 [self.delegate pushViewController:controller];
 
@@ -327,13 +328,14 @@
                 TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
                 [nc setSelectedIndex:2];
                 [nc setViewControllers:vcs];
-                
+                nc.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:nc];
                 break;
             }
             case 3:
             {
                 InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
+                vc.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:vc];
                 break;
             }
