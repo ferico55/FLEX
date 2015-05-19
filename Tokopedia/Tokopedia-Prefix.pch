@@ -44,4 +44,5 @@
     #import "string.h"
     #import "GAI.h"
     #import "GAIFields.h"
+    #import "TokopediaNetworkManager.h"
 #endif

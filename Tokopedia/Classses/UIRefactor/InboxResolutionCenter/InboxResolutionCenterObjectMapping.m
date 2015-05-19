@@ -66,7 +66,8 @@
     [resolutionShopMapping addAttributeMappingsFromArray:@[
                                                          API_SHOP_IMAGE_KEY,
                                                          API_SHOP_NAME_KEY,
-                                                         API_SHOP_URL_KEY
+                                                         API_SHOP_URL_KEY,
+                                                         API_SHOP_ID_KEY
                                                          ]];
     return resolutionShopMapping;
 }

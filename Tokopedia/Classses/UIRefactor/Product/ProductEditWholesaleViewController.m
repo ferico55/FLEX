@@ -68,10 +68,10 @@
     saveBarButtonItem.tag = BARBUTTON_PRODUCT_SAVE;
     self.navigationItem.rightBarButtonItem = saveBarButtonItem;
     
-    UIBarButtonItem *cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    UIBarButtonItem *cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [cancelBarButtonItem setTintColor:[UIColor whiteColor]];
     cancelBarButtonItem.tag = BARBUTTON_PRODUCT_BACK;
-    self.navigationItem.leftBarButtonItem = cancelBarButtonItem;
+    self.navigationItem.backBarButtonItem = cancelBarButtonItem;
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -82,6 +82,13 @@
              object:nil];
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+
+}
+
 #pragma mark - Memory Management
 - (void)didReceiveMemoryWarning
 {
@@ -89,10 +96,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 -(void)dealloc
 {
-    [_delegate ProductEditWholesaleViewController:self withWholesaleList:_wholesaleList];
-    [self.navigationController popViewControllerAnimated:YES];
+    
+
 }
 
 #pragma mark - View Gesture
@@ -124,9 +132,16 @@
             }
             case BARBUTTON_PRODUCT_SAVE:
                 {
-                    if ([self isValidQuantityValue] && [self isValidWholesalePriceCompareNet] && [self isValidWholesalePrice]) {
+                    if (_wholesaleList.count==0 || [[_wholesaleList[0] objectForKey:@"prd_prc_1"] integerValue]==0) {
                         [_delegate ProductEditWholesaleViewController:self withWholesaleList:_wholesaleList];
                         [self.navigationController popViewControllerAnimated:YES];
+                    }
+                    else
+                    {
+                        if ([self isValidQuantityValue] && [self isValidWholesalePriceCompareNet] && [self isValidWholesalePrice]) {
+                            [_delegate ProductEditWholesaleViewController:self withWholesaleList:_wholesaleList];
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
                     }
                 }
                 break;
@@ -185,7 +200,8 @@
             ((ProductEditWholesaleCell*)cell).minimumProductTextField.text = (wholesaleMinQty==0)?@"":[NSString stringWithFormat:@"%zd",wholesaleMinQty];
             ((ProductEditWholesaleCell*)cell).maximumProductTextField.text = (wholesaleMaxQty==0)?@"":[NSString stringWithFormat:@"%zd",wholesaleMaxQty];
             ((ProductEditWholesaleCell*)cell).indexPath = indexPath;
-            ((ProductEditWholesaleCell*)cell).deleteWholesaleButton.hidden = (indexPath.row==0);
+
+            //((ProductEditWholesaleCell*)cell).deleteWholesaleButton.hidden = (indexPath.row==0);
 
             ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
             NSInteger priceCurencyID = [product.product_currency_id integerValue]?:1;
@@ -322,20 +338,36 @@
 -(void)removeCell:(ProductEditWholesaleCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger wholesaleCount = _wholesaleList.count;
-    if (wholesaleCount>1) {
-        NSRange rangeDeletedWholesale = NSMakeRange(indexPath.row, wholesaleCount-indexPath.row);
-        [_wholesaleList removeObjectsInRange:rangeDeletedWholesale];
+    //if (wholesaleCount>1) {
+        
+        if (indexPath.row == 0) {
+            NSRange rangeDeletedWholesale = NSMakeRange(1, wholesaleCount-1);
+            [_wholesaleList removeObjectsInRange:rangeDeletedWholesale];
+        }
+        else
+        {
+            NSRange rangeDeletedWholesale = NSMakeRange(indexPath.row, wholesaleCount-indexPath.row);
+            [_wholesaleList removeObjectsInRange:rangeDeletedWholesale];
+        }
         
         NSMutableArray *deletedIndexPath = [NSMutableArray new];
         for (NSInteger i=indexPath.row; i<wholesaleCount; i++) {
-            [deletedIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            if (i > 0) {
+                [deletedIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            }
         }
+        
         [_table beginUpdates];
         [_table deleteRowsAtIndexPaths:deletedIndexPath
                       withRowAnimation:UITableViewRowAnimationLeft];
         [_table endUpdates];
         [_table reloadData];
-    }
+        
+        if (indexPath.row==0) {
+            [_wholesaleList removeAllObjects];
+        }
+
+    //}
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
@@ -425,6 +457,10 @@
 {
     BOOL isValidWholesalePriceCompareNet = YES;
     
+    if (_wholesaleList.count==0) {
+        return isValidWholesalePriceCompareNet;
+    }
+    
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     NSInteger netPrice = [product.product_price integerValue];
     NSInteger wholesalePrice;
@@ -432,8 +468,16 @@
     
     NSInteger wholesaleListIndex = _wholesaleList.count;
     NSInteger wholesaleIndex = _wholesaleList.count-1;
+    if(wholesaleIndex<0)
+    {
+        wholesaleIndex = 0;
+        wholesalePrice=0;
+    }
+    else
+    {
+        wholesalePrice = [[_wholesaleList[wholesaleIndex]objectForKey:wholesalePriceKey]integerValue];
+    }
     wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];
-    wholesalePrice = [[_wholesaleList[wholesaleIndex]objectForKey:wholesalePriceKey]integerValue];
     if (wholesalePrice>=netPrice) {
         isValidWholesalePriceCompareNet = NO;
     }
@@ -448,6 +492,10 @@
 -(BOOL)isValidQuantityValue
 {
     BOOL isValidQuantityValue = YES;
+    
+    if (_wholesaleList.count==0) {
+        return isValidQuantityValue;
+    }
     
     NSString *errorMessage;
     
@@ -507,13 +555,27 @@
 -(BOOL)isValidWholesalePrice
 {
     BOOL isValidPrice = YES;
+    
+    if (_wholesaleList.count==0) {
+        return isValidPrice;
+    }
+    
     NSString *errorMessage = @"";
     NSInteger wholesaleListKeyIndex = _wholesaleList.count;
     NSString *wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListKeyIndex];
     
     NSInteger wholesaleListIndex = _wholesaleList.count-1;
+    
     NSDictionary *wholesale = _wholesaleList[wholesaleListIndex];
-    NSInteger wholesalePrice = [[wholesale objectForKey:wholesalePriceKey]integerValue];
+    NSInteger wholesalePrice = 0;
+    if (wholesaleListIndex < 0) {
+        wholesaleListIndex = 0;
+    }
+    else
+    {
+        wholesalePrice = [[wholesale objectForKey:wholesalePriceKey]integerValue];
+    }
+    
     
     NSInteger productPriceCurrencyID = [[wholesale objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
     

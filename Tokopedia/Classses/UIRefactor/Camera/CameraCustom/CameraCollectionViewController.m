@@ -104,6 +104,8 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     _groupAlbums = [NSMutableArray new];
     
     [_selectedImages addObjectsFromArray:_selectedImagesArray];
+    
+    _collectionview.contentInset = UIEdgeInsetsMake(0, 0, 5, 0);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

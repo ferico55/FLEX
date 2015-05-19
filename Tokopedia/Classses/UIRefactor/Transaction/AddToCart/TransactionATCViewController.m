@@ -263,9 +263,16 @@
             return _isnodata?0:_tableViewProductCell.count;
             break;
         case 1:
-
-            return _isnodata?0:_tableViewShipmentCell.count;
+        {
+            NSInteger totalRow = _tableViewShipmentCell.count;
+            AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+            if ([address.address_name isEqualToString:@"0"])
+            {
+                totalRow -= 2;
+            }
+            return _isnodata?0:totalRow;
             break;
+        }
         case 2:
             return _isnodata?0:_tableViewPaymentDetailCell.count;
         default:
@@ -344,7 +351,7 @@
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPMENT_COST:
                     {
-                        label.text = shipmentPackage.price;
+                        label.text = shipmentPackage.price?:@"-";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_TOTAL:
@@ -1261,6 +1268,7 @@
             UIImageView *thumb = _productThumbImageView;
             thumb.image = nil;
             [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [thumb setImage:image animated:YES];
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             }];
         }

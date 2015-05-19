@@ -17,6 +17,7 @@
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "ResolutionCenterDetailViewController.h"
+#import "RequestCancelResolution.h"
 
 #import "InboxResolutionCenterOpenViewController.h"
 
@@ -39,7 +40,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -138,6 +139,11 @@
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshRequest)
+                                                 name:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME
+                                               object:nil];
+    
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -234,8 +240,6 @@
     [_dataInput setObject:startDate?:@"" forKey:API_TRANSACTION_START_DATE_KEY];
     [_dataInput setObject:endDate?:@"" forKey:API_TRANSACTION_END_DATE_KEY];
 
-    [_refreshControll beginRefreshing];
-    [self.tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [self refreshRequest];
 
 }
@@ -243,8 +247,6 @@
 #pragma mark - Track Order delegate
 -(void)shouldRefreshRequest
 {
-    [_refreshControll beginRefreshing];
-    [self.tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [self refreshRequest];
 }
 
@@ -601,6 +603,7 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
+    _tableView.contentOffset = CGPointZero;
     NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
     TxOrderStatus *order = stat;
@@ -657,6 +660,7 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
+    _tableView.contentOffset = CGPointZero;
 }
 
 
@@ -973,10 +977,35 @@
 {
     TxOrderStatusList *order = _list[indexPath.row];
     ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+    vc.indexPath = indexPath;
+    vc.delegate = self;
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     vc.resolutionID = resolutionID;
     [self.navigationController pushViewController:vc animated:YES];
+}
+-(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
+{
+    TxOrderStatusList *order = _list[indexPath.row];
+    RequestCancelResolution *request = [RequestCancelResolution new];
+    NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
+    NSString *resolutionID = [queries objectForKey:@"id"];
+    request.resolutionID = [resolutionID integerValue];
+    request.delegate = self;
+    [request doRequest];
+}
+
+-(void)successCancelComplain:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus delegate:self];
+    [alert show];
+    [self refreshRequest];
+}
+
+-(void)failedCancelComplain:(InboxResolutionCenterList *)resolution errors:(NSArray *)errors
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
+    [alert show];
 }
 
 -(void)failedConfirmDelivery:(NSDictionary*)object
@@ -1207,6 +1236,8 @@
     _page = 1;
 
     _networkManager.delegate = self;
+    [_refreshControll beginRefreshing];
+    [_tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [_networkManager doRequest];
 }
 
@@ -1215,16 +1246,20 @@
     TxOrderStatusDetailViewController *vc = [TxOrderStatusDetailViewController new];
     TxOrderStatusList *order = _list[indexPath.row];
     vc.order = order;
+    int buttonCount = 0;
+    if ([self isShowButtonConfirmOrder:order]) {
+        buttonCount +=1;
+    }
+    if ([self isShowButtonComplainOrder:order]) {
+        buttonCount +=1;
+    }
+    
+    vc.buttonHeaderCount = buttonCount;
+    
     if ([self isShowButtonSeeComplainOrder:order])
         vc.isComplain = YES;
     else if ([self isShowButtonReorder:order])
         vc.reOrder = YES;
-    else if ([self isShowThreeButtonsOrder:order])
-        vc.buttonHeaderCount = 2;
-    else if ([self isShowTwoButtonsOrder:order])
-        vc.buttonHeaderCount = 1;
-    else
-        vc.buttonHeaderCount = 0;
     vc.indexPath = indexPath;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];

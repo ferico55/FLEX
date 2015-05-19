@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
@@ -13,7 +13,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductEditImageViewController">
             <connections>
-                <outlet property="contentView" destination="iN0-l3-epB" id="FOk-XL-zzG"/>
                 <outlet property="defaultPictLabel" destination="1mQ-9A-d13" id="UFw-40-ixt"/>
                 <outlet property="deleteImageButton" destination="zuc-Ke-wX3" id="GCP-pn-05r"/>
                 <outlet property="productImageView" destination="57h-1U-x0N" id="DOI-DA-raM"/>
@@ -31,105 +30,131 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Igl-D4-n3r">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iN0-l3-epB">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="503"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="57h-1U-x0N">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="320" id="W0Z-Mt-yzN"/>
+                            </constraints>
+                        </imageView>
+                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L8P-0R-FbF">
+                            <rect key="frame" x="0.0" y="320" width="320" height="44"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="57h-1U-x0N">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                </imageView>
-                                <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L8P-0R-FbF">
-                                    <rect key="frame" x="0.0" y="320" width="320" height="44"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pP7-SO-de0" userLabel="Border Top">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
-                                        </view>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mgn-N5-8ah" userLabel="Border Bottom">
-                                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
-                                        </view>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pP7-SO-de0" userLabel="Border Top">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                    <color key="backgroundColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="0.5" colorSpace="calibratedRGB"/>
                                 </view>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Gambar" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w08-pw-yH2">
-                                    <rect key="frame" x="20" y="327" width="280" height="30"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mgn-N5-8ah" userLabel="Border Bottom">
+                                    <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="deviceRGB"/>
+                                </view>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Gambar" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w08-pw-yH2">
+                                    <rect key="frame" x="20" y="7" width="280" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="VrH-XG-zDh"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="UUx-gL-R4G"/>
                                     </connections>
                                 </textField>
-                                <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pGp-JI-Eri">
-                                    <rect key="frame" x="0.0" y="364" width="320" height="44"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zfx-Jf-4nn" userLabel="Border Bottom">
-                                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
-                                        </view>
-                                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gambar Utama" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1mQ-9A-d13">
-                                            <rect key="frame" x="20" y="11" width="280" height="21"/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J66-ln-im6">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                                            <state key="normal" title="Jadikan Gambar Utama">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="tapDefaultPict:" destination="-1" eventType="touchUpInside" id="hoV-BL-H38"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                </view>
-                                <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="efp-cc-qaT">
-                                    <rect key="frame" x="0.0" y="458" width="320" height="44"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gFR-et-XUX" userLabel="Border Bottom">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
-                                        </view>
-                                        <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r7P-U3-LaQ">
-                                            <rect key="frame" x="258" y="7" width="62" height="30"/>
-                                            <state key="normal" title="Update">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="dXd-IN-DdP"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zuc-Ke-wX3">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                            <color key="backgroundColor" red="1" green="0.40543072769999999" blue="0.34977172369999998" alpha="1" colorSpace="calibratedRGB"/>
-                                            <state key="normal" title="Hapus Gambar">
-                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="gVA-P9-mnz"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                </view>
                             </subviews>
-                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="mgn-N5-8ah" firstAttribute="top" secondItem="w08-pw-yH2" secondAttribute="bottom" constant="6" id="2Xg-ym-Waz"/>
+                                <constraint firstAttribute="bottom" secondItem="mgn-N5-8ah" secondAttribute="bottom" id="5d4-Ux-X2N"/>
+                                <constraint firstItem="w08-pw-yH2" firstAttribute="centerY" secondItem="L8P-0R-FbF" secondAttribute="centerY" id="A1E-mR-hWh"/>
+                                <constraint firstItem="pP7-SO-de0" firstAttribute="leading" secondItem="mgn-N5-8ah" secondAttribute="leading" id="GD8-Eh-2ir"/>
+                                <constraint firstItem="w08-pw-yH2" firstAttribute="leading" secondItem="L8P-0R-FbF" secondAttribute="leading" constant="20" id="Hoc-E6-CM6"/>
+                                <constraint firstItem="w08-pw-yH2" firstAttribute="centerX" secondItem="pP7-SO-de0" secondAttribute="centerX" id="NY9-Sj-j1f"/>
+                                <constraint firstItem="pP7-SO-de0" firstAttribute="top" secondItem="L8P-0R-FbF" secondAttribute="top" id="TPI-ED-190"/>
+                                <constraint firstItem="mgn-N5-8ah" firstAttribute="trailing" secondItem="pP7-SO-de0" secondAttribute="trailing" id="UJ3-Fi-r4h"/>
+                                <constraint firstItem="w08-pw-yH2" firstAttribute="top" secondItem="pP7-SO-de0" secondAttribute="bottom" constant="6" id="Vdn-qR-8bQ"/>
+                                <constraint firstAttribute="height" constant="44" id="bK5-qz-5rB"/>
+                                <constraint firstAttribute="trailing" secondItem="pP7-SO-de0" secondAttribute="trailing" id="fTS-bJ-b5i"/>
+                                <constraint firstItem="mgn-N5-8ah" firstAttribute="leading" secondItem="L8P-0R-FbF" secondAttribute="leading" id="vf7-IQ-hrI"/>
+                            </constraints>
                         </view>
+                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pGp-JI-Eri">
+                            <rect key="frame" x="0.0" y="364" width="320" height="44"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zfx-Jf-4nn" userLabel="Border Bottom">
+                                    <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="deviceRGB"/>
+                                </view>
+                                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gambar Utama" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1mQ-9A-d13">
+                                    <rect key="frame" x="20" y="11" width="280" height="21"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="21" id="sdR-Lk-A0m"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J66-ln-im6">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <state key="normal" title="Jadikan Gambar Utama">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="tapDefaultPict:" destination="-1" eventType="touchUpInside" id="hoV-BL-H38"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="J66-ln-im6" secondAttribute="trailing" id="05g-nH-ahh"/>
+                                <constraint firstItem="Zfx-Jf-4nn" firstAttribute="leading" secondItem="J66-ln-im6" secondAttribute="leading" id="1lL-hU-e1P"/>
+                                <constraint firstAttribute="height" constant="44" id="25Q-tK-yLw"/>
+                                <constraint firstItem="Zfx-Jf-4nn" firstAttribute="top" secondItem="1mQ-9A-d13" secondAttribute="bottom" constant="11" id="HvC-LE-j6z"/>
+                                <constraint firstItem="Zfx-Jf-4nn" firstAttribute="leading" secondItem="pGp-JI-Eri" secondAttribute="leading" id="LMu-uz-dzj"/>
+                                <constraint firstAttribute="bottom" secondItem="J66-ln-im6" secondAttribute="bottom" id="VWF-eq-axD"/>
+                                <constraint firstItem="J66-ln-im6" firstAttribute="trailing" secondItem="Zfx-Jf-4nn" secondAttribute="trailing" id="Zwj-Fc-RNK"/>
+                                <constraint firstItem="1mQ-9A-d13" firstAttribute="centerX" secondItem="Zfx-Jf-4nn" secondAttribute="centerX" id="aUI-aP-Ptf"/>
+                                <constraint firstItem="1mQ-9A-d13" firstAttribute="top" secondItem="pGp-JI-Eri" secondAttribute="top" constant="11" id="hhD-xf-U1b"/>
+                                <constraint firstItem="Zfx-Jf-4nn" firstAttribute="bottom" secondItem="J66-ln-im6" secondAttribute="bottom" id="tuV-f9-Pon"/>
+                                <constraint firstItem="1mQ-9A-d13" firstAttribute="leading" secondItem="pGp-JI-Eri" secondAttribute="leading" constant="20" id="wI3-1f-Kbd"/>
+                                <constraint firstItem="J66-ln-im6" firstAttribute="top" secondItem="pGp-JI-Eri" secondAttribute="top" id="xDl-ct-Vhh"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zuc-Ke-wX3">
+                            <rect key="frame" x="0.0" y="460" width="320" height="44"/>
+                            <color key="backgroundColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="Hapus Gambar">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="gVA-P9-mnz"/>
+                            </connections>
+                        </button>
                     </subviews>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="deviceRGB"/>
+                    <constraints>
+                        <constraint firstItem="L8P-0R-FbF" firstAttribute="leading" secondItem="pGp-JI-Eri" secondAttribute="leading" id="7Vc-xm-zdw"/>
+                        <constraint firstItem="57h-1U-x0N" firstAttribute="centerX" secondItem="Igl-D4-n3r" secondAttribute="centerX" id="7il-FT-qA6"/>
+                        <constraint firstItem="pGp-JI-Eri" firstAttribute="trailing" secondItem="L8P-0R-FbF" secondAttribute="trailing" id="AJ4-5Z-hCc"/>
+                        <constraint firstItem="L8P-0R-FbF" firstAttribute="trailing" secondItem="57h-1U-x0N" secondAttribute="trailing" id="CmF-PT-1t5"/>
+                        <constraint firstItem="L8P-0R-FbF" firstAttribute="leading" secondItem="57h-1U-x0N" secondAttribute="leading" id="LIT-Bi-eP5"/>
+                        <constraint firstItem="pGp-JI-Eri" firstAttribute="top" secondItem="L8P-0R-FbF" secondAttribute="bottom" id="N1Z-1V-s2W"/>
+                        <constraint firstItem="57h-1U-x0N" firstAttribute="top" secondItem="Igl-D4-n3r" secondAttribute="top" id="Qxj-wt-zjI"/>
+                        <constraint firstItem="57h-1U-x0N" firstAttribute="leading" secondItem="Igl-D4-n3r" secondAttribute="leading" id="UQw-2l-oeq"/>
+                        <constraint firstItem="L8P-0R-FbF" firstAttribute="top" secondItem="57h-1U-x0N" secondAttribute="bottom" id="nBk-PL-PpW"/>
+                    </constraints>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="Igl-D4-n3r" firstAttribute="leading" secondItem="Rsn-J7-Jnv" secondAttribute="leading" id="AW2-hX-qn8"/>
-                <constraint firstItem="Igl-D4-n3r" firstAttribute="top" secondItem="Rsn-J7-Jnv" secondAttribute="top" id="LdF-wo-BpO"/>
-                <constraint firstAttribute="bottom" secondItem="Igl-D4-n3r" secondAttribute="bottom" id="Nb6-tq-qK5"/>
-                <constraint firstAttribute="trailing" secondItem="Igl-D4-n3r" secondAttribute="trailing" id="WWL-Ks-ge5"/>
+                <constraint firstItem="Igl-D4-n3r" firstAttribute="leading" secondItem="Rsn-J7-Jnv" secondAttribute="leading" id="5n1-CA-ZT5"/>
+                <constraint firstAttribute="trailing" secondItem="Igl-D4-n3r" secondAttribute="trailing" id="FDH-dJ-YQe"/>
+                <constraint firstItem="Igl-D4-n3r" firstAttribute="top" secondItem="Rsn-J7-Jnv" secondAttribute="top" id="q30-um-Qun"/>
+                <constraint firstAttribute="bottom" secondItem="Igl-D4-n3r" secondAttribute="bottom" id="rPv-Eh-I3b"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="vmI-Cr-LgT" appends="YES" id="BJX-Q4-IN8"/>
             </connections>
@@ -141,9 +166,4 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
