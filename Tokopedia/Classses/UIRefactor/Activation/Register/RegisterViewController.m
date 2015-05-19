@@ -893,6 +893,8 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                             object:nil
                                                           userInfo:nil];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
     }
 }
 
