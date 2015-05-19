@@ -251,26 +251,27 @@
 	[super viewDidLayoutSubviews];
     
 	_selectedViewController.view.frame = _container.bounds;
-	
-	UIEdgeInsets inset = [self contentInsetForContainerController];
-	
-	UIView* tabbar;
-	CGRect frame;
-	tabbar = _tabbar;
-	frame = tabbar.frame;
-	frame.origin.y = inset.top;
-	
-	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-		UINavigationController* n = (UINavigationController*)_selectedViewController;
-		
-		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
-			CGRect rect = n.navigationBar.frame;
-			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
-		}
-	}
+
+// Did not remove this because of the todo
+//	UIEdgeInsets inset = [self contentInsetForContainerController];
+//	
+//	UIView* tabbar;
+//	CGRect frame;
+//	tabbar = _tabbar;
+//	frame = tabbar.frame;
+//	frame.origin.y = inset.top;
+//	
+//	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//		UINavigationController* n = (UINavigationController*)_selectedViewController;
+//		
+//		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
+//			CGRect rect = n.navigationBar.frame;
+//			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
+//		}
+//	}
 	//tabbar.frame = frame;
 	
-	inset = [self contentInsetForChildController];
+	UIEdgeInsets inset = [self contentInsetForChildController];
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
 		[_delegate tabBarController:self childControllerContentInset:inset];
 	}
@@ -383,40 +384,31 @@
 	if (selectedIndex == _selectedIndex) return;
     
 	if (_viewControllers != nil) {
-        
-        
-        
-		//UIView* selecttabbar;
-		CGRect selectframe;
-        
-		//selecttabbar = _tabbar;
-		selectframe = _tabbar.frame;
-        
-		UIViewController* deselect = _selectedViewController;
-        
 
+		UIViewController* deselect = _selectedViewController;
 		UIViewController* select = _viewControllers[selectedIndex];
-		
-		UIEdgeInsets inset = [self contentInsetForContainerController];
-		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-			
-			UINavigationController* n = (UINavigationController*)select;
-			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-				
-				//CGRect rect = n.navigationBar.frame;
-				//rect = [self.view convertRect:rect fromView:n.navigationBar.superview];
-				//(*selectframe).origin.y = CGRectGetMaxY(rect);
-				selectframe.origin.y = inset.top;
-				//selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
-				selectframe = CGRectZero;
-			} else {
-				//selectframe.origin.y = inset.top;
-                selectframe = CGRectZero;
-			}
-		} else {
-            selectframe = CGRectZero;
-			//selectframe.origin.y = inset.top;
-		}
+
+// Did not remove this because of the todo
+//		UIEdgeInsets inset = [self contentInsetForContainerController];
+//		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//			
+//			UINavigationController* n = (UINavigationController*)select;
+//			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
+//				
+//				//CGRect rect = n.navigationBar.frame;
+//				//rect = [self.view convertRect:rect fromView:n.navigationBar.superview];
+//				//(*selectframe).origin.y = CGRectGetMaxY(rect);
+//				selectframe.origin.y = inset.top;
+//				//selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
+//				selectframe = CGRectZero;
+//			} else {
+//				//selectframe.origin.y = inset.top;
+//                selectframe = CGRectZero;
+//			}
+//		} else {
+//            selectframe = CGRectZero;
+//			//selectframe.origin.y = inset.top;
+//		}
 		
 		//selecttabbar.frame = selectframe;
 		
@@ -548,8 +540,7 @@
     }
 	if (_viewControllers != nil) {
 		
-		NSInteger index = _selectedIndex;
-        index = sender.tag;
+		NSInteger index = sender.tag;
         
         //reset tab border color and text color
         for(int i=0;i<_chevrons.count;i++) {
@@ -765,13 +756,10 @@
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     
     [_actpp startAnimating];
-    
+    __weak typeof(thumb) wthumb = thumb;
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
+        [wthumb setImage:image];
         [_actpp stopAnimating];
-#pragma clang diagnostic pop
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [_actpp stopAnimating];

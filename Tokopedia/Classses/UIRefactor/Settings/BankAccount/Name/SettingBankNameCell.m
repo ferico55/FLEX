@@ -62,6 +62,9 @@
                 [_delegate SettingBankNameCell:self withindexpath:indexpath];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }

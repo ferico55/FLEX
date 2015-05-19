@@ -388,13 +388,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger listCount = _list.count;
     NSInteger rowCount;
-    NSArray *gatewayList = _cart.gateway_list;
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    
-    BOOL isNullDeposit = YES;
-    for (TransactionCartGateway *gateway in gatewayList) {
-        if([gateway.gateway  isEqual:@(0)]) isNullDeposit = NO;
-    }
     
     if (section == listCount) {
         switch ([_cartSummary.gateway integerValue]) {
@@ -523,11 +517,6 @@
     }
     else if (indexPath.section == listCount)
     {
-        NSArray *gatewayList = _cart.gateway_list;
-        BOOL isNullDeposit = YES;
-        for (TransactionCartGateway *gateway in gatewayList) {
-            if([gateway.gateway  isEqual:@(0)]) isNullDeposit = NO;
-        }
         if (indexPath.row == 1) {
             return ([selectedGateway.gateway isEqual: @(TYPE_GATEWAY_TOKOPEDIA)])?_totalPaymentCell.frame.size.height:(_indexPage==0)?_saldoTokopediaCell.frame.size.height:DEFAULT_ROW_HEIGHT;
         }
@@ -818,8 +807,6 @@
         [self.tableView deleteRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationAutomatic];
         
         [self.tableView endUpdates];
-
-        NSInteger usedVoucherAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT] integerValue];
         
         NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
         grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
@@ -1476,7 +1463,6 @@
                     voucherUsedAmount = voucherUsedAmount+ deposit;
                     if (voucherUsedAmount>voucherAmount) {
                         voucherUsedAmount = voucherAmount;
-                        deposit = voucherUsedAmount - voucherAmount;
                     }
                     else
                     {
@@ -1943,12 +1929,6 @@
     UITableViewCell *cell = nil;
     
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    NSArray *gatewayList = _cart.gateway_list;
-    BOOL isNullDeposit = YES;
-    for (TransactionCartGateway *gateway in gatewayList) {
-        if([gateway.gateway  isEqual: @(0)])
-            isNullDeposit = NO;
-    }
     
     if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
         [selectedGateway.gateway isEqual:@(-1)] ||
@@ -2027,7 +2007,7 @@
     TransactionCartList *list = _list[indexList];
     NSArray *products = list.cart_products;
     NSInteger rowCount = products.count+3;
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell;
     
     //if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -2690,16 +2670,11 @@
     [self adjustPartialListParam];
     
     NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-    NSString *grandTotalBefore = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"," withString:@""];
-    grandTotalBefore = [grandTotalBefore stringByReplacingOccurrencesOfString:@"-" withString:@""];
     
     NSString *deposit = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"," withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    NSInteger depositAmount = [deposit integerValue];
     
     NSString *voucher = [_dataInput objectForKey:DATA_VOUCHER_AMOUNT];
     
@@ -2709,7 +2684,7 @@
         totalInteger = 0;
     }
     
-    NSInteger grandTotalInteger = [grandTotalBefore integerValue] - [deposit integerValue];
+    NSInteger grandTotalInteger = 0;
     NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
     NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
     NSInteger grandTotalCartFromWS = [[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
@@ -2720,9 +2695,6 @@
             voucherUsedAmount = voucherAmount;
         }
     }
-    grandTotalInteger = 0;
-    
-    grandTotalInteger -= voucherUsedAmount;
     
     grandTotalInteger = totalInteger;
     
@@ -3141,7 +3113,7 @@
             _buttonVoucherInfo.hidden = YES;
             _buttonCancelVoucher.hidden = NO;
             
-            NSString *grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"." withString:@""];
+            NSString *grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
             grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
             grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"-" withString:@""];
             grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
@@ -3424,6 +3396,10 @@
 }
 
 - (IBAction)switchUsingSaldo:(id)sender {
+}
+
+- (void)refreshCartAfterCancelPayment {
+    
 }
 
 @end

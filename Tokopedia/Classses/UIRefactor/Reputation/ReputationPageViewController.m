@@ -11,7 +11,7 @@
 #import "ReputationMyProductViewController.h"
 #import "ReputationMyReviewViewController.h"
 
-@interface ReputationPageViewController ()
+@interface ReputationPageViewController () <UIPageViewControllerDelegate>
 
 
 @property (strong, nonatomic) ReputationMyProductViewController *myProductReputation;
@@ -55,14 +55,6 @@
     CGRect newFrame = [[_pageController view] frame];
     newFrame.origin.y += 45;
     [_pageController view].frame = newFrame;
-    
-    NSArray *subviews = _pageController.view.subviews;
-    UIPageControl *thisControl = nil;
-    for (int i=0; i<[subviews count]; i++) {
-        if ([[subviews objectAtIndex:i] isKindOfClass:[UIPageControl class]]) {
-            thisControl = (UIPageControl *)[subviews objectAtIndex:i];
-        }
-    }
     
     [self setScrollEnabled:NO forPageViewController:_pageController];
     [_pageController didMoveToParentViewController:self];

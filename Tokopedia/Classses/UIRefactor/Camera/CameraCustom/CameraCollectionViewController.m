@@ -177,11 +177,9 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 
 - (ALAssetsLibrary *)defaultAssetsLibrary
 {
-    static dispatch_once_t pred = 0;
-    static ALAssetsLibrary *library = nil;
-    dispatch_once(&pred, ^{
+    if (library == nil) {
         library = [[ALAssetsLibrary alloc] init];
-    });
+    }
     return library;
 }
 

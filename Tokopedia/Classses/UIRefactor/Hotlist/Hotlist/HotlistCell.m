@@ -63,6 +63,9 @@
                 [_delegate HotlistCell:self withindexpath:_indexpath withimageview:_productimageview];
                 break;
             }
+                
+            default:
+                break;
         }
     }
     else if ([sender isKindOfClass:[UISwipeGestureRecognizer class]])

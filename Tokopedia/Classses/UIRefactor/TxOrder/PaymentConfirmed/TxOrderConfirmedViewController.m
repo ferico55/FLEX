@@ -669,6 +669,7 @@
 
 - (void)failedGenerateHost
 {
+
 }
 
 #pragma mark - Request Action Upload Photo
@@ -742,7 +743,8 @@
     NSDictionary* param = @{API_ACTION_KEY : ACTION_UPLOAD_PROOF_BY_PAYMENT_ID,
                             API_PAYMENT_ID_KEY: paymentID,
                             API_FILE_NAME_KEY: fileName,
-                            API_FILE_PATH_KEY : filePath
+                            API_FILE_PATH_KEY : filePath,
+                            kTKPDGENERATEDHOST_APISERVERIDKEY :_generateHost.result.generated_host.server_id
                             };
     
 //#if DEBUG
@@ -864,9 +866,9 @@
     requestImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:userInfo};
     requestImage.action = ACTION_UPLOAD_PROOF_IMAGE;
     requestImage.fieldName = API_FORM_FIELD_NAME_PROOF;
+    requestImage.delegate = self;
     [requestImage configureRestkitUploadPhoto];
     [requestImage requestActionUploadPhoto];
-    requestImage.delegate = self;
 }
 
 @end

@@ -136,6 +136,10 @@
     [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
 }
 
+- (void)tapMoreButtonActionAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
 -(UITableViewCell*)cellTransactionCartAtIndexPath:(NSIndexPath*)indexPath
 {
     NSString *cellid = TRANSACTION_CART_CELL_IDENTIFIER;

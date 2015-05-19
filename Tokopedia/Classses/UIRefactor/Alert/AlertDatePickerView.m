@@ -61,9 +61,6 @@
 {
 	id<TKPDAlertViewDelegate> _delegate = self.delegate;
 	
-	[_gesture removeTarget:self action:@selector(gesture:)];
-	[_gesture addTarget:self action:@selector(gesture:)];
-	
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(willPresentAlertView:)])) {
 		[_delegate willPresentAlertView:self];
 	}

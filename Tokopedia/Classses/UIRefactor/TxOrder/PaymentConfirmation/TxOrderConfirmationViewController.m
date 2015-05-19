@@ -946,6 +946,10 @@
     [_delegate successCancelOrConfirmPayment];
 }
 
+- (void)shouldPopViewController {
+    
+}
+
 -(void)failedOrCancelConfirmPayment:(NSArray *)payment
 {
 

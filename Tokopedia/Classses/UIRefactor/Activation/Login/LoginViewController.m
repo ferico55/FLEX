@@ -261,7 +261,7 @@
 #pragma mark - property
 -(void)setData:(NSDictionary *)data
 {
-    data = _data;
+    _data = data;
 }
 
 #pragma mark - Request and Mapping

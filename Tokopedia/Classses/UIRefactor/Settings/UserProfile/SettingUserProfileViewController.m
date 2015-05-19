@@ -336,6 +336,10 @@
     _generatehost = generateHost;
 }
 
+- (void)failedGenerateHost {
+    
+}
+
 #pragma mark Request Action Upload Photo
 -(void)actionUploadImage:(id)object
 {
@@ -435,7 +439,8 @@
         kTKPDPROFILE_APIGENDERKEY      : [userInfo objectForKey:kTKPDPROFILE_APIGENDERKEY]?:_profile.result.data_user.gender,
         kTKPDPROFILE_APIHOBBYKEY       : [userInfo objectForKey:kTKPDPROFILE_APIHOBBYKEY]?:_profile.result.data_user.hobby,
         kTKPDPROFILE_APIMESSENGERKEY   : [userInfo objectForKey:kTKPDPROFILE_APIUSERMESSENGERKEY]?:_profile.result.data_user.user_messenger,
-        kTKPDPROFILE_APIPASSKEY        : [userInfo objectForKey:kTKPDPROFILE_APIPASSKEY]
+        kTKPDPROFILE_APIPASSKEY        : [userInfo objectForKey:kTKPDPROFILE_APIPASSKEY],
+        kTKPDPROFILE_APIUSERPHONEKEY   : [userInfo objectForKey:kTKPDPROFILE_APIUSERPHONEKEY]?:_profile.result.data_user.user_phone,
     };
     
     _barbuttonsave.enabled = NO;

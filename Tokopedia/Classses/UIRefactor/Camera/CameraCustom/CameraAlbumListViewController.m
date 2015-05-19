@@ -126,8 +126,9 @@
 {
     CameraCollectionViewController *vc = [CameraCollectionViewController new];
     vc.assetsGroup = _groups[indexPath.row];
-    vc.delegate = _delegate;
-    //[self presentViewController:nav animated:YES completion:nil];
+    if ([_delegate conformsToProtocol:@protocol(CameraCollectionViewControllerDelegate)]) {
+        vc.delegate = (id <CameraCollectionViewControllerDelegate>)_delegate;
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 

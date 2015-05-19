@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ShopPageHeader;
 
 @interface ShopProductPageViewController : UIViewController
 
@@ -15,5 +16,5 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
 
-
+@property (nonatomic, strong) ShopPageHeader *shopPageHeader;
 @end

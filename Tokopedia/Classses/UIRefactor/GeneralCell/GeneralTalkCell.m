@@ -205,8 +205,6 @@
                 NSMutableArray *buttonTitles = [[NSMutableArray alloc] init];
                 // Check whether the comment is belong to the logged in user,
                 // or the comment is on the user's shop
-                NSInteger loginUserId = [[auth objectForKey:@"user_id"] integerValue];
-                NSString *talkIsOwner = talkList.talk_own;
               
                 if ([talkList.talk_shop_id isEqualToString:[[auth objectForKey:@"shop_id"] stringValue]] ||
                     talkList.talk_user_id == [[auth objectForKey:@"user_id"] integerValue]) {

@@ -405,7 +405,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    float cellHeight;
+    float cellHeight = 0.0f;
     switch (indexPath.section) {
         case 0:
             cellHeight = ((UITableViewCell*)_section0TableViewCell[indexPath.row]).frame.size.height;
@@ -1169,7 +1169,7 @@
             if (type == TYPE_ADD_EDIT_PRODUCT_EDIT)defaultSuccessMessage=SUCCESSMESSAGE_EDIT_PRODUCT;
             if (type == TYPE_ADD_EDIT_PRODUCT_COPY)defaultSuccessMessage=SUCCESSMESSAGE_COPY_PRODUCT;
             
-            NSArray *successMessages = setting.message_status?:@[defaultSuccessMessage];
+            NSArray *successMessages = setting.message_status?:@[defaultSuccessMessage ?: @""];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
             [alert show];
             

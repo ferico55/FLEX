@@ -239,10 +239,6 @@
     [self initReviewForm];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
 
 #pragma mark - Request + Restkit Init
 - (void)configureRestkit {

@@ -229,6 +229,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     if(! hasLoadViewWillAppear)
@@ -395,7 +396,7 @@
     CGSize keyboardSize = [[[sender userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     int height = MIN(keyboardSize.height,keyboardSize.width);
     
-    BOOL scroll;
+    BOOL scroll = NO;
     CGRect tblRect = tblCreateShop.frame;
     if(self.view.bounds.size.height-height != tblRect.size.height) {
         scroll = YES;

@@ -12,25 +12,27 @@
 
 - (id)init
 {
-    // Badge label. contains notification number
-    _badgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(-5, -5, 17, 17)];
-    [_badgeLabel setFont:[UIFont fontWithName:@"GothamMedium" size:10]];
-    [_badgeLabel setBackgroundColor:[UIColor redColor]];
-    [_badgeLabel setTextColor:[UIColor whiteColor]];
-    [_badgeLabel.layer setCornerRadius:10];
-    [_badgeLabel setClipsToBounds:YES];
-    [_badgeLabel setTag:1];
-    [_badgeLabel setHidden:YES];
-    [_badgeLabel setTextAlignment:NSTextAlignmentCenter];
-    
-    // Button for bar button item
-    UIButton *button =  [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"icon_notification_toped"] forState:UIControlStateNormal];
-    [button setFrame:CGRectMake(0, 0, 25, 25)];
-    [button addSubview:_badgeLabel];
-    
-    self.customView = button;
-
+    self = [super init];
+    if (self != nil) {
+        // Badge label. contains notification number
+        _badgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(-5, -5, 17, 17)];
+        [_badgeLabel setFont:[UIFont fontWithName:@"GothamMedium" size:10]];
+        [_badgeLabel setBackgroundColor:[UIColor redColor]];
+        [_badgeLabel setTextColor:[UIColor whiteColor]];
+        [_badgeLabel.layer setCornerRadius:10];
+        [_badgeLabel setClipsToBounds:YES];
+        [_badgeLabel setTag:1];
+        [_badgeLabel setHidden:YES];
+        [_badgeLabel setTextAlignment:NSTextAlignmentCenter];
+        
+        // Button for bar button item
+        UIButton *button =  [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setImage:[UIImage imageNamed:@"icon_notification_toped"] forState:UIControlStateNormal];
+        [button setFrame:CGRectMake(0, 0, 25, 25)];
+        [button addSubview:_badgeLabel];
+        
+        self.customView = button;
+    }
     return self;
 }
 
