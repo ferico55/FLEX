@@ -2195,7 +2195,8 @@ UIAlertViewDelegate
 #pragma clang diagnostic pop
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
+            [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+            [thumb setContentMode:UIViewContentModeCenter];
             [v.act stopAnimating];
         }];
         
