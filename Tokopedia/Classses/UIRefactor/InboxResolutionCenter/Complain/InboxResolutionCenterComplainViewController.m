@@ -121,7 +121,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didChangePreferredContentSize:)
                                                  name:UIContentSizeCategoryDidChangeNotification object:nil];
-    
+
     _tableView.estimatedRowHeight = 70.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
@@ -225,7 +225,6 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    //TODO:: add counter_30_days
     InboxResolutionCenterComplainCell* cell = nil;
     NSString *cellID = INBOX_RESOLUTION_CENTER_MY_COMPLAIN_CELL_IDENTIFIER;
     
@@ -582,6 +581,7 @@
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Anda telah berhasil membatalkan komplain."] delegate:self];
             [alert show];
             [_allObjectCancelComplain removeObject:_objectCancelComplain];
+            [[NSNotificationCenter defaultCenter] postNotificationName:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME object:nil];
         }
         else
         {

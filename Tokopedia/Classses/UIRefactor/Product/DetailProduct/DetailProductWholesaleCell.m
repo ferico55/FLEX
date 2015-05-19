@@ -91,7 +91,7 @@
         ((DetailProductWholesaleTableCell*)cell).price.textColor = [UIColor lightGrayColor];
     } else {
         WholesalePrice *wholesale = _wholesales[indexPath.row-1];
-        if (indexPath.row == _wholesales.count-1)
+        if (indexPath.row == _wholesales.count)
             ((DetailProductWholesaleTableCell*)cell).quantity.text = [NSString stringWithFormat:@" >= %@", wholesale.wholesale_min];
         else
             ((DetailProductWholesaleTableCell*)cell).quantity.text = [NSString stringWithFormat:@"%@ - %@", wholesale.wholesale_min, wholesale.wholesale_max];

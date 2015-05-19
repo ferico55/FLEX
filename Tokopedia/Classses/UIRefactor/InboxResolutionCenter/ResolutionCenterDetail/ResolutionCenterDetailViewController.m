@@ -10,6 +10,7 @@
 #import "ResolutionCenterInputViewController.h"
 #import "ResolutionInputReceiptViewController.h"
 #import "InboxResolutionCenterOpenViewController.h"
+#import "InboxResolutionCenterComplainViewController.h"
 
 #import "NavigateViewController.h"
 

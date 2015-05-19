@@ -88,10 +88,10 @@
 {
     [super viewDidDisappear:animated];
     if (_track) {
-        if ([_track.result.track_order.order_status integerValue] == ORDER_DELIVERED &&
-            [self.delegate respondsToSelector:@selector(shouldRefreshRequest)]) {
+        //if ([_track.result.track_order.order_status integerValue] == ORDER_DELIVERED &&
+        //    [self.delegate respondsToSelector:@selector(shouldRefreshRequest)]) {
             [_delegate shouldRefreshRequest];
-        }
+        //}
     }
 }
 

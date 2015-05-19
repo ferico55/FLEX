@@ -482,6 +482,7 @@ typedef enum TagRequest {
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+        [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];

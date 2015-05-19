@@ -335,12 +335,12 @@ UIAlertViewDelegate
 }
 
 - (void)initNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+
     
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshRequest:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+    [center addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    [center addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
 
 
@@ -397,10 +397,8 @@ UIAlertViewDelegate
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    _promoteNetworkManager.delegate = nil;
-    [self cancel];
     
-    [tokopediaNetworkManager requestCancel];
+    
 }
 
 
@@ -1526,6 +1524,11 @@ UIAlertViewDelegate
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    
+    [tokopediaNetworkManager requestCancel];
+    _promoteNetworkManager.delegate = nil;
+    [self cancel];
+    
     tokopediaNetworkManagerWishList.delegate = nil;
     [tokopediaNetworkManagerWishList requestCancel];
     
@@ -1625,7 +1628,7 @@ UIAlertViewDelegate
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         id stats = [result objectForKey:@""];
         _product = stats;
-        _formattedProductDescription = _product.result.product.product_description;
+        _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
         _formattedProductTitle = _product.result.product.product_name;
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         

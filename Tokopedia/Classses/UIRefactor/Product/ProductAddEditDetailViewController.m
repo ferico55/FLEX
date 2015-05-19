@@ -1085,10 +1085,10 @@
     NSString *moveToWarehouse = [product.product_etalase_id isEqual:@(0)]?PRODUCT_MOVETO_WAREHOUSE_ID:@"1";
     
     NSNumber *etalaseUserInfoID = product.product_etalase_id;
-    if ([etalaseUserInfoID isEqual:@(0)]) {
-        [_moveToWarehouseNetworkManager doRequest];
-        return @{};
-    }
+    //if ([etalaseUserInfoID isEqual:@(0)]) {
+    //    [_moveToWarehouseNetworkManager doRequest];
+    //    return @{};
+    //}
     BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
     NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
     

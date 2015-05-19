@@ -1439,6 +1439,7 @@
 		FC36DFA219B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
 		FC36DFAA19B0656400AF74C1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC36DFA819B0656400AF74C1 /* InfoPlist.strings */; };
 		FC36DFAC19B0656400AF74C1 /* TokopediaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */; };
+		FC428D241B09A1CA00533F8C /* RequestCancelResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = FC428D231B09A1CA00533F8C /* RequestCancelResolution.m */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
@@ -3640,6 +3641,8 @@
 		FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TokopediaTests.m; sourceTree = "<group>"; };
 		FC36E1CD19B067AD00AF74C1 /* Tkpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tkpd.h; sourceTree = "<group>"; };
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
+		FC428D221B09A1CA00533F8C /* RequestCancelResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RequestCancelResolution.h; path = ResolutionCenterDetail/RequestCancelResolution.h; sourceTree = "<group>"; };
+		FC428D231B09A1CA00533F8C /* RequestCancelResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RequestCancelResolution.m; path = ResolutionCenterDetail/RequestCancelResolution.m; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -5722,6 +5725,8 @@
 		7AB963E91B021B610060A4C9 /* InboxResolutionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				FC428D221B09A1CA00533F8C /* RequestCancelResolution.h */,
+				FC428D231B09A1CA00533F8C /* RequestCancelResolution.m */,
 				7AB963EA1B021B610060A4C9 /* Complain */,
 				7AB963F41B021B610060A4C9 /* InboxResolutionCenterObjectMapping.h */,
 				7AB963F51B021B610060A4C9 /* InboxResolutionCenterObjectMapping.m */,
@@ -9002,6 +9007,7 @@
 				7AB9695F1B021B630060A4C9 /* ResolutionActionResult.m in Sources */,
 				7AB969AC1B021B630060A4C9 /* ActionOrder.m in Sources */,
 				7AB969191B021B630060A4C9 /* CatalogInfo.m in Sources */,
+				FC428D241B09A1CA00533F8C /* RequestCancelResolution.m in Sources */,
 				7AB96C371B021B630060A4C9 /* TransactionCartResultCell.m in Sources */,
 				7AB96C011B021B630060A4C9 /* ShopProductPageViewController.m in Sources */,
 				7AB96C361B021B630060A4C9 /* TransactionPaymenViewController.m in Sources */,

@@ -189,6 +189,43 @@ static sqlite3_stmt *statement = nil;
     return nil;
 }
 
+-(NSDictionary*)dataFromDepartmentID:(NSString*)departmentID
+{
+    NSString *tree;
+    NSString *parent;
+    
+    const char *dbpath = [databasePath UTF8String];
+    
+    if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+    {
+        NSString * query = [NSString stringWithFormat:@"select tree,parent from ws_department where d_id=\"%@\"",departmentID];
+        const char *query_stmt = [query UTF8String];
+        
+        NSMutableDictionary *data = [NSMutableDictionary new];
+        
+        if (sqlite3_prepare_v2(database, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                
+                //[dict removeAllObjects];
+                if ( sqlite3_column_type(statement, 0) != SQLITE_NULL )
+                    tree = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                [data setObject:tree forKey:@"tree"];
+                if ( sqlite3_column_type(statement, 1) != SQLITE_NULL )
+                    parent = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                [data setObject:parent forKey:@"parent"];
+            }
+            sqlite3_reset(statement);
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(database);
+        return [data copy];
+    }
+    return nil;
+}
+
+
 -(void)openDatabase
 {
     [self createEditableCopyOfDatabaseIfNeeded];

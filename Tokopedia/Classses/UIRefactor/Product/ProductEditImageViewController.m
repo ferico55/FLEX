@@ -74,6 +74,8 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+    
+    [_scrollView addSubview:_contentView];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -85,7 +87,7 @@
 
 -(void)viewDidLayoutSubviews
 {
-    _scrollView.contentSize = _contentView.frame.size;
+    //_scrollView.contentSize = _contentView.frame.size;
 }
 
 - (void)didReceiveMemoryWarning
