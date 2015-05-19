@@ -3114,6 +3114,9 @@
             _buttonCancelVoucher.hidden = NO;
             
             NSString *grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
+            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"-" withString:@""];
+            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
             NSInteger totalInteger = [grandTotal integerValue];
             
             if (totalInteger<=voucher) {
