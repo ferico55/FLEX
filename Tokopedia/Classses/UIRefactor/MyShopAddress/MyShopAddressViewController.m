@@ -356,7 +356,6 @@
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestSuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
-            _table.tableFooterView = nil;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
             [_timer invalidate];
@@ -365,8 +364,6 @@
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestFailure:error];
-            //[_act stopAnimating];
-            //_table.tableFooterView = nil;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
             [_timer invalidate];
@@ -424,8 +421,16 @@
                 [_list addObjectsFromArray:address.result.list];
                 if (_list.count >0) {
                     _isnodata = NO;
+                    _table.tableFooterView = nil;
+                } else {
+                    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+                    NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+                    _table.tableFooterView = noResultView;
+                    _table.sectionFooterHeight = 103;
                 }
+
                 [_table reloadData];
+                
                 NSInteger type = [[_datainput objectForKey:kTKPDDETAIL_DATATYPEKEY]integerValue];
                 if (type == 1) {
                     //TODO: Behavior after edit

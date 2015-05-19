@@ -463,9 +463,11 @@
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
         [self requestFacebookLoginResult:mappingResult withOperation:operation];
+        _barbuttonsignin.title = @"Masuk";
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
+        _barbuttonsignin.title = @"Masuk";
         [self requestFailureLogin:error];
     }];
     
@@ -771,6 +773,9 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                             object:nil
                                                           userInfo:nil];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
+                                                            object:nil];
     }
 }
 

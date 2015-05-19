@@ -676,12 +676,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 // redirect uri to search category
                 if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
                     NSString *departementID = _searchitem.result.department_id;
-                    //NSString *deptid = _searchitem.result.redirect_url.department_id;
                     [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
                     [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
                     [self cancel];
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
+                    
+                    if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
+                        [self.delegate updateTabCategory:departementID];
+                    }
                     
                     [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }

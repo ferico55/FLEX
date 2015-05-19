@@ -128,6 +128,7 @@ typedef enum
 #define kTKPDPROFILE_APIGENDERKEY @"gender"
 #define kTKPDPROFILE_APIEMAILKEY @"email"
 #define kTKPDPROFILE_APIMESSENGERKEY @"messenger"
+#define kTKPDPROFILE_APIMSISDNKEY  @"msisdn"
 
 #define kTKPDPROFILESETTING_APIUSERIDKEY @"user_id"
 #define kTKPDPROFILESETTING_APIPASSKEY @"password"

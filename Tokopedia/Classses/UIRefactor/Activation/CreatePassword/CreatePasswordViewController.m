@@ -455,8 +455,6 @@
         NSInteger day = [components day];
         
         _dateOfBirthTextField.text = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
-    } else {
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -477,8 +475,6 @@
 
 - (void)alertViewDismissed:(UIView *)alertView
 {
-    [self.delegate createPasswordSuccess];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Login methods
@@ -574,6 +570,9 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil
                                                               userInfo:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
+                                                                object:nil];
             
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             

@@ -37,6 +37,7 @@
     html = [html stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     html = [html stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     html = [html stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
+    html = [html stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
     
     myScanner = [NSScanner scannerWithString:html];
     
