@@ -72,12 +72,12 @@
             
             
         } else {
-            NSError *error = processResult;
+
             if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
                 [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
             } else
             {
-                NSError *error = operation.error;
+                NSError *error = processResult;
                 StickyAlertView *alert = [[StickyAlertView alloc]init];
                 NSArray *errors;
                 if(error.code == -1011) {
