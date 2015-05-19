@@ -16,6 +16,8 @@
 @property (nonatomic) NSString* product_id;
 @property (nonatomic) NSString* product_image;
 @property (nonatomic) NSString* product_name;
+@property (nonatomic, strong) NSString *product_image_no_square;
+
 
 
 @end

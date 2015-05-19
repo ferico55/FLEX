@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
 #import "LoginViewController.h"
+#import "ShopPageHeader.h"
 #import "ShopContainerViewController.h"
 #import "ShopTalkPageViewController.h"
 #import "ShopProductPageViewController.h"
@@ -277,8 +278,12 @@
     
 }
 
-- (void)postNotificationSetShopHeader {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
+- (void)updateHeaderShopPage
+{
+    [_shopNotesViewController.shopPageHeader setHeaderShopPage:_shop];
+    [_shopProductViewController.shopPageHeader setHeaderShopPage:_shop];
+    [_shopReviewViewController.shopPageHeader setHeaderShopPage:_shop];
+    [_shopTalkViewController.shopPageHeader setHeaderShopPage:_shop];
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
@@ -599,7 +604,7 @@
                 [secureStorage setKeychainWithValue:_shop.result.info.shop_has_terms?:@"" withKey:@"shop_has_terms"];
                 [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
                 _isNoData = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
+                [self updateHeaderShopPage];
             }
         }
         else{
@@ -658,6 +663,24 @@
     
 }
 
+
+#pragma mark - Method
+- (void)setFavoriteRightButtonItem
+{
+    StickyAlertView *stickyAlertView;
+    if([self.navigationItem.rightBarButtonItems firstObject] == _favoriteBarButton) {
+        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _fixedSpace, _messageBarButton, _fixedSpace, _infoBarButton];
+        stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
+    }
+    else {
+        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton,_fixedSpace, _messageBarButton,_fixedSpace, _infoBarButton];
+        stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
+    }
+    
+    [stickyAlertView show];
+}
+
+
 #pragma mark - Tap Action
 - (IBAction)infoTap:(id)sender {
     if (_shop) {
@@ -700,10 +723,9 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-        
-        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _fixedSpace, _messageBarButton, _fixedSpace, _infoBarButton];
     }
 }
+
 
 - (IBAction)unfavoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
@@ -712,8 +734,6 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-        
-        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton,_fixedSpace, _messageBarButton,_fixedSpace, _infoBarButton];
     }
     else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -787,20 +807,20 @@
             case 10:
             {
                 [_pageController setViewControllers:@[_shopTalkViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
+                [self updateHeaderShopPage];
                 break;
             }
             case 11:
             {
                 [_pageController setViewControllers:@[_shopReviewViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
+                [self updateHeaderShopPage];
                 break;
             }
             case 12:
             {
                 
                 [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
+                [self updateHeaderShopPage];
                 break;
             }
                 
@@ -808,7 +828,7 @@
             {
                 
                 [_pageController setViewControllers:@[_shopProductViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
+                [self updateHeaderShopPage];
                 break;
             }
             default:
@@ -868,7 +888,7 @@
         [self requestFavoriteResult:mappingResult withOperation:operation];
         [_timer invalidate];
         _timer = nil;
-        
+        [self setFavoriteRightButtonItem];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFavoriteError:error];
