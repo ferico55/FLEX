@@ -377,7 +377,7 @@ UIAlertViewDelegate
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Product Detail";
+    self.screenName = @"Product Info";
     _promoteNetworkManager.delegate = self;
     
     self.hidesBottomBarWhenPushed = YES;
