@@ -29,7 +29,7 @@
 @property (strong, nonatomic) NSArray *order_products;
 @property (strong, nonatomic) OrderShipment *order_shipment;
 @property (strong, nonatomic) OrderLast *order_last;
-@property (strong, nonatomic) NSArray *order_history;
+@property (strong, nonatomic) NSMutableArray *order_history;
 @property (strong, nonatomic) OrderDestination *order_destination;
 
 @end

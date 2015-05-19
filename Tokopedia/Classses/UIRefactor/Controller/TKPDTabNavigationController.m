@@ -11,8 +11,9 @@
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
 #import "SearchResultShopViewController.h"
+#import "SearchResultViewController.h"
 
-@interface TKPDTabNavigationController () <CategoryMenuViewDelegate>{
+@interface TKPDTabNavigationController () <CategoryMenuViewDelegate, SearchResultDelegate>{
 	UIView *_tabbar;
 	NSArray *_buttons;
 	NSInteger _unloadSelectedIndex;
@@ -20,6 +21,8 @@
     BOOL _hascatalog;
     
     UIBarButtonItem *_barbuttoncategory;
+    
+    NSString *_categoryID;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *container;
@@ -274,10 +277,11 @@
 		
 		_selectedIndex = selectedIndex;
 		_selectedViewController = _viewControllers[selectedIndex];
-				
+
         if ([_selectedViewController isKindOfClass:[SearchResultShopViewController class]]) {
             self.navigationItem.rightBarButtonItem = nil;
-        } else {
+        } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
+            ((SearchResultViewController *)_selectedViewController).delegate = self;
             self.navigationItem.rightBarButtonItem = _barbuttoncategory;
         }
         
@@ -444,7 +448,8 @@
             case 11:
             {
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue];
+                NSInteger categoryID = [_categoryID integerValue];
+                NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue]?:categoryID;
                 vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:@(d_id)};
                 vc.delegate = self;
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -579,6 +584,11 @@
     }    
 }
 
+- (void)updateTabCategory:(NSString *)categoryID
+{
+    _categoryID = categoryID;
+}
+
 @end
 
 #pragma mark -
@@ -620,6 +630,4 @@
 	objc_setAssociatedObject(self, @selector(TKPDTabNavigationItem), TKPDTabNavigationItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-
 @end
-

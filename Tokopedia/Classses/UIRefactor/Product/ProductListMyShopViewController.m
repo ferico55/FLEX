@@ -174,7 +174,10 @@
             ManageProductList *list = _list[indexPath.row];
             [((ProductListMyShopCell*)cell).labelname setText:list.product_name animated:YES];
             [((ProductListMyShopCell*)cell).labeletalase setText:list.product_etalase animated:YES];
-            [((ProductListMyShopCell*)cell).labelprice setText:[NSString stringWithFormat:@"%@ %@",list.product_currency, list.product_normal_price] animated:YES];
+            [((ProductListMyShopCell*)cell).labelprice setText:[NSString stringWithFormat:@"%@ %@",
+                                                                list.product_currency,
+                                                                list.product_normal_price]
+                                                      animated:YES];
             ((ProductListMyShopCell*)cell).indexpath = indexPath;
             
             UIActivityIndicatorView *act = ((ProductListMyShopCell*)cell).act;
@@ -197,8 +200,8 @@
                 [act stopAnimating];
                 [act setHidden:YES];
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                thumb.image = [UIImage imageNamed:@"Icon_no_photo_transparan"];
-                thumb.contentMode = UIViewContentModeScaleAspectFill;
+                thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+                thumb.contentMode = UIViewContentModeCenter;
                 [act stopAnimating];
                 [act setHidden:YES];
             }];
