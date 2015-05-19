@@ -255,7 +255,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat height;
+    CGFloat height = 0;
     switch (indexPath.section) {
         case 0: {
             if (_shipment) {
@@ -310,7 +310,7 @@
 
 - (CGFloat)heightForJNEAtRow:(NSInteger)row
 {
-    CGFloat height;
+    CGFloat height = 0;
     if ([_availableShipments containsObject:_JNE.shipment_id]) {
         
         // cell to show courier name and logo
@@ -424,7 +424,7 @@
 
 - (CGFloat)heightForTikiAtRow:(NSInteger)row
 {
-    CGFloat height;
+    CGFloat height = 0;
     if ([_availableShipments containsObject:_tiki.shipment_id]) {
 
         // cell to show courier name and logo
@@ -494,7 +494,7 @@
 
 - (CGFloat)heightForRPXAtRow:(NSInteger)row
 {
-    CGFloat height;
+    CGFloat height = 0;
     if ([_availableShipments containsObject:_RPX.shipment_id]) {
 
         // cell to show courier name and logo
@@ -543,7 +543,7 @@
 
 - (CGFloat)heightForWahanaAtRow:(NSInteger)row
 {
-    CGFloat height;
+    CGFloat height = 0;
     if ([_availableShipments containsObject:_wahana.shipment_id]) {
         
         // cell to show courier name and logo
@@ -582,7 +582,7 @@
 
 - (CGFloat)heightForPosAtRow:(NSInteger)row
 {
-    CGFloat height;
+    CGFloat height = 0;
     if ([_availableShipments containsObject:_posIndonesia.shipment_id]) {
         
         // cell to show courier name and logo
@@ -686,7 +686,7 @@
 
 - (CGFloat)heightForCahayaAtRow:(NSInteger)row
 {
-    CGFloat height;
+    CGFloat height = 0;
     if ([_availableShipments containsObject:_cahaya.shipment_id]) {
         if (row == 0) {
             height = 50;
@@ -716,7 +716,7 @@
 
 - (CGFloat)heightForPanduAtRow:(NSInteger)row
 {
-    CGFloat height;
+    CGFloat height = 0;
     if ([_availableShipments containsObject:_pandu.shipment_id]) {
 
         // cell to show courier name and logo
