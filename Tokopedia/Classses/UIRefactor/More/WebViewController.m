@@ -32,6 +32,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     self.navigationItem.title = strTitle;
 
     //SetUp URL
@@ -52,6 +53,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [progressView removeFromSuperview];
 }
 

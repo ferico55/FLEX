@@ -37,6 +37,9 @@
 
 @property (weak, nonatomic) id<ShipmentStatusCellDelegate> delegate;
 
+@property (weak, nonatomic) IBOutlet UIView *statusView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+
 - (void)hideDayLeftInformation;
 - (void)showTrackButton;
 - (void)showAllButton;

@@ -441,7 +441,7 @@
                 [_shopdictionary setObject:_shop forKey:@"b"];
             }
             
-            _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
+            _shopdictionarytitle = @[@"Rekomendasi",@""];
 
             
             if (_shop.count + _goldshop.count >0) {
@@ -565,16 +565,13 @@
     }
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@0,
                        kTKPDDETAIL_APISHOPNAMEKEY:list.shop_name?:@"",
                        kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
                        };
     [self.navigationController pushViewController:container animated:YES];
     //
     //Check Difference userID
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    _auth = [_auth mutableCopy];
     //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     //    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
     //    shopViewController.data = @{

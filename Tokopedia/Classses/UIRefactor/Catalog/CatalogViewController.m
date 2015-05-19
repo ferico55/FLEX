@@ -109,16 +109,14 @@
                                                                                   alpha:1],
                                  };
     
-    NSString *catalogName, *catalogPrice, *catalogImageURL;
+    NSString *catalogName, *catalogPrice;
     
     if (_catalogID) {
         catalogName = _catalogName;
         catalogPrice = _catalogPrice;
-        catalogImageURL = _catalogImage;
     } else if (_list) {
         catalogName = _list.catalog_name;
         catalogPrice = _list.catalog_price;
-        catalogImageURL = _list.catalog_image;
     }
 
     self.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:catalogName
@@ -140,7 +138,6 @@
 {
     [super viewWillAppear:animated];
     _tableView.tableHeaderView = _headerView;
-//    _tableView.tableFooterView = _footerView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -234,7 +231,8 @@
     
     RKObjectMapping *catalogImageMapping = [RKObjectMapping mappingForClass:[CatalogImages class]];
     [catalogImageMapping addAttributeMappingsFromArray:@[API_IMAGE_PRIMARY_KEY,
-                                                         API_IMAGE_SRC_KEY, @"image_src_full"]];
+                                                         API_IMAGE_SRC_KEY,
+                                                         API_IMAGE_SRC_FULL_KEY]];
     
     RKObjectMapping *catalogSpecificationMapping = [RKObjectMapping mappingForClass:[CatalogSpecs class]];
     [catalogSpecificationMapping addAttributeMappingsFromArray:@[API_SPEC_HEADER_KEY,]];
@@ -445,19 +443,21 @@
                 CGRect frame = CGRectMake(x, 0, self.view.frame.size.width, self.view.frame.size.width);
                 UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
                 
-                NSURLRequest* requestCatalogImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src_full]  cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                NSURLRequest* requestCatalogImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src]
+                                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                                                      
-                [catalogImageView setImageWithURLRequest:requestCatalogImage placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [catalogImageView setImageWithURLRequest:requestCatalogImage
+                                        placeholderImage:nil
+                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
-                    catalogImageView.contentMode = UIViewContentModeScaleAspectFit;
                     [catalogImageView setImage:image];
-                    
+                    [catalogImageView setContentMode:UIViewContentModeScaleAspectFill];
 #pragma clang diagnostic pop
-                    
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    
+                    [catalogImageView setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+                    [catalogImageView setContentMode:UIViewContentModeCenter];
                 }];
                 
 
@@ -574,7 +574,7 @@
 - (NSString *)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index
 {
     if(((int) index) < 0)
-        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:0]).image_src;
+        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:0]).image_src_full;
     else if(((int)index) > _catalog.result.catalog_info.catalog_images.count-1)
         return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:_catalog.result.catalog_info.catalog_images.count-1]).image_src_full;
     

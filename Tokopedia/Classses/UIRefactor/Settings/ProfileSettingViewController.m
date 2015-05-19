@@ -173,7 +173,9 @@
 
                 if ([[self.navigationController.viewControllers objectAtIndex:1] isKindOfClass:[UserContainerViewController class]]) {
                     UserContainerViewController *userContainer = [self.navigationController.viewControllers objectAtIndex:1];
-                    vc.delegate = userContainer;
+                    if ([userContainer conformsToProtocol:@protocol(SettingUserProfileDelegate) ]) {
+                        vc.delegate = (id <SettingUserProfileDelegate>)userContainer;
+                    }
                 }
                 
                 [self.navigationController pushViewController:vc animated:YES];

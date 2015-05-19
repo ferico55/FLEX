@@ -205,8 +205,10 @@
                         NSArray *array = generalaction.message_status?:[[NSArray alloc] initWithObjects:SUCCESS_REPORT_TALK, nil];
                         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
                         [stickyAlertView show];
-                        UINavigationController *nav = _delegate;
-                        [nav.navigationController popViewControllerAnimated:YES];
+                        if ([_delegate isKindOfClass:[UINavigationController class]]) {
+                            UINavigationController *nav = (UINavigationController *)_delegate;
+                            [nav.navigationController popViewControllerAnimated:YES];
+                        }
                     }
                 }
             }

@@ -752,10 +752,10 @@ LoadingViewDelegate
             SortViewController *vc = [SortViewController new];
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
             else
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
             vc.delegate = self;
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {

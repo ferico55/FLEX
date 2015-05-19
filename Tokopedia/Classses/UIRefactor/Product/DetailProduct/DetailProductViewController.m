@@ -204,9 +204,7 @@ UIAlertViewDelegate
 -(void)configureRestKit;
 -(void)loadData;
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
--(void)requesttimeout;
 
 @end
 
@@ -346,16 +344,29 @@ UIAlertViewDelegate
 
 
 - (void)setButtonFav {
-    _favButton.tag = 18;
-    [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
-    [_favButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
-    [_favButton.layer setBorderWidth:0];
-    _favButton.tintColor = [UIColor whiteColor];
-    [UIView animateWithDuration:0.3 animations:^(void) {
-        [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
-        [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }];
     
+    if(_favButton.tag == 17) {//Favorite is 17
+        _favButton.tag = 18;
+        [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+        [_favButton.layer setBorderWidth:0];
+        _favButton.tintColor = [UIColor whiteColor];
+        [UIView animateWithDuration:0.3 animations:^(void) {
+            [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
+            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        }];
+    }
+    else {
+        _favButton.tag = 17;
+        [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+        [_favButton.layer setBorderWidth:1];
+        _favButton.tintColor = [UIColor lightGrayColor];
+        [UIView animateWithDuration:0.3 animations:^(void) {
+            [_favButton setBackgroundColor:[UIColor whiteColor]];
+            [_favButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        }];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -520,7 +531,6 @@ UIAlertViewDelegate
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     [self favoriteShop:_product.result.shop_info.shop_id];
-                    [self setButtonFav];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -544,17 +554,6 @@ UIAlertViewDelegate
                     //UnLove Shop
                     [self configureFavoriteRestkit];
                     [self favoriteShop:_product.result.shop_info.shop_id];
-                    
-                    _favButton.tag = 17;
-                    
-                    [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
-                    [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-                    [_favButton.layer setBorderWidth:1];
-                    _favButton.tintColor = [UIColor lightGrayColor];
-                    [UIView animateWithDuration:0.3 animations:^(void) {
-                        [_favButton setBackgroundColor:[UIColor whiteColor]];
-                        [_favButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                    }];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -614,6 +613,9 @@ UIAlertViewDelegate
             case UIGestureRecognizerStateEnded: {
                 
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -635,6 +637,9 @@ UIAlertViewDelegate
                 [alert show];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -659,6 +664,9 @@ UIAlertViewDelegate
                 [self.navigationController pushViewController:controller animated:YES];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -688,6 +696,9 @@ UIAlertViewDelegate
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -1194,7 +1205,7 @@ UIAlertViewDelegate
         RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TheOtherProductResult class]];
         
         RKObjectMapping *otherProductListMapping = [RKObjectMapping mappingForClass:[TheOtherProductList class]];
-        [otherProductListMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
+        [otherProductListMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY, API_PRODUCT_IMAGE_NO_SQUARE]];
         
         [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
         
@@ -1358,7 +1369,17 @@ UIAlertViewDelegate
     }
     else if(tag == CTagFavorite)
     {
+        StickyAlertView *stickyAlertView;
+        if(_favButton.tag == 17) {//Favorite
+            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
+        }
+        else {
+            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
+        }
+        
+        [stickyAlertView show];
         [self requestFavoriteResult:successResult withOperation:operation];
+        [self setButtonFav];
     }
     else if(tag == CTagUnWishList)
     {
@@ -1581,7 +1602,6 @@ UIAlertViewDelegate
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
     }
 }
 
@@ -1620,6 +1640,10 @@ UIAlertViewDelegate
         
         [self requestprocess:object];
     }
+}
+
+- (void)requestfailure:(id)object {
+    
 }
 
 -(void)requestprocess:(id)object
@@ -1748,12 +1772,11 @@ UIAlertViewDelegate
             
             
             if(_product.result.shop_info.shop_already_favorited == 1) {
+                _favButton.tag = 17;
                 [self setButtonFav];
             } else {
-                [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
-                [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-                _favButton.tintColor = [UIColor lightGrayColor];
-                _favButton.tag = 17;
+                _favButton.tag = 18;
+                [self setButtonFav];
             }
             
             if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
@@ -2131,7 +2154,7 @@ UIAlertViewDelegate
     otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/2.0f);
     for(int i = 0; i< _otherProductObj.count; i++)
     {
-        OtherProduct *product = _otherProductObj[i];
+        TheOtherProductList *product = _otherProductObj[i];
         
         DetailProductOtherView *v = [DetailProductOtherView newview];
         
@@ -2157,7 +2180,7 @@ UIAlertViewDelegate
         v.pricelabel.text = product.product_price;
         //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image_no_square] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
         
         UIImageView *thumb = v.thumb;
@@ -2175,6 +2198,7 @@ UIAlertViewDelegate
 #pragma clang diagnostic pop
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
             [v.act stopAnimating];
         }];
         

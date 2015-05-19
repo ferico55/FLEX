@@ -29,7 +29,7 @@
 #import "ShopInfoViewController.h"
 #import "DetailReviewViewController.h"
 
-@interface ShopReviewViewController () <UITableViewDataSource, UITableViewDelegate, ShopHeaderDelegate>
+@interface ShopReviewViewController () <UITableViewDataSource, UITableViewDelegate, ShopHeaderDelegate, GeneralReviewCellDelegate>
 {
     NSMutableDictionary *_param;
     NSMutableArray *_list;

@@ -19,6 +19,8 @@
 #import "DetailProductViewController.h"
 
 #import "detail.h"
+#import "string_inbox_talk.h"
+
 
 @interface GeneralTalkCell () <UIActionSheetDelegate> {
     NavigateViewController *_navigateController;
@@ -115,7 +117,10 @@
     
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : productId};
-    [nav.navigationController pushViewController:vc animated:YES];
+    
+    if(![talkList.talk_product_status isEqualToString:STATE_TALK_PRODUCT_DELETED] && ![talkList.talk_product_status isEqualToString:STATE_TALK_PRODUCT_BANNED]) {
+        [nav.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)tapMessage {
@@ -200,8 +205,6 @@
                 NSMutableArray *buttonTitles = [[NSMutableArray alloc] init];
                 // Check whether the comment is belong to the logged in user,
                 // or the comment is on the user's shop
-                NSInteger loginUserId = [[auth objectForKey:@"user_id"] integerValue];
-                NSString *talkIsOwner = talkList.talk_own;
               
                 if ([talkList.talk_shop_id isEqualToString:[[auth objectForKey:@"shop_id"] stringValue]] ||
                     talkList.talk_user_id == [[auth objectForKey:@"user_id"] integerValue]) {

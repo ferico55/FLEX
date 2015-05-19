@@ -138,6 +138,10 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTotalReviewComment:)
+                                                 name:@"updateTotalReviewComment" object:nil];
+    
     if (_list.count>2) {
         _isnodata = NO;
     }
@@ -331,6 +335,9 @@
                 [self setHeaderData];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }
@@ -662,13 +669,6 @@
     float ratingpoint = (_isadvreviewquality)?_review.result.advance_review.rating_quality_point:_review.result.advance_review.rating_accuracy_point;
 
     _labeltotalreview.text = [NSString stringWithFormat:@"%f out of %zd",ratingpoint,_review.result.advance_review.total_review];
-    
-    NSArray *ratinglist = _review.result.advance_review.rating_list;
-//    
-//    for (RatingList *list in ratinglist) {
-//        NSInteger starpoint = list.rating_star_point;
-//        ((ProgressBarView*)_progressviews[starpoint-1]).floatcount =(_isadvreviewquality)?list.rating_quality_point:list.rating_accuracy_point;
-//    }
 }
 
 #pragma mark - Delegate
@@ -683,6 +683,7 @@
     vc.data = reviewlist;
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
     vc.is_owner = _reviewIsOwner;
+    vc.indexPath = indexpath;
     
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -733,6 +734,21 @@
         default:
             break;
     }
+}
+
+#pragma mark - Notification Center Action
+- (void)updateTotalReviewComment:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger index = [[userinfo objectForKey:@"index"]integerValue];
+    NSIndexPath *indexPath = [userinfo objectForKey:@"indexPath"];
+    
+    ReviewList *list = _list[index];
+    
+    list.review_response.response_message = [userinfo objectForKey:@"review_comment"];
+    list.review_response.response_create_time = [userinfo objectForKey:@"review_comment_time"];
+//    [_table reloadData];
+    [_table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
 }
 
 @end

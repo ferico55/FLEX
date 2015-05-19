@@ -81,7 +81,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rows;
+    NSInteger rows = 0;
     if (section == 0) {
         if (_changeCourier) {
             rows = 3;

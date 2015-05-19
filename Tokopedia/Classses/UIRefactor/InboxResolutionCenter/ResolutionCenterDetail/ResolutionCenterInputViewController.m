@@ -452,7 +452,9 @@
     vc.note = _messageTextView.text;
     NSArray *viewControllers = self.navigationController.viewControllers;
     UIViewController *destinationVC = viewControllers[viewControllers.count-2];
-    vc.delegate = destinationVC;
+    if ([destinationVC conformsToProtocol:@protocol(InboxResolutionCenterOpenViewControllerDelegate)]) {
+        vc.delegate = (id <InboxResolutionCenterOpenViewControllerDelegate>)destinationVC;
+    }
     vc.syncroDelegate = self;
     NSMutableArray *thumbs = [NSMutableArray new];
     for (NSString *thumb in _uploadedPhotos) {
@@ -610,7 +612,9 @@
                     break;
                 }
             }
-            [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+             if (imageView != nil) {
+                [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+             }
 
             [removedImages addObject:object];
             [self failedUploadObject:object];
@@ -663,8 +667,9 @@
             image.alpha = 0.5f;
         }
     }
-    
-    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    if (imageView != nil) {
+        [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];   
+    }
     
     [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
     
@@ -812,6 +817,10 @@
 {
     _generatehost = generateHost;
     [_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:)withObject:@(YES)];
+}
+
+- (void)failedGenerateHost {
+    
 }
 
 

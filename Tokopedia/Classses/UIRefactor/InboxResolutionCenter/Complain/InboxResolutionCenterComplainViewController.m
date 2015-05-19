@@ -37,7 +37,6 @@
     UITableViewDataSource,
     UITableViewDelegate,
     GeneralTableViewControllerDelegate,
-    FilterComplainViewControllerDelegate,
     ResolutionCenterDetailViewControllerDelegate,
     InboxResolutionCenterComplainCellDelegate,
     TokopediaNetworkManagerDelegate>

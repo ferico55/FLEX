@@ -805,11 +805,9 @@
     NSLog(@"\n\n\nRequest Operation : %@\n\n\n", _actionRequest);
     
     // Add information about which transaction is in processing and at what index path
-    OrderTransaction *order = [OrderTransaction new];
-    order = _selectedOrder;
+    OrderTransaction *order = _selectedOrder;
     
-    NSIndexPath *indexPath = [NSIndexPath new];
-    indexPath = _selectedIndexPath;
+    NSIndexPath *indexPath = _selectedIndexPath;
     
     NSDictionary *object = @{@"order" : order, @"indexPath" : indexPath};
     NSString *key = order.order_detail.detail_order_id;
@@ -860,7 +858,7 @@
             message = @"Anda telah berhasil membatalkan pengiriman barang.";
         }
         _numberOfProcessedOrder++;
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
         [alert show];
         [_orderInProcess removeObjectForKey:orderId];
     } else {

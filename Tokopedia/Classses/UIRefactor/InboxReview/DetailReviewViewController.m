@@ -13,11 +13,15 @@
 #import "string_inbox_review.h"
 #import "NavigateViewController.h"
 
-@interface DetailReviewViewController () <HPGrowingTextViewDelegate, UIScrollViewDelegate>
+#import "TokopediaNetworkManager.h"
+
+@interface DetailReviewViewController () <HPGrowingTextViewDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 {
     HPGrowingTextView *_growingtextview;
     UserAuthentificationManager *_userManager;
     NavigateViewController *_navigateController;
+    
+    TokopediaNetworkManager *_networkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
@@ -51,6 +55,8 @@
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
+    
+    __weak RKObjectManager *_readReviewObjManager;
     
     NSInteger _requestDeleteCommentCount;
     __weak RKObjectManager *_objectDeleteCommentManager;
@@ -100,13 +106,16 @@
     _userManager = [UserAuthentificationManager new];
     _operationQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
-    
     _navigateController = [NavigateViewController new];
+    
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    _networkManager.tagRequest = 1;
     
     [self initNavigationBar];
     [self initReviewData];
     
-    
+    [_networkManager doRequest];
     [self initTalkInputView];
     self.title = @"Ulasan";
     
@@ -458,9 +467,9 @@
 - (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *userinfo;
     
-    userinfo = @{@"index": _index, @"review_comment" : _commentReview, @"review_comment_time" : @"Just Now"};
+    userinfo = @{@"index": _index, @"review_comment" : _commentReview, @"review_comment_time" : @"Just Now", @"indexPath" : _indexPath};
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalComment" object:nil userInfo:userinfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalReviewComment" object:nil userInfo:userinfo];
 }
 
 #pragma mark - Action Delete Review
@@ -560,9 +569,9 @@
                 } else {
                     NSDictionary *userinfo;
                     [_talkInputView setHidden:NO];
-                    userinfo = @{@"index": _index, @"review_comment" : @"0", @"review_comment_time" : @"Just Now"};
+                    userinfo = @{@"index": _index, @"review_comment" : @"0", @"review_comment_time" : @"Just Now", @"indexPath" : _indexPath};
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalComment" object:nil userInfo:userinfo];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalReviewComment" object:nil userInfo:userinfo];
                 }
             }
         }
@@ -601,8 +610,9 @@
 }
 
 - (void)tapProduct {
-    
-    [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+    if(![_review.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![_review.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
+        [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+    }
 }
 
 #pragma mark - Alert Delegate
@@ -617,5 +627,50 @@
     }
 }
 
+#pragma mark - Tokopedia Network Delegate
+- (id)getObjectManager:(int)tag {
+    _readReviewObjManager =  [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+    
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:ADD_REVIEW_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_readReviewObjManager addResponseDescriptor:responseDescriptorStatus];
+    
+    return _readReviewObjManager;
+
+}
+
+- (NSString *)getPath:(int)tag {
+    return ADD_REVIEW_PATH;
+}
+
+- (NSDictionary *)getParameter:(int)tag {
+    return @{
+        @"review_id" : _review.review_id,
+        @"action" : @"set_read_review"
+    };
+}
+
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    return ((GeneralAction *) stat).status;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+    
+}
 
 @end

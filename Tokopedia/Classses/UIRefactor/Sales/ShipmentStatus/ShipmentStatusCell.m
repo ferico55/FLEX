@@ -12,8 +12,6 @@
     NSDictionary *_statusLabelAttributes;
 }
 
-@property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (weak, nonatomic) IBOutlet UIView *userView;
 
 @end

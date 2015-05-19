@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "LoadingView.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "ShopProductPageViewController.h"
 #import "MyShopNoteDetailViewController.h"
@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewDelegate,
     UIAlertViewDelegate,
     UISearchBarDelegate,
+    LoadingViewDelegate,
     TKPDTabInboxTalkNavigationControllerDelegate,
     ShopPageHeaderDelegate,
     SortViewControllerDelegate,
@@ -120,9 +121,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSOperationQueue *_operationQueue;
     NSOperationQueue *_operationUnfollowQueue;
     NSOperationQueue *_operationDeleteQueue;
-    ShopPageHeader *_shopPageHeader;
     
-    
+    LoadingView *loadingView;
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
@@ -627,6 +627,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 {
     if (_request.isExecuting) return;
     
+    loadingView = nil;
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
@@ -682,8 +683,17 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         _timer = nil;
         _isrefreshview = NO;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        if(_product==nil || _product.count==0) {
+            loadingView = [LoadingView new];
+            loadingView.delegate = self;
+            _table.tableFooterView = loadingView.view;
+            [self cancel];
+        }
+        else {
+            _table.tableFooterView = nil;
+        }
+
         [_act stopAnimating];
-        _table.tableFooterView = nil;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
@@ -1066,5 +1076,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
  // Pass the selected object to the new view controller.
  }
  */
-
+#pragma mark - LoadingView Delegate
+- (void)pressRetryButton
+{
+    [self configureRestKit];
+    [self loadData];
+}
 @end

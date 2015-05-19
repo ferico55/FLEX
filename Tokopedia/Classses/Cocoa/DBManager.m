@@ -111,14 +111,20 @@ static sqlite3_stmt *statement = nil;
                 //[dict removeAllObjects];
                 if ( sqlite3_column_type(statement, 0) != SQLITE_NULL )
                     d_id = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                [dict setObject:d_id forKey:@"d_id"];
+                if (d_id != nil) {
+                    [dict setObject:d_id forKey:@"d_id"];
+                }
                 //[dict setObject:d_id forKey:@"id"];
                 if ( sqlite3_column_type(statement, 1) != SQLITE_NULL )
                     name = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 1)];
-                [dict setObject:name forKey:@"title"];
+                if (name != nil) {
+                    [dict setObject:name forKey:@"title"];
+                }
                 if ( sqlite3_column_type(statement, 2) != SQLITE_NULL )
                     name = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 2)];
-                [dict setObject:name forKey:@"tree"];
+                if (name != nil) {
+                    [dict setObject:name forKey:@"tree"];
+                }
                 [resultArray addObject:dict];
             }
             //sqlite3_reset(statement);
@@ -149,7 +155,9 @@ static sqlite3_stmt *statement = nil;
                 //[dict removeAllObjects];
                 if ( sqlite3_column_type(statement, 0) != SQLITE_NULL )
                     districtname = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                [resultArray addObject:districtname];
+                if (districtname != nil) {
+                    [resultArray addObject:districtname];
+                }
             }
             //sqlite3_reset(statement);
         }
@@ -178,7 +186,9 @@ static sqlite3_stmt *statement = nil;
                 //[dict removeAllObjects];
                 if ( sqlite3_column_type(statement, 0) != SQLITE_NULL )
                     districtvalue = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                [resultArray addObject:districtvalue];
+                if (districtvalue != nil) {
+                    [resultArray addObject:districtvalue];   
+                }
             }
             //sqlite3_reset(statement);
         }

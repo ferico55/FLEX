@@ -12,18 +12,18 @@
 #import "DepositForm.h"
 #import "profile.h"
 
-@interface DepositFormViewController () <UITableViewDataSource, UITableViewDelegate, DepositListBankViewControllerDelegate, UITextFieldDelegate> {
+@interface DepositFormViewController () <UITextFieldDelegate> {
     NSString *_clearTotalAmount;
     
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
-    NSInteger *_requestCount;
+    NSInteger _requestCount;
     
     __weak RKObjectManager *_objectDepositFormManager;
     __weak RKManagedObjectRequestOperation *_requestDepositForm;
     NSOperationQueue *_operationDepositFormQueue;
-    NSInteger *_requestDepositFormCount;
+    NSInteger _requestDepositFormCount;
     
     __weak RKObjectManager *_objectSendOTPManager;
     __weak RKManagedObjectRequestOperation *_requestSendOTP;
@@ -64,7 +64,6 @@
 - (void)configureRestkit;
 - (void)cancelCurrentAction;
 - (void)loadData;
-- (void)requestSuccess;
 - (void)requestFail;
 - (void)requestTimeout;
 
@@ -171,12 +170,6 @@
 -(void)viewDidLayoutSubviews
 {
     _containerScrollView.contentSize = _contentView.frame.size;
-}
-
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
 }
 
 #pragma mark - Request Send OTP 
@@ -363,7 +356,7 @@
             
             if (status) {
                 [_useableSaldoIDR setText:depositForm.result.useable_deposit_idr];
-                _useableSaldoStr = depositForm.result.useable_deposit_idr;
+                _useableSaldoStr = depositForm.result.useable_deposit;
                 _chooseAccountButton.enabled = YES;
                 [_listBankAccount addObjectsFromArray:depositForm.result.bank_account];
                 NSString *verifiedState = depositForm.result.msisdn_verified;
@@ -513,6 +506,8 @@
                     if ([action.result.is_success isEqualToString:@"1"]) {
                         [self.navigationController popViewControllerAnimated:YES];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadListDeposit" object:nil userInfo:nil];
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
                     }
                 }

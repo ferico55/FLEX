@@ -99,7 +99,6 @@
 -(void)requesttimeout;
 
 - (IBAction)tap:(id)sender;
-- (IBAction)gesture:(id)sender;
 
 @end
 
@@ -450,6 +449,10 @@
     _generatehost = generateHost;
 }
 
+- (void)failedGenerateHost {
+    
+}
+
 #pragma mark Request Action Upload Photo
 -(void)actionUploadImage:(id)object
 {
@@ -588,7 +591,7 @@
         NSString *string = _shop.info.shop_tagline;
         _textviewslogan.text = string?:@"";
         if (string) {
-            _labelslogancharcount.text = [NSString stringWithFormat:@"%lu", limit - _textviewslogan.text.length];
+            _labelslogancharcount.text = [NSString stringWithFormat:@"%u", limit - _textviewslogan.text.length];
         }
         
         limit = 140;

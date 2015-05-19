@@ -63,7 +63,6 @@
 -(void)loadData;
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestFailure:(id)object;
--(void)requestProcess:(id)object;
 -(void)requestTimeout:(NSTimer*)timer;
 
 
@@ -180,8 +179,16 @@
             } else {
                 ((DepositListBankCell*)cell).isChecked.hidden = YES;
             }
-            ((DepositListBankCell*)cell).labelname.text = [NSString stringWithFormat:@"%@ a/n %@ - %@", list.bank_account_number, list.bank_account_name, list.bank_name
-            ];
+            
+            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+            style.lineSpacing = 4.0;
+            
+            NSMutableDictionary *attribute = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                             NSParagraphStyleAttributeName  : style,
+                                                                                             }];
+            NSAttributedString *attributedString = [[NSAttributedString alloc]initWithString:[NSString stringWithFormat:@"%@ a/n %@ - %@", list.bank_account_number, list.bank_account_name, list.bank_name
+                                                                                              ] attributes:attribute];
+            [((DepositListBankCell*)cell).labelname setAttributedText:attributedString];
         }
         
         return cell;
@@ -429,7 +436,7 @@
 
 -(void)requestFailure:(id)object
 {
-    [self requestProcess:object];
+//    [self requestProcess:object];
 }
 
 -(void)requestProcess:(id)object  withOperation:(RKObjectRequestOperation *)operation

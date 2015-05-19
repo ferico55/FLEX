@@ -58,6 +58,9 @@
                 [_delegate ShopFavoritedCellDelegate:self withindexpath:_indexpath];
                 break;
             }
+                
+            default:
+                break;
         }
     }
 }

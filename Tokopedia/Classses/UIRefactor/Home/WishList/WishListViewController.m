@@ -60,6 +60,7 @@
     /** set table view datasource and delegate **/
     tblWishList.delegate = self;
     tblWishList.dataSource = self;
+    tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
     
     /** set table footer view (loading act) **/
     tblWishList.tableFooterView = footer;
@@ -94,6 +95,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     if (! isRefreshView) {
         [self configureRestKit];
         if (isNoData || (uriNext != NULL && ![uriNext isEqualToString:@"0"] && uriNext != 0)) {

@@ -295,8 +295,7 @@
     [cell.shopNameLabel setText:order.order_shop.shop_name animated:YES];
     
     NSString *lastStatus = [NSString convertHTML:order.order_last.last_buyer_status];
-    
-    BOOL showResi = false;
+
     NSMutableArray *comment = [NSMutableArray new];
 
     if (lastStatus &&![lastStatus isEqualToString:@""]&&![lastStatus isEqualToString:@"0"]) {
@@ -309,7 +308,6 @@
         [comment addObject:[NSString stringWithFormat:@"Nomor resi: %@", order.order_last.last_shipping_ref_num]];
     }
     if (lastComment && ![lastComment isEqualToString:@"0"] && [lastComment isEqualToString:@""]) {
-        showResi = NO;
         [comment addObject:lastComment];
     }
     
@@ -1096,7 +1094,6 @@
         vc.isChangeSolution = NO;
         vc.isCanEditProblem = YES;
         vc.order = order;
-        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

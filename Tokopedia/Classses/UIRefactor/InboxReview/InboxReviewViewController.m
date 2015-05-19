@@ -114,8 +114,8 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateTotalComment:)
-                                                 name:@"updateTotalComment"
+                                             selector:@selector(updateTotalReviewComment:)
+                                                 name:@"updateTotalReviewComment"
                                                object:nil];
 }
 
@@ -241,6 +241,12 @@
                 [((GeneralReviewCell*)cell).commentbutton setTitle:@"1 Komentar" forState:UIControlStateNormal];
             }
             
+            if([list.review_read_status isEqualToString:@"1"]) {
+                [((GeneralReviewCell*)cell).unreadIcon setHidden:NO];
+            } else {
+                [((GeneralReviewCell*)cell).unreadIcon setHidden:YES];
+            }
+            
             //edit button visibility
             if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
@@ -300,9 +306,6 @@
             } else {
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
                 ((GeneralReviewCell *)cell).commentView.hidden = NO;
-                
-                CGRect newFrame = ((GeneralReviewCell *)cell).frame;
-                
             }
             
             
@@ -351,15 +354,6 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    InboxReviewList *list = _reviews[indexPath.row];
-    
-    int cellHeight = 0;
-    if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
-        cellHeight =  250;
-    } else {
-        cellHeight =  325;
-    }
-   
     return 325;
 }
 
@@ -694,6 +688,7 @@
     
     vc.data = list;
     vc.is_owner = list.review_is_owner;
+    vc.indexPath = indexpath;
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
     
     vc.hidesBottomBarWhenPushed = YES;
@@ -861,7 +856,7 @@
     [self loadData];
 }
 
-- (void)updateTotalComment:(NSNotification*)notification {
+- (void)updateTotalReviewComment:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"index"]integerValue];
     

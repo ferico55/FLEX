@@ -50,7 +50,6 @@
     self.navigationItem.leftBarButtonItem = barbuttonleft;
     
     barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbuttonright setTintColor:[UIColor blackColor]];
     [barbuttonright setTag:11];
     self.navigationItem.rightBarButtonItem = barbuttonright;
 }
@@ -61,13 +60,9 @@
     // Do any additional setup after loading the view from its nib.
     
     [self initBarButton];
+    self.title = ktkpdAddBankAccount;
     
     _datainput = [NSMutableDictionary new];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
 }
 
 #pragma mark - DataSource Delegate

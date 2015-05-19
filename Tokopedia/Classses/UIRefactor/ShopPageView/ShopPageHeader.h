@@ -17,7 +17,7 @@
 
 @end
 
-@interface ShopPageHeader : UIViewController<UIPageViewControllerDataSource>
+@interface ShopPageHeader : UIViewController
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) NSDictionary *data;
@@ -30,4 +30,6 @@
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) id<ShopPageHeaderDelegate> delegate;
 
+
+- (void)setHeaderShopPage:(Shop *)userInfo;
 @end

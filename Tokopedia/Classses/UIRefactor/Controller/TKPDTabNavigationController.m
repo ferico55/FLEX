@@ -110,6 +110,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    
+    [super viewWillAppear:animated];
+    
     self.navigationItem.title = [self.navigationTitle capitalizedString];
     self.hidesBottomBarWhenPushed = YES;
 }
@@ -125,30 +128,31 @@
 
 - (void)viewDidLayoutSubviews
 {
-    [super viewDidLayoutSubviews];
-    _selectedViewController.view.frame = _container.bounds;
-    
-    UIEdgeInsets inset = [self contentInsetForContainerController];
-    
-    UIView* tabbar;
-    CGRect frame;
-    tabbar = _tabbar;
-    frame = tabbar.frame;
-    frame.origin.y = inset.top;
-    
-    if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-        UINavigationController* n = (UINavigationController*)_selectedViewController;
-        
-        if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
-            CGRect rect = n.navigationBar.frame;
-            frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
-        }
-    }
-    
-    inset = [self contentInsetForChildController];
-    if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
-        [_delegate tabBarController:self childControllerContentInset:inset];
-    }
+	[super viewDidLayoutSubviews];
+	_selectedViewController.view.frame = _container.bounds;
+
+// Did not remove this because of the todo
+//	UIEdgeInsets inset = [self contentInsetForContainerController];
+//	
+//	UIView* tabbar;
+//	CGRect frame;
+//	tabbar = _tabbar;
+//	frame = tabbar.frame;
+//	frame.origin.y = inset.top;
+//	
+//	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//		UINavigationController* n = (UINavigationController*)_selectedViewController;
+//		
+//		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
+//			CGRect rect = n.navigationBar.frame;
+//			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
+//		}
+//	}
+	
+	UIEdgeInsets inset = [self contentInsetForChildController];
+	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
+		[_delegate tabBarController:self childControllerContentInset:inset];
+	}
 }
 
 #pragma mark -
@@ -241,42 +245,41 @@
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated
 {
-    if (selectedIndex == _selectedIndex) return;
-    
-    if (_viewControllers != nil) {
-        
-        CGRect selectframe;
-        
-        selectframe = _tabbar.frame;
-        
-        UIViewController* deselect = _selectedViewController;
-        UIViewController* select = _viewControllers[selectedIndex];
-        
-        UIEdgeInsets inset = [self contentInsetForContainerController];
-        if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-            
-            UINavigationController* n = (UINavigationController*)select;
-            if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-                selectframe.origin.y = inset.top;
-                selectframe = CGRectZero;
-            } else {
-                selectframe = CGRectZero;
-            }
-        } else {
-            selectframe = CGRectZero;
+	if (selectedIndex == _selectedIndex) return;
+	
+	if (_viewControllers != nil) {
+		UIViewController* deselect = _selectedViewController;
+        if (selectedIndex < 0) {
+            selectedIndex = 0;
         }
-        
-        int navigate = 0;
-        
-        if (_selectedIndex < selectedIndex) {
-            navigate = +1;
-        } else {
-            navigate = -1;
-        }
-        
-        _selectedIndex = selectedIndex;
-        _selectedViewController = _viewControllers[selectedIndex];
-        
+		UIViewController* select = _viewControllers[selectedIndex];
+
+//      Did not remove this because of the todo
+//		UIEdgeInsets inset = [self contentInsetForContainerController];
+//		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+//			
+//			UINavigationController* n = (UINavigationController*)select;
+//			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
+//				selectframe.origin.y = inset.top;
+//				selectframe = CGRectZero;
+//			} else {
+//                selectframe = CGRectZero;
+//			}
+//		} else {
+//            selectframe = CGRectZero;
+//		}
+		
+		int navigate = 0;
+
+		if (_selectedIndex < selectedIndex) {
+			navigate = +1;
+		} else {
+			navigate = -1;
+		}
+		
+		_selectedIndex = selectedIndex;
+		_selectedViewController = _viewControllers[selectedIndex];
+
         if ([_selectedViewController isKindOfClass:[SearchResultShopViewController class]]) {
             self.navigationItem.rightBarButtonItem = nil;
         } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
