@@ -92,7 +92,6 @@ UIAlertViewDelegate, MGSwipeTableCellDelegate>
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     Notes *_notes;
-    ShopPageHeader *_shopPageHeader;
     Shop *_shop;
     NoResultView *_noResult;
 }

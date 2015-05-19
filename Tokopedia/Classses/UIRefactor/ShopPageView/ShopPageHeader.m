@@ -71,13 +71,6 @@
 }
 
 
-- (void)initNotificationCenter {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(setHeaderShopPage:)
-                                                 name:@"setHeaderShopPage"
-                                               object:nil];
-}
-
 - (void)initButton {
 //    self.leftButton.layer.cornerRadius = 3;
 //    self.leftButton.layer.borderWidth = 1;
@@ -141,8 +134,6 @@
     
     [super viewDidLoad];
     _userManager = [UserAuthentificationManager new];
-    
-    [self initNotificationCenter];
     [self initButton];
     
     _descriptionView = [ShopDescriptionView newView];
@@ -301,10 +292,8 @@
     
 }
 
-- (void)setHeaderShopPage:(NSNotification*)notification {
-    id userinfo = notification.userInfo;
-    
-    _shop = [userinfo objectForKey:@"shop"];
+- (void)setHeaderShopPage:(Shop *)userInfo {
+    _shop = userInfo;
     [self.delegate didReceiveShop:_shop];
     if(_shop) {
         [self setHeaderData];
