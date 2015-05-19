@@ -140,7 +140,7 @@
 - (void)setHeaderProfilePage:(NSNotification*)notification {
     id userinfo = notification.userInfo;
     
-    _profile = userinfo;
+    _profile = [userinfo objectForKey:@"profile"];
     [self.delegate didReceiveProfile:_profile];
     if(_profile) {
         [self setHeaderData];
