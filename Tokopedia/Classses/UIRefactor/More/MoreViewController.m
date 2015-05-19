@@ -299,6 +299,21 @@
             }
         }
     }
+<<<<<<< Updated upstream
+=======
+    else if(tag == CTagVerificationNumber) {
+        VerificationNumber *verificationNumber = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+        [[NSUserDefaults standardUserDefaults] setObject:verificationNumber.result.msisdn.user_phone forKey:CStringMSISDN];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%f", [NSDate date].timeIntervalSince1970] forKey:CStringLastCheckVerify];
+        [[NSUserDefaults standardUserDefaults] setObject:verificationNumber.result.msisdn.is_verified forKey:CStringMSISDNIsVerify];
+        if([[NSUserDefaults standardUserDefaults] synchronize]) {
+            strLastVerification = [NSString stringWithFormat:@"%f", [NSDate date].timeIntervalSince1970];
+            strMSISDNIsVerify = verificationNumber.result.msisdn.is_verified;
+        }
+        
+        [self closeLoadingView];
+    }
+>>>>>>> Stashed changes
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag

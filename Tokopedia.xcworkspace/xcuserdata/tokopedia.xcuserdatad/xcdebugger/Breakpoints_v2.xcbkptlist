@@ -161,11 +161,31 @@
             endingLineNumber = "768"
             landmarkName = "-requestProof:"
             landmarkType = "5">
+<<<<<<< Updated upstream
+=======
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Activation/Login/LoginViewController.m"
+            timestampString = "453711909.292491"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "410"
+            endingLineNumber = "410"
+            landmarkName = "-requestActionLogin:"
+            landmarkType = "5">
+>>>>>>> Stashed changes
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
+<<<<<<< Updated upstream
                   symbolName = "-[TxOrderConfirmedViewController requestProof:]"
                   moduleName = "Tokopedia"
                   urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/TxOrder/PaymentConfirmed/TxOrderConfirmedViewController.m"
@@ -175,11 +195,23 @@
                   startingLineNumber = "768"
                   endingLineNumber = "768"
                   offsetFromSymbolStart = "1491">
+=======
+                  symbolName = "-[LoginViewController requestActionLogin:]"
+                  moduleName = "Tokopedia"
+                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/Activation/Login/LoginViewController.m"
+                  timestampString = "453711909.824831"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "410"
+                  endingLineNumber = "410"
+                  offsetFromSymbolStart = "1200">
+>>>>>>> Stashed changes
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
+<<<<<<< Updated upstream
                   symbolName = "__47-[TxOrderConfirmedViewController requestProof:]_block_invoke"
                   moduleName = "Tokopedia"
                   urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/TxOrder/PaymentConfirmed/TxOrderConfirmedViewController.m"
@@ -189,9 +221,39 @@
                   startingLineNumber = "768"
                   endingLineNumber = "768"
                   offsetFromSymbolStart = "67">
+=======
+                  symbolName = "__42-[LoginViewController requestActionLogin:]_block_invoke"
+                  moduleName = "Tokopedia"
+                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/Activation/Login/LoginViewController.m"
+                  timestampString = "453711909.824972"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "410"
+                  endingLineNumber = "410"
+                  offsetFromSymbolStart = "86">
+>>>>>>> Stashed changes
                </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+<<<<<<< Updated upstream
+=======
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/More/MoreViewController.m"
+            timestampString = "453712000.089838"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "-viewWillAppear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+>>>>>>> Stashed changes
    </Breakpoints>
 </Bucket>
