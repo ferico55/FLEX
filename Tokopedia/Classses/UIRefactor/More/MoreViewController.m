@@ -663,6 +663,7 @@
     }
     
     self.hidesBottomBarWhenPushed = NO;
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Reskit
