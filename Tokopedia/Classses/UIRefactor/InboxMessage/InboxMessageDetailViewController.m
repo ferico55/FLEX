@@ -188,6 +188,17 @@
     return cell;
 }
 
+- (NSString *)stringReplaceAhrefWithUrl:(NSString *)string
+{
+    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
+    
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive error:NULL];
+    
+    NSRange stringRange = NSMakeRange(0, string.length);
+    NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
+    
+    return trimmedString;
+}
 
 -(void)configureCell:(id)aCell atIndexPath:(NSIndexPath*)indexPath {
     InboxMessageDetailCell *cell = (InboxMessageDetailCell*)aCell;
@@ -200,46 +211,15 @@
         style.lineSpacing = 4.0;
         style.alignment = NSTextAlignmentLeft;
         
-//        NSData *data = [message.message_reply dataUsingEncoding:NSUnicodeStringEncoding];
-//        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
-//                                                                                              options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
-//                                                                                   documentAttributes:nil
-//                                                                                                error:nil];
-//        NSRange range = (NSRange){0,[attributedString length]};
-//        [attributedString enumerateAttribute:NSFontAttributeName
-//                                     inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-//                                  usingBlock:^(id value, NSRange range, BOOL *stop) {
-//                                      [attributedString addAttribute:NSFontAttributeName value:font range:range];
-//                                      [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-//                                  }];
-//        cell.messageLabel.attributedText = attributedString;
+        NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                     NSFontAttributeName: font,
+                                     NSParagraphStyleAttributeName: style,
+                                     };
+        NSString *string = message.message_reply;
+        string = [self stringReplaceAhrefWithUrl:string];
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
         
-//        NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-//                                     NSFontAttributeName: font,
-//                                     NSParagraphStyleAttributeName: style,
-//                                     };
-//        NSString *string = message.message_reply;
-//        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
-        NSData *data = [message.message_reply dataUsingEncoding:NSUnicodeStringEncoding];
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
-                                                                                              options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                                                                         NSForegroundColorAttributeName: [UIColor whiteColor],
-                                                                                                         NSFontAttributeName: font,
-                                                                                                         NSParagraphStyleAttributeName: style
-                                                                                                         }
-                                                                                   documentAttributes:nil
-                                                                                                error:nil];
-
-        NSRange range = (NSRange){0,[attributedString length]};
-        [attributedString enumerateAttribute:NSFontAttributeName
-                                     inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-                                  usingBlock:^(id value, NSRange range, BOOL *stop) {
-                                      [attributedString addAttribute:NSFontAttributeName value:font range:range];
-                                      [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-                                  }];
-
-        
-        cell.messageLabel.attributedText = attributedString;
+        cell.messageLabel.attributedText = attributedText;
 //        cell.messageLabel.text = message.message_reply;
         UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
 
