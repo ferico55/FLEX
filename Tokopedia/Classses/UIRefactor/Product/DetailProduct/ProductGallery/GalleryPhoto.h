@@ -37,7 +37,7 @@
 
 
 - (id)initWithThumbnailUrl:(NSString*)thumb fullsizeUrl:(NSString*)fullsize delegate:(NSObject<GalleryPhotoDelegate> *)delegate;
-- (id)initWithThumbnailPath:(NSString*)thumb fullsizePath:(NSString*)fullsize delegate:(NSObject<GalleryPhotoDelegate> *)delegate;
+- (id)initWithThumbnail:(UIImage *)thumb fullImage:(UIImage *)fullImage delegate:(NSObject<GalleryPhotoDelegate> *)delegate;
 
 - (void)loadThumbnail;
 - (void)loadFullsize;

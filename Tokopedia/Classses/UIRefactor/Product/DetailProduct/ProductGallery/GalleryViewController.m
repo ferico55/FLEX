@@ -704,10 +704,10 @@
 - (GalleryPhoto *)createGalleryPhotoForIndex:(NSUInteger)index
 {
 	GalleryPhoto *photo;
-	NSString *thumbPath;
-	NSString *fullsizePath;
-    thumbPath = fullsizePath = [_photoSource photoGallery:self urlForPhotoSize:FGalleryPhotoSizeFullsize atIndex:index];
-    photo = [[GalleryPhoto alloc] initWithThumbnailUrl:thumbPath fullsizeUrl:fullsizePath delegate:self];
+	UIImage *thumbImage;
+    UIImage *fullImage;
+    thumbImage = fullImage = [_photoSource photoGallery:index];
+    photo = [[GalleryPhoto alloc] initWithThumbnail:thumbImage fullImage:fullImage delegate:self];
 	photo.tag = index;
 	[_photoLoaders setObject:photo forKey: [NSString stringWithFormat:@"%i", (int)index]];
 	
