@@ -737,5 +737,6 @@
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
     [self loadData];
+    _saldoLabel.text = _useableSaldoIDR;
 }
 @end

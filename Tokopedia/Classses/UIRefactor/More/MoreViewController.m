@@ -156,7 +156,7 @@
     _depositLabel.hidden = YES;
     _loadingSaldo.hidden = NO;
     
-    
+    [self updateSaldoTokopedia:nil];
     [self setShopImage];
 }
 
@@ -166,7 +166,7 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    [self updateSaldoTokopedia:nil];
+
     
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -196,7 +196,6 @@
 {
     [super viewDidDisappear:animated];
     self.navigationController.tabBarController.title = @"More";
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
