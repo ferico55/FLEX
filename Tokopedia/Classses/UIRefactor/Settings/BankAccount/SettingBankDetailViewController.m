@@ -137,7 +137,7 @@
 }
 
 #pragma mark - Methods
--(void)setDefaultData:(NSDictionary*)data
+-(void)setDefaultData:(NSMutableDictionary *)data
 {
     _data = data;
     if (data) {
@@ -161,6 +161,12 @@
     _labelaccountnumber.text = bankAccount.bank_account_number;
     _labelbankname.text = bankAccount.bank_name;
     _labelbranch.text = bankAccount.bank_branch;
+    
+    BankAccountFormList *bank = [_data objectForKey:kTKPDPROFILE_DATABANKKEY];
+    bank.bank_account_name = bankAccount.bank_account_name;
+    bank.bank_account_number = bankAccount.bank_account_number;
+    bank.bank_name = bankAccount.bank_name;
+    bank.bank_branch = bankAccount.bank_branch;
 }
 
 @end
