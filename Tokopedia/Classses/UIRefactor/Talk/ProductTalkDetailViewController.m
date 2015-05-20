@@ -51,6 +51,7 @@
     NSInteger _page;
     NSInteger _limit;
     NSMutableDictionary *_datainput;
+    NSString *_savedComment;
     
 
     NSInteger _requestcount;
@@ -221,6 +222,8 @@
     [_talkProductImage addGestureRecognizer:productGesture];
     [_talkProductImage setUserInteractionEnabled:YES];
     
+    
+    
     [self setHeaderData:_data];
     
     //islogin
@@ -326,6 +329,11 @@
             
             if(list.is_not_delivered) {
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = NO;
+                ((GeneralTalkCommentCell*)cell).create_time.text = @"Gagal Kirim.";
+                
+                UITapGestureRecognizer *errorSendCommentGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapErrorComment)];
+                [((GeneralTalkCommentCell*)cell).commentfailimage addGestureRecognizer:errorSendCommentGesture];
+                [((GeneralTalkCommentCell*)cell).commentfailimage setUserInteractionEnabled:YES];
             } else {
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = YES;
             }
@@ -776,6 +784,11 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)tapErrorComment {
+    [self configureSendCommentRestkit];
+    [self addProductCommentTalk];
+}
+
 - (void)tapUser {
     NSString *userId = [_data objectForKey:@"user_id"];
     if(!userId) {
@@ -850,6 +863,7 @@
                                           animated:YES];
                     
                     //connect action to web service
+                    _savedComment = _growingtextview.text;
                     [self configureSendCommentRestkit];
                     [self addProductCommentTalk];
                     
@@ -933,6 +947,7 @@
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentAction class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentActionResult class]];
@@ -999,6 +1014,11 @@
             TalkCommentList *commentlist = _list[_list.count-1];
             commentlist.is_not_delivered = @"1";
             commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+            _growingtextview.text = _savedComment;
+            
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:commentaction.message_error
+                                                                           delegate:self];
+            [alert show];
         } else {
             NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
             _talktotalcommentlabel.text = totalcomment;
