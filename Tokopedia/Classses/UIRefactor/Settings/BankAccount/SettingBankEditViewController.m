@@ -418,7 +418,7 @@
                     [alert show];
                 } else if (setting.result.is_success == 1) {
                     //TODO:: add alert
-                    NSDictionary *userinfo;
+                    NSMutableDictionary *userinfo;
                     if (_type == TYPE_ADD_EDIT_PROFILE_EDIT){
 
                         if (_isBeingPresented) {
@@ -436,11 +436,11 @@
                         bankAccount.bank_name = _bankNameButton.titleLabel.text;
                         bankAccount.bank_branch = _bankBranchTextField.text;
                         
-                        userinfo = @{
-                                     kTKPDPROFILE_DATAEDITTYPEKEY   : [_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@"",
-                                     kTKPDPROFILE_DATAINDEXPATHKEY  : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:@"",
-                                     kTKPDPROFILE_DATABANKKEY   : bankAccount,
-                                    };
+                        userinfo = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                   kTKPDPROFILE_DATAEDITTYPEKEY   : [_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@"",
+                                                                                   kTKPDPROFILE_DATAINDEXPATHKEY  : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:@"",
+                                                                                   kTKPDPROFILE_DATABANKKEY   : bankAccount,
+                                                                                   }];
                     } else {
                         if (_isBeingPresented) {
                             [self.navigationController dismissViewControllerAnimated:YES completion:nil];

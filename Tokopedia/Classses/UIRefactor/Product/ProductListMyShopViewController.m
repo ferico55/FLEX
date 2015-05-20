@@ -172,8 +172,8 @@
         
         if (_list.count > indexPath.row) {
             ManageProductList *list = _list[indexPath.row];
-            [((ProductListMyShopCell*)cell).labelname setText:list.product_name animated:YES];
-            [((ProductListMyShopCell*)cell).labeletalase setText:list.product_etalase animated:YES];
+            [((ProductListMyShopCell*)cell).labelname setText:list.product_name animated:NO];
+            [((ProductListMyShopCell*)cell).labeletalase setText:list.product_etalase animated:NO];
             [((ProductListMyShopCell*)cell).labelprice setText:[NSString stringWithFormat:@"%@ %@",
                                                                 list.product_currency,
                                                                 list.product_normal_price]
@@ -188,9 +188,10 @@
                                                       timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
             UIImageView *thumb = ((ProductListMyShopCell*)cell).thumb;
-            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey"];
+            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+            thumb.contentMode = UIViewContentModeCenter;
             [thumb setImageWithURLRequest:request
-                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"]
+                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"

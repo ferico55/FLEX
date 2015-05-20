@@ -358,8 +358,20 @@
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:productCellIdentifer owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:0];
         }
+
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
         
-        cell.productNameLabel.text = product.product_name;
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                     NSParagraphStyleAttributeName  : style,
+                                     NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                     };
+        
+        cell.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:product.product_name
+                                                                               attributes:attributes];
+        [cell.productNameLabel sizeToFit];
+
         cell.productPriceLabel.text = product.product_price;
         cell.productWeightLabel.text = [NSString stringWithFormat:@"%@ kg", product.product_weight];
         

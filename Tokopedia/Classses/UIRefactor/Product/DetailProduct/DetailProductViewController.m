@@ -1945,8 +1945,8 @@ UIAlertViewDelegate
 {
     if (_product) {
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
-                                  _product.result.shop_info.shop_name,
-                                  _product.result.shop_info.shop_location];
+                                  _formattedProductTitle,
+                                  _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
         UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                          applicationActivities:nil];
