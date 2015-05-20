@@ -117,8 +117,6 @@
                                              selector:@selector(updateUnreadTalk:)
                                                  name:@"updateUnreadTalk" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showTalkWithFilter:)
                                                  name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
@@ -801,10 +799,6 @@
     TalkList *list = _talkList[index];
     list.talk_read_status = @"2";
     [_table reloadData];
-}
-
-- (void)userDidLogout : (NSNotification*)notification {
-    [_cachecontroller clearCache];
 }
 
 

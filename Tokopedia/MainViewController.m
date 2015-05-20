@@ -557,6 +557,7 @@ typedef enum TagRequest {
     [_auth removeAllObjects];
     
     [storage setKeychainWithValue:_persistToken withKey:@"device_token"];
+    [self removeCacheUser];
     
     [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     
@@ -567,6 +568,14 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
+    
+    
+}
+
+- (void)removeCacheUser {
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    [_cacheController initCacheWithDocumentPath:path];
+    [_cacheController clearCache];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
