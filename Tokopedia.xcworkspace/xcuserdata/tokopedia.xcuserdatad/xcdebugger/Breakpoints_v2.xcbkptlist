@@ -57,22 +57,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/ShopPageView/ShopContainerViewController.m"
-            timestampString = "453612453.989264"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "756"
-            endingLineNumber = "756"
-            landmarkName = "-addProductTap:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Shop/Info/ShopInfoViewController.m"
             timestampString = "453609706.586802"
             startingColumnNumber = "9223372036854775807"
@@ -169,7 +153,7 @@
                   symbolName = "-[TxOrderConfirmedViewController requestProof:]"
                   moduleName = "Tokopedia"
                   urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/TxOrder/PaymentConfirmed/TxOrderConfirmedViewController.m"
-                  timestampString = "453713480.953901"
+                  timestampString = "453724405.420829"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "768"
@@ -183,7 +167,7 @@
                   symbolName = "__47-[TxOrderConfirmedViewController requestProof:]_block_invoke"
                   moduleName = "Tokopedia"
                   urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/TxOrder/PaymentConfirmed/TxOrderConfirmedViewController.m"
-                  timestampString = "453713480.95404"
+                  timestampString = "453724405.420963"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "768"

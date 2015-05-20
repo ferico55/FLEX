@@ -7,6 +7,7 @@
 //
 
 #import "MyShopShipmentTableViewController.h"
+#import "SettingPaymentResult.h"
 #import "ShippingInfo.h"
 #import "ShippingInfoShipmentPackage.h"
 #import "ShopSettings.h"
@@ -1102,6 +1103,8 @@
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShippingInfoResult class]];
     [resultMapping addAttributeMappingsFromArray:@[
+                                                   kTKPDDETAILSHOP_APIPAYMENTLOCKEY,
+                                                   kTKPDDETAILSHOP_APIPAYMENTNOTEKEY,
                                                    kTKPDSHOPSHIPMENT_APITIKIFEEKEY,
                                                    kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY,
                                                    kTKPDSHOPSHIPMENT_APIISALLOWKEY,
@@ -1163,7 +1166,7 @@
                                                          kTKPDSHOPSHIPMENT_APIDISTRICTNAMEKEY,
                                                          kTKPDSHOPSHIPMENT_APIDISCTRICTSUPPORTEDKEY
                                                          ]];
-
+    
     // Relationship Mapping
     RKRelationshipMapping *districtRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIDISTRICTKEY
                                                                                      toKeyPath:kTKPDSHOPSHIPMENT_APIDISTRICTKEY
@@ -1275,6 +1278,14 @@
         
         _shipment = shippingInfo.result;
         _availableShipments = _shipment.shop_shipping.district_shipping_supported;
+        
+        
+        //Set Note for pay
+        for (Payment *payment in _shipment.payment_options) {
+            if ([_shipment.loc objectForKey:payment.payment_id]) {
+                payment.payment_info = [_shipment.loc objectForKey:payment.payment_id];
+            }
+        }
         
         NSMutableArray *districts = [NSMutableArray new];
         for (District *district in _shipment.district) {
