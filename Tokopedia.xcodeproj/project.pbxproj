@@ -786,9 +786,7 @@
 		7AB96BF61B021B630060A4C9 /* ShopSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB965BA1B021B610060A4C9 /* ShopSettingViewController.xib */; };
 		7AB96BF71B021B630060A4C9 /* ShopTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB965BE1B021B610060A4C9 /* ShopTalkViewController.m */; };
 		7AB96BF81B021B630060A4C9 /* ShopTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB965BF1B021B610060A4C9 /* ShopTalkViewController.xib */; };
-		7AB96BF91B021B630060A4C9 /* NavigationBarBlurController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB965C21B021B610060A4C9 /* NavigationBarBlurController.m */; };
 		7AB96BFA1B021B630060A4C9 /* ShopContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB965C41B021B610060A4C9 /* ShopContainerViewController.m */; };
-		7AB96BFB1B021B630060A4C9 /* ShopContainerViewController.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = 7AB965C51B021B610060A4C9 /* ShopContainerViewController.m.orig */; };
 		7AB96BFC1B021B630060A4C9 /* ShopContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB965C61B021B610060A4C9 /* ShopContainerViewController.xib */; };
 		7AB96BFD1B021B630060A4C9 /* ShopNotesPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB965C81B021B610060A4C9 /* ShopNotesPageViewController.m */; };
 		7AB96BFE1B021B630060A4C9 /* ShopNotesPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB965C91B021B610060A4C9 /* ShopNotesPageViewController.xib */; };
@@ -8535,7 +8533,6 @@
 				7AB96C821B021B630060A4C9 /* GothamMedium.ttf in Resources */,
 				7AB96CBF1B021B630060A4C9 /* icon_arrow_down_white@2x.png in Resources */,
 				7AB96CE41B021B630060A4C9 /* icon_20@3x.png in Resources */,
-				7AB96BFB1B021B630060A4C9 /* ShopContainerViewController.m.orig in Resources */,
 				7AB96E551B021B630060A4C9 /* HSConfirmBox@2x.png in Resources */,
 				7AB96C4D1B021B630060A4C9 /* TxOrderConfirmationCostCell.xib in Resources */,
 				7AB96E2A1B021B630060A4C9 /* icon_close_white@2x.png in Resources */,
@@ -8891,7 +8888,6 @@
 				7AB969B11B021B630060A4C9 /* OrderDestination.m in Sources */,
 				7AB96A621B021B630060A4C9 /* TKPDAlertView.m in Sources */,
 				7AB9694D1B021B630060A4C9 /* DepartmentChild2.m in Sources */,
-				7AB96BF91B021B630060A4C9 /* NavigationBarBlurController.m in Sources */,
 				7AB969971B021B630060A4C9 /* AddressForm.m in Sources */,
 				7AB96A131B021B630060A4C9 /* TransactionSummaryBCAParam.m in Sources */,
 				7AB969121B021B630060A4C9 /* DepositFormResult.m in Sources */,

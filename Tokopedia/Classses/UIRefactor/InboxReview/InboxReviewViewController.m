@@ -820,6 +820,7 @@
     list.review_rate_speed = [editedParam objectForKey:@"rate_speed"];
     list.review_create_time = @"Just Now";
     list.review_id = @"1";
+    list.review_read_status = @"2";
 //    list.review_user_id = [_userManager getUserId];
     
     [_reviewTable reloadData];
