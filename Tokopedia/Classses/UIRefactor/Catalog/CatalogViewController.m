@@ -539,10 +539,16 @@
         [_tableView reloadData];
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         NSInteger startingIndex = _productPhotoPageControl.currentPage;
-        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
-        controller.canDownload = NO;
-        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:controller animated:YES completion:nil];
+//        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
+//        controller.canDownload = NO;
+        GalleryViewController *gallery = [GalleryViewController new];
+        gallery.canDownload = YES;
+        [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
+        
+        
+
+        gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.navigationController presentViewController:gallery animated:YES completion:nil];
     }
 }
 

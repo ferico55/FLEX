@@ -2425,7 +2425,11 @@ UIAlertViewDelegate
     //    [self.navigationController pushViewController:vc animated:YES];
     
     
-    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+//    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+    GalleryViewController *gallery = [GalleryViewController new];
+    gallery.canDownload = YES;
+    [gallery initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+
     [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
