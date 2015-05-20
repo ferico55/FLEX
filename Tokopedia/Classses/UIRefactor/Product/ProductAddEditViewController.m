@@ -990,6 +990,9 @@
             NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE, nil];
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
             [alert show];
+            NSArray *objectProductPhoto = _productImageIDs;
+            NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
+            [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
         }
     }
@@ -1391,6 +1394,7 @@
                 product.product_currency_id = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY];
                 product.product_currency = name;
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+                [_dataInput setObject:@(value) forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
                 [_tableView reloadData];
                 
             }
@@ -1452,8 +1456,9 @@
            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
         else
         {
-            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"$" withString:@""];
-            productPrice = [productPrice stringByReplacingOccurrencesOfString:@"," withString:@""];
+            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"US$" withString:@""];
+            productPrice = [productPrice stringByReplacingOccurrencesOfString:@"." withString:@""];
+            productPrice = [productPrice stringByReplacingOccurrencesOfString:@"," withString:@"."];
         }
         product.product_price = productPrice;
         [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
@@ -1571,6 +1576,7 @@
         switch (type) {
             case TYPE_ADD_EDIT_PRODUCT_ADD:
                 self.title =  TITLE_ADD_PRODUCT;
+                [_dataInput setObject:@(PRICE_CURRENCY_ID_RUPIAH) forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
                 break;
             case TYPE_ADD_EDIT_PRODUCT_EDIT:
                 self.title = TITLE_EDIT_PRODUCT;
@@ -1631,6 +1637,7 @@
             thumb.userInteractionEnabled = NO;
             thumb.hidden = NO;
             thumb.image = nil;
+            [thumb setContentMode:UIViewContentModeCenter];
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -1638,6 +1645,7 @@
                 [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
                 thumb.userInteractionEnabled = YES;
+                [thumb setContentMode:UIViewContentModeScaleAspectFill];
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             }];
