@@ -366,7 +366,7 @@
                 _isNoData = YES;
                 
                 if(depositsummary.result.error_date) {
-                    //                    [_noResultView setNoResultText:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
+                    [_noResultView setNoResultText:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
                 }
                 _table.tableFooterView = _noResultView;
                 
