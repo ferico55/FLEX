@@ -70,6 +70,8 @@
     
     NavigateViewController *_navigate;
     TokopediaNetworkManager *_networkManager;
+    
+    TxOrderStatusList *_selectedTrackOrder;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -247,7 +249,35 @@
 #pragma mark - Track Order delegate
 -(void)shouldRefreshRequest
 {
+    
     [self refreshRequest];
+}
+
+- (void)updateDeliveredOrder:(NSString *)receiverName
+{
+//    OrderHistory *history = [OrderHistory new];
+//    NSString *buyerStatus;
+//    if ([receiverName isEqualToString:@""] || receiverName == NULL) {
+//        buyerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan"];
+//    } else {
+//        buyerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan<br>Received by %@", receiverName];
+//    }
+//    history.history_seller_status = buyerStatus;
+//    _selectedTrackOrder.order_detail.detail_order_status = ORDER_DELIVERED;
+//    _selectedTrackOrder.order_last.last_buyer_status = buyerStatus;
+//    
+//    [_selectedTrackOrder.order_history insertObject:history atIndex:0];
+//    _selectedOrder.order_detail.detail_order_status = ORDER_DELIVERED;
+//    _selectedOrder.order_deadline.deadline_finish_day_left = 3;
+//    
+//    NSDate *deadlineFinishDate = [[NSDate date] dateByAddingTimeInterval:60*60*24*3];
+//    
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"dd-MM-yyyy"];
+//    
+//    _selectedOrder.order_deadline.deadline_finish_date = [dateFormatter stringFromDate:deadlineFinishDate];
+//    
+//    [self.tableView reloadData];
 }
 
 #pragma mark - Table View Data Source
