@@ -26,7 +26,8 @@
 @property (nonatomic) NSInteger diff_district;
 @property (nonatomic, strong) PosMinWeight *pos_min_weight;
 @property (nonatomic, strong) ShopShipping *shop_shipping;
-
+@property (nonatomic, strong) NSDictionary *loc;
+@property (nonatomic, strong) NSArray *note;
 @property (nonatomic, strong) JNE *jne;
 @property (nonatomic, strong) POSIndonesia *pos;
 @property (nonatomic, strong) Tiki *tiki;
