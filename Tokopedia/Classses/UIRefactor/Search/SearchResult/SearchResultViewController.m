@@ -43,16 +43,16 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 @interface SearchResultViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
-    GeneralProductCellDelegate,
-    TKPDTabNavigationControllerDelegate,
-    SortViewControllerDelegate,
-    FilterViewControllerDelegate,
-    GeneralPhotoProductDelegate,
-    GeneralSingleProductDelegate,
-    TokopediaNetworkManagerDelegate,
-    LoadingViewDelegate
+UITableViewDataSource,
+UITableViewDelegate,
+GeneralProductCellDelegate,
+TKPDTabNavigationControllerDelegate,
+SortViewControllerDelegate,
+FilterViewControllerDelegate,
+GeneralPhotoProductDelegate,
+GeneralSingleProductDelegate,
+TokopediaNetworkManagerDelegate,
+LoadingViewDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
@@ -248,25 +248,25 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSInteger count = 0;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         count = _product.count;
-        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
-            count = _isnodata?1:count;
-        #else
-            count = _isnodata?0:count;
-        #endif
+#ifdef kTKPDSEARCHRESULT_NODATAENABLE
+        count = _isnodata?1:count;
+#else
+        count = _isnodata?0:count;
+#endif
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
-        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
-            count = _isnodata?1:count;
-        #else
-            count = _isnodata?0:count;
-        #endif
+#ifdef kTKPDSEARCHRESULT_NODATAENABLE
+        count = _isnodata?1:count;
+#else
+        count = _isnodata?0:count;
+#endif
     } else if (self.cellType == UITableViewCellTypeThreeColumn) {
         count = (_product.count%3==0)?_product.count/3:_product.count/3+1;
-        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
-            count = _isnodata?1:count;
-        #else
-            count = _isnodata?0:count;
-        #endif
+#ifdef kTKPDSEARCHRESULT_NODATAENABLE
+        count = _isnodata?1:count;
+#else
+        count = _isnodata?0:count;
+#endif
     }
     return count;
 }
@@ -336,7 +336,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         cell.productNameLabel.text = list.product_name;
         cell.productPriceLabel.text = list.product_price;
         cell.productShopLabel.text = list.shop_name;
-
+        
         NSString *stats = [NSString stringWithFormat:@"%@ Ulasan   %@ Diskusi",
                            list.product_review_count,
                            list.product_talk_count];
@@ -350,7 +350,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                range:NSMakeRange(list.product_review_count.length + 10, list.product_talk_count.length)];
         
         cell.productInfoLabel.attributedText = attributedText;
-
+        
         cell.badge.hidden = (![list.shop_gold_status boolValue]);
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_full]
@@ -462,7 +462,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingMiddle;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = [NSString stringWithFormat:@"%@ Toko", list.catalog_count_shop];
-
+                
                 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image_300] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                 //request.URL = url;
                 
@@ -471,7 +471,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 //thumb.hidden = YES;	//@prepareforreuse then @reset
                 
                 NSLog(@"============================== START GET %@ IMAGE =====================",
-                [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                      [_data objectForKey:kTKPDSEARCH_DATATYPE]);
                 [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -547,14 +547,14 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
     
     return cell;
-
+    
 }
 
 #pragma mark - Request + Mapping
 -(void)cancel
 {
-//    [_request cancel];
-//    _request = nil;
+    //    [_request cancel];
+    //    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }

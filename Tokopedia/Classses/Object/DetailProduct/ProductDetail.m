@@ -18,6 +18,10 @@
     return [_product_name kv_decodeHTMLCharacterEntities];
 }
 
+- (NSString*)product_short_desc {
+    return  [_product_short_desc kv_decodeHTMLCharacterEntities];
+}
+
 - (NSString *)product_etalase {
     return [_product_etalase kv_decodeHTMLCharacterEntities];
 }

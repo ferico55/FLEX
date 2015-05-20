@@ -70,12 +70,6 @@
     Product *_product;
     ShopSettings *_setting;
     
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
-    
-    __weak RKObjectManager *_objectmanagerDeleteImage;
-    __weak RKManagedObjectRequestOperation *_requestDeleteImage;
-    
     __weak RKObjectManager *_objectmanagerEditProductPicture;
     __weak RKManagedObjectRequestOperation *_requestEditProductPicture;
     
@@ -103,6 +97,8 @@
     NSMutableArray *_selectedIndexPathCameraController;
     
     TokopediaNetworkManager *_networkManager;
+    TokopediaNetworkManager *_networkManagerDeleteImage;
+    
     ProductAddEditDetailViewController *_detailVC;
 
     TKPDPhotoPicker *_photoPicker;
@@ -130,6 +126,7 @@
 @end
 
 #define TAG_REQUEST_DETAIL 10
+#define TAG_REQUEST_DELETE_IMAGE 11
 
 @implementation ProductAddEditViewController
 
@@ -172,6 +169,10 @@
     _tableView.dataSource = self;
     _networkManager.tagRequest = TAG_REQUEST_DETAIL;
     _networkManager.delegate = self;
+    
+    _networkManagerDeleteImage = [TokopediaNetworkManager new];
+    _networkManagerDeleteImage.tagRequest = TAG_REQUEST_DELETE_IMAGE;
+    _networkManagerDeleteImage.delegate = self;
     
     _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -222,10 +223,11 @@
         _networkManager .tagRequest = TAG_REQUEST_DETAIL;
         [_networkManager doRequest];
     }
-        RequestGenerateHost *generateHost =[RequestGenerateHost new];
-        [generateHost configureRestkitGenerateHost];
-        [generateHost requestGenerateHost];
-        generateHost.delegate = self;
+    
+    RequestGenerateHost *generateHost =[RequestGenerateHost new];
+    [generateHost configureRestkitGenerateHost];
+    [generateHost requestGenerateHost];
+    generateHost.delegate = self;
     
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
         _productNameTextField.enabled = NO;
@@ -715,6 +717,9 @@
     if (tag == TAG_REQUEST_DETAIL) {
         return [self objectManagerDetail];
     }
+    if (tag == TAG_REQUEST_DELETE_IMAGE) {
+        return [self objectManagerDeleteImage];
+    }
     return nil;
 }
 
@@ -732,6 +737,17 @@
                                 };
         return param;
     }
+    if (tag == TAG_REQUEST_DELETE_IMAGE) {
+        NSInteger productID = [[_dataInput objectForKey:API_PRODUCT_ID_KEY]integerValue];
+        NSInteger myshopID = [[_dataInput objectForKey:kTKPD_SHOPIDKEY]integerValue];
+        NSInteger pictureID = [[_dataInput objectForKey:API_PRODUCT_PICTURE_ID_KEY]integerValue];
+        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : ACTION_DELETE_IMAGE,
+                                API_PRODUCT_ID_KEY: @(productID),
+                                kTKPD_SHOPIDKEY : @(myshopID),
+                                API_PRODUCT_PICTURE_ID_KEY:@(pictureID)
+                                };
+        return param;
+    }
     return nil;
 }
 
@@ -739,6 +755,9 @@
 {
     if (tag == TAG_REQUEST_DETAIL) {
         return kTKPDDETAILPRODUCT_APIPATH;
+    }
+    if (tag == TAG_REQUEST_DELETE_IMAGE) {
+        return kTKPDDETAILACTIONPRODUCT_APIPATH;
     }
     return nil;
 }
@@ -753,6 +772,11 @@
         return _product.status;
     }
     
+    if (tag == TAG_REQUEST_DELETE_IMAGE) {
+        _setting = stats;
+        return _setting.status;
+    }
+    
     return nil;
 }
 
@@ -761,6 +785,9 @@
     if (tag == TAG_REQUEST_DETAIL) {
         [self enableButtonBeforeSuccessRequest:NO];
         [_alertProcessing show];
+    }
+    if (tag == TAG_REQUEST_DELETE_IMAGE) {
+        
     }
 }
 
@@ -772,16 +799,28 @@
         
         [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
     }
+    if (tag == TAG_REQUEST_DELETE_IMAGE) {
+        [self requestSuccessDeleteImage:successResult withOperation:operation];
+    }
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
-    [self actionAfterFailRequestMaxTries:tag];
+
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    [self enableButtonBeforeSuccessRequest:YES];
+    if (tag == TAG_REQUEST_DELETE_IMAGE) {
+        [_networkManagerDeleteImage doRequest];
+        [self cancelDeletedImage];
+    }
+    if (tag == TAG_REQUEST_DETAIL)
+    {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        [self enableButtonBeforeSuccessRequest:YES];
+        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+    }
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -829,7 +868,8 @@
 {
     _generateHost = generateHost;
     ((UIButton*)_addImageButtons[0]).enabled = YES;
-    [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+    
+    //[_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 -(void)failedGenerateHost
@@ -906,9 +946,9 @@
 }
 
 #pragma mark Request Delete Image
--(void)configureRestKitDeleteImage
+-(RKObjectManager*)objectManagerDeleteImage
 {
-    _objectmanagerDeleteImage =  [RKObjectManager sharedClient];
+    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
@@ -926,111 +966,33 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectmanagerDeleteImage addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    return objectManager;
 }
-
--(void)cancelDeleteImage
-{
-    [_requestDeleteImage cancel];
-    _requestDeleteImage = nil;
-    
-    [_objectmanagerDeleteImage.operationQueue cancelAllOperations];
-    _objectmanagerDeleteImage = nil;
-}
-
-- (void)requestDeleteImage:(id)object
-{
-    if(_requestDeleteImage.isExecuting) return;
-    
-    _requestcountDeleteImage ++;
-    NSDictionary *userInfo = (NSDictionary*)object;
-    
-    NSInteger productID = [[userInfo objectForKey:API_PRODUCT_ID_KEY]integerValue];
-    NSInteger myshopID = [[userInfo objectForKey:kTKPD_SHOPIDKEY]integerValue];
-    NSInteger pictureID = [[userInfo objectForKey:API_PRODUCT_PICTURE_ID_KEY]integerValue];
-    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : ACTION_DELETE_IMAGE,
-                            API_PRODUCT_ID_KEY: @(productID),
-                            kTKPD_SHOPIDKEY : @(myshopID),
-                            API_PRODUCT_PICTURE_ID_KEY:@(pictureID)
-                            };
-    
-    NSTimer *timer;
-    
-    _requestDeleteImage = [_objectmanagerDeleteImage appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
-    [_requestDeleteImage setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessDeleteImage:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureDeleteImage:error];
-        [timer invalidate];
-    }];
-    
-    [[[RKObjectManager sharedClient]operationQueue] addOperation:_requestDeleteImage];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutDeleteImage) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
 
 -(void)requestSuccessDeleteImage:(id)object withOperation:(RKObjectRequestOperation*)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    _setting = info;
-    NSString *statusstring = _setting.status;
-    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
+    id stat = [result objectForKey:@""];
+    ShopSettings *setting = stat;
+    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessDeleteImage:object];
-    }
-}
-
--(void)requestFailureDeleteImage:(id)object
-{
-    [self requestProcessDeleteImage:object];
-}
-
--(void)requestProcessDeleteImage:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ShopSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(setting.message_error)
-                {
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:ERRORMESSAGE_DELETE_PRODUCT_IMAGE, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-                    [alert show];
-                    [self cancelDeletedImage];
-                }
-                if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
-                    [alert show];
-                }
-            }
-        }
-        else{
-            [self cancelDeleteImage];
+        if(setting.message_error)
+        {
+            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:ERRORMESSAGE_DELETE_PRODUCT_IMAGE, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+            [alert show];
             [self cancelDeletedImage];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-                [self cancelDeletedImage];
-            }
+        }
+        if (setting.result.is_success == 1) {
+            NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
+            [alert show];
+            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
         }
     }
-}
-
--(void)requestTimeoutDeleteImage
-{
-    [self cancelDeleteImage];
 }
 
 #pragma mark Request Edit Product Picture
@@ -1268,14 +1230,14 @@
         }
         if (button.tag == tagView+1)
         {
-            for (UIImageView *image in _addImageButtons) {
-                if (image.tag == tagView+1)
-                {
-                    if (image.image == nil) {
+//            for (UIImageView *image in _addImageButtons) {
+//                if (image.tag == tagView+1)
+//                {
+//                    if (image.image == nil) {
                         button.enabled = YES;
-                    }
-                }
-            }
+//                    }
+//                }
+//            }
         }
     }
     
@@ -1326,12 +1288,10 @@
     [_dataInput setObject:_productImageURLs forKey:DATA_LAST_DELETED_IMAGE_PATH];
     [_dataInput setObject:@(index) forKey:DATA_LAST_DELETED_INDEX];
     [_dataInput setObject:((UIImageView*)_thumbProductImageViews[index]).image forKey:DATA_LAST_DELETED_IMAGE];
-    [_selectedIndexPathCameraController removeObjectAtIndex:index];
-    [_selectedImagesCameraController replaceObjectAtIndex:index withObject:@""];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        [self configureRestKitDeleteImage];
+        
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary* auth = [secureStorage keychainDictionary];
         
@@ -1343,7 +1303,13 @@
                                    kTKPD_SHOPIDKEY : @(myshopID),
                                    API_PRODUCT_PICTURE_ID_KEY:@(pictureID)
                                    };
-        [self requestDeleteImage:userInfo];
+        [_dataInput addEntriesFromDictionary:userInfo];
+        [_networkManagerDeleteImage doRequest];
+    }
+    else
+    {
+        [_selectedIndexPathCameraController removeObjectAtIndex:index];
+        [_selectedImagesCameraController replaceObjectAtIndex:index withObject:@""];
     }
     
     NSMutableDictionary *object = [NSMutableDictionary new];
@@ -1486,8 +1452,8 @@
            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
         else
         {
-            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-            
+            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"$" withString:@""];
+            productPrice = [productPrice stringByReplacingOccurrencesOfString:@"," withString:@""];
         }
         product.product_price = productPrice;
         [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
@@ -1641,8 +1607,8 @@
             NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[indexMoveTo] objectForKey:DATA_VALUE_KEY];
             product.product_move_to = value;
             product.product_etalase_id = product.product_etalase_id?:@(0);
-            product.product_description = product.product_short_desc;
-            product.product_returnable = _product.result.info.product_returnable;
+            product.product_description = product.product_short_desc?:@"";
+            product.product_returnable = _product.result.info.product_returnable?:@"";
         }
         [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
         NSArray *images = result.product_images;
@@ -1841,6 +1807,7 @@
     _minimumOrderTextField.userInteractionEnabled = isEnable;
     _productPriceTextField.userInteractionEnabled = isEnable;
     _productWeightTextField.userInteractionEnabled = isEnable;
+    
 }
 
 -(void)cancelDeletedImage
@@ -1901,7 +1868,7 @@
 - (RKObjectManager*)objectManagerDetail
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+    RKObjectManager *objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
@@ -2019,9 +1986,9 @@
     // Response Descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectmanager addResponseDescriptor:responseDescriptor];
+    [objectmanager addResponseDescriptor:responseDescriptor];
     
-    return _objectmanager;
+    return objectmanager;
 }
 
 

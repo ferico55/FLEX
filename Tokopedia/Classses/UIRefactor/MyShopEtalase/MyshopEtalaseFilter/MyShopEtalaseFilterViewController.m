@@ -16,7 +16,7 @@
 #import "URLCacheController.h"
 
 #define ETALASE_OBJECT_SELECTED_KEY @"object_selected"
-@interface MyShopEtalaseFilterViewController ()<UITableViewDataSource, UITableViewDelegate, MyShopEtalaseFilterCellDelegate, MyShopEtalaseEditViewControllerDelegate>{
+@interface MyShopEtalaseFilterViewController ()<UITableViewDataSource, UITableViewDelegate, MyShopEtalaseFilterCellDelegate, MyShopEtalaseEditViewControllerDelegate, TokopediaNetworkManagerDelegate>{
     BOOL _isnodata;
     
     NSMutableArray *_etalaseList;
@@ -26,6 +26,8 @@
     NSTimer *_timer;
     
     Etalase *_etalase;
+    
+    TokopediaNetworkManager *_networkManager;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -63,6 +65,11 @@
     
     [self.navigationController.navigationBar setTranslucent:NO];
     self.navigationController.navigationBarHidden = NO;
+    
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    _table.dataSource = self;
+    _table.delegate = self;
     
     self.title = @"Etalase";
     
@@ -121,9 +128,8 @@
 {
     [super viewWillAppear:animated];
     
-    [self configureRestKit];
     if (_isnodata) {
-        [self loadData];
+        [_networkManager doRequest];
     }
     
     self.edgesForExtendedLayout=UIRectEdgeNone;
@@ -134,13 +140,17 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self cancel];
 }
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    _table.dataSource = nil;
+    _table.delegate = nil;
+    
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
 }
 
 #pragma mark - View Action
@@ -256,18 +266,63 @@
 }
 
 #pragma mark - Request + Mapping Etalase
--(void)cancel
+
+-(id)getObjectManager:(int)tag
 {
-    [_request cancel];
-    _request = nil;
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
+    return [self objectManagerEtalase];
 }
 
-- (void)configureRestKit
+-(NSString *)getPath:(int)tag
+{
+    return kTKPDDETAILSHOP_APIPATH;
+}
+
+-(NSDictionary *)getParameter:(int)tag
+{
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
+                            kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            };
+    return param;
+}
+
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    
+    id stat = [resultDict objectForKey:@""];
+    _etalase = stat;
+    
+    return _etalase.status;
+}
+
+-(void)actionBeforeRequest:(int)tag
+{
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    [self requestsuccess:successResult withOperation:operation];
+    [_act stopAnimating];
+    _table.tableFooterView = nil;
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+    [_act stopAnimating];
+    _table.tableFooterView = nil;
+}
+
+- (RKObjectManager*)objectManagerEtalase
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+    RKObjectManager *objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Etalase class]];
@@ -294,54 +349,9 @@
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-}
-
-- (void)loadData
-{
+    [objectmanager addResponseDescriptor:responseDescriptor];
     
-    if (_request.isExecuting) return;
-    
-    _requestcount ++;
-    
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
-                            kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            };
-    
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:[param encrypt]];
-    
-    [_cachecontroller getFileModificationDate];
-    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-    
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-        
-        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [self requestsuccess:mappingResult withOperation:operation];
-            [_act stopAnimating];
-            _table.tableFooterView = nil;
-            [timer invalidate];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            [self requestfailure:error];
-            [_act stopAnimating];
-            _table.tableFooterView = nil;
-            [timer invalidate];
-        }];
-        [_operationQueue addOperation:_request];
-        
-        
-    }
-    else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-    }
+    return objectmanager;
 }
 
 
@@ -355,130 +365,33 @@
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-        [_cachecontroller connectionDidFinish:_cacheconnection];
-        //save response data
-        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        [_etalaseList addObjectsFromArray:_etalase.result.list];
         
-        [self requestprocess:object];
-    }
-}
-
--(void)requesttimeout
-{
-    [self cancel];
-}
-
--(void)requestfailure:(id)object
-{
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
+        NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];
+        if (presentedEtalaseType == PRESENTED_ETALASE_ADD_PRODUCT) {
+            EtalaseList *etalase = [EtalaseList new];
+            etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+            etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
+            [_etalaseList addObject:etalase];
         }
         
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            NSLog(@"result %@",[mapper mappingResult]);
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stat = [result objectForKey:@""];
-            _etalase = stat;
-            BOOL status = [_etalase.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        if (_etalaseList.count >0) {
+            _isnodata = NO;
             
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
-}
-
--(void)requestprocess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+            [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
             
-            id stat = [result objectForKey:@""];
-            _etalase = stat;
-            NSString *statusstring = _etalase.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [_etalaseList addObjectsFromArray:_etalase.result.list];
-                
-                NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];
-                if (presentedEtalaseType == PRESENTED_ETALASE_ADD_PRODUCT) {
-                    EtalaseList *etalase = [EtalaseList new];
-                    etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
-                    etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
-                    [_etalaseList addObject:etalase];
-                }
-                
-                if (_etalaseList.count >0) {
-                    _isnodata = NO;
-                    
-                    NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
-                    
-                    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
-                    if (!selectedEtalase) {
-                        _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
-                    }
-                    else
-                    {
-                        _selectedEtalase = selectedEtalase;
-                    }
-                    
-                    [_table reloadData];
-                    
-                }
-            }
-        }
-        else{
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %ld =====",(long)_requestcount);
-                    _table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    [_act stopAnimating];
-                    _table.tableFooterView = nil;
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
+            EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+            if (!selectedEtalase) {
+                _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
             }
             else
             {
-                [_act stopAnimating];
-                _table.tableFooterView = nil;
-                NSError *error = object;
-                if (!([error code] == NSURLErrorCancelled)){
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
+                _selectedEtalase = selectedEtalase;
             }
+            
+            [_table reloadData];
+            
         }
     }
 }
