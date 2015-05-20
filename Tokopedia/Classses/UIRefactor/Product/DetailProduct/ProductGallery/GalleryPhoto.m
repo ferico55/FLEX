@@ -48,13 +48,13 @@
 	return self;
 }
 
-- (id)initWithThumbnailPath:(NSString*)thumb fullsizePath:(NSString*)fullsize delegate:(NSObject<GalleryPhotoDelegate>*)delegate
+- (id)initWithThumbnail:(UIImage *)thumb fullImage:(UIImage *)fullImage delegate:(NSObject<GalleryPhotoDelegate> *)delegate
 {
 	self = [super init];
 	
 	_useNetwork = NO;
-	_thumbUrl = thumb;
-	_fullsizeUrl = fullsize;
+	_thumbnail = thumb;
+    _fullsize = fullImage;
 	_delegate = delegate;
 	return self;
 }
@@ -120,18 +120,6 @@
 
 - (void)loadFullsizeInThread
 {
-	NSString *path;
-        
-        if([[NSFileManager defaultManager] fileExistsAtPath:_fullsizeUrl])
-        {
-            path = _fullsizeUrl;
-        }
-        else {
-            path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _fullsizeUrl];
-        }
-			
-	_fullsize = [UIImage imageWithContentsOfFile:path];
-	
 	_hasFullsizeLoaded = YES;
 	_isFullsizeLoading = NO;
 
@@ -142,18 +130,6 @@
 
 - (void)loadThumbnailInThread
 {
-	NSString *path;
-        
-        if([[NSFileManager defaultManager] fileExistsAtPath:_thumbUrl])
-        {
-            path = _thumbUrl;
-        }
-        else {
-            path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _thumbUrl];
-        }
-		
-	_thumbnail = [UIImage imageWithContentsOfFile:path];
-	
 	_hasThumbLoaded = YES;
 	_isThumbLoading = NO;
 	
@@ -170,7 +146,7 @@
 	_isFullsizeLoading = NO;
 	_hasFullsizeLoaded = NO;
 	
-	_fullsize = nil;
+//	_fullsize = nil;
 }
 
 - (void)unloadThumbnail

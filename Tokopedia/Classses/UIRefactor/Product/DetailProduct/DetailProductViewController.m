@@ -2451,7 +2451,10 @@ UIAlertViewDelegate
 #pragma mark - GalleryPhoto Delegate
 - (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
 {
-    return (int)_product.result.product_images.count;
+    if(_headerimages == nil)
+        return 0;
+    
+    return (int)_headerimages.count;
 }
 
 
@@ -2467,17 +2470,16 @@ UIAlertViewDelegate
 }
 
 
-- (NSString*)photoGallery:(GalleryViewController*)gallery filePathForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
-    return nil;
+- (UIImage *)photoGallery:(NSUInteger)index {
+    if(((int) index) < 0)
+        return ((UIImageView *) [_headerimages objectAtIndex:0]).image;
+    else if(((int)index) > _headerimages.count-1)
+        return ((UIImageView *) [_headerimages objectAtIndex:_headerimages.count-1]).image;
+    return ((UIImageView *) [_headerimages objectAtIndex:index]).image;
 }
 
 - (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
-    if(((int) index) < 0)
-        return ((ProductImages *) [_product.result.product_images objectAtIndex:0]).image_src;
-    else if(((int)index) > _product.result.product_images.count-1)
-        return ((ProductImages *) [_product.result.product_images objectAtIndex:_product.result.product_images.count-1]).image_src;
-    
-    return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_src;
+    return nil;
 }
 
 - (void)handleTrashButtonTouch:(id)sender {
