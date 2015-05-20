@@ -128,6 +128,7 @@
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
+    self.screenName = @"Home - Favorite Shop";
     
     if(hasInitData)
     {
@@ -284,9 +285,6 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     
     if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        NSLog(@"%ld", (long)row);
-        
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             [self configureRestKit];
             [self request];

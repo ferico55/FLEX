@@ -144,7 +144,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    self.screenName = @"Login Page";
     [FBSession.activeSession closeAndClearTokenInformation];
     
     _loginButton.layer.cornerRadius = 2;

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #pragma mark - Hotlist Result View Controller
-@interface HotlistResultViewController : UIViewController
+@interface HotlistResultViewController : GAITrackedViewController
 
 @property (weak, nonatomic) IBOutlet UIImage *image;
 @property (strong, nonatomic) NSDictionary *data;

@@ -98,7 +98,7 @@
         lblTitle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin;
         lblTitle.font = [UIFont fontWithName:CFont_Gotham_book size:13.0f];
         lblTitle.backgroundColor = [UIColor clearColor];
-        lblTitle.textColor = btnCancel.titleLabel.textColor;
+        lblTitle.textColor = [UIColor whiteColor];
         
         
         [self.view addSubview:lblTitle];
@@ -117,6 +117,11 @@
         }
         
         [self.view addSubview:btnDownload];
+        
+        UISwipeGestureRecognizer *swipeBottom = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(actionCancel:)];
+        swipeBottom.direction = UISwipeGestureRecognizerDirectionDown | UISwipeGestureRecognizerDirectionUp;
+        [self.view addGestureRecognizer:swipeBottom];
+        [self.view setUserInteractionEnabled:YES];
 	}
     
 	return self;

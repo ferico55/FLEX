@@ -177,6 +177,7 @@
         }
     }
     self.table.contentInset = UIEdgeInsetsMake(0, 0, 45, 0);
+    self.screenName = @"Search Result - Shop Tab";
 }
 
 - (void)viewDidAppear:(BOOL)animated

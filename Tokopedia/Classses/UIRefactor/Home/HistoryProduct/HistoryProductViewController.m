@@ -148,6 +148,7 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    self.screenName = @"Home - History Product";
     
     
     //Check login with different id

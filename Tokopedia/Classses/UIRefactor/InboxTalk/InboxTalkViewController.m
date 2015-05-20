@@ -194,6 +194,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.screenName = @"Inbox Talk";
     if (!_isrefreshview) {
         [self configureRestKit];
         

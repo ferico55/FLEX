@@ -92,6 +92,7 @@
     [super viewWillAppear:animated];
     
     self.title = @"Status Pengiriman";
+    self.screenName = @"Shipping Status";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                       style:UIBarButtonItemStyleBordered

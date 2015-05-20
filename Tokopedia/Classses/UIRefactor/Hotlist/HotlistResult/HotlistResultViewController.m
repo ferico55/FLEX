@@ -211,7 +211,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 {
     [super viewWillAppear:animated];
     
-
+    self.screenName = @"Browse HotList Detail";
     [self configureRestKit];
     if (_isnodata) {
         [self request];

@@ -205,6 +205,7 @@
     [super viewWillAppear:animated];
 
     self.title = @"Beli";
+    self.screenName = @"ATC Form Page";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

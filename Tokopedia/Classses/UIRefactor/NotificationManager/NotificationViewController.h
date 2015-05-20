@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Notification.h"
+#import "GAIDictionaryBuilder.h"
 
 @protocol NotificationViewDelegate <NSObject>
 

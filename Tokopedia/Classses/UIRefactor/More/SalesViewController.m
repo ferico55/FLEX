@@ -50,6 +50,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.screenName = @"Transaction - Sales Page";
     self.hidesBottomBarWhenPushed = YES;
 }
 

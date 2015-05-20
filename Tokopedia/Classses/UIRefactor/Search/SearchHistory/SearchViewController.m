@@ -97,6 +97,7 @@
     [super viewWillAppear:animated];
     
     self.navigationController.title = @"Cari";
+    self.screenName = @"Search Page";
     
     [_searchbar becomeFirstResponder];
 

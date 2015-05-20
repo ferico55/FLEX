@@ -189,6 +189,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.screenName = @"Product - Talk List";
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata) {

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InboxTalkViewController : UIViewController
+@interface InboxTalkViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 

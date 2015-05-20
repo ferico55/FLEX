@@ -57,6 +57,11 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.screenName = @"Profile - Profile Information";
+}
+
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateInfoProfileScroll:)

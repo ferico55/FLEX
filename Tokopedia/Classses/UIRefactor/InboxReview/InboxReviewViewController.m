@@ -196,7 +196,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    self.screenName = @"Inbox Review";
     if (!_isRefreshing) {
         [self configureRestkit];
         
@@ -685,6 +685,8 @@
     NSInteger row = indexpath.row;
     
     InboxReviewList *list = _reviews[row];
+    list.review_read_status = @"2";
+    [_reviewTable reloadData];
     
     vc.data = list;
     vc.is_owner = list.review_is_owner;
@@ -818,6 +820,7 @@
     list.review_rate_speed = [editedParam objectForKey:@"rate_speed"];
     list.review_create_time = @"Just Now";
     list.review_id = @"1";
+    list.review_read_status = @"2";
 //    list.review_user_id = [_userManager getUserId];
     
     [_reviewTable reloadData];

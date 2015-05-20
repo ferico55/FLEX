@@ -160,7 +160,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    self.screenName = @"Register Page";
+    
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;
     self.textfieldpassword.isTopRoundCorner = YES;

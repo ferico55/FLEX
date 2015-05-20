@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CategoryViewController : UIViewController
+@interface CategoryViewController : GAITrackedViewController
 
 @property(strong,nonatomic) NSDictionary* data;
 

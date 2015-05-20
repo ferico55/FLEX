@@ -179,7 +179,6 @@
     
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
     NSInteger page = lround(fractionalPage);
-    NSLog(@"Current Page %zd", page);
     [self goToPage:page];
 }
 

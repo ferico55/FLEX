@@ -81,7 +81,7 @@
     [super viewDidLoad];
         
     [self.navigationController.navigationBar setTranslucent:NO];
-    self.screenName = @"Page Hotlist";
+    self.screenName = @"Home - HotList";
 
     _product = [NSMutableArray new];
     _page = 1;

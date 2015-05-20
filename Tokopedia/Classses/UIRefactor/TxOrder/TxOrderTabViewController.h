@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TxOrderTabViewController : UIViewController
+@interface TxOrderTabViewController : GAITrackedViewController
 
 @end
