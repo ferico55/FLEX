@@ -157,7 +157,6 @@ UIAlertViewDelegate
     
     BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
-    UIImage *imgWishList, *imgUnWishList;
     UIActivityIndicatorView *activityIndicator;
     UIFont *fontDesc;
     
@@ -374,6 +373,13 @@ UIAlertViewDelegate
     [tokopediaNetworkManager requestCancel];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    lblDescToko.text = @"alskdjf lkasjdlkf jaslkd jflaksjdlfkjaksdjflk ajsdl fkasd hf asdlfj lasj dlf asdf asdf asdf asdf sad fasd f  jakdsjflk ajsdlkfj alsdj flajs dl fjasld jflkasd jlka jsdlk jasdlk jflkds ";
+    viewContentDescToko.backgroundColor = [UIColor colorWithRed:238/255.0f green:238/255.0f blue:238/255.0f alpha:1.0f];
+    [viewContentDescToko bringSubviewToFront:viewTableContentHeader];
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -419,6 +425,18 @@ UIAlertViewDelegate
     if (section>0) return YES;
     
     return NO;
+}
+
+- (void)setBackgroundWishlist:(BOOL)isWishList
+{
+    if(! isWishList) {
+        btnWishList.backgroundColor = [UIColor colorWithRed:224/255.0f green:224/255.0f blue:224/255.0f alpha:1.0f];
+        [btnWishList setTitleColor:[UIColor colorWithRed:189/255.0f green:189/255.0f blue:189/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    }
+    else {
+        btnWishList.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
+        [btnWishList setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - View Action
@@ -1391,7 +1409,7 @@ UIAlertViewDelegate
         if(status && [wishListObject.result.is_success isEqualToString:@"1"])
         {
             alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_REMOVE_WISHLIST] delegate:self];
-            [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+            [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
             
@@ -1402,7 +1420,7 @@ UIAlertViewDelegate
         else
         {
             alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
-            [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+            [self setBackgroundWishlist:YES];
             btnWishList.tag = 0;
             [activityIndicator removeFromSuperview];
             [activityIndicator stopAnimating];
@@ -1420,7 +1438,7 @@ UIAlertViewDelegate
         if(status && [wishListObject.result.is_success isEqualToString:@"1"])
         {
             alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_ADD_WISHLIST] delegate:self];
-            [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+            [self setBackgroundWishlist:YES];
             btnWishList.tag = 0;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
             [activityIndicator removeFromSuperview];
@@ -1430,7 +1448,7 @@ UIAlertViewDelegate
         else
         {
             alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
-            [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+            [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
             [activityIndicator removeFromSuperview];
             [activityIndicator stopAnimating];
@@ -1460,7 +1478,7 @@ UIAlertViewDelegate
     {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
         [alert show];
-        [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+        [self setBackgroundWishlist:YES];
         btnWishList.tag = 0;
         [activityIndicator removeFromSuperview];
         [activityIndicator stopAnimating];
@@ -1470,7 +1488,7 @@ UIAlertViewDelegate
     {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
         [alert show];
-        [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+        [self setBackgroundWishlist:NO];
         btnWishList.tag = 1;
         [activityIndicator removeFromSuperview];
         [activityIndicator stopAnimating];
@@ -1692,33 +1710,28 @@ UIAlertViewDelegate
                 btnWishList.hidden = NO;
                 [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
                 btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
-                [btnWishList setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
                 btnWishList.layer.cornerRadius = 5;
                 btnWishList.layer.masksToBounds = YES;
                 btnWishList.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
                 btnWishList.layer.borderWidth = 1.0f;
                 btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-                btnWishList.titleEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 0);
+                btnWishList.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
                 //Rescale image
                 UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
-                [[UIImage imageNamed:@"icon_wishlist_active.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
-                imgUnWishList = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-                
-                UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
                 [[UIImage imageNamed:@"icon_wishlist_unactive.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
-                imgWishList = UIGraphicsGetImageFromCurrentImageContext();
+                UIImage *imgUnWishList = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
+                [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
                 
                 if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
                 {
-                    [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+                    [self setBackgroundWishlist:YES];
                     btnWishList.tag = 0;
                 }
                 else
                 {
-                    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+                    [self setBackgroundWishlist:NO];
                     btnWishList.tag = 1;
                 }
             }
@@ -2313,7 +2326,8 @@ UIAlertViewDelegate
 }
 
 - (void)cancelOtherProduct {
-    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+    [self setBackgroundWishlist:NO];
+//    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
 }
 
 #pragma mark - Request and mapping favorite action

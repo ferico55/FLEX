@@ -11,11 +11,11 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController : GAITrackedViewController
 {
-    IBOutlet UIView *viewTableContentHeader, *viewContentDescToko;
+    IBOutlet UIView *viewTableContentHeader, *viewContentDescToko, *viewContentSoldAndView;
     IBOutlet UIButton *btnWishList, *btnShare;
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;
-    IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle;
+    IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle, *lblDescToko;
 }
 @property (strong,nonatomic) NSDictionary *data;
 

@@ -657,13 +657,13 @@
     }
     
     else if (indexPath.section == 6) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                             object:nil
                                                           userInfo:@{}];
     }
     
     self.hidesBottomBarWhenPushed = NO;
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Reskit
