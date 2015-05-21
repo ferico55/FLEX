@@ -12,6 +12,7 @@
 #define CTagFavorite 4
 #define CTagWishList 5
 #define CTagUnWishList 6
+#define CPaddingTopDescToko 10
 
 #import "GalleryViewController.h"
 #import "detail.h"
@@ -27,6 +28,7 @@
 #import "GeneralAction.h"
 #import "ShopSettings.h"
 #import "RKObjectManager.h"
+#import "TTTAttributedLabel.h"
 
 #import "StarsRateView.h"
 #import "MarqueeLabel.h"
@@ -85,6 +87,7 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
+TTTAttributedLabelDelegate,
 GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
@@ -371,13 +374,6 @@ UIAlertViewDelegate
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [tokopediaNetworkManager requestCancel];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    lblDescToko.text = @"alskdjf lkasjdlkf jaslkd jflaksjdlfkjaksdjflk ajsdl fkasd hf asdlfj lasj dlf asdf asdf asdf asdf sad fasd f  jakdsjflk ajsdlkfj alsdj flajs dl fjasld jflkasd jlka jsdlk jasdlk jflkds ";
-    viewContentDescToko.backgroundColor = [UIColor colorWithRed:238/255.0f green:238/255.0f blue:238/255.0f alpha:1.0f];
-    [viewContentDescToko bringSubviewToFront:viewTableContentHeader];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -1650,6 +1646,35 @@ UIAlertViewDelegate
                                                                                            views:NSDictionaryOfVariableBindings(viewContentTokoTutup)]];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
         }
+        
+        //Check product status
+        if(_product.result.product.product_status!=nil && [_product.result.product.product_status isEqualToString:@"0"]) {
+            [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentDescToko(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
+        }
+        else if(_product.result.product.product_status!=nil && [_product.result.product.product_status isEqualToString:@"1"]) {
+            viewContentDescToko.backgroundColor = [UIColor colorWithRed:255/255.0f green:243/255.0f blue:224/255.0f alpha:1.0f];
+            [self setLblDescriptionToko:CStringCanReture];
+            NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
+            lblDescToko.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+            lblDescToko.delegate = self;
+            lblDescToko.text = CStringCanReture;
+            lblDescToko.linkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+            [lblDescToko addLinkToURL:[NSURL URLWithString:@"http://detik.com"] withRange:range];
+
+            
+            //Add To View
+            [viewContentDescToko addSubview:lblDescToko];
+            [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[viewContentDescToko(==%f)]", lblDescToko.bounds.size.height+(CPaddingTopDescToko*2)] options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
+        }
+        else if(_product.result.product.product_status!=nil && [_product.result.product.product_status isEqualToString:@"2"]) {
+            [self setLblDescriptionToko:CStringCannotReture];
+            lblDescToko.text = CStringCannotReture;
+            
+            //Add To View
+            [viewContentDescToko addSubview:lblDescToko];
+            [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[viewContentDescToko(==%f)]", lblDescToko.bounds.size.height+(CPaddingTopDescToko*2)] options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
+        }
+        
         _table.tableHeaderView = _header;        
         [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
         [_cachecontroller connectionDidFinish:_cacheconnection];
@@ -1899,6 +1924,23 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (void)setLblDescriptionToko:(NSString *)strText
+{
+    if(lblDescToko == nil) {
+        lblDescToko = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+        lblDescToko.textAlignment = NSTextAlignmentCenter;
+        lblDescToko.font = [UIFont fontWithName:CFont_Gotham_Book size:13.0f];
+        lblDescToko.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
+        lblDescToko.lineBreakMode = NSLineBreakByWordWrapping;
+        lblDescToko.numberOfLines = 0;
+    }
+    
+    int paddingLeft = 100;
+    int paddingRight = 10;
+    float height = [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-paddingLeft-paddingRight, 9999) withText:strText];
+    lblDescToko.frame = CGRectMake(paddingLeft, CPaddingTopDescToko, self.view.bounds.size.width-paddingLeft-paddingRight, height);
+}
+
 - (void)initViewTokoTutup
 {
     if(hasSetTokoTutup){
@@ -2544,4 +2586,16 @@ UIAlertViewDelegate
     _auth = [_userManager getUserLoginData];
 }
 
+
+
+#pragma mark - TTTAttributeLabel Delegate
+- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
+{
+
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    [[UIApplication sharedApplication] openURL:url];
+}
 @end

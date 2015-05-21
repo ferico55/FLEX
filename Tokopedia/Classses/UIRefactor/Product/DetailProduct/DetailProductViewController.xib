@@ -19,7 +19,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -48,7 +47,6 @@
                 <outlet property="header" destination="U7y-jr-OJ5" id="K7q-dP-Z2R"/>
                 <outlet property="headerActivityIndicator" destination="APb-x3-lmz" id="n6i-G8-z0A"/>
                 <outlet property="imagescrollview" destination="DQy-5R-3v9" id="cSB-b4-zhc"/>
-                <outlet property="lblDescToko" destination="dN7-gX-Gzg" id="m0P-Qs-Pyd"/>
                 <outlet property="lblDescTokoTutup" destination="qZe-o4-E8U" id="Gw5-8A-IUr"/>
                 <outlet property="lblOtherProductTitle" destination="And-LZ-Qxq" id="lqd-NI-tRr"/>
                 <outlet property="merchantActivityIndicator" destination="iwv-vI-T5T" id="8yS-u5-pLS"/>
@@ -344,26 +342,10 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iBv-sz-6rR">
                             <rect key="frame" x="0.0" y="296" width="320" height="39"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dN7-gX-Gzg">
-                                    <rect key="frame" x="107" y="9" width="205" height="21"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="205" id="SB4-8y-BjG"/>
-                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="WE7-Xr-bLM"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="39" id="6tJ-ib-4VL"/>
                                 <constraint firstAttribute="width" constant="320" id="F3Y-Dq-hOP"/>
-                                <constraint firstItem="dN7-gX-Gzg" firstAttribute="top" secondItem="iBv-sz-6rR" secondAttribute="top" constant="9" id="HBH-we-T8R"/>
-                                <constraint firstAttribute="trailing" secondItem="dN7-gX-Gzg" secondAttribute="trailing" constant="8" id="f7F-bd-GIk"/>
-                                <constraint firstAttribute="bottom" secondItem="dN7-gX-Gzg" secondAttribute="bottom" constant="9" id="uem-vz-8vo"/>
-                                <constraint firstItem="dN7-gX-Gzg" firstAttribute="leading" secondItem="iBv-sz-6rR" secondAttribute="leading" constant="107" id="wGz-6v-Oo5"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hsX-QI-9sF">

@@ -250,6 +250,9 @@ typedef enum
 #define PRODUCT_INFO @"Informasi Produk"
 #define NO_DESCRIPTION @"Tidak ada deskripsi"
 
+#define CStringCannotReture @"Produk yang sudah dibeli tidak dapat ditukar atau dikembalikan"
+#define CStringCanReture @"Produk yang sudah dibeli dapat ditukar atau dikembalikan dengan Syarat dan Ketentuan masing-masing toko"
+#define CStringCanRetureLinkDetection @"Syarat dan Ketentuan masing-masing toko"
 #define CStringSuccessFavoriteShop @"Anda berhasil memfavoritkan toko ini!"
 #define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
 
