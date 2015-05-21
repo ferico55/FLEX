@@ -664,11 +664,8 @@
     [button setAttributedTitle:myString forState:UIControlStateNormal];
     
     UIImage *arrowImage;
-    if(direction == 0) {
-        arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
-    } else {
-        arrowImage = [UIImage imageNamed:@"icon_triangle_up_white.png"];
-    }
+
+    arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
     
     
     CGRect rect = CGRectMake(0,0,10,7);
