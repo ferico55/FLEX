@@ -12,7 +12,7 @@
 #import "DepositForm.h"
 #import "profile.h"
 
-@interface DepositFormViewController () <UITextFieldDelegate> {
+@interface DepositFormViewController () <UITextFieldDelegate, UIScrollViewDelegate> {
     NSString *_clearTotalAmount;
     
     __weak RKObjectManager *_objectManager;
@@ -156,6 +156,7 @@
     _operationSendOTPQueue = [NSOperationQueue new];
     _listBankAccount = [NSMutableArray new];
     
+    _containerScrollView.delegate = self;
 //    [_useableSaldoIDR setText:[_data objectForKey:@"summary_useable_deposit_idr"]];
     [self configureDepositInfo];
     [self loadDepositInfo];
@@ -691,31 +692,33 @@
 
 - (void)keyboardWillShow:(NSNotification *)note {
     // get keyboard size and loctaion
-    CGRect keyboardBounds;
-    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-    
-    // Need to translate the bounds to account for rotation.
-    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
-    
-    // get a rect for the textView frame
-    CGRect containerFrame = self.view.frame;
-    
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
-    // animations settings
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationDuration:[duration doubleValue]];
-    [UIView setAnimationCurve:[curve intValue]];
-    
-    
-    // set views with new info
-    self.view.frame = containerFrame;
-    
-//    [_messagingview becomeFirstResponder];
-    // commit animations
-    [UIView commitAnimations];
+    if(_activeTextField.tag != 10) {
+        CGRect keyboardBounds;
+        [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+        NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+        
+        // Need to translate the bounds to account for rotation.
+        keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+        
+        // get a rect for the textView frame
+        CGRect containerFrame = self.view.frame;
+        
+        containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+        // animations settings
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationDuration:[duration doubleValue]];
+        [UIView setAnimationCurve:[curve intValue]];
+        
+        
+        // set views with new info
+        self.view.frame = containerFrame;
+        
+        //    [_messagingview becomeFirstResponder];
+        // commit animations
+        [UIView commitAnimations];
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)note {
@@ -804,6 +807,7 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
+    [textField resignFirstResponder];
     return YES;
 }
 
@@ -850,6 +854,12 @@
 
     }
     return YES;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [_totalAmount resignFirstResponder];
+    [_tokopediaPassword resignFirstResponder];
+    [_kodeOTP resignFirstResponder];
 }
 
 
