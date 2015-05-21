@@ -1933,12 +1933,11 @@ UIAlertViewDelegate
         lblDescToko.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
         lblDescToko.lineBreakMode = NSLineBreakByWordWrapping;
         lblDescToko.numberOfLines = 0;
+        lblDescToko.backgroundColor = [UIColor clearColor];
     }
     
-    int paddingLeft = 100;
-    int paddingRight = 10;
-    float height = [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-paddingLeft-paddingRight, 9999) withText:strText];
-    lblDescToko.frame = CGRectMake(paddingLeft, CPaddingTopDescToko, self.view.bounds.size.width-paddingLeft-paddingRight, height);
+    float height = [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText];
+    lblDescToko.frame = CGRectMake(CPaddingTopDescToko, CPaddingTopDescToko, self.view.bounds.size.width-(CPaddingTopDescToko*2), height);
 }
 
 - (void)initViewTokoTutup
