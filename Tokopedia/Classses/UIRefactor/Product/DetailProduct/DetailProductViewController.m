@@ -2183,7 +2183,7 @@ UIAlertViewDelegate
         v.pricelabel.text = product.product_price;
         //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image_no_square] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
         
         UIImageView *thumb = v.thumb;
@@ -2197,6 +2197,7 @@ UIAlertViewDelegate
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
             [thumb setImage:image];
+            [thumb setContentMode:UIViewContentModeScaleAspectFit];
             [v.act stopAnimating];
 #pragma clang diagnostic pop
             
