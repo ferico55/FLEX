@@ -11,7 +11,7 @@
 #import "TKPDTabHomeViewController.h"
 #import "TokopediaNetworkManager.h"
 
-@interface WishListViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, TokopediaNetworkManagerDelegate>
+@interface WishListViewController : GAITrackedViewController<UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, TokopediaNetworkManagerDelegate>
 {
     IBOutlet UITableView *tblWishList;
     IBOutlet UIView *footer, *viewNoData;

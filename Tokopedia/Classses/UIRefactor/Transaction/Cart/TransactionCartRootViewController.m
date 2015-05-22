@@ -108,7 +108,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    self.screenName = @"Cart Page";
     if (_index == 0) {
         
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];

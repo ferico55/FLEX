@@ -333,12 +333,12 @@ UIAlertViewDelegate
 }
 
 - (void)initNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+
     
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshRequest:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+    [center addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    [center addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
 
 
@@ -377,7 +377,7 @@ UIAlertViewDelegate
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    self.screenName = @"Product Info";
     _promoteNetworkManager.delegate = self;
     
     self.hidesBottomBarWhenPushed = YES;
@@ -408,10 +408,8 @@ UIAlertViewDelegate
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    _promoteNetworkManager.delegate = nil;
-    [self cancel];
     
-    [tokopediaNetworkManager requestCancel];
+    
 }
 
 
@@ -483,6 +481,7 @@ UIAlertViewDelegate
                 [_datatalk setObject:_product.result.statistic.product_sold_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
                 [_datatalk setObject:_product.result.statistic.product_view_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
                 [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
+                [_datatalk setObject:_product.result.product.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
@@ -1547,6 +1546,11 @@ UIAlertViewDelegate
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    
+    [tokopediaNetworkManager requestCancel];
+    _promoteNetworkManager.delegate = nil;
+    [self cancel];
+    
     tokopediaNetworkManagerWishList.delegate = nil;
     [tokopediaNetworkManagerWishList requestCancel];
     
@@ -1649,7 +1653,7 @@ UIAlertViewDelegate
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         id stats = [result objectForKey:@""];
         _product = stats;
-        _formattedProductDescription = _product.result.product.product_description;
+        _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
         _formattedProductTitle = _product.result.product.product_name;
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
@@ -2053,9 +2057,11 @@ UIAlertViewDelegate
     
     NSArray *images = _product.result.product_images;
     
+    [_headerimages removeAllObjects];
+    
     for(int i = 0; i< images.count; i++)
     {
-        CGFloat y = i * 320;
+        CGFloat y = i * self.view.frame.size.width;
         
         ProductImages *image = images[i];
         
@@ -2088,7 +2094,7 @@ UIAlertViewDelegate
     _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = images.count;
     
-    _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
+    _imagescrollview.contentSize = CGSizeMake(images.count*self.view.frame.size.width,0);
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
     _imagescrollview.showsHorizontalScrollIndicator = NO;
     
@@ -2195,7 +2201,8 @@ UIAlertViewDelegate
 #pragma clang diagnostic pop
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
+            [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+            [thumb setContentMode:UIViewContentModeCenter];
             [v.act stopAnimating];
         }];
         
@@ -2421,7 +2428,11 @@ UIAlertViewDelegate
     //    [self.navigationController pushViewController:vc animated:YES];
     
     
-    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+//    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+    GalleryViewController *gallery = [GalleryViewController new];
+    gallery.canDownload = YES;
+    [gallery initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+
     [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
@@ -2443,7 +2454,10 @@ UIAlertViewDelegate
 #pragma mark - GalleryPhoto Delegate
 - (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
 {
-    return (int)_product.result.product_images.count;
+    if(_headerimages == nil)
+        return 0;
+    
+    return (int)_headerimages.count;
 }
 
 
@@ -2459,17 +2473,16 @@ UIAlertViewDelegate
 }
 
 
-- (NSString*)photoGallery:(GalleryViewController*)gallery filePathForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
-    return nil;
+- (UIImage *)photoGallery:(NSUInteger)index {
+    if(((int) index) < 0)
+        return ((UIImageView *) [_headerimages objectAtIndex:0]).image;
+    else if(((int)index) > _headerimages.count-1)
+        return ((UIImageView *) [_headerimages objectAtIndex:_headerimages.count-1]).image;
+    return ((UIImageView *) [_headerimages objectAtIndex:index]).image;
 }
 
 - (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
-    if(((int) index) < 0)
-        return ((ProductImages *) [_product.result.product_images objectAtIndex:0]).image_src;
-    else if(((int)index) > _product.result.product_images.count-1)
-        return ((ProductImages *) [_product.result.product_images objectAtIndex:_product.result.product_images.count-1]).image_src;
-    
-    return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_src;
+    return nil;
 }
 
 - (void)handleTrashButtonTouch:(id)sender {

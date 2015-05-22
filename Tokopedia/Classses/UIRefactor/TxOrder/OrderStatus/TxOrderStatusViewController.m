@@ -17,6 +17,7 @@
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "ResolutionCenterDetailViewController.h"
+#import "RequestCancelResolution.h"
 
 #import "InboxResolutionCenterOpenViewController.h"
 
@@ -39,7 +40,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -69,6 +70,8 @@
     
     NavigateViewController *_navigate;
     TokopediaNetworkManager *_networkManager;
+    
+    TxOrderStatusList *_selectedTrackOrder;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -138,6 +141,11 @@
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshRequest)
+                                                 name:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME
+                                               object:nil];
+    
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -150,6 +158,13 @@
     [super viewWillAppear:animated];
     
     self.title = _viewControllerTitle?:@" ";
+    if ([_action isEqualToString:@"get_tx_order_status"]) {
+        self.screenName = @"Order Status";
+    } else if ([_action isEqualToString:@"get_tx_order_deliver"]) {
+        self.screenName = @"Received Confirmation";
+    } else {
+        self.screenName = @"Transaction List";
+    }
     _networkManager.delegate = self;
 }
 
@@ -234,8 +249,6 @@
     [_dataInput setObject:startDate?:@"" forKey:API_TRANSACTION_START_DATE_KEY];
     [_dataInput setObject:endDate?:@"" forKey:API_TRANSACTION_END_DATE_KEY];
 
-    [_refreshControll beginRefreshing];
-    [self.tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [self refreshRequest];
 
 }
@@ -243,9 +256,35 @@
 #pragma mark - Track Order delegate
 -(void)shouldRefreshRequest
 {
-    [_refreshControll beginRefreshing];
-    [self.tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
+    
     [self refreshRequest];
+}
+
+- (void)updateDeliveredOrder:(NSString *)receiverName
+{
+//    OrderHistory *history = [OrderHistory new];
+//    NSString *buyerStatus;
+//    if ([receiverName isEqualToString:@""] || receiverName == NULL) {
+//        buyerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan"];
+//    } else {
+//        buyerStatus = [NSString stringWithFormat:@"Pesanan telah tiba di tujuan<br>Received by %@", receiverName];
+//    }
+//    history.history_seller_status = buyerStatus;
+//    _selectedTrackOrder.order_detail.detail_order_status = ORDER_DELIVERED;
+//    _selectedTrackOrder.order_last.last_buyer_status = buyerStatus;
+//    
+//    [_selectedTrackOrder.order_history insertObject:history atIndex:0];
+//    _selectedOrder.order_detail.detail_order_status = ORDER_DELIVERED;
+//    _selectedOrder.order_deadline.deadline_finish_day_left = 3;
+//    
+//    NSDate *deadlineFinishDate = [[NSDate date] dateByAddingTimeInterval:60*60*24*3];
+//    
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"dd-MM-yyyy"];
+//    
+//    _selectedOrder.order_deadline.deadline_finish_date = [dateFormatter stringFromDate:deadlineFinishDate];
+//    
+//    [self.tableView reloadData];
 }
 
 #pragma mark - Table View Data Source
@@ -601,6 +640,7 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
+    _tableView.contentOffset = CGPointZero;
     NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
     TxOrderStatus *order = stat;
@@ -657,6 +697,7 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
+    _tableView.contentOffset = CGPointZero;
 }
 
 
@@ -973,10 +1014,35 @@
 {
     TxOrderStatusList *order = _list[indexPath.row];
     ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+    vc.indexPath = indexPath;
+    vc.delegate = self;
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     vc.resolutionID = resolutionID;
     [self.navigationController pushViewController:vc animated:YES];
+}
+-(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
+{
+    TxOrderStatusList *order = _list[indexPath.row];
+    RequestCancelResolution *request = [RequestCancelResolution new];
+    NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
+    NSString *resolutionID = [queries objectForKey:@"id"];
+    request.resolutionID = [resolutionID integerValue];
+    request.delegate = self;
+    [request doRequest];
+}
+
+-(void)successCancelComplain:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus delegate:self];
+    [alert show];
+    [self refreshRequest];
+}
+
+-(void)failedCancelComplain:(InboxResolutionCenterList *)resolution errors:(NSArray *)errors
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
+    [alert show];
 }
 
 -(void)failedConfirmDelivery:(NSDictionary*)object
@@ -1207,6 +1273,8 @@
     _page = 1;
 
     _networkManager.delegate = self;
+    [_refreshControll beginRefreshing];
+    [_tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [_networkManager doRequest];
 }
 
@@ -1215,16 +1283,20 @@
     TxOrderStatusDetailViewController *vc = [TxOrderStatusDetailViewController new];
     TxOrderStatusList *order = _list[indexPath.row];
     vc.order = order;
+    int buttonCount = 0;
+    if ([self isShowButtonConfirmOrder:order]) {
+        buttonCount +=1;
+    }
+    if ([self isShowButtonComplainOrder:order]) {
+        buttonCount +=1;
+    }
+    
+    vc.buttonHeaderCount = buttonCount;
+    
     if ([self isShowButtonSeeComplainOrder:order])
         vc.isComplain = YES;
     else if ([self isShowButtonReorder:order])
         vc.reOrder = YES;
-    else if ([self isShowThreeButtonsOrder:order])
-        vc.buttonHeaderCount = 2;
-    else if ([self isShowTwoButtonsOrder:order])
-        vc.buttonHeaderCount = 1;
-    else
-        vc.buttonHeaderCount = 0;
     vc.indexPath = indexPath;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];

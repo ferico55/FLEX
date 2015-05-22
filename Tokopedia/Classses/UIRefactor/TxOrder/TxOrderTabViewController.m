@@ -93,12 +93,12 @@
     [super viewWillAppear:animated];
     
     self.title = @"Konfirmasi Pembayaran";
+    self.screenName = @"Payment Confirmation";
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
     self.title = @" ";
 
 }

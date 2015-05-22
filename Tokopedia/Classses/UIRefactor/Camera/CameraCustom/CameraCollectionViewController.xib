@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="gcX-ot-2uM">
+                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="gcX-ot-2uM">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="0.0" id="vd3-Oz-XCJ">
@@ -33,6 +33,12 @@
                 </collectionView>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="gcX-ot-2uM" secondAttribute="bottom" id="2Vj-Uh-6NG"/>
+                <constraint firstAttribute="trailing" secondItem="gcX-ot-2uM" secondAttribute="trailing" id="8BD-JC-D38"/>
+                <constraint firstItem="gcX-ot-2uM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Vzb-jX-e0I"/>
+                <constraint firstItem="gcX-ot-2uM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="n44-I5-h56"/>
+            </constraints>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

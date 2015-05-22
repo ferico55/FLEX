@@ -137,6 +137,8 @@ typedef enum TagRequest {
 {
     [super viewWillAppear:animated];
     
+    self.screenName = @"Home - Product Feed";
+    
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [_networkManager doRequest];

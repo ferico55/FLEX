@@ -91,6 +91,8 @@
 {
     [super viewWillAppear:animated];
     self.title = @"Pusat Resolusi";
+    self.screenName = @"Inbox Resolution";
+    
     self.hidesBottomBarWhenPushed = YES;
 }
 

@@ -180,6 +180,7 @@ UIAlertViewDelegate, MGSwipeTableCellDelegate>
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.screenName = @"Shop - Note List";
     if (!_isrefreshview) {
         [self configureRestKit];
         

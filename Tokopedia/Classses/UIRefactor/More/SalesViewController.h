@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Notification.h"
 
-@interface SalesViewController : UIViewController
+@interface SalesViewController : GAITrackedViewController
 
 @property (strong, nonatomic) Notification *notification;
 

@@ -189,6 +189,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.screenName = @"Product - Talk List";
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata) {
@@ -739,7 +740,7 @@
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
-                TKPD_TALK_PRODUCT_STATUS:list.talk_product_status,
+                TKPD_TALK_PRODUCT_STATUS:[_data objectForKey:@"talk_product_status"],
                 TKPD_TALK_PRODUCT_IMAGE:[_data objectForKey:@"talk_product_image"],
                 TKPD_TALK_PRODUCT_NAME:[_data objectForKey:@"product_name"],
                 //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula

@@ -116,6 +116,7 @@ typedef enum {
 #define API_SHOP_IMAGE_KEY @"shop_image"
 #define API_SHOP_NAME_KEY @"shop_name"
 #define API_SHOP_URL_KEY @"shop_url"
+#define API_SHOP_ID_KEY @"shop_id"
 
 #pragma mark - Resolution Customer
 #define API_RESOLUTION_CUSTOMER_KEY @"resolution_customer"

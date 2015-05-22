@@ -10,6 +10,8 @@
 
 @implementation ProductImages
 
-
+- (NSString*)image_description {
+    return [_image_description kv_decodeHTMLCharacterEntities];
+}
 
 @end

@@ -13,11 +13,13 @@
 #import "SearchResultShopViewController.h"
 #import "SearchResultViewController.h"
 
+#import "DBManager.h"
+
 @interface TKPDTabNavigationController () <CategoryMenuViewDelegate, SearchResultDelegate>{
-	UIView *_tabbar;
-	NSArray *_buttons;
-	NSInteger _unloadSelectedIndex;
-	NSArray *_unloadViewControllers;
+    UIView *_tabbar;
+    NSArray *_buttons;
+    NSInteger _unloadSelectedIndex;
+    NSArray *_unloadViewControllers;
     BOOL _hascatalog;
     
     UIBarButtonItem *_barbuttoncategory;
@@ -58,12 +60,12 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _hascatalog = NO;
-		_selectedIndex = -1;
-		//_navigationIndex = -1;
-		_unloadSelectedIndex = -1;
+        _selectedIndex = -1;
+        //_navigationIndex = -1;
+        _unloadSelectedIndex = -1;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
-		self.view;
+        self.view;
 #pragma clang diagnostic pop
     }
     return self;
@@ -75,11 +77,11 @@
 {
     [super viewDidLoad];
     
-	if (_unloadSelectedIndex != -1) {
-		[self setViewControllers:_unloadViewControllers];
-		
-		_unloadSelectedIndex = -1;
-		_unloadViewControllers = nil;
+    if (_unloadSelectedIndex != -1) {
+        [self setViewControllers:_unloadViewControllers];
+        
+        _unloadSelectedIndex = -1;
+        _unloadViewControllers = nil;
     }
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
@@ -168,7 +170,7 @@
 
 - (void)setViewControllers:(NSArray *)viewControllers
 {
-	[self setViewControllers:viewControllers animated:NO];
+    [self setViewControllers:viewControllers animated:NO];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated
@@ -176,69 +178,69 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(SetHiddenSegmentController:)
                                                  name:@"setsegmentcontrol" object:nil];
-	if (viewControllers != nil) {
-		NSUInteger count = viewControllers.count;
+    if (viewControllers != nil) {
+        NSUInteger count = viewControllers.count;
         [_segmentcontrol setSelectedSegmentIndex:0];
-
-		[self setViewControllers:nil animated:NO];
-		
-		UIViewController* c;
-		for (NSInteger i = 0; i < count; i++) {
-			c = viewControllers[i];
-			if (c.TKPDTabNavigationItem == nil) {
-				c.TKPDTabNavigationItem = (TKPDTabNavigationItem*)c.tabBarItem;
-			}
-		}
-		
-		_viewControllers = [viewControllers copy];
-		if (_unloadSelectedIndex == -1) {
-			[self setSelectedIndex:0 animated:animated];
-		} else {
-			[self setSelectedIndex:_unloadSelectedIndex animated:animated];
-		}
-		
-	} else {
-		if (_selectedViewController != nil) {
-			
-			[_selectedViewController willMoveToParentViewController:nil];
-			[_selectedViewController.view removeFromSuperview];
-			[_selectedViewController removeFromParentViewController];
-		}
-		
-		_viewControllers = nil;
-		_selectedViewController = nil;
-		_selectedIndex = -1;
-	}
+        
+        [self setViewControllers:nil animated:NO];
+        
+        UIViewController* c;
+        for (NSInteger i = 0; i < count; i++) {
+            c = viewControllers[i];
+            if (c.TKPDTabNavigationItem == nil) {
+                c.TKPDTabNavigationItem = (TKPDTabNavigationItem*)c.tabBarItem;
+            }
+        }
+        
+        _viewControllers = [viewControllers copy];
+        if (_unloadSelectedIndex == -1) {
+            [self setSelectedIndex:0 animated:animated];
+        } else {
+            [self setSelectedIndex:_unloadSelectedIndex animated:animated];
+        }
+        
+    } else {
+        if (_selectedViewController != nil) {
+            
+            [_selectedViewController willMoveToParentViewController:nil];
+            [_selectedViewController.view removeFromSuperview];
+            [_selectedViewController removeFromParentViewController];
+        }
+        
+        _viewControllers = nil;
+        _selectedViewController = nil;
+        _selectedIndex = -1;
+    }
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
 {
-	[self setSelectedViewController:selectedViewController animated:NO];
+    [self setSelectedViewController:selectedViewController animated:NO];
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController animated:(BOOL)animated
 {
-	if ((selectedViewController != nil) && (_viewControllers.count == (_buttons.count - 0)) && (selectedViewController != _selectedViewController)) {
-		
-		UIViewController* c;
-		NSInteger i;
-		
-		for (i = 0; i < _viewControllers.count; i++) {
-			c = _viewControllers[i];
-			if (c == selectedViewController) {
-				break;
-			}
-		}
-		
-		if (c != nil) {
-			[self setSelectedIndex:i];
-		}
-	}
+    if ((selectedViewController != nil) && (_viewControllers.count == (_buttons.count - 0)) && (selectedViewController != _selectedViewController)) {
+        
+        UIViewController* c;
+        NSInteger i;
+        
+        for (i = 0; i < _viewControllers.count; i++) {
+            c = _viewControllers[i];
+            if (c == selectedViewController) {
+                break;
+            }
+        }
+        
+        if (c != nil) {
+            [self setSelectedIndex:i];
+        }
+    }
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex
 {
-	[self setSelectedIndex:selectedIndex animated:NO];
+    [self setSelectedIndex:selectedIndex animated:NO];
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated
@@ -285,71 +287,71 @@
             self.navigationItem.rightBarButtonItem = _barbuttoncategory;
         }
         
-		if (animated && (deselect != nil) && (navigate != 0)) {
-			
-			if (deselect != nil) {
-				[deselect willMoveToParentViewController:nil];
-			}
-			
-			[self addChildViewController:select];
-			
-			if (navigate == 0) {
-				select.view.frame = _container.bounds;	//dead code
-			} else {
-				if (navigate > 0) {
-					select.view.frame = CGRectOffset(_container.bounds, (CGRectGetWidth(_container.bounds)), 0.0f);
-				} else {
-					select.view.frame = CGRectOffset(_container.bounds, -(CGRectGetWidth(_container.bounds)), 0.0f);
-				}
-			}
-			
-			[self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0) animations:^{
-				
-				if (navigate != 0) {
-					if (navigate > 0) {
-						deselect.view.frame = CGRectOffset(_container.bounds, -(CGRectGetWidth(_container.bounds)), 0.0f);
-					} else {
-						deselect.view.frame = CGRectOffset(_container.bounds, (CGRectGetWidth(_container.bounds)), 0.0f);
-					}
-					select.view.frame = _container.bounds;
-				}
-				
-				_tabbar.userInteractionEnabled = NO;	//race condition
-				
-			} completion:^(BOOL finished) {
-				
-				[deselect removeFromParentViewController];
-				[select didMoveToParentViewController:self];
-				
-				_tabbar.userInteractionEnabled = YES;	//race condition
-			}];
-			
-		} else {
-			if (deselect != nil) {
-				[deselect willMoveToParentViewController:nil];
-				[deselect.view removeFromSuperview];
-				[deselect removeFromParentViewController];
-			}
-			
-			[self addChildViewController:select];
-			
-			select.view.frame = _container.bounds;
-			
-			[_container addSubview:select.view];
-			[select didMoveToParentViewController:self];
-		}
-	}
+        if (animated && (deselect != nil) && (navigate != 0)) {
+            
+            if (deselect != nil) {
+                [deselect willMoveToParentViewController:nil];
+            }
+            
+            [self addChildViewController:select];
+            
+            if (navigate == 0) {
+                select.view.frame = _container.bounds;	//dead code
+            } else {
+                if (navigate > 0) {
+                    select.view.frame = CGRectOffset(_container.bounds, (CGRectGetWidth(_container.bounds)), 0.0f);
+                } else {
+                    select.view.frame = CGRectOffset(_container.bounds, -(CGRectGetWidth(_container.bounds)), 0.0f);
+                }
+            }
+            
+            [self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0) animations:^{
+                
+                if (navigate != 0) {
+                    if (navigate > 0) {
+                        deselect.view.frame = CGRectOffset(_container.bounds, -(CGRectGetWidth(_container.bounds)), 0.0f);
+                    } else {
+                        deselect.view.frame = CGRectOffset(_container.bounds, (CGRectGetWidth(_container.bounds)), 0.0f);
+                    }
+                    select.view.frame = _container.bounds;
+                }
+                
+                _tabbar.userInteractionEnabled = NO;	//race condition
+                
+            } completion:^(BOOL finished) {
+                
+                [deselect removeFromParentViewController];
+                [select didMoveToParentViewController:self];
+                
+                _tabbar.userInteractionEnabled = YES;	//race condition
+            }];
+            
+        } else {
+            if (deselect != nil) {
+                [deselect willMoveToParentViewController:nil];
+                [deselect.view removeFromSuperview];
+                [deselect removeFromParentViewController];
+            }
+            
+            [self addChildViewController:select];
+            
+            select.view.frame = _container.bounds;
+            
+            [_container addSubview:select.view];
+            [select didMoveToParentViewController:self];
+        }
+    }
 }
 
 - (UIEdgeInsets)contentInsetForChildController
 {
-	UIEdgeInsets inset = [self contentInsetForContainerController];
-	
-	//CGRect bounds = ((UIView*)_tabbars[0]).bounds;
-	CGRect bounds = _tabbar.bounds;
-	inset.top += CGRectGetHeight(bounds);
-	
-	return inset;
+    UIEdgeInsets inset = [self contentInsetForContainerController];
+    
+    //CGRect bounds = ((UIView*)_tabbars[0]).bounds;
+    CGRect bounds = _tabbar.bounds;
+    inset.top += CGRectGetHeight(bounds);
+    
+    return inset;
 }
 
 #pragma mark -
@@ -358,21 +360,21 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-	
-	NSLog(@"%@: %@", [self class], NSStringFromSelector(_cmd));
-	
-	NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
-	
-	if (self.isViewLoaded && (self.view.window == nil)) {
-		
-		_unloadSelectedIndex = _selectedIndex;
-		_unloadViewControllers = _viewControllers;
-		[self setViewControllers:nil];
-		
-		self.view = nil;
-	}
-	
-	NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
+    
+    NSLog(@"%@: %@", [self class], NSStringFromSelector(_cmd));
+    
+    NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
+    
+    if (self.isViewLoaded && (self.view.window == nil)) {
+        
+        _unloadSelectedIndex = _selectedIndex;
+        _unloadViewControllers = _viewControllers;
+        [self setViewControllers:nil];
+        
+        self.view = nil;
+    }
+    
+    NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
 }
 
 #ifdef _DEBUG
@@ -386,12 +388,12 @@
 #pragma mark View actions
 -(IBAction)tap:(UISegmentedControl*) sender
 {
-	if (_viewControllers != nil) {
-		
-		NSInteger index = _selectedIndex;
+    if (_viewControllers != nil) {
+        
+        NSInteger index = _selectedIndex;
         if ( ![[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]) {
             switch (sender.selectedSegmentIndex) {
-                //case 1:
+                    //case 1:
                 case 0: {
                     index = sender.selectedSegmentIndex;
                     break;
@@ -416,22 +418,22 @@
         {
             index = sender.selectedSegmentIndex;
         }
-		BOOL should = YES;
-		
-		if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
-			
-			should = [_delegate tabBarController:self shouldSelectViewController:_viewControllers[index]];
-		}
-		
-		if (should) {
-			[self setSelectedIndex:index animated:NO];
-			
-			if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {
-				
-				[_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
-			}
-		}
-	}
+        BOOL should = YES;
+        
+        if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
+            
+            should = [_delegate tabBarController:self shouldSelectViewController:_viewControllers[index]];
+        }
+        
+        if (should) {
+            [self setSelectedIndex:index animated:NO];
+            
+            if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {
+                
+                [_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
+            }
+        }
+    }
 }
 
 -(IBAction)tapbutton:(id)sender
@@ -448,9 +450,14 @@
             case 11:
             {
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                NSInteger categoryID = [_categoryID integerValue];
-                NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue]?:categoryID;
-                vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:@(d_id)};
+                NSString *categoryID = _categoryID;
+                NSString *d_id = [_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY]?:categoryID?:@"";
+                NSDictionary *dataDepartment = [[DBManager getSharedInstance]dataFromDepartmentID:d_id];
+                NSInteger tree = [[dataDepartment objectForKey:@"tree"] integerValue];
+                if (tree == 3) {
+                    d_id = [dataDepartment objectForKey:@"parent"];
+                }
+                vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:d_id};
                 vc.delegate = self;
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -467,59 +474,59 @@
 
 - (UIEdgeInsets)contentInsetForContainerController
 {
-	UIEdgeInsets inset = UIEdgeInsetsZero;
-	if ((self.parentViewController != nil) && [self.parentViewController respondsToSelector:@selector(contentInsetForChildController)]) {
-		UIEdgeInsets bar = [((id)self.parentViewController) contentInsetForChildController];
-		
-		inset.top += bar.top;
-		inset.bottom += bar.bottom;
-		inset.left += bar.left;
-		inset.right += bar.right;
-		
-	} else {
-		UIApplication* app = [UIApplication sharedApplication];
-		if (!app.statusBarHidden) {
-			
-			CGRect bar = app.statusBarFrame;
-			CGRect view = _selectedViewController.view.frame;
-			
-			UINavigationController* n = (UINavigationController*)[self isChildViewControllersContainsNavigationController:self];
-			if (n != nil) {
-				UINavigationBar* nbar = n.navigationBar;
-				//if (!n.navigationBarHidden && !nbar.hidden && nbar.translucent) {
-				if ((nbar != nil) && !n.navigationBarHidden && !nbar.hidden && nbar.translucent) {
-					
-					if (_selectedViewController.view.window != nil) {	//TODO:
-						view = [_selectedViewController.view.superview convertRect:view toView:_selectedViewController.view.window];
-						NSAssert(_selectedViewController.view.window != nil, @"nil view's window");
-						
-						if (CGRectIntersectsRect(bar, view)) {
-							bar = CGRectIntersection(bar, view);
-							inset.top += CGRectGetHeight(bar);
-							inset.bottom += CGRectGetHeight(bar);
-						}
-						
-					} else if (nbar.translucent) {
-						inset.top += CGRectGetHeight(bar);
-					}
-				}
-			}
-		}
-	}
-	return inset;
+    UIEdgeInsets inset = UIEdgeInsetsZero;
+    if ((self.parentViewController != nil) && [self.parentViewController respondsToSelector:@selector(contentInsetForChildController)]) {
+        UIEdgeInsets bar = [((id)self.parentViewController) contentInsetForChildController];
+        
+        inset.top += bar.top;
+        inset.bottom += bar.bottom;
+        inset.left += bar.left;
+        inset.right += bar.right;
+        
+    } else {
+        UIApplication* app = [UIApplication sharedApplication];
+        if (!app.statusBarHidden) {
+            
+            CGRect bar = app.statusBarFrame;
+            CGRect view = _selectedViewController.view.frame;
+            
+            UINavigationController* n = (UINavigationController*)[self isChildViewControllersContainsNavigationController:self];
+            if (n != nil) {
+                UINavigationBar* nbar = n.navigationBar;
+                //if (!n.navigationBarHidden && !nbar.hidden && nbar.translucent) {
+                if ((nbar != nil) && !n.navigationBarHidden && !nbar.hidden && nbar.translucent) {
+                    
+                    if (_selectedViewController.view.window != nil) {	//TODO:
+                        view = [_selectedViewController.view.superview convertRect:view toView:_selectedViewController.view.window];
+                        NSAssert(_selectedViewController.view.window != nil, @"nil view's window");
+                        
+                        if (CGRectIntersectsRect(bar, view)) {
+                            bar = CGRectIntersection(bar, view);
+                            inset.top += CGRectGetHeight(bar);
+                            inset.bottom += CGRectGetHeight(bar);
+                        }
+                        
+                    } else if (nbar.translucent) {
+                        inset.top += CGRectGetHeight(bar);
+                    }
+                }
+            }
+        }
+    }
+    return inset;
 }
 
 - (UIViewController*)isChildViewControllersContainsNavigationController:(UIViewController*)controller
 {
-	NSArray* childs = controller.childViewControllers;
-	for (UIViewController* c in childs) {
-		if ([c isKindOfClass:[UINavigationController class]]) {
-			return c;
-		} else {
-			return [self isChildViewControllersContainsNavigationController:c];
-		}
-	}
-	return nil;
+    NSArray* childs = controller.childViewControllers;
+    for (UIViewController* c in childs) {
+        if ([c isKindOfClass:[UINavigationController class]]) {
+            return c;
+        } else {
+            return [self isChildViewControllersContainsNavigationController:c];
+        }
+    }
+    return nil;
 }
 
 #pragma mark - Category delegate
@@ -600,34 +607,34 @@
 
 - (TKPDTabNavigationController*)TKPDTabNavigationController
 {
-	UIViewController* c = self.parentViewController;
-	
-	while (c != nil) {
-		if ([c isKindOfClass:[TKPDTabNavigationController class]]) {
-			return  (TKPDTabNavigationController*)c;
-		}
-		
-		c = c.parentViewController;
-	}
-	
-	return nil;
+    UIViewController* c = self.parentViewController;
+    
+    while (c != nil) {
+        if ([c isKindOfClass:[TKPDTabNavigationController class]]) {
+            return  (TKPDTabNavigationController*)c;
+        }
+        
+        c = c.parentViewController;
+    }
+    
+    return nil;
 }
 
 @dynamic TKPDTabNavigationItem;
 
 - (TKPDTabNavigationItem *)TKPDTabNavigationItem
 {
-	id o = objc_getAssociatedObject(self, @selector(TKPDTabNavigationItem));
-	if (o == nil) {
-		o = self.tabBarItem;
-		[self setTKPDTabNavigationItem:o];
-	}
-	return o;
+    id o = objc_getAssociatedObject(self, @selector(TKPDTabNavigationItem));
+    if (o == nil) {
+        o = self.tabBarItem;
+        [self setTKPDTabNavigationItem:o];
+    }
+    return o;
 }
 
 - (void)setTKPDTabNavigationItem:(TKPDTabNavigationItem *)TKPDTabNavigationItem
 {
-	objc_setAssociatedObject(self, @selector(TKPDTabNavigationItem), TKPDTabNavigationItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(TKPDTabNavigationItem), TKPDTabNavigationItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

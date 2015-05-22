@@ -118,6 +118,7 @@
     [super viewWillAppear:animated];
     
     self.title = @"Pesanan Baru";
+    self.screenName = @"New Order";
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

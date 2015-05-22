@@ -151,6 +151,12 @@
     [_networkManager doRequest];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.screenName = @"Shop - Manage Product";
+
+}
+
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -553,12 +559,12 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-
-                if (_list.count == 0) {
-                    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
-                    NoResultView *resultView = [[NoResultView alloc] initWithFrame:frame];
-                    _table.tableFooterView = resultView;
+                
+                if (_list.count<=4) {
+                    [_act stopAnimating];
+                    _table.tableFooterView = _footer;
                 }
+
             } else {
                 CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
                 NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];

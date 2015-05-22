@@ -30,6 +30,7 @@
 {
     Catalog *_catalog;
     
+    NSMutableArray *_arrayCatalogImage;
     NSMutableArray *_specificationTitles;
     NSMutableArray *_specificationValues;
     NSMutableArray *_specificationKeys;
@@ -438,6 +439,7 @@
 
         if (_catalog.result.catalog_info.catalog_images.count > 0) {
             _placeholderImageView.hidden = YES;
+            _arrayCatalogImage = [NSMutableArray new];
             NSInteger x = 0;
             for (CatalogImages *image in _catalog.result.catalog_info.catalog_images) {
                 CGRect frame = CGRectMake(x, 0, self.view.frame.size.width, self.view.frame.size.width);
@@ -460,7 +462,7 @@
                     [catalogImageView setContentMode:UIViewContentModeCenter];
                 }];
                 
-
+                [_arrayCatalogImage addObject:catalogImageView];
                 [_productPhotoScrollView addSubview:catalogImageView];
                 x += self.view.frame.size.width;
             }
@@ -539,10 +541,16 @@
         [_tableView reloadData];
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         NSInteger startingIndex = _productPhotoPageControl.currentPage;
-        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
-        controller.canDownload = NO;
-        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:controller animated:YES completion:nil];
+//        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
+//        controller.canDownload = NO;
+        GalleryViewController *gallery = [GalleryViewController new];
+        gallery.canDownload = YES;
+        [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
+        
+        
+
+        gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.navigationController presentViewController:gallery animated:YES completion:nil];
     }
 }
 
@@ -568,17 +576,23 @@
 
 - (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
 {
-    return _catalog.result.catalog_info.catalog_images.count;
+    if(_arrayCatalogImage == nil)
+        return 0;
+    return (int)_arrayCatalogImage.count;
+}
+
+- (UIImage *)photoGallery:(NSUInteger)index {
+    if(((int) index) < 0)
+        return ((UIImageView *) [_arrayCatalogImage objectAtIndex:0]).image;
+    else if(((int)index) > _arrayCatalogImage.count-1)
+        return ((UIImageView *) [_arrayCatalogImage objectAtIndex:_arrayCatalogImage.count-1]).image;
+
+    return ((UIImageView *) [_arrayCatalogImage objectAtIndex:index]).image;
 }
 
 - (NSString *)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index
 {
-    if(((int) index) < 0)
-        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:0]).image_src_full;
-    else if(((int)index) > _catalog.result.catalog_info.catalog_images.count-1)
-        return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:_catalog.result.catalog_info.catalog_images.count-1]).image_src_full;
-    
-    return ((CatalogImages *) [_catalog.result.catalog_info.catalog_images objectAtIndex:index]).image_src_full;
+    return nil;
 }
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProfileFavoriteShopViewController : UIViewController
+@interface ProfileFavoriteShopViewController : GAITrackedViewController
 
 @property (strong, nonatomic) NSDictionary *data;
 

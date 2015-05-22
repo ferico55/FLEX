@@ -10,7 +10,7 @@
 #import "FavoritedShopCell.h"
 #import "TKPDTabHomeViewController.h"
 
-@interface FavoritedShopViewController : UIViewController
+@interface FavoritedShopViewController : GAITrackedViewController
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic)NSDictionary *data;

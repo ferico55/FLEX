@@ -250,6 +250,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.screenName = @"Shop - Product List";
     self.hidesBottomBarWhenPushed = YES;
     if (!_isrefreshview) {
         [self configureRestKit];

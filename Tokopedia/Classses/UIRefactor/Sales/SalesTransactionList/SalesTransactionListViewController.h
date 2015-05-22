@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SalesTransactionListViewController : UIViewController
+@interface SalesTransactionListViewController : GAITrackedViewController
 
 @end
