@@ -20,6 +20,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -27,7 +28,6 @@
             <connections>
                 <outlet property="pengembalianProductLabel" destination="bwI-Gp-XHN" id="8rm-ic-6vg"/>
                 <outlet property="productDescriptionTextView" destination="oQq-CV-OQw" id="w2e-ep-asC"/>
-                <outlet property="returnableProductSwitch" destination="zpH-lb-p57" id="w6g-Zt-Vw0"/>
                 <outlet property="section0FooterView" destination="BZp-DP-v2U" id="Ei7-yg-0fS"/>
                 <outlet property="section3FooterView" destination="Fx0-KH-3k4" id="h9M-Bt-ixz"/>
                 <outlet property="tableView" destination="in6-xe-FSb" id="oV4-cH-PY7"/>
@@ -157,23 +157,24 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="342" y="1107"/>
         </tableViewCell>
-        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="XTg-Ba-0Hg">
+        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="6pM-QP-qIU" detailTextLabel="uRz-fI-ZBd" style="IBUITableViewCellStyleValue1" id="XTg-Ba-0Hg">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XTg-Ba-0Hg" id="Wdm-u7-JlO">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pengembalian Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8s-mM-h4z">
-                        <rect key="frame" x="15" y="11" width="153" height="21"/>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pengembalian produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6pM-QP-qIU">
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zpH-lb-p57">
-                        <rect key="frame" x="263" y="6" width="51" height="31"/>
-                        <connections>
-                            <action selector="tap:" destination="-1" eventType="valueChanged" id="rZJ-Vb-EcC"/>
-                        </connections>
-                    </switch>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uRz-fI-ZBd">
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <point key="canvasLocation" x="342" y="743"/>

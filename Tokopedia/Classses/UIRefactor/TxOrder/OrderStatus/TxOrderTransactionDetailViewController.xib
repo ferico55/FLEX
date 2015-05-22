@@ -174,13 +174,6 @@
                                 <constraint firstAttribute="height" constant="1" id="9YL-Oq-XeV"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q4Y-q5-dPM" userLabel="Horizontal Border">
-                            <rect key="frame" x="0.0" y="62" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="IQA-Hc-QHg"/>
-                            </constraints>
-                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8 Oktober 2014" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dd0-i4-LGR">
                             <rect key="frame" x="210" y="17" width="95" height="11"/>
                             <constraints>
@@ -195,17 +188,13 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="Q4Y-q5-dPM" secondAttribute="trailing" id="BLJ-er-xoh"/>
                         <constraint firstItem="zsr-Nv-664" firstAttribute="leading" secondItem="4In-Pz-FcA" secondAttribute="trailing" constant="8" id="CcI-QF-TYb"/>
                         <constraint firstItem="OXE-gE-jqL" firstAttribute="top" secondItem="6vC-U8-5b8" secondAttribute="top" id="Eie-EU-EgT"/>
-                        <constraint firstAttribute="bottom" secondItem="Q4Y-q5-dPM" secondAttribute="bottom" id="Gze-mV-6ce"/>
                         <constraint firstAttribute="height" constant="63" id="HDD-Za-DUl"/>
                         <constraint firstItem="dd0-i4-LGR" firstAttribute="top" secondItem="OXE-gE-jqL" secondAttribute="bottom" constant="16" id="Hig-bN-LCu"/>
                         <constraint firstItem="4In-Pz-FcA" firstAttribute="top" secondItem="OXE-gE-jqL" secondAttribute="bottom" constant="8" id="PmK-vw-nvt"/>
                         <constraint firstAttribute="trailing" secondItem="dd0-i4-LGR" secondAttribute="trailing" constant="15" id="QWN-Cu-Wxv"/>
-                        <constraint firstItem="Q4Y-q5-dPM" firstAttribute="leading" secondItem="6vC-U8-5b8" secondAttribute="leading" id="T9S-AH-H07"/>
                         <constraint firstAttribute="trailing" secondItem="SHv-yA-GGc" secondAttribute="trailing" constant="30" id="U9d-VZ-9KZ"/>
-                        <constraint firstItem="Q4Y-q5-dPM" firstAttribute="top" secondItem="4In-Pz-FcA" secondAttribute="bottom" constant="9" id="USi-at-Wuj"/>
                         <constraint firstItem="4In-Pz-FcA" firstAttribute="leading" secondItem="6vC-U8-5b8" secondAttribute="leading" constant="15" id="VjE-F2-2fg"/>
                         <constraint firstAttribute="trailing" secondItem="OXE-gE-jqL" secondAttribute="trailing" id="War-aF-JDN"/>
                         <constraint firstItem="zsr-Nv-664" firstAttribute="top" secondItem="OXE-gE-jqL" secondAttribute="bottom" constant="16" id="X2X-D8-yKD"/>

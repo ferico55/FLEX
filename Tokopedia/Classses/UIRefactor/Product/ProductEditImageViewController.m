@@ -281,11 +281,9 @@
                              _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
                              _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
                              _scrollviewContentSize.height += _keyboardSize.height;
-                             if ((self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y) {
                                  UIEdgeInsets inset = _scrollView.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height + 10));
-                                 [_scrollView setContentInset:inset];
-                             }
+                             inset.top -= (_keyboardSize.height - (self.view.frame.size.height-(_keyboardPosition.y + _activeTextField.frame.origin.y + _activeTextField.frame.size.height)));
+                             [_scrollView setContentInset:inset];
                          }
                          completion:^(BOOL finished){
                          }];

@@ -706,25 +706,25 @@
     for (TxOrderConfirmationList *detail in selectedOrder) {
         [confirmationIDs addObject:detail.confirmation.confirmation_id];
     }
-    NSString * confirmationID = [[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"];
+    NSString * confirmationID = [[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
     NSString *paymentID = _paymentID?:@"";
     NSString *token = form.token?:@"";
     NSString *methodID = method.method_id?:@"";
-    NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY];
+    NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY]?:[NSDate date];
     NSString *paymentAmount = [_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY]?:@"";
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:paymentDate];
-    NSNumber *year = @([components year]);
-    NSNumber *month = @([components month]);
-    NSNumber *day = @([components day]);
+    NSNumber *year = @([components year])?:@(0);
+    NSNumber *month = @([components month])?:@(0);
+    NSNumber *day = @([components day])?:@(0);
     NSString *comment = [_dataInput objectForKey:DATA_MARK_KEY]?:@"";
     NSString *password = [_dataInput objectForKey:DATA_PASSWORD_KEY]?:@"";
     NSString *systemBankID = systemBank.sysbank_id?:@"";
-    NSNumber *bankID = @(bank.bank_id);
+    NSNumber *bankID = @(bank.bank_id)?:@(0);
     NSString *bankName = bank.bank_name?:@"";
     NSString *bankAccountName = bank.bank_account_name?:@"";
     NSString *bankAccountBranch = bank.bank_branch?:@"";
     NSString *bankAccountNumber = bank.bank_account_number?:@"";
-    NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id;
+    NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
     NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
     NSString *action = _isConfirmed?ACTION_EDIT_PAYMENT:ACTION_CONFIRM_PAYMENT;
     
@@ -1101,9 +1101,11 @@
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     TxOrderPaymentEditForm *formIsConfirmed = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
     
-    NSString *paymentOrderLeft = (_isConfirmed)?formIsConfirmed.payment.order_left_amount:form.order.order_left_amount;
+    NSInteger paymentOrderLeft = (_isConfirmed)?
+    ([formIsConfirmed.payment.order_left_amount integerValue] - [formIsConfirmed.payment.order_confirmation_code integerValue]):
+    ([form.order.order_left_amount integerValue] - [form.order.order_confirmation_code integerValue]);
     
-    if (![self isPaymentTypeSaldoTokopedia] && [paymentAmount integerValue]<[paymentOrderLeft integerValue]) {
+    if (![self isPaymentTypeSaldoTokopedia] && [paymentAmount integerValue]<paymentOrderLeft) {
         [errorMessage addObject:[NSString stringWithFormat:ERRORMESSAGE_INVALID_PAYMENT_AMOUNT,paymentOrderLeft]];
         isValid = NO;
     }

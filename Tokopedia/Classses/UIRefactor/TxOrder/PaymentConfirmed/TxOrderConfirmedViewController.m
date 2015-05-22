@@ -49,7 +49,8 @@
     GenerateHostDelegate,
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
-    TKPDPhotoPickerDelegate
+    TKPDPhotoPickerDelegate,
+    TxOrderPaymentViewControllerDelegate
 >
 {
     BOOL _isNodata;
@@ -159,8 +160,9 @@
 -(void)refreshRequest
 {
     _page = 1;
-    //[self configureRestKit];
-    //[self request];
+    _networkManager.delegate = self;
+    [_refreshControl beginRefreshing];
+    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     [_networkManager doRequest];
 }
 
@@ -249,7 +251,11 @@
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
     
     //if (detailOrder.has_user_bank ==1) {
-    [_delegate editPayment:detailOrder];
+    TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
+    vc.isConfirmed = YES;
+    vc.delegate = self;
+    vc.paymentID = detailOrder.payment_id;
+    [self.navigationController pushViewController:vc animated:YES];
     //}
 }
 
@@ -258,7 +264,7 @@
     [_dataInput setObject:_list[indexPath.section] forKey:DATA_SELECTED_ORDER_KEY];
     
     _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
-                                                                  pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+                                              pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
     _photoPicker.delegate = self;
 }
 
@@ -447,6 +453,9 @@
     TxOrderConfirmed *order = [result objectForKey:@""];
     
     if(_refreshControl.isRefreshing) {
+        if (_page == 1) {
+            _tableView.contentOffset = CGPointZero;
+        }
         [_refreshControl endRefreshing];
     }
     
@@ -475,6 +484,9 @@
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
+    if (_page == 1) {
+        _tableView.contentOffset = CGPointZero;
+    }
     [_refreshControl endRefreshing];
     _tableView.tableFooterView = _act;
 }
@@ -620,6 +632,10 @@
                     [alert show];
                 }
                 else{
+                    
+                    if (_page == 1) {
+                        _tableView.contentOffset = CGPointZero;
+                    }
                     
                     _orderDetail = order.result.tx_order_detail;
                     
@@ -870,5 +886,6 @@
     [requestImage configureRestkitUploadPhoto];
     [requestImage requestActionUploadPhoto];
 }
+
 
 @end

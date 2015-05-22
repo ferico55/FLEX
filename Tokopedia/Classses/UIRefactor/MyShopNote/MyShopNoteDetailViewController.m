@@ -509,7 +509,7 @@
                     _isNewNoteReturnableProduct = YES;
                 }
                 
-                NSData *data = [_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding];
+                NSData *data = [contentNote dataUsingEncoding:NSUnicodeStringEncoding];
                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
                                                                                                       options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                                                                                            documentAttributes:nil
@@ -573,6 +573,8 @@
                         break;
                     case NOTES_RETURNABLE_PRODUCT:
                         _titleNoteTextField.hidden = YES;
+                        _titleLabel.hidden = NO;
+                        _titleLabel.text = @"Kebijakan Pengembalian Produk";
                         _titleLabel.hidden = NO;
                         break;
                     default:
@@ -924,6 +926,9 @@
                 _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
                 _titleNoteTextField.enabled = NO;
                 _barbuttonedit.enabled = YES;
+                _titleLabel.text = @"Kebijakan Pengembalian Produk";
+                _titleLabel.hidden = NO;
+                
                 
                 [self setTimeLabelBecomeCurrentDate];
                 
@@ -978,6 +983,7 @@
     _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
                            day, monthString, year, currentTime];
     [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
+    _timeNoteLabel.hidden = NO;
 }
 
 -(void)didEditNote:(NSNotificationCenter*)notification

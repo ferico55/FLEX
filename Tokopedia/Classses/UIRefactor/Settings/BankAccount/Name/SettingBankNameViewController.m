@@ -81,6 +81,7 @@
     value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select bank_id from ws_bank order by bank_name"]];
     [_banknames addObjectsFromArray:name];
     [_bankvalues addObjectsFromArray:value];
+    
     if (bankid!=0) index = [_bankvalues indexOfObject:[NSString stringWithFormat:@"%zd",bankid]];
     indexpath = (index == 0)?[_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]:[NSIndexPath indexPathForRow:index inSection:0];
     
