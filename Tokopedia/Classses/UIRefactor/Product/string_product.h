@@ -253,7 +253,8 @@ typedef enum
 #define CStringCannotReture @"Produk yang sudah dibeli tidak dapat ditukar atau dikembalikan"
 #define CStringCanReture @"Produk yang sudah dibeli dapat ditukar atau dikembalikan dengan Syarat dan Ketentuan masing-masing toko"
 #define CStringCanRetureLinkDetection @"Syarat dan Ketentuan masing-masing toko"
+#define CStringCanRetureReplace @" dengan Syarat dan Ketentuan masing-masing toko"
 #define CStringSuccessFavoriteShop @"Anda berhasil memfavoritkan toko ini!"
 #define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
-
+#define CStringSyaratDanKetentuan @"Syarat & Ketentuan"
 #endif

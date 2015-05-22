@@ -12,8 +12,12 @@
 #define CTagFavorite 4
 #define CTagWishList 5
 #define CTagUnWishList 6
+#define CTagNoteCanReture 7
 #define CPaddingTopDescToko 10
 
+#import "Notes.h"
+#import "NoteDetails.h"
+#import "NotesResult.h"
 #import "GalleryViewController.h"
 #import "detail.h"
 #import "search.h"
@@ -69,6 +73,7 @@
 #import "MyShopEtalaseFilterViewController.h"
 #import "NoResultView.h"
 #import "RequestMoveTo.h"
+#import "WebViewController.h"
 #import "EtalaseList.h"
 
 #pragma mark - CustomButton Expand Desc
@@ -119,6 +124,7 @@ UIAlertViewDelegate
     NSInteger _pageheaderimages;
     NSInteger _heightDescSection;
     Product *_product;
+    NoteDetails *notesDetail;
     BOOL is_dismissed;
     NSDictionary *_auth;
     
@@ -142,6 +148,9 @@ UIAlertViewDelegate
     __weak RKObjectManager *_objectWishListManager;
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
     NSOperationQueue *operationWishList;
+    
+    __weak RKObjectManager *_objectNoteCanReture;
+    TokopediaNetworkManager *tokopediaNoteCanReture;
     
     __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
@@ -1027,6 +1036,11 @@ UIAlertViewDelegate
     else if(tag == CTagWishList)
         return @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
                  kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
+    else if(tag == CTagNoteCanReture)
+        return @{kTKPDDETAIL_ACTIONKEY:kTKPDDETAIL_APIGETNOTESDETAILKEY,
+                 kTKPDNOTES_APINOTEIDKEY:_product.result.shop_info.shop_has_terms,
+                 NOTES_TERMS_FLAG_KEY:@(1),
+                 kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id};
     
     return nil;
 }
@@ -1045,6 +1059,8 @@ UIAlertViewDelegate
         return [NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH];
     else if(tag == CTagWishList)
         return [NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH];
+    else if(tag == CTagNoteCanReture)
+        return kTKPDDETAILNOTES_APIPATH;
     
     return nil;
 }
@@ -1074,7 +1090,7 @@ UIAlertViewDelegate
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:@"action/product.pl"
+                                                                                                 pathPattern:[self getPath:tag]
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -1133,6 +1149,7 @@ UIAlertViewDelegate
                                                               kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
                                                               kTKPDDETAIL_APISHOPIDKEY:kTKPDDETAIL_APISHOPIDKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPHASTERMKEY:kTKPDDETAILPRODUCT_APISHOPHASTERMKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
@@ -1200,7 +1217,7 @@ UIAlertViewDelegate
         // Response Descriptor
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping
                                                                                                 method:RKRequestMethodPOST
-                                                                                           pathPattern:kTKPDDETAILPRODUCT_APIPATH
+                                                                                           pathPattern:[self getPath:tag]
                                                                                                keyPath:@""
                                                                                            statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -1228,7 +1245,7 @@ UIAlertViewDelegate
         
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                 method:RKRequestMethodPOST
-                                                                                           pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@""
+                                                                                           pathPattern:[self getPath:tag] keyPath:@""
                                                                                            statusCodes:kTkpdIndexSetStatusCodeOK];
         
         [_objectOtherProductManager addResponseDescriptor:responseDescriptor];
@@ -1257,7 +1274,7 @@ UIAlertViewDelegate
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:@"action/favorite-shop.pl"
+                                                                                                 pathPattern:[self getPath:tag]
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -1283,11 +1300,45 @@ UIAlertViewDelegate
         [statusMapping addPropertyMapping:resulRel];
         
         //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/wishlist.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
         
         [_objectWishListManager addResponseDescriptor:responseDescriptorStatus];
         
         return _objectWishListManager;
+    }
+    else if(tag == CTagNoteCanReture) {
+        _objectNoteCanReture = [RKObjectManager sharedClient];
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
+        RKObjectMapping *noteDetailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
+        [noteDetailMapping addAttributeMappingsFromDictionary:@{
+                                                                CNotesPosition:CNotesPosition,
+                                                                CNotesStatus:CNotesStatus,
+                                                                CNotesCreateTime:CNotesCreateTime,
+                                                                CNotesID:CNotesID,
+                                                                CNotesTitle:CNotesTitle,
+                                                                CNotesActive:CNotesActive,
+                                                                CNotesUpdateTime:CNotesUpdateTime,
+                                                                CNotesContent:CNotesContent
+                                                                }];
+        
+        //Relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        RKRelationshipMapping *detailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CDetail toKeyPath:CDetail withMapping:noteDetailMapping];
+        [resultMapping addPropertyMapping:detailRel];
+        
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        [_objectNoteCanReture addResponseDescriptor:responseDescriptor];
+        
+        return _objectNoteCanReture;
     }
     
     return nil;
@@ -1328,6 +1379,10 @@ UIAlertViewDelegate
     {
         GeneralAction *wishlistAction = stat;
         return wishlistAction.status;
+    }
+    else if(tag == CTagNoteCanReture) {
+        Notes *notes = stat;
+        return notes.status;
     }
     
     return nil;
@@ -1453,6 +1508,11 @@ UIAlertViewDelegate
         
         [alert show];
     }
+    else if(tag == CTagNoteCanReture) {
+        NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
+        Notes *tempNotes = [result objectForKey:@""];
+        notesDetail = tempNotes.result.detail;
+    }
 }
 
 
@@ -1489,6 +1549,9 @@ UIAlertViewDelegate
         [activityIndicator removeFromSuperview];
         [activityIndicator stopAnimating];
         [btnWishList setHidden:NO];
+    }
+    else if(tag == CTagNoteCanReture) {
+    
     }
 }
 
@@ -1579,6 +1642,11 @@ UIAlertViewDelegate
     
     tokopediaOtherProduct.delegate = nil;
     [tokopediaOtherProduct requestCancel];
+    tokopediaOtherProduct = nil;
+    
+    tokopediaNoteCanReture.delegate = nil;
+    [tokopediaNoteCanReture requestCancel];
+    tokopediaNoteCanReture = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -1653,14 +1721,27 @@ UIAlertViewDelegate
         }
         else if(_product.result.product.product_status!=nil && [_product.result.product.product_status isEqualToString:@"1"]) {
             viewContentDescToko.backgroundColor = [UIColor colorWithRed:255/255.0f green:243/255.0f blue:224/255.0f alpha:1.0f];
-            [self setLblDescriptionToko:CStringCanReture];
-            NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
-            lblDescToko.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-            lblDescToko.delegate = self;
-            lblDescToko.text = CStringCanReture;
-            lblDescToko.linkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
-            [lblDescToko addLinkToURL:[NSURL URLWithString:@"http://detik.com"] withRange:range];
-
+            
+            if([_product.result.shop_info.shop_has_terms isEqualToString:@"0"]) {
+                NSString *strCanReture = [CStringCanReture stringByReplacingOccurrencesOfString:CStringCanRetureReplace withString:@""];
+                [self setLblDescriptionToko:strCanReture];
+                lblDescToko.text = strCanReture;
+            }
+            else {
+                [self setLblDescriptionToko:CStringCanReture];
+                NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
+                lblDescToko.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+                lblDescToko.delegate = self;
+                lblDescToko.text = CStringCanReture;
+                lblDescToko.linkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+                [lblDescToko addLinkToURL:[NSURL URLWithString:@"http://detik.com"] withRange:range];
+                
+                tokopediaNoteCanReture = [TokopediaNetworkManager new];
+                tokopediaNoteCanReture.delegate = self;
+                tokopediaNoteCanReture.tagRequest = CTagNoteCanReture;
+                [tokopediaNoteCanReture doRequest];
+            }
+            
             
             //Add To View
             [viewContentDescToko addSubview:lblDescToko];
@@ -2595,6 +2676,11 @@ UIAlertViewDelegate
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    [[UIApplication sharedApplication] openURL:url];
+    if(notesDetail!=nil && notesDetail.notes_content!=nil) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strTitle = CStringSyaratDanKetentuan;
+        webViewController.strContentHTML = notesDetail.notes_content;
+        [self.navigationController pushViewController:webViewController animated:YES];
+    }
 }
 @end

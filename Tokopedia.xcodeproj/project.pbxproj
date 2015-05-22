@@ -1416,6 +1416,7 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		855856571B0DF4D80021288E /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 855856561B0DF4D80021288E /* Note.m */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -3606,6 +3607,8 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		855856551B0DF4D80021288E /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note.h; sourceTree = "<group>"; };
+		855856561B0DF4D80021288E /* Note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note.m; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -3792,6 +3795,7 @@
 		7AB95FD11B021B5F0060A4C9 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				855856541B0DF4B70021288E /* Note */,
 				7AB95FD21B021B5F0060A4C9 /* Activation */,
 				7AB95FE71B021B5F0060A4C9 /* Deposit */,
 				7AB95FED1B021B5F0060A4C9 /* DepositForm */,
@@ -7738,6 +7742,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		855856541B0DF4B70021288E /* Note */ = {
+			isa = PBXGroup;
+			children = (
+				855856551B0DF4D80021288E /* Note.h */,
+				855856561B0DF4D80021288E /* Note.m */,
+			);
+			path = Note;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -8824,6 +8837,7 @@
 				7AB969D31B021B630060A4C9 /* NotesList.m in Sources */,
 				7AB969881B021B630060A4C9 /* ChangePhoneNumber.m in Sources */,
 				7AB969891B021B630060A4C9 /* ChangePhoneNumberResult.m in Sources */,
+				855856571B0DF4D80021288E /* Note.m in Sources */,
 				7AB96A511B021B630060A4C9 /* AlertInfoPaymentConfirmationView.m in Sources */,
 				7AB96A531B021B630060A4C9 /* AlertInfoView.m in Sources */,
 				7AB96A051B021B630060A4C9 /* TransactionCart.m in Sources */,
