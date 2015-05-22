@@ -12,7 +12,7 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController : GAITrackedViewController
 {
-    IBOutlet UIView *viewTableContentHeader, *viewContentDescToko, *viewContentSoldAndView;
+    IBOutlet UIView *viewTableContentHeader, *viewContentDescToko, *viewContentSoldAndView, *viewContentUlasanAndDiskusi;
     IBOutlet UIButton *btnWishList, *btnShare;
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;

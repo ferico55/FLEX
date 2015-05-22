@@ -1117,6 +1117,7 @@ UIAlertViewDelegate
                                                           API_PRODUCT_INSURANCE_KEY:API_PRODUCT_INSURANCE_KEY,
                                                           API_PRODUCT_CONDITION_KEY:API_PRODUCT_CONDITION_KEY,
                                                           API_PRODUCT_ETALASE_ID_KEY:API_PRODUCT_ETALASE_ID_KEY,
+                                                          KTKPDPRODUCT_RETURNABLE:KTKPDPRODUCT_RETURNABLE,
                                                           API_PRODUCT_ETALASE_KEY:API_PRODUCT_ETALASE_KEY,
                                                           API_PRODUCT_MINIMUM_ORDER_KEY:API_PRODUCT_MINIMUM_ORDER_KEY,
                                                           kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
@@ -1715,11 +1716,8 @@ UIAlertViewDelegate
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
         }
         
-        //Check product status
-        if(_product.result.product.product_status!=nil && [_product.result.product.product_status isEqualToString:@"0"]) {
-            [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentDescToko(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
-        }
-        else if(_product.result.product.product_status!=nil && [_product.result.product.product_status isEqualToString:@"1"]) {
+        //Check product returnable
+        if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"1"]) {
             viewContentDescToko.backgroundColor = [UIColor colorWithRed:255/255.0f green:243/255.0f blue:224/255.0f alpha:1.0f];
             
             if([_product.result.shop_info.shop_has_terms isEqualToString:@"0"]) {
@@ -1734,7 +1732,7 @@ UIAlertViewDelegate
                 lblDescToko.delegate = self;
                 lblDescToko.text = CStringCanReture;
                 lblDescToko.linkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
-                [lblDescToko addLinkToURL:[NSURL URLWithString:@"http://detik.com"] withRange:range];
+                [lblDescToko addLinkToURL:[NSURL URLWithString:@""] withRange:range];
                 
                 tokopediaNoteCanReture = [TokopediaNetworkManager new];
                 tokopediaNoteCanReture.delegate = self;
@@ -1742,18 +1740,28 @@ UIAlertViewDelegate
                 [tokopediaNoteCanReture doRequest];
             }
             
+            int calculateHeightViewContentDescToko = lblDescToko.bounds.size.height+(CPaddingTopDescToko *2);
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, (_header.bounds.size.height-viewContentDescToko.bounds.size.height) + calculateHeightViewContentDescToko);
             
             //Add To View
             [viewContentDescToko addSubview:lblDescToko];
             [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[viewContentDescToko(==%f)]", lblDescToko.bounds.size.height+(CPaddingTopDescToko*2)] options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
         }
-        else if(_product.result.product.product_status!=nil && [_product.result.product.product_status isEqualToString:@"2"]) {
+        else if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"2"]) {
             [self setLblDescriptionToko:CStringCannotReture];
             lblDescToko.text = CStringCannotReture;
+            
+            int calculateHeightViewContentDescToko = lblDescToko.bounds.size.height+(CPaddingTopDescToko *2);
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, (_header.bounds.size.height-viewContentDescToko.bounds.size.height) + calculateHeightViewContentDescToko);
             
             //Add To View
             [viewContentDescToko addSubview:lblDescToko];
             [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[viewContentDescToko(==%f)]", lblDescToko.bounds.size.height+(CPaddingTopDescToko*2)] options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
+        }
+        else {
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, _header.bounds.size.height-viewContentDescToko.bounds.size.height);
+            
+            [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentDescToko(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
         }
         
         _table.tableHeaderView = _header;        
@@ -2679,7 +2687,7 @@ UIAlertViewDelegate
     if(notesDetail!=nil && notesDetail.notes_content!=nil) {
         WebViewController *webViewController = [WebViewController new];
         webViewController.strTitle = CStringSyaratDanKetentuan;
-        webViewController.strContentHTML = notesDetail.notes_content;
+        webViewController.strContentHTML = [NSString stringWithFormat:@"<font face='Gotham Book' size='2'>%@</font>", notesDetail.notes_content];
         [self.navigationController pushViewController:webViewController animated:YES];
     }
 }
