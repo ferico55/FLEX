@@ -83,8 +83,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Detail Pengiriman";
-    
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _mapping = [TransactionObjectMapping new];
@@ -157,7 +155,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    self.title = @"Detail Pengiriman";
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -167,6 +165,14 @@
     //NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
     //                           DATA_CART_DETAIL_LIST_KEY : [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY]};
     //[_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
+    
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStyleDone target:self action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButton;
+}
+
+-(IBAction)tap:(id)sender
+{
+
 }
 
 -(void)dealloc

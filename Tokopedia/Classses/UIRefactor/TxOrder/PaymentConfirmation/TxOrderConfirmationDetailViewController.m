@@ -162,16 +162,18 @@
     NSInteger rowCount = orderList.order_products.count;
     if (indexPath.row < rowCount)
     {
-        CGSize maximumLabelSize = CGSizeMake(200,9999);
+        OrderProduct *orderProduct = orderList.order_products[indexPath.row];
         
-        CGSize expectedLabelSize = [_remarkLabel.text sizeWithFont:_remarkLabel.font
-                                                  constrainedToSize:maximumLabelSize
-                                                      lineBreakMode:_remarkLabel.lineBreakMode];
+        CGSize maximumLabelSize = CGSizeMake(190,9999);
         
-        //adjust the label the the new height.
-        CGRect newFrame = _remarkLabel.frame;
-        newFrame.size.height = expectedLabelSize.height;
-        height = PRODUCT_CELL_HEIGHT + newFrame.size.height;
+        NSString *string = [orderProduct.product_notes isEqualToString:@"0"]?@"":[NSString convertHTML:orderProduct.product_notes];
+        
+        //Calculate the expected size based on the font and linebreak mode of your label
+        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:NSLineBreakByTruncatingTail];
+        
+        return PRODUCT_CELL_HEIGHT+expectedLabelSize.height;
     }
     else if(indexPath.row == rowCount)
         height = SHIPMENT_HEIGHT;

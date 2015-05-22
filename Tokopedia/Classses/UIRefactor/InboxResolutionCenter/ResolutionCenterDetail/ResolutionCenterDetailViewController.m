@@ -275,15 +275,24 @@
             NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
             NSInteger attachmentHeight = VIEW_ATTACHMENT_HEIGHT;
             
+            //Calculate the expected size based on the font and linebreak mode of your label
+            NSString *string = [NSString convertHTML:[self markConversation:conversation]];
+            CGSize maximumLabelSize = CGSizeMake(190,9999);
+            CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_12
+                                          constrainedToSize:maximumLabelSize
+                                              lineBreakMode:NSLineBreakByTruncatingTail];
+            
+            cellRowHeight += expectedLabelSize.height;
+            
             rowHeight = cellRowHeight + deltaHeightCell;
             if ([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]) {
                 rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
             }
             if ([self isShowAttachment:conversation]) {
-                rowHeight = cellRowHeight + attachmentHeight + deltaHeightCell;
+                rowHeight = cellRowHeight + attachmentHeight;
             }
             if ([self isShowAttachmentWithButton:conversation]) {
-                rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
+                rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height;
             }
             if ([cell.markLabel.text isEqualToString:@""]) {
                 rowHeight = rowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
@@ -1239,6 +1248,7 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionCenterDetailResult class]];
     
     RKObjectMapping *resolutionConversationMapping = [_mapping resolutionConversationMapping];
+    RKObjectMapping *resolutionAttachmentMapping = [_mapping resolutionAttachmentMapping];
     
     RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                    toKeyPath:kTKPD_APIRESULTKEY
@@ -1247,9 +1257,13 @@
     RKRelationshipMapping *resolutionConversationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CONVERSATION_KEY
                                                                                                    toKeyPath:API_RESOLUTION_CONVERSATION_KEY
                                                                                                  withMapping:resolutionConversationMapping];
+    RKRelationshipMapping *resolutionAttachmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ATTACHMENT_KEY
+                                                                                                 toKeyPath:API_RESOLUTION_ATTACHMENT_KEY
+                                                                                               withMapping:resolutionAttachmentMapping];
     
     [statusMapping addPropertyMapping:resultRel];
     [resultMapping addPropertyMapping:resolutionConversationRel];
+    [resolutionConversationMapping addPropertyMapping:resolutionAttachmentRel];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
@@ -1291,6 +1305,7 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
+    
     _tableView.tableFooterView = _footerView;
     [_act startAnimating];
     
@@ -1759,7 +1774,7 @@
     
     [_operationQueue addOperation:_requestReplay];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutReplay) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(requestTimeoutReplay) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 

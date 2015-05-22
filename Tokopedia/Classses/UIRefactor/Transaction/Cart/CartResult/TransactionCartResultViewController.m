@@ -13,6 +13,8 @@
 #import "TransactionCartResultPaymentCell.h"
 #import "TxOrderStatusViewController.h"
 
+#import "WebViewController.h"
+
 #import "TxOrderTabViewController.h"
 
 @interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -215,12 +217,10 @@
     }
     else
     {
-        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 568)];
-        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_HELP_URL]]];
-        UIViewController *controller = [UIViewController new];
-        controller.title = kTKPDMORE_HELP_TITLE;
-        [controller.view addSubview:webView];
-        [self.navigationController pushViewController:controller animated:YES];
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strURL = kTKPDMORE_HELP_URL;
+        webViewController.strTitle = kTKPDMORE_HELP_TITLE;
+        [self.navigationController pushViewController:webViewController animated:YES];
     }
 }
 

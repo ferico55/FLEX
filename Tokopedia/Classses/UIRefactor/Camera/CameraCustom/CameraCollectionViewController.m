@@ -73,6 +73,10 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 {
     [super viewDidLoad];
     
+    if (_maxSelected == 0) {
+        _maxSelected = 5;
+    }
+    
     _assets = [NSMutableArray new];
     _selectedImages = [NSMutableArray new];
     if (_selectedIndexPath == nil || _selectedIndexPath.count == 0) {
@@ -272,35 +276,37 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 {
     [_selectedImages removeAllObjects];
     for (NSIndexPath *selected in _selectedIndexPath) {
-        ALAsset *asset = _assets[selected.row-1];
-        UIImage *rawImage = [UIImage imageWithCGImage:[[asset defaultRepresentation]
-                                                       fullScreenImage]];
-        NSString* mediaType = @"public.image";
-        NSString* imageName = [[asset defaultRepresentation] filename];
-        
-        UIImage *resizedImage = [self resizedImage:rawImage];
-        
-        NSData* imageDataResizedImage;
-        if (imageName) {
-            NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
-            if ([extensionOFImage isEqualToString:@"jpg"])
+        if (selected.row>0) {
+            ALAsset *asset = _assets[selected.row-1];
+            UIImage *rawImage = [UIImage imageWithCGImage:[[asset defaultRepresentation]
+                                                           fullScreenImage]];
+            NSString* mediaType = @"public.image";
+            NSString* imageName = [[asset defaultRepresentation] filename];
+            
+            UIImage *resizedImage = [self resizedImage:rawImage];
+            
+            NSData* imageDataResizedImage;
+            if (imageName) {
+                NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
+                if ([extensionOFImage isEqualToString:@"jpg"])
+                    imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
+                else
+                    imageDataResizedImage = UIImageJPEGRepresentation(resizedImage, 1.0);
+            }
+            else{
                 imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
-            else
-                imageDataResizedImage = UIImageJPEGRepresentation(resizedImage, 1.0);
+            }
+            
+            NSDictionary *selectedImage = @{kTKPDCAMERA_DATAPHOTOKEY:@{
+                                                    kTKPDCAMERA_DATARAWPHOTOKEY:rawImage?:@"",
+                                                    kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
+                                                    kTKPDCAMERA_DATAPHOTOKEY:resizedImage?:@"",
+                                                    DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
+                                                    DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@""
+                                                    }};
+            [_selectedImages addObject:selectedImage];
+            
         }
-        else{
-            imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
-        }
-        
-        NSDictionary *selectedImage = @{kTKPDCAMERA_DATAPHOTOKEY:@{
-                                                kTKPDCAMERA_DATARAWPHOTOKEY:rawImage?:@"",
-                                                kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
-                                                kTKPDCAMERA_DATAPHOTOKEY:resizedImage?:@"",
-                                                DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
-                                                DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@""
-                                                }};
-        [_selectedImages addObject:selectedImage];
-        
     }
     [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":[_selectedIndexPath copy]}];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -364,7 +370,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         }
         else
         {
-            if (_selectedIndexPath.count <5) {
+            if (_selectedIndexPath.count < _maxSelected) {
                 cell.checkmarkImageView.hidden = NO;
                 [_selectedIndexPath addObject:indexPath];
             }
@@ -424,7 +430,9 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 // MARK: TKPDPhotoPickerDelegate methods
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
-    NSDictionary *userInfoDict = @{@"selected_images":@[userInfo]};
+    [_selectedIndexPath addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
+    [_selectedImages addObject:userInfo];
+    NSDictionary *userInfoDict = @{@"selected_images":[_selectedImages copy], DATA_CAMERA_SOURCE_TYPE:@(UIImagePickerControllerSourceTypeCamera), @"selected_indexpath":_selectedIndexPath};
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     [_delegate didDismissController:self withUserInfo:userInfoDict];
     

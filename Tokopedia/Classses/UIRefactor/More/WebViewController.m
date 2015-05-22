@@ -18,7 +18,7 @@
     NJKWebViewProgress *progressProxy;
     NJKWebViewProgressView *progressView;
 }
-@synthesize strURL, strTitle;
+@synthesize strURL, strTitle, strContentHTML;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,20 +35,25 @@
     [super viewWillAppear:animated];
     self.navigationItem.title = strTitle;
 
-    //SetUp URL
-    progressProxy = [[NJKWebViewProgress alloc] init];
-    webView.delegate = progressProxy;
-    progressProxy.webViewProxyDelegate = self;
-    progressProxy.progressDelegate = self;
-    
-    
-    //SetUp Progress View
-    CGFloat progressBarHeight = 2.f;
-    CGRect navigaitonBarBounds = self.navigationController.navigationBar.bounds;
-    CGRect barFrame = CGRectMake(0,     navigaitonBarBounds.size.height - progressBarHeight, navigaitonBarBounds.size.width, progressBarHeight);
-    progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
-    [self.navigationController.navigationBar addSubview:progressView];
-    [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strURL]]];
+    if(strContentHTML != nil) {
+        [webView loadHTMLString:strContentHTML baseURL:nil];
+    }
+    else {
+        //SetUp URL
+        progressProxy = [[NJKWebViewProgress alloc] init];
+        webView.delegate = progressProxy;
+        progressProxy.webViewProxyDelegate = self;
+        progressProxy.progressDelegate = self;
+        
+        
+        //SetUp Progress View
+        CGFloat progressBarHeight = 2.f;
+        CGRect navigaitonBarBounds = self.navigationController.navigationBar.bounds;
+        CGRect barFrame = CGRectMake(0,     navigaitonBarBounds.size.height - progressBarHeight, navigaitonBarBounds.size.width, progressBarHeight);
+        progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
+        [self.navigationController.navigationBar addSubview:progressView];
+        [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strURL]]];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

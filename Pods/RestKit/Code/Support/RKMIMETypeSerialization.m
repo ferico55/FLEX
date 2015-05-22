@@ -1,4 +1,3 @@
-
 //
 //  RKMIMETypeSerialization.m
 //  RestKit

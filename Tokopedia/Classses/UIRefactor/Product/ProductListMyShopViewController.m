@@ -180,10 +180,15 @@
             ManageProductList *list = _list[indexPath.row];
             [((ProductListMyShopCell*)cell).labelname setText:list.product_name animated:NO];
             [((ProductListMyShopCell*)cell).labeletalase setText:list.product_etalase animated:NO];
+            NSString *price = list.product_normal_price;
+            if (list.product_currency_id == 2) { // 2 is USD currency id
+                price = list.product_no_idr_price;
+            }
             [((ProductListMyShopCell*)cell).labelprice setText:[NSString stringWithFormat:@"%@ %@",
-                                                                list.product_currency,
-                                                                list.product_normal_price]
+                                                                list.product_currency_symbol,
+                                                                price]
                                                       animated:YES];
+            
             ((ProductListMyShopCell*)cell).indexpath = indexPath;
             
             UIActivityIndicatorView *act = ((ProductListMyShopCell*)cell).act;
@@ -487,7 +492,10 @@
                                                  kTKPDDETAILPRODUCT_APIPRODUCTIMAGE300KEY,
                                                  kTKPDDETAILPRODUCT_APIPRODUCTDEPARTMENTKEY,
                                                  kTKPDDETAILPRODUCT_APIPRODUCTURKKEY,
-                                                 API_PRODUCT_NAME_KEY
+                                                 API_PRODUCT_NAME_KEY,
+                                                 API_PRODUCT_CURRENCY_SYMBOL,
+                                                 API_PRICE_USD_VALUE,
+                                                 API_PRODUCT_FORM_PRICE_CURRENCY_ID_KEY
                                                  ]];
     
     //add relationship mapping

@@ -25,7 +25,7 @@
         _transitionStyle = transitionStyle;
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             UIActionSheet *actionSheet  = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Library", @"Camera", nil];
-            [actionSheet showInView:_parentViewController.view];
+            [actionSheet showInView:_parentViewController.parentViewController.view];
         } else {
             [self presentPickerWithCamera:NO];
         }
@@ -140,7 +140,7 @@
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         UIImage* rawImage = [info objectForKey:UIImagePickerControllerOriginalImage];
         NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-        
+        UIImagePickerControllerSourceType sourceType = picker.sourceType;
         NSURL *imagePath = [info objectForKey:UIImagePickerControllerReferenceURL];
         
         float actualHeight = rawImage.size.height;
@@ -188,11 +188,12 @@
                           kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
                           kTKPDCAMERA_DATAPHOTOKEY:resizedImage?:@"",
                           DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
-                          DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@""
+                          DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@"",
+                          DATA_CAMERA_SOURCE_TYPE:@(sourceType)?:@""
                           } forKey:kTKPDCAMERA_DATAPHOTOKEY];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [wself.parentViewController dismissViewControllerAnimated:YES completion:nil];
+            [wself.parentViewController dismissViewControllerAnimated:NO completion:nil];
             [wself.delegate photoPicker:wself didDismissCameraControllerWithUserInfo:wself.data];
         });
         
