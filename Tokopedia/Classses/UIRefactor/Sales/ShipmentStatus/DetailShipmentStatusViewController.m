@@ -149,6 +149,7 @@
                              kTkpdBaseURLString, pdf, invoiceID, userID];
             
             UIWebView *webView = [[UIWebView alloc] initWithFrame:[self.view bounds]];
+            webView.scalesPageToFit = YES;
             [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
             UIViewController *controller = [UIViewController new];
             controller.title = _order.order_detail.detail_invoice;
