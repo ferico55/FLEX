@@ -230,9 +230,9 @@
     NSString *is_success = [[info result] is_success];
     
     if([is_success isEqualToString:kTKPD_STATUSSUCCESS]) {
-        NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[KTKPDMESSAGE_DELIVERED] delegate:self];
         [stickyAlertView show];
+        [self.navigationController popViewControllerAnimated:TRUE];
     } else {
         
         NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
@@ -300,7 +300,7 @@
                 } else {
                     [self configureRestkit];
                     [self doSendMessage];
-                    [self.navigationController popViewControllerAnimated:TRUE];
+//                    [self.navigationController popViewControllerAnimated:TRUE];
                 }
                 
                 break;

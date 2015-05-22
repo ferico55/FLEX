@@ -504,6 +504,7 @@ UIAlertViewDelegate
                 [_datatalk setObject:_product.result.statistic.product_sold_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
                 [_datatalk setObject:_product.result.statistic.product_view_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
                 [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
+                [_datatalk setObject:_product.result.product.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
@@ -2091,8 +2092,8 @@ UIAlertViewDelegate
 {
     if (_product) {
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
-                                  _product.result.shop_info.shop_name,
-                                  _product.result.shop_info.shop_location];
+                                  _formattedProductTitle,
+                                  _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
         UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                          applicationActivities:nil];
@@ -2199,9 +2200,11 @@ UIAlertViewDelegate
     
     NSArray *images = _product.result.product_images;
     
+    [_headerimages removeAllObjects];
+    
     for(int i = 0; i< images.count; i++)
     {
-        CGFloat y = i * 320;
+        CGFloat y = i * self.view.frame.size.width;
         
         ProductImages *image = images[i];
         
@@ -2234,7 +2237,7 @@ UIAlertViewDelegate
     _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = images.count;
     
-    _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
+    _imagescrollview.contentSize = CGSizeMake(images.count*self.view.frame.size.width,0);
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
     _imagescrollview.showsHorizontalScrollIndicator = NO;
     
