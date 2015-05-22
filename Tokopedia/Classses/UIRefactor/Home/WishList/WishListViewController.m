@@ -60,7 +60,8 @@
     /** set table view datasource and delegate **/
     tblWishList.delegate = self;
     tblWishList.dataSource = self;
-    tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
+    [self setTableInset];
+    
     
     /** set table footer view (loading act) **/
     tblWishList.tableFooterView = footer;
@@ -134,6 +135,13 @@
     }
 }
 
+- (void) setTableInset {
+    if([[UIScreen mainScreen]bounds].size.height >= 568) {
+        tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+    } else {
+        tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+    }
+}
 /*
  #pragma mark - Navigation
  
@@ -565,5 +573,7 @@
     }
     
 }
+
+
 
 @end

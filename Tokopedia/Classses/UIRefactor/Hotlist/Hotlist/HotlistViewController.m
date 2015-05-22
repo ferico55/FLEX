@@ -96,7 +96,7 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    _table.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
+    [self setTableInset];
     
     if (_product.count > 0) {
         _isnodata = NO;
@@ -144,6 +144,14 @@
         _isNeedToRemoveAllObject = YES;
         [_networkManager doRequest];
         _table.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
+    }
+}
+
+- (void) setTableInset {
+    if([[UIScreen mainScreen]bounds].size.height >= 568) {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+    } else {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
     }
 }
 

@@ -104,12 +104,13 @@
     /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
+    [self setTableInset];
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    _table.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
+//    _table.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
     
     if (_product.count > 0) {
         _isnodata = NO;
@@ -172,6 +173,13 @@
     }
 }
 
+- (void) setTableInset {
+    if([[UIScreen mainScreen]bounds].size.height >= 568) {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+    } else {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+    }
+}
 
 
 #pragma mark - Table View Data Source
