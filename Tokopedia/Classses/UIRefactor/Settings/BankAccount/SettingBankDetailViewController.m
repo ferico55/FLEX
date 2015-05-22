@@ -163,6 +163,7 @@
     _labelbranch.text = bankAccount.bank_branch;
     
     BankAccountFormList *bank = [_data objectForKey:kTKPDPROFILE_DATABANKKEY];
+    bank.bank_id = bankAccount.bank_id;
     bank.bank_account_name = bankAccount.bank_account_name;
     bank.bank_account_number = bankAccount.bank_account_number;
     bank.bank_name = bankAccount.bank_name;

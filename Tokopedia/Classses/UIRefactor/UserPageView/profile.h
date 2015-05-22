@@ -72,6 +72,7 @@ typedef enum
 #define kTKPDPROFILE_APIGETPROFILEKEY @"get_profile"
 #define kTKPDPROFILE_APISETUSERPROFILEKEY @"set_user_profile"
 #define kTKPDPROFILE_APIEDITPROFILEKEY  @"edit_profile"
+#define kTKPDPROFILE_APIUPLOADPROFILEPICTUREKEY    @"upload_profile_picture"
 #define kTKPDPROFILE_APISETPASSWORDKEY @"set_password"
 #define kTKPDPROFILE_APIEDITPASSWORDKEY @"edit_password"
 #define kTKPDPROFILE_APISETEMAILNOTIFKEY @"set_email_notification"
@@ -129,6 +130,7 @@ typedef enum
 #define kTKPDPROFILE_APIEMAILKEY @"email"
 #define kTKPDPROFILE_APIMESSENGERKEY @"messenger"
 #define kTKPDPROFILE_APIMSISDNKEY  @"msisdn"
+#define kTKPDPROFILE_APIFILEUPLOADEDKEY @"file_uploaded"
 
 #define kTKPDPROFILESETTING_APIUSERIDKEY @"user_id"
 #define kTKPDPROFILESETTING_APIPASSKEY @"password"

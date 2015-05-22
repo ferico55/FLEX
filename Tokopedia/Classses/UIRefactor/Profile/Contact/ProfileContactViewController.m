@@ -63,9 +63,6 @@
 #pragma mark - Notification
 - (void)updateView:(NSNotification *)notification
 {
-
-    
-    
 }
 
 #pragma mark - Memory Management

@@ -45,8 +45,6 @@
     NSOperationQueue *_operationQueueFacebookLogin;
     
     FBLoginView *_loginView;
-    
-    
     id<FBGraphUser> _facebookUser;
 }
 
@@ -156,8 +154,6 @@
     _passwordTextField.isBottomRoundCorner = YES;
     
     _loginView.delegate = self;
-    
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -508,10 +504,11 @@
                                                                     object:nil
                                                                   userInfo:nil];
             }
+        
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-        }
-        else if ([_login.result.status isEqualToString:@"1"]) {
 
+        } else if ([_login.result.status isEqualToString:@"1"]) {
+            
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -535,9 +532,7 @@
             
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             
-        }
-        else
-        {
+        } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                            delegate:self];
             [alert show];

@@ -43,8 +43,8 @@
 #define kTKPD_APISTATUSMESSAGEKEY @"message_status"
 #define kTKPD_APIISSUCCESSKEY @"is_success"
 
-#define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
-#define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Error"
+#define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Permintaan Anda berhasil."
+#define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Permintaan Anda gagal. Cobalah beberapa saat lagi."
 #define kTKPDMESSAGE_ERRORMESSAGEDATEKEY @"Rentang waktu maksimal pemeriksaan mutasi adalah 31 hari."
 
 #define kTKPDMESSAGE_SUCCESSEDITPROFILEMESSAGEKEY   @"Anda telah berhasil mengubah profil."

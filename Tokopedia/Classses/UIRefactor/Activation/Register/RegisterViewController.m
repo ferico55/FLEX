@@ -26,13 +26,11 @@
     UITextFieldDelegate,
     UIScrollViewDelegate,
     UIAlertViewDelegate,
-    FBLoginViewDelegate,
     CreatePasswordDelegate,
-    TKPDAlertViewDelegate
+    TKPDAlertViewDelegate,
+    FBLoginViewDelegate
 >
-{
-    id<FBGraphUser> _facebookUser;
-    
+{    
     UITextField *_activetextfield;
     NSMutableDictionary *_datainput;
     
@@ -51,11 +49,14 @@
 
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
-    NSOperationQueue *_operationQueue;
     
     __weak RKObjectManager *_facebookObjectManager;
     __weak RKManagedObjectRequestOperation *_requestFacebookLogin;
-    NSOperationQueue *_operationQueueFacebookLogin;
+
+    NSOperationQueue *_operationQueue;
+    
+    FBLoginView *_loginView;
+    id<FBGraphUser> _facebookUser;
 }
 
 @property (weak, nonatomic) IBOutlet TextField *texfieldfullname;
@@ -115,8 +116,6 @@
 
     _operationQueue =[NSOperationQueue new];
     
-    [FBSession.activeSession closeAndClearTokenInformation];
-    
     // keyboard notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -143,15 +142,12 @@
                                                                      attributes:attributes];
     _agreementLabel.userInteractionEnabled = YES;
 
-    _operationQueueFacebookLogin = [NSOperationQueue new];
-    
-    FBLoginView *loginView = [[FBLoginView alloc] init];
-    loginView.delegate = self;
-    loginView.readPermissions = @[@"public_profile", @"email"];
-    loginView.frame = CGRectMake(0, 0,
-                                 _facebookLoginView.frame.size.width,
-                                 _facebookLoginView.frame.size.height);
-    [_facebookLoginView addSubview:loginView];
+    _loginView = [[FBLoginView alloc] init];
+    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
+    _loginView.frame = CGRectMake(0, 0,
+                                  _facebookLoginView.frame.size.width,
+                                  _facebookLoginView.frame.size.height);
+    [_facebookLoginView addSubview:_loginView];
 
     [_container addSubview:_contentView];
     _container.contentSize = CGSizeMake(self.view.frame.size.width,
@@ -172,6 +168,10 @@
     _act.hidden = YES;
     
     [self cancel];
+    
+    _loginView.delegate = self;
+    
+    [FBSession.activeSession closeAndClearTokenInformation];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -197,12 +197,6 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
-            case 11:
-            {
-                //done button action
-                
-            }
-
             default:
                 break;
         }
@@ -210,17 +204,6 @@
     }else if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
-            case 10:
-            {
-                // go to login
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-            case 11:
-            {
-                // go to terms of service
-                break;
-            }
             case 12:{
                 // button agreement
                 if (!btn.selected)
@@ -528,159 +511,6 @@
     [self cancel];
 }
 
-- (void)configureRestKitFacebookLogin
-{
-    // initialize RestKit
-    _facebookObjectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Login class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LoginResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY    : kTKPDLOGIN_APIISLOGINKEY,
-                                                        kTKPDLOGIN_APISHOPIDKEY     : kTKPDLOGIN_APISHOPIDKEY,
-                                                        kTKPDLOGIN_APIUSERIDKEY     : kTKPDLOGIN_APIUSERIDKEY,
-                                                        kTKPDLOGIN_APIFULLNAMEKEY   : kTKPDLOGIN_APIFULLNAMEKEY,
-                                                        kTKPDLOGIN_APIIMAGEKEY      : kTKPDLOGIN_APIIMAGEKEY,
-                                                        kTKPDLOGIN_APISHOPNAMEKEY   : kTKPDLOGIN_APISHOPNAMEKEY,
-                                                        kTKPDLOGIN_APISHOPAVATARKEY : kTKPDLOGIN_APISHOPAVATARKEY,
-                                                        kTKPDLOGIN_APISHOPISGOLDKEY : kTKPDLOGIN_APISHOPISGOLDKEY,
-                                                        kTKPDLOGIN_API_STATUS_KEY               : kTKPDLOGIN_API_STATUS_KEY,
-                                                        kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
-                                                        kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
-                                                        }];
-    //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDLOGIN_FACEBOOK_APIPATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_facebookObjectManager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)requestLoginFacebookUser
-{
-    if (_requestFacebookLogin.isExecuting) return;
-    
-    [self configureRestKitFacebookLogin];
-    
-    _requestcount++;
-    
-    NSDictionary *param = @{
-                            kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
-                            kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
-                            kTKPDLOGIN_API_EMAIL_KEY        : [_facebookUser objectForKey:@"email"]?:@"",
-                            kTKPDLOGIN_API_NAME_KEY         : [_facebookUser objectForKey:@"name"]?:@"",
-                            kTKPDLOGIN_API_ID_KEY           : [_facebookUser objectForKey:@"id"]?:@"",
-                            kTKPDLOGIN_API_BIRTHDAY_KEY     : [_facebookUser objectForKey:@"birthday"]?:@"",
-                            kTKPDLOGIN_API_GENDER_KEY       : [_facebookUser objectForKey:@"gender"]?:@"",
-                            };
-    
-    NSLog(@"\n\n\n%@\n\n\n", param);
-    
-    _requestFacebookLogin = [_facebookObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                                         method:RKRequestMethodPOST
-                                                                                           path:kTKPDLOGIN_FACEBOOK_APIPATH
-                                                                                     parameters:[param encrypt]];
-    
-    NSLog(@"\n\n\n%@\n\n\n", _requestFacebookLogin);
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                      target:self
-                                                    selector:@selector(requesttimeout)
-                                                    userInfo:nil
-                                                     repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer
-                                 forMode:NSRunLoopCommonModes];
-    
-    [_requestFacebookLogin setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [timer invalidate];
-        [self requestFacebookLoginSuccess:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [timer invalidate];
-        [self requestfailure:error];
-    }];
-    
-    [_operationQueueFacebookLogin addOperation:_requestFacebookLogin];
-}
-
--(void)requestFacebookLoginSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    _login = [result objectForKey:@""];
-    if ([_login.result.status isEqualToString:@"1"]) {
-    
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-        [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-        [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-        [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-        [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-        [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-        [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-        [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-        [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
-        [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-
-        CreatePasswordViewController *controller = [CreatePasswordViewController new];
-        controller.login = _login;
-        controller.delegate = self;
-        controller.facebookUser = _facebookUser;
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navigationController.navigationBar.translucent = NO;
-
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        
-    } else if ([_login.result.status isEqualToString:@"2"]) {
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        
-        [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-        
-        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-        [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-        [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-        
-        [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-        [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-        [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-        [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-        [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-        [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
-        [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-
-        LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
-        if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
-            [loginController.delegate redirectViewController:loginController.redirectViewController];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            [self.tabBarController setSelectedIndex:0];
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                object:nil
-                                                              userInfo:nil];
-        }
-
-        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-
-    } else {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
-                                                                       delegate:self];
-        [alert show];
-        [self cancel];
-    }
-}
-
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
@@ -806,35 +636,55 @@
     }
 }
 
+#pragma mark - Scroll delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.view endEditing:YES];
+}
+
+#pragma mark - Create password delegate
+
+- (void)createPasswordSuccess
+{
+    LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
+    if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)])
+    {
+        [loginController.delegate redirectViewController:loginController.redirectViewController];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.tabBarController setSelectedIndex:0];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                            object:nil
+                                                          userInfo:nil];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+    }
+}
+
 #pragma mark - Facebook login delegate
 
 // Call method when user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
-    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
-    if (authManager.isLogin == NO && [[FBSession activeSession] isOpen]) {
-
+    if ([[FBSession activeSession] state] == FBSessionStateOpen) {
+        [FBSession.activeSession closeAndClearTokenInformation];
+        [self requestLoginFacebookUser:user];        
         _facebookUser = user;
-        
-        [self requestLoginFacebookUser];
-
         _loadingView.hidden = NO;
-        
         [_facebookLoginActivityIndicator startAnimating];
-
-        for(UIView *subview in [_container subviews]) {
-            [subview removeFromSuperview];
-        }
     }
 }
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
 {
-
 }
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
 {
-
+    if ([[FBSession activeSession] state] != FBSessionStateCreated) {
+        [self cancel];
+    }
 }
 
 // Handle possible errors that can occur during login
@@ -871,31 +721,174 @@
     }
 }
 
-#pragma mark - Scroll delegate
+#pragma mark - Restkit Facebook login
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+- (void)configureRestKitFacebookLogin
 {
-    [self.view endEditing:YES];
+    // initialize RestKit
+    _facebookObjectManager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Login class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LoginResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY    : kTKPDLOGIN_APIISLOGINKEY,
+                                                        kTKPDLOGIN_APISHOPIDKEY     : kTKPDLOGIN_APISHOPIDKEY,
+                                                        kTKPDLOGIN_APIUSERIDKEY     : kTKPDLOGIN_APIUSERIDKEY,
+                                                        kTKPDLOGIN_APIFULLNAMEKEY   : kTKPDLOGIN_APIFULLNAMEKEY,
+                                                        kTKPDLOGIN_APIIMAGEKEY      : kTKPDLOGIN_APIIMAGEKEY,
+                                                        kTKPDLOGIN_APISHOPNAMEKEY   : kTKPDLOGIN_APISHOPNAMEKEY,
+                                                        kTKPDLOGIN_APISHOPAVATARKEY : kTKPDLOGIN_APISHOPAVATARKEY,
+                                                        kTKPDLOGIN_APISHOPISGOLDKEY : kTKPDLOGIN_APISHOPISGOLDKEY,
+                                                        kTKPDLOGIN_API_STATUS_KEY               : kTKPDLOGIN_API_STATUS_KEY,
+                                                        kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
+                                                        kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
+                                                        kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
+                                                        kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
+                                                        }];
+    //add relationship mapping
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDLOGIN_FACEBOOK_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_facebookObjectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-#pragma mark - Create password delegate
-
-- (void)createPasswordSuccess
+- (void)requestLoginFacebookUser:(id<FBGraphUser>)user
 {
-    LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
-    if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)])
+    if (_requestFacebookLogin.isExecuting) return;
+    
+    [self configureRestKitFacebookLogin];
+    
+    _requestcount++;
+    
+    NSDictionary *param = @{
+                            kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
+                            kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
+                            kTKPDLOGIN_API_EMAIL_KEY        : [user objectForKey:@"email"]?:@"",
+                            kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
+                            kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
+                            kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
+                            kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
+                            };
+    
+    NSLog(@"\n\n\n%@\n\n\n", param);
+    
+    _requestFacebookLogin = [_facebookObjectManager appropriateObjectRequestOperationWithObject:self
+                                                                                         method:RKRequestMethodPOST
+                                                                                           path:kTKPDLOGIN_FACEBOOK_APIPATH
+                                                                                     parameters:[param encrypt]];
+    
+    NSLog(@"\n\n\n%@\n\n\n", _requestFacebookLogin);
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                      target:self
+                                                    selector:@selector(requesttimeout)
+                                                    userInfo:nil
+                                                     repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:timer
+                                 forMode:NSRunLoopCommonModes];
+    
+    [_requestFacebookLogin setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [timer invalidate];
+        [self requestFacebookLoginResult:mappingResult withOperation:operation];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [timer invalidate];
+        [self requestfailure:error];
+    }];
+    
+    [_operationQueue addOperation:_requestFacebookLogin];
+}
+
+- (void)requestFacebookLoginResult:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation
+{
+    _login = [mappingResult.dictionary objectForKey:@""];
+    BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    if (status) {
+        _isnodata = NO;
+        if ([_login.result.status isEqualToString:@"2"]) {
+            
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
+            [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
+            [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+            
+            LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
+            if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
+                [loginController.delegate redirectViewController:loginController.redirectViewController];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                [self.tabBarController setSelectedIndex:0];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                    object:nil
+                                                                  userInfo:nil];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+        }
+        else if ([_login.result.status isEqualToString:@"1"]) {
+            
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+            
+            CreatePasswordViewController *controller = [CreatePasswordViewController new];
+            controller.login = _login;
+            controller.delegate = self;
+            controller.facebookUser = _facebookUser;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+            navigationController.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            
+        }
+        else
+        {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
+                                                                           delegate:self];
+            [alert show];
+            [self cancel];
+        }
+    }
+    else
     {
-        [loginController.delegate redirectViewController:loginController.redirectViewController];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        [self.tabBarController setSelectedIndex:0];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                            object:nil
-                                                          userInfo:nil];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                       delegate:self];
+        [alert show];
+        [self cancel];
     }
 }
+
 
 @end

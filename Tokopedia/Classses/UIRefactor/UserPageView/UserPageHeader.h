@@ -23,12 +23,10 @@
 @property (strong, nonatomic) NSDictionary *data;
 @property CGPoint contentOffset;
 @property (strong, nonatomic) ProfileInfo *profile;
-
-
+@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (nonatomic, retain) IBOutlet UIView *header;
 @property (nonatomic, retain) IBOutlet UIView *searchView;
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) id<UserPageHeaderDelegate> delegate;
-
 
 @end

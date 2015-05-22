@@ -12,7 +12,7 @@
 #import "activation.h"
 
 @implementation UserAuthentificationManager {
-    NSDictionary *_auth;
+    NSMutableDictionary *_auth;
 }
 
 - (id)init
@@ -20,8 +20,7 @@
     self = [super init];
     if (self) {
         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-        _auth = [secureStorage keychainDictionary];
-        _auth = [_auth mutableCopy];
+        _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
     }
     return self;
 }
@@ -109,7 +108,8 @@
     return NO;
 }
 
-
-
+- (void)setUserImage:(NSString *)userImage {
+    [_auth setObject:userImage forKey:@"user_image"];
+}
 
 @end

@@ -50,7 +50,7 @@
                             <rect key="frame" x="150" y="230" width="20" height="20"/>
                         </activityIndicatorView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="qR5-xw-F6Q" secondAttribute="centerX" id="TiV-OX-WyD"/>
                         <constraint firstAttribute="centerY" secondItem="qR5-xw-F6Q" secondAttribute="centerY" id="ePN-Qn-rWy"/>
@@ -185,7 +185,7 @@
                         <constraint firstAttribute="height" constant="36" id="IDN-xk-z9A"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="5bz-xB-0WU" appends="YES" id="snJ-q9-vl0"/>
@@ -208,9 +208,16 @@
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vwu-wq-o6E" userLabel="Facebook Login View">
                     <rect key="frame" x="15" y="478" width="290" height="44"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <subviews>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="akr-Zs-I36">
+                            <rect key="frame" x="135" y="12" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.23137254901960785" green="0.34901960784313724" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="L2Z-5Y-TLb"/>
+                        <constraint firstAttribute="centerY" secondItem="akr-Zs-I36" secondAttribute="centerY" id="OBb-6E-Dhh"/>
+                        <constraint firstAttribute="centerX" secondItem="akr-Zs-I36" secondAttribute="centerX" id="dkx-HQ-ooh"/>
                     </constraints>
                 </view>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="ZWH-II-caf">

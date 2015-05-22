@@ -464,6 +464,7 @@
         
         UIWebView *webView = [[UIWebView alloc] initWithFrame:[self.view bounds]];
         [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+        webView.scalesPageToFit = YES;
         UIViewController *controller = [UIViewController new];
         controller.title = _transaction.order_detail.detail_invoice;
         [controller.view addSubview:webView];

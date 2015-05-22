@@ -107,6 +107,10 @@
     RequestShipmentCourier *courier = [RequestShipmentCourier new];
     courier.delegate = self;
     [courier request];
+
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:_refreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -638,8 +642,13 @@
 
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         Order *newOrders = [result objectForKey:@""];
-        [_orders addObjectsFromArray:newOrders.result.list];
-
+        
+        if (_page == 1) {
+            _orders = newOrders.result.list;
+        } else {
+            [_orders addObjectsFromArray:newOrders.result.list];
+        }
+        
         _uriNext =  newOrders.result.paging.uri_next;
 
         NSURL *url = [NSURL URLWithString:_uriNext];
@@ -911,6 +920,13 @@
         
         [_orderInProcess removeObjectForKey:orderId];
     }
+}
+
+- (void)refreshData
+{
+    _page = 1;
+    [self configureRestKit];
+    [self request];
 }
 
 #pragma mark - Shipment courier request delegate
