@@ -99,7 +99,7 @@
     self.navigationController.title = @"Cari";
     self.screenName = @"Search Page";
     
-    [_searchbar becomeFirstResponder];
+
 
     [self initNotificationManager];
 
@@ -115,9 +115,14 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [_searchbar becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_searchbar resignFirstResponder];
 }
 
 #pragma mark - Memory Management
