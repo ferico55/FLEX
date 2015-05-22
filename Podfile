@@ -4,6 +4,7 @@
 target "Tokopedia" do
     pod 'RestKit', '~>  0.20.0'
     pod 'NJKWebViewProgress'
+    pod 'TTTAttributedLabel'
 end
 
 target "TokopediaTests" do

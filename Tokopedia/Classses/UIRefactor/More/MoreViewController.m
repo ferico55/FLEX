@@ -659,6 +659,7 @@
     }
     
     else if (indexPath.section == 6) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                             object:nil
                                                           userInfo:@{}];

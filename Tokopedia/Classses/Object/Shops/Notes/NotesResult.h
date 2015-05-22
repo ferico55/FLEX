@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "NotesList.h"
+#define CDetail @"detail"
 
+@class NoteDetails;
 @interface NotesResult : NSObject
-
 @property (strong, nonatomic) NSArray *list;
-
+@property (strong, nonatomic) NoteDetails *detail;
 @end
