@@ -318,10 +318,9 @@
             [self.navigationController popViewControllerAnimated:YES];
         } else if (button.tag == 11) {
             SettingBankEditViewController *vc = [SettingBankEditViewController new];
-            vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                        kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ADD_NEW),
-                        };
-
+            vc.data = [NSMutableDictionary dictionaryWithDictionary:@{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                                                                      kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ADD_NEW),
+                                                                      }];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             nav.navigationBar.translucent = NO;
             

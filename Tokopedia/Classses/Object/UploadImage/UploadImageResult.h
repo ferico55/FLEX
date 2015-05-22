@@ -16,4 +16,6 @@
 @property (nonatomic, strong) NSString *pic_obj;
 @property (nonatomic, strong) NSString *file_name;
 @property (nonatomic, strong) Upload *upload;
+@property (nonatomic, strong) NSString *file_uploaded;
+
 @end

@@ -22,7 +22,6 @@
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
 
-//#import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
@@ -36,6 +35,7 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
+//#import "TKPDTabInboxCustomerServiceNavigationController.h"
 
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
@@ -101,6 +101,10 @@
                                                  selector:@selector(updateSaldoTokopedia:)
                                                      name:@"updateSaldoTokopedia" object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateProfilePicture:)
+                                                     name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
+                                                   object:nil];
     }
     return self;
 }
@@ -130,12 +134,6 @@
     self.navigationController.title = @"More";
     [self initNotificationManager];
     
-    
-    
-    
-    
-    
-    
     // Remove default table inset
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
     
@@ -156,7 +154,7 @@
     _depositLabel.hidden = YES;
     _loadingSaldo.hidden = NO;
     
-    
+    [self updateSaldoTokopedia:nil];
     [self setShopImage];
 }
 
@@ -166,8 +164,9 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    [self updateSaldoTokopedia:nil];
-    
+
+    [self updateSaldoTokopedia:nil];    
+
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName value:@"More Navigation Page"];
@@ -188,15 +187,12 @@
     if (selectedIndexPath != nil) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
-    
-    //    [self updateSaldoTokopedia:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     self.navigationController.tabBarController.title = @"More";
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -324,12 +320,12 @@
 
 #pragma mark - Method
 - (void)setShopImage {
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"user_image"]]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
+    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+    NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];    
     [_profilePictureImageView setImageWithURLRequest:request
-                                    placeholderImage:[UIImage imageNamed:@"nil"]
+                                    placeholderImage:nil
                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -469,7 +465,7 @@
             break;
             
         case 4:
-            return 4;
+            return 5;
             break;
             
         case 5:
@@ -617,7 +613,13 @@
             nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
             
-        } else if (indexPath.row  == 3) {
+        } else if (indexPath.row == 3) {
+          
+//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
+//            controller.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:controller animated:YES];
+            
+        } else if (indexPath.row  == 4) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
@@ -794,5 +796,10 @@
     [self loadDataDeposit];
 }
 
+- (void)updateProfilePicture:(NSNotification *)notification
+{
+    UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
+    _profilePictureImageView.image = profilePicture;
+}
 
 @end

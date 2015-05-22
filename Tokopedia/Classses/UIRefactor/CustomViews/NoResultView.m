@@ -30,7 +30,7 @@
 }
 
 - (void)setNoResultText:(NSString*)string {
-//    [_noResultLabel setText:string];
+    [_titleLabel setText:string];
 }
 
 

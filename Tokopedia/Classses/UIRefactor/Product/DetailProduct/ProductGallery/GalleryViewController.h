@@ -64,7 +64,7 @@ typedef enum
 
 @optional
 - (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index;
-- (NSString*)photoGallery:(GalleryViewController *)gallery filePathForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index;
+- (UIImage *)photoGallery:(NSUInteger)index;
 - (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index;
 
 @end

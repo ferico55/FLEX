@@ -28,4 +28,6 @@
 - (BOOL)isMyUser:(NSString*)userId;
 - (NSString*)addParameterAndConvertToString:(id)params;
 
+- (void)setUserImage:(NSString *)userImage;
+
 @end    

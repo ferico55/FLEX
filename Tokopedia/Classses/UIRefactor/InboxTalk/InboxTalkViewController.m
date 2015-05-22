@@ -117,8 +117,6 @@
                                              selector:@selector(updateUnreadTalk:)
                                                  name:@"updateUnreadTalk" object:nil];
     
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showTalkWithFilter:)
                                                  name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
@@ -143,6 +141,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initNotification];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
     
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _talkListPage = 1;
@@ -167,7 +167,7 @@
         _isnodata = NO;
     }
     
-    [self initNotification];
+
     [self initCache];
     [self configureRestKit];
     
@@ -800,7 +800,6 @@
     list.talk_read_status = @"2";
     [_table reloadData];
 }
-
 
 
 
