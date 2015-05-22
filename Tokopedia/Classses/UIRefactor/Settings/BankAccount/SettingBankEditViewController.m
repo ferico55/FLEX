@@ -326,25 +326,22 @@
     [_objectmanagerActionAddBank addResponseDescriptor:responseDescriptor];
 }
 
--(void)requestActionAddBank:(id)object
+-(void)requestActionAddBank:(NSDictionary *)userInfo
 {
     if (_requestActionAddBank.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userinfo = (NSDictionary*)object;
     
     BankAccountFormList *list = [_data objectForKey:kTKPDPROFILE_DATABANKKEY];
     
     NSString *action = (_type==1)?kTKPDPROFILE_APIEDITBANKKEY:kTKPDPROFILE_APIADDBANKKEY;
     
-    NSInteger bankID = [[userinfo objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]integerValue]?:list.bank_id;
-    NSString *bankname = [userinfo objectForKey:API_BANK_NAME_KEY]?:list.bank_name?:@(0);
-    NSString *bankAccountID = [userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY]?:list.bank_account_id;
-    NSString *accountname = [userinfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNAMEKEY]?:list.bank_account_name?:@(0);
-    NSNumber *accountnumber = [userinfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY]?:list.bank_account_number?:@(0);
-    NSString *branchname = [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY]?:list.bank_branch?:@(0);
-    NSString *pass = [userinfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
-    NSString *OTP = [userinfo objectForKey:kTKPDPROFILESETTING_APIOTPCODEKEY]?:@"0";
+    NSInteger bankID = [[userInfo objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]integerValue]?:list.bank_id;
+    NSString *bankname = [userInfo objectForKey:API_BANK_NAME_KEY]?:list.bank_name?:@(0);
+    NSString *bankAccountID = list.bank_account_id?:@"";
+    NSString *accountname = [userInfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNAMEKEY]?:list.bank_account_name?:@(0);
+    NSNumber *accountnumber = [userInfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY]?:list.bank_account_number?:@(0);
+    NSString *branchname = [userInfo objectForKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY]?:list.bank_branch?:@(0);
+    NSString *pass = [userInfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
+    NSString *OTP = [userInfo objectForKey:kTKPDPROFILESETTING_APIOTPCODEKEY]?:@"0";
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:action,
                             kTKPDPROFILESETTING_APIBANKIDKEY : @(bankID),
@@ -365,6 +362,14 @@
                                                                                                 path:kTKPDPROFILE_PROFILESETTINGAPIPATH
                                                                                           parameters:[param encrypt]];
     
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                      target:self
+                                                    selector:@selector(requestTimeoutActionAddBank)
+                                                    userInfo:nil
+                                                     repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    
     [_requestActionAddBank setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddBank:mappingResult withOperation:operation];
         [timer invalidate];
@@ -376,14 +381,6 @@
     }];
     
     [_operationQueue addOperation:_requestActionAddBank];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                             target:self
-                                           selector:@selector(requestTimeoutActionAddBank)
-                                           userInfo:nil
-                                            repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestSuccessActionAddBank:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -431,6 +428,7 @@
                         }
                         
                         BankAccountFormList *bankAccount = [BankAccountFormList new];
+                        bankAccount.bank_id = [[_datainput objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY] integerValue];
                         bankAccount.bank_account_name = _accountNameTextField.text;
                         bankAccount.bank_account_number = _accountNumberTextField.text;
                         bankAccount.bank_name = _bankNameButton.titleLabel.text;
@@ -636,14 +634,15 @@
 -(void)SettingBankNameViewController:(UIViewController *)vc withData:(NSDictionary *)data
 {
     NSIndexPath *indexpath = [data objectForKey:kTKPDPROFILE_DATABANKINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    
     NSString *name = [data objectForKey:API_BANK_NAME_KEY];
     NSInteger bankid = [[data objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY] integerValue];
-    NSString *bankAccountID = [data objectForKey:API_BANK_ACCOUNT_ID_KEY]?:@"";
+    
     [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATABANKINDEXPATHKEY];
-    [_bankNameButton setTitle:name forState:UIControlStateNormal];
     [_datainput setObject:name forKey:API_BANK_NAME_KEY];
     [_datainput setObject:@(bankid) forKey:kTKPDPROFILESETTING_APIBANKIDKEY];
-    [_datainput setObject:bankAccountID forKeyedSubscript:API_BANK_ACCOUNT_ID_KEY];
+
+    [_bankNameButton setTitle:name forState:UIControlStateNormal];
 }
 
 

@@ -153,7 +153,7 @@
         
         if (_list.count > indexPath.row) {
             NotesList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).textLabel.text = list.note_title;
+            ((GeneralList1GestureCell*)cell).textLabel.text = [NSString convertHTML:list.note_title];
             ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;            
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPETWOBUTTONKEY;
