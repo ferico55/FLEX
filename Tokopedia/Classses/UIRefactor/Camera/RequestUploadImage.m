@@ -42,7 +42,8 @@
                                                         kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY:kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY,
                                                         @"file_name" : @"file_name",
                                                         @"pic_id" : @"pic_id",
-                                                        @"pic_obj" : @"pic_obj"
+                                                        @"pic_obj" : @"pic_obj",
+                                                        @"file_uploaded" : @"file_uploaded",
                                                         }];
     
 

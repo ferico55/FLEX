@@ -35,8 +35,6 @@
     NSDictionary *_auth;
 }
 
-@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
-
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
@@ -116,12 +114,23 @@
 
 - (void)setHeaderData {
     //set shop image
-    NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_profile.result.user_info.user_image ?:@""]
+    
+    NSURL *userImageURL;
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    if ([auth.getUserId isEqualToString:_profile.result.user_info.user_id]) {
+        userImageURL = [NSURL URLWithString:[auth.getUserLoginData objectForKey:@"user_image"]];
+    } else {
+        userImageURL = [NSURL URLWithString:_profile.result.user_info.user_image];
+    }
+    
+    NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:userImageURL
                                                         cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                     timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     [_avatarIndicator startAnimating];
-    [_profileImage setImageWithURLRequest:requestAvatar placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [_profileImage setImageWithURLRequest:requestAvatar
+                         placeholderImage:nil
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         _profileImage.image = image;

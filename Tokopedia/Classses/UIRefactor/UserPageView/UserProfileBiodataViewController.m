@@ -53,7 +53,8 @@
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
-
+    [nc addObserver:self selector:@selector(updateProfilePicture:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
+    
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -258,6 +259,12 @@
     _profile = userinfo;
     _isnodatashop = ((_profile.result.shop_info)||(_profile.result.shop_stats))?NO:YES;
     [_table reloadData];
+}
+
+- (void)updateProfilePicture:(NSNotification *)notification
+{
+    UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
+    _userHeader.profileImage.image = profilePicture;
 }
 
 #pragma mark - Memory Management

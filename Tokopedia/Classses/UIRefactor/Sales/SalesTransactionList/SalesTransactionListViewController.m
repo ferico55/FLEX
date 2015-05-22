@@ -94,6 +94,10 @@
 
     [self configureRestKit];
     [self request];
+
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:_refreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -596,7 +600,12 @@
         
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         _resultOrder = [result objectForKey:@""];
-        [_orders addObjectsFromArray:_resultOrder.result.list];
+        
+        if (_page == 1) {
+            _orders = _resultOrder.result.list;
+        } else {
+            [_orders addObjectsFromArray:_resultOrder.result.list];
+        }
         
         _nextURI =  _resultOrder.result.paging.uri_next;
         NSURL *url = [NSURL URLWithString:_nextURI];
@@ -639,6 +648,13 @@
 {
     [_activityIndicatorView stopAnimating];
     _tableView.tableFooterView = nil;
+}
+
+- (void)refreshData
+{
+    _page = 1;
+    [self configureRestKit];
+    [self request];
 }
 
 #pragma mark - Reskit action methods

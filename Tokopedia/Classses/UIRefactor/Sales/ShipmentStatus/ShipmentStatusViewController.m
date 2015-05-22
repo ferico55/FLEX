@@ -85,6 +85,10 @@
     
     [self configureRestKit];
     [self requestInvoice:nil];
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:_refreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -542,8 +546,13 @@
 
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         _resultOrder = [result objectForKey:@""];
-        [_shipments addObjectsFromArray:_resultOrder.result.list];
-
+        
+        if (_page == 1) {
+            _shipments = _resultOrder.result.list;
+        } else {
+            [_shipments addObjectsFromArray:_resultOrder.result.list];
+        }
+        
         _nextURI =  _resultOrder.result.paging.uri_next;
         NSURL *url = [NSURL URLWithString:_nextURI];
         NSArray* query = [[url query] componentsSeparatedByString: @"&"];
@@ -586,6 +595,13 @@
 - (void)cancel
 {
 
+}
+
+- (void)refreshData
+{
+    _page = 1;
+    [self configureRestKit];
+    [self requestInvoice:nil];
 }
 
 #pragma mark - Reskit action methods

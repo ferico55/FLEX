@@ -145,6 +145,10 @@
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_alertLabel.text
                                                                                     attributes:attributes];
     _alertLabel.attributedText = productNameAttributedText;
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:_refreshControl];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -786,8 +790,11 @@
     
         [_activityIndicator startAnimating];
         
-        _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_NEW_ORDER_PATH parameters:[param encrypt]];
-
+        _request = [_objectManager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodPOST
+                                                                          path:API_NEW_ORDER_PATH
+                                                                    parameters:[param encrypt]];
+        
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             
             _isRefreshView = NO;
@@ -868,7 +875,12 @@
     
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         Order *newOrder = [result objectForKey:@""];
-        [_transactions addObjectsFromArray:newOrder.result.list];
+        
+        if (_page == 1) {
+            _transactions = newOrder.result.list;
+        } else {
+            [_transactions addObjectsFromArray:newOrder.result.list];
+        }
         
         NSLog(@"\n\n\n%@\n\n\n", _transactions);
         
@@ -1088,6 +1100,13 @@
 
         [_orderInProcess removeObjectForKey:orderId];
     }
+}
+
+- (void)refreshData
+{
+    _page = 1;
+    [self configureRestKit];
+    [self request];
 }
 
 #pragma mark - Order detail delegate
