@@ -465,7 +465,7 @@
             break;
             
         case 4:
-            return 5;
+            return 4;
             break;
             
         case 5:
@@ -614,7 +614,9 @@
             [self.navigationController pushViewController:nc animated:YES];
             
         } else if (indexPath.row == 3) {
-          
+            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
 //            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
 //            controller.hidesBottomBarWhenPushed = YES;
 //            [self.navigationController pushViewController:controller animated:YES];
