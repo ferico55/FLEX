@@ -217,12 +217,13 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    // add gesture to product image
+
+        // add gesture to product image
     UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
     [_talkProductImage addGestureRecognizer:productGesture];
     [_talkProductImage setUserInteractionEnabled:YES];
-    
-    
+
+
     
     [self setHeaderData:_data];
     
@@ -783,9 +784,11 @@
 #pragma mark - View Action
 
 - (void)tapProduct {
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
-    [self.navigationController pushViewController:vc animated:YES];
+    if([[_data objectForKey:@"talk_product_status"] isEqualToString:@"1"]) {
+        DetailProductViewController *vc = [DetailProductViewController new];
+        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)tapErrorComment {
@@ -895,9 +898,7 @@
             }
                 
             case 11 : {
-                DetailProductViewController *vc = [DetailProductViewController new];
-                vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
-                [self.navigationController pushViewController:vc animated:YES];
+                [self tapProduct];
                 break;
             }
                 
