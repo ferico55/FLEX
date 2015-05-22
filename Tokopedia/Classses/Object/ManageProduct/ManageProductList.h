@@ -27,5 +27,7 @@
 @property (nonatomic, strong) NSString *product_department;
 @property (nonatomic, strong) NSString *product_url;
 @property (nonatomic, strong) NSString *product_name;
+@property (nonatomic, strong) NSString *product_currency_symbol;
+@property (nonatomic, strong) NSString *product_no_idr_price;
 
 @end

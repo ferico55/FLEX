@@ -503,7 +503,27 @@
             return expectedLabelSize.height+40;
         }
         else if (labs(indexPathFirstObjectProduct.row-indexPath.row)<products.count) {
-            return CELL_PRODUCT_ROW_HEIGHT;
+            NSInteger indexProduct = 0;
+            if (([list.cart_error_message_1 isEqualToString:@""]||[list.cart_error_message_1 isEqualToString:@"0"])&&
+                ([list.cart_error_message_2 isEqualToString:@""]||[list.cart_error_message_2 isEqualToString:@"0"])) {
+                indexProduct = indexPath.row;
+            }
+            else
+                indexProduct = indexPath.row-1;
+            
+            NSArray *listProducts = list.cart_products;
+            ProductDetail *product = listProducts[indexProduct];
+            
+            NSString *string = product.product_notes;
+            
+            //Calculate the expected size based on the font and linebreak mode of your label
+            CGSize maximumLabelSize = CGSizeMake(190,9999);
+            CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
+                                          constrainedToSize:maximumLabelSize
+                                              lineBreakMode:NSLineBreakByTruncatingTail];
+            
+            return CELL_PRODUCT_ROW_HEIGHT+expectedLabelSize.height;
+            //return CELL_PRODUCT_ROW_HEIGHT;
         }
         else
         {
@@ -2014,15 +2034,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 44)];
+    
         textField.placeholder = placeholder;
         textField.text = (indexPath.section==_list.count+1)?@"":(indexPath.row == rowCount)?_senderNameDropshipper[indexPath.section]:_senderPhoneDropshipper[indexPath.section];
         textField.delegate = self;
         if ([placeholder isEqualToString:@"Nama Pengirim"]) {
             textField.tag = indexPath.section+1;
+            textField.keyboardType = UIKeyboardTypeDefault;
         }
         else
         {
             textField.tag = -indexPath.section -1;
+            textField.keyboardType = UIKeyboardTypeNumberPad;
         }
         textField.font = FONT_DEFAULT_CELL_TKPD;
         [textField setReturnKeyType:UIReturnKeyDone];
@@ -2098,7 +2121,7 @@
     
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section];
     ((TransactionCartCell*)cell).indexPath = indexPathCell;
-    cell.remarkLabel.text = product.product_notes;
+    [cell.remarkLabel setCustomAttributedText:product.product_notes?:@"-"];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     

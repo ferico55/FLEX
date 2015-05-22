@@ -21,12 +21,20 @@
         <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionCartCellIdentifier" rowHeight="210" id="nrB-Gb-lSt" customClass="TransactionCartCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="210"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nrB-Gb-lSt" id="ObG-qm-9Xr">
+            <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nrB-Gb-lSt" id="ObG-qm-9Xr">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOu-9t-o2o">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="91"/>
                         <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tiN-DT-ee1" userLabel="Border Bottom">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="AER-Gq-25G"/>
+                                    <constraint firstAttribute="height" constant="1" id="aTz-ZO-5S4"/>
+                                </constraints>
+                            </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" lineBreakMode="middleTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9B8-Qh-nPX">
                                 <rect key="frame" x="95" y="14" width="175" height="21"/>
                                 <constraints>
@@ -39,7 +47,7 @@
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LJv-fK-LmM" userLabel="Border Bottom">
                                 <rect key="frame" x="15" y="90" width="290" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Rti-QR-WXZ"/>
                                 </constraints>
@@ -92,6 +100,7 @@
                             <constraint firstAttribute="trailing" secondItem="LJv-fK-LmM" secondAttribute="trailing" constant="15" id="1xZ-n7-9Aa"/>
                             <constraint firstItem="fWE-ZZ-SIy" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" constant="15" id="2kY-av-vvc"/>
                             <constraint firstAttribute="bottom" secondItem="LJv-fK-LmM" secondAttribute="bottom" id="6PL-Dq-yLK"/>
+                            <constraint firstItem="tiN-DT-ee1" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" id="7Nl-1S-EJE"/>
                             <constraint firstItem="fWE-ZZ-SIy" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" constant="10" id="9M8-CL-wBN"/>
                             <constraint firstItem="9B8-Qh-nPX" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" constant="14" id="FPZ-k5-Pei"/>
                             <constraint firstItem="syi-Ey-9on" firstAttribute="top" secondItem="9B8-Qh-nPX" secondAttribute="bottom" constant="4" id="I8v-uk-eB2"/>
@@ -101,7 +110,9 @@
                             <constraint firstAttribute="height" constant="91" id="Xqe-x2-vQg"/>
                             <constraint firstItem="LJv-fK-LmM" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" constant="15" id="ZOc-6O-aPU"/>
                             <constraint firstAttribute="trailing" secondItem="VEf-5u-Ef6" secondAttribute="trailing" constant="5" id="ZQF-ni-IIi"/>
+                            <constraint firstAttribute="trailing" secondItem="tiN-DT-ee1" secondAttribute="trailing" id="bnV-Dr-vjM"/>
                             <constraint firstAttribute="trailing" secondItem="syi-Ey-9on" secondAttribute="trailing" constant="50" id="gYA-mt-Tm4"/>
+                            <constraint firstItem="tiN-DT-ee1" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" id="mcK-xh-MIE"/>
                             <constraint firstItem="VEf-5u-Ef6" firstAttribute="leading" secondItem="9B8-Qh-nPX" secondAttribute="trailing" constant="5" id="oOd-Ei-THE"/>
                             <constraint firstItem="VEf-5u-Ef6" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" id="uoK-Hf-aF0"/>
                         </constraints>
@@ -127,7 +138,7 @@
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzP-i3-O6o" userLabel="Border Bottom">
                                 <rect key="frame" x="15" y="43" width="290" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="WGr-eL-eaL"/>
                                 </constraints>
@@ -176,7 +187,7 @@
                             <constraint firstAttribute="bottom" secondItem="dDt-Mq-1QP" secondAttribute="bottom" constant="14" id="Rq4-hZ-KrB"/>
                             <constraint firstItem="dDt-Mq-1QP" firstAttribute="top" secondItem="unQ-M8-7Wu" secondAttribute="bottom" constant="2" id="RzH-R7-BN0"/>
                             <constraint firstItem="dDt-Mq-1QP" firstAttribute="leading" secondItem="CLh-ZD-D84" secondAttribute="leading" constant="15" id="WCq-hS-GOR"/>
-                            <constraint firstAttribute="height" constant="76" id="YAd-CV-daJ"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="76" id="YAd-CV-daJ"/>
                             <constraint firstItem="unQ-M8-7Wu" firstAttribute="leading" secondItem="CLh-ZD-D84" secondAttribute="leading" constant="15" id="Z55-Kx-6kf"/>
                             <constraint firstAttribute="trailing" secondItem="dDt-Mq-1QP" secondAttribute="trailing" constant="15" id="irF-a1-vHl"/>
                         </constraints>
@@ -196,6 +207,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="border" destination="tiN-DT-ee1" id="7Af-1I-fTq"/>
                 <outlet property="editButton" destination="VEf-5u-Ef6" id="Seb-zq-5Ex"/>
                 <outlet property="errorProductLabel" destination="ArF-vS-sw3" id="SIZ-vQ-fEr"/>
                 <outlet property="productNameLabel" destination="9B8-Qh-nPX" id="gUV-uK-K9f"/>

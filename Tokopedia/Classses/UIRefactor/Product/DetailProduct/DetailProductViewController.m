@@ -111,8 +111,6 @@ UIAlertViewDelegate
     
     NSInteger _requestcount;
     
-    NSMutableArray *_headerimages;
-    
     NSInteger _pageheaderimages;
     NSInteger _heightDescSection;
     Product *_product;
@@ -240,7 +238,6 @@ UIAlertViewDelegate
     fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
     _datatalk = [NSMutableDictionary new];
-    _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _otherProductObj = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -2056,7 +2053,9 @@ UIAlertViewDelegate
     
     NSArray *images = _product.result.product_images;
     
-    [_headerimages removeAllObjects];
+    NSMutableArray *headerImages = [NSMutableArray new];
+    
+    [[_imagescrollview subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     for(int i = 0; i< images.count; i++)
     {
@@ -2087,10 +2086,10 @@ UIAlertViewDelegate
         thumb.contentMode = UIViewContentModeScaleAspectFit;
         
         [_imagescrollview addSubview:thumb];
-        [_headerimages addObject:thumb];
+        [headerImages addObject:thumb];
     }
     
-    _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
+    _pagecontrol.hidden = headerImages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = images.count;
     
     _imagescrollview.contentSize = CGSizeMake(images.count*self.view.frame.size.width,0);
@@ -2099,7 +2098,7 @@ UIAlertViewDelegate
     
     [_datatalk setObject:_formattedProductTitle?:@"" forKey:API_PRODUCT_NAME_KEY];
     [_datatalk setObject:_product.result.product.product_price?:@"" forKey:API_PRODUCT_PRICE_KEY];
-    [_datatalk setObject:_headerimages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
+    [_datatalk setObject:headerImages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
 }
 
 -(void)setFooterViewData

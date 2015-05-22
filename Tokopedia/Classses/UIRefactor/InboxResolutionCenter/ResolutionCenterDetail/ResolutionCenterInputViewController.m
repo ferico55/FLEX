@@ -98,7 +98,10 @@
     _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
     _thumbImages = [NSArray sortViewsWithTagInArray:_thumbImages];
     
-    [_cancelButtons makeObjectsPerformSelector:@selector(setHidden:)withObject:@(YES)];
+    for (UIButton *btn in _cancelButtons) {
+        btn.hidden = YES;
+    }
+    
     [_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:)withObject:@(NO)];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -262,7 +265,7 @@
     }
     
     if (!_isFinishUploadingImage) {
-        [errorMessage addObject:@"Belum selesai mengupload image."];
+        [errorMessage addObject:@"Anda belum selesai mengunggah gambar."];
         isValid = NO;
     }
     
@@ -425,16 +428,23 @@
 
 -(void)didTapEditSolutionButton
 {
-    
+    BOOL isSeller = (_resolution.resolution_by.by_seller == 1);
     BOOL isGotTheOrder = [_resolution.resolution_last.last_flag_received boolValue];
-    if (isGotTheOrder) {
+
+    if (isSeller) {
         [self resolutionOpenIsGotTheOrder:isGotTheOrder];
     }
     else
     {
-        UIAlertView *alertChangeSolution = [[UIAlertView alloc]initWithTitle:@"Apakah barang telah diterima?" message:@"Anda tidak bisa mengubah menjadi tidak terima barang, setelah Anda konfirmasi terima barang." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya",@"Tidak", nil];
-        alertChangeSolution.tag = TAG_CHANGE_SOLUTION;
-        [alertChangeSolution show];
+        if (isGotTheOrder) {
+            [self resolutionOpenIsGotTheOrder:isGotTheOrder];
+        }
+        else
+        {
+            UIAlertView *alertChangeSolution = [[UIAlertView alloc]initWithTitle:@"Apakah barang telah diterima?" message:@"Anda tidak bisa mengubah menjadi tidak terima barang, setelah Anda konfirmasi terima barang." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya",@"Tidak", nil];
+            alertChangeSolution.tag = TAG_CHANGE_SOLUTION;
+            [alertChangeSolution show];
+        }
     }
 }
 
@@ -542,10 +552,10 @@
 -(void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo
 {
     NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
+    NSArray *selectedIndexPaths = [userinfo objectForKey:@"selected_indexpath"];
     
-    [_selectedIndexPathCameraController removeAllObjects];
-    [_selectedIndexPathCameraController addObjectsFromArray:[userinfo objectForKey:@"selected_indexpath"]];
-    
+    _selectedIndexPathCameraController = [selectedIndexPaths mutableCopy];
+        
     //Hapus data yg equal @""
     NSMutableArray *selectedImageTemp = [NSMutableArray new];
     for (NSDictionary *selected in _selectedImagesCameraController) {
@@ -553,8 +563,8 @@
             [selectedImageTemp addObject:selected];
         }
     }
-    [_selectedImagesCameraController removeAllObjects];
-    [_selectedImagesCameraController addObjectsFromArray:selectedImageTemp];
+    
+    _selectedImagesCameraController = selectedImageTemp;
     
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];
@@ -570,6 +580,7 @@
     for (NSDictionary *selected in selectedImages) {
         if (![self Array:[_selectedImagesCameraController copy] containObject:selected])
         {
+            [_selectedImagesCameraController addObject:selected];
             [self setImageData:selected tag:[emptyImageIndex[j] integerValue]];
             j++;
         }
@@ -578,9 +589,6 @@
     if ([self totalUploadedAndUploadingImage] == 0) {
         [_imageScrollView removeFromSuperview];
     }
-    
-    [_selectedImagesCameraController removeAllObjects];
-    [_selectedImagesCameraController addObjectsFromArray:selectedImages];
 
 }
 
@@ -589,37 +597,46 @@
     //Hapus Image dari camera controller
     NSMutableArray *removedImages = [NSMutableArray new];
      for (int i = 0; i<_selectedImagesCameraController.count; i++) {
-         NSDictionary *photoObjectInArray = [_selectedImagesCameraController[i] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-         NSDictionary *photoObject = [removedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-         
-         UIImage* imageObject = [photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-         UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imageObject.scale);
-         [imageObject drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-         imageObject = UIGraphicsGetImageFromCurrentImageContext();
-         UIGraphicsEndImageContext();
-         
-         if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
+         if ([_selectedImagesCameraController[i] isEqual:@""]) {
+             ((UIImageView*)_thumbImages[i]).image = nil;
+         }
+         else
+         {
+             NSDictionary *photoObjectInArray = [_selectedImagesCameraController[i] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+             NSDictionary *photoObject = [removedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
              
-            NSMutableDictionary *object = [NSMutableDictionary new];
-            [object setObject:removedImage forKey:DATA_SELECTED_PHOTO_KEY];
-            UIImageView *imageView;
-
-            for (UIImageView *image in _thumbImages) {
-                
-                if ([self image:image.image isEqualTo:imageObject])
-                {
-                    imageView = image;
-                    break;
-                }
-            }
-             if (imageView != nil) {
-                [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+             UIImage* imageObject = [photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+             UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imageObject.scale);
+             [imageObject drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+             imageObject = UIGraphicsGetImageFromCurrentImageContext();
+             UIGraphicsEndImageContext();
+             
+             if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
+                 
+                 NSMutableDictionary *object = [NSMutableDictionary new];
+                 [object setObject:removedImage forKey:DATA_SELECTED_PHOTO_KEY];
+                 UIImageView *imageView;
+                 
+                 for (UIImageView *image in _thumbImages) {
+                     
+                     if ([self image:image.image isEqualTo:imageObject])
+                     {
+                         imageView = image;
+                         break;
+                     }
+                 }
+                 if (imageView != nil) {
+                     [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+                     [self failedUploadObject:object];
+                 }
+                 
+                 [removedImages addObject:object];
+                 [_selectedIndexPathCameraController removeObjectAtIndex:i];
+                 
+                 break;
              }
+         }
 
-            [removedImages addObject:object];
-            [self failedUploadObject:object];
-            break;
-        }
      }
 }
 
@@ -653,10 +670,6 @@
     NSDictionary* photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     
     UIImage* imagePhoto = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imagePhoto.scale);
-    [imagePhoto drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    imagePhoto = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
     
     for (UIImageView *image in _thumbImages) {
         if (image.tag == tagView)

@@ -28,5 +28,6 @@
 @property BOOL isCameraSource;
 @property NSArray *selectedImagesArray;
 @property(nonatomic, strong) NSMutableArray *selectedIndexPath;
+@property NSInteger maxSelected;
 
 @end

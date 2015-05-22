@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Breadcrumb.h"
 
 @interface UserAuthentificationManager : NSObject {
     id userLoginData;
@@ -20,6 +21,7 @@
 - (NSString*)getUserId;
 - (NSString*)getShopId;
 - (NSString*)getShopHasTerm;
+- (Breadcrumb*)getLastProductAddCategory;
 - (NSString*)getMyDeviceToken;
 - (NSString*)getMyDeviceIdToken;
 - (BOOL)isMyShopWithShopId:(NSString*)shopId;
