@@ -10,4 +10,6 @@
 
 @interface InboxCustomerServiceCell : UITableViewCell
 
++ (id)initCell;
+
 @end

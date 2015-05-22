@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, InboxCustomerServiceType) {
+    InboxCustomerServiceTypeAll,
+    InboxCustomerServiceTypeInProcess,
+    InboxCustomerServiceTypeClosed
+};
+
 @interface InboxCustomerServiceViewController : UITableViewController
+
+@property InboxCustomerServiceType inboxCustomerServiceType;
 
 @end

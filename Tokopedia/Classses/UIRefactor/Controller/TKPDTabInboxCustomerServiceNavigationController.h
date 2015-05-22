@@ -10,4 +10,6 @@
 
 @interface TKPDTabInboxCustomerServiceNavigationController : UIViewController
 
+@property (strong, nonatomic) NSArray *viewControllers;
+
 @end
