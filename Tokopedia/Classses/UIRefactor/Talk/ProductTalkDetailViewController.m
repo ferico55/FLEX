@@ -456,18 +456,22 @@
     _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
-//    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
-//    UIImage * image;
-//    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
-//    if(imageData) {
-//        image = [UIImage imageWithData:imageData];
-//    } else {
-//        image = [UIImage imageNamed:@"default-boy.png"];
-//    }
-//    
-//    _talkuserimage.image = image;
-//    _talkuserimage = [UIImageView circleimageview:_talkuserimage];
-//
+    if(![[data objectForKey:TKPD_TALK_USER_ID] isEqualToString:[_userManager getUserId]]) {
+        _reportButton.hidden = NO;
+        
+        CGRect newFrame = _talktotalcommentlabel.frame;
+        newFrame.origin.x = 54;
+        _talktotalcommentlabel.frame = newFrame;
+        _buttonsDividers.hidden = NO;
+    } else {
+        _reportButton.hidden = YES;
+        
+        CGRect newFrame = _talktotalcommentlabel.frame;
+        newFrame.origin.x = 120;
+        _talktotalcommentlabel.frame = newFrame;
+        _buttonsDividers.hidden = YES;
+    }
+    
     
     NSURLRequest* requestUserImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [_talkuserimage setImageWithURLRequest:requestUserImage placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
