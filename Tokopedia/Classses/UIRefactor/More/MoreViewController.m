@@ -34,8 +34,8 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
-#import "TKPDTabViewController.h"
-#import "InboxCustomerServiceViewController.h"
+//#import "TKPDTabViewController.h"
+//#import "InboxCustomerServiceViewController.h"
 
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
