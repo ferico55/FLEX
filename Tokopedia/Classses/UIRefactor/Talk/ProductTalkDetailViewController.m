@@ -852,7 +852,7 @@
                     [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
                     NSString *dateString = [dateFormat stringFromDate:today];
                     
-                    commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
+                    commentlist.comment_create_time = dateString;
                     commentlist.is_just_sent = YES;
                     
                     [_list insertObject:commentlist atIndex:lastindexpathrow];
@@ -1140,7 +1140,7 @@
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralTalkCommentCell*) cell).indexpath;
         TalkCommentList *list = _list[indexPath.row];
-        if(list.comment_user_id == nil)
+        if(list.comment_user_id == nil || list.comment_id == nil)
             return nil;
         
         [_datainput setObject:list.comment_id forKey:@"comment_id"];
