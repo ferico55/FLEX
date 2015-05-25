@@ -18,7 +18,6 @@
 #import "string_more.h"
 #import "WebViewController.h"
 
-
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
 
@@ -35,7 +34,8 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
-//#import "TKPDTabInboxCustomerServiceNavigationController.h"
+#import "TKPDTabViewController.h"
+#import "InboxCustomerServiceViewController.h"
 
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
@@ -615,17 +615,25 @@
             
         } else if (indexPath.row == 3) {
           
-//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
-//            controller.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:controller animated:YES];
+            TKPDTabViewController *controller = [TKPDTabViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+            
+            InboxCustomerServiceViewController *allInbox = [InboxCustomerServiceViewController new];
+            InboxCustomerServiceViewController *unreadInbox = [InboxCustomerServiceViewController new];
+            InboxCustomerServiceViewController *closedInbox = [InboxCustomerServiceViewController new];
+            
+            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+            
+            [self.navigationController pushViewController:controller animated:YES];
             
         } else if (indexPath.row  == 4) {
+            
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
             
-        }
-        
+        }        
     }
     
     else if (indexPath.section == 5) {
