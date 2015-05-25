@@ -457,7 +457,7 @@
     _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
-    if(![[data objectForKey:TKPD_TALK_USER_ID] isEqualToString:[_userManager getUserId]]) {
+    if(![[data objectForKey:TKPD_TALK_USER_ID] isEqualToString:[_userManager getUserId]] && ![_userManager isMyShopWithShopId:[_data objectForKey:@"talk_shop_id"]]) {
         _reportButton.hidden = NO;
         
         CGRect newFrame = _talktotalcommentlabel.frame;
@@ -1146,7 +1146,7 @@
         [_datainput setObject:list.comment_id forKey:@"comment_id"];
         [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
         
-        if(![[_userManager getUserId] isEqualToString:list.comment_user_id]) {
+        if(![[_userManager getUserId] isEqualToString:list.comment_user_id] && ![_userManager isMyShopWithShopId:[_data objectForKey:@"talk_shop_id"]]) {
             MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];
