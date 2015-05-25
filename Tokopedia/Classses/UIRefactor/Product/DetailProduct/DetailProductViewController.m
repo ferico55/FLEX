@@ -171,6 +171,8 @@ UIAlertViewDelegate
     UIFont *fontDesc;
     
     RequestMoveTo *_requestMoveTo;
+    
+    NSMutableArray *_headerimages;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -262,6 +264,8 @@ UIAlertViewDelegate
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
+    
+    _headerimages = [NSMutableArray new];
     
     _requestMoveTo =[RequestMoveTo new];
     _requestMoveTo.delegate = self;
@@ -2614,7 +2618,6 @@ UIAlertViewDelegate
         
     return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_description;
 }
-
 
 - (UIImage *)photoGallery:(NSUInteger)index {
     if(((int) index) < 0)
