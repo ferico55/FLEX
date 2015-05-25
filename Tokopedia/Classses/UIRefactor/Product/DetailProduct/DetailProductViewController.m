@@ -173,7 +173,6 @@ UIAlertViewDelegate
     
     RequestMoveTo *_requestMoveTo;
     
-    NSMutableArray *_headerimages;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
