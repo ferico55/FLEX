@@ -10,4 +10,8 @@
 
 @implementation ReviewResponse
 
+- (NSString*)response_message {
+    return [_response_message kv_decodeHTMLCharacterEntities];
+}
+
 @end
