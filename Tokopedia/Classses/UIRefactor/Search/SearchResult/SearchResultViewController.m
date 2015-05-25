@@ -878,6 +878,7 @@ LoadingViewDelegate
 -(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     [_params addEntriesFromDictionary:userInfo];
+    [_product removeAllObjects];
     [self refreshView:nil];
     _table.tableFooterView = _footer;
     [_act startAnimating];
