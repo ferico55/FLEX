@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UIView *productView;
 @property (weak, nonatomic) IBOutlet UILabel *errorProductLabel;
 
+@property (weak, nonatomic) IBOutlet UIView *border;
 +(id)newcell;
 
 @end

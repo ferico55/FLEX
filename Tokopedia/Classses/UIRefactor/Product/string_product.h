@@ -31,6 +31,7 @@ typedef enum
     BUTTON_PRODUCT_WEIGHT = 1,
     
     BUTTON_PRODUCT_INSURANCE = 0,
+    BUTTON_PRODUCT_RETURNABLE = 1,
     
     BUTTON_PRODUCT_ETALASE = 0,
     BUTTON_PRODUCT_ETALASE_DETAIL = 1,
@@ -157,6 +158,8 @@ typedef enum
 #define API_PRODUCT_NAME_KEY @"product_name"
 #define API_PRODUCT_QUANTITY_KEY @"product_quantity"
 #define API_PRODUCT_CART_ID_KEY @"product_cart_id"
+#define API_PRODUCT_CURRENCY_SYMBOL @"product_currency_symbol"
+#define API_PRICE_USD_VALUE @"product_no_idr_price"
 
 #define API_MANAGE_PRODUCT_KEYWORD_KEY          @"keyword"
 #define API_MANAGE_PRODUCT_ETALASE_ID_KEY       @"etalase_id"
@@ -242,7 +245,9 @@ typedef enum
 #define ARRAY_PRODUCT_INSURACE @[@{DATA_NAME_KEY:@"Opsional", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(2)}]
 #define ARRAY_PRODUCT_CONDITION @[@{DATA_NAME_KEY:@"Baru", DATA_VALUE_KEY:@(PRODUCT_CONDITION_NEW_ID)}, @{DATA_NAME_KEY:@"Bekas", DATA_VALUE_KEY:@(PRODUCT_CONDITION_SECOND_ID)}]
 #define ARRAY_PRODUCT_MOVETO_ETALASE @[@{DATA_NAME_KEY:@"Gudang", DATA_VALUE_KEY:@(2)}, @{DATA_NAME_KEY:@"Etalase", DATA_VALUE_KEY:@(1)}]
-#define ARRAY_PRODUCT_RETURNABLE @[@{DATA_NAME_KEY:@"Not Set", DATA_VALUE_KEY:@(0)}, @{DATA_NAME_KEY:@"Yes", DATA_VALUE_KEY:@(RETURNABLE_YES_ID)}, @{DATA_NAME_KEY:@"No", DATA_VALUE_KEY:@(RETURNABLE_NO_ID)}]
+
+#define ARRAY_PRODUCT_RETURNABLE @[@{DATA_NAME_KEY:@"-", DATA_VALUE_KEY:@(0)}, @{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(RETURNABLE_YES_ID)}, @{DATA_NAME_KEY:@"Tidak", DATA_VALUE_KEY:@(RETURNABLE_NO_ID)}]
+
 #define ARRAY_PRODUCT_WAREHOUSE @[@{DATA_NAME_KEY:@"Yes", DATA_VALUE_KEY:@(PRODUCT_WAREHOUSE_YES_ID)},@{DATA_NAME_KEY:@"No", DATA_VALUE_KEY:@(PRODUCT_WAREHOUSE_NO_ID)}]
 
 #define PRODUCT_DESC @"Deskripsi Produk"
@@ -250,7 +255,11 @@ typedef enum
 #define PRODUCT_INFO @"Informasi Produk"
 #define NO_DESCRIPTION @"Tidak ada deskripsi"
 
+#define CStringCannotReture @"Produk yang sudah dibeli tidak dapat ditukar atau dikembalikan"
+#define CStringCanReture @"Produk yang sudah dibeli dapat ditukar atau dikembalikan dengan Syarat dan Ketentuan masing-masing toko"
+#define CStringCanRetureLinkDetection @"Syarat dan Ketentuan masing-masing toko"
+#define CStringCanRetureReplace @" dengan Syarat dan Ketentuan masing-masing toko"
 #define CStringSuccessFavoriteShop @"Anda berhasil memfavoritkan toko ini!"
 #define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
-
+#define CStringSyaratDanKetentuan @"Syarat & Ketentuan"
 #endif

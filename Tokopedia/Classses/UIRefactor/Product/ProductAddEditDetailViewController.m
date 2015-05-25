@@ -80,7 +80,6 @@
     
     BOOL _isNodata;
     BOOL _isBeingPresented;
-    BOOL _isShopHasTerm;
     EtalaseList *_selectedEtalase;
 }
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
@@ -190,6 +189,16 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    UITableViewCell *returnableCell = (UITableViewCell*)_section0TableViewCell[1];
+    
+    if (_isShopHasTerm) {
+        returnableCell.detailTextLabel.textColor = TEXT_COLOUR_ENABLE;
+    }
+    else
+    {
+        returnableCell.detailTextLabel.textColor = TEXT_COLOUR_DISABLE;
+    }
     
     _returnableProductSwitch.enabled = _isShopHasTerm;
 }
@@ -344,6 +353,10 @@
                 NSString *productMustInsurance =[ARRAY_PRODUCT_INSURACE[([product.product_must_insurance integerValue]-1>0)?[product.product_must_insurance integerValue]-1:0]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productMustInsurance;
             }
+            if (indexPath.row == BUTTON_PRODUCT_RETURNABLE) {
+                NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[product.product_returnable integerValue]]objectForKey:DATA_NAME_KEY];
+                cell.detailTextLabel.text = productReturnable;
+            }
             break;
         case 1:
             cell = _section1TableViewCell[indexPath.row];
@@ -444,6 +457,17 @@
                     alertView.delegate = self;
                     alertView.pickerData = ARRAY_PRODUCT_INSURACE;
                     [alertView show];
+                    break;
+                }
+                case BUTTON_PRODUCT_RETURNABLE:
+                {
+                    if (_isShopHasTerm) {
+                        AlertPickerView *alertView = [AlertPickerView newview];
+                        alertView.tag = 13;
+                        alertView.delegate = self;
+                        alertView.pickerData = ARRAY_PRODUCT_RETURNABLE;
+                        [alertView show];
+                    }
                     break;
                 }
             }
@@ -737,18 +761,19 @@
     NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     
     NSString *productID = product.product_id?:@"";
-    NSInteger returnableProduct = [[_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
-    if (returnableProduct == -1) {
-        returnableProduct = 0; // Not Set
-    }
-    else if(returnableProduct == 1)
-    {
-        returnableProduct = 1; //returnable
-    }
-    else
-    {
-        returnableProduct = 2; // not returnable
-    }
+    NSInteger returnableProduct = [product.product_returnable integerValue];
+    //NSInteger returnableProduct = [[_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
+    //if (returnableProduct == -1) {
+    //    returnableProduct = 0; // Not Set
+    //}
+    //else if(returnableProduct == 1)
+    //{
+    //    returnableProduct = 1; //returnable
+    //}
+    //else
+    //{
+    //    returnableProduct = 2; // not returnable
+    //}
     
     NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
     
@@ -1100,18 +1125,19 @@
 
     
     NSString *productID = product.product_id?:@"";
-    NSString *returnableProduct = [_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]?:product.product_returnable?:@"";
-    if ([returnableProduct integerValue] == -1) {
-        returnableProduct = @"0"; // Not Set
-    }
-    else if([returnableProduct integerValue] == 1)
-    {
-        returnableProduct = @"1"; //returnable
-    }
-    else
-    {
-        returnableProduct = @"2"; // not returnable
-    }
+    NSString *returnableProduct = product.product_returnable?:@"0";
+    //NSString *returnableProduct = [_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]?:product.product_returnable?:@"";
+    //if ([returnableProduct integerValue] == -1) {
+    //    returnableProduct = @"0"; // Not Set
+    //}
+    //else if([returnableProduct integerValue] == 1)
+    //{
+    //    returnableProduct = @"1"; //returnable
+    //}
+    //else
+    //{
+    //    returnableProduct = @"2"; // not returnable
+    //}
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
                                       API_PRODUCT_ID_KEY: productID,
@@ -1332,9 +1358,13 @@
             [_tableView reloadData];
             break;
         }
-        case BUTTON_PRODUCT_RETURNABLE_NOTE:
+        case 13:
         {
-
+            NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
+            NSString *value = [ARRAY_PRODUCT_RETURNABLE[index] objectForKey:DATA_VALUE_KEY];
+            product.product_returnable = value;
+            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+            [_tableView reloadData];
             break;
         }
         default:
@@ -1386,9 +1416,10 @@
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
         ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-        NSString *productReturnable = product.product_returnable;
+        NSString *productReturnable = product.product_returnable?:@"";
         if ([productReturnable isEqualToString:@""] || [productReturnable isEqualToString:@"0"] || productReturnable == nil) {
-            [_dataInput setObject:@(-1) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
+            [_dataInput setObject:@(0) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
+            //[_dataInput setObject:@(-1) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
         }
         BOOL isProductReturnable = ([productReturnable integerValue] == RETURNABLE_YES_ID)?YES:NO;
         _returnableProductSwitch.on = isProductReturnable;

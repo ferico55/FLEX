@@ -10,4 +10,9 @@
 
 @implementation OrderProduct
 
+-(NSString *)product_notes
+{
+    return [_product_notes kv_decodeHTMLCharacterEntities];
+}
+
 @end

@@ -120,6 +120,22 @@
     return cell;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //Calculate the expected size based on the font and linebreak mode of your label
+    NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
+    NSArray *listProducts = _order.order_products;
+    OrderProduct *product = listProducts[indexProduct];
+    CGSize maximumLabelSize = CGSizeMake(190,9999);
+    NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
+    NSString *string = productNotes;
+    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_13
+                                  constrainedToSize:maximumLabelSize
+                                      lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    return 210+expectedLabelSize.height;
+}
+
 
 #pragma mark - Cell Delegate
 -(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
@@ -150,6 +166,7 @@
         cell.delegate = self;
     }
     
+    cell.border.hidden = NO;
     NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
     NSArray *listProducts = _order.order_products;
     OrderProduct *product = listProducts[indexProduct];
@@ -166,7 +183,8 @@
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section-1];
     cell.indexPath = indexPathCell;
     cell.editButton.hidden = YES;
-    cell.remarkLabel.text = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
+    NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
+    [cell.remarkLabel setCustomAttributedText:[NSString convertHTML:productNotes]];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
