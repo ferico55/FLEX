@@ -52,6 +52,7 @@
 #import "Helpshift.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
+#import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
 
@@ -636,9 +637,30 @@
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+//            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            
+            if([MFMailComposeViewController canSendMail]) {
+                MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
+                emailController.mailComposeDelegate = self;
+                
+                
+                NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+                
+                [emailController setSubject:@"Feedback"];
+                [emailController setMessageBody:messageBody isHTML:YES];
+                [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
+                [emailController.navigationBar setTintColor:[UIColor whiteColor]];
+                 
+                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+                [self presentViewController:emailController animated:YES completion:nil];
+            } else {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email (dan login terlebih dahulu) apabila ingin mengirimkan feedback :)"]
+                                                                               delegate:self];
+                [alert show];
+            }
+            
         } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker set:kGAIScreenName value:@"FAQ Center"];
@@ -803,6 +825,11 @@
 {
     UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
     _profilePictureImageView.image = profilePicture;
+}
+
+#pragma mark - Email delegate
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end
