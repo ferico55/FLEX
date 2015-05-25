@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *unreadBtn;
 @property (weak, nonatomic) IBOutlet UIView *allSign;
 @property (weak, nonatomic) IBOutlet UIView *unreadSign;
+@property (weak, nonatomic) IBOutlet UIView *segmentContainer;
 
 @property (weak, nonatomic) IBOutlet UIView *buttonsContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceButtons;
@@ -101,6 +102,11 @@
 {
     [super viewDidLoad];
     
+    [_segmentContainer.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_segmentContainer.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_segmentContainer.layer setShadowRadius:1];
+    [_segmentContainer.layer setShadowOpacity:0.3];
+    
     _titleNavMessage = ALL_MESSAGE;
     _titleNavMessageSent = ALL_MESSAGE;
     _titleNavMessageArchive = ALL_MESSAGE;
@@ -126,6 +132,8 @@
     CGRect frame = _buttonsContainer.frame;
     frame.origin.y = -89;
     _buttonsContainer.frame = frame;
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
