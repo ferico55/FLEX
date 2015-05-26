@@ -190,6 +190,13 @@
         for(int i=0;i<messages.count;i++) {
             NSString *str = [NSString stringWithFormat:@"%@", [messages objectAtIndex:i]];
             str = [NSString convertHTML:str];
+            if ([str containsString:@"ERROR_IMG_WIDTH_SMALL"]) {
+                str = @"Maksimum ukuran file yang diunggah adalah 500.000 bytes (500 Kilobytes)";
+            }
+            else if([str containsString:@"SERVER_ERROR"])
+            {
+                str = @"Mohon maaf, terjadi kendala pada server. Mohon coba kembali";
+            }
             [messagesError addObject:str];
         }
     }
