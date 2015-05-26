@@ -260,10 +260,10 @@
     _totalPaymentLabel.text = _order.order_detail.detail_open_amount_idr;
     _recieverName.text = _order.order_destination.receiver_name;
     _recieverPhone.text = _order.order_destination.receiver_phone;
-    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@, %@ %@",
+    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@ %@",
                          _order.order_destination.address_street,
-                         _order.order_destination.address_city
-                         ,_order.order_destination.address_district,
+                         _order.order_destination.address_district,
+                         _order.order_destination.address_city,
                          _order.order_destination.address_province,
                          _order.order_destination.address_postal];
     [_addressStreetLabel setCustomAttributedText:[NSString convertHTML:address]];

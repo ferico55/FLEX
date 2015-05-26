@@ -353,10 +353,10 @@
     cell.totalPaymentLabel.text = orderList.order_detail.detail_open_amount_idr;
     
     cell.recieverNameLabel.text = orderList.order_destination.receiver_name;
-    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@, %@ %@",
+    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@ %@",
                          orderList.order_destination.address_street,
-                         orderList.order_destination.address_city,
                          orderList.order_destination.address_district,
+                         orderList.order_destination.address_city,
                          orderList.order_destination.address_province,
                          orderList.order_destination.address_postal];
     [cell.addressLabel setCustomAttributedText:[NSString convertHTML:address]];
