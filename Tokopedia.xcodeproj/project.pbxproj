@@ -1410,6 +1410,16 @@
 		7AB96E6B1B021B630060A4C9 /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB968ED1B021B630060A4C9 /* zbar-helpicons.png */; };
 		7AB96E6C1B021B630060A4C9 /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB968EE1B021B630060A4C9 /* zbar-samples.png */; };
 		7AB96E6E1B02245D0060A4C9 /* icon_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB96E6D1B02245D0060A4C9 /* icon_green.png */; };
+		85368F5B1B131F9900461969 /* AlertPriceNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85368F4C1B131F9800461969 /* AlertPriceNotificationViewController.m */; };
+		85368F5C1B131F9900461969 /* AlertPriceNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85368F4D1B131F9800461969 /* AlertPriceNotificationViewController.xib */; };
+		85368F5D1B131F9900461969 /* DetailPriceAlertTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85368F4F1B131F9800461969 /* DetailPriceAlertTableViewCell.m */; };
+		85368F5E1B131F9900461969 /* DetailPriceAlertTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85368F501B131F9800461969 /* DetailPriceAlertTableViewCell.xib */; };
+		85368F5F1B131F9900461969 /* DetailPriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85368F521B131F9900461969 /* DetailPriceAlertViewController.m */; };
+		85368F601B131F9900461969 /* DetailPriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85368F531B131F9900461969 /* DetailPriceAlertViewController.xib */; };
+		85368F611B131F9900461969 /* PriceAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85368F551B131F9900461969 /* PriceAlertCell.m */; };
+		85368F621B131F9900461969 /* PriceAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85368F561B131F9900461969 /* PriceAlertCell.xib */; };
+		85368F631B131F9900461969 /* PriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85368F581B131F9900461969 /* PriceAlertViewController.m */; };
+		85368F641B131F9900461969 /* PriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85368F591B131F9900461969 /* PriceAlertViewController.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1417,11 +1427,15 @@
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		855856571B0DF4D80021288E /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = 855856561B0DF4D80021288E /* Note.m */; };
+		856ADFFD1B1411D80063D0BA /* DepartmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 856ADFFC1B1411D80063D0BA /* DepartmentTableViewController.m */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		85D3A1721B1323BF0072DB66 /* PriceAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D3A1711B1323BF0072DB66 /* PriceAlert.m */; };
+		85D3A1751B1323DB0072DB66 /* PriceAlertResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D3A1741B1323DB0072DB66 /* PriceAlertResult.m */; };
+		85D3A1781B13249C0072DB66 /* DetailPriceAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D3A1771B13249C0072DB66 /* DetailPriceAlert.m */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -2850,7 +2864,6 @@
 		7AB965C21B021B610060A4C9 /* NavigationBarBlurController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationBarBlurController.m; sourceTree = "<group>"; };
 		7AB965C31B021B610060A4C9 /* ShopContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopContainerViewController.h; sourceTree = "<group>"; };
 		7AB965C41B021B610060A4C9 /* ShopContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopContainerViewController.m; sourceTree = "<group>"; };
-		7AB965C51B021B610060A4C9 /* ShopContainerViewController.m.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ShopContainerViewController.m.orig; sourceTree = "<group>"; };
 		7AB965C61B021B610060A4C9 /* ShopContainerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopContainerViewController.xib; sourceTree = "<group>"; };
 		7AB965C71B021B610060A4C9 /* ShopNotesPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopNotesPageViewController.h; sourceTree = "<group>"; };
 		7AB965C81B021B610060A4C9 /* ShopNotesPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopNotesPageViewController.m; sourceTree = "<group>"; };
@@ -3601,6 +3614,22 @@
 		7AB968ED1B021B630060A4C9 /* zbar-helpicons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-helpicons.png"; sourceTree = "<group>"; };
 		7AB968EE1B021B630060A4C9 /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
 		7AB96E6D1B02245D0060A4C9 /* icon_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_green.png; sourceTree = "<group>"; };
+		85368F4B1B131F9800461969 /* AlertPriceNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertPriceNotificationViewController.h; sourceTree = "<group>"; };
+		85368F4C1B131F9800461969 /* AlertPriceNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertPriceNotificationViewController.m; sourceTree = "<group>"; };
+		85368F4D1B131F9800461969 /* AlertPriceNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertPriceNotificationViewController.xib; sourceTree = "<group>"; };
+		85368F4E1B131F9800461969 /* DetailPriceAlertTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertTableViewCell.h; sourceTree = "<group>"; };
+		85368F4F1B131F9800461969 /* DetailPriceAlertTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertTableViewCell.m; sourceTree = "<group>"; };
+		85368F501B131F9800461969 /* DetailPriceAlertTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertTableViewCell.xib; sourceTree = "<group>"; };
+		85368F511B131F9900461969 /* DetailPriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertViewController.h; sourceTree = "<group>"; };
+		85368F521B131F9900461969 /* DetailPriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertViewController.m; sourceTree = "<group>"; };
+		85368F531B131F9900461969 /* DetailPriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertViewController.xib; sourceTree = "<group>"; };
+		85368F541B131F9900461969 /* PriceAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertCell.h; sourceTree = "<group>"; };
+		85368F551B131F9900461969 /* PriceAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertCell.m; sourceTree = "<group>"; };
+		85368F561B131F9900461969 /* PriceAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertCell.xib; sourceTree = "<group>"; };
+		85368F571B131F9900461969 /* PriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertViewController.h; sourceTree = "<group>"; };
+		85368F581B131F9900461969 /* PriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertViewController.m; sourceTree = "<group>"; };
+		85368F591B131F9900461969 /* PriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertViewController.xib; sourceTree = "<group>"; };
+		85368F5A1B131F9900461969 /* string_price_alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_price_alert.h; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -3609,11 +3638,19 @@
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		855856551B0DF4D80021288E /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note.h; sourceTree = "<group>"; };
 		855856561B0DF4D80021288E /* Note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note.m; sourceTree = "<group>"; };
+		856ADFFB1B1411D80063D0BA /* DepartmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentTableViewController.h; sourceTree = "<group>"; };
+		856ADFFC1B1411D80063D0BA /* DepartmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentTableViewController.m; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		85D3A1701B1323BF0072DB66 /* PriceAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlert.h; sourceTree = "<group>"; };
+		85D3A1711B1323BF0072DB66 /* PriceAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlert.m; sourceTree = "<group>"; };
+		85D3A1731B1323DB0072DB66 /* PriceAlertResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertResult.h; sourceTree = "<group>"; };
+		85D3A1741B1323DB0072DB66 /* PriceAlertResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertResult.m; sourceTree = "<group>"; };
+		85D3A1761B13249C0072DB66 /* DetailPriceAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlert.h; sourceTree = "<group>"; };
+		85D3A1771B13249C0072DB66 /* DetailPriceAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlert.m; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -3814,6 +3851,7 @@
 				7AB960CD1B021B600060A4C9 /* InboxTalk */,
 				7AB960D41B021B600060A4C9 /* ManageProduct */,
 				7AB960DB1B021B600060A4C9 /* Notification */,
+				85D3A16F1B1321AF0072DB66 /* PriceAlert */,
 				7AB960E71B021B600060A4C9 /* Paging */,
 				7AB960EA1B021B600060A4C9 /* ProductFeed */,
 				7AB960F11B021B600060A4C9 /* ProductTalkCommentAction */,
@@ -5154,6 +5192,7 @@
 				7AB964571B021B610060A4C9 /* MyShopPayment */,
 				7AB9645E1B021B610060A4C9 /* MyShopShipment */,
 				7AB964651B021B610060A4C9 /* NotificationManager */,
+				857567D81B12BDEE00EC1B35 /* PriceAlert */,
 				7AB9646F1B021B610060A4C9 /* Product */,
 				7AB964B71B021B610060A4C9 /* Profile */,
 				7AB964BC1B021B610060A4C9 /* Reputation */,
@@ -6565,7 +6604,6 @@
 				7AB965C21B021B610060A4C9 /* NavigationBarBlurController.m */,
 				7AB965C31B021B610060A4C9 /* ShopContainerViewController.h */,
 				7AB965C41B021B610060A4C9 /* ShopContainerViewController.m */,
-				7AB965C51B021B610060A4C9 /* ShopContainerViewController.m.orig */,
 				7AB965C61B021B610060A4C9 /* ShopContainerViewController.xib */,
 				7AB965C71B021B610060A4C9 /* ShopNotesPageViewController.h */,
 				7AB965C81B021B610060A4C9 /* ShopNotesPageViewController.m */,
@@ -7751,6 +7789,44 @@
 			path = Note;
 			sourceTree = "<group>";
 		};
+		857567D81B12BDEE00EC1B35 /* PriceAlert */ = {
+			isa = PBXGroup;
+			children = (
+				85368F4B1B131F9800461969 /* AlertPriceNotificationViewController.h */,
+				85368F4C1B131F9800461969 /* AlertPriceNotificationViewController.m */,
+				85368F4D1B131F9800461969 /* AlertPriceNotificationViewController.xib */,
+				85368F4E1B131F9800461969 /* DetailPriceAlertTableViewCell.h */,
+				85368F4F1B131F9800461969 /* DetailPriceAlertTableViewCell.m */,
+				85368F501B131F9800461969 /* DetailPriceAlertTableViewCell.xib */,
+				85368F511B131F9900461969 /* DetailPriceAlertViewController.h */,
+				85368F521B131F9900461969 /* DetailPriceAlertViewController.m */,
+				85368F531B131F9900461969 /* DetailPriceAlertViewController.xib */,
+				85368F541B131F9900461969 /* PriceAlertCell.h */,
+				85368F551B131F9900461969 /* PriceAlertCell.m */,
+				85368F561B131F9900461969 /* PriceAlertCell.xib */,
+				85368F571B131F9900461969 /* PriceAlertViewController.h */,
+				85368F581B131F9900461969 /* PriceAlertViewController.m */,
+				85368F591B131F9900461969 /* PriceAlertViewController.xib */,
+				85368F5A1B131F9900461969 /* string_price_alert.h */,
+				856ADFFB1B1411D80063D0BA /* DepartmentTableViewController.h */,
+				856ADFFC1B1411D80063D0BA /* DepartmentTableViewController.m */,
+			);
+			path = PriceAlert;
+			sourceTree = "<group>";
+		};
+		85D3A16F1B1321AF0072DB66 /* PriceAlert */ = {
+			isa = PBXGroup;
+			children = (
+				85D3A1701B1323BF0072DB66 /* PriceAlert.h */,
+				85D3A1711B1323BF0072DB66 /* PriceAlert.m */,
+				85D3A1731B1323DB0072DB66 /* PriceAlertResult.h */,
+				85D3A1741B1323DB0072DB66 /* PriceAlertResult.m */,
+				85D3A1761B13249C0072DB66 /* DetailPriceAlert.h */,
+				85D3A1771B13249C0072DB66 /* DetailPriceAlert.m */,
+			);
+			path = PriceAlert;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -8204,12 +8280,14 @@
 				7AB96D541B021B630060A4C9 /* icon_order_cancel@2x.png in Resources */,
 				7AB96D971B021B630060A4C9 /* icon_track_grey@2x.png in Resources */,
 				7AB96D8C1B021B630060A4C9 /* icon_star_unactive@2x.png in Resources */,
+				85368F5C1B131F9900461969 /* AlertPriceNotificationViewController.xib in Resources */,
 				7AB96CF71B021B630060A4C9 /* icon_check_orange.png in Resources */,
 				7AB96D6A1B021B630060A4C9 /* icon_share.png in Resources */,
 				7AB96B011B021B630060A4C9 /* InboxResolutionCenterOpenViewController.xib in Resources */,
 				7AB96E691B021B630060A4C9 /* zbar-back.png in Resources */,
 				7AB96C0B1B021B630060A4C9 /* FilterLocationViewCell.xib in Resources */,
 				7AB96CE91B021B630060A4C9 /* icon_5@3x.png in Resources */,
+				85368F641B131F9900461969 /* PriceAlertViewController.xib in Resources */,
 				7AB96BC11B021B630060A4C9 /* SettingBankEditViewController.xib in Resources */,
 				7AB96D0D1B021B630060A4C9 /* icon_diskusi_unfollow_grey@2x.png in Resources */,
 				7AB96D2D1B021B630060A4C9 /* icon_location@2x.png in Resources */,
@@ -8463,6 +8541,7 @@
 				7AB96D5F1B021B630060A4C9 /* icon_quote@2x.png in Resources */,
 				7AB96DDE1B021B630060A4C9 /* person2.png in Resources */,
 				7AB96AE71B021B630060A4C9 /* HotlistCell.xib in Resources */,
+				85368F621B131F9900461969 /* PriceAlertCell.xib in Resources */,
 				7AB96E001B021B630060A4C9 /* ic_search.png in Resources */,
 				7AB96CC51B021B630060A4C9 /* icon_arrow_up_white@2x.png in Resources */,
 				7AB96DC91B021B630060A4C9 /* icon_arrow_white@2x.png in Resources */,
@@ -8635,6 +8714,7 @@
 				7AB96B111B021B630060A4C9 /* ReviewFormViewController.xib in Resources */,
 				7AB96A7A1B021B630060A4C9 /* CatalogShopViewController.xib in Resources */,
 				7AB96D571B021B630060A4C9 /* icon_order_check.png in Resources */,
+				85368F5E1B131F9900461969 /* DetailPriceAlertTableViewCell.xib in Resources */,
 				7AB96E1F1B021B630060A4C9 /* icon_arrow_down_grey.png in Resources */,
 				7AB96E081B021B630060A4C9 /* icon_category_actibe@2x.png in Resources */,
 				7AB96D091B021B630060A4C9 /* icon_diskusi_comment_grey@2x.png in Resources */,
@@ -8667,6 +8747,7 @@
 				7AB96B5D1B021B630060A4C9 /* ProductEditWholesaleCell.xib in Resources */,
 				7AB96C791B021B630060A4C9 /* UserContainerViewController.xib in Resources */,
 				7AB96E4E1B021B630060A4C9 /* HSChatBubbleBlue.png in Resources */,
+				85368F601B131F9900461969 /* DetailPriceAlertViewController.xib in Resources */,
 				7AB96D191B021B630060A4C9 /* icon_grid_dua.png in Resources */,
 				7AB96B9B1B021B630060A4C9 /* ChangeReceiptNumberViewController.xib in Resources */,
 				7AB96B471B021B630060A4C9 /* DetailProductWholesaleTableCell.xib in Resources */,
@@ -8814,6 +8895,7 @@
 				7AB96A981B021B630060A4C9 /* TKPDTabProfileNavigationController.m in Sources */,
 				7AB969311B021B630060A4C9 /* ReviewResult.m in Sources */,
 				7AB96B3C1B021B630060A4C9 /* DetailProductDescriptionCell.m in Sources */,
+				85368F631B131F9900461969 /* PriceAlertViewController.m in Sources */,
 				7AB968F81B021B630060A4C9 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				7AB96B081B021B630060A4C9 /* ResolutionCenterSystemCell.m in Sources */,
 				7AB969061B021B630060A4C9 /* CreatePassword.m in Sources */,
@@ -8827,6 +8909,7 @@
 				7AB96BC61B021B630060A4C9 /* SettingPasswordViewController.m in Sources */,
 				7AB969BC1B021B630060A4C9 /* List.m in Sources */,
 				7AB969201B021B630060A4C9 /* DetailCatalogResult.m in Sources */,
+				85D3A1751B1323DB0072DB66 /* PriceAlertResult.m in Sources */,
 				7AB96A591B021B630060A4C9 /* AlertPickerView.m in Sources */,
 				7AB96BED1B021B630060A4C9 /* ShopNotesDetailViewController.m in Sources */,
 				7AB96BE31B021B630060A4C9 /* ShopStatView.m in Sources */,
@@ -8945,6 +9028,7 @@
 				7AB96AB11B021B630060A4C9 /* DepositListBankCell.m in Sources */,
 				7AB96C3D1B021B630060A4C9 /* TransactionCartRootViewController.m in Sources */,
 				7AB969E01B021B630060A4C9 /* AddProductSubmitResult.m in Sources */,
+				85D3A1781B13249C0072DB66 /* DetailPriceAlert.m in Sources */,
 				7AB9699E1B021B630060A4C9 /* BankAccountGetDefaultFormDefaultBank.m in Sources */,
 				7AB9695E1B021B630060A4C9 /* ResolutionAction.m in Sources */,
 				7AB969A21B021B630060A4C9 /* NotificationFormResult.m in Sources */,
@@ -8987,6 +9071,7 @@
 				7AB96BF51B021B630060A4C9 /* ShopSettingViewController.m in Sources */,
 				7AB96C581B021B630060A4C9 /* TxOrderConfirmationViewController.m in Sources */,
 				7AB969FD1B021B630060A4C9 /* TransactionATCForm.m in Sources */,
+				85D3A1721B1323BF0072DB66 /* PriceAlert.m in Sources */,
 				7AB969651B021B630060A4C9 /* ResolutionBy.m in Sources */,
 				7AB969CD1B021B630060A4C9 /* EtalaseList.m in Sources */,
 				7AB96A1E1B021B630060A4C9 /* TxOrderCancelPaymentResult.m in Sources */,
@@ -9112,6 +9197,7 @@
 				7AB969331B021B630060A4C9 /* ShopStats.m in Sources */,
 				7AB96C741B021B630060A4C9 /* ProfileFavoriteShopCell.m in Sources */,
 				7AB96AE81B021B630060A4C9 /* HotlistViewController.m in Sources */,
+				85368F5F1B131F9900461969 /* DetailPriceAlertViewController.m in Sources */,
 				7AB96C221B021B630060A4C9 /* TrackOrderViewController.m in Sources */,
 				7AB9697F1B021B630060A4C9 /* NotificationSales.m in Sources */,
 				7AB969831B021B630060A4C9 /* ProductFeedResult.m in Sources */,
@@ -9131,8 +9217,10 @@
 				7AB968F01B021B630060A4C9 /* URLCacheConnection.m in Sources */,
 				7AB9690B1B021B630060A4C9 /* LogoutResult.m in Sources */,
 				7AB96AF61B021B630060A4C9 /* FilterComplainViewController.m in Sources */,
+				856ADFFD1B1411D80063D0BA /* DepartmentTableViewController.m in Sources */,
 				7AB96A9E1B021B630060A4C9 /* LoadingView.m in Sources */,
 				7AB969B51B021B630060A4C9 /* OrderOrder.m in Sources */,
+				85368F611B131F9900461969 /* PriceAlertCell.m in Sources */,
 				7AB96B751B021B630060A4C9 /* ReputationPageViewController.m in Sources */,
 				7AB96AD21B021B630060A4C9 /* ReportViewController.m in Sources */,
 				7AB96B181B021B630060A4C9 /* MoreViewController.m in Sources */,
@@ -9146,6 +9234,7 @@
 				7AB96A961B021B630060A4C9 /* TKPDTabNavigationController.m in Sources */,
 				7AB96B101B021B630060A4C9 /* ReviewFormViewController.m in Sources */,
 				7AB9696C1B021B630060A4C9 /* ResolutionDispute.m in Sources */,
+				85368F5B1B131F9900461969 /* AlertPriceNotificationViewController.m in Sources */,
 				7AB9697D1B021B630060A4C9 /* NotificationPurchase.m in Sources */,
 				7AB968F31B021B630060A4C9 /* ExpiringCache.m in Sources */,
 				7AB969F21B021B630060A4C9 /* Tiki.m in Sources */,
@@ -9397,6 +9486,7 @@
 				7AB96A361B021B630060A4C9 /* TxOrderStatusList.m in Sources */,
 				7AB96B601B021B630060A4C9 /* ProductListMyShopCell.m in Sources */,
 				7AB96A1C1B021B630060A4C9 /* TxOrderCancelPaymentForm.m in Sources */,
+				85368F5D1B131F9900461969 /* DetailPriceAlertTableViewCell.m in Sources */,
 				7AB9694B1B021B630060A4C9 /* HistoryProductResult.m in Sources */,
 				7AB96B461B021B630060A4C9 /* DetailProductWholesaleTableCell.m in Sources */,
 				7AB96C5B1B021B630060A4C9 /* TableViewCell.m in Sources */,

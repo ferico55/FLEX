@@ -15,6 +15,8 @@
 #define CTagNoteCanReture 7
 #define CPaddingTopDescToko 10
 
+
+#import "AlertPriceNotificationViewController.h"
 #import "Notes.h"
 #import "NoteDetails.h"
 #import "NotesResult.h"
@@ -2089,6 +2091,12 @@ UIAlertViewDelegate
 
 - (IBAction)actionShare:(id)sender
 {
+    AlertPriceNotificationViewController *p = [AlertPriceNotificationViewController new];
+    [self.navigationController pushViewController:p animated:YES];
+    
+    
+    
+    return;
     if (_product) {
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
                                   _product.result.shop_info.shop_name,

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AlertPriceNotificationViewController">
+            <connections>
+                <outlet property="constraintSpaceViewCategoryAndTbl" destination="SWI-mJ-ch8" id="xv3-oP-YqK"/>
+                <outlet property="imgArrow" destination="ogC-Yc-Om8" id="KR2-1p-YWl"/>
+                <outlet property="tblPriceAlert" destination="z43-ws-w79" id="kFM-bN-by7"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewCategory" destination="3Cz-3E-ssW" id="y5y-iI-UHb"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="z43-ws-w79">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="528" id="6vs-yJ-mh6"/>
+                        <constraint firstAttribute="width" constant="320" id="Sb8-tn-xME"/>
+                    </constraints>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Cz-3E-ssW">
+                    <rect key="frame" x="0.0" y="528" width="320" height="166"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="en6-R7-rI1">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kategori" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r83-Ac-Cit">
+                                    <rect key="frame" x="8" y="10" width="304" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="4bj-7T-f2A"/>
+                                        <constraint firstAttribute="width" constant="304" id="p8V-pN-miN"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                    <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_up.png" translatesAutoresizingMaskIntoConstraints="NO" id="ogC-Yc-Om8">
+                                    <rect key="frame" x="181" y="10" width="20" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="6aV-Yx-xYK"/>
+                                        <constraint firstAttribute="width" constant="20" id="x5m-pu-Arf"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="ogC-Yc-Om8" secondAttribute="trailing" constant="119" id="6Ho-wp-vY5"/>
+                                <constraint firstAttribute="width" constant="320" id="9gN-jW-uxf"/>
+                                <constraint firstAttribute="height" constant="40" id="Tqg-tN-dj0"/>
+                                <constraint firstItem="ogC-Yc-Om8" firstAttribute="top" secondItem="en6-R7-rI1" secondAttribute="top" constant="10" id="ckP-Wo-ChX"/>
+                                <constraint firstItem="r83-Ac-Cit" firstAttribute="top" secondItem="en6-R7-rI1" secondAttribute="top" constant="10" id="fSs-Xe-y4y"/>
+                                <constraint firstItem="r83-Ac-Cit" firstAttribute="leading" secondItem="en6-R7-rI1" secondAttribute="leading" constant="8" id="yqG-b8-GIs"/>
+                            </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="8zz-P0-Gbg" appends="YES" id="gjY-bh-cGY"/>
+                            </connections>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JRw-f7-xgQ">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="320" id="Nep-19-gVp"/>
+                                <constraint firstAttribute="height" constant="1" id="gYW-4J-NZg"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="en6-R7-rI1" firstAttribute="leading" secondItem="3Cz-3E-ssW" secondAttribute="leading" id="2Ne-fV-yao"/>
+                        <constraint firstItem="JRw-f7-xgQ" firstAttribute="leading" secondItem="3Cz-3E-ssW" secondAttribute="leading" id="62Z-8P-bbN"/>
+                        <constraint firstAttribute="trailing" secondItem="JRw-f7-xgQ" secondAttribute="trailing" id="6RZ-4j-7F5"/>
+                        <constraint firstAttribute="width" constant="320" id="AND-YD-a37"/>
+                        <constraint firstItem="JRw-f7-xgQ" firstAttribute="top" secondItem="3Cz-3E-ssW" secondAttribute="top" id="IMc-Sk-Aeu"/>
+                        <constraint firstAttribute="height" constant="166" id="LOA-9u-kk7"/>
+                        <constraint firstAttribute="trailing" secondItem="en6-R7-rI1" secondAttribute="trailing" id="ffK-uI-LhH"/>
+                        <constraint firstItem="en6-R7-rI1" firstAttribute="bottom" secondItem="3Cz-3E-ssW" secondAttribute="top" constant="40" id="hOs-LK-djq"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="3Cz-3E-ssW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4FB-ZJ-fGr"/>
+                <constraint firstAttribute="bottom" secondItem="z43-ws-w79" secondAttribute="bottom" constant="40" id="5ds-58-zpM"/>
+                <constraint firstAttribute="trailing" secondItem="z43-ws-w79" secondAttribute="trailing" id="AsY-Id-22q"/>
+                <constraint firstAttribute="trailing" secondItem="3Cz-3E-ssW" secondAttribute="trailing" id="Ei3-8n-0dL"/>
+                <constraint firstItem="3Cz-3E-ssW" firstAttribute="top" secondItem="z43-ws-w79" secondAttribute="bottom" id="SWI-mJ-ch8"/>
+                <constraint firstItem="z43-ws-w79" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="cOy-MO-CD8"/>
+                <constraint firstItem="z43-ws-w79" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="f6l-LR-SM5"/>
+            </constraints>
+            <point key="canvasLocation" x="210" y="264"/>
+        </view>
+        <tapGestureRecognizer id="8zz-P0-Gbg">
+            <connections>
+                <action selector="actionShowKategory:" destination="-1" id="Ybt-XQ-Nk7"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="icon_arrow_up.png" width="14" height="14"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

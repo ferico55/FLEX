@@ -1,0 +1,507 @@
+//
+//  AlertPriceNotificationViewController.m
+//  Tokopedia
+//
+//  Created by Tokopedia on 5/22/15.
+//  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
+//
+
+#import "AlertPriceNotificationViewController.h"
+#import "Breadcrumb.h"
+#import "category.h"
+#import "DepartmentTableViewController.h"
+#import "DetailPriceAlert.h"
+#import "DetailPriceAlertViewController.h"
+#import "GeneralAction.h"
+#import "LoadingView.h"
+#import "PriceAlertCell.h"
+#import "Paging.h"
+#import "PriceAlert.h"
+#import "PriceAlertResult.h"
+#import "RKObjectManager.h"
+#import "string_price_alert.h"
+#import "TokopediaNetworkManager.h"
+#define CCellIdentifier @"cell"
+#define CTagGetPriceAlert 10
+#define CTagDeletePriceAlert 11
+
+
+@interface AlertPriceNotificationViewController ()<TokopediaNetworkManagerDelegate, DepartmentListDelegate, LoadingViewDelegate>
+
+@end
+
+@implementation AlertPriceNotificationViewController {
+    LoadingView *loadingView;
+    
+    TokopediaNetworkManager *tokopediaNetworkManager;
+    RKObjectManager *rkObjectManager;
+    NSMutableArray *arrList, *arrDepartment, *arrFilter;
+    PriceAlert *priceAlert;
+    
+    
+    BOOL isFiltering;
+    int nSelectedDepartment;
+    int page;
+    DetailPriceAlert *tempPriceAlert;
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationItem.title = CStringNotificationHarga;
+    page = 1;
+    tblPriceAlert.tableFooterView = [self getActivityIndicator];
+    [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [tblPriceAlert reloadData];
+    
+}
+
+- (void)dealloc
+{
+    tokopediaNetworkManager.delegate = nil;
+    [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager = nil;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
+
+
+#pragma mark - UITableView Delegate And DataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(arrList == nil)
+        return 0;
+    
+    return arrList.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 134;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
+    [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(arrList.count-1==indexPath.row && page!=0 && !isFiltering && (tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil)) {
+        tblPriceAlert.tableFooterView = [self getLoadView:CTagGetPriceAlert].view;
+    }
+    else if(arrList.count-1==indexPath.row && page!=0 && !isFiltering && !tokopediaNetworkManager.getObjectRequest.isExecuting) {
+        tblPriceAlert.tableFooterView = [self getActivityIndicator];
+        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+    }
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    PriceAlertCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
+    if(cell == nil) {
+        NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
+        cell = [arrPriceAlert objectAtIndex:0];
+        cell.viewController = self;
+    }
+    
+    DetailPriceAlert *detailPriceAlert = [arrList objectAtIndex:indexPath.row];
+    if(detailPriceAlert.pricealert_product_image != nil) {
+        [cell.getProductImage setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:detailPriceAlert.pricealert_product_image]]  placeholderImage:[UIImage imageNamed:@""] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                cell.getProductImage.image = image;
+        } failure:nil];
+    }
+    
+    [cell setTagBtnClose:(int)indexPath.row];
+    [cell setLblDateProduct:[NSDate date]];
+    [cell setProductName:detailPriceAlert.pricealert_product_name];
+    [cell setPriceNotification:detailPriceAlert.pricealert_price];
+    [cell setLowPrice:detailPriceAlert.pricealert_price_min];
+    
+    return cell;
+}
+
+#pragma mark - UIAction View
+- (void)actionShowKategory:(id)sender
+{
+    if(arrDepartment!=nil && arrDepartment.count>0) {
+        DepartmentTableViewController *departmentViewController = [DepartmentTableViewController new];
+        departmentViewController.del = self;
+        departmentViewController.arrList = arrDepartment;
+        departmentViewController.selectedIndex = nSelectedDepartment;
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
+        navController.navigationBar.translucent = NO;
+        [self presentViewController:navController animated:YES completion:nil];
+    }
+    
+//    if(viewCategory.tag == 0) {//Show View Category
+//        [UIView animateWithDuration:.5 animations:^{
+//            viewCategory.userInteractionEnabled = NO;
+//            imgArrow.transform = CGAffineTransformMakeRotation(degreeToRadian(180));
+//            constraintSpaceViewCategoryAndTbl.constant = -50;
+//            [self.view layoutIfNeeded];
+//        } completion:^(BOOL finished){
+//            viewCategory.tag = 1;
+//            viewCategory.userInteractionEnabled = YES;
+//        }];
+//    }
+//    else {//Hide View Category
+//        [UIView animateWithDuration:.5 animations:^{
+//            viewCategory.userInteractionEnabled = NO;
+//            imgArrow.transform = CGAffineTransformIdentity;
+//            constraintSpaceViewCategoryAndTbl.constant = 0;
+//            [self.view layoutIfNeeded];
+//        } completion:^(BOOL finished){
+//            viewCategory.tag = 0;
+//            viewCategory.userInteractionEnabled = YES;
+//        }];
+//    }
+}
+
+- (void)actionCloseCell:(id)sender
+{
+    if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        [stickyAlertView show];
+    }
+    else {
+        [self deletingPriceAlert:YES];
+        tempPriceAlert = [(isFiltering? arrFilter:arrList) objectAtIndex:(int)((UIButton *) sender).tag];
+        [[self getNetworkManager:CTagDeletePriceAlert] doRequest];
+    }
+}
+
+
+#pragma mark - Method
+- (void)deletingPriceAlert:(BOOL)isDeleting
+{
+    if(isDeleting) {
+        UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityIndicatorView.frame = CGRectMake(0, 0, 30, 30);
+        [activityIndicatorView startAnimating];
+        
+        self.navigationItem.rightBarButtonItem.customView = activityIndicatorView;
+    }
+    else {
+        self.navigationItem.rightBarButtonItem.customView = nil;
+    }
+}
+
+
+
+- (LoadingView *)getLoadView:(int)tag
+{
+    if(loadingView == nil) {
+        loadingView = [LoadingView new];
+        loadingView.delegate = self;
+    }
+    loadingView.tag = tag;
+    
+    return loadingView;
+}
+
+- (UIActivityIndicatorView *)getActivityIndicator
+{
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.frame = CGRectMake(0, 10, 40, 40);
+    [activityIndicator startAnimating];
+
+    return activityIndicator;
+}
+
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag
+{
+    if(tokopediaNetworkManager == nil) {
+        tokopediaNetworkManager = [TokopediaNetworkManager new];
+        tokopediaNetworkManager.delegate = self;
+    }
+    tokopediaNetworkManager.tagRequest = tag;
+    
+    return tokopediaNetworkManager;
+}
+
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        return @{CAction:CGetPriceAlert, CPage:[NSNumber numberWithInt:page]};
+    }
+    else if(tag == CTagDeletePriceAlert) {
+        return @{CAction:CDeletePriceAlert, CPriceAlertID:tempPriceAlert.pricealert_id};
+    }
+    
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        return CInboxPriceAlert;
+    }
+    else if(tag == CTagDeletePriceAlert) {
+        return [NSString stringWithFormat:@"%@/%@", CAction, CPriceAlertPL];
+    }
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        rkObjectManager = [RKObjectManager sharedClient];
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[PriceAlert class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                            }];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[PriceAlertResult class]];
+        RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[Breadcrumb class]];
+        [departmentMapping addAttributeMappingsFromArray:@[CDepartmentID, CDepartmentName]];
+        
+        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+        [pagingMapping addAttributeMappingsFromDictionary:@{CUriNext:CUriNext, CUriPrevious:CUriPrevious}];
+        
+        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[DetailPriceAlert class]];
+        [listMapping addAttributeMappingsFromArray:@[CPriceAlertTotalProduct,
+                                                          CPriceAlertPriceMin,
+                                                          CPriceAlertIsActive,
+                                                          CPriceAlertProductName,
+                                                          CPriceAlertProductStatus,
+                                                          CPriceAlertTotalUnread,
+                                                          CPriceAlertType,
+                                                          CPriceAlertPrice,
+                                                          CPriceAlertProductImage,
+                                                          CPriceAlertID,
+                                                          CPriceAlertProductID
+                                                          ]];
+        
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        RKRelationshipMapping *departmenetRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CDepartment toKeyPath:CDepartment withMapping:departmentMapping];
+        [resultMapping addPropertyMapping:departmenetRel];
+        
+        RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping];
+        [resultMapping addPropertyMapping:pagingRel];
+        
+        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CList toKeyPath:CList withMapping:listMapping];
+        [resultMapping addPropertyMapping:listRel];
+        
+        
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:[self getPath:CTagGetPriceAlert] keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        [rkObjectManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return rkObjectManager;
+    }
+    else if(tag == CTagDeletePriceAlert) {
+        rkObjectManager = [RKObjectManager sharedClient];
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [rkObjectManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return rkObjectManager;
+    }
+    
+    return nil;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        PriceAlert *tempPAlert = [((RKMappingResult *) result).dictionary objectForKey:@""];
+        return tempPAlert.status;
+    }
+    else if(tag == CTagDeletePriceAlert) {
+        GeneralAction *generalAction = [((RKMappingResult *) result).dictionary objectForKey:@""];
+        return generalAction.status;
+    }
+    
+    return nil;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        tblPriceAlert.tableFooterView = nil;
+        priceAlert = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+        if(priceAlert.result.list != nil) {
+            if(arrList == nil) {
+                arrList = [[NSMutableArray alloc] initWithArray:priceAlert.result.list];
+            }
+            else {
+                [arrList addObjectsFromArray:priceAlert.result.list];
+            }
+            priceAlert.result.list = nil;
+            
+            if(priceAlert.result.department != nil) {
+                if(arrDepartment == nil) {
+                    arrDepartment = [[NSMutableArray alloc] initWithArray:priceAlert.result.department];
+                    Breadcrumb *breadCrumb = [Breadcrumb new];
+                    breadCrumb.department_id = @"-1";
+                    breadCrumb.department_name = CStringAllDepartment;
+                    [arrDepartment insertObject:breadCrumb atIndex:0];
+                    priceAlert.result.department = nil;
+                }
+                
+                if(! [priceAlert.result.paging.uri_next isEqualToString:@"0"]) {
+                    NSURL *url = [NSURL URLWithString:priceAlert.result.paging.uri_next];
+                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                    NSMutableDictionary *queries = [NSMutableDictionary new];
+                    for (NSString *keyValuePair in querry)
+                    {
+                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                        NSString *key = [pairComponents objectAtIndex:0];
+                        NSString *value = [pairComponents objectAtIndex:1];
+                        
+                        [queries setObject:value forKey:key];
+                    }
+                    
+                    page = [[queries objectForKey:@"page"] intValue];
+                }
+                else {
+                    page = 0;
+                }
+            }
+        }
+        
+        
+        if(tblPriceAlert.delegate == nil) {
+            tblPriceAlert.delegate = self;
+            tblPriceAlert.dataSource = self;
+        }
+
+        [tblPriceAlert reloadData];
+    }
+    else if(tag == CTagDeletePriceAlert) {
+        GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+        if([generalAction.result.is_success isEqualToString:@"1"]) {
+            if(arrFilter != nil) {
+                [arrFilter removeObject:tempPriceAlert];
+            }
+            
+            [arrList removeObject:tempPriceAlert];
+            NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
+            [section addIndex:0];
+            [tblPriceAlert reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
+            tempPriceAlert = nil;
+        }
+        else {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedDeletePriceAlert] delegate:self];
+            [stickyAlertView show];
+        }
+        
+        [self deletingPriceAlert:NO];
+    }
+    
+    rkObjectManager = nil;
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        
+    }
+}
+
+- (void)actionBeforeRequest:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        
+    }
+
+}
+
+- (void)actionRequestAsync:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        
+    }
+
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if(tag == CTagGetPriceAlert) {
+        tblPriceAlert.tableFooterView = [self getLoadView:CTagGetPriceAlert].view;
+    }
+    else if(tag == CTagDeletePriceAlert) {
+        tempPriceAlert = nil;
+        [self deleting  ];
+    }
+    
+    
+    rkObjectManager = nil;
+}
+
+
+#pragma mark - DepartmentList Delegate
+- (void)didCancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)didFinishSelectedAtRow:(int)row
+{
+    isFiltering = (row > -1);
+    nSelectedDepartment = row;
+    [self didCancel];
+}
+
+
+#pragma mark - LoadingView Delegate
+- (void)pressRetryButton
+{
+    if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        [stickyAlertView show];
+    }
+    else {
+        tblPriceAlert.tableFooterView = [self getActivityIndicator];
+        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+    }
+}
+@end
