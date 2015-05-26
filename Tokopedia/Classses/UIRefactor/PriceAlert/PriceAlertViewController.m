@@ -5,19 +5,48 @@
 //  Created by Tokopedia on 5/22/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
+#import "AlertPriceNotificationViewController.h"
+#import "CatalogInfo.h"
+#import "DetailPriceAlert.h"
+#import "GeneralAction.h"
 #import "PriceAlertViewController.h"
+#import "ProductDetail.h"
+#import "RKObjectManager.h"
 #import "string_price_alert.h"
+#import "TokopediaNetworkManager.h"
 
-@interface PriceAlertViewController ()
+#define CTagEditPriceAlert 1
+#define CTagAddPriceAlert 2
+#define CTagAddCatalogPriceAlert 3
 
+
+@interface PriceAlertViewController ()<TokopediaNetworkManagerDelegate>
+{
+    TokopediaNetworkManager *tokopediaNetworkManager;
+    RKObjectManager *rkObjectManager;
+    
+    UIBarButtonItem *rightBarButtonItem;
+}
 @end
 
 @implementation PriceAlertViewController
 
+- (NSString *)formatRupiah:(NSString *)strRupiah
+{
+    NSMutableString *result = [NSMutableString stringWithString:strRupiah];
+    int n = (int)strRupiah.length;
+
+    while (n-3 > 0) {
+        [result insertString:@"." atIndex:n-3];
+        n -= 3;
+    }
+    
+    return [NSString stringWithFormat:@"Rp %@", result];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [self initNavigation];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,14 +67,180 @@
 #pragma mark - Setup View
 - (void)initNavigation
 {
-    self.navigationController.title = CStringNotificationHarga;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tambah" style:UIBarButtonItemStylePlain target:self action:@selector(actionTambah:)];
+    self.navigationItem.title = CStringPriceAlert;
+    rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSave style:UIBarButtonItemStylePlain target:self action:@selector(actionTambah:)];;
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
 
 
 #pragma mark - Method
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag
+{
+    if(tokopediaNetworkManager == nil) {
+        tokopediaNetworkManager = [TokopediaNetworkManager new];
+        tokopediaNetworkManager.delegate = self;
+    }
+    
+    tokopediaNetworkManager.tagRequest = tag;
+    return tokopediaNetworkManager;
+}
+
 - (void)actionTambah:(id)sender
 {
+    StickyAlertView *stickyAlertView;
+    if(txtPrice.text==nil || [[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
+        stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFillPrice] delegate:self];
+        [stickyAlertView show];
+    }
+    else {
+        if(_catalogInfo != nil) {
+            [[self getNetworkManager:CTagAddCatalogPriceAlert] doRequest];
+        }
+        else if(_productDetail != nil) {
+            [[self getNetworkManager:CTagAddPriceAlert] doRequest];
+        }
+        else if(_detailPriceAlert != nil) {
+            [[self getNetworkManager:CTagEditPriceAlert] doRequest];
+        }
+        
+        [self setLoadingDoingAction:YES];
+    }
+}
+
+- (void)setLoadingDoingAction:(BOOL)isDoingAction
+{
+    if(isDoingAction) {
+        txtPrice.enabled = NO;
+        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityIndicator.frame = CGRectMake(0, 0, 30, 30);
+        [activityIndicator startAnimating];
+        self.navigationItem.rightBarButtonItem.customView = activityIndicator;
+    }
+    else {
+        txtPrice.enabled = YES;
+        self.navigationItem.rightBarButtonItem.customView = nil;
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    }
+}
+
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    if(tag == CTagAddCatalogPriceAlert) {
+        return @{CAction:CAddCatalogPriceAlert, CCatalogID:_catalogInfo.catalog_id, CPriceAlertPrice:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+    }
+    else if(tag == CTagEditPriceAlert) {
+        return @{CAction:CEditPriceAlert, CPriceAlertID:_detailPriceAlert.pricealert_id, CPriceAlertPrice:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+    }
+    else if(tag == CTagAddPriceAlert) {
+        return @{CAction:CAddPriceAlert, CPriceAlertPrice:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]], CProductID:_productDetail.product_id};
+    }
     
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag
+{
+    return [NSString stringWithFormat:@"%@/%@", CAction, CPriceAlertPL];
+}
+
+- (id)getObjectManager:(int)tag
+{
+    rkObjectManager = [RKObjectManager sharedClient];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    //register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [rkObjectManager addResponseDescriptor:responseDescriptorStatus];
+    return rkObjectManager;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    GeneralAction *generalAction = [((RKMappingResult *) result).dictionary objectForKey:@""];
+    return generalAction.status;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    [self setLoadingDoingAction:NO];
+    GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+    if(tag == CTagAddCatalogPriceAlert) {
+        if([generalAction.result.is_success isEqualToString:@"1"]) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessAddPriceCatalog] delegate:self];
+            [stickyAlertView show];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else {
+            [self actionAfterFailRequestMaxTries:tag];
+        }
+    }
+    else if(tag == CTagAddPriceAlert) {
+        if([generalAction.result.is_success isEqualToString:@"1"]) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessAddPrice] delegate:self];
+            [stickyAlertView show];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else {
+            [self actionAfterFailRequestMaxTries:tag];
+        }
+    }
+    else if(tag == CTagEditPriceAlert) {
+        if([generalAction.result.is_success isEqualToString:@"1"]) {
+            UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+            if([viewController isMemberOfClass:[AlertPriceNotificationViewController class]]) {
+                [((AlertPriceNotificationViewController *) viewController) updatePriceAlert:[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]];
+            }
+            
+            
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessEditPriceAlert] delegate:self];
+            [stickyAlertView show];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else {
+            [self actionAfterFailRequestMaxTries:tag];
+        }
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+}
+
+- (void)actionBeforeRequest:(int)tag
+{}
+
+- (void)actionRequestAsync:(int)tag
+{}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    StickyAlertView *stickyAlertView;
+    if(tag == CTagAddCatalogPriceAlert) {
+        stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedAddCatalogPriceAlert] delegate:self];
+    }
+    else if(tag == CTagAddPriceAlert) {
+        stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedAddPriceAlert] delegate:self];
+    }
+    else if(tag == CTagEditPriceAlert) {
+        stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedEditPriceAlert] delegate:self];
+    }
+
+    [stickyAlertView show];
+    [self setLoadingDoingAction:NO];
 }
 @end

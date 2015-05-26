@@ -17,6 +17,7 @@
 #import "CatalogShopViewController.h"
 #import "LoginViewController.h"
 #import "ProductAddEditViewController.h"
+#import "PriceAlertViewController.h"
 #import "GalleryViewController.h"
 
 @interface CatalogViewController ()
@@ -509,6 +510,12 @@
 }
 
 #pragma mark - Action
+- (void)actionAddNotificationPriceCatalog:(id)sender
+{
+    PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+    priceAlertViewController.catalogInfo = _catalog.result.catalog_info;
+    [self.navigationController pushViewController:priceAlertViewController animated:YES];
+}
 
 - (IBAction)tap:(id)sender
 {

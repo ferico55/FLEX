@@ -10,6 +10,7 @@
 
 #import "CatalogPrice.h"
 #import "CatalogImages.h"
+#define CCatalogID @"catalog_id"
 
 @interface CatalogInfo : NSObject
 

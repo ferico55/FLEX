@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#define CProductID @"product_id"
+
 
 @interface ProductDetail : NSObject
 

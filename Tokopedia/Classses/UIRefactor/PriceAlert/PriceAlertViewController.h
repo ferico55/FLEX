@@ -7,9 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ProductDetail, DetailPriceAlert, CatalogInfo, AlertPriceNotificationViewController;
 
 @interface PriceAlertViewController : UIViewController
 {
     IBOutlet UITextField *txtPrice;
 }
+
+@property (nonatomic) BOOL isCatalog;
+@property (nonatomic, unsafe_unretained) CatalogInfo *catalogInfo;
+@property (nonatomic, unsafe_unretained) ProductDetail *productDetail;
+@property (nonatomic, unsafe_unretained) DetailPriceAlert *detailPriceAlert;
 @end

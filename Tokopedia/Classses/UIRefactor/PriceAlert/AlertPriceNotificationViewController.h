@@ -17,4 +17,5 @@
 }
 
 - (IBAction)actionShowKategory:(id)sender;
+- (void)updatePriceAlert:(NSString *)strPrice;
 @end

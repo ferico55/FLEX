@@ -62,10 +62,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    _selectedIndex = (int)indexPath.row;
     
     cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:0]];
     cell.accessoryType = UITableViewCellAccessoryNone;
+    _selectedIndex = (int)indexPath.row;
 }
 
 

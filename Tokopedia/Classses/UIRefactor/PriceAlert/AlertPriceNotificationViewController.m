@@ -5,6 +5,8 @@
 //  Created by Tokopedia on 5/22/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "PriceAlertViewController.h"
+
 
 #import "AlertPriceNotificationViewController.h"
 #import "Breadcrumb.h"
@@ -14,6 +16,7 @@
 #import "DetailPriceAlertViewController.h"
 #import "GeneralAction.h"
 #import "LoadingView.h"
+#import "NoResultView.h"
 #import "PriceAlertCell.h"
 #import "Paging.h"
 #import "PriceAlert.h"
@@ -32,17 +35,17 @@
 
 @implementation AlertPriceNotificationViewController {
     LoadingView *loadingView;
+    NoResultView *noResultView;
     
     TokopediaNetworkManager *tokopediaNetworkManager;
     RKObjectManager *rkObjectManager;
-    NSMutableArray *arrList, *arrDepartment, *arrFilter;
+    NSMutableArray *arrList, *arrDepartment;
     PriceAlert *priceAlert;
-    
-    
-    BOOL isFiltering;
-    int nSelectedDepartment;
-    int page;
     DetailPriceAlert *tempPriceAlert;
+    
+    
+    int nSelectedDepartment, lastSelectedDepartment;
+    int page;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,7 +58,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [tblPriceAlert reloadData];
-    
+    tempPriceAlert = nil;
 }
 
 - (void)dealloc
@@ -109,10 +112,10 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(arrList.count-1==indexPath.row && page!=0 && !isFiltering && (tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil)) {
+    if(arrList.count-1==indexPath.row && page>1 && (tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil)) {
         tblPriceAlert.tableFooterView = [self getLoadView:CTagGetPriceAlert].view;
     }
-    else if(arrList.count-1==indexPath.row && page!=0 && !isFiltering && !tokopediaNetworkManager.getObjectRequest.isExecuting) {
+    else if(arrList.count-1==indexPath.row && page>1 && !tokopediaNetworkManager.getObjectRequest.isExecuting) {
         tblPriceAlert.tableFooterView = [self getActivityIndicator];
         [[self getNetworkManager:CTagGetPriceAlert] doRequest];
     }
@@ -147,7 +150,7 @@
 #pragma mark - UIAction View
 - (void)actionShowKategory:(id)sender
 {
-    if(arrDepartment!=nil && arrDepartment.count>0) {
+    if(arrList!=nil && arrDepartment!=nil && arrDepartment.count>0) {
         DepartmentTableViewController *departmentViewController = [DepartmentTableViewController new];
         departmentViewController.del = self;
         departmentViewController.arrList = arrDepartment;
@@ -183,19 +186,31 @@
 
 - (void)actionCloseCell:(id)sender
 {
+//    PriceAlertViewController *p = [PriceAlertViewController new];
+//    tempPriceAlert = [(isFiltering? arrFilter:arrList) objectAtIndex:(int)((UIButton *) sender).tag];
+//    p.detailPriceAlert = tempPriceAlert;
+//    [self.navigationController pushViewController:p animated:YES];
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
     }
     else {
         [self deletingPriceAlert:YES];
-        tempPriceAlert = [(isFiltering? arrFilter:arrList) objectAtIndex:(int)((UIButton *) sender).tag];
+        tempPriceAlert = [arrList objectAtIndex:(int)((UIButton *) sender).tag];
         [[self getNetworkManager:CTagDeletePriceAlert] doRequest];
     }
 }
 
 
 #pragma mark - Method
+- (void)updatePriceAlert:(NSString *)strPrice
+{
+    ((DetailPriceAlert *) [arrList objectAtIndex:[arrList indexOfObject:tempPriceAlert]]).pricealert_price = strPrice;
+    [tblPriceAlert beginUpdates];
+    [tblPriceAlert reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[arrList indexOfObject:tempPriceAlert] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [tblPriceAlert endUpdates];
+}
+
 - (void)deletingPriceAlert:(BOOL)isDeleting
 {
     if(isDeleting) {
@@ -248,10 +263,15 @@
 - (NSDictionary*)getParameter:(int)tag
 {
     if(tag == CTagGetPriceAlert) {
-        return @{CAction:CGetPriceAlert, CPage:[NSNumber numberWithInt:page]};
+        NSMutableDictionary *dictParam = [[NSMutableDictionary alloc] initWithObjectsAndKeys:CGetPriceAlert, CAction, [NSNumber numberWithInt:page], CPage, nil];
+        if(nSelectedDepartment > 0) {
+            [dictParam setObject:((Breadcrumb *)[arrDepartment objectAtIndex:nSelectedDepartment]).department_id forKey:CDepartmentID];
+        }
+        
+        return dictParam;
     }
     else if(tag == CTagDeletePriceAlert) {
-        return @{CAction:CDeletePriceAlert, CPriceAlertID:tempPriceAlert.pricealert_id};
+        return @{CAction:([tempPriceAlert.pricealert_type isEqualToString:@"1"]? CDeletePriceAlert:CDeleteCatalogPriceAlert), CPriceAlertID:tempPriceAlert.pricealert_id};
     }
     
     return nil;
@@ -369,7 +389,7 @@
         tblPriceAlert.tableFooterView = nil;
         priceAlert = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         if(priceAlert.result.list != nil) {
-            if(arrList == nil) {
+            if(page == 1) {
                 arrList = [[NSMutableArray alloc] initWithArray:priceAlert.result.list];
             }
             else {
@@ -403,9 +423,21 @@
                     page = [[queries objectForKey:@"page"] intValue];
                 }
                 else {
-                    page = 0;
+                    page = 1;
                 }
             }
+        }
+        
+        
+        if(arrList==nil || arrList.count==0) {
+            if(noResultView == nil) {
+                noResultView = [NoResultView new];
+                [tblPriceAlert addSubview:noResultView.view];
+            }
+        }
+        else if(noResultView != nil) {
+            [noResultView.view removeFromSuperview];
+            noResultView = nil;
         }
         
         
@@ -419,10 +451,6 @@
     else if(tag == CTagDeletePriceAlert) {
         GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         if([generalAction.result.is_success isEqualToString:@"1"]) {
-            if(arrFilter != nil) {
-                [arrFilter removeObject:tempPriceAlert];
-            }
-            
             [arrList removeObject:tempPriceAlert];
             NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
             [section addIndex:0];
@@ -470,10 +498,10 @@
     }
     else if(tag == CTagDeletePriceAlert) {
         tempPriceAlert = nil;
-        [self deleting  ];
+        [self deletingPriceAlert:NO];
     }
     
-    
+    nSelectedDepartment = lastSelectedDepartment;
     rkObjectManager = nil;
 }
 
@@ -486,8 +514,13 @@
 
 - (void)didFinishSelectedAtRow:(int)row
 {
-    isFiltering = (row > -1);
-    nSelectedDepartment = row;
+    if(row != nSelectedDepartment) {
+        lastSelectedDepartment = nSelectedDepartment;
+        nSelectedDepartment = row;
+        page = 1;
+        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+    }
+    
     [self didCancel];
 }
 

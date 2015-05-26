@@ -17,6 +17,7 @@
 
 
 #import "AlertPriceNotificationViewController.h"
+#import "PriceAlertViewController.h"
 #import "Notes.h"
 #import "NoteDetails.h"
 #import "NotesResult.h"
@@ -2089,12 +2090,17 @@ UIAlertViewDelegate
     [_table reloadData];
 }
 
+- (void)actionAddPriceAlert:(id)sender
+{
+    PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+    priceAlertViewController.productDetail = _product.result.product;
+    [self.navigationController pushViewController:priceAlertViewController animated:YES];
+}
+
 - (IBAction)actionShare:(id)sender
 {
-    AlertPriceNotificationViewController *p = [AlertPriceNotificationViewController new];
-    [self.navigationController pushViewController:p animated:YES];
-    
-    
+    AlertPriceNotificationViewController *a = [AlertPriceNotificationViewController new];
+    [self.navigationController pushViewController:a animated:YES];
     
     return;
     if (_product) {
