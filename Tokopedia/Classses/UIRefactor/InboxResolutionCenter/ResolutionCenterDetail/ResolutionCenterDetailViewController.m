@@ -634,17 +634,10 @@
     cell.timeDateLabel.text = (lastConversation == _addedLastConversation)?_resolutionDetail.resolution_last.last_create_time_str:sinceDateString;
     
     [cell hideAllViews];
-    if ([self isShowTwoButton:conversation])
-    {
-        cell.twoButtonView.hidden = NO;
-        [self adjustTwoButtonsTitleConversation:conversation cell:cell];
 
-    }
-    else if ([self isShowOneButton:conversation atIndexPath:indexPath])
-    {
-        cell.oneButtonView.hidden = NO;
-        [self adjustOneButtonTitleConversation:conversation cell:cell];
-    }
+    
+    UIColor *lastCellColour = [UIColor colorWithRed:255.f/255.f green:243.f/255.f blue:224.f/255.f alpha:1];
+    UIColor *buttonCellColour = [UIColor colorWithRed:249.f/255.f green:249.f/255.f blue:249.f/255.f alpha:1];
     
     [cell.markLabel setCustomAttributedText:cell.markLabel.text];
     cell.indexPath = indexPath;
@@ -659,7 +652,31 @@
     else {
         cell.oneButtonConstraintHeight.constant = 44;
         cell.twoButtonConstraintHeight.constant = 44;
+        if ([self isShowTwoButton:conversation])
+        {
+            cell.twoButtonView.hidden = NO;
+            [self adjustTwoButtonsTitleConversation:conversation cell:cell];
+            
+        }
+        else if ([self isShowOneButton:conversation atIndexPath:indexPath])
+        {
+            cell.oneButtonView.hidden = NO;
+            [self adjustOneButtonTitleConversation:conversation cell:cell];
+        }
     }
+    
+    if (_listResolutionConversation.count>0)
+    {
+        if (indexPath.row == (_listResolutionConversation.count-1))
+        {
+            cell.titleView.backgroundColor = lastCellColour;
+        }
+        else
+        {
+            cell.titleView.backgroundColor = buttonCellColour;
+        }
+    }
+
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -1399,11 +1416,11 @@
     _loadMoreButton.enabled = YES;
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    _tableView.tableFooterView = nil;
-    [_act stopAnimating];
-}
+//-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//{
+////    _tableView.tableFooterView = nil;
+////    [_act stopAnimating];
+//}
 
 -(void)requestWithAction:(NSString*)action
 {
