@@ -50,9 +50,14 @@
     RKObjectMapping *subResultMapping = [RKObjectMapping mappingForClass:[Upload class]];
     [subResultMapping addAttributeMappingsFromDictionary:@{kTKPD_SRC:kTKPD_SRC}];
     
+    RKObjectMapping *imageResultMapping = [RKObjectMapping mappingForClass:[UploadImageImage class]];
+    [imageResultMapping addAttributeMappingsFromDictionary:@{@"pic_code":@"pic_code",
+                                                           @"pic_src":@"pic_src"}];
+    
     
     // Relationship Mapping
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIUPLOADKEY toKeyPath:kTKPD_APIUPLOADKEY withMapping:subResultMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image" toKeyPath:@"image" withMapping:imageResultMapping]];
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -78,13 +83,15 @@
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"0";
     NSInteger userID = _generateHost.result.generated_host.user_id;
     
+    NSInteger newAdd = (_isNotUsingNewAdd)?0:1;
+    
     NSDictionary *param;
 
     param = @{ kTKPDDETAIL_APIACTIONKEY: _action,
                          kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
                          kTKPD_USERIDKEY : @(userID),
                          @"product_id" : _productID?:@"",
-                         @"new_add" : @(1)
+                         @"new_add" : @(newAdd)
                          //@"is_temp" :@(1)
                          };
     
@@ -142,7 +149,7 @@
                        [self showErrorMessages:array?:@[]];
                        [_delegate failedUploadObject:_imageObject];
                    }
-                   else if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)) {
+                   else if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil) {
                        [_delegate successUploadObject:_imageObject withMappingResult:images];
                    }
                    else
@@ -190,7 +197,11 @@
         for(int i=0;i<messages.count;i++) {
             NSString *str = [NSString stringWithFormat:@"%@", [messages objectAtIndex:i]];
             str = [NSString convertHTML:str];
-            if ([str containsString:@"ERROR_IMG_WIDTH_SMALL"]) {
+            if ([str containsString:@"SMALL"]) {
+                str = @"Ukuran file yang diunggah terlalu kecil";
+            }
+            else if ([str containsString:@"BIG"])
+            {
                 str = @"Maksimum ukuran file yang diunggah adalah 500.000 bytes (500 Kilobytes)";
             }
             else if([str containsString:@"SERVER_ERROR"])

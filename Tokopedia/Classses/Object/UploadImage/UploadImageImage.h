@@ -10,4 +10,7 @@
 
 @interface UploadImageImage : NSObject
 
+@property (nonatomic, strong) NSString *pic_code;
+@property (nonatomic, strong) NSString *pic_src;
+
 @end
