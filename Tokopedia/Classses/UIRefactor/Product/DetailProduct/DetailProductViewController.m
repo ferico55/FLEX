@@ -113,6 +113,8 @@ UIAlertViewDelegate
     CGFloat _descriptionHeight;
     CGFloat _informationHeight;
     
+    NSMutableArray *_headerimages;
+    
     BOOL _isnodata;
     BOOL _isnodatawholesale;
     BOOL isDoingWishList, isDoingFavorite;
@@ -262,6 +264,8 @@ UIAlertViewDelegate
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
+    
+    _headerimages = [NSMutableArray new];
     
     _requestMoveTo =[RequestMoveTo new];
     _requestMoveTo.delegate = self;

@@ -36,6 +36,7 @@
 		FC36DFAA19B0656400AF74C1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC36DFA819B0656400AF74C1 /* InfoPlist.strings */; };
 		FC36DFAC19B0656400AF74C1 /* TokopediaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
+		FC7636F51B15DE680034A8F1 /* UploadImageImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7636F41B15DE680034A8F1 /* UploadImageImage.m */; };
 		FC8350871B0B3C87003739A3 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FC83471F1B0B3C83003739A3 /* URLCacheAlert.m */; };
 		FC8350881B0B3C87003739A3 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8347211B0B3C83003739A3 /* URLCacheConnection.m */; };
 		FC8350891B0B3C87003739A3 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8347231B0B3C83003739A3 /* URLCacheController.m */; };
@@ -1500,6 +1501,8 @@
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
+		FC7636F31B15DE680034A8F1 /* UploadImageImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageImage.h; sourceTree = "<group>"; };
+		FC7636F41B15DE680034A8F1 /* UploadImageImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageImage.m; sourceTree = "<group>"; };
 		FC83471E1B0B3C83003739A3 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		FC83471F1B0B3C83003739A3 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		FC8347201B0B3C83003739A3 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -5187,6 +5190,8 @@
 		FC834A0A1B0B3C84003739A3 /* UploadImage */ = {
 			isa = PBXGroup;
 			children = (
+				FC7636F31B15DE680034A8F1 /* UploadImageImage.h */,
+				FC7636F41B15DE680034A8F1 /* UploadImageImage.m */,
 				FC834A0B1B0B3C84003739A3 /* GenerateHost */,
 				FC834A121B0B3C84003739A3 /* Upload.h */,
 				FC834A131B0B3C84003739A3 /* Upload.m */,
@@ -9476,6 +9481,7 @@
 				FC8350B91B0B3C87003739A3 /* ProductList.m in Sources */,
 				FC83528A1B0B3C88003739A3 /* InboxMessageDetailViewController.m in Sources */,
 				FC8351A81B0B3C87003739A3 /* TxOrderConfirmationListOrder.m in Sources */,
+				FC7636F51B15DE680034A8F1 /* UploadImageImage.m in Sources */,
 				FC8350EE1B0B3C87003739A3 /* InboxMessageAction.m in Sources */,
 				FC8353021B0B3C88003739A3 /* ReputationCell.m in Sources */,
 				FC8350C41B0B3C87003739A3 /* RatingList.m in Sources */,
