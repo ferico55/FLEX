@@ -270,7 +270,7 @@
     _cityLabel.text = _order.order_destination.address_city;
     _countryLabel.text = [NSString stringWithFormat:@"%@, %@ %@",_order.order_destination.address_district,_order.order_destination.address_province, _order.order_destination.address_postal];
     _shipmentLabel.text = [NSString stringWithFormat:@"%@ - %@",_order.order_shipment.shipment_name,_order.order_shipment.shipment_product];
-    _partialLabel.text = (_order.order_detail.detail_order_status == 1)?@"Ya":@"Tidak";
+    _partialLabel.text = (_order.order_detail.detail_partial_order == 1)?@"Ya":@"Tidak";
     
     NSString *dropshipName = _order.order_detail.detail_dropship_name;
     if (!dropshipName || [dropshipName isEqualToString:@""] || [dropshipName isEqualToString:@"0"]) {
