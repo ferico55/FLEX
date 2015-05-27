@@ -426,13 +426,13 @@
     
     NSDictionary *param = @{
         kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIEDITPROFILEKEY,
-        kTKPDPROFILE_APIFULLNAMEKEY    : [userInfo objectForKey:kTKPDPROFILE_APIFULLNAMEKEY]?:_profile.result.data_user.full_name,
-        kTKPDPROFILE_APIBIRTHDAYKEY    : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHDAYKEY]?:_profile.result.data_user.birth_day,
-        kTKPDPROFILE_APIBIRTHMONTHKEY  : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHMONTHKEY]?:_profile.result.data_user.birth_month,
-        kTKPDPROFILE_APIBIRTHYEARKEY   : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHYEARKEY]?:_profile.result.data_user.birth_year,
-        kTKPDPROFILE_APIGENDERKEY      : [userInfo objectForKey:kTKPDPROFILE_APIGENDERKEY]?:_profile.result.data_user.gender,
-        kTKPDPROFILE_APIHOBBYKEY       : [userInfo objectForKey:kTKPDPROFILE_APIHOBBYKEY]?:_profile.result.data_user.hobby,
-        kTKPDPROFILE_APIMESSENGERKEY   : [userInfo objectForKey:kTKPDPROFILE_APIUSERMESSENGERKEY]?:_profile.result.data_user.user_messenger,
+        kTKPDPROFILE_APIFULLNAMEKEY    : [userInfo objectForKey:kTKPDPROFILE_APIFULLNAMEKEY]?:(_profile.result.data_user.full_name?:@""),
+        kTKPDPROFILE_APIBIRTHDAYKEY    : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHDAYKEY]?:(_profile.result.data_user.birth_day?:@""),
+        kTKPDPROFILE_APIBIRTHMONTHKEY  : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHMONTHKEY]?:(_profile.result.data_user.birth_month?:@""),
+        kTKPDPROFILE_APIBIRTHYEARKEY   : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHYEARKEY]?:(_profile.result.data_user.birth_year?:@""),
+        kTKPDPROFILE_APIGENDERKEY      : [userInfo objectForKey:kTKPDPROFILE_APIGENDERKEY]?:(_profile.result.data_user.gender?:@""),
+        kTKPDPROFILE_APIHOBBYKEY       : [userInfo objectForKey:kTKPDPROFILE_APIHOBBYKEY]?:(_profile.result.data_user.hobby?:@""),
+        kTKPDPROFILE_APIMESSENGERKEY   : [userInfo objectForKey:kTKPDPROFILE_APIUSERMESSENGERKEY]?:(_profile.result.data_user.user_messenger?:@""),
         kTKPDPROFILE_APIPASSKEY        : [userInfo objectForKey:kTKPDPROFILE_APIPASSKEY],
         kTKPDPROFILE_APIMSISDNKEY      : _profile.result.data_user.user_phone
     };

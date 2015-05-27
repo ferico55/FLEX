@@ -194,6 +194,12 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                         name:UIKeyboardWillHideNotification
                         object:nil];
+    
+    [_pricemin addTarget:self action:@selector(priceTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+    [_pricemax addTarget:self action:@selector(priceTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+
+    [_pricemincatalog addTarget:self action:@selector(priceTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+    [_pricemaxcatalog addTarget:self action:@selector(priceTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -227,10 +233,15 @@
             case 11:
             {
                 //SUBMIT
-                NSInteger pricemin = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
-                NSInteger pricemax = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
-                if (pricemax>=pricemin){
-                    NSDictionary *userinfo = @{kTKPDFILTER_APILOCATIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"",
+                NSInteger priceMin = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
+                NSInteger priceMax = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
+ 
+                if (priceMax < priceMin) {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Harga minimum harus lebih kecil dari harga maksimum."] delegate:self];
+                    [alert show];
+                } else {
+                    NSDictionary *userinfo = @{
+                                               kTKPDFILTER_APILOCATIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"",
                                                kTKPDFILTER_APISHOPTYPEKEY:[_detailfilter objectForKey:kTKPDFILTER_APISHOPTYPEKEY]?:@"",
                                                kTKPDFILTER_APIPRICEMINKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY]?:@"",
                                                kTKPDFILTER_APIPRICEMAXKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY]?:@"",
@@ -242,10 +253,6 @@
                                                };
                     [_delegate FilterViewController:self withUserInfo:userinfo];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
-                else{
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"price max < price min" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
                 }
                 break;
             }
@@ -414,15 +421,13 @@
     return YES;
 }
 
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (void)priceTextFieldChanged:(UITextField *)textField
 {
     if (textField == _pricemin || textField == _pricemincatalog) {
         [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMINKEY];
-    }
-    if (textField == _pricemax || textField == _pricemaxcatalog) {
+    } else if (textField == _pricemax || textField == _pricemaxcatalog) {
         [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMAXKEY];
     }
-    return YES;
 }
 
 #pragma mark - Keyboard Notification

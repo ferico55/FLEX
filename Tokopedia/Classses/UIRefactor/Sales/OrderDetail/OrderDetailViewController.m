@@ -78,6 +78,7 @@
 @property (strong, nonatomic) IBOutlet UIView *detailTransactionView;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDueDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *receivePartialOrderLabel;
 
 @end
 
@@ -139,7 +140,9 @@
     _addressLabel.numberOfLines = 0;
     [_addressLabel sizeToFit];
 
-    NSString *city = [NSString stringWithFormat:@"%@, %@", _transaction.order_destination.address_city, _transaction.order_destination.address_district];
+    NSString *city = [NSString stringWithFormat:@"%@\n%@",
+                      _transaction.order_destination.address_district,
+                      _transaction.order_destination.address_city];
     city = [city stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     city = [city stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     NSAttributedString *cityAttributedString = [[NSAttributedString alloc] initWithString:city
@@ -175,6 +178,8 @@
     _assuranceFeeLabel.text = _transaction.order_detail.detail_insurance_price_idr;
     _shipmentFeeLabel.text = _transaction.order_detail.detail_shipping_price_idr;
     _totalFeeLabel.text = _transaction.order_detail.detail_open_amount_idr;
+    
+    _receivePartialOrderLabel.text = _transaction.order_detail.detail_partial_order?@"Ya":@"Tidak";
     
     _textAttributes = @{
                             NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],

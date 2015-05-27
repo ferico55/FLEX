@@ -33,6 +33,7 @@
 #define kTKPD_PRODUCTIDKEY @"product_id"
 #define kTKPD_SHOPNAMEKEY @"shop_name"
 #define kTKPD_SHOPIMAGEKEY @"shop_avatar"
+#define kTKPD_USEREMAIL @"user_email"
 #define kTKPD_SHOPURL @"shop_url"
 #define kTKPD_SHOPISGOLD @"shop_is_gold"
 #define kTKPD_NULLCOMMENTKEY @"0"

@@ -122,6 +122,7 @@ UIAlertViewDelegate
     NSInteger _requestcount;
     
     NSInteger _pageheaderimages;
+    NSMutableArray *_headerimages;
     NSInteger _heightDescSection;
     Product *_product;
     NoteDetails *notesDetail;
@@ -173,6 +174,8 @@ UIAlertViewDelegate
     UIFont *fontDesc;
     
     RequestMoveTo *_requestMoveTo;
+    
+    NSMutableArray *_headerimages;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -251,6 +254,7 @@ UIAlertViewDelegate
     fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
     _datatalk = [NSMutableDictionary new];
+    _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _otherProductObj = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -2204,6 +2208,7 @@ UIAlertViewDelegate
     NSMutableArray *headerImages = [NSMutableArray new];
     
     [[_imagescrollview subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [_headerimages removeAllObjects];
     
     for(int i = 0; i< images.count; i++)
     {
@@ -2235,9 +2240,10 @@ UIAlertViewDelegate
         
         [_imagescrollview addSubview:thumb];
         [headerImages addObject:thumb];
+        [_headerimages addObject:thumb];
     }
     
-    _pagecontrol.hidden = headerImages.count <= 1?YES:NO;
+    _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = images.count;
     
     _imagescrollview.contentSize = CGSizeMake(images.count*self.view.frame.size.width,0);
@@ -2246,7 +2252,7 @@ UIAlertViewDelegate
     
     [_datatalk setObject:_formattedProductTitle?:@"" forKey:API_PRODUCT_NAME_KEY];
     [_datatalk setObject:_product.result.product.product_price?:@"" forKey:API_PRODUCT_PRICE_KEY];
-    [_datatalk setObject:headerImages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
+    [_datatalk setObject:_headerimages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
 }
 
 -(void)setFooterViewData
@@ -2329,7 +2335,7 @@ UIAlertViewDelegate
         v.pricelabel.text = product.product_price;
         //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image_no_square] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
         
         UIImageView *thumb = v.thumb;
@@ -2343,6 +2349,7 @@ UIAlertViewDelegate
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
             [thumb setImage:image];
+            [thumb setContentMode:UIViewContentModeScaleAspectFit];
             [v.act stopAnimating];
 #pragma clang diagnostic pop
             
@@ -2618,7 +2625,6 @@ UIAlertViewDelegate
         
     return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_description;
 }
-
 
 - (UIImage *)photoGallery:(NSUInteger)index {
     if(((int) index) < 0)

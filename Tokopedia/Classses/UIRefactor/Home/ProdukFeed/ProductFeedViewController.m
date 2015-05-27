@@ -120,17 +120,27 @@ typedef enum TagRequest {
     _table.tableFooterView = _footer;
     [_act startAnimating];
 
-    _table.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
+    [self setTableInset];
     
     if (_product.count > 0) {
         _isnodata = NO;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
+}
+
+- (void) setTableInset {
+    if([[UIScreen mainScreen]bounds].size.height >= 568) {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+    } else {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -477,6 +487,24 @@ typedef enum TagRequest {
     _table.tableFooterView = _footer;
     [_act startAnimating];
     [_networkManager doRequest];
+}
+
+
+#pragma mark - Notification Action
+- (void)userDidTappedTabBar:(NSNotification*)notification {
+    [_table scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (void)didSwipeHomeTab:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
+    
+    if(tag == 1) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
+    }
+    
 }
 
 @end
