@@ -1422,6 +1422,12 @@
 ////    [_act stopAnimating];
 //}
 
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+    _tableView.tableFooterView = nil;
+    [_act stopAnimating];
+}
+
 -(void)requestWithAction:(NSString*)action
 {
     _actionRequest = action;
