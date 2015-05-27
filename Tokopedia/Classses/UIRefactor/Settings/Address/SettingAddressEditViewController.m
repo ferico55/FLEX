@@ -440,7 +440,7 @@
         
         _textviewaddress.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:list.address_street] attributes:attributes];
 
-        NSString *postalcode = list.postal_code?[NSString stringWithFormat:@"%zd",list.postal_code]:@"";
+        NSString *postalcode = list.postal_code?:@"";
         _textfieldpostcode.text = postalcode;
         _textfieldphonenumber.text = list.receiver_phone?:@"";
         [_buttonprovince setTitle:list.province_name?:kTKPDPROFILE_UNSETORIGIN forState:UIControlStateNormal];
@@ -693,18 +693,20 @@
     NSString *addressstreet = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street?:@"";
     NSString *password = [userinfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY]?:@"";
     
-    return @{kTKPDPROFILE_APIACTIONKEY:action,
-             kTKPDPROFILESETTING_APIADDRESSIDKEY : @(addressid),
-             kTKPDPROFILESETTING_APICITYKEY : city,
-             kTKPDPROFILESETTING_APIRECEIVERNAMEKEY : recievername,
-             kTKPDPROFILESETTING_APIADDRESSNAMEKEY : addressname,
-             kTKPDPROFILESETTING_APIRECEIVERPHONEKEY : phone,
-             kTKPDPROFILESETTING_APIPROVINCEKEY : province,
-             kTKPDPROFILESETTING_APIPOSTALCODEKEY : postalcode,
-             kTKPDPROFILESETTING_APIADDRESSSTREETKEY : addressstreet,
-             kTKPDPROFILESETTING_APIDISTRICTKEY : distric,
-             kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password
-             };
+    NSDictionary *param =@{kTKPDPROFILE_APIACTIONKEY:action,
+                           kTKPDPROFILESETTING_APIADDRESSIDKEY : @(addressid),
+                           kTKPDPROFILESETTING_APICITYKEY : city,
+                           kTKPDPROFILESETTING_APIRECEIVERNAMEKEY : recievername,
+                           kTKPDPROFILESETTING_APIADDRESSNAMEKEY : addressname,
+                           kTKPDPROFILESETTING_APIRECEIVERPHONEKEY : phone,
+                           kTKPDPROFILESETTING_APIPROVINCEKEY : province,
+                           kTKPDPROFILESETTING_APIPOSTALCODEKEY : postalcode,
+                           kTKPDPROFILESETTING_APIADDRESSSTREETKEY : addressstreet,
+                           kTKPDPROFILESETTING_APIDISTRICTKEY : distric,
+                           kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password
+                           };
+    
+    return param;
 }
 
 - (NSString*)getPath:(int)tag
