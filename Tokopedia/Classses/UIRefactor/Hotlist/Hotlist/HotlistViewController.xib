@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="185" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="4bJ-qF-cUo" customClass="TableViewScrollAndSwipe">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="192" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="4bJ-qF-cUo" customClass="TableViewScrollAndSwipe">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.95294117647058818" green="0.95294117647058818" blue="0.95294117647058818" alpha="1" colorSpace="deviceRGB"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -35,14 +35,14 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="4bJ-qF-cUo" firstAttribute="top" secondItem="SkJ-Yv-ops" secondAttribute="top" id="D5i-Hf-QB4"/>
-                <constraint firstItem="4bJ-qF-cUo" firstAttribute="leading" secondItem="SkJ-Yv-ops" secondAttribute="leading" id="GXX-Zy-fqL"/>
-                <constraint firstAttribute="bottom" secondItem="4bJ-qF-cUo" secondAttribute="bottom" id="OSD-5Q-ccR"/>
-                <constraint firstAttribute="trailing" secondItem="4bJ-qF-cUo" secondAttribute="trailing" id="cda-kT-s0M"/>
+                <constraint firstAttribute="bottom" secondItem="4bJ-qF-cUo" secondAttribute="bottom" id="IL5-xq-Pri"/>
+                <constraint firstItem="4bJ-qF-cUo" firstAttribute="leading" secondItem="SkJ-Yv-ops" secondAttribute="leading" id="ZQS-iJ-HtC"/>
+                <constraint firstAttribute="trailing" secondItem="4bJ-qF-cUo" secondAttribute="trailing" id="vlo-zs-wd1"/>
+                <constraint firstItem="4bJ-qF-cUo" firstAttribute="top" secondItem="SkJ-Yv-ops" secondAttribute="top" id="wfo-26-NR4"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="148" y="274"/>
+            <point key="canvasLocation" x="543" y="217"/>
         </view>
         <view contentMode="scaleToFill" id="RV0-LQ-bBH" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>

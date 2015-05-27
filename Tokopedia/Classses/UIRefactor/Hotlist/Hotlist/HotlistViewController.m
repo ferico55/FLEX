@@ -93,6 +93,9 @@
     _table.delegate = self;
     _table.dataSource = self;
     _table.tableFooterView = _footer;
+    
+    
+    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
@@ -227,6 +230,15 @@
 }
 
 #pragma mark - Table View Delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if([[UIScreen mainScreen]bounds].size.width > 320) {
+        return 248;
+    } else {
+        return 192;
+    }
+    return 0.0f;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (_isnodata) {

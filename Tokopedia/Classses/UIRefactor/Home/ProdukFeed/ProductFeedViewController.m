@@ -18,15 +18,15 @@
 #import "LoadingView.h"
 #import "NoResultView.h"
 
-@interface ProductFeedViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+#import "GeneralProductCollectionViewCell.h"
+#define kCellsPerRow 2
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (strong, nonatomic) IBOutlet UIView *footer;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@interface ProductFeedViewController() <UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, GeneralProductCellDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+
 
 @property (nonatomic, strong) NSMutableArray *product;
-@property (nonatomic)  BOOL *isDismissVc;
 @property (nonatomic, assign) CGFloat lastContentOffset;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 typedef enum ScrollDirection {
     ScrollDirectionNone,
@@ -103,23 +103,14 @@ typedef enum TagRequest {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
-    /** create new **/
     _product = [NSMutableArray new];
-    
-    /** set first page become 1 **/
     _page = 1;
-    
-    /** set max data per page request **/
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
         
     /** set table view datasource and delegate **/
-    _table.delegate = self;
-    _table.dataSource = self;
+    _collectionView.delegate = self;
+    _collectionView.dataSource = self;
     
-    /** set table footer view (loading act) **/
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
-
     [self setTableInset];
     
     if (_product.count > 0) {
@@ -132,14 +123,35 @@ typedef enum TagRequest {
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    [_table addSubview:_refreshControl];
+    [_collectionView addSubview:_refreshControl];
+    
+    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    
+    UINib *cellNib = [UINib nibWithNibName:@"GeneralProductCollectionViewCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"GeneralProductCollectionViewIdentifier"];
+    
+    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+    
+    //set flow
+    UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+    [flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
+    [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    [_collectionView setCollectionViewLayout:flowLayout];
+    
+    if([[UIScreen mainScreen]bounds].size.width > 320) {
+        [flowLayout setItemSize:CGSizeMake(192, 250)];
+    } else {
+        [flowLayout setItemSize:CGSizeMake(145, 205)];
+    }
+
 }
 
 - (void) setTableInset {
     if([[UIScreen mainScreen]bounds].size.height >= 568) {
-        _table.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
     } else {
-        _table.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
     }
 }
 
@@ -183,100 +195,75 @@ typedef enum TagRequest {
     self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
-
-
-#pragma mark - Table View Data Source
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
-#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : count;
-#else
-    return _isnodata ? 0 : count;
-#endif
-    
+#pragma mark - Collection Delegate
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _product.count;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
-        
-        cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [GeneralProductCell newcell];
-            ((GeneralProductCell*)cell).delegate = self;
-        }
-        
-        if (_product.count > indexPath.row) {
-            //reset cell
-            [self reset:cell];
-            /** Flexible view count **/
-            NSUInteger indexsegment = indexPath.row * 2;
-            NSUInteger indexmax = indexsegment + 2;
-            NSUInteger indexlimit = MIN(indexmax, _product.count);
-            
-            NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
-            
-            NSUInteger i;
-            
-            for (UIView *view in ((GeneralProductCell*)cell).viewcell ) {
-                view.hidden = YES;
-            }
-            
-            for (i = 0; (indexsegment + i) < indexlimit; i++) {
-                ProductFeedList *list = [_product objectAtIndex:indexsegment + i];
-                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
-                (((GeneralProductCell*)cell).indexpath) = indexPath;
-                
-                ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.product_price;
-                
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
-                NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-                [paragrahStyle setLineSpacing:5];
-                [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
-                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).attributedText = attributedString;
-                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingTail;
-                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
-                
-                if([list.shop_gold_status isEqualToString:@"1"]) {
-                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
-                } else {
-                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
-                }
-                
-                
-                NSString *urlstring = list.product_image;
-                
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                
-                UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
-                thumb.image = nil;
-                [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *cellid = @"GeneralProductCollectionViewIdentifier";
+    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+
+
+    //reset cell
+    ProductFeedList *list = [_product objectAtIndex:indexPath.row];
+    cell.labelprice.text = list.product_price;
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
+    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragrahStyle setLineSpacing:5];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
+    cell.labeldescription.attributedText = attributedString;
+    cell.labeldescription.lineBreakMode = NSLineBreakByTruncatingTail;
+    cell.labelalbum.text = list.shop_name?:@"";
+    cell.backgroundColor = [UIColor blueColor];
+    
+    if([list.shop_gold_status isEqualToString:@"1"]) {
+        cell.isGoldShop.hidden = NO;
+    } else {
+        cell.isGoldShop.hidden = YES;
+    }
+    
+    
+    NSString *urlstring = list.product_image;
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    UIImageView *thumb = cell.thumb;
+    thumb.image = nil;
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    [thumb setImage:image];
-                    [thumb setContentMode:UIViewContentModeScaleAspectFill];
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                }];
-            }
-        }
-    } else {
-        static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDHOME_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
-    }
-
+        [thumb setImage:image];
+        [thumb setContentMode:UIViewContentModeScaleAspectFill];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+    }];
+    
+    
     return cell;
-  
 }
 
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+            [_networkManager doRequest];
+        }
+    }
+}
+
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    
+    if(kind == UICollectionElementKindSectionFooter) {
+        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+        
+        reusableView = footerview;
+    }
+    
+    return reusableView;
+}
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -285,40 +272,6 @@ typedef enum TagRequest {
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     _networkManager = nil;
-}
-
-
-#pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            /** called if need to load next page **/
-            //NSLog(@"%@", NSStringFromSelector(_cmd));
-            [_networkManager doRequest];
-        }
-    }
-}
-
-
-
-#pragma mark - Cell Delegate
--(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger index = indexPath.section+2*(indexPath.row);
-    ProductFeedList *list = _product[index];
-
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
-
-    [self.delegate pushViewController:vc];
 }
 
 
@@ -425,20 +378,15 @@ typedef enum TagRequest {
     return _objectmanager;
 }
 
-//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-//{
-//    
-//}
-
 - (void)actionBeforeRequest:(int)tag {
-    if (!_isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-    }
-    else{
-        _table.tableFooterView = nil;
-        [_act stopAnimating];
-    }
+//    if (!_isrefreshview) {
+//        _table.tableFooterView = _footer;
+//        [_act startAnimating];
+//    }
+//    else{
+//        _table.tableFooterView = nil;
+//        [_act stopAnimating];
+//    }
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
@@ -457,21 +405,21 @@ typedef enum TagRequest {
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
         
         if(_urinext!=nil && [_urinext isEqualToString:@"0"]) {
-            [_act stopAnimating];
-            _table.tableFooterView = nil;
+//            [_act stopAnimating];
+//            _table.tableFooterView = nil;
         }
     } else {
         _isnodata = YES;
-        _table.tableFooterView = _noResult;
+//        _table.tableFooterView = _noResult;
     }
 
     
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
-        [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else  {
-        [_table reloadData];
+        [_collectionView reloadData];
     }
 
 }
@@ -479,20 +427,20 @@ typedef enum TagRequest {
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
-    _table.tableFooterView = _loadingView.view;
+//    _table.tableFooterView = _loadingView.view;
 }
 
 #pragma mark - Delegate LoadingView
 - (void)pressRetryButton {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
+//    _table.tableFooterView = _footer;
+//    [_act startAnimating];
     [_networkManager doRequest];
 }
 
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
-    [_table scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+    [_collectionView scrollsToTop];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {

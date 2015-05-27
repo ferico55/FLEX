@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		7A757B6C1B14843F003E6B63 /* GeneralProductCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B6A1B14843F003E6B63 /* GeneralProductCollectionViewCell.m */; };
+		7A757B6D1B14843F003E6B63 /* GeneralProductCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A757B6B1B14843F003E6B63 /* GeneralProductCollectionViewCell.xib */; };
+		7A757B711B15A64D003E6B63 /* FooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B6F1B15A64D003E6B63 /* FooterCollectionReusableView.m */; };
+		7A757B721B15A64D003E6B63 /* FooterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */; };
+		7A757B751B15B011003E6B63 /* CollectionScrollAndSwipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B741B15B011003E6B63 /* CollectionScrollAndSwipe.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1459,6 +1464,14 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7A757B691B14843F003E6B63 /* GeneralProductCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductCollectionViewCell.h; sourceTree = "<group>"; };
+		7A757B6A1B14843F003E6B63 /* GeneralProductCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductCollectionViewCell.m; sourceTree = "<group>"; };
+		7A757B6B1B14843F003E6B63 /* GeneralProductCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProductCollectionViewCell.xib; sourceTree = "<group>"; };
+		7A757B6E1B15A64D003E6B63 /* FooterCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterCollectionReusableView.h; sourceTree = "<group>"; };
+		7A757B6F1B15A64D003E6B63 /* FooterCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterCollectionReusableView.m; sourceTree = "<group>"; };
+		7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterCollectionReusableView.xib; sourceTree = "<group>"; };
+		7A757B731B15B011003E6B63 /* CollectionScrollAndSwipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionScrollAndSwipe.h; sourceTree = "<group>"; };
+		7A757B741B15B011003E6B63 /* CollectionScrollAndSwipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionScrollAndSwipe.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5581,6 +5594,8 @@
 				FC834ADF1B0B3C84003739A3 /* TextField.m */,
 				FC834AE01B0B3C84003739A3 /* TKPDTextView.h */,
 				FC834AE11B0B3C85003739A3 /* TKPDTextView.m */,
+				7A757B731B15B011003E6B63 /* CollectionScrollAndSwipe.h */,
+				7A757B741B15B011003E6B63 /* CollectionScrollAndSwipe.m */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -5658,6 +5673,9 @@
 				FC834B1A1B0B3C85003739A3 /* GeneralTalkCommentCell.h */,
 				FC834B1B1B0B3C85003739A3 /* GeneralTalkCommentCell.m */,
 				FC834B1C1B0B3C85003739A3 /* GeneralTalkCommentCell.xib */,
+				7A757B691B14843F003E6B63 /* GeneralProductCollectionViewCell.h */,
+				7A757B6A1B14843F003E6B63 /* GeneralProductCollectionViewCell.m */,
+				7A757B6B1B14843F003E6B63 /* GeneralProductCollectionViewCell.xib */,
 			);
 			path = GeneralCell;
 			sourceTree = "<group>";
@@ -5748,6 +5766,9 @@
 				FC834B3E1B0B3C85003739A3 /* ProductFeedViewController.xib */,
 				FC834B3F1B0B3C85003739A3 /* ProductInfoTableViewController.h */,
 				FC834B401B0B3C85003739A3 /* ProductInfoTableViewController.m */,
+				7A757B6E1B15A64D003E6B63 /* FooterCollectionReusableView.h */,
+				7A757B6F1B15A64D003E6B63 /* FooterCollectionReusableView.m */,
+				7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */,
 			);
 			path = ProdukFeed;
 			sourceTree = "<group>";
@@ -8373,6 +8394,7 @@
 				FC83543A1B0B3C88003739A3 /* icon_20.png in Resources */,
 				FC8354C61B0B3C88003739A3 /* icon_lock_grey.png in Resources */,
 				FC8352F81B0B3C88003739A3 /* ProductEditWholesaleViewController.xib in Resources */,
+				7A757B721B15A64D003E6B63 /* FooterCollectionReusableView.xib in Resources */,
 				FC8355221B0B3C88003739A3 /* icon_star_active@2x.png in Resources */,
 				FC8355EC1B0B3C88003739A3 /* HSTutorial.png in Resources */,
 				FC8355981B0B3C88003739A3 /* ic_search.png in Resources */,
@@ -8502,6 +8524,7 @@
 				FC8355FB1B0B3C88003739A3 /* MGSwipeTableCell.podspec in Resources */,
 				FC8352141B0B3C88003739A3 /* CatalogSpecificationCell.xib in Resources */,
 				FC83545C1B0B3C88003739A3 /* icon_arrow_up_white.png in Resources */,
+				7A757B6D1B14843F003E6B63 /* GeneralProductCollectionViewCell.xib in Resources */,
 				FC83520C1B0B3C88003739A3 /* CatalogProductViewController.xib in Resources */,
 				FC8355B31B0B3C88003739A3 /* tabnav_bg.png in Resources */,
 				FC8354D21B0B3C88003739A3 /* icon_maintenance_grey.png in Resources */,
@@ -9240,6 +9263,7 @@
 				FC83523A1B0B3C88003739A3 /* NoResultView.m in Sources */,
 				FC83511F1B0B3C87003739A3 /* ProductTalkFormResult.m in Sources */,
 				FC8352131B0B3C88003739A3 /* CatalogSpecificationCell.m in Sources */,
+				7A757B6C1B14843F003E6B63 /* GeneralProductCollectionViewCell.m in Sources */,
 				FC83513D1B0B3C87003739A3 /* PrivacyFormResult.m in Sources */,
 				FC83517D1B0B3C87003739A3 /* SettingPayment.m in Sources */,
 				FC8351BE1B0B3C88003739A3 /* TxOrderConfirmedDetailResult.m in Sources */,
@@ -9601,6 +9625,7 @@
 				FC8352901B0B3C88003739A3 /* InboxResolutionCenterComplainCell.m in Sources */,
 				FC8350C21B0B3C87003739A3 /* Rating.m in Sources */,
 				FC8353151B0B3C88003739A3 /* FilterNewOrderViewController.m in Sources */,
+				7A757B711B15A64D003E6B63 /* FooterCollectionReusableView.m in Sources */,
 				FC83535B1B0B3C88003739A3 /* SettingNotificationCell.m in Sources */,
 				FC8350BE1B0B3C87003739A3 /* OtherProduct.m in Sources */,
 				FC8353F21B0B3C88003739A3 /* TableViewCell.m in Sources */,
@@ -9643,6 +9668,7 @@
 				FC36DF9319B0656400AF74C1 /* main.m in Sources */,
 				FC8351621B0B3C87003739A3 /* OpenShopPicture.m in Sources */,
 				FC83540D1B0B3C88003739A3 /* ProfileFavoriteShopViewController.m in Sources */,
+				7A757B751B15B011003E6B63 /* CollectionScrollAndSwipe.m in Sources */,
 				FC8351391B0B3C87003739A3 /* NotificationFormNotif.m in Sources */,
 				FC8352B31B0B3C88003739A3 /* SalesViewController.m in Sources */,
 				FC83532A1B0B3C88003739A3 /* CancelShipmentViewController.m in Sources */,
