@@ -24,6 +24,8 @@
     CGSize _scrollviewContentSize;
     
     TKPDPhotoPicker *_photoPicker;
+    
+    BOOL _isDefaultImage;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
@@ -100,32 +102,19 @@
 {
     _data = data;
     if (data) {
-//        NSString *urlstring = [_data objectForKey:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY];
-//        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-//        //request.URL = url;
-//        
-//        UIImageView *thumb = _productImageView;
-//        
-//        thumb.image = nil;
-//        //thumb.hidden = YES;	//@prepareforreuse then @reset
-//        
-//        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Warc-retain-cycles"
-//            [thumb setImage:image];
-//#pragma clang diagnostic pop
-//            
-//        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-//        }];
-        
         _productImageView.image = _uploadedImage;
         
         BOOL isDefaultImage = [[_data objectForKey:DATA_IS_DEFAULT_IMAGE]boolValue];
         _defaultPictLabel.hidden = !isDefaultImage;
         _setDefaultButton.hidden = isDefaultImage;
+        _isDefaultImage = isDefaultImage;
         
         NSString *productName = [_data objectForKey:DATA_PRODUCT_IMAGE_NAME_KEY];
         _productNameTextField.text = productName;
+        
+        if (_isDefaultFromWS) {
+            _deleteImageButton.hidden = YES;
+        }
     }
 }
 
@@ -137,7 +126,10 @@
         switch (button.tag) {
             case BUTTON_PRODUCT_DELETE_PRODUCT_IMAGE:
             {
-                BOOL isDefaultImage = [[_data objectForKey:DATA_IS_DEFAULT_IMAGE]boolValue];
+                BOOL isDefaultImage = _isDefaultImage;
+                if (!_isDefaultFromWS && _type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+                    isDefaultImage = NO;
+                }
                 if (isDefaultImage) {
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:ERRORMESSAGE_INVALID_DELETE_PRODUCT_IMAGE delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                     [alertView show];
@@ -175,22 +167,6 @@
                 break;
         }
     }
-    if ([sender isKindOfClass:[UISwitch class]]) {
-        UISwitch *switchButton = (UISwitch*)sender;
-        switch (switchButton.tag) {
-            case SWITCH_PRODUCT_DEFAULT_IMAGE:
-            {
-                if (switchButton.on){
-                    NSInteger indexImage = [[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-                    [_delegate setDefaultImageAtIndex:indexImage];
-                    switchButton.enabled = NO;
-                }
-                break;
-            }
-            default:
-                break;
-        }
-    }
 }
 - (IBAction)gesture:(id)sender {
     [_activeTextField resignFirstResponder];
@@ -201,6 +177,7 @@
     
     sender.hidden = YES;
     _defaultPictLabel.hidden = NO;
+    _isDefaultImage = YES;
 }
 
 #pragma mark - Photo picker delegate
@@ -230,7 +207,8 @@
         case 1:
         {
             NSInteger indexImage = [[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-            [_delegate deleteProductImageAtIndex:indexImage];
+            BOOL isDefaultImage = _isDefaultImage;
+            [_delegate deleteProductImageAtIndex:indexImage isDefaultImage:isDefaultImage];
             [self.navigationController popViewControllerAnimated:YES];
             break;
         }
