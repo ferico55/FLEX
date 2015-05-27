@@ -121,7 +121,6 @@
     
     _networkManagerShopPict = [TokopediaNetworkManager new];
     _networkManagerShopPict.delegate = self;
-    _networkManagerShopPict.isParameterNotEncrypted = YES;
     _networkManagerShopPict.tagRequest = TAG_REQUEST_SHOP_PICT;
     
     _datainput = [NSMutableDictionary new];
@@ -210,7 +209,7 @@
 -(NSString *)getPath:(int)tag
 {
     if (tag == TAG_REQUEST_SHOP_PICT) {
-        return @"action/upload-image-helper.pl";
+        return @"action/myshop-info.pl";
     }
     
     return nil;
@@ -220,13 +219,14 @@
 {
     if (tag == TAG_REQUEST_SHOP_PICT) {
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        NSString* userID = [auth getUserId];
+        NSString* userID = [auth getUserId]?:@"";
         
         NSDictionary *param = @{@"new_add":@(1),
                                 @"action":@"update_shop_picture",
-                                @"pic_code":_images.result.pic_obj?:@"",
-                                @"pic_src": _images.result.file_th?:@"",
-                                @"user_id" : userID
+                                @"pic_code":_images.result.image.pic_code?:@"",
+                                @"pic_src": _images.result.image.pic_src?:@"",
+                                @"user_id" : userID,
+                                @"server_id" : _generatehost.result.generated_host.server_id?:@""
                                 };
         return param;
     }
@@ -256,12 +256,50 @@
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
     if (tag == TAG_REQUEST_SHOP_PICT) {
-        _thumb.alpha = 1.0;
         
-        NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.file_th?:@"",
-                                   kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_images.result.file_path?:@""
-                                   };
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+        NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
+        id stats = [resultDict objectForKey:@""];
+        _settings = stats;
+        
+        if (_settings.result.is_success == 1) {
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Anda telah berhasil mengubah gambar toko"] delegate:self];
+            [alert show];
+            
+            NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.image.pic_src?:@"",
+                                       kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_images.result.file_path?:@""
+                                       };
+            [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_SHOP_AVATAR_NOTIFICATION_NAME object:nil userInfo:userinfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+        }
+        else
+        {
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:_settings.message_error?:@[@"Anda gagal mengubah gambar toko. Mohon coba kembali"] delegate:self];
+            [alert show];
+            
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.info.shop_avatar]
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
+            UIImageView *thumb = _thumb;
+            [UIImageView circleimageview:thumb];
+            
+            [thumb setImageWithURLRequest:request
+                         placeholderImage:[UIImage imageNamed:@"icon_default_shop"]
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                      [thumb setImage:image];
+#pragma clang diagnosti c pop
+                                  } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                      [thumb setImage:[UIImage imageNamed:@"icon_default_shop"]];
+                                      thumb.layer.borderColor = [UIColor colorWithRed:199.0/255.0 green:200.0/255.0 blue:204.0/255.0 alpha:1].CGColor;
+                                      thumb.layer.borderWidth = 1;
+                                  }];
+        }
+
+        
+        _thumb.alpha = 1.0;
+        _buttoneditimage.enabled = YES;
     }
 }
 
@@ -274,6 +312,7 @@
 {
     if (tag == TAG_REQUEST_SHOP_PICT) {
         [self failedUploadObject:_uploadImageObject];
+        _buttoneditimage.enabled = YES;
     }
 }
 
@@ -287,8 +326,9 @@
 -(RKObjectManager *)objectManagerUpload
 {
     // initialize RestKit
-    NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generatehost.result.generated_host.upload_host];
-    RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
+    //NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generatehost.result.generated_host.upload_host];
+    //RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
@@ -304,7 +344,7 @@
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/upload-image-helper.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/myshop-info.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [objectManager addResponseDescriptor:responseDescriptor];
     
@@ -465,15 +505,20 @@
     uploadImage.fieldName = API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME;
     [uploadImage configureRestkitUploadPhoto];
     [uploadImage requestActionUploadPhoto];
+    
+    _buttoneditimage.enabled = NO;
 }
 
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
+    _images = uploadImage;
     [_networkManagerShopPict doRequest];
 }
 
 -(void)failedUploadObject:(id)object
 {
+    _buttoneditimage.enabled = YES;
+    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = _thumb;
@@ -709,10 +754,6 @@
     
     NSDictionary *photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
     
     _thumb.image = image;
     _uploadImageObject = object;
