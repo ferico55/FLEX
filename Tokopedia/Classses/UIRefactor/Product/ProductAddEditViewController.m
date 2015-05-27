@@ -481,11 +481,14 @@
         {
             if (gesture.view.tag > 0) {
                 NSInteger indexImage = gesture.view.tag-20;
-                NSString *defaultImagePath =[_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
-                NSString *selectedImagePath =_productImageURLs[indexImage];
+                NSNumber *defaultImagePath =[_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
+                
+                NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+                NSNumber *selectedImagePath = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)? _productImageURLs[indexImage]:_productImageIDs[indexImage];
+                
                 BOOL isDefaultImage;
                 if (defaultImagePath)
-                    isDefaultImage = [defaultImagePath isEqualToString:selectedImagePath];
+                    isDefaultImage = [defaultImagePath isEqual:selectedImagePath];
                 else
                     isDefaultImage = (gesture.view.tag-20 == 0);
                 
@@ -494,10 +497,12 @@
                             kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY : _productImageURLs[indexImage]?:@"",
                             kTKPDDETAIL_DATAINDEXKEY : @(indexImage),
                             DATA_IS_DEFAULT_IMAGE : @(isDefaultImage),
-                            DATA_PRODUCT_IMAGE_NAME_KEY : _productImageDesc[indexImage]?:@""
+                            DATA_PRODUCT_IMAGE_NAME_KEY : _productImageDesc[indexImage]?:@"",
                             };
                 vc.uploadedImage = ((UIImageView*)_thumbProductImageViews[indexImage]).image;
                 vc.delegate = self;
+                vc.isDefaultFromWS = (type == TYPE_ADD_EDIT_PRODUCT_EDIT && indexImage == 0);
+                vc.type = type;
                 [self.navigationController pushViewController:vc animated:YES];
             }
 
@@ -892,7 +897,7 @@
 
 -(void)failedGenerateHost
 {
-    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark Request Action Upload Photo
@@ -952,14 +957,7 @@
 
 - (void)requestProcessUploadPhoto
 {
-    if (_uploadingImages.count > 0) {
-        [self actionUploadImage:[_uploadingImages firstObject]];
-    }
-    else
-    {
-        _isFinishedUploadImages = YES;
-    }
-    
+    if (_uploadingImages.count ==0) _isFinishedUploadImages = YES;
     
 }
 
@@ -1012,6 +1010,7 @@
             NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
             [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
+        
         }
     }
 }
@@ -1273,12 +1272,6 @@
     uploadImage.generateHost = _generateHost;
     uploadImage.action = ACTION_UPLOAD_PRODUCT_IMAGE;
     uploadImage.fieldName = @"fileToUpload";
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PRODUCT_ADD ||type == TYPE_ADD_EDIT_PRODUCT_COPY)
-    {
-        uploadImage.isNewAdd = YES;
-    }
-    
     [uploadImage configureRestkitUploadPhoto];
     [uploadImage requestActionUploadPhoto];
 }
@@ -1306,7 +1299,7 @@
 
 #pragma mark - Product Edit Image Delegate
 
--(void)deleteProductImageAtIndex:(NSInteger)index
+-(void)deleteProductImageAtIndex:(NSInteger)index isDefaultImage:(BOOL)isDefaultImage
 {
     [_dataInput setObject:_productImageIDs[index] forKey:DATA_LAST_DELETED_IMAGE_ID];
     [_dataInput setObject:_productImageURLs forKey:DATA_LAST_DELETED_IMAGE_PATH];
@@ -1315,6 +1308,10 @@
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+        
+        if (index != 0 && isDefaultImage) {
+            [self setDefaultImageAtIndex:0];
+        }
         
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary* auth = [secureStorage keychainDictionary];
@@ -1328,6 +1325,15 @@
                                    API_PRODUCT_PICTURE_ID_KEY:@(pictureID)
                                    };
         [_dataInput addEntriesFromDictionary:userInfo];
+        [_productImageDesc replaceObjectAtIndex:index withObject:@""];
+        
+        NSInteger imageID =[_productImageIDs[index] integerValue];
+        NSString *imageDescriptionKey = [NSString stringWithFormat:API_PRODUCT_IMAGE_DESCRIPTION_KEY@"%zd",imageID];
+        NSMutableDictionary *ImageNameDictionary = [NSMutableDictionary new];
+        ImageNameDictionary = [[_dataInput objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY] mutableCopy];
+        [ImageNameDictionary removeObjectForKey:imageDescriptionKey];
+        [_dataInput setObject:ImageNameDictionary forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
+        
         [_networkManagerDeleteImage doRequest];
     }
     else  if (type == TYPE_ADD_EDIT_PRODUCT_COPY) {
