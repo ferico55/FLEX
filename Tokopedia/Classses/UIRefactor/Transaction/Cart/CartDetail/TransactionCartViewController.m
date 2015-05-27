@@ -514,10 +514,11 @@
             NSArray *listProducts = list.cart_products;
             ProductDetail *product = listProducts[indexProduct];
             
-            NSString *string = product.product_notes;
+            NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+            NSString *string = productNotes;
             
             //Calculate the expected size based on the font and linebreak mode of your label
-            CGSize maximumLabelSize = CGSizeMake(190,9999);
+            CGSize maximumLabelSize = CGSizeMake(290,9999);
             CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
                                           constrainedToSize:maximumLabelSize
                                               lineBreakMode:NSLineBreakByTruncatingTail];
@@ -2121,7 +2122,8 @@
     
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section];
     ((TransactionCartCell*)cell).indexPath = indexPathCell;
-    [cell.remarkLabel setCustomAttributedText:product.product_notes?:@"-"];
+    NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+    [cell.remarkLabel setCustomAttributedText:productNotes?:@"-"];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     

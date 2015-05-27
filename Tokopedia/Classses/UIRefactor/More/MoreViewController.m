@@ -106,6 +106,11 @@
                                                  selector:@selector(updateProfilePicture:)
                                                      name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateShopPicture:)
+                                                     name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
+                                                   object:nil];
+        
     }
     return self;
 }
@@ -320,6 +325,18 @@
 
 
 #pragma mark - Method
+-(void)updateShopPicture:(NSNotification*)notif
+{
+    NSDictionary *userInfo = notif.userInfo;
+    
+    NSString *strAvatar = [userInfo objectForKey:@"file_th"]?:@"";
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:strAvatar withKey:@"shop_avatar"];
+    _auth = [[secureStorage keychainDictionary] mutableCopy];
+    
+    [self setShopImage];
+}
+
 - (void)setShopImage {
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];

@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIView *oneButtonView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *oneButtonConstraintHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *twoButtonConstraintHeight;
+@property (weak, nonatomic) IBOutlet UIView *titleView;
 
 +(id)newCell;
 @property NSIndexPath *indexPath;

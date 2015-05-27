@@ -18,6 +18,9 @@
 - (NSArray*)LoadDataQueryDepartement:(NSString*)query;
 - (NSArray*)LoadDataQueryLocationName:(NSString*)query;
 - (NSArray*)LoadDataQueryLocationValue:(NSString*)query;
+
+- (NSArray*)LoadDataQueryLocationNameAndID:(NSString*)query;
+
 - (NSDictionary*)dataFromDepartmentID:(NSString*)departmentID;
 
 @end

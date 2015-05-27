@@ -113,6 +113,8 @@ UIAlertViewDelegate
     CGFloat _descriptionHeight;
     CGFloat _informationHeight;
     
+    NSMutableArray *_headerimages;
+    
     BOOL _isnodata;
     BOOL _isnodatawholesale;
     BOOL isDoingWishList, isDoingFavorite;
@@ -120,7 +122,6 @@ UIAlertViewDelegate
     NSInteger _requestcount;
     
     NSInteger _pageheaderimages;
-    NSMutableArray *_headerimages;
     NSInteger _heightDescSection;
     Product *_product;
     NoteDetails *notesDetail;
@@ -173,7 +174,6 @@ UIAlertViewDelegate
     
     RequestMoveTo *_requestMoveTo;
     
-    NSMutableArray *_headerimages;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -266,8 +266,6 @@ UIAlertViewDelegate
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
-    
-    _headerimages = [NSMutableArray new];
     
     _requestMoveTo =[RequestMoveTo new];
     _requestMoveTo.delegate = self;
