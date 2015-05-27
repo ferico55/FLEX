@@ -52,7 +52,15 @@
     else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    cell.textLabel.text = ((Breadcrumb *)[_arrList objectAtIndex:indexPath.row]).department_name;
+    
+    
+    id object = [_arrList objectAtIndex:indexPath.row];
+    if([object isMemberOfClass:[Breadcrumb class]]) {
+        cell.textLabel.text = ((Breadcrumb *)object).department_name;
+    }
+    else {
+        cell.textLabel.text = (NSString *)object;
+    }
     
     return cell;
 }

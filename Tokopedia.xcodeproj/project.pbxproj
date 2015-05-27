@@ -3832,6 +3832,7 @@
 		7AB95FD11B021B5F0060A4C9 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				854BAC691B156F7100392663 /* Catalog */,
 				855856541B0DF4B70021288E /* Note */,
 				7AB95FD21B021B5F0060A4C9 /* Activation */,
 				7AB95FE71B021B5F0060A4C9 /* Deposit */,
@@ -7778,6 +7779,13 @@
 				7AB968EE1B021B630060A4C9 /* zbar-samples.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		854BAC691B156F7100392663 /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Catalog;
 			sourceTree = "<group>";
 		};
 		855856541B0DF4B70021288E /* Note */ = {

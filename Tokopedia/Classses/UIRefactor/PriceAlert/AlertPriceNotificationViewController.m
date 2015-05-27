@@ -5,9 +5,6 @@
 //  Created by Tokopedia on 5/22/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-#import "PriceAlertViewController.h"
-
-
 #import "AlertPriceNotificationViewController.h"
 #import "Breadcrumb.h"
 #import "category.h"
@@ -35,6 +32,7 @@
 
 @implementation AlertPriceNotificationViewController {
     LoadingView *loadingView;
+    UIRefreshControl *refreshControl;
     NoResultView *noResultView;
     
     TokopediaNetworkManager *tokopediaNetworkManager;
@@ -45,12 +43,19 @@
     
     
     int nSelectedDepartment, lastSelectedDepartment;
-    int page;
+    int page, latestPage;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = CStringNotificationHarga;
     page = 1;
+    
+    
+    refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [tblPriceAlert addSubview:refreshControl];
+    
     tblPriceAlert.tableFooterView = [self getActivityIndicator];
     [[self getNetworkManager:CTagGetPriceAlert] doRequest];
 }
@@ -106,7 +111,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    tempPriceAlert = [arrList objectAtIndex:indexPath.row];
+    PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
+    
     DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
+    detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
+    detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
     [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
 }
 
@@ -186,10 +196,6 @@
 
 - (void)actionCloseCell:(id)sender
 {
-//    PriceAlertViewController *p = [PriceAlertViewController new];
-//    tempPriceAlert = [(isFiltering? arrFilter:arrList) objectAtIndex:(int)((UIButton *) sender).tag];
-//    p.detailPriceAlert = tempPriceAlert;
-//    [self.navigationController pushViewController:p animated:YES];
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
@@ -203,6 +209,22 @@
 
 
 #pragma mark - Method
+- (void)refreshView:(id)sender
+{
+    [refreshControl endRefreshing];
+    if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        [stickyAlertView show];
+    }
+    else {
+        latestPage = page;
+        page = 1;
+        
+        tblPriceAlert.allowsSelection = NO;
+        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+    }
+}
+
 - (void)updatePriceAlert:(NSString *)strPrice
 {
     ((DetailPriceAlert *) [arrList objectAtIndex:[arrList indexOfObject:tempPriceAlert]]).pricealert_price = strPrice;
@@ -386,6 +408,7 @@
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
     if(tag == CTagGetPriceAlert) {
+        tblPriceAlert.allowsSelection = YES;
         tblPriceAlert.tableFooterView = nil;
         priceAlert = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         if(priceAlert.result.list != nil) {
@@ -494,7 +517,13 @@
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
     if(tag == CTagGetPriceAlert) {
-        tblPriceAlert.tableFooterView = [self getLoadView:CTagGetPriceAlert].view;
+        if(tblPriceAlert.allowsSelection) {
+            tblPriceAlert.tableFooterView = [self getLoadView:CTagGetPriceAlert].view;
+        }
+        else {
+            tblPriceAlert.allowsSelection = YES;
+            page = latestPage;
+        }
     }
     else if(tag == CTagDeletePriceAlert) {
         tempPriceAlert = nil;

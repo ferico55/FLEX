@@ -7,13 +7,16 @@
 //
 
 #import "DetailPriceAlertTableViewCell.h"
+@implementation CustomButtonBuy
+@synthesize tagIndexPath;
+@end
+
+
 
 @implementation DetailPriceAlertTableViewCell
 
 - (void)awakeFromNib {
     btnBuy.layer.cornerRadius = 3.0f;
-    imagePerson.layer.cornerRadius = imagePerson.bounds.size.width/2.0f;
-    imageProduct.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -38,19 +41,9 @@
 }
 
 #pragma mark - SetView
-- (void)setImgProduct:(UIImage *)imgProduct
+- (CustomButtonBuy *)getBtnBuy
 {
-    imageProduct.image = imgProduct;
-}
-
-- (void)setImgPerson:(UIImage *)imgPerson
-{
-    imagePerson.image = imgPerson;
-}
-
-- (void)setName:(NSString *)strName
-{
-    lblName.text = strName;
+    return btnBuy;
 }
 
 - (void)setNameProduct:(NSString *)strNameProduct
@@ -58,13 +51,13 @@
     lblProductName.text = strNameProduct;
 }
 
+- (void)setProductPrice:(NSString *)strPriceProduct
+{
+    lblPriceProduct.text = strPriceProduct;
+}
+
 - (void)setKondisiProduct:(NSString *)strKondisiProduct
 {
     lblConditionProduct.text = strKondisiProduct;
-}
-
-- (void)setDateProduct:(NSDate *)date
-{
-    lblProductDate.text = @"20123/12/12";
 }
 @end

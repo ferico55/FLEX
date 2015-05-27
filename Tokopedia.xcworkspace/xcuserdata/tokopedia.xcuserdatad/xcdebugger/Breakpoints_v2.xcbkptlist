@@ -130,11 +130,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/PriceAlert/PriceAlertViewController.m"
-            timestampString = "454325170.307526"
+            timestampString = "454329001.315079"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
             landmarkName = "-actionAfterFailRequestMaxTries:"
             landmarkType = "5">
          </BreakpointContent>

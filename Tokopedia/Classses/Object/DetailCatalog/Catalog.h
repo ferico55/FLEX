@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 #import "DetailCatalogResult.h"
+#define CMessageError @"message_error"
+#define CStatus @"status"
+#define CServerProcessTime @"server_process_time"
 
 @interface Catalog : NSObject
 

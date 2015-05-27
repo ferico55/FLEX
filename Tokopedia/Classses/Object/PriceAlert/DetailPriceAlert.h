@@ -18,7 +18,18 @@
 #define CPriceAlertProductImage @"pricealert_product_image"
 #define CPriceAlertID @"pricealert_id"
 #define CPriceAlertProductID @"pricealert_product_id"
-
+#define CPriceAlertItemImage @"pricealert_item_image"
+#define CPriceAlertItemName @"pricealert_item_name"
+#define CPriceAlertProductShopID @"pricealert_product_shop_id"
+#define CPriceAlertCatalogID @"pricealert_catalog_id"
+#define CPriceAlertTypeDesc @"pricealert_type_desc"
+#define CPriceAlertItemID @"pricealert_item_id"
+#define CPriceAlertProductCatalogID @"pricealert_product_catalog_id"
+#define CPriceAlertProductDepartmentID @"pricealert_product_department_id"
+#define CPriceAlertCatalogDepartmentID @"pricealert_catalog_department_id"
+#define CPriceAlertItemURI @"pricealert_item_uri"
+#define CPriceAlertCatalogName @"pricealert_catalog_name"
+#define CPriceAlertCatalogStatus @"pricealert_catalog_status"
 
 @interface DetailPriceAlert : NSObject
 @property (nonatomic, strong) NSString *pricealert_total_product;
@@ -32,4 +43,18 @@
 @property (nonatomic, strong) NSString *pricealert_product_image;
 @property (nonatomic, strong) NSString *pricealert_id;
 @property (nonatomic, strong) NSString *pricealert_product_id;
+
+
+@property (nonatomic, strong) NSString *pricealert_item_image;
+@property (nonatomic, strong) NSString *pricealert_item_name;
+@property (nonatomic, strong) NSString *pricealert_product_shop_id;
+@property (nonatomic, strong) NSString *pricealert_catalog_id;
+@property (nonatomic, strong) NSString *pricealert_type_desc;
+@property (nonatomic, strong) NSString *pricealert_item_id;
+@property (nonatomic, strong) NSString *pricealert_product_catalog_id;
+@property (nonatomic, strong) NSString *pricealert_product_department_id;
+@property (nonatomic, strong) NSString *pricealert_catalog_department_id;
+@property (nonatomic, strong) NSString *pricealert_item_uri;
+@property (nonatomic, strong) NSString *pricealert_catalog_name;
+@property (nonatomic, strong) NSString *pricealert_catalog_status;
 @end

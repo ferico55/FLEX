@@ -7,20 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+@interface CustomButtonBuy:UIButton
+@property (nonatomic, strong) NSIndexPath *tagIndexPath;
+@end
+
 
 @interface DetailPriceAlertTableViewCell : UITableViewCell
 {
-    IBOutlet UIImageView *imageProduct, *imagePerson;
-    IBOutlet UILabel *lblName, *lblProductName, *lblConditionProduct, *lblPriceProduct, *lblProductDate;
-    IBOutlet UIButton *btnBuy;
+    IBOutlet UILabel *lblProductName, *lblConditionProduct, *lblPriceProduct;
+    IBOutlet CustomButtonBuy *btnBuy;
 }
 @property (nonatomic, strong) UIViewController *viewController;
 
 - (IBAction)actionBuy:(id)sender;
-- (void)setImgProduct:(UIImage *)imgProduct;
-- (void)setImgPerson:(UIImage *)imgPerson;
-- (void)setName:(NSString *)strName;
+- (CustomButtonBuy *)getBtnBuy;
 - (void)setNameProduct:(NSString *)strNameProduct;
 - (void)setKondisiProduct:(NSString *)strKondisiProduct;
-- (void)setDateProduct:(NSDate *)date;
+- (void)setProductPrice:(NSString *)strPriceProduct;
 @end

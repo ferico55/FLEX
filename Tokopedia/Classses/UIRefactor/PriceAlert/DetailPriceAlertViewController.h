@@ -7,14 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+@class DetailPriceAlert;
 
 @interface DetailPriceAlertViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
     IBOutlet UITableView *tblDetailPriceAlert;
-    IBOutlet UIImageView *imgUpDownKondisi;
     IBOutlet UIView *viewKondisi, *viewLineHeader;
     IBOutlet NSLayoutConstraint *constraintHeightTable, *constraintVerticalKondisiAndTable, *constraintYLineHeader;
 }
 
-- (IBAction)actionShowCondition:(id)sender;
+@property (nonatomic, unsafe_unretained) UIImage *imageHeader;
+@property (nonatomic, unsafe_unretained) DetailPriceAlert *detailPriceAlert;
+- (void)updatePriceAlert:(NSString *)strPrice;
+- (IBAction)actionSort:(id)sender;
+- (IBAction)actionFilter:(id)sender;
 @end

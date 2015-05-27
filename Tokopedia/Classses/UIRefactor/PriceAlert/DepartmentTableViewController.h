@@ -15,6 +15,7 @@
 
 
 @interface DepartmentTableViewController : UITableViewController
+@property (nonatomic) int tag;
 @property (nonatomic, unsafe_unretained) id<DepartmentListDelegate> del;
 @property (nonatomic, strong) NSArray *arrList;
 @property (nonatomic) int selectedIndex;

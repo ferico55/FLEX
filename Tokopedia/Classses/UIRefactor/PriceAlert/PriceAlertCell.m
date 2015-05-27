@@ -115,6 +115,11 @@
     return constraintBottomViewContent;
 }
 
+- (NSLayoutConstraint *)getConstraintProductNameAndX
+{
+    return constraingTrailingProductNameAndX;
+}
+
 - (NSLayoutConstraint *)getConstraintTrailling
 {
     return constraintTraillingViewContent;

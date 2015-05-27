@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #define CProductID @"product_id"
+#define CProductPrice @"product_price"
+#define CProductCondition @"product_condition"
+#define CProductName @"product_name"
 
 
 @interface ProductDetail : NSObject

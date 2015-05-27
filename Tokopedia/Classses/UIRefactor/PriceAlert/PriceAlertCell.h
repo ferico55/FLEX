@@ -21,6 +21,7 @@
     IBOutlet NSLayoutConstraint *constraintXViewContent;
     IBOutlet NSLayoutConstraint *constraintBottomViewContent;
     IBOutlet NSLayoutConstraint *constraintTraillingViewContent;
+    IBOutlet NSLayoutConstraint *constraingTrailingProductNameAndX;
 }
 @property (nonatomic, strong) UIViewController *viewController;
 
@@ -38,4 +39,5 @@
 - (NSLayoutConstraint *)getConstraintX;
 - (NSLayoutConstraint *)getConstraintBottom;
 - (NSLayoutConstraint *)getConstraintTrailling;
+- (NSLayoutConstraint *)getConstraintProductNameAndX;
 @end
