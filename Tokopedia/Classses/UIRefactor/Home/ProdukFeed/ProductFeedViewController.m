@@ -165,6 +165,7 @@ typedef enum TagRequest {
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+            _isFailRequest = NO;
             [_networkManager doRequest];
         }
     }
@@ -360,10 +361,10 @@ typedef enum TagRequest {
 }
 
 - (void) setTableInset {
-    if([[UIScreen mainScreen]bounds].size.height >= 568) {
-        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
-    } else {
+    if([[UIScreen mainScreen]bounds].size.height > 568) {
         _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+    } else {
+        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
     }
 }
 
