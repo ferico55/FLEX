@@ -156,6 +156,8 @@
         _quantityLabel.text = [NSString stringWithFormat:@"%zd",(NSInteger)_quantityStepper.value];
         _quantityStepper.minimumValue= [product.product_min_order integerValue];
         _remarkTextView.text = product.product_notes;
+        NSInteger counter = 144 - _remarkTextView.text.length;
+        _labelCounter.text = [NSString stringWithFormat:@"%zd",(counter<0)?0:counter];
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         

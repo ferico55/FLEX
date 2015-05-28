@@ -104,12 +104,13 @@
     /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
+    [self setTableInset];
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    _table.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
+//    _table.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
     
     if (_product.count > 0) {
         _isnodata = NO;
@@ -121,13 +122,11 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
 
-    NSLog(@"going here first");
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
     
     if (!_isrefreshview) {
-//        [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-//            [self loadData];
             hasInitData = YES;
             [_networkManager doRequest];
         }
@@ -174,6 +173,13 @@
     }
 }
 
+- (void) setTableInset {
+    if([[UIScreen mainScreen]bounds].size.height >= 568) {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+    } else {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+    }
+}
 
 
 #pragma mark - Table View Data Source
@@ -630,6 +636,23 @@
 - (void)pressRetryButton {
     _table.tableFooterView = _footer;
     [_networkManager doRequest];
+}
+
+#pragma mark - Notification Action
+- (void)userDidTappedTabBar:(NSNotification*)notification {
+    [_table scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (void)didSwipeHomeTab:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
+    
+    if(tag == 3) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
+    }
+    
 }
 
 

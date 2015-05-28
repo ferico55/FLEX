@@ -145,26 +145,44 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NQR-wY-053" id="KjW-1Q-r8c">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RYM-7j-tEe">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RYM-7j-tEe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nama Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ja9-vy-77n">
-                                <rect key="frame" x="15" y="11" width="121" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Produk" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-N2-pnu">
-                                <rect key="frame" x="149" y="0.0" width="153" height="44"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Produk" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-N2-pnu">
+                                <rect key="frame" x="192" y="0.0" width="110" height="42"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="-1" id="TNN-29-QZF"/>
                                 </connections>
                             </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ja9-vy-77n">
+                                <rect key="frame" x="15" y="11" width="121" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Mzk-Lr-8ka"/>
+                                    <constraint firstAttribute="width" constant="121" id="via-ZZ-GJX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="1mA-N2-pnu" secondAttribute="bottom" id="8wu-ac-rC0"/>
+                            <constraint firstItem="ja9-vy-77n" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" constant="11" id="WTg-P9-7Qk"/>
+                            <constraint firstAttribute="trailing" secondItem="1mA-N2-pnu" secondAttribute="trailing" constant="18" id="fTH-4A-nZs"/>
+                            <constraint firstItem="1mA-N2-pnu" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" id="ijx-fC-P01"/>
+                            <constraint firstItem="ja9-vy-77n" firstAttribute="leading" secondItem="RYM-7j-tEe" secondAttribute="leading" constant="15" id="llE-sK-6CH"/>
+                            <constraint firstItem="1mA-N2-pnu" firstAttribute="leading" secondItem="ja9-vy-77n" secondAttribute="trailing" constant="56" id="yZL-FH-e2H"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="RYM-7j-tEe" secondAttribute="bottom" constant="1" id="IXz-Vb-blg"/>
+                    <constraint firstAttribute="trailing" secondItem="RYM-7j-tEe" secondAttribute="trailing" id="PVj-JR-g3t"/>
+                    <constraint firstItem="RYM-7j-tEe" firstAttribute="top" secondItem="KjW-1Q-r8c" secondAttribute="top" id="c0k-YV-E4d"/>
+                    <constraint firstItem="RYM-7j-tEe" firstAttribute="leading" secondItem="KjW-1Q-r8c" secondAttribute="leading" id="vjw-qF-lYi"/>
+                </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="344" y="701"/>
         </tableViewCell>

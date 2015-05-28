@@ -40,7 +40,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -640,7 +640,10 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
-    _tableView.contentOffset = CGPointZero;
+    if (_page == 1) {
+        _tableView.contentOffset = CGPointZero;
+    }
+    
     NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
     TxOrderStatus *order = stat;
@@ -697,7 +700,10 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
-    _tableView.contentOffset = CGPointZero;
+    
+    if (_page == 1) {
+        _tableView.contentOffset = CGPointZero;
+    }
 }
 
 
@@ -1131,6 +1137,7 @@
         vc.isChangeSolution = NO;
         vc.isCanEditProblem = YES;
         vc.order = order;
+        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

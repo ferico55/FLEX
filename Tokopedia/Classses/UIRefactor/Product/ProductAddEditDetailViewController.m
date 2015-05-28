@@ -681,15 +681,20 @@
     if (tag == TAG_REQUEST_VALIDATION) {
         [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         _saveBarButtonItem.enabled = YES;
+        [self showErrorAlert];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     if (tag == TAG_REQUEST_PICTURE) {
         _saveBarButtonItem.enabled = YES;
         [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
-        
+        [self showErrorAlert];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     if (tag == TAG_REQUEST_SUBMIT) {
         _saveBarButtonItem.enabled = YES;
         [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        [self showErrorAlert];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
     }
     if (tag == TAG_REQUEST_EDIT) {
@@ -699,6 +704,23 @@
     if (tag == TAG_REQUEST_MOVE_TO) {
         
     }
+}
+
+-(void)showErrorAlert
+{
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    NSString *errorString = @"";
+    if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
+        errorString = @"Gagal menambahkan produk. Mohon coba kembali.";
+    }
+    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+        errorString = @"Gagal mengubah produk. Mohon coba kembali.";
+    }
+    if (type == TYPE_ADD_EDIT_PRODUCT_COPY) {
+        errorString = @"Gagal mensalin produk. Mohon coba kembali.";
+    }
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorString delegate:self];
+    [alert show];
 }
 
 #pragma mark - -Request Add Product Validation

@@ -121,7 +121,7 @@
                                              selector:@selector(showTalkWithFilter:)
                                                  name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
                                                object:nil];
-    }
+}
 
 - (void)initCache {
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:TKPD_INBOXTALK_CACHE];
@@ -141,12 +141,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initNotification];
-//    [[NSNotificationCenter defaultCenter]postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
-    
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _talkListPage = 1;
     
+    [self initNotification];
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];
     _operationDeleteQueue = [NSOperationQueue new];

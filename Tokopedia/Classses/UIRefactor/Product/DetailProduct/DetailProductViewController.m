@@ -113,6 +113,8 @@ UIAlertViewDelegate
     CGFloat _descriptionHeight;
     CGFloat _informationHeight;
     
+    NSMutableArray *_headerimages;
+    
     BOOL _isnodata;
     BOOL _isnodatawholesale;
     BOOL isDoingWishList, isDoingFavorite;
@@ -172,7 +174,6 @@ UIAlertViewDelegate
     
     RequestMoveTo *_requestMoveTo;
     
-    NSMutableArray *_headerimages;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -251,6 +252,7 @@ UIAlertViewDelegate
     fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
     _datatalk = [NSMutableDictionary new];
+    _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _otherProductObj = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -264,8 +266,6 @@ UIAlertViewDelegate
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
-    
-    _headerimages = [NSMutableArray new];
     
     _requestMoveTo =[RequestMoveTo new];
     _requestMoveTo.delegate = self;
@@ -2204,6 +2204,7 @@ UIAlertViewDelegate
     NSMutableArray *headerImages = [NSMutableArray new];
     
     [[_imagescrollview subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [_headerimages removeAllObjects];
     
     for(int i = 0; i< images.count; i++)
     {
@@ -2235,9 +2236,10 @@ UIAlertViewDelegate
         
         [_imagescrollview addSubview:thumb];
         [headerImages addObject:thumb];
+        [_headerimages addObject:thumb];
     }
     
-    _pagecontrol.hidden = headerImages.count <= 1?YES:NO;
+    _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = images.count;
     
     _imagescrollview.contentSize = CGSizeMake(images.count*self.view.frame.size.width,0);
@@ -2246,7 +2248,7 @@ UIAlertViewDelegate
     
     [_datatalk setObject:_formattedProductTitle?:@"" forKey:API_PRODUCT_NAME_KEY];
     [_datatalk setObject:_product.result.product.product_price?:@"" forKey:API_PRODUCT_PRICE_KEY];
-    [_datatalk setObject:headerImages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
+    [_datatalk setObject:_headerimages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
 }
 
 -(void)setFooterViewData
@@ -2329,7 +2331,7 @@ UIAlertViewDelegate
         v.pricelabel.text = product.product_price;
         //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image_no_square] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
         
         UIImageView *thumb = v.thumb;
@@ -2343,6 +2345,7 @@ UIAlertViewDelegate
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
             [thumb setImage:image];
+            [thumb setContentMode:UIViewContentModeScaleAspectFit];
             [v.act stopAnimating];
 #pragma clang diagnostic pop
             

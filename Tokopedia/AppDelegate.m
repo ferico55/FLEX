@@ -39,10 +39,16 @@
         [Fabric with:@[CrashlyticsKit]];
         
         //push notification init
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-         (UIRemoteNotificationTypeBadge |
-          UIRemoteNotificationTypeSound |
-          UIRemoteNotificationTypeAlert)];
+        if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
+            // iOS 8 Notifications
+            [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+            [application registerForRemoteNotifications];
+        }
+        else {
+            // iOS < 8 Notifications
+            [application registerForRemoteNotificationTypes:
+             (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+        }
         
         //Google Analytics init
         [GAI sharedInstance].trackUncaughtExceptions = YES;

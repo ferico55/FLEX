@@ -14,8 +14,8 @@
 @synthesize delegate = _delegate;
 
 static CGFloat textMarginHorizontal = 13.0f;
-static CGFloat textMarginVertical = 6.5f;
-static CGFloat messageTextSize = 15.0;
+static CGFloat textMarginVertical = 5.0f;
+static CGFloat messageTextSize = 17.0;
 
 @synthesize sent, messageLabel, messageView, timeLabel, avatarImageView, balloonView;
 

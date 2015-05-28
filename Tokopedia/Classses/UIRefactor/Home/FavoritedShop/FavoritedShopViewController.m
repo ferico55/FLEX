@@ -93,7 +93,7 @@
     tokopediaNetworkManager = [TokopediaNetworkManager new];
     tokopediaNetworkManager.delegate = self;
     
-    _table.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
+    [self setTableInset];
     
     if (_shop.count + _goldshop.count > 0) {
         _isnodata = NO;
@@ -105,10 +105,8 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshView:)
-                                                 name:@"notifyFav"
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:@"notifyFav" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
     if (!_isrefreshview) {
         [self configureRestKit];
@@ -156,6 +154,14 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) setTableInset {
+    if([[UIScreen mainScreen]bounds].size.height >= 568) {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+    } else {
+        _table.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+    }
 }
 
 #pragma mark - Initialization
@@ -820,6 +826,24 @@
     [_act startAnimating];
     tokopediaNetworkManager.tagRequest = CTagRequest;
     [tokopediaNetworkManager doRequest];
+}
+
+
+#pragma mark - Notification Action
+- (void)userDidTappedTabBar:(NSNotification*)notification {
+    [_table scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (void)didSwipeHomeTab:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
+    
+    if(tag == 4) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
+    }
+    
 }
 
 #pragma mark - Dealloc

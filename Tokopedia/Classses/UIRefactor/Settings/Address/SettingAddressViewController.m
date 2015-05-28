@@ -280,11 +280,11 @@
                     }
                     else
                     {
-                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @" ";
                     }
 
                     if (![_searchKeyword isEqualToString:@""] && _searchKeyword != nil) {
-                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@"";
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@" ";
                     }
                 }
             }
@@ -299,7 +299,7 @@
             if (_list.count > indexPath.section) {
                 AddressFormList *list = _list[indexPath.section];
                 ((SettingAddressExpandedCell*)cell).recieverNameLabel.text = list.receiver_name;
-                NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %zd",
+                NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@ %@",
                                      [NSString convertHTML:list.address_street], list.district_name, list.city_name,
                                      list.province_name, list.country_name, list.postal_code];
                 
@@ -343,7 +343,18 @@
     if (indexPath.row == 0) {
         return 44;
     } else {
-        return 243;
+        AddressFormList *list = _list[indexPath.section];
+        
+        NSString *string = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@ %@",
+                             [NSString convertHTML:list.address_street], list.district_name, list.city_name,
+                             list.province_name, list.country_name, list.postal_code];
+        
+        //Calculate the expected size based on the font and linebreak mode of your label
+        CGSize maximumLabelSize = CGSizeMake(190,9999);
+        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:NSLineBreakByTruncatingTail];
+        return 243-35+expectedLabelSize.height;
     }
 }
 
@@ -793,6 +804,7 @@
                     StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                          delegate:self];
                     [alertView show];
+                    
                 } else {
                     [self cancelDeleteRow];
                 }
@@ -872,6 +884,15 @@
 }
 
 #pragma mark - delegate address detail
+-(void)setDefaultAddressData:(NSDictionary *)data
+{
+    AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
+    _indexPath = (NSIndexPath *)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
+    [self setAsDefaultAtIndexPath:_indexPath];
+}
+
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
@@ -934,7 +955,7 @@
     [_list removeObject:object];
     [_list insertObject:object atIndex:0];
     [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
-    [self.table reloadData];
+    [_table reloadData];
 }
 -(void)cancelSetAsDefault
 {
@@ -1039,7 +1060,6 @@
     _searchKeyword = searchBar.text;
 
     [_table reloadData];
-    [self performSelector:@selector(reloadTableData) withObject:nil afterDelay:0.1];
 
     return YES;
 }
@@ -1126,6 +1146,7 @@
     } else if (alertView.tag == 2) {
         if (buttonIndex == 1) {            
             [self deleteListAtIndexPath:_indexPath];
+            [self.navigationController popToViewController:self animated:YES];
         }
     }
 }

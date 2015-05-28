@@ -59,6 +59,12 @@ static CGFloat messageTextSize = 14.0;
 
 - (void)setSubjectLabelText:(NSString *)text
 {
+    if ([text isEqualToString:@"Seller"]) {
+        text = @"Penjual";
+    } else if ([text isEqualToString:@"Buyer"]) {
+        text = @"Pembeli";
+    }
+    
     [_textAttributes setObject:[UIFont fontWithName:@"GothamBook" size:10] forKey:NSFontAttributeName];
     _subjectLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:_textAttributes];
     [_subjectLabel sizeToFit];

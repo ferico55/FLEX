@@ -12,17 +12,17 @@
 #import "AddressViewController.h"
 
 #pragma mark - SettingAddress Location View Controller
-@interface AddressViewController () <AddressCellDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface AddressViewController () <UITableViewDelegate,UITableViewDataSource>
 {
     NSInteger _type;
-    NSMutableDictionary *_selectedlocation;
+    NSDictionary *_selectedlocation;
     
     BOOL _isnodata;
+    
+    NSMutableArray *_listLocation;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
-@property (nonatomic, strong) NSMutableArray *locationnames;
-@property (nonatomic, strong) NSMutableArray *locationvalues;
 
 @end
 
@@ -44,11 +44,8 @@
     [super viewDidLoad];
     
     [self.navigationController.navigationBar setTranslucent:NO];
-    /** create new **/
-
-    _locationnames = [NSMutableArray new];
-    _locationvalues = [NSMutableArray new];
-    _selectedlocation = [NSMutableDictionary new];
+    
+    _listLocation = [NSMutableArray new];
     
     UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
                                                                       style:UIBarButtonItemStyleDone
@@ -57,36 +54,23 @@
     doneBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = doneBarButton;
     
-    NSArray *name;
-    NSArray *value;
-    
     _type =[[_data objectForKey:kTKPDLOCATION_DATALOCATIONTYPEKEY] integerValue];
-    NSIndexPath *indexpath;
-    NSInteger index = 0;
     switch (_type) {
         case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
-            NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
-            self.title = @"Pilih Provinsi";
-            name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select province_name from ws_province order by province_name"]];
-            
-            value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select province_id from ws_province order by province_name"]];
-            [_locationnames addObjectsFromArray:name];
-            [_locationvalues addObjectsFromArray:value];
-            if (provid!=0) index = [_locationvalues indexOfObject:[NSString stringWithFormat:@"%zd",provid]];
-            break;
+            NSArray *listLocation = [[DBManager getSharedInstance]LoadDataQueryLocationNameAndID:[NSString stringWithFormat:@"select province_name,province_id from ws_province order by province_name"]];
+                                                                                            
+            [_listLocation addObjectsFromArray:listLocation];
+             break;
         }
         case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
             self.title = @"Pilih Kota";
             NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
-            NSInteger cityid = [[_data objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue];
-            name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select city_name from ws_city d WHERE province_id = %zd order by city_name",provid]];
             
-            value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select city_id from ws_city d WHERE province_id = %zd order by city_name",provid]];
-            [_locationnames addObjectsFromArray:name];
-            [_locationvalues addObjectsFromArray:value];
-            if(cityid!=0) index = [_locationvalues indexOfObject:[NSString stringWithFormat:@"%zd",cityid]];
+            NSArray *listLocation = [[DBManager getSharedInstance]LoadDataQueryLocationNameAndID:[NSString stringWithFormat:@"select city_name,city_id from ws_city d WHERE province_id = %zd order by city_name",provid]];
+            [_listLocation addObjectsFromArray:listLocation];
+            
             break;
         }
         case kTKPDLOCATION_DATATYPEDISTICTKEY:
@@ -94,24 +78,20 @@
             self.title = @"Pilih Kecamatan";
             NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
             NSInteger cityid = [[_data objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue];
-            NSInteger districtid = [[_data objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]integerValue];
-            name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select district_name from ws_district d WHERE province_id = %zd and city_id=%zd order by district_name",provid,cityid]];
             
-            value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select district_id from ws_district d WHERE province_id = %zd and city_id=%zd order by district_id",provid,cityid]];
-            [_locationnames addObjectsFromArray:name];
-            [_locationvalues addObjectsFromArray:value];
-            if(districtid!=0) index = [_locationvalues indexOfObject:[NSString stringWithFormat:@"%zd",districtid]];
+            NSArray *listLocation = [[DBManager getSharedInstance]LoadDataQueryLocationNameAndID:[NSString stringWithFormat:@"select district_name,district_id from ws_district d WHERE province_id = %zd and city_id=%zd order by district_name",provid,cityid]];
+            [_listLocation addObjectsFromArray:listLocation];
+            
             break;
         }
         default:
             break;
     }
-
-    indexpath = (index == 0)?[_data objectForKey:kTKPDLOCATION_DATAINDEXPATHKEY]:[NSIndexPath indexPathForRow:index inSection:0];
-
-    [_selectedlocation setObject:indexpath forKey:kTKPDLOCATION_DATAINDEXPATHKEY];
-
-    if (_locationnames.count > 0) {
+    
+    
+    _selectedlocation = [_data objectForKey:DATA_SELECTED_LOCATION_KEY]?:@{};
+    
+    if (_listLocation.count > 0) {
         _isnodata = NO;
     }
 }
@@ -136,32 +116,28 @@
             case 11:
             {
                 NSDictionary *data;
-                NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 switch (_type) {
                     case kTKPDLOCATION_DATATYPEPROVINCEKEY:
                     {
-                        data = @{kTKPDLOCATION_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
-                                 kTKPDLOCATION_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
-                                 kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY:indexpath,
-                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type)
+                        data = @{
+                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type),
+                                 DATA_SELECTED_LOCATION_KEY : _selectedlocation
                                  };
                         break;
                     }
                     case kTKPDLOCATION_DATATYPEREGIONKEY:
                     {
-                        data = @{kTKPDLOCATION_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
-                                 kTKPDLOCATION_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
-                                 kTKPDLOCATION_DATACITYINDEXPATHKEY:indexpath,
-                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type)
+                        data = @{
+                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type),
+                                 DATA_SELECTED_LOCATION_KEY : _selectedlocation
                                  };
                         break;
                     }
                     case kTKPDLOCATION_DATATYPEDISTICTKEY:
                     {
-                        data = @{kTKPDLOCATION_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
-                                 kTKPDLOCATION_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
-                                 kTKPDLOCATION_DATADISTRICTINDEXPATHKEY:indexpath,
-                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type)
+                        data = @{
+                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type),
+                                 DATA_SELECTED_LOCATION_KEY : _selectedlocation
                                  };
                         break;
                     }
@@ -182,46 +158,20 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDmenuLISTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _locationnames.count;
-#else
-    return _isnodata ? 0 : _locationnames.count;
-#endif
+    return _listLocation.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        NSString *cellid = ADDRRESS_CELL_IDENTIFIER;
-		
-		cell = (AddressCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [AddressCell newcell];
-			((AddressCell*)cell).delegate = self;
-		}
-        if (indexPath.row != ((NSIndexPath*)[_selectedlocation objectForKey:kTKPDLOCATION_DATAINDEXPATHKEY]).row) {
-            ((AddressCell*)cell).imageview.hidden = YES;
-        }
-        else
-            ((AddressCell*)cell).imageview.hidden = NO;
-        
-        //if (indexPath.row>_locationnames.count) {
-            ((AddressCell*)cell).data = @{kTKPDLOCATION_DATAINDEXPATHKEY: indexPath, kTKPDLOCATION_DATALOCATIONNAMEKEY: _locationnames[indexPath.row]};
-        //}
-        
-	} else {
-		static NSString *CellIdentifier = kTKPDLOCATION_STANDARDTABLEVIEWCELLIDENTIFIER;
-		
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		}
-        
-		cell.textLabel.text = kTKPDLOCATION_NODATACELLTITLE;
-		cell.detailTextLabel.text = kTKPDLOCATION_NODATACELLDESCS;
-	}
+    NSString *cellid = ADDRRESS_CELL_IDENTIFIER;
+
+    cell = (AddressCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [AddressCell newcell];
+    }
+    ((AddressCell*)cell).data = _listLocation[indexPath.row];
+    ((AddressCell*)cell).imageview.hidden = !([_listLocation[indexPath.row][@"ID"] integerValue] == [_selectedlocation[@"ID"] integerValue]);
 	
 	return cell;
 }
@@ -235,10 +185,9 @@
 }
 
 #pragma mark - Cell Delegate
--(void)AddressCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    [_selectedlocation setObject:indexpath forKey:kTKPDLOCATION_DATAINDEXPATHKEY];
+    _selectedlocation = _listLocation [indexPath.row];
     [_table reloadData];
 }
 

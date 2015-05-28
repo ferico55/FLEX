@@ -52,6 +52,7 @@
 #import "Helpshift.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
+#import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
 
@@ -105,6 +106,11 @@
                                                  selector:@selector(updateProfilePicture:)
                                                      name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateShopPicture:)
+                                                     name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
+                                                   object:nil];
+        
     }
     return self;
 }
@@ -319,6 +325,18 @@
 
 
 #pragma mark - Method
+-(void)updateShopPicture:(NSNotification*)notif
+{
+    NSDictionary *userInfo = notif.userInfo;
+    
+    NSString *strAvatar = [userInfo objectForKey:@"file_th"]?:@"";
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:strAvatar withKey:@"shop_avatar"];
+    _auth = [[secureStorage keychainDictionary] mutableCopy];
+    
+    [self setShopImage];
+}
+
 - (void)setShopImage {
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];
@@ -465,7 +483,7 @@
             break;
             
         case 4:
-            return 5;
+            return 4;
             break;
             
         case 5:
@@ -614,26 +632,20 @@
             [self.navigationController pushViewController:nc animated:YES];
             
         } else if (indexPath.row == 3) {
-          
-            TKPDTabViewController *controller = [TKPDTabViewController new];
-            controller.hidesBottomBarWhenPushed = YES;
-            
-            InboxCustomerServiceViewController *allInbox = [InboxCustomerServiceViewController new];
-            InboxCustomerServiceViewController *unreadInbox = [InboxCustomerServiceViewController new];
-            InboxCustomerServiceViewController *closedInbox = [InboxCustomerServiceViewController new];
-            
-            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
-            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
-            
-            [self.navigationController pushViewController:controller animated:YES];
+            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
+//            controller.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:controller animated:YES];
             
         } else if (indexPath.row  == 4) {
-            
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
             
-        }        
+        }
+        
     }
     
     else if (indexPath.section == 5) {
@@ -642,9 +654,30 @@
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+//            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            
+            if([MFMailComposeViewController canSendMail]) {
+                MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
+                emailController.mailComposeDelegate = self;
+                
+                
+                NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+                
+                [emailController setSubject:@"Feedback"];
+                [emailController setMessageBody:messageBody isHTML:YES];
+                [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
+                [emailController.navigationBar setTintColor:[UIColor whiteColor]];
+                 
+                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+                [self presentViewController:emailController animated:YES completion:nil];
+            } else {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email (dan login terlebih dahulu) apabila ingin mengirimkan feedback :)"]
+                                                                               delegate:self];
+                [alert show];
+            }
+            
         } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker set:kGAIScreenName value:@"FAQ Center"];
@@ -809,6 +842,11 @@
 {
     UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
     _profilePictureImageView.image = profilePicture;
+}
+
+#pragma mark - Email delegate
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end
