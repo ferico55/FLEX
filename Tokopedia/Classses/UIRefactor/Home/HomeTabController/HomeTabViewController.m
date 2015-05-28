@@ -243,7 +243,7 @@
 - (void)didSwipeHomePage:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"page"]integerValue];
-    
+    [self goToPage:index-1];
     if(index == 1) {
         [self tapButtonAnimate:0];
     } else if(index == 2) {
