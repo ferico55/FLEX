@@ -5,8 +5,13 @@
 //  Created by IT Tkpd on 9/23/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "DetailProductViewController.h"
 #import "DetailProductInfoCell.h"
+#import "TTTAttributedLabel.h"
+#import "string_more.h"
+@interface DetailProductInfoCell()<TTTAttributedLabelDelegate>
+@end
+
 
 @implementation DetailProductInfoCell
 
@@ -52,5 +57,47 @@
         UIButton *btn = (UIButton *)sender;
         [_delegate DetailProductInfoCell:self withbuttonindex:btn.tag];
     }
+}
+
+
+#pragma mark - Method
+- (void)setLblDescriptionToko:(NSString *)strText
+{
+    if(lblMessageRetur == nil) {
+        lblMessageRetur = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+        lblMessageRetur.textAlignment = NSTextAlignmentCenter;
+        lblMessageRetur.font = [UIFont fontWithName:CFont_Gotham_Book size:13.0f];
+        lblMessageRetur.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
+        lblMessageRetur.lineBreakMode = NSLineBreakByWordWrapping;
+        lblMessageRetur.numberOfLines = 0;
+        lblMessageRetur.backgroundColor = [UIColor clearColor];
+        [viewRetur addSubview:lblMessageRetur];
+    }
+    
+    
+    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText];
+    lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5, CPaddingTopDescToko, viewRetur.bounds.size.width-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15, height);
+    constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
+}
+
+- (void)hiddenViewRetur
+{
+    constraintHeightViewRetur.constant = 0;
+    [imgRetur removeConstraints:imgRetur.constraints];
+    [imgRetur addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[imgRetur(==0)]" options:0 metrics:0 views:NSDictionaryOfVariableBindings(imgRetur)]];
+}
+
+- (void)setLblRetur:(NSString *)str
+{
+    lblMessageRetur.text = str;
+}
+
+- (TTTAttributedLabel *)getLblRetur
+{
+    return lblMessageRetur;
+}
+- (float)getHeightReturView
+{
+    return constraintHeightViewRetur.constant;
 }
 @end
