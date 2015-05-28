@@ -10,10 +10,10 @@
 
 @interface GeneralProductCollectionViewCell : UICollectionViewCell
 
-@property (strong, nonatomic) IBOutlet UIImageView *thumb;
-@property (strong, nonatomic) IBOutlet UILabel *labelprice;
-@property (strong, nonatomic) IBOutlet UILabel *labeldescription;
-@property (strong, nonatomic) IBOutlet UILabel *labelalbum;
-@property (strong, nonatomic) IBOutlet UIImageView *isGoldShop;
+@property (strong, nonatomic) IBOutlet UIImageView *productImage;
+@property (strong, nonatomic) IBOutlet UILabel *productPrice;
+@property (strong, nonatomic) IBOutlet UILabel *productShop;
+@property (strong, nonatomic) IBOutlet UILabel *productName;
+@property (strong, nonatomic) IBOutlet UIImageView *goldShopBadge;
 
 @end
