@@ -34,6 +34,10 @@
 
 - (NSString *)formatRupiah:(NSString *)strRupiah
 {
+    if([strRupiah isEqualToString:@""]) {
+        strRupiah = @"0";
+    }
+    
     NSMutableString *result = [NSMutableString stringWithString:strRupiah];
     int n = (int)strRupiah.length;
 
@@ -48,6 +52,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNavigation];
+    
+    if(_detailPriceAlert!=nil && ![_detailPriceAlert.pricealert_price isEqualToString:@"Rp 0"]) {
+        NSString *tempStr = [_detailPriceAlert.pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
+        txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,6 +85,15 @@
 
 
 #pragma mark - Method
+- (NSString *)getPriceAlert
+{
+    NSString *tempPrice = [txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if([tempPrice isEqualToString:@""])
+        return @"";
+    else
+        return tempPrice;
+}
+
 - (TokopediaNetworkManager *)getNetworkManager:(int)tag
 {
     if(tokopediaNetworkManager == nil) {
@@ -89,12 +107,12 @@
 
 - (void)actionTambah:(id)sender
 {
-    StickyAlertView *stickyAlertView;
-    if(txtPrice.text==nil || [[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
-        stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFillPrice] delegate:self];
-        [stickyAlertView show];
-    }
-    else {
+//    StickyAlertView *stickyAlertView;
+//    if(txtPrice.text==nil || [[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
+//        stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFillPrice] delegate:self];
+//        [stickyAlertView show];
+//    }
+//    else {
         if(_catalogInfo != nil) {
             [[self getNetworkManager:CTagAddCatalogPriceAlert] doRequest];
         }
@@ -106,7 +124,7 @@
         }
         
         [self setLoadingDoingAction:YES];
-    }
+//    }
 }
 
 - (void)setLoadingDoingAction:(BOOL)isDoingAction
@@ -130,13 +148,13 @@
 - (NSDictionary*)getParameter:(int)tag
 {
     if(tag == CTagAddCatalogPriceAlert) {
-        return @{CAction:CAddCatalogPriceAlert, CCatalogID:_catalogInfo.catalog_id, CPriceAlertPrice:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+        return @{CAction:CAddCatalogPriceAlert, CCatalogID:_catalogInfo.catalog_id, CPriceAlertPrice:[self getPriceAlert]};
     }
     else if(tag == CTagEditPriceAlert) {
-        return @{CAction:CEditPriceAlert, CPriceAlertID:_detailPriceAlert.pricealert_id, CPriceAlertPrice:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+        return @{CAction:CEditPriceAlert, CPriceAlertID:_detailPriceAlert.pricealert_id, CPriceAlertPrice:[self getPriceAlert]};
     }
     else if(tag == CTagAddPriceAlert) {
-        return @{CAction:CAddPriceAlert, CPriceAlertPrice:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]], CProductID:_productDetail.product_id};
+        return @{CAction:CAddPriceAlert, CPriceAlertPrice:[self getPriceAlert], CProductID:_productDetail.product_id};
     }
     
     return nil;

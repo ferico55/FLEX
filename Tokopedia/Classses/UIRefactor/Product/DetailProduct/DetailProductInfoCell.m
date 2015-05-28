@@ -66,7 +66,7 @@
     if(lblMessageRetur == nil) {
         lblMessageRetur = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
         lblMessageRetur.textAlignment = NSTextAlignmentCenter;
-        lblMessageRetur.font = [UIFont fontWithName:CFont_Gotham_Book size:13.0f];
+        lblMessageRetur.font = [UIFont fontWithName:CFont_Gotham_Book size:11.0f];
         lblMessageRetur.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
         lblMessageRetur.lineBreakMode = NSLineBreakByWordWrapping;
         lblMessageRetur.numberOfLines = 0;

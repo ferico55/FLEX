@@ -365,7 +365,7 @@ UIAlertViewDelegate
     if(_favButton.tag == 17) {//Favorite is 17
         _favButton.tag = 18;
         [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
-        [_favButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_active.png"] forState:UIControlStateNormal];
         [_favButton.layer setBorderWidth:0];
         _favButton.tintColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.3 animations:^(void) {
@@ -376,12 +376,12 @@ UIAlertViewDelegate
     else {
         _favButton.tag = 17;
         [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
-        [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_nonactive.png"] forState:UIControlStateNormal];
         [_favButton.layer setBorderWidth:1];
         _favButton.tintColor = [UIColor lightGrayColor];
         [UIView animateWithDuration:0.3 animations:^(void) {
             [_favButton setBackgroundColor:[UIColor whiteColor]];
-            [_favButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [_favButton setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
         }];
     }
 }
@@ -454,16 +454,16 @@ UIAlertViewDelegate
 
 - (void)setBackgroundPriceAlert:(BOOL)isActive
 {
-    if(isActive) {
-        [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_active.png"] forState:UIControlStateNormal];
-        btnPriceAlert.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
-        [btnPriceAlert setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }
-    else {
+//    if(isActive) {
+//        [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_active.png"] forState:UIControlStateNormal];
+//        btnPriceAlert.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
+//        [btnPriceAlert setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    }
+//    else {
         [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_nonactive.png"] forState:UIControlStateNormal];
         btnPriceAlert.backgroundColor = [UIColor whiteColor];
         [btnPriceAlert setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    }
+//    }
 }
 
 #pragma mark - View Action
