@@ -13,6 +13,8 @@
 		7A757B711B15A64D003E6B63 /* FooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B6F1B15A64D003E6B63 /* FooterCollectionReusableView.m */; };
 		7A757B721B15A64D003E6B63 /* FooterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */; };
 		7A757B751B15B011003E6B63 /* CollectionScrollAndSwipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B741B15B011003E6B63 /* CollectionScrollAndSwipe.m */; };
+		7A757B791B15E58B003E6B63 /* RetryCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B771B15E58B003E6B63 /* RetryCollectionReusableView.m */; };
+		7A757B7A1B15E58B003E6B63 /* RetryCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A757B781B15E58B003E6B63 /* RetryCollectionReusableView.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1472,6 +1474,9 @@
 		7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterCollectionReusableView.xib; sourceTree = "<group>"; };
 		7A757B731B15B011003E6B63 /* CollectionScrollAndSwipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionScrollAndSwipe.h; sourceTree = "<group>"; };
 		7A757B741B15B011003E6B63 /* CollectionScrollAndSwipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionScrollAndSwipe.m; sourceTree = "<group>"; };
+		7A757B761B15E58B003E6B63 /* RetryCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetryCollectionReusableView.h; sourceTree = "<group>"; };
+		7A757B771B15E58B003E6B63 /* RetryCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetryCollectionReusableView.m; sourceTree = "<group>"; };
+		7A757B781B15E58B003E6B63 /* RetryCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RetryCollectionReusableView.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5769,6 +5774,9 @@
 				7A757B6E1B15A64D003E6B63 /* FooterCollectionReusableView.h */,
 				7A757B6F1B15A64D003E6B63 /* FooterCollectionReusableView.m */,
 				7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */,
+				7A757B761B15E58B003E6B63 /* RetryCollectionReusableView.h */,
+				7A757B771B15E58B003E6B63 /* RetryCollectionReusableView.m */,
+				7A757B781B15E58B003E6B63 /* RetryCollectionReusableView.xib */,
 			);
 			path = ProdukFeed;
 			sourceTree = "<group>";
@@ -8817,6 +8825,7 @@
 				FC83531B1B0B3C88003739A3 /* ProductQuantityViewController.xib in Resources */,
 				FC83543D1B0B3C88003739A3 /* icon_21@2x.png in Resources */,
 				FC8351EA1B0B3C88003739A3 /* AlertInfoPaymentConfirmationView.xib in Resources */,
+				7A757B7A1B15E58B003E6B63 /* RetryCollectionReusableView.xib in Resources */,
 				FC8355521B0B3C88003739A3 /* icon_search@2x.png in Resources */,
 				FC83549E1B0B3C88003739A3 /* icon_default_shop.jpg in Resources */,
 				FC8353251B0B3C88003739A3 /* SalesOrderCell.xib in Resources */,
@@ -9189,6 +9198,7 @@
 				FC8352D91B0B3C88003739A3 /* DetailProductOtherView.m in Sources */,
 				FC8352711B0B3C88003739A3 /* FavoritedShopViewController.m in Sources */,
 				FC8352731B0B3C88003739A3 /* HistoryProductViewController.m in Sources */,
+				7A757B791B15E58B003E6B63 /* RetryCollectionReusableView.m in Sources */,
 				FC8350B61B0B3C87003739A3 /* CatalogShops.m in Sources */,
 				FC8352A51B0B3C88003739A3 /* DetailReviewViewController.m in Sources */,
 				FC8351F51B0B3C88003739A3 /* StickyAlert.m in Sources */,

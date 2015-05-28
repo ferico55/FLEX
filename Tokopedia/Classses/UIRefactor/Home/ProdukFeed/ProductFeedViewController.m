@@ -19,6 +19,8 @@
 #import "NoResultView.h"
 
 #import "GeneralProductCollectionViewCell.h"
+#import "NavigateViewController.h"
+
 #define kCellsPerRow 2
 
 @interface ProductFeedViewController() <UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, GeneralProductCellDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
@@ -27,6 +29,7 @@
 @property (nonatomic, strong) NSMutableArray *product;
 @property (nonatomic, assign) CGFloat lastContentOffset;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
 typedef enum ScrollDirection {
     ScrollDirectionNone,
@@ -62,7 +65,7 @@ typedef enum TagRequest {
     NSString *_urinext;
     
     BOOL _isnodata;
-    
+    BOOL _isFailRequest;
     BOOL _isrefreshview;
     
     UIRefreshControl *_refreshControl;
@@ -84,6 +87,7 @@ typedef enum TagRequest {
     if (self) {
         _isrefreshview = NO;
         _isnodata = YES;
+        _isFailRequest = NO;
     }
     return self;
 }
@@ -100,8 +104,8 @@ typedef enum TagRequest {
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
+
+
     
     _product = [NSMutableArray new];
     _page = 1;
@@ -125,7 +129,10 @@ typedef enum TagRequest {
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
     
+    [_networkManager doRequest];
+    
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
     
     UINib *cellNib = [UINib nibWithNibName:@"GeneralProductCollectionViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"GeneralProductCollectionViewIdentifier"];
@@ -133,16 +140,18 @@ typedef enum TagRequest {
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
     
+    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+    
     //set flow
-    UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
-    [flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-    [_collectionView setCollectionViewLayout:flowLayout];
+    [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
+    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    [_collectionView setCollectionViewLayout:_flowLayout];
     
     if([[UIScreen mainScreen]bounds].size.width > 320) {
-        [flowLayout setItemSize:CGSizeMake(192, 250)];
+        [_flowLayout setItemSize:CGSizeMake(192, 250)];
     } else {
-        [flowLayout setItemSize:CGSizeMake(145, 205)];
+        [_flowLayout setItemSize:CGSizeMake(145, 205)];
     }
 
 }
@@ -158,41 +167,7 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     self.screenName = @"Home - Product Feed";
-    
-    if (!_isrefreshview) {
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [_networkManager doRequest];
-        }
-    }
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
-    
-    //Check Difference userID
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    _auth = [_auth mutableCopy];
-    
-    if(hasInitData)
-    {
-        hasInitData = !hasInitData;
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-    }
-    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-        _page = 1;
-        _isnodata = YES;
-        _product = [NSMutableArray new];
-        _isrefreshview = NO;
-        _urinext = nil;
-        [_networkManager doRequest];
-    }
-    
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 #pragma mark - Collection Delegate
@@ -204,8 +179,6 @@ typedef enum TagRequest {
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellid = @"GeneralProductCollectionViewIdentifier";
     GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-
-
     //reset cell
     ProductFeedList *list = [_product objectAtIndex:indexPath.row];
     cell.labelprice.text = list.product_price;
@@ -233,37 +206,43 @@ typedef enum TagRequest {
     UIImageView *thumb = cell.thumb;
     thumb.image = nil;
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [thumb setImage:image];
         [thumb setContentMode:UIViewContentModeScaleAspectFill];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
-    
-    return cell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             [_networkManager doRequest];
         }
     }
+    
+    return cell;
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     
     if(kind == UICollectionElementKindSectionFooter) {
-        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
-        
-        reusableView = footerview;
+        if(_isFailRequest) {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+        }
     }
     
     return reusableView;
 }
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NavigateViewController *navigateController = [NavigateViewController new];
+    ProductFeedList *product = [_product objectAtIndex:indexPath.row];
+    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+}
+
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -405,19 +384,20 @@ typedef enum TagRequest {
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
         
         if(_urinext!=nil && [_urinext isEqualToString:@"0"]) {
-//            [_act stopAnimating];
-//            _table.tableFooterView = nil;
+            //remove loading if there is no more items
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
         }
     } else {
         _isnodata = YES;
-//        _table.tableFooterView = _noResult;
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        [_collectionView addSubview:_noResult];
     }
 
     
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
-//        [_table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
     } else  {
         [_collectionView reloadData];
     }
@@ -427,20 +407,22 @@ typedef enum TagRequest {
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
-//    _table.tableFooterView = _loadingView.view;
+    
+    _isFailRequest = YES;
+    [_collectionView reloadData];
 }
 
-#pragma mark - Delegate LoadingView
-- (void)pressRetryButton {
-//    _table.tableFooterView = _footer;
-//    [_act startAnimating];
+
+- (IBAction)pressRetryButton:(id)sender {
     [_networkManager doRequest];
+    _isFailRequest = NO;
+    [_collectionView reloadData];
 }
 
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
-    [_collectionView scrollsToTop];
+    [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
@@ -454,5 +436,7 @@ typedef enum TagRequest {
     }
     
 }
+
+#pragma mark - Other Method 
 
 @end

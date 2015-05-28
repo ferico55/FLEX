@@ -183,6 +183,10 @@
     [self goToPage:page];
 }
 
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+    return YES;
+}
+
 
 
 #pragma mark - Action
