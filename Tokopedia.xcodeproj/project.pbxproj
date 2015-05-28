@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		7A6A41101B1706FD00589171 /* MyWishlistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A410E1B1706FD00589171 /* MyWishlistViewController.m */; };
+		7A6A41111B1706FD00589171 /* MyWishlistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A6A410F1B1706FD00589171 /* MyWishlistViewController.xib */; };
+		7A6A41151B170DA500589171 /* HistoryProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6A41131B170DA500589171 /* HistoryProductViewController.m */; };
+		7A6A41161B170DA500589171 /* HistoryProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A6A41141B170DA500589171 /* HistoryProductViewController.xib */; };
 		7A757B6C1B14843F003E6B63 /* GeneralProductCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B6A1B14843F003E6B63 /* GeneralProductCollectionViewCell.m */; };
 		7A757B6D1B14843F003E6B63 /* GeneralProductCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A757B6B1B14843F003E6B63 /* GeneralProductCollectionViewCell.xib */; };
-		7A757B711B15A64D003E6B63 /* FooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B6F1B15A64D003E6B63 /* FooterCollectionReusableView.m */; };
-		7A757B721B15A64D003E6B63 /* FooterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */; };
 		7A757B751B15B011003E6B63 /* CollectionScrollAndSwipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B741B15B011003E6B63 /* CollectionScrollAndSwipe.m */; };
-		7A757B791B15E58B003E6B63 /* RetryCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A757B771B15E58B003E6B63 /* RetryCollectionReusableView.m */; };
-		7A757B7A1B15E58B003E6B63 /* RetryCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A757B781B15E58B003E6B63 /* RetryCollectionReusableView.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -535,8 +535,6 @@
 		FC8352701B0B3C88003739A3 /* FavoritedShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC834B2C1B0B3C85003739A3 /* FavoritedShopCell.xib */; };
 		FC8352711B0B3C88003739A3 /* FavoritedShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC834B2E1B0B3C85003739A3 /* FavoritedShopViewController.m */; };
 		FC8352721B0B3C88003739A3 /* FavoritedShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC834B2F1B0B3C85003739A3 /* FavoritedShopViewController.xib */; };
-		FC8352731B0B3C88003739A3 /* HistoryProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC834B321B0B3C85003739A3 /* HistoryProductViewController.m */; };
-		FC8352741B0B3C88003739A3 /* HistoryProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC834B331B0B3C85003739A3 /* HistoryProductViewController.xib */; };
 		FC8352751B0B3C88003739A3 /* HomeTabHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC834B361B0B3C85003739A3 /* HomeTabHeaderViewController.m */; };
 		FC8352761B0B3C88003739A3 /* HomeTabHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC834B371B0B3C85003739A3 /* HomeTabHeaderViewController.xib */; };
 		FC8352771B0B3C88003739A3 /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC834B391B0B3C85003739A3 /* HomeTabViewController.m */; };
@@ -1466,17 +1464,17 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7A6A410D1B1706FD00589171 /* MyWishlistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWishlistViewController.h; sourceTree = "<group>"; };
+		7A6A410E1B1706FD00589171 /* MyWishlistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWishlistViewController.m; sourceTree = "<group>"; };
+		7A6A410F1B1706FD00589171 /* MyWishlistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyWishlistViewController.xib; sourceTree = "<group>"; };
+		7A6A41121B170DA500589171 /* HistoryProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryProductViewController.h; sourceTree = "<group>"; };
+		7A6A41131B170DA500589171 /* HistoryProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryProductViewController.m; sourceTree = "<group>"; };
+		7A6A41141B170DA500589171 /* HistoryProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryProductViewController.xib; sourceTree = "<group>"; };
 		7A757B691B14843F003E6B63 /* GeneralProductCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductCollectionViewCell.h; sourceTree = "<group>"; };
 		7A757B6A1B14843F003E6B63 /* GeneralProductCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductCollectionViewCell.m; sourceTree = "<group>"; };
 		7A757B6B1B14843F003E6B63 /* GeneralProductCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProductCollectionViewCell.xib; sourceTree = "<group>"; };
-		7A757B6E1B15A64D003E6B63 /* FooterCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterCollectionReusableView.h; sourceTree = "<group>"; };
-		7A757B6F1B15A64D003E6B63 /* FooterCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterCollectionReusableView.m; sourceTree = "<group>"; };
-		7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterCollectionReusableView.xib; sourceTree = "<group>"; };
 		7A757B731B15B011003E6B63 /* CollectionScrollAndSwipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionScrollAndSwipe.h; sourceTree = "<group>"; };
 		7A757B741B15B011003E6B63 /* CollectionScrollAndSwipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionScrollAndSwipe.m; sourceTree = "<group>"; };
-		7A757B761B15E58B003E6B63 /* RetryCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetryCollectionReusableView.h; sourceTree = "<group>"; };
-		7A757B771B15E58B003E6B63 /* RetryCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetryCollectionReusableView.m; sourceTree = "<group>"; };
-		7A757B781B15E58B003E6B63 /* RetryCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RetryCollectionReusableView.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -2442,9 +2440,6 @@
 		FC834B2D1B0B3C85003739A3 /* FavoritedShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritedShopViewController.h; sourceTree = "<group>"; };
 		FC834B2E1B0B3C85003739A3 /* FavoritedShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritedShopViewController.m; sourceTree = "<group>"; };
 		FC834B2F1B0B3C85003739A3 /* FavoritedShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritedShopViewController.xib; sourceTree = "<group>"; };
-		FC834B311B0B3C85003739A3 /* HistoryProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryProductViewController.h; sourceTree = "<group>"; };
-		FC834B321B0B3C85003739A3 /* HistoryProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryProductViewController.m; sourceTree = "<group>"; };
-		FC834B331B0B3C85003739A3 /* HistoryProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryProductViewController.xib; sourceTree = "<group>"; };
 		FC834B351B0B3C85003739A3 /* HomeTabHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabHeaderViewController.h; sourceTree = "<group>"; };
 		FC834B361B0B3C85003739A3 /* HomeTabHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabHeaderViewController.m; sourceTree = "<group>"; };
 		FC834B371B0B3C85003739A3 /* HomeTabHeaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTabHeaderViewController.xib; sourceTree = "<group>"; };
@@ -3724,6 +3719,16 @@
 				C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		7A6A410C1B1706FD00589171 /* MyWishlist */ = {
+			isa = PBXGroup;
+			children = (
+				7A6A410D1B1706FD00589171 /* MyWishlistViewController.h */,
+				7A6A410E1B1706FD00589171 /* MyWishlistViewController.m */,
+				7A6A410F1B1706FD00589171 /* MyWishlistViewController.xib */,
+			);
+			path = MyWishlist;
 			sourceTree = "<group>";
 		};
 		FC36DF7A19B0656400AF74C1 = {
@@ -5717,6 +5722,7 @@
 		FC834B281B0B3C85003739A3 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				7A6A410C1B1706FD00589171 /* MyWishlist */,
 				FC834B291B0B3C85003739A3 /* FavoritedShop */,
 				FC834B301B0B3C85003739A3 /* HistoryProduct */,
 				FC834B341B0B3C85003739A3 /* HomeTabController */,
@@ -5743,9 +5749,9 @@
 		FC834B301B0B3C85003739A3 /* HistoryProduct */ = {
 			isa = PBXGroup;
 			children = (
-				FC834B311B0B3C85003739A3 /* HistoryProductViewController.h */,
-				FC834B321B0B3C85003739A3 /* HistoryProductViewController.m */,
-				FC834B331B0B3C85003739A3 /* HistoryProductViewController.xib */,
+				7A6A41121B170DA500589171 /* HistoryProductViewController.h */,
+				7A6A41131B170DA500589171 /* HistoryProductViewController.m */,
+				7A6A41141B170DA500589171 /* HistoryProductViewController.xib */,
 			);
 			path = HistoryProduct;
 			sourceTree = "<group>";
@@ -5771,12 +5777,6 @@
 				FC834B3E1B0B3C85003739A3 /* ProductFeedViewController.xib */,
 				FC834B3F1B0B3C85003739A3 /* ProductInfoTableViewController.h */,
 				FC834B401B0B3C85003739A3 /* ProductInfoTableViewController.m */,
-				7A757B6E1B15A64D003E6B63 /* FooterCollectionReusableView.h */,
-				7A757B6F1B15A64D003E6B63 /* FooterCollectionReusableView.m */,
-				7A757B701B15A64D003E6B63 /* FooterCollectionReusableView.xib */,
-				7A757B761B15E58B003E6B63 /* RetryCollectionReusableView.h */,
-				7A757B771B15E58B003E6B63 /* RetryCollectionReusableView.m */,
-				7A757B781B15E58B003E6B63 /* RetryCollectionReusableView.xib */,
 			);
 			path = ProdukFeed;
 			sourceTree = "<group>";
@@ -8402,7 +8402,6 @@
 				FC83543A1B0B3C88003739A3 /* icon_20.png in Resources */,
 				FC8354C61B0B3C88003739A3 /* icon_lock_grey.png in Resources */,
 				FC8352F81B0B3C88003739A3 /* ProductEditWholesaleViewController.xib in Resources */,
-				7A757B721B15A64D003E6B63 /* FooterCollectionReusableView.xib in Resources */,
 				FC8355221B0B3C88003739A3 /* icon_star_active@2x.png in Resources */,
 				FC8355EC1B0B3C88003739A3 /* HSTutorial.png in Resources */,
 				FC8355981B0B3C88003739A3 /* ic_search.png in Resources */,
@@ -8448,6 +8447,7 @@
 				FC83533A1B0B3C88003739A3 /* FilterShipmentStatusViewController.xib in Resources */,
 				FC83551B1B0B3C88003739A3 /* icon_signin_active (deleted 63cad7fbff1b7fd53fd50f759a4b79c0).png in Resources */,
 				FC8352E91B0B3C88003739A3 /* ProductReviewDetailViewController.xib in Resources */,
+				7A6A41111B1706FD00589171 /* MyWishlistViewController.xib in Resources */,
 				FC8352651B0B3C88003739A3 /* GeneralSwitchCell.xib in Resources */,
 				FC8353A71B0B3C88003739A3 /* FilterLocationViewController.xib in Resources */,
 				FC83531F1B0B3C88003739A3 /* OrderDetailProductCell.xib in Resources */,
@@ -8496,6 +8496,7 @@
 				FC8355A41B0B3C88003739A3 /* icon_home@2x.png in Resources */,
 				FC83556E1B0B3C88003739A3 /* navigation-button-bg-pt.png in Resources */,
 				FC83542D1B0B3C88003739A3 /* icon_14@2x.png in Resources */,
+				7A6A41161B170DA500589171 /* HistoryProductViewController.xib in Resources */,
 				FC8355791B0B3C88003739A3 /* icon_etalase@3x.png in Resources */,
 				FC8353D31B0B3C88003739A3 /* TransactionCartResultViewController.xib in Resources */,
 				FC8355D31B0B3C88003739A3 /* HelpshiftLocalizable.strings in Resources */,
@@ -8825,7 +8826,6 @@
 				FC83531B1B0B3C88003739A3 /* ProductQuantityViewController.xib in Resources */,
 				FC83543D1B0B3C88003739A3 /* icon_21@2x.png in Resources */,
 				FC8351EA1B0B3C88003739A3 /* AlertInfoPaymentConfirmationView.xib in Resources */,
-				7A757B7A1B15E58B003E6B63 /* RetryCollectionReusableView.xib in Resources */,
 				FC8355521B0B3C88003739A3 /* icon_search@2x.png in Resources */,
 				FC83549E1B0B3C88003739A3 /* icon_default_shop.jpg in Resources */,
 				FC8353251B0B3C88003739A3 /* SalesOrderCell.xib in Resources */,
@@ -8877,7 +8877,6 @@
 				FC8355841B0B3C88003739A3 /* icon_category_active@3x.png in Resources */,
 				FC8355431B0B3C88003739A3 /* icon_cart_active@2x.png in Resources */,
 				FC8355471B0B3C88003739A3 /* icon_category_active.png in Resources */,
-				FC8352741B0B3C88003739A3 /* HistoryProductViewController.xib in Resources */,
 				FC8352F21B0B3C88003739A3 /* ProductAddEditViewController.xib in Resources */,
 				FC8354D41B0B3C88003739A3 /* icon_maintenance_grey_2x.png in Resources */,
 				FC8354901B0B3C88003739A3 /* icon_check_orange@2x.png in Resources */,
@@ -9197,8 +9196,6 @@
 				FC8351071B0B3C87003739A3 /* ResolutionShop.m in Sources */,
 				FC8352D91B0B3C88003739A3 /* DetailProductOtherView.m in Sources */,
 				FC8352711B0B3C88003739A3 /* FavoritedShopViewController.m in Sources */,
-				FC8352731B0B3C88003739A3 /* HistoryProductViewController.m in Sources */,
-				7A757B791B15E58B003E6B63 /* RetryCollectionReusableView.m in Sources */,
 				FC8350B61B0B3C87003739A3 /* CatalogShops.m in Sources */,
 				FC8352A51B0B3C88003739A3 /* DetailReviewViewController.m in Sources */,
 				FC8351F51B0B3C88003739A3 /* StickyAlert.m in Sources */,
@@ -9287,6 +9284,7 @@
 				FC83515B1B0B3C87003739A3 /* SendMessageResult.m in Sources */,
 				FC8353901B0B3C88003739A3 /* ShopTalkViewController.m in Sources */,
 				FC8350DC1B0B3C87003739A3 /* FavoritedShopResult.m in Sources */,
+				7A6A41151B170DA500589171 /* HistoryProductViewController.m in Sources */,
 				FC83521B1B0B3C88003739A3 /* CategoryViewCell.m in Sources */,
 				FC83508F1B0B3C87003739A3 /* NSDictionaryCategory.m in Sources */,
 				FC83524B1B0B3C88003739A3 /* DepositListBankViewController.m in Sources */,
@@ -9425,6 +9423,7 @@
 				FC8351C31B0B3C88003739A3 /* TxOrderConfirmPaymentFormForm.m in Sources */,
 				FC8350FF1B0B3C87003739A3 /* ResolutionCenterDetailResult.m in Sources */,
 				FC8351241B0B3C87003739A3 /* ProfileEditFormResult.m in Sources */,
+				7A6A41101B1706FD00589171 /* MyWishlistViewController.m in Sources */,
 				FC8352791B0B3C88003739A3 /* ProductFeedViewController.m in Sources */,
 				FC8352531B0B3C88003739A3 /* GeneralAlertCell.m in Sources */,
 				FC8351A51B0B3C87003739A3 /* OrderShop.m in Sources */,
@@ -9635,7 +9634,6 @@
 				FC8352901B0B3C88003739A3 /* InboxResolutionCenterComplainCell.m in Sources */,
 				FC8350C21B0B3C87003739A3 /* Rating.m in Sources */,
 				FC8353151B0B3C88003739A3 /* FilterNewOrderViewController.m in Sources */,
-				7A757B711B15A64D003E6B63 /* FooterCollectionReusableView.m in Sources */,
 				FC83535B1B0B3C88003739A3 /* SettingNotificationCell.m in Sources */,
 				FC8350BE1B0B3C87003739A3 /* OtherProduct.m in Sources */,
 				FC8353F21B0B3C88003739A3 /* TableViewCell.m in Sources */,

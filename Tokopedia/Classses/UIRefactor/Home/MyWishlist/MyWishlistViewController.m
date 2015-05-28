@@ -10,16 +10,17 @@
 #import "string_product.h"
 #import "detail.h"
 
-#import "HistoryProductViewController.h"
+#import "MyWishlistViewController.h"
 #import "DetailProductViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
 
 #import "GeneralProductCollectionViewCell.h"
 #import "NavigateViewController.h"
-#import "HistoryProduct.h"
+#import "WishListObject.h"
+#import "WishListObjectList.h"
 
-@interface HistoryProductViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
+@interface MyWishlistViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -35,7 +36,7 @@ typedef enum TagRequest {
 @end
 
 
-@implementation HistoryProductViewController {
+@implementation MyWishlistViewController {
     NSInteger _page;
     NSInteger _itemPerPage;
     
@@ -73,7 +74,7 @@ typedef enum TagRequest {
     _isNoData = (_product.count > 0);
     _page = 1;
     _itemPerPage = kTKPDHOMEHOTLIST_LIMITPAGE;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
     
@@ -130,8 +131,8 @@ typedef enum TagRequest {
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellid = @"GeneralProductCollectionViewIdentifier";
     GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-    
-    HistoryProductList *list = [_product objectAtIndex:indexPath.row];
+
+    WishListObjectList *list = [_product objectAtIndex:indexPath.row];
     cell.productPrice.text = list.product_price;
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
@@ -142,7 +143,7 @@ typedef enum TagRequest {
     cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.productShop.text = list.shop_name?:@"";
     
-    if([list.shop_gold_status isEqualToString:@"1"]) {
+    if(list.shop_gold_status == 1) {
         cell.goldShopBadge.hidden = NO;
     } else {
         cell.goldShopBadge.hidden = YES;
@@ -153,8 +154,8 @@ typedef enum TagRequest {
     thumb.image = nil;
     
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [thumb setImage:image];
         [thumb setContentMode:UIViewContentModeScaleAspectFill];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
@@ -188,8 +189,8 @@ typedef enum TagRequest {
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    HistoryProductList *product = [_product objectAtIndex:indexPath.row];
-    [navigateController navigateToProductFromViewController:self withProductID:[NSString stringWithFormat:@"%@", product.product_id]];
+    WishListObjectList *product = [_product objectAtIndex:indexPath.row];
+    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
 }
 
 
@@ -218,82 +219,109 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Tokopedia Network Delegate
-- (NSString *)getPath:(int)tag {
-    return kTKPDHOMEHOTLIST_APIPATH;
+- (NSDictionary *)getParameter:(int)tag {
+    return @{kTKPDHOME_APIACTIONKEY      :   kTKPDGET_WISH_LIST,
+             kTKPDHOME_APIPAGEKEY        :       @(_page),
+             kTKPDHOME_APILIMITPAGEKEY   :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
 }
 
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEHISTORYPRODUCTACT};
-    return param;
+- (NSString *)getPath:(int)tag {
+    return kTKPDHOMEHOTLIST_APIPATH;
 }
 
 - (NSString *)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
-    HistoryProduct *list = stat;
+    WishListObject *list = stat;
     
     return list.status;
 }
 
 - (id)getObjectManager:(int)tag {
+    // initialize RestKit
     _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[HistoryProduct class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[WishListObject class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HistoryProductResult class]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[HistoryProductList class]];
+    
+    
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[WishListObjectList class]];
     [listMapping addAttributeMappingsFromArray:@[
-                                                 kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY,
-                                                 kTKPDDETAILCATALOG_APIPRODUCTIDKEY,
-                                                 kTKPDDETAILCATALOG_APISHOPGOLDSTATUSKEY,
-                                                 kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                 kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                 kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
-                                                 API_PRODUCT_NAME_KEY
+                                                 KTKPDSHOP_GOLD_STATUS,
+                                                 KTKPDSHOP_ID,
+                                                 KTKPDPRODUCT_RATING_POINT,
+                                                 KTKPDPRODUCT_DEPARTMENT_ID,
+                                                 KTKPDPRODUCT_ETALASE,
+                                                 KTKPDSHOP_FEATURED_SHOP,
+                                                 KTKPDSHOP_URL,
+                                                 KTKPDPRODUCT_STATUS,
+                                                 KTKPDPRODUCT_ID,
+                                                 KTKPDPRODUCT_IMAGE_FULL,
+                                                 KTKPDPRODUCT_CURRENCY_ID,
+                                                 KTKPDPRODUCT_RATING_DESC,
+                                                 KTKPDPRODUCT_CURRENCY,
+                                                 KTKPDPRODUCT_TALK_COUNT,
+                                                 KTKPDPRODUCT_PRICE_NO_IDR,
+                                                 KTKPDPRODUCT_IMAGE,
+                                                 KTKPDPRODUCT_PRICE,
+                                                 KTKPDPRODUCT_SOLD_COUNT,
+                                                 KTKPDPRODUCT_RETURNABLE,
+                                                 KTKPDSHOP_LOCATION,
+                                                 KTKPDPRODUCT_NORMAL_PRICE,
+                                                 KTKPDPRODUCT_IMAGE_300,
+                                                 KTKPDSHOP_NAME,
+                                                 KTKPDPRODUCT_REVIEW_COUNT,
+                                                 KTKPDSHOP_IS_OWNER,
+                                                 KTKPDPRODUCT_URL,
+                                                 KTKPDPRODUCT_NAME
                                                  ]];
     
     //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[WishListObjectResult class]];
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
+    
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    
+    
+    
     //register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH
-                                                                                                 keyPath:@""
+                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
-    
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
     return _objectmanager;
+
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    
+
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    HistoryProduct *feed = [result objectForKey:@""];
+    WishListObject *feed = [result objectForKey:@""];
     
     if(_page == 1) {
         _product = [feed.result.list mutableCopy];
     } else {
         [_product addObjectsFromArray: feed.result.list];
     }
-    
+
     [_noResult removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
@@ -317,7 +345,7 @@ typedef enum TagRequest {
     } else  {
         [_collectionView reloadData];
     }
-    
+
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
