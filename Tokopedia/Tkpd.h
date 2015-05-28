@@ -11,7 +11,7 @@
 
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -19,7 +19,7 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-//#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -33,10 +33,13 @@
 #define kTKPD_PRODUCTIDKEY @"product_id"
 #define kTKPD_SHOPNAMEKEY @"shop_name"
 #define kTKPD_SHOPIMAGEKEY @"shop_avatar"
+#define kTKPD_USEREMAIL @"user_email"
 #define kTKPD_SHOPURL @"shop_url"
 #define kTKPD_SHOPISGOLD @"shop_is_gold"
 #define kTKPD_NULLCOMMENTKEY @"0"
 #define kTKPD_SHOP_AVATAR @"shop_avatar"
+#define LAST_CATEGORY_VALUE @"last_category_value"
+#define LAST_CATEGORY_NAME @"last_category_name"
 
 #define DATA_PAYMENT_CONFIRMATION_COUNT_KEY @"data_payment_conf"
 #define DATA_STATUS_COUNT_KEY @"data_status"
@@ -135,6 +138,7 @@ typedef enum {
 #define kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY"
 #define kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY"
 #define kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY"
+#define EDIT_SHOP_AVATAR_NOTIFICATION_NAME @"tokopedia.EDIT_SHOP_AVATAR"
 
 #define UPDATE_TABBAR @"UPDATE_TABBAR"
 

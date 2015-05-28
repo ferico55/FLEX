@@ -36,34 +36,13 @@
     // Configure the view for the selected state
 }
 
-#pragma mark - View Gestures
--(IBAction)gesture:(id)sender
-{
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
-        switch (gesture.state) {
-            case UIGestureRecognizerStateBegan: {
-                break;
-            }
-            case UIGestureRecognizerStateChanged: {
-                break;
-            }
-            case UIGestureRecognizerStateEnded: {
-                NSIndexPath *indexpath = [_data objectForKey:kTKPDLOCATION_DATAINDEXPATHKEY];
-                [_delegate AddressCell:self withindexpath:indexpath];
-                break;
-            }
-        }
-    }
-}
-
 #pragma mark - Properties
 -(void)setData:(NSDictionary *)data
 {
     _data = data;
     
     if (data) {
-        _label.text = [_data objectForKey:kTKPDLOCATION_DATALOCATIONNAMEKEY];
+        _label.text = [_data objectForKey:@"Name"];
     }
 }
 

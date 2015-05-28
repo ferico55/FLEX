@@ -12,7 +12,7 @@
 #import "DepositForm.h"
 #import "profile.h"
 
-@interface DepositFormViewController () <UITextFieldDelegate> {
+@interface DepositFormViewController () <UITextFieldDelegate, UIScrollViewDelegate> {
     NSString *_clearTotalAmount;
     
     __weak RKObjectManager *_objectManager;
@@ -156,6 +156,7 @@
     _operationSendOTPQueue = [NSOperationQueue new];
     _listBankAccount = [NSMutableArray new];
     
+    _containerScrollView.delegate = self;
 //    [_useableSaldoIDR setText:[_data objectForKey:@"summary_useable_deposit_idr"]];
     [self configureDepositInfo];
     [self loadDepositInfo];
@@ -689,49 +690,58 @@
     [_chooseAccountButton setTitle:bankName forState:UIControlStateNormal];
 }
 
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+- (void)keyboardWillShow:(NSNotification *)note {
+    // get keyboard size and loctaion
+    if(_activeTextField.tag != 10) {
+        CGRect keyboardBounds;
+        [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+        NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+        
+        // Need to translate the bounds to account for rotation.
+        keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+        
+        // get a rect for the textView frame
+        CGRect containerFrame = self.view.frame;
+        
+        containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+        // animations settings
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationDuration:[duration doubleValue]];
+        [UIView setAnimationCurve:[curve intValue]];
         
         
-        _scrollviewContentSize = [_containerScrollView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_containerScrollView setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize = [_containerScrollView contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             if ((_activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y) {
-                                 UIEdgeInsets inset = _containerScrollView.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height + 10));
-                                 [_containerScrollView setContentInset:inset];
-                             }
-                         }
-                         completion:^(BOOL finished){
-                         }];
+        // set views with new info
+        self.view.frame = containerFrame;
         
+        //    [_messagingview becomeFirstResponder];
+        // commit animations
+        [UIView commitAnimations];
     }
 }
 
-- (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         _containerScrollView.contentInset = contentInsets;
-                         _containerScrollView.scrollIndicatorInsets = contentInsets;
-                     }
-                     completion:^(BOOL finished){
-                     }];
+- (void)keyboardWillHide:(NSNotification *)note {
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    // get a rect for the textView frame
+    self.view.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1.0];
+    CGRect containerFrame = self.view.frame;
+    
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
+    
+    // animations settings
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    
+    // set views with new info
+    self.view.frame = containerFrame;
+    
+    // commit animations
+    [UIView commitAnimations];
 }
 
 
@@ -797,6 +807,7 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
+    [textField resignFirstResponder];
     return YES;
 }
 
@@ -843,6 +854,12 @@
 
     }
     return YES;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [_totalAmount resignFirstResponder];
+    [_tokopediaPassword resignFirstResponder];
+    [_kodeOTP resignFirstResponder];
 }
 
 

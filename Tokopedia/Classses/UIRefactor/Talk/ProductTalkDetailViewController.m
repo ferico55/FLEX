@@ -51,6 +51,7 @@
     NSInteger _page;
     NSInteger _limit;
     NSMutableDictionary *_datainput;
+    NSString *_savedComment;
     
 
     NSInteger _requestcount;
@@ -216,10 +217,13 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    // add gesture to product image
+
+        // add gesture to product image
     UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
     [_talkProductImage addGestureRecognizer:productGesture];
     [_talkProductImage setUserInteractionEnabled:YES];
+
+
     
     [self setHeaderData:_data];
     
@@ -326,6 +330,11 @@
             
             if(list.is_not_delivered) {
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = NO;
+                ((GeneralTalkCommentCell*)cell).create_time.text = @"Gagal Kirim.";
+                
+                UITapGestureRecognizer *errorSendCommentGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapErrorComment)];
+                [((GeneralTalkCommentCell*)cell).commentfailimage addGestureRecognizer:errorSendCommentGesture];
+                [((GeneralTalkCommentCell*)cell).commentfailimage setUserInteractionEnabled:YES];
             } else {
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = YES;
             }
@@ -448,18 +457,22 @@
     _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
-//    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
-//    UIImage * image;
-//    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
-//    if(imageData) {
-//        image = [UIImage imageWithData:imageData];
-//    } else {
-//        image = [UIImage imageNamed:@"default-boy.png"];
-//    }
-//    
-//    _talkuserimage.image = image;
-//    _talkuserimage = [UIImageView circleimageview:_talkuserimage];
-//
+    if(![[data objectForKey:TKPD_TALK_USER_ID] isEqualToString:[_userManager getUserId]] && ![_userManager isMyShopWithShopId:[_data objectForKey:@"talk_shop_id"]]) {
+        _reportButton.hidden = NO;
+        
+        CGRect newFrame = _talktotalcommentlabel.frame;
+        newFrame.origin.x = 54;
+        _talktotalcommentlabel.frame = newFrame;
+        _buttonsDividers.hidden = NO;
+    } else {
+        _reportButton.hidden = YES;
+        
+        CGRect newFrame = _talktotalcommentlabel.frame;
+        newFrame.origin.x = 120;
+        _talktotalcommentlabel.frame = newFrame;
+        _buttonsDividers.hidden = YES;
+    }
+    
     
     NSURLRequest* requestUserImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [_talkuserimage setImageWithURLRequest:requestUserImage placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -771,9 +784,16 @@
 #pragma mark - View Action
 
 - (void)tapProduct {
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
-    [self.navigationController pushViewController:vc animated:YES];
+    if([[_data objectForKey:@"talk_product_status"] isEqualToString:@"1"]) {
+        DetailProductViewController *vc = [DetailProductViewController new];
+        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)tapErrorComment {
+    [self configureSendCommentRestkit];
+    [self addProductCommentTalk];
 }
 
 - (void)tapUser {
@@ -832,7 +852,7 @@
                     [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
                     NSString *dateString = [dateFormat stringFromDate:today];
                     
-                    commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
+                    commentlist.comment_create_time = dateString;
                     commentlist.is_just_sent = YES;
                     
                     [_list insertObject:commentlist atIndex:lastindexpathrow];
@@ -850,6 +870,7 @@
                                           animated:YES];
                     
                     //connect action to web service
+                    _savedComment = _growingtextview.text;
                     [self configureSendCommentRestkit];
                     [self addProductCommentTalk];
                     
@@ -877,9 +898,7 @@
             }
                 
             case 11 : {
-                DetailProductViewController *vc = [DetailProductViewController new];
-                vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
-                [self.navigationController pushViewController:vc animated:YES];
+                [self tapProduct];
                 break;
             }
                 
@@ -933,6 +952,7 @@
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentAction class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentActionResult class]];
@@ -999,6 +1019,11 @@
             TalkCommentList *commentlist = _list[_list.count-1];
             commentlist.is_not_delivered = @"1";
             commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+            _growingtextview.text = _savedComment;
+            
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:commentaction.message_error
+                                                                           delegate:self];
+            [alert show];
         } else {
             NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
             _talktotalcommentlabel.text = totalcomment;
@@ -1115,13 +1140,13 @@
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralTalkCommentCell*) cell).indexpath;
         TalkCommentList *list = _list[indexPath.row];
-        if(list.comment_user_id == nil)
+        if(list.comment_user_id == nil || list.comment_id == nil)
             return nil;
         
         [_datainput setObject:list.comment_id forKey:@"comment_id"];
         [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
         
-        if(![[_userManager getUserId] isEqualToString:list.comment_user_id]) {
+        if(![[_userManager getUserId] isEqualToString:list.comment_user_id] && ![_userManager isMyShopWithShopId:[_data objectForKey:@"talk_shop_id"]]) {
             MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];

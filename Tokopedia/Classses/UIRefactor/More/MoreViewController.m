@@ -5,6 +5,7 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
@@ -18,11 +19,9 @@
 #import "string_more.h"
 #import "WebViewController.h"
 
-
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
 
-//#import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
@@ -36,6 +35,8 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
+#import "TKPDTabViewController.h"
+#import "InboxCustomerServiceViewController.h"
 
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
@@ -52,6 +53,7 @@
 #import "Helpshift.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
+#import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
 
@@ -101,6 +103,15 @@
                                                  selector:@selector(updateSaldoTokopedia:)
                                                      name:@"updateSaldoTokopedia" object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateProfilePicture:)
+                                                     name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateShopPicture:)
+                                                     name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
+                                                   object:nil];
+        
     }
     return self;
 }
@@ -130,12 +141,6 @@
     self.navigationController.title = @"More";
     [self initNotificationManager];
     
-    
-    
-    
-    
-    
-    
     // Remove default table inset
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
     
@@ -156,7 +161,7 @@
     _depositLabel.hidden = YES;
     _loadingSaldo.hidden = NO;
     
-    
+    [self updateSaldoTokopedia:nil];
     [self setShopImage];
 }
 
@@ -166,8 +171,9 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    [self updateSaldoTokopedia:nil];
-    
+
+    [self updateSaldoTokopedia:nil];    
+
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker set:kGAIScreenName value:@"More Navigation Page"];
@@ -188,15 +194,12 @@
     if (selectedIndexPath != nil) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
-    
-    //    [self updateSaldoTokopedia:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     self.navigationController.tabBarController.title = @"More";
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -323,13 +326,25 @@
 
 
 #pragma mark - Method
-- (void)setShopImage {
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"user_image"]]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+-(void)updateShopPicture:(NSNotification*)notif
+{
+    NSDictionary *userInfo = notif.userInfo;
     
+    NSString *strAvatar = [userInfo objectForKey:@"file_th"]?:@"";
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:strAvatar withKey:@"shop_avatar"];
+    _auth = [[secureStorage keychainDictionary] mutableCopy];
+    
+    [self setShopImage];
+}
+
+- (void)setShopImage {
+    
+    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+    NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];    
     [_profilePictureImageView setImageWithURLRequest:request
-                                    placeholderImage:[UIImage imageNamed:@"nil"]
+                                    placeholderImage:nil
                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -469,7 +484,7 @@
             break;
             
         case 4:
-            return 4;
+            return 5;
             break;
             
         case 5:
@@ -617,13 +632,18 @@
             nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
             
-        } else if (indexPath.row  == 3) {
+        } else if (indexPath.row == 3) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
+//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
+//            controller.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:controller animated:YES];
             
+        } else if (indexPath.row  == 4) {
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
         }
-        
     }
     
     else if (indexPath.section == 5) {
@@ -632,9 +652,30 @@
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+//            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            
+            if([MFMailComposeViewController canSendMail]) {
+                MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
+                emailController.mailComposeDelegate = self;
+                
+                
+                NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+                
+                [emailController setSubject:@"Feedback"];
+                [emailController setMessageBody:messageBody isHTML:YES];
+                [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
+                [emailController.navigationBar setTintColor:[UIColor whiteColor]];
+                 
+                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+                [self presentViewController:emailController animated:YES completion:nil];
+            } else {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email (dan login terlebih dahulu) apabila ingin mengirimkan feedback :)"]
+                                                                               delegate:self];
+                [alert show];
+            }
+            
         } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker set:kGAIScreenName value:@"FAQ Center"];
@@ -795,5 +836,15 @@
     [self loadDataDeposit];
 }
 
+- (void)updateProfilePicture:(NSNotification *)notification
+{
+    UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
+    _profilePictureImageView.image = profilePicture;
+}
+
+#pragma mark - Email delegate
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 
 @end

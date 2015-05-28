@@ -117,13 +117,11 @@
                                              selector:@selector(updateUnreadTalk:)
                                                  name:@"updateUnreadTalk" object:nil];
     
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showTalkWithFilter:)
                                                  name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
                                                object:nil];
-    }
+}
 
 - (void)initCache {
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:TKPD_INBOXTALK_CACHE];
@@ -143,10 +141,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _talkListPage = 1;
     
+    [self initNotification];
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];
     _operationDeleteQueue = [NSOperationQueue new];
@@ -167,7 +165,7 @@
         _isnodata = NO;
     }
     
-    [self initNotification];
+
     [self initCache];
     [self configureRestKit];
     
@@ -800,7 +798,6 @@
     list.talk_read_status = @"2";
     [_table reloadData];
 }
-
 
 
 

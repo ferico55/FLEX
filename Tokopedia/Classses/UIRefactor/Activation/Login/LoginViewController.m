@@ -45,8 +45,6 @@
     NSOperationQueue *_operationQueueFacebookLogin;
     
     FBLoginView *_loginView;
-    
-    
     id<FBGraphUser> _facebookUser;
 }
 
@@ -156,8 +154,6 @@
     _passwordTextField.isBottomRoundCorner = YES;
     
     _loginView.delegate = self;
-    
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -497,6 +493,7 @@
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+            [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
             
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];
@@ -508,10 +505,11 @@
                                                                     object:nil
                                                                   userInfo:nil];
             }
+        
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-        }
-        else if ([_login.result.status isEqualToString:@"1"]) {
 
+        } else if ([_login.result.status isEqualToString:@"1"]) {
+            
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -524,6 +522,7 @@
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+            [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
@@ -535,9 +534,7 @@
             
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             
-        }
-        else
-        {
+        } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                            delegate:self];
             [alert show];
@@ -574,6 +571,7 @@
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+            [secureStorage setKeychainWithValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] withKey:kTKPD_USEREMAIL];
             
             //add user login to GA
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];

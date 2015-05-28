@@ -67,14 +67,15 @@
     __weak RKObjectManager *_objectmanagerGenerateHost;
     __weak RKManagedObjectRequestOperation *_requestGenerateHost;
     
-    __weak RKObjectManager *_objectmanagerUploadPhoto;
-    __weak RKManagedObjectRequestOperation *_requestActionUploadPhoto;
-    
     __weak RKObjectManager *_objectmanagerActionSubmit;
     __weak RKManagedObjectRequestOperation *_requestActionSubmit;
     
     __weak RKObjectManager *_objectmanagerProfileForm;
     TokopediaNetworkManager *tokopediaNetworkManagerProfileForm;
+
+    __weak RKObjectManager *_uploadProfileImageObjectManager;
+    __weak RKManagedObjectRequestOperation *_uploadProfileImageRequest;
+    
     NSOperationQueue *_operationQueue;
     
     UIBarButtonItem *_barbuttonsave;
@@ -273,9 +274,6 @@
 
 -(void)cancelProfileForm
 {
-//    [_requestProfileForm cancel];
-//    _requestProfileForm = nil;
-    
     [_objectmanagerProfileForm.operationQueue cancelAllOperations];
     _objectmanagerProfileForm = nil;
 }
@@ -356,34 +354,30 @@
 
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
-    _thumb.alpha = 1;
     _images = uploadImage;
-    NSDictionary *userinfo = @{kTKPDPROFILE_APIUPLOADFILETHUMBKEY :uploadImage.result.file_th,
-                               kTKPDPROFILE_APIUPLOADFILEPATHKEY:uploadImage.result.file_path
-                               };
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+    [self configureRestKitProfileImage];
+    [self requestUploadProfilePicture:uploadImage.result.file_uploaded];
 }
 
 -(void)failedUploadObject:(id)object
 {
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_profile.result.data_user.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    //request.URL = url;
+    NSURL *profilePictureURL = [NSURL URLWithString:_profile.result.data_user.user_image];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:profilePictureURL
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = _thumb;
     thumb = [UIImageView circleimageview:thumb];
-    
     thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
     
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [thumb setImageWithURLRequest:request
+                 placeholderImage:nil
+                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [thumb setImage:image];
 #pragma clang diagnostic pop
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    } failure:nil];
     
     _thumb.alpha = 1;
 }
@@ -432,13 +426,13 @@
     
     NSDictionary *param = @{
         kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIEDITPROFILEKEY,
-        kTKPDPROFILE_APIFULLNAMEKEY    : [userInfo objectForKey:kTKPDPROFILE_APIFULLNAMEKEY]?:_profile.result.data_user.full_name,
-        kTKPDPROFILE_APIBIRTHDAYKEY    : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHDAYKEY]?:_profile.result.data_user.birth_day,
-        kTKPDPROFILE_APIBIRTHMONTHKEY  : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHMONTHKEY]?:_profile.result.data_user.birth_month,
-        kTKPDPROFILE_APIBIRTHYEARKEY   : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHYEARKEY]?:_profile.result.data_user.birth_year,
-        kTKPDPROFILE_APIGENDERKEY      : [userInfo objectForKey:kTKPDPROFILE_APIGENDERKEY]?:_profile.result.data_user.gender,
-        kTKPDPROFILE_APIHOBBYKEY       : [userInfo objectForKey:kTKPDPROFILE_APIHOBBYKEY]?:_profile.result.data_user.hobby,
-        kTKPDPROFILE_APIMESSENGERKEY   : [userInfo objectForKey:kTKPDPROFILE_APIUSERMESSENGERKEY]?:_profile.result.data_user.user_messenger,
+        kTKPDPROFILE_APIFULLNAMEKEY    : [userInfo objectForKey:kTKPDPROFILE_APIFULLNAMEKEY]?:(_profile.result.data_user.full_name?:@""),
+        kTKPDPROFILE_APIBIRTHDAYKEY    : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHDAYKEY]?:(_profile.result.data_user.birth_day?:@""),
+        kTKPDPROFILE_APIBIRTHMONTHKEY  : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHMONTHKEY]?:(_profile.result.data_user.birth_month?:@""),
+        kTKPDPROFILE_APIBIRTHYEARKEY   : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHYEARKEY]?:(_profile.result.data_user.birth_year?:@""),
+        kTKPDPROFILE_APIGENDERKEY      : [userInfo objectForKey:kTKPDPROFILE_APIGENDERKEY]?:(_profile.result.data_user.gender?:@""),
+        kTKPDPROFILE_APIHOBBYKEY       : [userInfo objectForKey:kTKPDPROFILE_APIHOBBYKEY]?:(_profile.result.data_user.hobby?:@""),
+        kTKPDPROFILE_APIMESSENGERKEY   : [userInfo objectForKey:kTKPDPROFILE_APIUSERMESSENGERKEY]?:(_profile.result.data_user.user_messenger?:@""),
         kTKPDPROFILE_APIPASSKEY        : [userInfo objectForKey:kTKPDPROFILE_APIPASSKEY],
         kTKPDPROFILE_APIMSISDNKEY      : _profile.result.data_user.user_phone
     };
@@ -850,5 +844,113 @@
 
 }
 
+- (void)configureRestKitProfileImage
+{
+    //_uploadProfileImageObjectManager = [RKObjectManager sharedClient];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generatehost.result.generated_host.upload_host];
+    _uploadProfileImageObjectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
+
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEditForm class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{
+                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditFormResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{
+                                                        kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY
+                                                        }];
+    
+    // Relationship Mapping
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_uploadProfileImageObjectManager addResponseDescriptor:responseDescriptor];
+}
+
+- (void)requestUploadProfilePicture:(NSString *)fileUploaded
+{
+    if (_uploadProfileImageRequest.isExecuting) return;
+    
+    _barbuttonsave.enabled = NO;
+    
+    NSDictionary *param = @{
+                            kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIUPLOADPROFILEPICTUREKEY,
+                            kTKPDPROFILE_APIFILEUPLOADEDKEY    : fileUploaded,
+                            };
+    
+    _uploadProfileImageRequest = [_uploadProfileImageObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
+    
+    NSTimer *timer;
+
+    [_uploadProfileImageRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self uploadImageRequestSuccessMappingResult:mappingResult operation:operation];
+        _barbuttonsave.enabled = YES;
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self uploadImageRequestError:error];
+        _barbuttonsave.enabled = YES;
+    }];
+    
+    [_operationQueue addOperation:_uploadProfileImageRequest];
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                             target:self
+                                           selector:@selector(requesttimeoutProfileForm)
+                                           userInfo:nil
+                                            repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+}
+
+- (void)uploadImageRequestSuccessMappingResult:(RKMappingResult *)mappingResult operation:(RKObjectRequestOperation *)operation
+{
+    ProfileEditForm *uploadImageResponse = [mappingResult.dictionary objectForKey:@""];
+    BOOL status = [uploadImageResponse.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    if (status) {
+        if ([uploadImageResponse.result.is_success boolValue]) {
+            _thumb.alpha = 1;
+            NSDictionary *userinfo = @{kTKPDPROFILE_APIPROFILEPHOTOKEY : self.thumb.image};
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
+                                                                object:nil
+                                                              userInfo:userinfo];
+        } else if (uploadImageResponse.message_error.count > 0) {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:uploadImageResponse.message_error delegate:self];
+            [alert show];
+        }
+    }
+}
+
+- (void)uploadImageRequestError:(NSError *)error
+{
+    NSURL *profilePictureURL = [NSURL URLWithString:_profile.result.data_user.user_image];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:profilePictureURL
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    UIImageView *thumb = _thumb;
+    thumb = [UIImageView circleimageview:thumb];
+    thumb.image = nil;
+    
+    [thumb setImageWithURLRequest:request
+                 placeholderImage:nil
+                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                              [thumb setImage:image];
+#pragma clang diagnostic pop
+                          } failure:nil];
+    
+    _thumb.alpha = 1;
+}
 
 @end

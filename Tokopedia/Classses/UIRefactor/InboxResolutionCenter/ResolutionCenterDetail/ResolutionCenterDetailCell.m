@@ -91,6 +91,7 @@
 
 - (void)hideAllViews
 {
+    [_attachmentImages makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
     _oneButtonView.hidden = YES;
     _twoButtonView.hidden = YES;
     _atachmentView.hidden = YES;

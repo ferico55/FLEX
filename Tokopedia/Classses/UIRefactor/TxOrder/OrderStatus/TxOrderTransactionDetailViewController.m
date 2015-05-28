@@ -120,6 +120,22 @@
     return cell;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //Calculate the expected size based on the font and linebreak mode of your label
+    NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
+    NSArray *listProducts = _order.order_products;
+    OrderProduct *product = listProducts[indexProduct];
+    CGSize maximumLabelSize = CGSizeMake(190,9999);
+    NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
+    NSString *string = productNotes;
+    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_13
+                                  constrainedToSize:maximumLabelSize
+                                      lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    return 210+expectedLabelSize.height;
+}
+
 
 #pragma mark - Cell Delegate
 -(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
@@ -150,6 +166,7 @@
         cell.delegate = self;
     }
     
+    cell.border.hidden = NO;
     NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
     NSArray *listProducts = _order.order_products;
     OrderProduct *product = listProducts[indexProduct];
@@ -166,7 +183,8 @@
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section-1];
     cell.indexPath = indexPathCell;
     cell.editButton.hidden = YES;
-    cell.remarkLabel.text = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
+    NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
+    [cell.remarkLabel setCustomAttributedText:[NSString convertHTML:productNotes]];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -242,17 +260,17 @@
     _totalPaymentLabel.text = _order.order_detail.detail_open_amount_idr;
     _recieverName.text = _order.order_destination.receiver_name;
     _recieverPhone.text = _order.order_destination.receiver_phone;
-    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@, %@ %@",
+    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@ %@",
                          _order.order_destination.address_street,
-                         _order.order_destination.address_city
-                         ,_order.order_destination.address_district,
+                         _order.order_destination.address_district,
+                         _order.order_destination.address_city,
                          _order.order_destination.address_province,
                          _order.order_destination.address_postal];
     [_addressStreetLabel setCustomAttributedText:[NSString convertHTML:address]];
     _cityLabel.text = _order.order_destination.address_city;
     _countryLabel.text = [NSString stringWithFormat:@"%@, %@ %@",_order.order_destination.address_district,_order.order_destination.address_province, _order.order_destination.address_postal];
     _shipmentLabel.text = [NSString stringWithFormat:@"%@ - %@",_order.order_shipment.shipment_name,_order.order_shipment.shipment_product];
-    _partialLabel.text = (_order.order_detail.detail_order_status == 1)?@"Ya":@"Tidak";
+    _partialLabel.text = (_order.order_detail.detail_partial_order == 1)?@"Ya":@"Tidak";
     
     NSString *dropshipName = _order.order_detail.detail_dropship_name;
     if (!dropshipName || [dropshipName isEqualToString:@""] || [dropshipName isEqualToString:@"0"]) {

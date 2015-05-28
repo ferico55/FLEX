@@ -60,7 +60,8 @@
     /** set table view datasource and delegate **/
     tblWishList.delegate = self;
     tblWishList.dataSource = self;
-    tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 53, 0);
+    [self setTableInset];
+    
     
     /** set table footer view (loading act) **/
     tblWishList.tableFooterView = footer;
@@ -71,6 +72,8 @@
     if (product.count > 0) {
         isNoData = NO;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
     
     refreshControl = [[UIRefreshControl alloc] init];
@@ -132,6 +135,13 @@
     }
 }
 
+- (void) setTableInset {
+    if([[UIScreen mainScreen]bounds].size.height >= 568) {
+        tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+    } else {
+        tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+    }
+}
 /*
  #pragma mark - Navigation
  
@@ -365,6 +375,9 @@
     if([product count] == 0) {
         tblWishList.tableFooterView = _noResult;
     }
+    else if(tblWishList.tableFooterView == _noResult) {
+        tblWishList.tableFooterView = nil;
+    }
 }
 
 
@@ -546,4 +559,24 @@
     [activityIndicator startAnimating];
     [tokoPediaNetworkManager doRequest];
 }
+
+#pragma mark - Notification Action
+- (void)userDidTappedTabBar:(NSNotification*)notification {
+    [tblWishList scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (void)didSwipeHomeTab:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
+    
+    if(tag == 2) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
+    }
+    
+}
+
+
+
 @end

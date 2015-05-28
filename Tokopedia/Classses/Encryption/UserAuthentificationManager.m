@@ -12,7 +12,7 @@
 #import "activation.h"
 
 @implementation UserAuthentificationManager {
-    NSDictionary *_auth;
+    NSMutableDictionary *_auth;
 }
 
 - (id)init
@@ -20,8 +20,7 @@
     self = [super init];
     if (self) {
         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-        _auth = [secureStorage keychainDictionary];
-        _auth = [_auth mutableCopy];
+        _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
     }
     return self;
 }
@@ -67,6 +66,14 @@
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
+-(Breadcrumb*)getLastProductAddCategory
+{
+    Breadcrumb *category = [Breadcrumb new];
+    category.department_id = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
+    category.department_name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
+    return category;
+}
+
 - (NSString *)addParameterAndConvertToString:(id)params
 {
     NSDictionary *mutable = [params mutableCopy];
@@ -109,7 +116,8 @@
     return NO;
 }
 
-
-
+- (void)setUserImage:(NSString *)userImage {
+    [_auth setObject:userImage forKey:@"user_image"];
+}
 
 @end

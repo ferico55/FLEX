@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UIView *allSign;
 @property (weak, nonatomic) IBOutlet UIView *unreadSign;
 @property (weak, nonatomic) IBOutlet UIView *buttonsContainer;
+@property (weak, nonatomic) IBOutlet UIView *segmentContainer;
 
 - (IBAction)tap:(UISegmentedControl *)sender;
 - (UIEdgeInsets)contentInsetForContainerController;
@@ -70,6 +71,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [_segmentContainer.layer setShadowOffset:CGSizeMake(0, 0.5)];
+    [_segmentContainer.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
+    [_segmentContainer.layer setShadowRadius:1];
+    [_segmentContainer.layer setShadowOpacity:0.3];
     
     _titleNavTalk = ALL_TALK;
     _titleNavMyProductTalk = ALL_TALK;

@@ -19,6 +19,6 @@
 
 @property (nonatomic, weak) IBOutlet id<SettingBankDetailViewControllerDelegate> delegate;
 
-@property (strong, nonatomic) NSDictionary *data;
+@property (strong, nonatomic) NSMutableDictionary *data;
 
 @end

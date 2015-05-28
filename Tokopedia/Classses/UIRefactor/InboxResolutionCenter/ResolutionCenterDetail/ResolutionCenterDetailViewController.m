@@ -275,15 +275,24 @@
             NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
             NSInteger attachmentHeight = VIEW_ATTACHMENT_HEIGHT;
             
+            //Calculate the expected size based on the font and linebreak mode of your label
+            NSString *string = [NSString convertHTML:[self markConversation:conversation]];
+            CGSize maximumLabelSize = CGSizeMake(190,9999);
+            CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_12
+                                          constrainedToSize:maximumLabelSize
+                                              lineBreakMode:NSLineBreakByTruncatingTail];
+            
+            cellRowHeight += expectedLabelSize.height;
+            
             rowHeight = cellRowHeight + deltaHeightCell;
             if ([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]) {
                 rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
             }
             if ([self isShowAttachment:conversation]) {
-                rowHeight = cellRowHeight + attachmentHeight + deltaHeightCell;
+                rowHeight = cellRowHeight + attachmentHeight;
             }
             if ([self isShowAttachmentWithButton:conversation]) {
-                rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
+                rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height;
             }
             if ([cell.markLabel.text isEqualToString:@""]) {
                 rowHeight = rowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
@@ -625,17 +634,10 @@
     cell.timeDateLabel.text = (lastConversation == _addedLastConversation)?_resolutionDetail.resolution_last.last_create_time_str:sinceDateString;
     
     [cell hideAllViews];
-    if ([self isShowTwoButton:conversation])
-    {
-        cell.twoButtonView.hidden = NO;
-        [self adjustTwoButtonsTitleConversation:conversation cell:cell];
 
-    }
-    else if ([self isShowOneButton:conversation atIndexPath:indexPath])
-    {
-        cell.oneButtonView.hidden = NO;
-        [self adjustOneButtonTitleConversation:conversation cell:cell];
-    }
+    
+    UIColor *lastCellColour = [UIColor colorWithRed:255.f/255.f green:243.f/255.f blue:224.f/255.f alpha:1];
+    UIColor *buttonCellColour = [UIColor colorWithRed:249.f/255.f green:249.f/255.f blue:249.f/255.f alpha:1];
     
     [cell.markLabel setCustomAttributedText:cell.markLabel.text];
     cell.indexPath = indexPath;
@@ -650,7 +652,31 @@
     else {
         cell.oneButtonConstraintHeight.constant = 44;
         cell.twoButtonConstraintHeight.constant = 44;
+        if ([self isShowTwoButton:conversation])
+        {
+            cell.twoButtonView.hidden = NO;
+            [self adjustTwoButtonsTitleConversation:conversation cell:cell];
+            
+        }
+        else if ([self isShowOneButton:conversation atIndexPath:indexPath])
+        {
+            cell.oneButtonView.hidden = NO;
+            [self adjustOneButtonTitleConversation:conversation cell:cell];
+        }
     }
+    
+    if (_listResolutionConversation.count>0)
+    {
+        if (indexPath.row == (_listResolutionConversation.count-1))
+        {
+            cell.titleView.backgroundColor = lastCellColour;
+        }
+        else
+        {
+            cell.titleView.backgroundColor = buttonCellColour;
+        }
+    }
+
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -1239,6 +1265,7 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionCenterDetailResult class]];
     
     RKObjectMapping *resolutionConversationMapping = [_mapping resolutionConversationMapping];
+    RKObjectMapping *resolutionAttachmentMapping = [_mapping resolutionAttachmentMapping];
     
     RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                    toKeyPath:kTKPD_APIRESULTKEY
@@ -1247,9 +1274,13 @@
     RKRelationshipMapping *resolutionConversationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CONVERSATION_KEY
                                                                                                    toKeyPath:API_RESOLUTION_CONVERSATION_KEY
                                                                                                  withMapping:resolutionConversationMapping];
+    RKRelationshipMapping *resolutionAttachmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ATTACHMENT_KEY
+                                                                                                 toKeyPath:API_RESOLUTION_ATTACHMENT_KEY
+                                                                                               withMapping:resolutionAttachmentMapping];
     
     [statusMapping addPropertyMapping:resultRel];
     [resultMapping addPropertyMapping:resolutionConversationRel];
+    [resolutionConversationMapping addPropertyMapping:resolutionAttachmentRel];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
@@ -1291,6 +1322,7 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
+    
     _tableView.tableFooterView = _footerView;
     [_act startAnimating];
     
@@ -1384,7 +1416,13 @@
     _loadMoreButton.enabled = YES;
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//{
+////    _tableView.tableFooterView = nil;
+////    [_act stopAnimating];
+//}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
 {
     _tableView.tableFooterView = nil;
     [_act stopAnimating];
@@ -1759,7 +1797,7 @@
     
     [_operationQueue addOperation:_requestReplay];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutReplay) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(requestTimeoutReplay) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 

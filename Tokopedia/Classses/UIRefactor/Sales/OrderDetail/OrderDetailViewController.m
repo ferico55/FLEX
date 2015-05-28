@@ -78,6 +78,7 @@
 @property (strong, nonatomic) IBOutlet UIView *detailTransactionView;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDueDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *receivePartialOrderLabel;
 
 @end
 
@@ -139,7 +140,9 @@
     _addressLabel.numberOfLines = 0;
     [_addressLabel sizeToFit];
 
-    NSString *city = [NSString stringWithFormat:@"%@, %@", _transaction.order_destination.address_city, _transaction.order_destination.address_district];
+    NSString *city = [NSString stringWithFormat:@"%@\n%@",
+                      _transaction.order_destination.address_district,
+                      _transaction.order_destination.address_city];
     city = [city stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     city = [city stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     NSAttributedString *cityAttributedString = [[NSAttributedString alloc] initWithString:city
@@ -175,6 +178,8 @@
     _assuranceFeeLabel.text = _transaction.order_detail.detail_insurance_price_idr;
     _shipmentFeeLabel.text = _transaction.order_detail.detail_shipping_price_idr;
     _totalFeeLabel.text = _transaction.order_detail.detail_open_amount_idr;
+    
+    _receivePartialOrderLabel.text = _transaction.order_detail.detail_partial_order?@"Ya":@"Tidak";
     
     _textAttributes = @{
                             NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
@@ -358,8 +363,20 @@
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:productCellIdentifer owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:0];
         }
+
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
         
-        cell.productNameLabel.text = product.product_name;
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                     NSParagraphStyleAttributeName  : style,
+                                     NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                     };
+        
+        cell.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:product.product_name
+                                                                               attributes:attributes];
+        [cell.productNameLabel sizeToFit];
+
         cell.productPriceLabel.text = product.product_price;
         cell.productWeightLabel.text = [NSString stringWithFormat:@"%@ kg", product.product_weight];
         
@@ -452,6 +469,7 @@
         
         UIWebView *webView = [[UIWebView alloc] initWithFrame:[self.view bounds]];
         [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+        webView.scalesPageToFit = YES;
         UIViewController *controller = [UIViewController new];
         controller.title = _transaction.order_detail.detail_invoice;
         [controller.view addSubview:webView];

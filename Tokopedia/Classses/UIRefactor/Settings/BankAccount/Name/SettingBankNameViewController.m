@@ -81,6 +81,7 @@
     value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select bank_id from ws_bank order by bank_name"]];
     [_banknames addObjectsFromArray:name];
     [_bankvalues addObjectsFromArray:value];
+    
     if (bankid!=0) index = [_bankvalues indexOfObject:[NSString stringWithFormat:@"%zd",bankid]];
     indexpath = (index == 0)?[_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]:[NSIndexPath indexPathForRow:index inSection:0];
     
@@ -124,13 +125,14 @@
             }
             case 11:
             {
-                NSDictionary *data;
-                NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                data = @{kTKPDPROFILESETTING_APIBANKIDKEY : [_tempresultarray[indexpath.row] objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY],
-                         API_BANK_NAME_KEY :  [_tempresultarray[indexpath.row] objectForKey:API_BANK_NAME_KEY],
-                         kTKPDPROFILE_DATABANKINDEXPATHKEY: indexpath,
-                         };
-                
+                NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
+                NSIndexPath *indexPath = [_selectedlocation objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
+                NSDictionary *bank = _tempresultarray[indexPath.row];
+                NSDictionary *data = @{
+                                           kTKPDPROFILESETTING_APIBANKIDKEY  : [bank objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY],
+                                           API_BANK_NAME_KEY                 : [bank objectForKey:API_BANK_NAME_KEY],
+                                           kTKPDPROFILE_DATABANKINDEXPATHKEY : indexPath,
+                                       };
                 [_delegate SettingBankNameViewController:self withData:data];
                 [self.navigationController popViewControllerAnimated:YES];
                 break;

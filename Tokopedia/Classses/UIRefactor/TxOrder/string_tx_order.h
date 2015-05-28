@@ -287,7 +287,7 @@ typedef enum
 #define ERRORMESSAGE_NILL_PASSWORD_TOKOPEDIA @"Masukkan Password Tokopedia"
 #define ERRORMESSAGE_NILL_SYSTEM_BANK @"Pilih Bank Tujuan"
 #define ERRORMESSAGE_NILL_BANK_ACCOUNT @"Pilih Akun Bank"
-#define ERRORMESSAGE_INVALID_PAYMENT_AMOUNT @"Jumlah pembayaran yang diinput tidak mencukupi. Total Pembayaran sebesar Rp %@,-"
+#define ERRORMESSAGE_INVALID_PAYMENT_AMOUNT @"Jumlah pembayaran yang diinput tidak mencukupi. Total Pembayaran sebesar Rp %zd,-"
 
 #pragma mark - Order Form
 #define API_ORDER_FORM_KEY @"order"

@@ -20,7 +20,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="145" height="195"/>
                     <subviews>
                         <imageView tag="10" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thumb_product.png" translatesAutoresizingMaskIntoConstraints="NO" id="jUW-a0-vrN">
-                            <rect key="frame" x="0.0" y="0.0" width="145" height="135"/>
+                            <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4PO-g8-fRS">
                             <rect key="frame" x="8" y="166" width="103" height="16"/>

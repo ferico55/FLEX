@@ -471,6 +471,7 @@
         AlertDatePickerView *datePicker = [AlertDatePickerView newview];
         datePicker.isSetMinimumDate = YES;
         datePicker.delegate = self;
+        datePicker.tag = 12;
         [datePicker show];
         return NO;
     }

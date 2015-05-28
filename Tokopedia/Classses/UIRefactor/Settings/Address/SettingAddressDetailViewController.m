@@ -127,19 +127,19 @@
             case 10:
             {
                 //set as default
-                _viewdefault.hidden = NO;
-                _viewsetasdefault.hidden = YES;
-                [_delegate DidTapButton:btn withdata:_data];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Ganti Alamat Utama"
+                                                                    message:@"Apakah Anda yakin ingin menggunakan alamat ini sebagai alamat utama Anda?"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Tidak"
+                                                          otherButtonTitles:@"Ya", nil];
+                alertView.tag = 1;
+                alertView.delegate = self;
+                [alertView show];
                 break;
             }
             case 11:
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hapus Alamat"
-                                                                message:@"Apakah Anda yakin ingin menghapus alamat ini?"
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Tidak"
-                                                      otherButtonTitles:@"Ya", nil];
-                [alert show];
+                [_delegate DidTapButton:btn withdata:_data];
                 break;
             }
             default:
@@ -172,7 +172,7 @@
         
         _labeladdress.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:list.address_street] attributes:attributes];
         
-        NSString *postalcode = list.postal_code?[NSString stringWithFormat:@"%zd",list.postal_code]:@"";
+        NSString *postalcode = list.postal_code?list.postal_code:@"";
         _labelpostcode.text = postalcode;
         _labelcity.text = list.city_name?:@"";
         _labelprovince.text = list.province_name?:@"";
@@ -218,9 +218,10 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        //delete address
-        [_delegate DidTapButton:_deleteButton withdata:_data];
-        [self.navigationController popViewControllerAnimated:YES];
+        //default address
+        _viewdefault.hidden = NO;
+        _viewsetasdefault.hidden = YES;
+        [_delegate setDefaultAddressData:_data];
     }
 }
 

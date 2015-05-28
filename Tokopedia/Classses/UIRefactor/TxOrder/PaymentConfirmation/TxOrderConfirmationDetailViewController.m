@@ -162,16 +162,18 @@
     NSInteger rowCount = orderList.order_products.count;
     if (indexPath.row < rowCount)
     {
-        CGSize maximumLabelSize = CGSizeMake(200,9999);
+        OrderProduct *orderProduct = orderList.order_products[indexPath.row];
         
-        CGSize expectedLabelSize = [_remarkLabel.text sizeWithFont:_remarkLabel.font
-                                                  constrainedToSize:maximumLabelSize
-                                                      lineBreakMode:_remarkLabel.lineBreakMode];
+        CGSize maximumLabelSize = CGSizeMake(190,9999);
         
-        //adjust the label the the new height.
-        CGRect newFrame = _remarkLabel.frame;
-        newFrame.size.height = expectedLabelSize.height;
-        height = PRODUCT_CELL_HEIGHT + newFrame.size.height;
+        NSString *string = [orderProduct.product_notes isEqualToString:@"0"]?@"":[NSString convertHTML:orderProduct.product_notes];
+        
+        //Calculate the expected size based on the font and linebreak mode of your label
+        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:NSLineBreakByTruncatingTail];
+        
+        return PRODUCT_CELL_HEIGHT+expectedLabelSize.height;
     }
     else if(indexPath.row == rowCount)
         height = SHIPMENT_HEIGHT;
@@ -351,10 +353,10 @@
     cell.totalPaymentLabel.text = orderList.order_detail.detail_open_amount_idr;
     
     cell.recieverNameLabel.text = orderList.order_destination.receiver_name;
-    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@, %@ %@",
+    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@ %@",
                          orderList.order_destination.address_street,
-                         orderList.order_destination.address_city,
                          orderList.order_destination.address_district,
+                         orderList.order_destination.address_city,
                          orderList.order_destination.address_province,
                          orderList.order_destination.address_postal];
     [cell.addressLabel setCustomAttributedText:[NSString convertHTML:address]];

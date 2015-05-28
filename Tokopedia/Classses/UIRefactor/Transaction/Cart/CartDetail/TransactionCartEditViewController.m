@@ -19,6 +19,10 @@
     NSOperationQueue *_operationQueue;
     UIBarButtonItem *_barButtonSave;
     UITextView *_activeTextView;
+    
+    CGPoint _keyboardPosition;
+    CGSize _keyboardSize;
+    CGSize _scrollviewContentSize;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
@@ -28,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIStepper *quantityStepper;
 @property (weak, nonatomic) IBOutlet UITextView *remarkTextView;
 @property (weak, nonatomic) IBOutlet UILabel *labelCounter;
+@property (strong, nonatomic) IBOutlet UIView *headerView;
 
 
 @end
@@ -49,10 +54,31 @@
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     
     if ([_remarkTextView.text isEqualToString:@""]) {
-        [_remarkTextView setPlaceholder:@"Tulis keterangan"];
+        [self setTextViewPlaceholder:@"Tulis Keterangan"];
     }
     
+    _remarkTextView.delegate = self;
+    [_remarkTextView addSubview:_headerView];
+    
     [self setDefaultData:_data];
+    [_remarkTextView becomeFirstResponder];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+-(void)viewDidLayoutSubviews
+{
+    UIEdgeInsets inset = _remarkTextView.textContainerInset;
+    inset.left = 15;
+    inset.top = _headerView.frame.size.height + 10;
+    _remarkTextView.textContainerInset = inset;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,6 +95,11 @@
 {
     [super viewDidDisappear:YES];
     self.title = nil;
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - View Action
@@ -125,6 +156,8 @@
         _quantityLabel.text = [NSString stringWithFormat:@"%zd",(NSInteger)_quantityStepper.value];
         _quantityStepper.minimumValue= [product.product_min_order integerValue];
         _remarkTextView.text = product.product_notes;
+        NSInteger counter = 144 - _remarkTextView.text.length;
+        _labelCounter.text = [NSString stringWithFormat:@"%zd",(counter<0)?0:counter];
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
@@ -141,11 +174,83 @@
 }
 
 #pragma mark - TextView Delegate
+
+
+- (void)setTextViewPlaceholder:(NSString *)placeholderText
+{
+    UIEdgeInsets inset = _remarkTextView.textContainerInset;
+    inset.left = 15;
+    inset.top = _headerView.frame.size.height;
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(inset.left, inset.top, _remarkTextView.frame.size.width, 40)];
+    placeholderLabel.text = placeholderText;
+    placeholderLabel.font = [UIFont fontWithName:_remarkTextView.font.fontName size:_remarkTextView.font.pointSize];
+    placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+    placeholderLabel.tag = 1;
+    [_remarkTextView addSubview:placeholderLabel];
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
+    if (textView.text.length > 0) {
+        placeholderLabel.hidden = YES;
+    } else {
+        placeholderLabel.hidden = NO;
+    }
+}
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSInteger counter = 144 - (textView.text.length + (text.length - range.length));
     _labelCounter.text = [NSString stringWithFormat:@"%zd",(counter<0)?0:counter];
     return textView.text.length + (text.length - range.length) <= 144;
 }
+
+#pragma mark - Keyboard Notification
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+    if(_keyboardSize.height < 0){
+        _keyboardPosition = [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+        _scrollviewContentSize = [_remarkTextView contentSize];
+        _scrollviewContentSize.height += _keyboardSize.height;
+        [_remarkTextView setContentSize:_scrollviewContentSize];
+    }else{
+        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                              delay:0
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+                             _scrollviewContentSize = [_remarkTextView contentSize];
+                             
+                             _keyboardPosition = [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+                             _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+                             _scrollviewContentSize.height += _keyboardSize.height;
+                             
+                             UIEdgeInsets inset = _remarkTextView.contentInset;
+                             inset.bottom = _keyboardPosition.y;
+                             [_remarkTextView setContentInset:inset];
+                         }
+                         completion:^(BOOL finished){
+                         }];
+        
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification {
+    
+    UIEdgeInsets inset = _remarkTextView.contentInset;
+    inset.bottom = 0;
+    [_remarkTextView setContentInset:inset];
+    
+    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                          delay:0
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+
+                     }
+                     completion:^(BOOL finished){
+                     }];
+    
+}
+
 
 @end

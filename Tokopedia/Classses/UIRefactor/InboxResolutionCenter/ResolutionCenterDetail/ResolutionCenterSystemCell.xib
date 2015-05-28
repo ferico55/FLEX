@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -243,6 +243,7 @@
                 <outlet property="oneButtonConstraintHeight" destination="x7E-d3-eRw" id="3xK-r1-Mjg"/>
                 <outlet property="oneButtonView" destination="1bS-bT-KeK" id="8Fd-gB-wKr"/>
                 <outlet property="timeDateLabel" destination="XMB-bb-70z" id="zKD-1Y-bnL"/>
+                <outlet property="titleView" destination="ygm-pX-z3l" id="Rne-oi-bu3"/>
                 <outlet property="twoButtonConstraintHeight" destination="P7s-wY-dBd" id="gOC-gq-aXB"/>
                 <outlet property="twoButtonView" destination="bPc-Z7-ZW9" id="mnE-EM-36p"/>
                 <outletCollection property="twoButtons" destination="qZ2-xr-7qX" id="cV9-ny-xLV"/>

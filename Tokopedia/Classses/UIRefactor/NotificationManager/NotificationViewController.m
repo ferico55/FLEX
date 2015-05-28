@@ -5,7 +5,7 @@
 //  Created by Tokopedia PT on 12/15/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "AlertPriceNotificationViewController.h"
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
@@ -162,7 +162,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 4;
+            numberOfRows = 5;
             break;
             
         case 1:
@@ -339,6 +339,12 @@
                 [self.delegate pushViewController:vc];
                 break;
             }
+            case 4:
+            {
+                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+                [self.delegate pushViewController:alertPriceNotificationViewController];
+            }
+                break;
             default:
                 break;
         }

@@ -188,6 +188,17 @@
     return cell;
 }
 
+- (NSString *)stringReplaceAhrefWithUrl:(NSString *)string
+{
+    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
+    
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive error:NULL];
+    
+    NSRange stringRange = NSMakeRange(0, string.length);
+    NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
+    
+    return trimmedString;
+}
 
 -(void)configureCell:(id)aCell atIndexPath:(NSIndexPath*)indexPath {
     InboxMessageDetailCell *cell = (InboxMessageDetailCell*)aCell;
@@ -205,6 +216,7 @@
                                      NSParagraphStyleAttributeName: style,
                                      };
         NSString *string = message.message_reply;
+        string = [self stringReplaceAhrefWithUrl:string];
         NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
         
         cell.messageLabel.attributedText = attributedText;

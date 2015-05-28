@@ -30,7 +30,7 @@
 
 @property GenerateHost *generateHost;
 @property (strong,nonatomic) NSString *shopHasTerm;
-
+@property BOOL isShopHasTerm;
 @property BOOL isNeedRequestAddProductPicture;
 
 @end
