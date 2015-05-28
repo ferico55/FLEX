@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -99,17 +99,17 @@
                         <view contentMode="scaleToFill" id="sjh-ak-goY">
                             <rect key="frame" x="80" y="10" width="1" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" id="jXw-PP-XNG">
                             <rect key="frame" x="160" y="10" width="1" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" id="eyR-cg-0r6">
                             <rect key="frame" x="240" y="10" width="1" height="20"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -227,7 +227,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="12" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F8e-Eg-cHZ">
-                            <rect key="frame" x="270" y="10" width="22" height="22"/>
+                            <rect key="frame" x="269" y="10" width="22" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="22" id="N4S-LF-NSK"/>
                                 <constraint firstAttribute="height" constant="22" id="oek-fp-GKH"/>
@@ -266,7 +266,7 @@
                         <constraint firstItem="Gx1-tQ-pg6" firstAttribute="leading" secondItem="IfJ-DJ-XMe" secondAttribute="trailing" id="A4Z-sp-0Wy"/>
                         <constraint firstItem="5u3-Yp-hph" firstAttribute="top" secondItem="2uP-2A-Zsx" secondAttribute="bottom" constant="9" id="DEb-4T-TuD"/>
                         <constraint firstItem="2uP-2A-Zsx" firstAttribute="leading" secondItem="k1W-46-4gi" secondAttribute="leading" id="Dkm-ya-a9z"/>
-                        <constraint firstAttribute="trailing" secondItem="F8e-Eg-cHZ" secondAttribute="trailing" constant="28" id="E3C-us-siQ"/>
+                        <constraint firstAttribute="trailing" secondItem="F8e-Eg-cHZ" secondAttribute="trailing" constant="29" id="E3C-us-siQ"/>
                         <constraint firstItem="Gx1-tQ-pg6" firstAttribute="leading" secondItem="IfJ-DJ-XMe" secondAttribute="trailing" id="GDQ-PN-eK7"/>
                         <constraint firstItem="Q4r-Us-5lN" firstAttribute="leading" secondItem="qQG-uB-xoR" secondAttribute="trailing" id="Hqm-Ji-xYU"/>
                         <constraint firstItem="ivK-4X-4J1" firstAttribute="top" secondItem="k1W-46-4gi" secondAttribute="top" constant="10" id="MPA-nD-Oiy"/>
@@ -297,8 +297,8 @@
                         <constraint firstAttribute="trailing" secondItem="Gx1-tQ-pg6" secondAttribute="trailing" id="pny-5U-3ox"/>
                         <constraint firstItem="Xph-cc-GUt" firstAttribute="top" secondItem="2uP-2A-Zsx" secondAttribute="bottom" constant="9" id="qgz-hs-PLg"/>
                         <constraint firstItem="5u3-Yp-hph" firstAttribute="leading" secondItem="Q4r-Us-5lN" secondAttribute="trailing" constant="32" id="rFI-1p-yhM"/>
-                        <constraint firstItem="F8e-Eg-cHZ" firstAttribute="leading" secondItem="ivK-4X-4J1" secondAttribute="trailing" constant="29" id="rGr-kM-Xvm"/>
-                        <constraint firstItem="F8e-Eg-cHZ" firstAttribute="leading" secondItem="ivK-4X-4J1" secondAttribute="trailing" constant="29" id="sJg-JC-1Hg"/>
+                        <constraint firstItem="F8e-Eg-cHZ" firstAttribute="leading" secondItem="ivK-4X-4J1" secondAttribute="trailing" constant="28" id="rGr-kM-Xvm"/>
+                        <constraint firstItem="F8e-Eg-cHZ" firstAttribute="leading" secondItem="ivK-4X-4J1" secondAttribute="trailing" constant="28" id="sJg-JC-1Hg"/>
                         <constraint firstItem="5u3-Yp-hph" firstAttribute="leading" secondItem="Q4r-Us-5lN" secondAttribute="trailing" constant="32" id="t7R-0Q-cbk"/>
                         <constraint firstAttribute="height" constant="45" id="xGW-jh-h8m"/>
                         <constraint firstItem="uPB-5U-cIA" firstAttribute="leading" secondItem="k1W-46-4gi" secondAttribute="leading" constant="29" id="xjs-mV-pB1"/>
