@@ -119,7 +119,7 @@ UIAlertViewDelegate
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
-    BOOL isDoingWishList, isDoingFavorite;
+    BOOL isDoingWishList, isDoingFavorite, redirectToPriceAlert;
     
     NSInteger _requestcount;
     
@@ -1485,6 +1485,10 @@ UIAlertViewDelegate
                 isDoingFavorite = !isDoingFavorite;
                 [_favButton sendActionsForControlEvents:UIControlEventTouchUpInside];
             }
+            else if(redirectToPriceAlert) {
+                redirectToPriceAlert = !redirectToPriceAlert;
+                [btnPriceAlert sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
         }
     }
     else if(tag == CTagOtherProduct)
@@ -2094,9 +2098,26 @@ UIAlertViewDelegate
 
 - (IBAction)actionPriceAlert:(id)sender
 {
-    PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
-    priceAlertViewController.productDetail = _product.result.product;
-    [self.navigationController pushViewController:priceAlertViewController animated:YES];
+    if(_auth) {
+        PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+        priceAlertViewController.productDetail = _product.result.product;
+        [self.navigationController pushViewController:priceAlertViewController animated:YES];
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        isNeedLogin = YES;
+        redirectToPriceAlert = YES;
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 - (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action
