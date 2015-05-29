@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
@@ -66,7 +66,6 @@
                 <outletCollection property="tableViewProductCell" destination="PXj-xj-k3O" id="Rou-fh-Z1w"/>
                 <outletCollection property="tableViewProductCell" destination="7D2-jV-vkl" id="9za-zF-1ne"/>
                 <outletCollection property="tableViewProductCell" destination="Vwc-LH-Sc2" id="4LC-Bk-Y73"/>
-                <outletCollection property="tableViewProductCell" destination="zrh-Ec-ndt" id="mb5-fr-kkE"/>
                 <outletCollection property="tableViewProductCell" destination="BfC-AW-McL" id="hEF-ld-erO"/>
                 <outletCollection property="headerTableView" destination="gsc-A3-KM1" id="SJi-Wk-eua"/>
                 <outletCollection property="headerTableView" destination="q9W-Wt-95M" id="ds5-jQ-lWc"/>
@@ -78,6 +77,7 @@
                 <outletCollection property="tableViewShipmentCell" destination="Qzg-cW-dgD" id="lii-P0-Gs6"/>
                 <outletCollection property="tableViewShipmentCell" destination="aPJ-FY-wpC" id="ygJ-hl-bk8"/>
                 <outletCollection property="tableViewPaymentDetailCell" destination="T1e-I5-MeF" id="CHq-ha-RRb"/>
+                <outletCollection property="tableViewShipmentCell" destination="zrh-Ec-ndt" id="iXr-v9-aWw"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -296,7 +296,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="498" y="-455"/>
         </tableViewCell>
-        <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="zrh-Ec-ndt">
+        <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="zrh-Ec-ndt">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zrh-Ec-ndt" id="Q5F-wB-JYE">
@@ -786,17 +786,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLx-Tn-gT5">
-                        <rect key="frame" x="126" y="1" width="179" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="179" id="CBd-p1-0tu"/>
-                        </constraints>
+                        <rect key="frame" x="126" y="1" width="179" height="41"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harga Barang" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QrC-oJ-kYK">
-                        <rect key="frame" x="15" y="1" width="103" height="43"/>
+                        <rect key="frame" x="15" y="1" width="103" height="41"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="103" id="IPC-uk-nvP"/>
+                            <constraint firstAttribute="width" constant="103" id="dCc-si-Ngo"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -828,19 +825,19 @@
                 <constraints>
                     <constraint firstItem="SOh-JZ-GQ1" firstAttribute="top" secondItem="trB-pk-pkE" secondAttribute="bottom" constant="10" id="7Rr-Ye-OIz"/>
                     <constraint firstAttribute="bottom" secondItem="SOh-JZ-GQ1" secondAttribute="bottom" id="7cK-Bn-258"/>
+                    <constraint firstItem="QrC-oJ-kYK" firstAttribute="top" secondItem="gSi-x5-OSp" secondAttribute="bottom" id="Cj4-5s-el0"/>
                     <constraint firstItem="SOh-JZ-GQ1" firstAttribute="leading" secondItem="L5u-36-lkM" secondAttribute="leading" id="D1i-Hf-ayx"/>
-                    <constraint firstItem="BLx-Tn-gT5" firstAttribute="top" secondItem="L5u-36-lkM" secondAttribute="top" constant="1" id="FEX-mN-66j"/>
                     <constraint firstAttribute="trailing" secondItem="SOh-JZ-GQ1" secondAttribute="trailing" id="FkD-i5-fQe"/>
-                    <constraint firstItem="BLx-Tn-gT5" firstAttribute="leading" secondItem="QrC-oJ-kYK" secondAttribute="trailing" constant="8" id="FmM-sj-D6e"/>
-                    <constraint firstAttribute="bottom" secondItem="BLx-Tn-gT5" secondAttribute="bottom" constant="-1" id="INZ-1K-4Aa"/>
-                    <constraint firstItem="QrC-oJ-kYK" firstAttribute="top" secondItem="L5u-36-lkM" secondAttribute="top" constant="1" id="J8Q-1R-fZ5"/>
+                    <constraint firstItem="BLx-Tn-gT5" firstAttribute="leading" secondItem="QrC-oJ-kYK" secondAttribute="trailing" constant="8" id="H0V-i0-YER"/>
+                    <constraint firstItem="BLx-Tn-gT5" firstAttribute="top" secondItem="gSi-x5-OSp" secondAttribute="bottom" id="I0T-Xi-vY6"/>
+                    <constraint firstAttribute="bottom" secondItem="QrC-oJ-kYK" secondAttribute="bottom" constant="1" id="KCR-cu-BQN"/>
                     <constraint firstItem="gSi-x5-OSp" firstAttribute="leading" secondItem="L5u-36-lkM" secondAttribute="leading" id="PUc-l6-LWg"/>
                     <constraint firstItem="gSi-x5-OSp" firstAttribute="top" secondItem="L5u-36-lkM" secondAttribute="top" id="QnH-5s-2oW"/>
+                    <constraint firstAttribute="trailing" secondItem="BLx-Tn-gT5" secondAttribute="trailing" constant="15" id="XzM-1f-HZp"/>
+                    <constraint firstItem="QrC-oJ-kYK" firstAttribute="leading" secondItem="L5u-36-lkM" secondAttribute="leading" constant="15" id="bEs-J0-5cf"/>
                     <constraint firstAttribute="trailing" secondItem="gSi-x5-OSp" secondAttribute="trailing" id="hXu-PX-33k"/>
+                    <constraint firstAttribute="bottom" secondItem="BLx-Tn-gT5" secondAttribute="bottom" constant="1" id="iFh-Iw-X06"/>
                     <constraint firstAttribute="trailing" secondItem="trB-pk-pkE" secondAttribute="trailing" constant="15" id="ovC-Zu-ejY"/>
-                    <constraint firstAttribute="bottom" secondItem="QrC-oJ-kYK" secondAttribute="bottom" constant="-1" id="pj4-pZ-Ii9"/>
-                    <constraint firstItem="BLx-Tn-gT5" firstAttribute="leading" secondItem="QrC-oJ-kYK" secondAttribute="trailing" constant="8" id="qfs-ne-aEL"/>
-                    <constraint firstItem="QrC-oJ-kYK" firstAttribute="leading" secondItem="L5u-36-lkM" secondAttribute="leading" constant="15" id="vnN-EP-bwP"/>
                     <constraint firstItem="trB-pk-pkE" firstAttribute="top" secondItem="L5u-36-lkM" secondAttribute="top" constant="12" id="xLp-mM-7Xd"/>
                 </constraints>
             </tableViewCellContentView>
@@ -852,19 +849,13 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cLJ-bo-2Qu" id="NLC-vV-RPc">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-8N-w16">
-                        <rect key="frame" x="126" y="1" width="179" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="179" id="EJo-ix-oan"/>
-                        </constraints>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-8N-w16">
+                        <rect key="frame" x="126" y="1" width="179" height="41"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0M-8H-2VQ">
-                        <rect key="frame" x="15" y="1" width="103" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="103" id="aa2-c0-QH0"/>
-                        </constraints>
+                        <rect key="frame" x="15" y="1" width="95" height="41"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -877,27 +868,26 @@
                         </constraints>
                     </view>
                     <activityIndicatorView hidden="YES" opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="tzy-sU-wbF">
-                        <rect key="frame" x="285" y="12" width="20" height="20"/>
+                        <rect key="frame" x="285" y="11" width="20" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="vdK-PK-Q0e"/>
-                            <constraint firstAttribute="width" constant="20" id="yIA-sE-V4E"/>
+                            <constraint firstAttribute="width" constant="20" id="FmT-10-cu0"/>
+                            <constraint firstAttribute="height" constant="20" id="xe6-jt-pe0"/>
                         </constraints>
                     </activityIndicatorView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="v0M-8H-2VQ" secondAttribute="bottom" constant="-1" id="26B-6m-J3Q"/>
                     <constraint firstAttribute="bottom" secondItem="lYp-3X-fRw" secondAttribute="bottom" id="4J0-k4-HrI"/>
-                    <constraint firstAttribute="bottom" secondItem="6kE-8N-w16" secondAttribute="bottom" constant="-1" id="EeO-DY-YD5"/>
-                    <constraint firstItem="v0M-8H-2VQ" firstAttribute="leading" secondItem="NLC-vV-RPc" secondAttribute="leading" constant="15" id="FQM-MB-bjA"/>
-                    <constraint firstItem="6kE-8N-w16" firstAttribute="top" secondItem="NLC-vV-RPc" secondAttribute="top" constant="1" id="I8N-zl-e2T"/>
-                    <constraint firstItem="6kE-8N-w16" firstAttribute="leading" secondItem="v0M-8H-2VQ" secondAttribute="trailing" constant="8" id="WSc-NF-RKi"/>
-                    <constraint firstItem="v0M-8H-2VQ" firstAttribute="top" secondItem="NLC-vV-RPc" secondAttribute="top" constant="1" id="XBf-Dw-IjB"/>
-                    <constraint firstItem="6kE-8N-w16" firstAttribute="leading" secondItem="v0M-8H-2VQ" secondAttribute="trailing" constant="8" id="fRU-dS-Fmz"/>
+                    <constraint firstAttribute="trailing" secondItem="tzy-sU-wbF" secondAttribute="trailing" constant="15" id="WWb-qu-5KQ"/>
+                    <constraint firstItem="6kE-8N-w16" firstAttribute="leading" secondItem="v0M-8H-2VQ" secondAttribute="trailing" constant="16" id="Wk9-Sq-gtV"/>
+                    <constraint firstAttribute="trailing" secondItem="6kE-8N-w16" secondAttribute="trailing" constant="15" id="a29-nz-CzT"/>
+                    <constraint firstAttribute="bottom" secondItem="v0M-8H-2VQ" secondAttribute="bottom" constant="1" id="a67-1X-IMw"/>
+                    <constraint firstItem="6kE-8N-w16" firstAttribute="top" secondItem="NLC-vV-RPc" secondAttribute="top" constant="1" id="bgy-QC-3DV"/>
                     <constraint firstAttribute="trailing" secondItem="lYp-3X-fRw" secondAttribute="trailing" id="gBh-Yy-igh"/>
-                    <constraint firstItem="lYp-3X-fRw" firstAttribute="top" secondItem="tzy-sU-wbF" secondAttribute="bottom" constant="10" id="kYM-s4-vSE"/>
-                    <constraint firstAttribute="trailing" secondItem="tzy-sU-wbF" secondAttribute="trailing" constant="15" id="mFc-7d-MKE"/>
+                    <constraint firstAttribute="bottom" secondItem="6kE-8N-w16" secondAttribute="bottom" constant="1" id="ity-FL-bV5"/>
+                    <constraint firstItem="tzy-sU-wbF" firstAttribute="top" secondItem="NLC-vV-RPc" secondAttribute="top" constant="11" id="oyr-OH-zUH"/>
                     <constraint firstItem="lYp-3X-fRw" firstAttribute="leading" secondItem="NLC-vV-RPc" secondAttribute="leading" id="qg3-9S-y22"/>
-                    <constraint firstItem="tzy-sU-wbF" firstAttribute="top" secondItem="NLC-vV-RPc" secondAttribute="top" constant="12" id="sb3-6l-dfz"/>
+                    <constraint firstItem="v0M-8H-2VQ" firstAttribute="leading" secondItem="NLC-vV-RPc" secondAttribute="leading" constant="15" id="rVT-LQ-oEK"/>
+                    <constraint firstItem="v0M-8H-2VQ" firstAttribute="top" secondItem="NLC-vV-RPc" secondAttribute="top" constant="1" id="tmY-DK-Mir"/>
                 </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="501" y="190"/>
