@@ -1346,7 +1346,7 @@
     NSMutableArray *errorMessage = [NSMutableArray new];
     
     AddressFormList *selectedAddress = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    if (selectedAddress.address_id == 0) {
+    if (selectedAddress.address_name == nil || [selectedAddress.address_name isEqualToString:@""] || [selectedAddress.address_name isEqualToString:@"0"]) {
         isValid = NO;
         [errorMessage addObject:ERRORMESSAGE_NULL_ADDRESS];
     }
