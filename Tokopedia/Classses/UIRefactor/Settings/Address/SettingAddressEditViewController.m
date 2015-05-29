@@ -99,22 +99,7 @@
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    if (self.navigationController.viewControllers[0] == self) {
-        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tap:)];
-        barButtonItem.tag = 10;
-        self.navigationItem.leftBarButtonItem = barButtonItem;
-    }
-    
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
-                                                      style:UIBarButtonItemStyleDone
-                                                     target:(self)
-                                                     action:@selector(tap:)];
-    _barbuttonsave.tag = 11;
-    
-    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+
 
     _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     _act.hidesWhenStopped = YES;
@@ -141,6 +126,23 @@
     [super viewWillAppear:animated];
     self.scrollView.delegate = self;
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height)];
+    
+    if (self.navigationController.viewControllers[0] == self) {
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+        barButtonItem.tag = 10;
+        self.navigationItem.leftBarButtonItem = barButtonItem;
+    }
+    
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:(self)
+                                                     action:@selector(tap:)];
+    _barbuttonsave.tag = 11;
+    
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
 }
 
 - (void)viewWillLayoutSubviews
@@ -152,6 +154,12 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:(self)
+                                                            action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = back;
 }
 
 
