@@ -339,6 +339,7 @@ typedef enum
 
 #define FORMAT_SUCCESS_BUY @"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran %@"
 
+#define ERRORMESSAGE_NULL_ADDRESS @"Alamat harus diisi."
 #define ERRORMESSAGE_NULL_CART_SHIPPING_AGENT @"Agen kurir harus diisi."
 #define ERRORMESSAGE_NULL_CART_PAYMENT @"Pilih Metode Pembayaran yang ingin digunakan terlebih dahulu."
 #define ERRORMESSAGE_NULL_CART_PASSWORD @"Kata Sandi harus diisi."

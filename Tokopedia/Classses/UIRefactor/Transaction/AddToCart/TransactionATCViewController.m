@@ -1325,14 +1325,23 @@
     BOOL isValid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     
-    ShippingInfoShipments *shipment = _selectedShipment;
-    NSInteger shippingID = [shipment.shipment_id integerValue];
-    
-    if (shippingID == 0)
-    {
+    AddressFormList *selectedAddress = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    if (selectedAddress.address_id == 0) {
         isValid = NO;
-        [errorMessage addObject:ERRORMESSAGE_NULL_CART_SHIPPING_AGENT];
+        [errorMessage addObject:ERRORMESSAGE_NULL_ADDRESS];
     }
+    else
+    {
+        ShippingInfoShipments *shipment = _selectedShipment;
+        NSInteger shippingID = [shipment.shipment_id integerValue];
+        
+        if (shippingID == 0)
+        {
+            isValid = NO;
+            [errorMessage addObject:ERRORMESSAGE_NULL_CART_SHIPPING_AGENT];
+        }
+    }
+
     
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
