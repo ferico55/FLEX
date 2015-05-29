@@ -108,6 +108,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *productQuantityLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *productQuantityStepper;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowInsuranceImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *insuraceConstraint;
 
 @end
 
@@ -221,6 +223,9 @@
     [super viewDidDisappear:animated];
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
+    
+    _activeTextField = nil;
+    _activeTextView = nil;
 }
 
 #pragma mark - View Action
@@ -269,7 +274,7 @@
             AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
             if ([address.address_name isEqualToString:@"0"])
             {
-                totalRow -= 2;
+                totalRow -= 3;
             }
             return _isnodata?0:totalRow;
             break;
@@ -294,20 +299,6 @@
             case 0:
             {
                 cell = _tableViewProductCell[indexPath.row];
-                UILabel *label = (UILabel *)[cell viewWithTag:1];
-                switch (indexPath.row) {
-                    case TAG_BUTTON_TRANSACTION_INSURANCE:
-                    {
-                        if ([product.product_must_insurance integerValue]==1) {
-                            label.text = @"Wajib Asuransi";
-                        }
-                        else{
-                            NSInteger insuranceID = [product.product_insurance integerValue];
-                            label.text = (insuranceID==1)?@"Ya":@"Tidak";
-                        }
-                        break;
-                    }
-                }
                 break;
             }
             case 1:
@@ -336,6 +327,28 @@
                     case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
                     {
                         label.text = shipmentPackage.name?:@"Pilih";
+                        break;
+                    }
+                    case TAG_BUTTON_TRANSACTION_INSURANCE:
+                    {
+                        NSInteger insurance = [self insuranceStatus];
+                        if (insurance == 0) {
+                            label.text = @"Tidak didukung";
+                            label.textColor = TEXT_COLOUR_DISABLE;
+                            _arrowInsuranceImageView.hidden = YES;
+                            _insuraceConstraint.constant = 0;
+                        } else if (insurance == 1) {
+                            label.text = @"Wajib Asuransi";
+                            label.textColor = TEXT_COLOUR_DISABLE;
+                            _arrowInsuranceImageView.hidden = YES;
+                            _insuraceConstraint.constant = 0;
+                        } else {
+                            NSInteger insuranceID = [product.product_insurance integerValue];
+                            label.text = (insuranceID==1)?@"Ya":@"Tidak";
+                            label.textColor = TEXT_COLOUR_ENABLE;
+                            _arrowInsuranceImageView.hidden = NO;
+                            _insuraceConstraint.constant = 14.0f;
+                        }
                         break;
                     }
                 }
@@ -387,7 +400,9 @@
                     [indicatorView stopAnimating];
                     [indicatorView setHidden:YES];
                 }
+                break;
         }
+        
     }
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -455,18 +470,6 @@
     if (indexPath.section == 0)
     {
         switch (indexPath.row) {
-            case TAG_BUTTON_TRANSACTION_INSURANCE:
-            {
-                ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
-                if ([product.product_must_insurance integerValue]!=1) {
-                    AlertPickerView *alert = [AlertPickerView newview];
-                    alert.tag = indexPath.row;
-                    alert.delegate = self;
-                    alert.pickerData = ARRAY_INSURACE;
-                    [alert show];
-                }
-                break;
-            }
             case TAG_BUTTON_TRANSACTION_NOTE:
             {
                 [_remarkTextView becomeFirstResponder];
@@ -544,6 +547,19 @@
                 vc.delegate = self;
                 
                 [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+                
+            case TAG_BUTTON_TRANSACTION_INSURANCE:
+            {
+                NSInteger insurance = [self insuranceStatus];
+                if (insurance != 0 && insurance !=1) {
+                    AlertPickerView *alert = [AlertPickerView newview];
+                    alert.tag = indexPath.row;
+                    alert.delegate = self;
+                    alert.pickerData = ARRAY_INSURACE;
+                    [alert show];
+                }
                 break;
             }
         }
@@ -891,6 +907,10 @@
             _selectedShipment = [shipmentSupporteds firstObject];
             _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
             
+            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+            product = ATCForm.result.form.product_detail;
+            [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
+            
             [self setAddress:address];
             _isnodata = NO;
             [_tableView reloadData];
@@ -1226,7 +1246,7 @@
      _tableView.contentInset = contentInsets;
      _tableView.scrollIndicatorInsets = contentInsets;
      
-     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:TAG_BUTTON_TRANSACTION_NOTE inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
@@ -1368,6 +1388,59 @@
 {
     [_dataInput setObject:action forKey:DATA_TODO_CALCULATE];
     [_networkManagerCalculate doRequest];
+}
+
+-(NSInteger)insuranceStatus
+{
+    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+    
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyCode = @"Rp ";
+    formatter.currencyGroupingSeparator = @".";
+    formatter.maximumFractionDigits = 0;
+    formatter.minimumFractionDigits = 0;
+    
+    NSInteger productPrice = [[formatter numberFromString:product.product_price] integerValue];
+    
+    /* Untuk auto insurance*/
+    NSInteger insurance = 2;
+    
+    ShippingInfoShipments *shipment = _selectedShipment;
+    ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
+    
+    NSInteger shipmentID = [shipment.shipment_id integerValue];
+    NSInteger ongkir = [[formatter numberFromString:shipmentPackage.price] integerValue];
+    
+    if (shipmentID == 1) {
+        if ((ongkir * 10) >= productPrice) {
+            insurance = 0;
+        } else {
+            insurance = 2;
+        };
+    } else if (shipmentID == 6) {
+        if (productPrice <= 299999) {
+            insurance = 0;
+        } else {
+            insurance = 1;
+        };
+    } else if (shipmentID == 4) {
+        insurance = 1;
+    } else if (shipmentID == 7) {
+        if (productPrice <= 299999) {
+            insurance = 0;
+        } else {
+            insurance = 1;
+        };
+    } else if (shipmentID == 9) {
+        if ((ongkir * 10) >= productPrice) {
+            insurance = 0;
+        } else {
+            insurance = 2;
+        };
+    }
+    
+    return insurance;
 }
 
 #pragma mark - Memory Management

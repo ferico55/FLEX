@@ -49,10 +49,12 @@
                 <outlet property="act" destination="YTl-yM-RaU" id="gez-rT-3lZ"/>
                 <outlet property="actBuyButton" destination="guT-MQ-tD1" id="0m3-zF-bT8"/>
                 <outlet property="addressLabel" destination="bk2-Tr-a8Z" id="7eh-z0-BKv"/>
+                <outlet property="arrowInsuranceImageView" destination="hrd-bZ-AOJ" id="67a-oe-EuC"/>
                 <outlet property="borderAddress" destination="Ea7-XM-T7k" id="tEa-u1-2bx"/>
                 <outlet property="borderFullAddress" destination="IfS-dh-V7H" id="BoO-Ps-e9E"/>
                 <outlet property="buyButton" destination="ZND-e2-NEY" id="Hzm-Ug-aPG"/>
                 <outlet property="footer" destination="7qp-b3-zGj" id="6Rx-Ku-Itj"/>
+                <outlet property="insuraceConstraint" destination="1nr-77-rUU" id="nZm-ic-rvp"/>
                 <outlet property="phoneLabel" destination="cqz-ce-FDb" id="0Ux-Ri-zzg"/>
                 <outlet property="productDescriptionLabel" destination="jsc-eB-Aif" id="FOq-wd-cvk"/>
                 <outlet property="productQuantityLabel" destination="JAs-Hq-Jdf" id="45V-40-efH"/>
