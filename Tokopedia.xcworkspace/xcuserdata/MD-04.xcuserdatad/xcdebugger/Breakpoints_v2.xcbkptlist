@@ -1394,11 +1394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartViewController.m"
-            timestampString = "454560814.861537"
+            timestampString = "454589483.92464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2120"
-            endingLineNumber = "2120"
+            startingLineNumber = "2123"
+            endingLineNumber = "2123"
             landmarkName = "-cellTransactionCartAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1410,11 +1410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartViewController.m"
-            timestampString = "454560814.861537"
+            timestampString = "454589483.92464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "523"
-            endingLineNumber = "523"
+            startingLineNumber = "525"
+            endingLineNumber = "525"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1442,11 +1442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartViewController.m"
-            timestampString = "454560814.861537"
+            timestampString = "454589483.92464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1274"
-            endingLineNumber = "1274"
+            startingLineNumber = "1277"
+            endingLineNumber = "1277"
             landmarkName = "-didSelectObject:senderIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1586,11 +1586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartViewController.m"
-            timestampString = "454560814.861537"
+            timestampString = "454589483.92464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2277"
-            endingLineNumber = "2277"
+            startingLineNumber = "2280"
+            endingLineNumber = "2280"
             landmarkName = "-getParameter:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1602,11 +1602,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartViewController.m"
-            timestampString = "454560814.861537"
+            timestampString = "454589483.92464"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2260"
-            endingLineNumber = "2260"
+            startingLineNumber = "2263"
+            endingLineNumber = "2263"
             landmarkName = "-getParameter:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1682,12 +1682,12 @@
                   moduleName = "Tokopedia"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MD-04/Documents/Tokopedia/Tokopedia/Classses/UIRefactor/TxOrder/PaymentConfirmed/TxOrderConfirmedViewController.m"
-                  timestampString = "454588308.69512"
+                  timestampString = "454589484.241579"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "785"
                   endingLineNumber = "785"
-                  offsetFromSymbolStart = "1488">
+                  offsetFromSymbolStart = "1416">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1697,12 +1697,12 @@
                   moduleName = "Tokopedia"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MD-04/Documents/Tokopedia/Tokopedia/Classses/UIRefactor/TxOrder/PaymentConfirmed/TxOrderConfirmedViewController.m"
-                  timestampString = "454588308.695277"
+                  timestampString = "454589484.241818"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "785"
                   endingLineNumber = "785"
-                  offsetFromSymbolStart = "67">
+                  offsetFromSymbolStart = "62">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1762,12 +1762,12 @@
                   moduleName = "Tokopedia"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MD-04/Documents/Tokopedia/Tokopedia/Classses/UIRefactor/Settings/UserProfile/SettingUserProfileViewController.m"
-                  timestampString = "454588308.696993"
+                  timestampString = "454589484.243344"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "896"
                   endingLineNumber = "896"
-                  offsetFromSymbolStart = "545">
+                  offsetFromSymbolStart = "544">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1777,12 +1777,12 @@
                   moduleName = "Tokopedia"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/MD-04/Documents/Tokopedia/Tokopedia/Classses/UIRefactor/Settings/UserProfile/SettingUserProfileViewController.m"
-                  timestampString = "454588308.697164"
+                  timestampString = "454589484.243486"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "896"
                   endingLineNumber = "896"
-                  offsetFromSymbolStart = "67">
+                  offsetFromSymbolStart = "62">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1864,22 +1864,6 @@
             startingLineNumber = "158"
             endingLineNumber = "158"
             landmarkName = "-viewWillAppear:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartShippingViewController.m"
-            timestampString = "454562962.887343"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1187"
-            endingLineNumber = "1187"
-            landmarkName = "-editInsurance:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -1075,14 +1075,17 @@
                 if ([cart.cart_cannot_insurance integerValue]==1) {
                    insuranceName = @"Tidak didukung";
                     cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.accessoryType = UITableViewCellAccessoryNone;
                 }
                 else if ([cart.cart_force_insurance integerValue]==1) {
                     insuranceName = @"Wajib Asuransi";
                     cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.accessoryType = UITableViewCellAccessoryNone;
                 }
                 else{
                     insuranceName = cart.cart_insurance_name?:([cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
                      cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
                 cell.detailTextLabel.text = insuranceName;
                 break;
@@ -1145,11 +1148,20 @@
         {
             NSString *insuranceName;
             if ([cart.cart_cannot_insurance integerValue]==1)
+            {
                 insuranceName = @"Tidak didukung";
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
             else if ([cart.cart_force_insurance integerValue] == 1)
+            {
                 insuranceName = @"Wajib Asuransi";
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
             else
+            {
                 insuranceName = cart.cart_insurance_name?:([cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
             cell.detailTextLabel.text = insuranceName;
             break;
         }

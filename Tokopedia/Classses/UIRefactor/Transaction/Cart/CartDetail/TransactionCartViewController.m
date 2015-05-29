@@ -112,6 +112,8 @@
     TokopediaNetworkManager *_networkManagerBCAClickPay;
     
     UIAlertView *_alertLoading;
+    
+    NSInteger _indexSelectedShipment;
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
@@ -672,6 +674,7 @@
                                     DATA_INDEX_KEY : @(index)
                                     };
     [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
+    _indexSelectedShipment = index;
     shipmentViewController.indexPage = _indexPage;
     shipmentViewController.delegate = self;
     [self.navigationController pushViewController:shipmentViewController animated:YES];
@@ -2599,7 +2602,7 @@
             
             [self adjustAfterUpdateList];
             
-            NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
+            NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list[_indexSelectedShipment]};
             [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         }
     }
