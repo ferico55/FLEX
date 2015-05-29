@@ -1186,7 +1186,6 @@
 {
     NSDictionary *userInfo = aNotification.userInfo;
     TransactionCartList *cart = [userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
     
     [_tableView reloadData];

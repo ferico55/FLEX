@@ -111,8 +111,6 @@
     TokopediaNetworkManager *_networkManagerEMoney;
     TokopediaNetworkManager *_networkManagerBCAClickPay;
     
-    TransactionCartShippingViewController *_shipmentViewController;
-    
     UIAlertView *_alertLoading;
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
@@ -202,7 +200,6 @@
     _listProductFirstObjectIndexPath =[NSMutableArray new];
     _mapping = [TransactionObjectMapping new];
     _navigate = [NavigateViewController new];
-    _shipmentViewController = [TransactionCartShippingViewController new];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.tagRequest = TAG_REQUEST_CART;
@@ -667,19 +664,17 @@
         }
     }
 
-    if (!_shipmentViewController) {
-        _shipmentViewController = [TransactionCartShippingViewController new];
-    }
-    _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
+    TransactionCartShippingViewController *shipmentViewController = [TransactionCartShippingViewController new];
+    shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
                                     DATA_DROPSHIPPER_NAME_KEY: dropshipName,
                                     DATA_DROPSHIPPER_PHONE_KEY:dropshipPhone,
                                     DATA_PARTIAL_LIST_KEY :partial,
                                     DATA_INDEX_KEY : @(index)
                                     };
     [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-    _shipmentViewController.indexPage = _indexPage;
-    _shipmentViewController.delegate = self;
-    [self.navigationController pushViewController:_shipmentViewController animated:YES];
+    shipmentViewController.indexPage = _indexPage;
+    shipmentViewController.delegate = self;
+    [self.navigationController pushViewController:shipmentViewController animated:YES];
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
@@ -1630,9 +1625,6 @@
     [_stockPartialDetail removeAllObjects];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-    if (_shipmentViewController) {
-        _shipmentViewController = nil;
-    }
 }
 
 -(void)addArrayObjectTemp
@@ -2607,15 +2599,8 @@
             
             [self adjustAfterUpdateList];
             
-            if (_shipmentViewController) {
-                NSInteger index = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue];
-                _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list[index],
-                                                 DATA_INDEX_KEY : @(index)
-                                                 };
-                [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-                _shipmentViewController.indexPage = _indexPage;
-                _shipmentViewController.delegate = self;
-            }
+            NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
+            [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         }
     }
 }
@@ -2670,8 +2655,6 @@
         
     }
     if (listCount>0) {
-        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
-        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         
         
         if (_indexPage == 0) {
