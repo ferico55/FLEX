@@ -399,6 +399,13 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
+                
+                _table.tableFooterView = nil;
+
+            } else {
+                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+                self.table.tableFooterView = noResultView;
             }
         }
     }
@@ -975,7 +982,11 @@
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralList1GestureCell*) cell).indexpath;
 
-        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+        UIColor *redColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
+        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus"
+                                               backgroundColor:redColor
+                                                       padding:padding
+                                                      callback:^BOOL(MGSwipeTableCell *sender) {
             [self deleteListAtIndexPath:indexPath];
             return YES;
         }];
@@ -1084,7 +1095,6 @@
     {
         [self requestSuccess:successResult withOperation:operation];
         [_act stopAnimating];
-        _table.tableFooterView = nil;
         _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
         [_table reloadData];
         _isrefreshview = NO;

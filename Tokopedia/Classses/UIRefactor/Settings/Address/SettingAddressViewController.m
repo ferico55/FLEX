@@ -74,7 +74,7 @@
     NSString *_searchKeyword;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -517,7 +517,14 @@
                 
                 _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
                 NSLog(@"%zd",_page);
+                
+                _table.tableFooterView = nil;
+            } else {
+                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+                self.table.tableFooterView = noResultView;
             }
+            
             NSInteger type = [[_datainput objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
             if (type == TYPE_ADD_EDIT_PROFILE_EDIT) {
                 //TODO: Behavior after edit
@@ -536,7 +543,6 @@
                 [self.navigationController pushViewController:vc animated:NO];
             }
             [_table reloadData];
-            //_table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
         }
     }
 }
@@ -1257,7 +1263,6 @@
     {
         [self requestSuccess:successResult withOperation:operation];
         [_act stopAnimating];
-        _table.tableFooterView = nil;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         _doneBarButtonItem.enabled = YES;
