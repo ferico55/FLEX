@@ -128,42 +128,7 @@
     [super viewDidLoad];
     _listTemp = [NSMutableArray new];
     
-    NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
-        _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                              style:UIBarButtonItemStylePlain
-                                                             target:(self)
-                                                             action:@selector(tap:)];
-        _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
-        self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
 
-        [self.view addSubview:_addNewAddressView];
-        _table.contentInset = UIEdgeInsetsMake(_addNewAddressView.frame.size.height, 0, 0, 0);
-        //_table.tableHeaderView = _addNewAddressView;
-        
-        _searchBar.delegate = self;
-        _searchBar.placeholder = @"Cari Alamat";
-        _searchBar.userInteractionEnabled = YES;
-        
-    } else {
-        
-        UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                      target:self
-                                                                                      action:@selector(tap:)];
-        addBarButton.tag = 12;
-        self.navigationItem.rightBarButtonItem = addBarButton;
-        
-        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tap:)];
-        backBarButton.tag = 10;
-        self.navigationItem.backBarButtonItem = backBarButton;
-        
-        //_table.tableHeaderView = _searchBarView;
-        [self.view addSubview:_searchBarView];
-        _table.contentInset = UIEdgeInsetsMake(_searchBarView.frame.size.height, 0, 0, 0);
-    }
 
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -203,18 +168,53 @@
 {
     [super viewWillAppear:animated];
     
-//    if (!_isrefreshview) {
-//        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-//            [self request];
-//        }
-//    }
+    NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+        _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                              style:UIBarButtonItemStylePlain
+                                                             target:(self)
+                                                             action:@selector(tap:)];
+        _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
+        self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
+        
+        [self.view addSubview:_addNewAddressView];
+        _table.contentInset = UIEdgeInsetsMake(_addNewAddressView.frame.size.height, 0, 0, 0);
+        //_table.tableHeaderView = _addNewAddressView;
+        
+        _searchBar.delegate = self;
+        _searchBar.placeholder = @"Cari Alamat";
+        _searchBar.userInteractionEnabled = YES;
+        
+    } else {
+        
+        UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                      target:self
+                                                                                      action:@selector(tap:)];
+        addBarButton.tag = 12;
+        self.navigationItem.rightBarButtonItem = addBarButton;
+        
+        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+        backBarButton.tag = 10;
+        self.navigationItem.backBarButtonItem = backBarButton;
+        
+        //_table.tableHeaderView = _searchBarView;
+        [self.view addSubview:_searchBarView];
+        _table.contentInset = UIEdgeInsetsMake(_searchBarView.frame.size.height, 0, 0, 0);
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    
+    UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:(self)
+                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = back;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
