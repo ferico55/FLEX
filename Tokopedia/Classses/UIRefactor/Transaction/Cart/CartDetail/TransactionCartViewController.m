@@ -2602,7 +2602,7 @@
             
             [self adjustAfterUpdateList];
             
-            NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list?_list[_indexSelectedShipment]:0};
+            NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
             [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         }
     }
