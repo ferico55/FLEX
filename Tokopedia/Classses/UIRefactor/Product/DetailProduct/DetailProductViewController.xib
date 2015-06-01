@@ -26,7 +26,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -398,28 +397,12 @@
                                     <rect key="frame" x="0.0" y="49" width="320" height="1"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qan-1S-e2b">
-                                    <rect key="frame" x="8" y="10" width="50" height="32"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="ear-fi-MQf"/>
-                                        <constraint firstAttribute="width" constant="50" id="isX-lf-FMN"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                    <state key="normal" image="icon_button_share.png">
-                                        <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="actionShare:" destination="-1" eventType="touchUpInside" id="Bue-JI-fea"/>
-                                    </connections>
-                                </button>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZQ-y3-gDO">
-                                    <rect key="frame" x="194" y="10" width="118" height="32"/>
+                                    <rect key="frame" x="176" y="10" width="120" height="32"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="118" id="VYo-0D-LRf"/>
-                                        <constraint firstAttribute="height" constant="32" id="wkJ-ud-bQG"/>
+                                        <constraint firstAttribute="width" constant="120" id="Fqb-Jw-3pI"/>
+                                        <constraint firstAttribute="height" constant="32" id="ISN-qb-BIz"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                     <state key="normal" title="Wishlist" image="icon_button_wishlist_nonactive.png">
@@ -430,33 +413,31 @@
                                         <action selector="actionWishList:" destination="-1" eventType="touchUpInside" id="QIU-Cf-YVJ"/>
                                     </connections>
                                 </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqO-5S-ELQ">
-                                    <rect key="frame" x="68" y="10" width="118" height="32"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qan-1S-e2b">
+                                    <rect key="frame" x="23" y="10" width="120" height="32"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="4UF-ia-kp6"/>
-                                        <constraint firstAttribute="width" constant="118" id="hYd-IR-Lkr"/>
+                                        <constraint firstAttribute="height" constant="32" id="8kw-Ht-Lls"/>
+                                        <constraint firstAttribute="width" constant="120" id="NgE-3L-4nY"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                    <state key="normal" title="Price Alert" image="icon_button_pricealert_nonactive.png">
-                                        <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal" title="Share" image="icon_button_share.png">
+                                        <color key="titleColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
+                                    <connections>
+                                        <action selector="actionShare:" destination="-1" eventType="touchUpInside" id="Bue-JI-fea"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" constant="8" id="5oW-a0-pmP"/>
                                 <constraint firstAttribute="height" constant="50" id="6ja-ou-q2E"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="leading" secondItem="uqO-5S-ELQ" secondAttribute="trailing" constant="8" id="WTs-3S-cm0"/>
-                                <constraint firstItem="uqO-5S-ELQ" firstAttribute="leading" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="10" id="h3u-pb-jl8"/>
-                                <constraint firstAttribute="trailing" secondItem="NZQ-y3-gDO" secondAttribute="trailing" constant="8" id="qgS-L7-CTX"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="t5G-7I-Akc"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="wJw-FM-xMh"/>
-                                <constraint firstItem="uqO-5S-ELQ" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="wfn-7C-IDT"/>
+                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" constant="23" id="KqK-bw-S8r"/>
+                                <constraint firstAttribute="bottom" secondItem="Qan-1S-e2b" secondAttribute="bottom" constant="8" id="cT9-N0-mei"/>
+                                <constraint firstAttribute="trailing" secondItem="NZQ-y3-gDO" secondAttribute="trailing" constant="24" id="tiy-X7-t37"/>
+                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="vGK-Ww-MFl"/>
+                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="leading" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="33" id="vSf-FV-edq"/>
                                 <constraint firstAttribute="width" constant="320" id="zdP-Tg-4ZA"/>
                             </constraints>
                         </view>
@@ -769,7 +750,6 @@
     </objects>
     <resources>
         <image name="Badges_gold_merchant" width="40" height="40"/>
-        <image name="icon_button_pricealert_nonactive.png" width="20" height="20"/>
         <image name="icon_button_share.png" width="20" height="20"/>
         <image name="icon_button_wishlist_nonactive.png" width="20" height="20"/>
         <image name="icon_sold.png" width="14" height="14"/>

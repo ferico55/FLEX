@@ -23,5 +23,4 @@
 - (void)setBackgroundPriceAlert:(BOOL)isActive;
 - (IBAction)actionShare:(id)sender;
 - (IBAction)actionWishList:(id)sender;
-- (IBAction)actionPriceAlert:(id)sender;
 @end

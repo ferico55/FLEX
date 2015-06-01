@@ -14,7 +14,6 @@
 #define CTagUnWishList 6
 #define CTagNoteCanReture 7
 
-
 #import "Notes.h"
 #import "NoteDetails.h"
 #import "NotesResult.h"
@@ -336,6 +335,8 @@ UIAlertViewDelegate
     btnShare.layer.borderWidth = 1;
     btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
     btnShare.layer.masksToBounds = YES;
+    btnShare.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+    btnShare.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
     
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
@@ -440,13 +441,16 @@ UIAlertViewDelegate
         [btnWishList setImage:[UIImage imageNamed:@"icon_button_wishlist_active.png"] forState:UIControlStateNormal];
         btnWishList.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
         [btnWishList setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        btnWishList.layer.borderWidth = 0;
     }
     else {
         [btnWishList setImage:[UIImage imageNamed:@"icon_button_wishlist_nonactive.png"] forState:UIControlStateNormal];
         btnWishList.backgroundColor = [UIColor whiteColor];
         [btnWishList setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        btnWishList.layer.borderWidth = 1.0f;
     }
 }
+
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
@@ -1818,7 +1822,6 @@ UIAlertViewDelegate
                 btnWishList.layer.cornerRadius = 5;
                 btnWishList.layer.masksToBounds = YES;
                 btnWishList.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-                btnWishList.layer.borderWidth = 1.0f;
                 btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
                 btnWishList.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
