@@ -61,7 +61,12 @@
 
 - (void)setProductName:(NSString *)strProductName
 {
-    lblProductName.text = strProductName;
+    [btnProductName setTitle:strProductName forState:UIControlStateNormal];
+}
+
+- (UIButton *)getBtnProductName
+{
+    return btnProductName;
 }
 
 - (void)setLblDateProduct:(NSDate *)date

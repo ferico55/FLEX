@@ -6,8 +6,10 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import "Catalog.h"
+#import "CatalogViewController.h"
 #import "CatalogShops.h"
 #import "detail.h"
+#import "DetailProductViewController.h"
 #import "DepartmentTableViewController.h"
 #import "DetailPriceAlert.h"
 #import "DetailProductResult.h"
@@ -17,12 +19,14 @@
 #import "LoginViewController.h"
 #import "LoadingView.h"
 #import "NoResult.h"
+#import "Paging.h"
 #import "PriceAlertCell.h"
 #import "Product.h"
 #import "PriceAlertViewController.h"
 #import "ProductDetail.h"
 #import "PriceAlert.h"
 #import "PriceAlertResult.h"
+#import "ShopContainerViewController.h"
 #import "string_price_alert.h"
 #import "string_product.h"
 #import "string_catalog.h"
@@ -32,7 +36,6 @@
 #define CCellIdentifier @"cell"
 
 #define CTagGetDetailPriceList 1
-#define CTagGetCatalogList 2
 #define CHeaderViewContent 1
 #define CHeaderImg 2
 #define CHeaderLabelHeader 3
@@ -43,18 +46,17 @@
 
 @interface DetailPriceAlertViewController ()<TokopediaNetworkManagerDelegate, LoginViewDelegate, LoadingViewDelegate, DepartmentListDelegate>
 {
+    NSMutableArray *catalogList;
     PriceAlertCell *priceAlertCell;
     TokopediaNetworkManager *tokopediaNetworkManager;
     DepartmentTableViewController *departmentViewController;
     RKObjectManager *objectManager;
     
     NSString *strTempProductID;
-    Catalog *catalog;
-    DetailPriceAlert *latestDetailPriceAlert;
     NoResultView *noResultView;
     UIActivityIndicatorView *activityIndicatorView, *activityIndicatorLoadProductDetail;
     LoadingView *loadingView;
-    int nSelectedFilter, nSelectedSort;
+    int nSelectedFilter, nSelectedSort, page;
 }
 
 @end
@@ -70,6 +72,7 @@
     self.navigationItem.title = CStringNotificationHarga;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringUbah style:UIBarButtonItemStylePlain target:self action:@selector(actionUbah:)];
     
+    page = 1;
     NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
     priceAlertCell = [arrPriceAlert objectAtIndex:0];
     [self.view addSubview:priceAlertCell.getViewContent];
@@ -87,14 +90,24 @@
     [priceAlertCell.getBtnClose setHidden:YES];
     [self setContentValue];
     constraintYLineHeader.constant = tempViewContent.frame.origin.y + tempViewContent.bounds.size.height + 1;
-    constraintHeightTable.constant = self.view.bounds.size.height - viewKondisi.frame.origin.y - (viewLineHeader.frame.origin.y+viewLineHeader.bounds.size.height);
+    constraintHeightTable.constant = self.view.bounds.size.height - (viewLineHeader.frame.origin.y+viewLineHeader.bounds.size.height);
 
     [self.view bringSubviewToFront:viewLineHeader];
-    [self.view bringSubviewToFront:viewKondisi];
     [self.view layoutIfNeeded];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
     [self isGettingCatalogList:YES];
+    
+    
+    tblDetailPriceAlert.allowsSelection = NO;
+    if([_detailPriceAlert.pricealert_type isEqualToString:@"1"]) {//Catalog
+        constraintWidthUrutkan.constant = 0;
+        constraintWidthFilter.constant = self.view.bounds.size.width;
+        constraintWidthSeparatorButton.constant = 0;
+        [btnFilter setTitle:CstringFilter forState:UIControlStateNormal];
+        btnFilter.titleLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
+        [btnFilter setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -114,14 +127,35 @@
 
 
 #pragma mark - Action View
+- (void)actionDetailProduct:(id)sender
+{
+    if(strTempProductID != nil) {
+        [self deallocNetworkManager];
+        [self showActivityIndicatorGetProductDetail:NO];
+    }
+    
+    if([_detailPriceAlert.pricealert_type isEqualToString:@"1"]) {
+        [self redirectToDetailProduct:nil];
+    }
+    else {
+        CatalogViewController *catalogViewController = [CatalogViewController new];
+        catalogViewController.catalogID = _detailPriceAlert.pricealert_product_id;
+        catalogViewController.catalogName = _detailPriceAlert.pricealert_product_name;
+        catalogViewController.catalogImage = _detailPriceAlert.pricealert_product_image;
+        catalogViewController.catalogPrice = _detailPriceAlert.pricealert_price;
+        [self.navigationController pushViewController:catalogViewController animated:YES];
+    }
+}
+
 - (void)actionSort:(id)sender
 {
     if(tblDetailPriceAlert.delegate != nil) {
         departmentViewController = [DepartmentTableViewController new];
         departmentViewController.del = self;
-        departmentViewController.arrList = @[CStringProductTerjual, CStringUlasan, CStringHargaTerendah, CStringHargaTertinggi];
+        departmentViewController.arrList = @[CStringPembaruanTerakhir, CStringProductTerjual, CStringUlasan, CStringHargaTerendah, CStringHargaTertinggi];
         departmentViewController.selectedIndex = nSelectedSort;
         departmentViewController.tag = CTagSort;
+        departmentViewController.navigationItem.title = CStringSort;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
         navController.navigationBar.translucent = NO;
         [self presentViewController:navController animated:YES completion:nil];
@@ -136,18 +170,36 @@
         departmentViewController.arrList = @[CStringSemuaKondisi, CStringBaru, CStringBekas];
         departmentViewController.selectedIndex = nSelectedFilter;
         departmentViewController.tag = CTagFilter;
+        departmentViewController.navigationItem.title = CstringFilter;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
         navController.navigationBar.translucent = NO;
         [self presentViewController:navController animated:YES completion:nil];
     }
 }
 
-- (void)actionBuy:(id)sender
+- (void)actionShopName:(id)sender
 {
-    CustomButtonBuy *btnBuy = (CustomButtonBuy *)sender;
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
-    ProductDetail *tempProductDetail = [((CatalogShops *) [catalog.result.catalog_shops objectAtIndex:btnBuy.tagIndexPath.section]).product_list objectAtIndex:btnBuy.tagIndexPath.row];
+    CatalogShops *catalogShop = [catalogList objectAtIndex:((CustomButton *) sender).tagIndexPath.section];
+    ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
+    shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:catalogShop.shop_id,
+                                         kTKPDDETAIL_APISHOPNAMEKEY:catalogShop.shop_name,
+                                         kTKPD_AUTHKEY:_auth?:@{}};
+    [self.navigationController pushViewController:shopContainerViewController animated:YES];
+}
+
+- (void)actionProductName:(id)sender
+{
+    [self redirectToDetailProduct:((ProductDetail *) [((CatalogShops *) [catalogList objectAtIndex:((CustomButton *) sender).tagIndexPath.section]).product_list objectAtIndex:((CustomButton *) sender).tagIndexPath.row]).product_id];
+}
+
+- (void)actionBuy:(id)sender
+{
+    CustomButton *btnBuy = (CustomButton *)sender;
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    ProductDetail *tempProductDetail = [((CatalogShops *) [catalogList objectAtIndex:btnBuy.tagIndexPath.section]).product_list objectAtIndex:btnBuy.tagIndexPath.row];
     
     if(_auth) {
         strTempProductID = tempProductDetail.product_id;
@@ -171,6 +223,17 @@
 
 
 #pragma mark - Method
+- (void)redirectToDetailProduct:(NSString *)strProductID
+{
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    
+    DetailProductViewController *detailProductViewController = [DetailProductViewController new];
+    detailProductViewController.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : (strProductID?:_detailPriceAlert.pricealert_product_id), kTKPD_AUTHKEY:auth?:[NSNull null]};
+    [self.navigationController pushViewController:detailProductViewController animated:YES];
+}
+
+
 - (BOOL)canRedirectView
 {
     UIViewController *viewController = [self.navigationController.viewControllers lastObject];
@@ -274,9 +337,16 @@
     return tokopediaNetworkManager;
 }
 
+
+- (NSString *)getPrice:(NSString *)strTempPrice
+{
+    return [strTempPrice isEqualToString:@"Rp 0"]? CStringAllPrice:strTempPrice;
+}
+
+
 - (void)updatePriceAlert:(NSString *)strPrice
 {
-    _detailPriceAlert.pricealert_price = strPrice;
+    _detailPriceAlert.pricealert_price = [self getPrice:strPrice];
     [priceAlertCell setPriceNotification:_detailPriceAlert.pricealert_price];
 }
 
@@ -285,8 +355,11 @@
     [priceAlertCell setImageProduct:_imageHeader];
     [priceAlertCell setLblDateProduct:[NSDate date]];
     [priceAlertCell setProductName:_detailPriceAlert.pricealert_product_name];
-    [priceAlertCell setPriceNotification:_detailPriceAlert.pricealert_price];
+    [priceAlertCell setPriceNotification:[self getPrice:_detailPriceAlert.pricealert_price]];
     [priceAlertCell setLowPrice:_detailPriceAlert.pricealert_price_min];
+    
+    [priceAlertCell getBtnProductName].userInteractionEnabled = YES;
+    [[priceAlertCell getBtnProductName] addTarget:self action:@selector(actionDetailProduct:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)actionUbah:(id)sender
@@ -306,12 +379,12 @@
 #pragma mark - UITableView Delegate And DataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return catalog.result.catalog_shops.count;
+    return catalogList.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return ((CatalogShops *) [catalog.result.catalog_shops objectAtIndex:section]).product_list.count;
+    return ((CatalogShops *) [catalogList objectAtIndex:section]).product_list.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -333,11 +406,15 @@
         imgHeader.layer.masksToBounds = YES;
         [viewContent addSubview:imgHeader];
         
-        UILabel *lblHeaderName = [[UILabel alloc] initWithFrame:CGRectMake(66, 17, 230, 17)];
-        lblHeaderName.backgroundColor = [UIColor clearColor];
-        lblHeaderName.tag = CHeaderLabelHeader;
-        lblHeaderName.font = [UIFont fontWithName:CGothamBook size:15.0f];
-        [viewContent addSubview:lblHeaderName];
+        CustomButton *btnHeaderName = [CustomButton buttonWithType:UIButtonTypeCustom];
+        btnHeaderName.frame = CGRectMake(66, 17, 230, 17);
+        btnHeaderName.backgroundColor = [UIColor clearColor];
+        btnHeaderName.tag = CHeaderLabelHeader;
+        btnHeaderName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [btnHeaderName setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        btnHeaderName.titleLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
+        [btnHeaderName addTarget:self action:@selector(actionShopName:) forControlEvents:UIControlEventTouchUpInside];
+        [viewContent addSubview:btnHeaderName];
         
         UILabel *lblDate = [[UILabel alloc] initWithFrame:CGRectMake(66, 34, 230, 15)];
         lblDate.backgroundColor = [UIColor clearColor];
@@ -345,7 +422,7 @@
         lblDate.font = [UIFont fontWithName:CGothamBook size:8.0f];
         [viewContent addSubview:lblDate];
     }
-    CatalogShops *catalogShop = [catalog.result.catalog_shops objectAtIndex:section];
+    CatalogShops *catalogShop = [catalogList objectAtIndex:section];
     
     UIView *tempViewContent = [view viewWithTag:CHeaderViewContent];
     __weak UIImageView *tempImage = (UIImageView *)[tempViewContent viewWithTag:CHeaderImg];
@@ -353,8 +430,10 @@
         tempImage.image = image;
     } failure:nil];
 
-    UILabel *lblHeaderName = (UILabel *)[tempViewContent viewWithTag:CHeaderLabelHeader];
-    lblHeaderName.text = catalogShop.shop_name;
+    
+    CustomButton *btnHeaderName = (CustomButton *)[tempViewContent viewWithTag:CHeaderLabelHeader];
+    btnHeaderName.tagIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+    [btnHeaderName setTitle:catalogShop.shop_name forState:UIControlStateNormal];
     
     UILabel *lblDate = (UILabel *)[tempViewContent viewWithTag:CHeaderLabelDate];
     lblDate.text = @"2012-12-12 11:11AM";
@@ -377,6 +456,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.section==catalogList.count-1 && page>1 && (!tokopediaNetworkManager.getObjectRequest.isExecuting && objectManager==nil) && tblDetailPriceAlert.tableFooterView==nil) {
+        [self isGettingCatalogList:YES];
+        [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DetailPriceAlertTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
@@ -386,10 +473,11 @@
     }
     
     cell.getBtnBuy.tagIndexPath = indexPath;
-    ProductDetail *tempProductDetail = [((CatalogShops *) [catalog.result.catalog_shops objectAtIndex:indexPath.section]).product_list objectAtIndex:indexPath.row];
+    cell.getBtnProductName.tagIndexPath = indexPath;
+    ProductDetail *tempProductDetail = [((CatalogShops *) [catalogList objectAtIndex:indexPath.section]).product_list objectAtIndex:indexPath.row];
     [cell setNameProduct:tempProductDetail.product_name];
     [cell setKondisiProduct:tempProductDetail.product_condition];
-    [cell setProductPrice:tempProductDetail.product_price];
+    [cell setProductPrice:tempProductDetail.product_price_fmt];
 
     return cell;
 }
@@ -399,20 +487,16 @@
 - (NSDictionary*)getParameter:(int)tag
 {
     if(tag == CTagGetDetailPriceList) {
-        return @{CAction:CGetPriceAlertDetail, CPriceAlertID:_detailPriceAlert.pricealert_id};
-    }
-    else if(tag == CTagGetCatalogList) {
         NSMutableDictionary *param = [NSMutableDictionary new];
-        [param setObject:API_GET_CATALOG_DETAIL_KEY forKey:API_ACTION_KEY];
-        [param setObject:[_detailPriceAlert.pricealert_type isEqualToString:@"2"] ? latestDetailPriceAlert.pricealert_catalog_id:latestDetailPriceAlert.pricealert_product_catalog_id forKey:API_CATALOG_ID_KEY];
+        [param setObject:CGetPriceAlertDetail forKey:CAction];
+        [param setObject:_detailPriceAlert.pricealert_id forKey:CPriceAlertID];
+        [param setObject:@(page) forKey:CPage];
         
         if(nSelectedFilter > 0) {
             [param setObject:@(nSelectedFilter) forKey:CCondition];
         }
-        if(nSelectedSort > 0) {
-            [param setObject:@(nSelectedSort) forKey:CSort];
-        }
-
+        [param setObject:@(nSelectedSort+1) forKey:CSort];
+        
         return param;
     }
     else if(tag == CTagGetProductDetail) {
@@ -429,9 +513,6 @@
 {
     if(tag == CTagGetDetailPriceList) {
         return CInboxPriceAlert;
-    }
-    else if(tag == CTagGetCatalogList) {
-        return API_CATALOG_PATH;
     }
     else if(tag == CTagGetProductDetail) {
         return kTKPDDETAILPRODUCT_APIPATH;
@@ -475,57 +556,47 @@
                                                                 CPriceAlertID:CPriceAlertID
                                                                 }];
         
+        
+        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+        [pagingMapping addAttributeMappingsFromDictionary:@{CUriNext:CUriNext, CUriPrevious:CUriPrevious}];
+        
+        
+        RKObjectMapping *catalogShopMapping = [RKObjectMapping mappingForClass:[CatalogShops class]];
+        [catalogShopMapping addAttributeMappingsFromArray:@[CShopRateAccuracy,
+                                                            CShopID,
+                                                            CIsGoldShop,
+                                                            CShopUri,
+                                                            CShopRating,
+                                                            CShopTotalProduct,
+                                                            CShopImage,
+                                                            CShopLocation,
+                                                            CShopName,
+                                                            CShopRateSpeed,
+                                                            CShopTotalAddress,
+                                                            CShopIsOwner,
+                                                            CShopRatingDesc,
+                                                            CShopRateService,
+                                                            CShopDomain]];
+        
+        
+        RKObjectMapping *productDetailMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
+        [productDetailMapping addAttributeMappingsFromArray:@[CProductPrice, CProductID, CProductCondition, CProductName, CProductPriceFmt, CProductUri]];
+        
+        
+        
+        
         //relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                      toKeyPath:kTKPD_APIRESULTKEY
-                                                                                    withMapping:resultMapping];
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];
         
         RKRelationshipMapping *priceRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CPriceAlertDetail toKeyPath:CPriceAlertDetail withMapping:priceAlertMapping];
         [resultMapping addPropertyMapping:priceRel];
         
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:[self getPath:tag]
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        [objectManager addResponseDescriptor:responseDescriptorStatus];
+        RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping];
+        [resultMapping addPropertyMapping:pagingRel];
         
-        return objectManager;
-    }
-    else if(tag == CTagGetCatalogList) {
-        objectManager = [RKObjectManager sharedClient];
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Catalog class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{
-                                                            CMessageError:CMessageError,
-                                                            CServerProcessTime:CServerProcessTime,
-                                                            CStatus:CStatus
-                                                            }];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
-        RKObjectMapping *catalogShopMapping = [RKObjectMapping mappingForClass:[CatalogShops class]];
-        [catalogShopMapping addAttributeMappingsFromArray:@[CShopRateAccuracy,
-                                                       CShopImage,
-                                                       CShopID,
-                                                       CShopLocation,
-                                                       CShopRateSpeed,
-                                                       CIsGoldShop,
-                                                       CShopName,
-                                                       CShopTotalAddress,
-                                                       CShopTotalProduct,
-                                                       CShopRateService]];
-        
-        RKObjectMapping *productDetailMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
-        [productDetailMapping addAttributeMappingsFromArray:@[CProductPrice, CProductID, CProductCondition, CProductName]];
-        
-        
-        //Relation
-        RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resultRel];
-        
-        RKRelationshipMapping *catalogShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_SHOPS_KEY toKeyPath:API_CATALOG_SHOPS_KEY withMapping:catalogShopMapping];
-        [resultMapping addPropertyMapping:catalogShopRel];
+        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CList toKeyPath:CList withMapping:catalogShopMapping];
+        [resultMapping addPropertyMapping:listRel];
         
         RKRelationshipMapping *productRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CProductList toKeyPath:CProductList withMapping:productDetailMapping];
         [catalogShopMapping addPropertyMapping:productRel];
@@ -671,10 +742,6 @@
         PriceAlert *priceAlert = [((RKMappingResult *) result).dictionary objectForKey:@""];
         return priceAlert.status;
     }
-    else if(tag == CTagGetCatalogList) {
-        Catalog *tempCatalog = [((RKMappingResult *) result).dictionary objectForKey:@""];
-        return tempCatalog.status;
-    }
     else if(tag == CTagGetProductDetail) {
         Product *product = [((RKMappingResult *) result).dictionary objectForKey:@""];
         return product.status;
@@ -685,15 +752,18 @@
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
+    objectManager = nil;
     if(tag == CTagGetDetailPriceList) {
         PriceAlert *priceAlert = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
-        latestDetailPriceAlert = priceAlert.result.price_alert_detail;
-        [[self getNetworkManager:CTagGetCatalogList] doRequest];
-    }
-    else if(tag == CTagGetCatalogList) {
+        if(page == 1) {
+            catalogList = [NSMutableArray arrayWithArray:priceAlert.result.list];
+        }
+        else {
+            [catalogList addObjectsFromArray:priceAlert.result.list];
+        }
         [self isGettingCatalogList:NO];
-        catalog = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
-        if(catalog.result.catalog_shops==nil || catalog.result.catalog_shops.count==0) {
+        
+        if(catalogList==nil || catalogList.count==0) {
             [tblDetailPriceAlert addSubview:[self getNoResultView].view];
         }
         else if(noResultView != nil) {
@@ -705,6 +775,28 @@
             tblDetailPriceAlert.delegate = self;
             tblDetailPriceAlert.dataSource = self;
         }
+        
+        
+        if(! [priceAlert.result.paging.uri_next isEqualToString:@"0"]) {
+            NSURL *url = [NSURL URLWithString:priceAlert.result.paging.uri_next];
+            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+            NSMutableDictionary *queries = [NSMutableDictionary new];
+            for (NSString *keyValuePair in querry)
+            {
+                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                NSString *key = [pairComponents objectAtIndex:0];
+                NSString *value = [pairComponents objectAtIndex:1];
+                
+                [queries setObject:value forKey:key];
+            }
+            
+            page = [[queries objectForKey:@"page"] intValue];
+        }
+        else {
+            page = 1;
+        }
+
+        
         [tblDetailPriceAlert reloadData];
     }
     else if(tag == CTagGetProductDetail) {
@@ -733,7 +825,8 @@
 
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
-    if(tag==CTagGetCatalogList || tag==CTagGetDetailPriceList) {
+    objectManager = nil;
+    if(tag == CTagGetDetailPriceList) {
         [self isGettingCatalogList:NO];
         [self showRetryLoadCatalog:YES withTag:tag];
     }
@@ -763,10 +856,6 @@
 - (void)pressRetryButton
 {
     switch (loadingView.tag) {
-        case CTagGetCatalogList:
-            [self isGettingCatalogList:YES];
-            [[self getNetworkManager:CTagGetCatalogList] doRequest];
-            break;
         case CTagGetDetailPriceList:
             [self isGettingCatalogList:YES];
             [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
@@ -787,7 +876,8 @@
         nSelectedSort = row;
     }
 
-    [[self getNetworkManager:CTagGetCatalogList] doRequest];
+    page = 1;
+    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
     [self didCancel];
 }
 

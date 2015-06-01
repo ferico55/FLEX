@@ -11,7 +11,7 @@
 @interface PriceAlertCell : UITableViewCell
 {
     IBOutlet UIImageView *imgProductView;
-    IBOutlet UILabel *lblProductName;
+    IBOutlet UIButton *btnProductName;
     IBOutlet UILabel *lblDateProduct;
     IBOutlet UILabel *lblPriceNotification;
     IBOutlet UILabel *lblLowPrice;
@@ -35,6 +35,7 @@
 - (UIImageView *)getProductImage;
 - (UIView *)getViewContent;
 - (UIButton *)getBtnClose;
+- (UIButton *)getBtnProductName;
 - (NSLayoutConstraint *)getConstraintY;
 - (NSLayoutConstraint *)getConstraintX;
 - (NSLayoutConstraint *)getConstraintBottom;

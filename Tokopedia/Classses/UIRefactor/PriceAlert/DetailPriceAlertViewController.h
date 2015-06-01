@@ -12,8 +12,9 @@
 @interface DetailPriceAlertViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
     IBOutlet UITableView *tblDetailPriceAlert;
-    IBOutlet UIView *viewKondisi, *viewLineHeader;
-    IBOutlet NSLayoutConstraint *constraintHeightTable, *constraintVerticalKondisiAndTable, *constraintYLineHeader;
+    IBOutlet UIView *viewLineHeader, *viewSeparatorUrutkan;
+    IBOutlet UIButton *btnSort, *btnFilter;
+    IBOutlet NSLayoutConstraint *constraintHeightTable, *constraintWidthSeparatorButton, *constraintYLineHeader, *constraintWidthUrutkan, *constraintWidthFilter;
 }
 
 @property (nonatomic, unsafe_unretained) UIImage *imageHeader;

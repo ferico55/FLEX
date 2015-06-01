@@ -29,7 +29,15 @@
 #define CGothamBook @"Gotham Book"
 
 
-
+#define CStringAllPrice @"Semua Harga"
+#define CStringSort @"Urutkan"
+#define CstringFilter @"Filter"
+#define CStringCategory @"Kategori"
+#define CStringSuccessRemovePriceAlert @"Anda telah berhasil menghapus notifikasi harga"
+#define CStringConfirmDeleteCatalog @"Apakah Anda yakin menghapus notifikasi harga ini?"
+#define CStringYa @"Ya"
+#define CStringTidak @"Tidak"
+#define CStringPembaruanTerakhir @"Pembaruan Terakhir"
 #define CStringProductTerjual @"Produk Terjual"
 #define CStringUlasan @"Ulasan"
 #define CStringHargaTerendah @"Harga Terendah"
@@ -47,6 +55,7 @@
 #define CStringFailedDeletePriceAlert @"Gagal delete price alert"
 #define CStringWaitLoading @"Silahkan coba lagi, Ada proses yang sedang di eksekusi"
 #define CStringAllDepartment @"Semua Department"
+#define CStringDepartment @"Department"
 #define CStringSelesai @"Selesai"
 #define CStringPriceAlert @"Price Alert"
 #define CStringBatal @"Batal"

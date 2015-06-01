@@ -225,7 +225,7 @@
                                 <constraint firstAttribute="height" constant="16" id="aae-ar-TJQ"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -400,14 +400,14 @@
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qan-1S-e2b">
-                                    <rect key="frame" x="230" y="8" width="82" height="32"/>
+                                    <rect key="frame" x="8" y="10" width="50" height="32"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="82" id="86C-lV-w44"/>
-                                        <constraint firstAttribute="height" constant="32" id="rN2-1D-RTi"/>
+                                        <constraint firstAttribute="height" constant="32" id="ear-fi-MQf"/>
+                                        <constraint firstAttribute="width" constant="50" id="isX-lf-FMN"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                    <state key="normal" title="Share" image="icon_button_share.png">
+                                    <state key="normal" image="icon_button_share.png">
                                         <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -415,12 +415,28 @@
                                         <action selector="actionShare:" destination="-1" eventType="touchUpInside" id="Bue-JI-fea"/>
                                     </connections>
                                 </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqO-5S-ELQ">
-                                    <rect key="frame" x="8" y="9" width="103" height="32"/>
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZQ-y3-gDO">
+                                    <rect key="frame" x="194" y="10" width="118" height="32"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="ES4-3t-ili"/>
-                                        <constraint firstAttribute="width" constant="103" id="aev-gw-W8t"/>
+                                        <constraint firstAttribute="width" constant="118" id="VYo-0D-LRf"/>
+                                        <constraint firstAttribute="height" constant="32" id="wkJ-ud-bQG"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                    <state key="normal" title="Wishlist" image="icon_button_wishlist_nonactive.png">
+                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="actionWishList:" destination="-1" eventType="touchUpInside" id="QIU-Cf-YVJ"/>
+                                    </connections>
+                                </button>
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqO-5S-ELQ">
+                                    <rect key="frame" x="68" y="10" width="118" height="32"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="4UF-ia-kp6"/>
+                                        <constraint firstAttribute="width" constant="118" id="hYd-IR-Lkr"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                     <state key="normal" title="Price Alert" image="icon_button_pricealert_nonactive.png">
@@ -434,33 +450,17 @@
                                         <action selector="actionPriceAlert:" destination="-1" eventType="touchUpInside" id="GVo-Yl-XBz"/>
                                     </connections>
                                 </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZQ-y3-gDO">
-                                    <rect key="frame" x="119" y="9" width="103" height="32"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="103" id="Ghv-JA-aoF"/>
-                                        <constraint firstAttribute="height" constant="32" id="LyT-f5-Ytm"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                    <state key="normal" title="Wishlist" image="icon_button_wishlist_nonactive.png">
-                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <color key="titleShadowColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="actionWishList:" destination="-1" eventType="touchUpInside" id="QIU-Cf-YVJ"/>
-                                    </connections>
-                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" constant="8" id="5oW-a0-pmP"/>
                                 <constraint firstAttribute="height" constant="50" id="6ja-ou-q2E"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="9" id="JLP-WM-Kws"/>
-                                <constraint firstItem="uqO-5S-ELQ" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" constant="8" id="ah3-es-bV7"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="leading" secondItem="uqO-5S-ELQ" secondAttribute="trailing" constant="8" id="caS-ao-vkm"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="8" id="lQ1-ml-d8v"/>
-                                <constraint firstAttribute="trailing" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="8" id="urd-sO-LrJ"/>
-                                <constraint firstItem="uqO-5S-ELQ" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="9" id="w1h-Bk-LiA"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="NZQ-y3-gDO" secondAttribute="trailing" constant="8" id="zIB-AF-ncV"/>
+                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="leading" secondItem="uqO-5S-ELQ" secondAttribute="trailing" constant="8" id="WTs-3S-cm0"/>
+                                <constraint firstItem="uqO-5S-ELQ" firstAttribute="leading" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="10" id="h3u-pb-jl8"/>
+                                <constraint firstAttribute="trailing" secondItem="NZQ-y3-gDO" secondAttribute="trailing" constant="8" id="qgS-L7-CTX"/>
+                                <constraint firstItem="Qan-1S-e2b" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="t5G-7I-Akc"/>
+                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="wJw-FM-xMh"/>
+                                <constraint firstItem="uqO-5S-ELQ" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="wfn-7C-IDT"/>
                                 <constraint firstAttribute="width" constant="320" id="zdP-Tg-4ZA"/>
                             </constraints>
                         </view>

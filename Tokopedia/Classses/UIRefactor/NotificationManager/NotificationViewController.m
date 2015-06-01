@@ -82,6 +82,12 @@
         [self updateLabelAppearance:_resolutionCenterCountLabel];
     }
     
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
+    
+    
     
     // Payment section
     if([_notification.result.sales.sales_new_order integerValue] > 0) {
@@ -342,6 +348,7 @@
             case 4:
             {
                 AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:alertPriceNotificationViewController];
             }
                 break;

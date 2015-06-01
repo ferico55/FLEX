@@ -7,7 +7,7 @@
 //
 
 #import "DetailPriceAlertTableViewCell.h"
-@implementation CustomButtonBuy
+@implementation CustomButton
 @synthesize tagIndexPath;
 @end
 
@@ -27,7 +27,7 @@
 
 
 #pragma mark - Action View
-- (void)actionBuy:(id)sender
+- (IBAction)actionBuy:(id)sender
 {
     id view = [self superview];
     while (view && ![view isKindOfClass:[UITableView class]]) {
@@ -40,15 +40,34 @@
         [tempViewController performSelector:@selector(actionBuy:) withObject:sender];
 }
 
+- (IBAction)actionProductName:(id)sender
+{
+    id view = [self superview];
+    while (view && ![view isKindOfClass:[UITableView class]]) {
+        view = [view superview];
+    }
+    UITableView *tempTableView = ((UITableView *) view);
+    UIViewController *tempViewController = ((UIViewController *) tempTableView.delegate);
+    
+    if([tempViewController respondsToSelector:@selector(actionProductName:)])
+        [tempViewController performSelector:@selector(actionProductName:) withObject:sender];
+}
+
 #pragma mark - SetView
-- (CustomButtonBuy *)getBtnBuy
+- (CustomButton *)getBtnBuy
 {
     return btnBuy;
 }
 
+
+- (CustomButton *)getBtnProductName
+{
+    return btnProductName;
+}
+
 - (void)setNameProduct:(NSString *)strNameProduct
 {
-    lblProductName.text = strNameProduct;
+    [btnProductName setTitle:strNameProduct forState:UIControlStateNormal];
 }
 
 - (void)setProductPrice:(NSString *)strPriceProduct

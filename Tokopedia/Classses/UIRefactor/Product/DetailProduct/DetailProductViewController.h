@@ -20,6 +20,7 @@
 @property (strong,nonatomic) NSDictionary *data;
 
 - (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText;
+- (void)setBackgroundPriceAlert:(BOOL)isActive;
 - (IBAction)actionShare:(id)sender;
 - (IBAction)actionWishList:(id)sender;
 - (IBAction)actionPriceAlert:(id)sender;

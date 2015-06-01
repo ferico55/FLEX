@@ -14,6 +14,12 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		859CCDCD1B18424F00A5B172 /* icon_button_pricealert_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 859CCDC71B18424F00A5B172 /* icon_button_pricealert_active.png */; };
+		859CCDCE1B18424F00A5B172 /* icon_button_pricealert_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859CCDC81B18424F00A5B172 /* icon_button_pricealert_active@2x.png */; };
+		859CCDCF1B18424F00A5B172 /* icon_button_pricealert_active@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859CCDC91B18424F00A5B172 /* icon_button_pricealert_active@3x.png */; };
+		859CCDD01B18424F00A5B172 /* icon_button_pricealert_nonactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 859CCDCA1B18424F00A5B172 /* icon_button_pricealert_nonactive.png */; };
+		859CCDD11B18424F00A5B172 /* icon_button_pricealert_nonactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859CCDCB1B18424F00A5B172 /* icon_button_pricealert_nonactive@2x.png */; };
+		859CCDD21B18424F00A5B172 /* icon_button_pricealert_nonactive@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859CCDCC1B18424F00A5B172 /* icon_button_pricealert_nonactive@3x.png */; };
 		85A6E5671B1706880000763C /* icon_shop_favorite_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A6E5651B1706870000763C /* icon_shop_favorite_2x.png */; };
 		85A6E5681B1706880000763C /* icon_shop_favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A6E5661B1706870000763C /* icon_shop_favorite.png */; };
 		85A6E5721B1707020000763C /* icon_button_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A6E5691B1707020000763C /* icon_button_share.png */; };
@@ -1510,6 +1516,12 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		859CCDC71B18424F00A5B172 /* icon_button_pricealert_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_button_pricealert_active.png; sourceTree = "<group>"; };
+		859CCDC81B18424F00A5B172 /* icon_button_pricealert_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_pricealert_active@2x.png"; sourceTree = "<group>"; };
+		859CCDC91B18424F00A5B172 /* icon_button_pricealert_active@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_pricealert_active@3x.png"; sourceTree = "<group>"; };
+		859CCDCA1B18424F00A5B172 /* icon_button_pricealert_nonactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_button_pricealert_nonactive.png; sourceTree = "<group>"; };
+		859CCDCB1B18424F00A5B172 /* icon_button_pricealert_nonactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_pricealert_nonactive@2x.png"; sourceTree = "<group>"; };
+		859CCDCC1B18424F00A5B172 /* icon_button_pricealert_nonactive@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_pricealert_nonactive@3x.png"; sourceTree = "<group>"; };
 		85A6E5651B1706870000763C /* icon_shop_favorite_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_favorite_2x.png; sourceTree = "<group>"; };
 		85A6E5661B1706870000763C /* icon_shop_favorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_favorite.png; sourceTree = "<group>"; };
 		85A6E5691B1707020000763C /* icon_button_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_button_share.png; sourceTree = "<group>"; };
@@ -7299,6 +7311,12 @@
 				85A6E5B41B1726CE0000763C /* icon_button_favorite_nonactive.png */,
 				85A6E5B51B1726CE0000763C /* icon_button_favorite_nonactive@2x.png */,
 				85A6E5B61B1726CE0000763C /* icon_button_favorite_nonactive@3x.png */,
+				859CCDC71B18424F00A5B172 /* icon_button_pricealert_active.png */,
+				859CCDC81B18424F00A5B172 /* icon_button_pricealert_active@2x.png */,
+				859CCDC91B18424F00A5B172 /* icon_button_pricealert_active@3x.png */,
+				859CCDCA1B18424F00A5B172 /* icon_button_pricealert_nonactive.png */,
+				859CCDCB1B18424F00A5B172 /* icon_button_pricealert_nonactive@2x.png */,
+				859CCDCC1B18424F00A5B172 /* icon_button_pricealert_nonactive@3x.png */,
 				85A6E5691B1707020000763C /* icon_button_share.png */,
 				85A6E56A1B1707020000763C /* icon_button_share@2x.png */,
 				85A6E56B1B1707020000763C /* icon_button_share@3x.png */,
@@ -8458,6 +8476,7 @@
 				FC76443C1B15E2830034A8F1 /* icon_1@2x.png in Resources */,
 				FC7645E11B15E2830034A8F1 /* HS-delete-button.png in Resources */,
 				FC7645411B15E2830034A8F1 /* icon_urutkan_alt.png in Resources */,
+				859CCDD21B18424F00A5B172 /* icon_button_pricealert_nonactive@3x.png in Resources */,
 				FC7645A41B15E2830034A8F1 /* icon_cart_active@2x.png in Resources */,
 				FC7644BE1B15E2830034A8F1 /* icon_home (deleted 52a3c070d99c24bc47d4f40ddd02be3f).png in Resources */,
 				FC7645011B15E2830034A8F1 /* icon_search (deleted 1f85ced2a89be38343ca7c6249b002c7).png in Resources */,
@@ -8856,6 +8875,7 @@
 				FC76451F1B15E2830034A8F1 /* icon_signin.png in Resources */,
 				FC7643221B15E2830034A8F1 /* SalesNewOrderViewController.xib in Resources */,
 				FC76439A1B15E2830034A8F1 /* ShopNotesPageViewController.xib in Resources */,
+				859CCDD11B18424F00A5B172 /* icon_button_pricealert_nonactive@2x.png in Resources */,
 				FC76448F1B15E2830034A8F1 /* icon_category_list_white@2x.png in Resources */,
 				FC7645761B15E2830034A8F1 /* navigation-button-bg-pt@2x.png in Resources */,
 				FC7645511B15E2830034A8F1 /* icon_home@2x.png in Resources */,
@@ -8885,6 +8905,7 @@
 				FC7642E51B15E2830034A8F1 /* DetailProductWholesaleTableCell.xib in Resources */,
 				FC7642F11B15E2830034A8F1 /* ProductTalkCell.xib in Resources */,
 				FC76446A1B15E2830034A8F1 /* icon_cart@2x (deleted 7bac05209d0760a038a7038ebfb068e1).png in Resources */,
+				859CCDCE1B18424F00A5B172 /* icon_button_pricealert_active@2x.png in Resources */,
 				FC7645FF1B15E2830034A8F1 /* LICENSE in Resources */,
 				FC76458B1B15E2830034A8F1 /* icon_category_active@3x.png in Resources */,
 				FC7645541B15E2830034A8F1 /* icon_more.png in Resources */,
@@ -8955,6 +8976,7 @@
 				FC76423D1B15E2830034A8F1 /* NoResultView.xib in Resources */,
 				FC7645101B15E2830034A8F1 /* icon_shop_addproduct_2x.png in Resources */,
 				FC76420C1B15E2820034A8F1 /* CatalogSectionHeaderView.xib in Resources */,
+				859CCDCD1B18424F00A5B172 /* icon_button_pricealert_active.png in Resources */,
 				FC7642AF1B15E2830034A8F1 /* ReviewFormViewController.xib in Resources */,
 				FC76429B1B15E2830034A8F1 /* InboxResolutionCenterTabViewController.xib in Resources */,
 				FC7645381B15E2830034A8F1 /* icon_triangle_down_white@2x.png in Resources */,
@@ -8995,6 +9017,7 @@
 				FC7642611B15E2830034A8F1 /* GeneralProductReviewCell.xib in Resources */,
 				FC7645671B15E2830034A8F1 /* icon_arrow_white.png in Resources */,
 				85A6E5BC1B1726CE0000763C /* icon_button_favorite_nonactive@3x.png in Resources */,
+				859CCDCF1B18424F00A5B172 /* icon_button_pricealert_active@3x.png in Resources */,
 				FC76421C1B15E2820034A8F1 /* CategoryViewController.xib in Resources */,
 				FC7645AF1B15E2830034A8F1 /* icon_more@2x.png in Resources */,
 				FC7645C51B15E2830034A8F1 /* Icon_check_grey_bg@2x.png in Resources */,
@@ -9057,6 +9080,7 @@
 				FC7642561B15E2830034A8F1 /* GeneralAlertCell.xib in Resources */,
 				FC7642DF1B15E2830034A8F1 /* DetailProductOtherView.xib in Resources */,
 				FC7645001B15E2830034A8F1 /* icon_retry_grey@2x.png in Resources */,
+				859CCDD01B18424F00A5B172 /* icon_button_pricealert_nonactive.png in Resources */,
 				FC7643CF1B15E2830034A8F1 /* TransactionCartViewController.xib in Resources */,
 				FC7644521B15E2830034A8F1 /* icon_house@2x.png in Resources */,
 				FC76436F1B15E2830034A8F1 /* SettingUserProfileViewController.xib in Resources */,

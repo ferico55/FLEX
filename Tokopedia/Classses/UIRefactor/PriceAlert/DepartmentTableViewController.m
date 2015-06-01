@@ -18,7 +18,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = CDepartment;
+    if(self.navigationItem.title==nil || [self.navigationItem.title isEqualToString:@""]) {
+        self.navigationItem.title = CStringDepartment;
+    }
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSelesai style:UIBarButtonItemStylePlain target:self action:@selector(actionSelesai:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringBatal style:UIBarButtonItemStylePlain target:self action:@selector(actionBatal:)];
 }
@@ -43,6 +46,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
     if(cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CCellIdentifier];
+        cell.textLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
     }
     
     

@@ -7,6 +7,7 @@
 //
 #import "AlertPriceNotificationViewController.h"
 #import "CatalogInfo.h"
+#import "DetailProductViewController.h"
 #import "DetailPriceAlertViewController.h"
 #import "DetailPriceAlert.h"
 #import "GeneralAction.h"
@@ -210,6 +211,12 @@
     }
     else if(tag == CTagAddPriceAlert) {
         if([generalAction.result.is_success isEqualToString:@"1"]) {
+            UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+            if([tempViewController isMemberOfClass:[DetailProductViewController class]]) {
+                [((DetailProductViewController *) tempViewController) setBackgroundPriceAlert:YES];
+            }
+            
+            
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessAddPrice] delegate:self];
             [stickyAlertView show];
             [self.navigationController popViewControllerAnimated:YES];

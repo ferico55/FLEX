@@ -642,6 +642,7 @@
             
         } else if (indexPath.row  == 4) {
             AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
         }
     }

@@ -26,7 +26,7 @@
 #define CTagDeletePriceAlert 11
 
 
-@interface AlertPriceNotificationViewController ()<TokopediaNetworkManagerDelegate, DepartmentListDelegate, LoadingViewDelegate>
+@interface AlertPriceNotificationViewController ()<TokopediaNetworkManagerDelegate, DepartmentListDelegate, LoadingViewDelegate, UIAlertViewDelegate>
 
 @end
 
@@ -41,7 +41,7 @@
     PriceAlert *priceAlert;
     DetailPriceAlert *tempPriceAlert;
     
-    
+    NSObject *objTagConfirmDelete;
     int nSelectedDepartment, lastSelectedDepartment;
     int page, latestPage;
 }
@@ -58,6 +58,15 @@
     
     tblPriceAlert.tableFooterView = [self getActivityIndicator];
     [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+    
+    NSBundle* bundle = [NSBundle mainBundle];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
+    }
+    else
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -117,6 +126,7 @@
     DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
     detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
     detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
+    detailPriceAlertViewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
 }
 
@@ -151,7 +161,7 @@
     [cell setTagBtnClose:(int)indexPath.row];
     [cell setLblDateProduct:[NSDate date]];
     [cell setProductName:detailPriceAlert.pricealert_product_name];
-    [cell setPriceNotification:detailPriceAlert.pricealert_price];
+    [cell setPriceNotification:[self getPrice:detailPriceAlert.pricealert_price]];
     [cell setLowPrice:detailPriceAlert.pricealert_price_min];
     
     return cell;
@@ -163,6 +173,7 @@
     if(arrList!=nil && arrDepartment!=nil && arrDepartment.count>0) {
         DepartmentTableViewController *departmentViewController = [DepartmentTableViewController new];
         departmentViewController.del = self;
+        departmentViewController.navigationItem.title = CStringCategory;
         departmentViewController.arrList = arrDepartment;
         departmentViewController.selectedIndex = nSelectedDepartment;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
@@ -201,9 +212,12 @@
         [stickyAlertView show];
     }
     else {
-        [self deletingPriceAlert:YES];
-        tempPriceAlert = [arrList objectAtIndex:(int)((UIButton *) sender).tag];
-        [[self getNetworkManager:CTagDeletePriceAlert] doRequest];
+        objTagConfirmDelete = [NSObject new];
+        
+        UIAlertView *confirmDelete = [[UIAlertView alloc] initWithTitle:nil message:CStringConfirmDeleteCatalog delegate:self cancelButtonTitle:CStringTidak otherButtonTitles:CStringYa, nil];
+        confirmDelete.delegate = self;
+        confirmDelete.tag = (int)((UIButton *) sender).tag;;
+        [confirmDelete show];
     }
 }
 
@@ -223,6 +237,11 @@
         tblPriceAlert.allowsSelection = NO;
         [[self getNetworkManager:CTagGetPriceAlert] doRequest];
     }
+}
+
+- (NSString *)getPrice:(NSString *)strTempPrice
+{
+    return ([strTempPrice isEqualToString:@"Rp 0"])? CStringAllPrice:strTempPrice;
 }
 
 - (void)updatePriceAlert:(NSString *)strPrice
@@ -474,6 +493,9 @@
     else if(tag == CTagDeletePriceAlert) {
         GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         if([generalAction.result.is_success isEqualToString:@"1"]) {
+            StickyAlertView *sticyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
+            [sticyAlertView show];
+            
             [arrList removeObject:tempPriceAlert];
             NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
             [section addIndex:0];
@@ -564,6 +586,21 @@
     else {
         tblPriceAlert.tableFooterView = [self getActivityIndicator];
         [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+    }
+}
+
+
+#pragma mark  -UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(objTagConfirmDelete) {
+        if(buttonIndex == 1) {
+            [self deletingPriceAlert:YES];
+            tempPriceAlert = [arrList objectAtIndex:alertView.tag];
+            [[self getNetworkManager:CTagDeletePriceAlert] doRequest];
+        }
+        
+        objTagConfirmDelete = nil;
     }
 }
 @end

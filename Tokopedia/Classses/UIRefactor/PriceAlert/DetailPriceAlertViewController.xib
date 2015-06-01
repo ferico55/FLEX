@@ -7,10 +7,17 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailPriceAlertViewController">
             <connections>
+                <outlet property="btnFilter" destination="GDz-RY-csy" id="3eo-iM-awR"/>
+                <outlet property="btnSort" destination="arF-YV-fUm" id="xHe-NE-aXY"/>
+                <outlet property="constraintHeightTable" destination="1PE-o4-H4B" id="6vK-Jh-E7U"/>
+                <outlet property="constraintWidthFilter" destination="4YB-rs-Yuf" id="hAe-rH-a95"/>
+                <outlet property="constraintWidthSeparatorButton" destination="rpS-Ir-C9R" id="sSb-4s-zf9"/>
+                <outlet property="constraintWidthUrutkan" destination="hhS-Dk-d0k" id="hXo-5m-hAU"/>
                 <outlet property="constraintYLineHeader" destination="Rsb-66-cXU" id="Mxd-dI-ApS"/>
                 <outlet property="tblDetailPriceAlert" destination="Sx0-be-k6p" id="sw7-Lq-JSf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewLineHeader" destination="s67-Nv-zra" id="BuU-Oa-gfu"/>
+                <outlet property="viewSeparatorUrutkan" destination="vJH-Dz-e3C" id="Fzd-vZ-QLD"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -30,6 +37,7 @@
                     <rect key="frame" x="0.0" y="11" width="320" height="511"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="511" id="1PE-o4-H4B"/>
                         <constraint firstAttribute="width" constant="320" id="VOE-gJ-7GB"/>
                     </constraints>
                 </tableView>
@@ -45,15 +53,17 @@
                     <rect key="frame" x="160" y="535" width="1" height="22"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="22" id="oKv-GZ-pvf"/>
                         <constraint firstAttribute="width" constant="1" id="rpS-Ir-C9R"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GDz-RY-csy">
                     <rect key="frame" x="161" y="523" width="159" height="45"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="159" id="4YB-rs-Yuf"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="159" id="4YB-rs-Yuf"/>
                         <constraint firstAttribute="height" constant="45" id="Uih-Y1-YHB"/>
                     </constraints>
+                    <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                     <state key="normal" image="icon_filter.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -67,7 +77,9 @@
                         <constraint firstAttribute="width" constant="160" id="hhS-Dk-d0k"/>
                         <constraint firstAttribute="height" constant="45" id="w9f-F5-XYf"/>
                     </constraints>
+                    <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                     <state key="normal" image="icon_urutkan_alt.png">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>

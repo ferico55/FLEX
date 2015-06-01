@@ -11,7 +11,8 @@
 #define CProductPrice @"product_price"
 #define CProductCondition @"product_condition"
 #define CProductName @"product_name"
-
+#define CProductUri @"product_uri"
+#define CProductPriceFmt @"product_price_fmt"
 
 @interface ProductDetail : NSObject
 
@@ -27,10 +28,12 @@
 @property (nonatomic, strong) NSString *product_status;
 @property (nonatomic, strong) NSString *product_last_update;
 @property (nonatomic, strong) NSString *product_id;
-@property (nonatomic) NSInteger product_price_alert;
+@property (nonatomic, strong) NSString *product_price_alert;
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *product_url;
+@property (nonatomic, strong) NSString *product_uri;
 @property (nonatomic, strong) NSString *product_already_wishlist;
+@property (nonatomic, strong) NSString *product_price_fmt;
 
 @property (nonatomic, strong) NSString *product_currency_id; //product_price_currency_value(cart)
 @property (nonatomic, strong) NSString *product_currency;    //product_price_currency_value(cart)
