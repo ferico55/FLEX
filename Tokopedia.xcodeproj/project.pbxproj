@@ -9854,7 +9854,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a7ef0f59-beeb-4c9d-a88a-3d0bb4011185";
+				PROVISIONING_PROFILE = "606a3c67-4e4a-4dc4-b655-2ec0413065f2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -9892,7 +9892,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a7ef0f59-beeb-4c9d-a88a-3d0bb4011185";
+				PROVISIONING_PROFILE = "606a3c67-4e4a-4dc4-b655-2ec0413065f2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
