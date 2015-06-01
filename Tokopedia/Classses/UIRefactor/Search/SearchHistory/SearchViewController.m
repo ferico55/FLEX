@@ -90,7 +90,10 @@
                                              selector:@selector(clearHistory)
                                                  name:kTKPD_REMOVE_SEARCH_HISTORY
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
 }
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -402,6 +405,10 @@
 }
 
 #pragma mark - Notification delegate
+- (void)goToHotlist:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    [self.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
+}
 
 - (void)reloadNotification
 {

@@ -668,11 +668,17 @@ LoadingViewDelegate
                                 kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]
                                 };
                     
-                    [self.navigationController popViewControllerAnimated:NO];
+
+//
+//                    if ([self.delegate respondsToSelector:@selector(pushViewController:animated:)]) {
+//                        [self.delegate pushViewController:vc animated:NO];
+//                    }
+//                    
+//                    vc.delegate = self;
+                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                    [self.navigationController presentViewController:nav animated:YES completion:nil];
                     
-                    if ([self.delegate respondsToSelector:@selector(pushViewController:animated:)]) {
-                        [self.delegate pushViewController:vc animated:NO];
-                    }
+                    [self.navigationController popViewControllerAnimated:NO];
                     
                 }
                 // redirect uri to search category
