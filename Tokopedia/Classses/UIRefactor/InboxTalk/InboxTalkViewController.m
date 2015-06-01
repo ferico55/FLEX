@@ -531,7 +531,7 @@
                 
             } else {
                 _isnodata = YES;
-                _table.tableFooterView = _noResultView;
+                _table.tableFooterView = _noResultView.view;
             }
         }
         else{
@@ -549,13 +549,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = _noResultView;
+                    _table.tableFooterView = _noResultView.view;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = _noResultView;
+                _table.tableFooterView = _noResultView.view;
             }
         }
     }
