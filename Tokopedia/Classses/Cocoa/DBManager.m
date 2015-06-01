@@ -142,6 +142,7 @@ static sqlite3_stmt *statement = nil;
     
     const char *dbpath = [databasePath UTF8String];
     
+    
     if (sqlite3_open(dbpath, &database) == SQLITE_OK)
     {
         const char *query_stmt = [query UTF8String];
@@ -167,6 +168,48 @@ static sqlite3_stmt *statement = nil;
     }
     return nil;
 }
+
+- (NSArray*)LoadDataQueryLocationNameAndID:(NSString*)query
+{
+    NSString *districtname;
+    NSString *districtID;
+    
+    const char *dbpath = [databasePath UTF8String];
+    
+    
+    if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+    {
+        const char *query_stmt = [query UTF8String];
+        NSMutableArray *resultArray = [[NSMutableArray alloc]init];
+        
+        if (sqlite3_prepare_v2(database, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                //NSMutableDictionary* dict = [NSMutableDictionary new];
+                //[dict removeAllObjects];
+                if ( sqlite3_column_type(statement, 0) != SQLITE_NULL )
+                {
+                    districtname = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                }
+                if ( sqlite3_column_type(statement, 1) != SQLITE_NULL )
+                {
+                    districtID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                }
+                if (districtname != nil) {
+                    NSDictionary *nameAndID = @{@"Name":districtname, @"ID":districtID};
+                    [resultArray addObject:nameAndID];
+                }
+            }
+            //sqlite3_reset(statement);
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(database);
+        return resultArray;
+    }
+    return nil;
+}
+
 - (NSArray*)LoadDataQueryLocationValue:(NSString*)query
 {
     NSString *districtvalue;

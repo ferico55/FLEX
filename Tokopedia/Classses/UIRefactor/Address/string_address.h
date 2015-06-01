@@ -19,21 +19,11 @@ typedef enum
 
 #define kTKPDLOCATION_DATALOCATIONTYPEKEY @"type"
 
-#define kTKPDLOCATION_DATAINDEXPATHKEY @"indexpath"
-
 #define kTKPDLOCATION_DATACITYIDKEY @"city_id"
 #define kTKPDLOCATION_DATAPROVINCEIDKEY @"province_id"
-#define kTKPDLOCATION_DATADISTRICTIDKEY @"district_id"
 
-#define kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY @"provinceindexpath"
-#define kTKPDLOCATION_DATACITYINDEXPATHKEY @"cityindexpath"
-#define kTKPDLOCATION_DATADISTRICTINDEXPATHKEY @"districtindexpath"
-
-#define kTKPDLOCATION_DATALOCATIONVALUEKEY @"locationvalue"
-#define kTKPDLOCATION_DATALOCATIONNAMEKEY @"locationname"
-
-#define kTKPDLOCATION_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
-#define kTKPDLOCATION_NODATACELLTITLE @"no data"
-#define kTKPDLOCATION_NODATACELLDESCS @"no data description"
+#define DATA_SELECTED_LOCATION_KEY @"data_selected_location"
+#define DATA_NAME_KEY @"Name"
+#define DATA_ID_KEY @"ID"
 
 #endif

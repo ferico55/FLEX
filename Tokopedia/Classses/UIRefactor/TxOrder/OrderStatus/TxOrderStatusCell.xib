@@ -171,7 +171,7 @@
                 <constraint firstAttribute="trailing" secondItem="ktj-St-LWh" secondAttribute="trailing" constant="8" id="o4X-zJ-TKj"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="403" y="492"/>
+            <point key="canvasLocation" x="349" y="493"/>
         </view>
         <view contentMode="scaleToFill" id="N4b-Lh-0Zu" userLabel="Tree Buttons View">
             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>

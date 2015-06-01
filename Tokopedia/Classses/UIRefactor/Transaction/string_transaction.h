@@ -13,12 +13,12 @@ typedef enum
 {
     TAG_BUTTON_TRANSACTION_DEFAULT = 0,
     TAG_BUTTON_TRANSACTION_QUANTITY = 2,
-    TAG_BUTTON_TRANSACTION_INSURANCE = 3,
-    TAG_BUTTON_TRANSACTION_NOTE = 4,
+    TAG_BUTTON_TRANSACTION_NOTE = 3,
     //Section1
     TAG_BUTTON_TRANSACTION_ADDRESS = 0,
     TAG_BUTTON_TRANSACTION_SHIPPING_AGENT = 2,
     TAG_BUTTON_TRANSACTION_SERVICE_TYPE = 3,
+    TAG_BUTTON_TRANSACTION_INSURANCE = 4,
     //Section2
     TAG_BUTTON_TRANSACTION_PRODUCT_PRICE = 0,
     TAG_BUTTON_TRANSACTION_SHIPMENT_COST = 1,
@@ -339,6 +339,7 @@ typedef enum
 
 #define FORMAT_SUCCESS_BUY @"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran %@"
 
+#define ERRORMESSAGE_NULL_ADDRESS @"Alamat harus diisi."
 #define ERRORMESSAGE_NULL_CART_SHIPPING_AGENT @"Agen kurir harus diisi."
 #define ERRORMESSAGE_NULL_CART_PAYMENT @"Pilih Metode Pembayaran yang ingin digunakan terlebih dahulu."
 #define ERRORMESSAGE_NULL_CART_PASSWORD @"Kata Sandi harus diisi."

@@ -111,9 +111,9 @@
     TokopediaNetworkManager *_networkManagerEMoney;
     TokopediaNetworkManager *_networkManagerBCAClickPay;
     
-    TransactionCartShippingViewController *_shipmentViewController;
-    
     UIAlertView *_alertLoading;
+    
+    NSInteger _indexSelectedShipment;
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
@@ -202,7 +202,6 @@
     _listProductFirstObjectIndexPath =[NSMutableArray new];
     _mapping = [TransactionObjectMapping new];
     _navigate = [NavigateViewController new];
-    _shipmentViewController = [TransactionCartShippingViewController new];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.tagRequest = TAG_REQUEST_CART;
@@ -514,10 +513,11 @@
             NSArray *listProducts = list.cart_products;
             ProductDetail *product = listProducts[indexProduct];
             
-            NSString *string = product.product_notes;
+            NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+            NSString *string = productNotes;
             
             //Calculate the expected size based on the font and linebreak mode of your label
-            CGSize maximumLabelSize = CGSizeMake(190,9999);
+            CGSize maximumLabelSize = CGSizeMake(290,9999);
             CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
                                           constrainedToSize:maximumLabelSize
                                               lineBreakMode:NSLineBreakByTruncatingTail];
@@ -666,19 +666,18 @@
         }
     }
 
-    if (!_shipmentViewController) {
-        _shipmentViewController = [TransactionCartShippingViewController new];
-    }
-    _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
+    TransactionCartShippingViewController *shipmentViewController = [TransactionCartShippingViewController new];
+    shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
                                     DATA_DROPSHIPPER_NAME_KEY: dropshipName,
                                     DATA_DROPSHIPPER_PHONE_KEY:dropshipPhone,
                                     DATA_PARTIAL_LIST_KEY :partial,
                                     DATA_INDEX_KEY : @(index)
                                     };
     [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-    _shipmentViewController.indexPage = _indexPage;
-    _shipmentViewController.delegate = self;
-    [self.navigationController pushViewController:_shipmentViewController animated:YES];
+    _indexSelectedShipment = index;
+    shipmentViewController.indexPage = _indexPage;
+    shipmentViewController.delegate = self;
+    [self.navigationController pushViewController:shipmentViewController animated:YES];
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
@@ -1629,9 +1628,6 @@
     [_stockPartialDetail removeAllObjects];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-    if (_shipmentViewController) {
-        _shipmentViewController = nil;
-    }
 }
 
 -(void)addArrayObjectTemp
@@ -2121,7 +2117,8 @@
     
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section];
     ((TransactionCartCell*)cell).indexPath = indexPathCell;
-    [cell.remarkLabel setCustomAttributedText:product.product_notes?:@"-"];
+    NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+    [cell.remarkLabel setCustomAttributedText:productNotes?:@"-"];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -2605,15 +2602,8 @@
             
             [self adjustAfterUpdateList];
             
-            if (_shipmentViewController) {
-                NSInteger index = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue];
-                _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list[index],
-                                                 DATA_INDEX_KEY : @(index)
-                                                 };
-                [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-                _shipmentViewController.indexPage = _indexPage;
-                _shipmentViewController.delegate = self;
-            }
+            NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list[_indexSelectedShipment]};
+            [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         }
     }
 }
@@ -2668,8 +2658,6 @@
         
     }
     if (listCount>0) {
-        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
-        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         
         
         if (_indexPage == 0) {

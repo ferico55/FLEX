@@ -40,7 +40,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -640,7 +640,10 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
-    _tableView.contentOffset = CGPointZero;
+    if (_page == 1) {
+        _tableView.contentOffset = CGPointZero;
+    }
+    
     NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
     TxOrderStatus *order = stat;
@@ -697,7 +700,10 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
-    _tableView.contentOffset = CGPointZero;
+    
+    if (_page == 1) {
+        _tableView.contentOffset = CGPointZero;
+    }
 }
 
 
@@ -940,20 +946,24 @@
     BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(order.message_error)
-        {
-            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-            [alert show];
-        }
         if (order.result.is_success == 1) {
             TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
             [self.navigationController pushViewController:vc animated:YES];
         }
         else
         {
-            [self requestFailureReOrder:object withError:nil];
-        }
+            if(order.message_error)
+            {
+                NSMutableArray *errors = [order.message_error mutableCopy];
+                for (int i = 0; i<errors.count; i++) {
+                    if ([order.message_error[i] containsString:@"Alamat"]) {
+                        [errors replaceObjectAtIndex:i withObject:@"Pesan ulang tidak dapat dilakukan karena alamat tidak valid."];
+                    }
+                }
+                NSArray *array = errors?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                [alert show];
+            }        }
     }
     else
     {
@@ -1131,6 +1141,7 @@
         vc.isChangeSolution = NO;
         vc.isCanEditProblem = YES;
         vc.order = order;
+        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

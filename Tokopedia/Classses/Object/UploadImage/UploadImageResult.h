@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UploadImageImage.h"
 @class Upload;
+
 @interface UploadImageResult : NSObject
 
 @property (nonatomic, strong) NSString *pic_id;
@@ -17,5 +19,6 @@
 @property (nonatomic, strong) NSString *file_name;
 @property (nonatomic, strong) Upload *upload;
 @property (nonatomic, strong) NSString *file_uploaded;
+@property (nonatomic, strong) UploadImageImage *image;
 
 @end
