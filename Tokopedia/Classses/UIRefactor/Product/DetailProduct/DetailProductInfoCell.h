@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+@class TTTAttributedLabel, DetailProductViewController;
 
+#define CPaddingTopDescToko 10
 #define kTKPDDETAILPRODUCTINFOCELLIDENTIFIER @"DetailProductInfoCellIdentifier"
 
 #pragma mark - Detail Product Info Cell Delegate
@@ -19,7 +21,12 @@
 
 #pragma mark - Detail Product Info Cell
 @interface DetailProductInfoCell : UITableViewCell
-
+{
+    IBOutlet NSLayoutConstraint *constraintHeightViewRetur;
+    TTTAttributedLabel *lblMessageRetur;
+    IBOutlet UIView *viewRetur;
+    IBOutlet UIImageView *imgRetur;
+}
 
 @property (nonatomic, weak) IBOutlet id<DetailProductInfoCellDelegate> delegate;
 
@@ -33,5 +40,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *etalasebutton;
 
 +(id)newcell;
-
+- (void)setLblDescriptionToko:(NSString *)strText;
+- (void)hiddenViewRetur;
+- (void)setLblRetur:(NSString *)str;
+- (TTTAttributedLabel *)getLblRetur;
+- (float)getHeightReturView;
 @end

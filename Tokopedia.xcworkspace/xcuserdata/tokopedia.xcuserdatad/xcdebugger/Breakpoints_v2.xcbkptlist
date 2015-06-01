@@ -130,11 +130,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/PriceAlert/PriceAlertViewController.m"
-            timestampString = "454329001.315079"
+            timestampString = "454568533.314528"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
             landmarkName = "-actionAfterFailRequestMaxTries:"
             landmarkType = "5">
          </BreakpointContent>
@@ -145,13 +145,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/PriceAlert/DetailPriceAlertViewController.m"
-            timestampString = "454486814.117365"
+            filePath = "Tokopedia/Classses/UIRefactor/Product/DetailProduct/DetailProductViewController.m"
+            timestampString = "454576721.209697"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
-            landmarkName = "-actionUbah:"
+            startingLineNumber = "2520"
+            endingLineNumber = "2520"
+            landmarkName = "-cancelLoginView"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -161,13 +161,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Product/DetailProduct/DetailProductViewController.m"
-            timestampString = "454496826.965999"
+            filePath = "Tokopedia/Classses/UIRefactor/Hotlist/HotlistTabController/TKPDTabHomeViewController.m"
+            timestampString = "454588120.438155"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2522"
-            endingLineNumber = "2522"
-            landmarkName = "-setWishList"
+            startingLineNumber = "497"
+            endingLineNumber = "497"
+            landmarkName = "-initNotificationManager"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -177,13 +177,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Product/DetailProduct/DetailProductViewController.m"
-            timestampString = "454496826.965999"
+            filePath = "Tokopedia/Classses/UIRefactor/Hotlist/HotlistTabController/TKPDTabHomeViewController.m"
+            timestampString = "454588170.815395"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2494"
-            endingLineNumber = "2494"
-            landmarkName = "-setUnWishList"
+            startingLineNumber = "495"
+            endingLineNumber = "495"
+            landmarkName = "-initNotificationManager"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

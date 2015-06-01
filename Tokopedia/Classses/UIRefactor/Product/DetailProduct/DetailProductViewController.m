@@ -13,7 +13,7 @@
 #define CTagWishList 5
 #define CTagUnWishList 6
 #define CTagNoteCanReture 7
-#define CPaddingTopDescToko 10
+
 
 #import "Notes.h"
 #import "NoteDetails.h"
@@ -204,7 +204,6 @@ UIAlertViewDelegate
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (strong, nonatomic) IBOutlet UIView *shopinformationview;
 @property (strong, nonatomic) IBOutlet UIView *shopClickView;
-@property (strong, nonatomic) IBOutlet UIView *shareClickView;
 @property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
@@ -332,20 +331,22 @@ UIAlertViewDelegate
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
     
+    //Set corner btn share
+    btnShare.layer.cornerRadius = 5.0f;
+    btnShare.layer.borderWidth = 1;
+    btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+    btnShare.layer.masksToBounds = YES;
+    
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
     [_shopClickView setUserInteractionEnabled:YES];
-    
-    UITapGestureRecognizer *tapShareGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionShare:)];
-    [_shareClickView addGestureRecognizer:tapShareGes];
-    [_shareClickView setUserInteractionEnabled:YES];
     
     //Add observer
     [self initNotification];
 }
 
 - (void)initNotification {
-
+    
     
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshRequest:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
@@ -360,7 +361,7 @@ UIAlertViewDelegate
     if(_favButton.tag == 17) {//Favorite is 17
         _favButton.tag = 18;
         [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
-        [_favButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_active.png"] forState:UIControlStateNormal];
         [_favButton.layer setBorderWidth:0];
         _favButton.tintColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.3 animations:^(void) {
@@ -371,12 +372,12 @@ UIAlertViewDelegate
     else {
         _favButton.tag = 17;
         [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
-        [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+        [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_nonactive.png"] forState:UIControlStateNormal];
         [_favButton.layer setBorderWidth:1];
         _favButton.tintColor = [UIColor lightGrayColor];
         [UIView animateWithDuration:0.3 animations:^(void) {
             [_favButton setBackgroundColor:[UIColor whiteColor]];
-            [_favButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [_favButton setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
         }];
     }
 }
@@ -435,13 +436,15 @@ UIAlertViewDelegate
 
 - (void)setBackgroundWishlist:(BOOL)isWishList
 {
-    if(! isWishList) {
-        btnWishList.backgroundColor = [UIColor colorWithRed:224/255.0f green:224/255.0f blue:224/255.0f alpha:1.0f];
-        [btnWishList setTitleColor:[UIColor colorWithRed:189/255.0f green:189/255.0f blue:189/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    }
-    else {
+    if(isWishList) {
+        [btnWishList setImage:[UIImage imageNamed:@"icon_button_wishlist_active.png"] forState:UIControlStateNormal];
         btnWishList.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
         [btnWishList setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    else {
+        [btnWishList setImage:[UIImage imageNamed:@"icon_button_wishlist_nonactive.png"] forState:UIControlStateNormal];
+        btnWishList.backgroundColor = [UIColor whiteColor];
+        [btnWishList setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
 }
 
@@ -853,12 +856,12 @@ UIAlertViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-//    return 200;
+    //    return 200;
     if(! _isnodatawholesale)
     {
         if(section == 2)
         {
-//            return 200;
+            //            return 200;
             if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
                 return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
             else
@@ -942,7 +945,39 @@ UIAlertViewDelegate
             ((DetailProductInfoCell*)productInfoCell).delegate = self;
         }
         [self productinfocell:productInfoCell withtableview:tableView];
-        _informationHeight = productInfoCell.productInformationView.frame.size.height;
+        
+        //Check product returnable
+        if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"1"]) {
+            if([_product.result.shop_info.shop_has_terms isEqualToString:@"0"]) {
+                NSString *strCanReture = [CStringCanReture stringByReplacingOccurrencesOfString:CStringCanRetureReplace withString:@""];
+                [productInfoCell setLblDescriptionToko:strCanReture];
+                [productInfoCell setLblRetur:strCanReture];
+            }
+            else {
+                [productInfoCell setLblDescriptionToko:CStringCanReture];
+                NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
+                [productInfoCell getLblRetur].enabledTextCheckingTypes = NSTextCheckingTypeLink;
+                [productInfoCell getLblRetur].delegate = self;
+                
+                [productInfoCell setLblRetur:CStringCanReture];
+                [productInfoCell getLblRetur].linkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+                [[productInfoCell getLblRetur] addLinkToURL:[NSURL URLWithString:@""] withRange:range];
+                
+                tokopediaNoteCanReture = [TokopediaNetworkManager new];
+                tokopediaNoteCanReture.delegate = self;
+                tokopediaNoteCanReture.tagRequest = CTagNoteCanReture;
+                [tokopediaNoteCanReture doRequest];
+            }
+        }
+        else if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"2"]) {
+            [productInfoCell setLblDescriptionToko:CStringCannotReture];
+            [productInfoCell setLblRetur:CStringCannotReture];
+        }
+        else {
+            [productInfoCell hiddenViewRetur];
+        }
+        
+        _informationHeight = productInfoCell.productInformationView.frame.size.height+[productInfoCell getHeightReturView];
         cell = productInfoCell;
         return cell;
     }
@@ -1527,7 +1562,7 @@ UIAlertViewDelegate
     }
     else if(tag == CTagTokopediaNetworkManager)
     {
-
+        
     }
     else if(tag == CTagOtherProduct)
         [self requestFailureOtherProduct:errorResult];
@@ -1554,7 +1589,7 @@ UIAlertViewDelegate
         [btnWishList setHidden:NO];
     }
     else if(tag == CTagNoteCanReture) {
-    
+        
     }
 }
 
@@ -1706,67 +1741,21 @@ UIAlertViewDelegate
             return;
         }
         
+        
+        //Set toko tutup
         if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
-            [self initViewTokoTutup];
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, [lblDescTokoTutup sizeThatFits:CGSizeMake(lblDescTokoTutup.bounds.size.width, 9999)].height+16+viewTableContentHeader.bounds.size.height);
+            viewContentTokoTutup.hidden = NO;
+            lblDescTokoTutup.text = [NSString stringWithFormat:FORMAT_TOKO_TUTUP, _product.result.shop_info.shop_is_closed_until];
         }
-        else {
-            [viewContentTokoTutup addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentTokoTutup(==0)]"
-                                                                                         options:0
-                                                                                         metrics:nil
-                                                                                           views:NSDictionaryOfVariableBindings(viewContentTokoTutup)]];
+        
+        //Set shop in warehouse
+        if(((int) _product.result.product.product_status) != PRODUCT_STATE_WAREHOUSE) {
+            constraintHeightWarehouse.constant = 0;
+            viewContentWarehouse.hidden = YES;
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
         }
         
-        //Check product returnable
-        if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"1"]) {
-            viewContentDescToko.backgroundColor = [UIColor colorWithRed:255/255.0f green:243/255.0f blue:224/255.0f alpha:1.0f];
-            
-            if([_product.result.shop_info.shop_has_terms isEqualToString:@"0"]) {
-                NSString *strCanReture = [CStringCanReture stringByReplacingOccurrencesOfString:CStringCanRetureReplace withString:@""];
-                [self setLblDescriptionToko:strCanReture];
-                lblDescToko.text = strCanReture;
-            }
-            else {
-                [self setLblDescriptionToko:CStringCanReture];
-                NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
-                lblDescToko.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-                lblDescToko.delegate = self;
-                lblDescToko.text = CStringCanReture;
-                lblDescToko.linkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
-                [lblDescToko addLinkToURL:[NSURL URLWithString:@""] withRange:range];
-                
-                tokopediaNoteCanReture = [TokopediaNetworkManager new];
-                tokopediaNoteCanReture.delegate = self;
-                tokopediaNoteCanReture.tagRequest = CTagNoteCanReture;
-                [tokopediaNoteCanReture doRequest];
-            }
-            
-            int calculateHeightViewContentDescToko = lblDescToko.bounds.size.height+(CPaddingTopDescToko *2);
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, (_header.bounds.size.height-viewContentDescToko.bounds.size.height) + calculateHeightViewContentDescToko);
-            
-            //Add To View
-            [viewContentDescToko addSubview:lblDescToko];
-            [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[viewContentDescToko(==%f)]", lblDescToko.bounds.size.height+(CPaddingTopDescToko*2)] options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
-        }
-        else if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"2"]) {
-            [self setLblDescriptionToko:CStringCannotReture];
-            lblDescToko.text = CStringCannotReture;
-            
-            int calculateHeightViewContentDescToko = lblDescToko.bounds.size.height+(CPaddingTopDescToko *2);
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, (_header.bounds.size.height-viewContentDescToko.bounds.size.height) + calculateHeightViewContentDescToko);
-            
-            //Add To View
-            [viewContentDescToko addSubview:lblDescToko];
-            [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[viewContentDescToko(==%f)]", lblDescToko.bounds.size.height+(CPaddingTopDescToko*2)] options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
-        }
-        else {
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, _header.bounds.size.height-viewContentDescToko.bounds.size.height);
-            
-            [viewContentDescToko addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentDescToko(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentDescToko)]];
-        }
-        
-        _table.tableHeaderView = _header;        
+        _table.tableHeaderView = _header;
         [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
         [_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data to plist
@@ -1806,7 +1795,7 @@ UIAlertViewDelegate
                 barbutton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting.png"] withAction:@selector(gestureSetting:)];
                 
                 [barbutton setTag:22];
-
+                
                 UIBarButtonItem *barbutton1;
                 if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE) {
                     barbutton1 = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_move_etalase.png"] withAction:@selector(gestureMoveToEtalase:)];
@@ -1833,13 +1822,7 @@ UIAlertViewDelegate
                 btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
                 btnWishList.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
-                //Rescale image
-                UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
-                [[UIImage imageNamed:@"icon_wishlist_unactive.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
-                UIImage *imgUnWishList = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-                [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
-                
+                //Set background wishlist
                 if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
                 {
                     [self setBackgroundWishlist:YES];
@@ -1879,14 +1862,14 @@ UIAlertViewDelegate
                 _dinkButton.hidden = YES;
                 _buyButton.hidden = YES;
                 [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
-                                                                               options:0
-                                                                               metrics:nil
-                                                                                 views:NSDictionaryOfVariableBindings(_dinkButton)]];
-                
-                [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
                                                                                     options:0
                                                                                     metrics:nil
-                                                                                      views:NSDictionaryOfVariableBindings(_buyButton)]];
+                                                                                      views:NSDictionaryOfVariableBindings(_dinkButton)]];
+                
+                [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
+                                                                                   options:0
+                                                                                   metrics:nil
+                                                                                     views:NSDictionaryOfVariableBindings(_buyButton)]];
             }
             else {
                 if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
@@ -1897,7 +1880,7 @@ UIAlertViewDelegate
                     _dinkButton.hidden = YES;
                 }
             }
-
+            
             
             
             if(_product.result.shop_info.shop_already_favorited == 1) {
@@ -1988,10 +1971,10 @@ UIAlertViewDelegate
             // Etalase
             if(_product.result.product.product_etalase_id != nil) {
                 ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-            
+                
                 container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
-                               kTKPD_AUTHKEY:_auth?:[NSNull null],
-                               @"product_etalase_id" : _product.result.product.product_etalase_id};
+                                   kTKPD_AUTHKEY:_auth?:[NSNull null],
+                                   @"product_etalase_id" : _product.result.product.product_etalase_id};
                 [self.navigationController pushViewController:container animated:YES];
             }
             
@@ -2015,32 +1998,6 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
-- (void)setLblDescriptionToko:(NSString *)strText
-{
-    if(lblDescToko == nil) {
-        lblDescToko = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-        lblDescToko.textAlignment = NSTextAlignmentCenter;
-        lblDescToko.font = [UIFont fontWithName:CFont_Gotham_Book size:13.0f];
-        lblDescToko.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
-        lblDescToko.lineBreakMode = NSLineBreakByWordWrapping;
-        lblDescToko.numberOfLines = 0;
-        lblDescToko.backgroundColor = [UIColor clearColor];
-    }
-    
-    float height = [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText];
-    lblDescToko.frame = CGRectMake(CPaddingTopDescToko, CPaddingTopDescToko, self.view.bounds.size.width-(CPaddingTopDescToko*2), height);
-}
-
-- (void)initViewTokoTutup
-{
-    if(hasSetTokoTutup){
-        return;
-    }
-    lblDescTokoTutup.backgroundColor = [UIColor clearColor];
-    [self initAttributeText:lblDescTokoTutup withStrText:[NSString stringWithFormat:CStringDescTokoTutup, _product.result.shop_info.shop_is_closed_note, _product.result.shop_info.shop_is_closed_until] withColor:[UIColor blackColor]];
-}
-
-
 - (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -2093,8 +2050,8 @@ UIAlertViewDelegate
 {
     if (_product) {
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
-                                  _formattedProductTitle,
-                                  _product.result.shop_info.shop_name];
+                           _formattedProductTitle,
+                           _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
         UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                          applicationActivities:nil];
@@ -2111,6 +2068,7 @@ UIAlertViewDelegate
     else
         [self setUnWishList];
 }
+
 
 - (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action
 {
@@ -2131,11 +2089,11 @@ UIAlertViewDelegate
     
     NSString *productName = _formattedProductTitle?:@"";
     
-
+    
     CGRect labelCGRectFrame = CGRectMake(0, 0, 480, 44);
     MarqueeLabel *productLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:6.0 andFadeLength:10.0f];
     
-
+    
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
     UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:15];
@@ -2182,8 +2140,8 @@ UIAlertViewDelegate
     _header.frame = newHeaderFrame;
     
     _pricelabel.text = _product.result.product.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Terjual", _product.result.statistic.product_sold_count];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@ Dilihat", _product.result.statistic.product_view_count];
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count];
     
     [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count] forState:UIControlStateNormal];
     [_reviewbutton.layer setBorderWidth:1];
@@ -2466,7 +2424,7 @@ UIAlertViewDelegate
 
 - (void)cancelOtherProduct {
     [self setBackgroundWishlist:NO];
-//    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+    //    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
 }
 
 #pragma mark - Request and mapping favorite action
@@ -2484,7 +2442,7 @@ UIAlertViewDelegate
 - (void)setUnWishList
 {
     if(_auth) {
-        [_header addSubview:activityIndicator];
+        [viewContentWishList addSubview:activityIndicator];
         [activityIndicator startAnimating];
         [btnWishList setHidden:YES];
         
@@ -2512,7 +2470,7 @@ UIAlertViewDelegate
 - (void)setWishList
 {
     if(_auth) {
-        [_header addSubview:activityIndicator];
+        [viewContentWishList addSubview:activityIndicator];
         [activityIndicator startAnimating];
         [btnWishList setHidden:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
@@ -2566,23 +2524,23 @@ UIAlertViewDelegate
 
 #pragma mark - Tap View
 - (void)tapProductGallery {
-//    NSDictionary *data = @{
-//                           @"image_index" : @(_pageheaderimages),
-//                           @"images" : _product.result.product_images
-//                           };
-//    
-//    ProductGalleryViewController *vc = [ProductGalleryViewController new];
-//    vc.data = data;
-//    
-//    [self.navigationController presentViewController:vc animated:YES completion:nil];
+    //    NSDictionary *data = @{
+    //                           @"image_index" : @(_pageheaderimages),
+    //                           @"images" : _product.result.product_images
+    //                           };
+    //
+    //    ProductGalleryViewController *vc = [ProductGalleryViewController new];
+    //    vc.data = data;
+    //
+    //    [self.navigationController presentViewController:vc animated:YES completion:nil];
     //    [self.navigationController pushViewController:vc animated:YES];
     
     
-//    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+    //    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
     GalleryViewController *gallery = [GalleryViewController new];
     gallery.canDownload = YES;
     [gallery initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
-
+    
     [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
@@ -2618,7 +2576,7 @@ UIAlertViewDelegate
         return ((ProductImages *) [_product.result.product_images objectAtIndex:0]).image_description;
     else if(((int)index) > _product.result.product_images.count-1)
         return ((ProductImages *) [_product.result.product_images objectAtIndex:_product.result.product_images.count-1]).image_description;
-        
+    
     return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_description;
 }
 
@@ -2671,7 +2629,7 @@ UIAlertViewDelegate
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
-
+    
     if(isNeedLogin) {
         [self loadData];
     }
@@ -2687,7 +2645,7 @@ UIAlertViewDelegate
 #pragma mark - TTTAttributeLabel Delegate
 - (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
 {
-
+    
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
