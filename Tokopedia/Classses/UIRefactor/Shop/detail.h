@@ -245,6 +245,7 @@ typedef enum
 #define API_PRODUCT_TOTAL_PRICE_IDR_KEY @"product_total_price_idr"
 #define API_PRODUCT_TOTAL_PRICE_KEY @"product_total_price"
 #define API_PRODUCT_PICTURE_KEY @"product_pic"
+#define API_PRODUCT_MUST_INSURANCE_KEY @"product_must_insurance"
 
 #define API_PRODUCT_WEIGHT_KEY @"product_weight"
 #define API_PRODUCT_WEIGHT_UNIT_KEY @"product_weight_unit"

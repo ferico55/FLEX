@@ -12,7 +12,7 @@
 #import "MyShopAddressEditViewController.h"
 
 #pragma mark - Setting Location Detail View Controller
-@interface MyShopAddressDetailViewController () <UIScrollViewDelegate>
+@interface MyShopAddressDetailViewController () <UIScrollViewDelegate, ShopAddressEditViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *labeladdressname;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdress;
@@ -99,7 +99,7 @@
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
                             kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
                             };
-                
+                vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
                 nav.navigationBar.translucent = NO;
                 
@@ -134,29 +134,41 @@
     if (data) {
         Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
         
-        _labeladdressname.text = list.location_address_name;
-        _labelcity.text = list.location_city_name;
-        _labeldistrict.text = list.location_district_name;
-        _labelphonenumber.text = list.location_phone;
-        _labelprovince.text = list.location_province_name;
-        NSString *email = [list.location_email isEqualToString:@"0"]?@"-":list.location_email;
-        _faxLabel.text = list.location_fax;
-        _labelemail.text = email;
-        
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 4.0;
-        
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName            : _labeladdress.font,
-                                     NSParagraphStyleAttributeName  : style,
-                                     NSForegroundColorAttributeName : _labeladdress.textColor,
-                                     };
-        
-        NSString *address = [NSString stringWithFormat:@"%@\n%@",
-                             [NSString convertHTML:list.location_address], list.location_area];
-
-        _labeladdress.attributedText = [[NSAttributedString alloc] initWithString:address attributes:attributes];
+        [self setAddress:list];
     }
+}
+
+#pragma mark - Edit address delegate
+
+-(void)successEditAddress:(Address *)address
+{
+    [self setAddress:address];
+}
+
+-(void)setAddress:(Address*)address
+{
+    _labeladdressname.text = address.location_address_name;
+    _labelcity.text = address.location_city_name;
+    _labeldistrict.text = address.location_district_name;
+    _labelphonenumber.text = address.location_phone;
+    _labelprovince.text = address.location_province_name;
+    NSString *email = [address.location_email isEqualToString:@"0"]?@"-":address.location_email;
+    _faxLabel.text = address.location_fax;
+    _labelemail.text = email;
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : _labeladdress.font,
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : _labeladdress.textColor,
+                                 };
+    
+    NSString *addressString = [NSString stringWithFormat:@"%@\n%@",
+                         [NSString convertHTML:address.location_address], address.location_area];
+    
+    _labeladdress.attributedText = [[NSAttributedString alloc] initWithString:addressString attributes:attributes];
 }
 
 @end

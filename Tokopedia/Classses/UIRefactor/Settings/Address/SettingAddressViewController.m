@@ -74,7 +74,7 @@
     NSString *_searchKeyword;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -128,42 +128,7 @@
     [super viewDidLoad];
     _listTemp = [NSMutableArray new];
     
-    NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
-        _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                              style:UIBarButtonItemStylePlain
-                                                             target:(self)
-                                                             action:@selector(tap:)];
-        _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
-        self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
 
-        [self.view addSubview:_addNewAddressView];
-        _table.contentInset = UIEdgeInsetsMake(_addNewAddressView.frame.size.height, 0, 0, 0);
-        //_table.tableHeaderView = _addNewAddressView;
-        
-        _searchBar.delegate = self;
-        _searchBar.placeholder = @"Cari Alamat";
-        _searchBar.userInteractionEnabled = YES;
-        
-    } else {
-        
-        UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                      target:self
-                                                                                      action:@selector(tap:)];
-        addBarButton.tag = 12;
-        self.navigationItem.rightBarButtonItem = addBarButton;
-        
-        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tap:)];
-        backBarButton.tag = 10;
-        self.navigationItem.backBarButtonItem = backBarButton;
-        
-        //_table.tableHeaderView = _searchBarView;
-        [self.view addSubview:_searchBarView];
-        _table.contentInset = UIEdgeInsetsMake(_searchBarView.frame.size.height, 0, 0, 0);
-    }
 
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -203,18 +168,53 @@
 {
     [super viewWillAppear:animated];
     
-//    if (!_isrefreshview) {
-//        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-//            [self request];
-//        }
-//    }
+    NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+        _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                              style:UIBarButtonItemStylePlain
+                                                             target:(self)
+                                                             action:@selector(tap:)];
+        _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
+        self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
+        
+        [self.view addSubview:_addNewAddressView];
+        _table.contentInset = UIEdgeInsetsMake(_addNewAddressView.frame.size.height, 0, 0, 0);
+        //_table.tableHeaderView = _addNewAddressView;
+        
+        _searchBar.delegate = self;
+        _searchBar.placeholder = @"Cari Alamat";
+        _searchBar.userInteractionEnabled = YES;
+        
+    } else {
+        
+        UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                      target:self
+                                                                                      action:@selector(tap:)];
+        addBarButton.tag = 12;
+        self.navigationItem.rightBarButtonItem = addBarButton;
+        
+        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+        backBarButton.tag = 10;
+        self.navigationItem.backBarButtonItem = backBarButton;
+        
+        //_table.tableHeaderView = _searchBarView;
+        [self.view addSubview:_searchBarView];
+        _table.contentInset = UIEdgeInsetsMake(_searchBarView.frame.size.height, 0, 0, 0);
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    
+    UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:(self)
+                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = back;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -280,11 +280,11 @@
                     }
                     else
                     {
-                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @" ";
                     }
 
                     if (![_searchKeyword isEqualToString:@""] && _searchKeyword != nil) {
-                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@"";
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@" ";
                     }
                 }
             }
@@ -299,7 +299,7 @@
             if (_list.count > indexPath.section) {
                 AddressFormList *list = _list[indexPath.section];
                 ((SettingAddressExpandedCell*)cell).recieverNameLabel.text = list.receiver_name;
-                NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %zd",
+                NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@ %@",
                                      [NSString convertHTML:list.address_street], list.district_name, list.city_name,
                                      list.province_name, list.country_name, list.postal_code];
                 
@@ -343,7 +343,18 @@
     if (indexPath.row == 0) {
         return 44;
     } else {
-        return 243;
+        AddressFormList *list = _list[indexPath.section];
+        
+        NSString *string = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@ %@",
+                             [NSString convertHTML:list.address_street], list.district_name, list.city_name,
+                             list.province_name, list.country_name, list.postal_code];
+        
+        //Calculate the expected size based on the font and linebreak mode of your label
+        CGSize maximumLabelSize = CGSizeMake(190,9999);
+        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:NSLineBreakByTruncatingTail];
+        return 243-35+expectedLabelSize.height;
     }
 }
 
@@ -506,7 +517,14 @@
                 
                 _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
                 NSLog(@"%zd",_page);
+                
+                _table.tableFooterView = nil;
+            } else {
+                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+                self.table.tableFooterView = noResultView;
             }
+            
             NSInteger type = [[_datainput objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
             if (type == TYPE_ADD_EDIT_PROFILE_EDIT) {
                 //TODO: Behavior after edit
@@ -525,7 +543,6 @@
                 [self.navigationController pushViewController:vc animated:NO];
             }
             [_table reloadData];
-            //_table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
         }
     }
 }
@@ -787,6 +804,7 @@
                     StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                          delegate:self];
                     [alertView show];
+                    
                 } else {
                     [self cancelDeleteRow];
                 }
@@ -866,6 +884,15 @@
 }
 
 #pragma mark - delegate address detail
+-(void)setDefaultAddressData:(NSDictionary *)data
+{
+    AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
+    _indexPath = (NSIndexPath *)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
+    [self setAsDefaultAtIndexPath:_indexPath];
+}
+
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
@@ -928,7 +955,7 @@
     [_list removeObject:object];
     [_list insertObject:object atIndex:0];
     [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
-    [self.table reloadData];
+    [_table reloadData];
 }
 -(void)cancelSetAsDefault
 {
@@ -1033,7 +1060,6 @@
     _searchKeyword = searchBar.text;
 
     [_table reloadData];
-    [self performSelector:@selector(reloadTableData) withObject:nil afterDelay:0.1];
 
     return YES;
 }
@@ -1120,6 +1146,7 @@
     } else if (alertView.tag == 2) {
         if (buttonIndex == 1) {            
             [self deleteListAtIndexPath:_indexPath];
+            [self.navigationController popToViewController:self animated:YES];
         }
     }
 }
@@ -1236,7 +1263,6 @@
     {
         [self requestSuccess:successResult withOperation:operation];
         [_act stopAnimating];
-        _table.tableFooterView = nil;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         _doneBarButtonItem.enabled = YES;

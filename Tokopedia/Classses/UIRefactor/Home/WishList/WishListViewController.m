@@ -375,6 +375,9 @@
     if([product count] == 0) {
         tblWishList.tableFooterView = _noResult;
     }
+    else if(tblWishList.tableFooterView == _noResult) {
+        tblWishList.tableFooterView = nil;
+    }
 }
 
 

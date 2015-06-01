@@ -11,7 +11,7 @@
 
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -19,7 +19,7 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-//#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -138,6 +138,7 @@ typedef enum {
 #define kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY"
 #define kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY"
 #define kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY"
+#define EDIT_SHOP_AVATAR_NOTIFICATION_NAME @"tokopedia.EDIT_SHOP_AVATAR"
 
 #define UPDATE_TABBAR @"UPDATE_TABBAR"
 

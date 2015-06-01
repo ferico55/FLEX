@@ -1021,7 +1021,9 @@
     if(textView.tag == CTagSlogan)
     {
         [self checkValidation:nil withSlogan:strText withDesc:nil];
-        lblCountSlogan.text = [NSString stringWithFormat:@"%d", (int)(CMaxSlogan-strText.length)];
+        
+        if((int)(CMaxSlogan-strText.length) != -1)
+            lblCountSlogan.text = [NSString stringWithFormat:@"%d", (int)(CMaxSlogan-strText.length)];
         if (text.length == 0)
             return YES;
         else if(textView.text.length >= CMaxSlogan)
@@ -1031,7 +1033,9 @@
     else if(textView.tag == CTagDeskripsi)
     {
         [self checkValidation:nil withSlogan:nil withDesc:strText];
-        lblCountDescripsi.text = [NSString stringWithFormat:@"%d", (int)(CMaxDesc-strText.length)];
+        
+        if((int)(CMaxDesc-strText.length) != -1)
+            lblCountDescripsi.text = [NSString stringWithFormat:@"%d", (int)(CMaxDesc-strText.length)];
         if (text.length == 0)
             return YES;
         else if(textView.text.length >= CMaxDesc)

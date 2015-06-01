@@ -381,6 +381,7 @@
                                                              API_DETAIL_FORCE_CANCEL        : API_DETAIL_FORCE_CANCEL,
                                                              API_DETAIL_DROPSHIP_NAME       : API_DETAIL_DROPSHIP_NAME,
                                                              API_DETAIL_DROPSHIP_TELP       : API_DETAIL_DROPSHIP_TELP,
+                                                             API_DETAIL_PARTIAL_ORDER       : API_DETAIL_PARTIAL_ORDER,
                                                              @"detail_total_add_fee"        : @"detail_total_add_fee",
                                                              @"detail_open_amount_idr"      : @"detail_open_amount_idr",
                                                              }];

@@ -104,6 +104,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             
             UISwitch *changeCourierSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 65, 7, 0, 0)];
+            [changeCourierSwitch setOn:_changeCourier];
             [changeCourierSwitch addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
             [cell addSubview:changeCourierSwitch];
             
@@ -324,9 +325,9 @@
                             [NSIndexPath indexPathForRow:1 inSection:0],
                             [NSIndexPath indexPathForRow:2 inSection:0],
                             ];
-    if (_changeCourier) {
+    if (_changeCourier && [self.tableView numberOfRowsInSection:0] == 1) {
         [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-    } else {
+    } else if (!_changeCourier && [self.tableView numberOfRowsInSection:0] == 3) {
         [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     }
 }

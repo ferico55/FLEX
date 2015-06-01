@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
@@ -129,7 +129,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSTimeInterval _timeinterval;
     NSMutableArray *_product;
     Shop *_shop;
-    NoResult *_noResult;
+    NoResultView *_noResult;
     
     BOOL _navigationBarIsAnimating;
     
@@ -180,7 +180,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
 
     _product = [NSMutableArray new];
-    _noResult = [NoResult new];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
 
     _isrefreshview = NO;
     
@@ -677,7 +677,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
-        _table.tableFooterView = nil;
         [_table reloadData];
         [_refreshControl endRefreshing];
         [_timer invalidate];
@@ -770,15 +769,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                     
                     _isNoData = NO;
                     
-                    if (_product.count == 0) {
-                        _table.tableFooterView = _noResult;
-                        _act.hidden = YES;
-                    }
-                    
                 } else {
                     _isNoData = YES;
                     _table.tableFooterView = _noResult;
-                }
+                    _act.hidden = YES;
+               }
             }
         }
         else{
