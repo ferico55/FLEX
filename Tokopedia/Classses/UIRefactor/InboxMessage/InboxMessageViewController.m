@@ -200,7 +200,7 @@ typedef enum TagRequest {
 
 -(void)viewWillAppear:(BOOL)animated
 {
-//    [super viewWillAppear:animated];
+    [super viewWillAppear:animated];
     self.screenName = @"Inbox Message";
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
