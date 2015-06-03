@@ -15,6 +15,8 @@
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import "Helpshift.h"
+#import "AppsFlyerTracker.h"
+
 
 @implementation AppDelegate
 
@@ -32,6 +34,11 @@
     [_window makeKeyAndVisible];
     
     dispatch_async(dispatch_get_main_queue(), ^{
+        //appsflyer init
+        [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
+        [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
+        [AppsFlyerTracker sharedTracker].currencyCode = @"IDR";
+        
         //helpshift init
         [Helpshift installForApiKey:HelpshiftKey domainName:HelpshiftDomain appID:HelpshiftAppid];
         
@@ -65,6 +72,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [FBAppEvents activateApp];
+    [[AppsFlyerTracker sharedTracker]trackAppLaunch];
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
