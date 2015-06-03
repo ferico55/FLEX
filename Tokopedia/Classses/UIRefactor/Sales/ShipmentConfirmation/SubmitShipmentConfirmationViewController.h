@@ -15,6 +15,7 @@
 
 @optional;
 - (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage;
+- (void)successConfirmOrder:(OrderTransaction *)order;
 
 @end
 
@@ -22,5 +23,6 @@
 
 @property (weak, nonatomic) id<SubmitShipmentConfirmationDelegate> delegate;
 @property (strong, nonatomic) NSArray *shipmentCouriers;
+@property (strong, nonatomic) OrderTransaction *order;
 
 @end
