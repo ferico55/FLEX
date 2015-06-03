@@ -35,8 +35,8 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         //appsflyer init
-        [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"REPLACE THIS WITH YOUR Dev_Key";
-        [AppsFlyerTracker sharedTracker].appleAppID = @"REPLACE THIS WITH YOUR App_ID";
+        [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
+        [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
         [AppsFlyerTracker sharedTracker].currencyCode = @"IDR";
         
         //helpshift init
