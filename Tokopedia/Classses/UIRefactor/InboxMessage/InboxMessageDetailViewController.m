@@ -131,6 +131,9 @@
 
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [_request cancel];
+    [_operationQueue cancelAllOperations];
+    [_timer invalidate];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -261,7 +264,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxMessageDetailList *messagedetaillist = _messages[indexPath.row];
     CGSize messageSize = [InboxMessageDetailCell messageSize:messagedetaillist.message_reply];
-    
+
     return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
 }
 
