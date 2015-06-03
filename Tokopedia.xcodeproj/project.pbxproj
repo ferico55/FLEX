@@ -14,6 +14,7 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		85A53C971B1C880D00D626B7 /* DetailProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -38,7 +39,6 @@
 		85D12B561B1C4A39001B9272 /* icon_sold.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D12B531B1C4A39001B9272 /* icon_sold.png */; };
 		85D12B571B1C4A39001B9272 /* icon_sold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D12B541B1C4A39001B9272 /* icon_sold@2x.png */; };
 		85D12B581B1C4A39001B9272 /* icon_sold@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D12B551B1C4A39001B9272 /* icon_sold@3x.png */; };
-		85D12B641B1C76CD001B9272 /* DetailProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85D12B631B1C76CD001B9272 /* DetailProductViewController.xib */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -1500,6 +1500,7 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductViewController.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -1524,7 +1525,6 @@
 		85D12B531B1C4A39001B9272 /* icon_sold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sold.png; sourceTree = "<group>"; };
 		85D12B541B1C4A39001B9272 /* icon_sold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_sold@2x.png"; sourceTree = "<group>"; };
 		85D12B551B1C4A39001B9272 /* icon_sold@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_sold@3x.png"; sourceTree = "<group>"; };
-		85D12B631B1C76CD001B9272 /* DetailProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductViewController.xib; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -6232,7 +6232,7 @@
 				FC763BEF1B15E27A0034A8F1 /* DetailProductOtherView.xib */,
 				FC763BF01B15E27A0034A8F1 /* DetailProductViewController.h */,
 				FC763BF11B15E27A0034A8F1 /* DetailProductViewController.m */,
-				85D12B631B1C76CD001B9272 /* DetailProductViewController.xib */,
+				85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */,
 				FC763BF31B15E27A0034A8F1 /* DetailProductWholesaleCell.h */,
 				FC763BF41B15E27A0034A8F1 /* DetailProductWholesaleCell.m */,
 				FC763BF51B15E27A0034A8F1 /* DetailProductWholesaleCell.xib */,
@@ -8787,7 +8787,7 @@
 				FC7643221B15E2830034A8F1 /* SalesNewOrderViewController.xib in Resources */,
 				FC76439A1B15E2830034A8F1 /* ShopNotesPageViewController.xib in Resources */,
 				FC76448F1B15E2830034A8F1 /* icon_category_list_white@2x.png in Resources */,
-				85D12B641B1C76CD001B9272 /* DetailProductViewController.xib in Resources */,
+				85A53C971B1C880D00D626B7 /* DetailProductViewController.xib in Resources */,
 				FC7645761B15E2830034A8F1 /* navigation-button-bg-pt@2x.png in Resources */,
 				FC7645511B15E2830034A8F1 /* icon_home@2x.png in Resources */,
 				FC7644231B15E2830034A8F1 /* button_white.png in Resources */,
