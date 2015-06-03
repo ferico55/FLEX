@@ -780,6 +780,7 @@
                         [_networkManagerBuy doRequest];
                     }
                 }
+                break;
                 case TYPE_GATEWAY_TRANSFER_BANK:
                     [_networkManagerBuy doRequest];
                     break;
@@ -804,13 +805,13 @@
                     navigationController.navigationBar.translucent = NO;
                     navigationController.navigationBar.tintColor = [UIColor whiteColor];
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                    break;
                 }
+                    break;
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
                 {
                     [_networkManagerBuy doRequest];
-                    break;
                 }
+                    break;
                 default:
                     break;
             }
@@ -1040,7 +1041,7 @@
     }
     else if (_indexPage == 1 && [_cartSummary.deposit_amount integerValue]>0) {
         NSString *password = [_dataInput objectForKey:API_PASSWORD_KEY];
-        if ([password isEqualToString:@""] || !(password)) {
+        if ([password isEqualToString:@""] || password == nil) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
         }
@@ -1066,6 +1067,7 @@
         }
     }
     
+    NSLog(@"%d",isValid);
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messageError delegate:self];
         [alert show];
@@ -2122,7 +2124,9 @@
     UIImageView *thumb = cell.productThumbImageView;
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey2.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
         [thumb setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {}];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        thumb.image = [UIImage imageNamed:@"Icon_no_photo_transparan.png"];
+    }];
     
     cell.editButton.hidden = (_indexPage == 1);
     
@@ -2432,7 +2436,7 @@
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         [self requestSuccessActionCancelCart:successResult withOperation:operation];
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
     }
     if (tag == TAG_REQUEST_CHECKOUT) {
         [self requestSuccessActionCheckout:successResult withOperation:operation];
@@ -2464,7 +2468,14 @@
         [_act stopAnimating];
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }
-    [_refreshControl endRefreshing];
+}
+
+-(void)endRefreshing
+{
+    if (_refreshControl.isRefreshing) {
+        [_tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+        [_refreshControl endRefreshing];
+    }
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -2475,12 +2486,12 @@
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_CART) {
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
         [_act stopAnimating];
         _isLoadingRequest = NO;
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
     }
     
     if (tag == TAG_REQUEST_CHECKOUT) {
@@ -2509,7 +2520,7 @@
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
         [_act stopAnimating];
     }
-    [_refreshControl endRefreshing];
+    [self endRefreshing];
 }
 
 #pragma mark - Request Cart
@@ -2571,7 +2582,7 @@
 
 -(void)requestSuccessCart:(id)successResult withOperation:(RKObjectRequestOperation*)operation
 {
-    [_refreshControl endRefreshing];
+    [self endRefreshing];
     [_act stopAnimating];
     _isLoadingRequest = NO;
     
