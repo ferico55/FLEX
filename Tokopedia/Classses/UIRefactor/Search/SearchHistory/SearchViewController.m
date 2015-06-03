@@ -92,6 +92,8 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
+    
+    [_searchbar becomeFirstResponder];
 }
 
 
@@ -120,7 +122,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [_searchbar becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
