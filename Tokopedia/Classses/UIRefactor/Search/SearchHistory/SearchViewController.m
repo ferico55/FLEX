@@ -90,7 +90,10 @@
                                              selector:@selector(clearHistory)
                                                  name:kTKPD_REMOVE_SEARCH_HISTORY
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
 }
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -99,8 +102,6 @@
     self.navigationController.title = @"Cari";
     self.screenName = @"Search Page";
     
-
-
     [self initNotificationManager];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -113,6 +114,8 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -402,6 +405,10 @@
 }
 
 #pragma mark - Notification delegate
+- (void)goToHotlist:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    [self.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
+}
 
 - (void)reloadNotification
 {

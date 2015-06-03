@@ -109,6 +109,7 @@ typedef enum TagRequest {
     [center addObserver:self
                selector:@selector(updateTabBarMore:)
                    name:UPDATE_TABBAR object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
