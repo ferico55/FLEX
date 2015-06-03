@@ -1813,6 +1813,23 @@ UIAlertViewDelegate
                 
                 self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
                 [btnWishList removeFromSuperview];
+                
+                //Set position btn share
+                int n = (int)btnShare.constraints.count;
+                NSMutableArray *arrRemoveConstraint = [NSMutableArray new];
+
+                for(int i=0;i<n;i++) {
+                    if([[btnShare.constraints objectAtIndex:i] isMemberOfClass:[NSLayoutConstraint class]]) {
+                        [arrRemoveConstraint addObject:[btnShare.constraints objectAtIndex:i]];
+                    }
+                }
+                [btnShare removeConstraints:arrRemoveConstraint];
+                [arrRemoveConstraint removeAllObjects];
+                arrRemoveConstraint = nil;
+                
+                [btnShare removeConstraints:btnShare.constraints];
+                [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+                [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
             } else {
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
                 activityIndicator.color = [UIColor lightGrayColor];

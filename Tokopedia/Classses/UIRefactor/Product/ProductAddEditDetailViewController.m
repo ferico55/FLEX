@@ -914,7 +914,7 @@
 {
     //_objectManagerActionAddProductPicture = [RKObjectManager sharedClient];
     NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generateHost.result.generated_host.upload_host];
-    RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
+    RKObjectManager *objectManager = [RKObjectManager sharedClientUploadImage:urlString];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductPicture class]];
@@ -933,6 +933,8 @@
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/upload-image-helper.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [objectManager addResponseDescriptor:responseDescriptor];
+    
+    NSLog(@"%@",objectManager);
     
     return objectManager;
 }
