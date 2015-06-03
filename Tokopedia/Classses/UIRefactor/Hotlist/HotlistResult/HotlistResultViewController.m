@@ -172,7 +172,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
     
-
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -529,6 +528,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];                
+            }
+                
+            case 12 : {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
             default:
                 break;

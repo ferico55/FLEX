@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -25,15 +25,34 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailProductInfoCellIdentifier" rowHeight="290" id="RcP-lh-rUh" customClass="DetailProductInfoCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="290"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailProductInfoCellIdentifier" rowHeight="339" id="RcP-lh-rUh" customClass="DetailProductInfoCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="339"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RcP-lh-rUh" id="C7Z-Y5-yyl">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="289"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rgf-ve-Kvl" userLabel="Product Information - View">
-                        <rect key="frame" x="10" y="20" width="300" height="232"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NPB-Bk-WX5">
+                        <rect key="frame" x="10" y="19" width="300" height="50"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_retur.png" translatesAutoresizingMaskIntoConstraints="NO" id="fvs-uY-hH7">
+                                <rect key="frame" x="20" y="10" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="cZK-us-Byg"/>
+                                    <constraint firstAttribute="width" constant="30" id="loq-GU-w7O"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.90980392156862744" green="0.96078431372549022" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="fvs-uY-hH7" secondAttribute="centerY" id="Byi-1I-gZp"/>
+                            <constraint firstItem="fvs-uY-hH7" firstAttribute="leading" secondItem="NPB-Bk-WX5" secondAttribute="leading" constant="20" id="coC-RT-PxS"/>
+                            <constraint firstAttribute="height" constant="50" id="el3-uT-JTc"/>
+                            <constraint firstAttribute="width" constant="300" id="yzi-wc-GaS"/>
+                        </constraints>
+                    </view>
+                    <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rgf-ve-Kvl" userLabel="Product Information - View">
+                        <rect key="frame" x="10" y="70" width="300" height="232"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pemesanan Min." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaN-Ue-d4K">
                                 <rect key="frame" x="10" y="9" width="108" height="21"/>
@@ -146,23 +165,42 @@
                                 </subviews>
                             </view>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="232" id="5Ke-tc-kZJ"/>
+                            <constraint firstAttribute="width" constant="300" id="Qzk-pM-cT1"/>
+                        </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="NPB-Bk-WX5" firstAttribute="top" secondItem="C7Z-Y5-yyl" secondAttribute="top" constant="19" id="1Nr-hz-iPw"/>
+                    <constraint firstItem="NPB-Bk-WX5" firstAttribute="leading" secondItem="C7Z-Y5-yyl" secondAttribute="leading" constant="10" id="Z4k-Rv-vRL"/>
+                    <constraint firstItem="Rgf-ve-Kvl" firstAttribute="leading" secondItem="C7Z-Y5-yyl" secondAttribute="leading" constant="10" id="bKR-pZ-6L0"/>
+                    <constraint firstAttribute="trailing" secondItem="Rgf-ve-Kvl" secondAttribute="trailing" constant="10" id="sAw-2v-ldQ"/>
+                    <constraint firstAttribute="trailing" secondItem="NPB-Bk-WX5" secondAttribute="trailing" constant="10" id="vWN-Vp-Y9E"/>
+                    <constraint firstItem="Rgf-ve-Kvl" firstAttribute="top" secondItem="NPB-Bk-WX5" secondAttribute="bottom" constant="1" id="yf7-MA-B2N"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="conditionlabel" destination="CyT-a6-icH" id="YwY-mm-xxt"/>
+                <outlet property="constraintHeightViewRetur" destination="el3-uT-JTc" id="Uwf-G4-rfK"/>
                 <outlet property="etalasebutton" destination="xd9-Yo-yUf" id="ZHT-ID-ij2"/>
+                <outlet property="imgRetur" destination="fvs-uY-hH7" id="CVW-A6-PW9"/>
                 <outlet property="insurancelabel" destination="qQQ-44-8y4" id="tYA-0a-vOk"/>
                 <outlet property="minorderlabel" destination="dVc-xU-9CT" id="1ex-tg-m4I"/>
                 <outlet property="productInformationView" destination="Rgf-ve-Kvl" id="OHh-77-4Gp"/>
+                <outlet property="viewRetur" destination="NPB-Bk-WX5" id="k8a-xB-Ryo"/>
                 <outlet property="weightlabel" destination="cc0-iw-hjh" id="3qM-eV-zXT"/>
                 <outletCollection property="categorybuttons" destination="RfU-qt-NEW" id="UJZ-c5-HtM"/>
                 <outletCollection property="categorybuttons" destination="FQH-9u-jNL" id="fYM-hu-5bJ"/>
                 <outletCollection property="categorybuttons" destination="Gwc-Y6-mxy" id="OPd-ZH-sPS"/>
             </connections>
+            <point key="canvasLocation" x="433" y="274.5"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon_retur.png" width="40" height="40"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
