@@ -114,6 +114,8 @@
     UIAlertView *_alertLoading;
     
     NSInteger _indexSelectedShipment;
+    
+    NSNumberFormatter *_IDRformatter;
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
@@ -288,6 +290,14 @@
     
     _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     _popFromShipment = NO;
+    
+    _IDRformatter = [[NSNumberFormatter alloc] init];
+    _IDRformatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    _IDRformatter.currencyCode = @"Rp ";
+    _IDRformatter.currencyGroupingSeparator = @".";
+    _IDRformatter.currencyDecimalSeparator = @",";
+    _IDRformatter.maximumFractionDigits = 0;
+    _IDRformatter.minimumFractionDigits = 0;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -744,7 +754,7 @@
 
                     
                     _cart.grand_total = [NSString stringWithFormat:@"%zd", totalInteger];
-                    _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
+                    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
                     
                     [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
                     
@@ -867,7 +877,7 @@
 
         _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
         
-        _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+        _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
         
         _saldoTokopediaAmountTextField.text = @"";
         
@@ -1318,7 +1328,7 @@
         
         _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
         
-        _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+        _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
         
         _saldoTokopediaAmountTextField.text = @"";
         
@@ -1498,7 +1508,7 @@
             }
             
             _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
-            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+            _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
             _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
             
             NSString *depositAmount = [textFieldRemoveOneChar stringByReplacingOccurrencesOfString:@"." withString:@""];
@@ -1537,7 +1547,7 @@
             
             NSLog(@"%zd",deposit);
             _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
-            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+            _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
             [_dataInput setObject:@(deposit) forKey:DATA_USED_SALDO_KEY];
             
             _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
@@ -1640,19 +1650,6 @@
     [_stockPartialDetail addObject:@(0)];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-}
-
--(NSNumberFormatter*)grandTotalFormater
-{
-    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    formatter.currencyCode = @"Rp ";
-    formatter.currencyGroupingSeparator = @".";
-    formatter.currencyDecimalSeparator = @",";
-    formatter.maximumFractionDigits = 0;
-    formatter.minimumFractionDigits = 0;
-    
-    return formatter;
 }
 
 -(NSInteger)depositAmountUser
@@ -1788,7 +1785,7 @@
     view.infoButton.hidden = ([list.cart_logistic_fee integerValue]==0);
     [view.subtotalLabel setText:list.cart_total_product_price_idr animated:YES];
     NSInteger aditionalFeeValue = [list.cart_logistic_fee integerValue]+[list.cart_insurance_price integerValue];
-    NSString *formatAdditionalFeeValue = [NSString stringWithFormat:@"Rp %zd,-",aditionalFeeValue];
+    NSString *formatAdditionalFeeValue = [_IDRformatter stringFromNumber:@(aditionalFeeValue)];
     [view.insuranceLabel setText:formatAdditionalFeeValue animated:YES];
     [view.shippingCostLabel setText:list.cart_shipping_rate_idr animated:YES];
     [view.totalLabel setText:list.cart_total_amount_idr animated:YES];
@@ -2723,7 +2720,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
     
     
     _refreshFromShipment = NO;
@@ -3108,16 +3105,8 @@
             _voucherCodeButton.hidden = YES;
             _voucherAmountLabel.hidden = NO;
             
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-            formatter.currencyCode = @"Rp ";
-            formatter.currencyGroupingSeparator = @".";
-            formatter.currencyDecimalSeparator = @",";
-            formatter.maximumFractionDigits = 0;
-            formatter.minimumFractionDigits = 0;
-            
             NSInteger voucher = [dataVoucher.result.data_voucher.voucher_amount integerValue];
-            NSString *voucherString = [formatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
+            NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
             voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
             _voucherAmountLabel.text = voucherString;
             _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
@@ -3145,7 +3134,7 @@
                 totalInteger = 0;
             }
             _cart.grand_total = [NSString stringWithFormat:@"%zd",totalInteger];
-            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
+            _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
             [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
             [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
             [_tableView reloadData];
