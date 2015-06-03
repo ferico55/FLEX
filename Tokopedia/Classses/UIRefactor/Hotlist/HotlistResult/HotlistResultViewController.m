@@ -172,13 +172,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
     
-    
-    if([_data objectForKey:kTKPDHOME_DATAISSEARCHHOTLISTKEY]) {
-        UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        leftBarButton.tag = 12;
-        self.navigationItem.leftBarButtonItem = leftBarButton;
-    }
-
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];

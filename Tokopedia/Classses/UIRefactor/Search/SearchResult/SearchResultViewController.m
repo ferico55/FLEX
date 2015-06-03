@@ -198,6 +198,7 @@ LoadingViewDelegate
             [self request];
         }
     }
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -661,25 +662,7 @@ LoadingViewDelegate
                 
                 // Redirect URI to hotlist
                 if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
-                    
-                    HotlistResultViewController *vc = [HotlistResultViewController new];
-                    vc.data = @{
-                                kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES),
-                                kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]
-                                };
-                    
-
-//
-//                    if ([self.delegate respondsToSelector:@selector(pushViewController:animated:)]) {
-//                        [self.delegate pushViewController:vc animated:NO];
-//                    }
-//                    
-//                    vc.delegate = self;
-                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                    [self.navigationController presentViewController:nav animated:YES completion:nil];
-                    
-                    [self.navigationController popViewControllerAnimated:NO];
-                    
+                    [self redirectToHotlistResult];
                 }
                 // redirect uri to search category
                 if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
@@ -702,11 +685,28 @@ LoadingViewDelegate
     }
 }
 
+- (void)redirectToHotlistResult
+{
+    NSURL *url = [NSURL URLWithString:_uriredirect];
+    NSArray* query = [[url path] componentsSeparatedByString: @"/"];
+    
+    HotlistResultViewController *vc = [HotlistResultViewController new];
+    vc.data = @{
+                kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES),
+                kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]
+                };
+
+    vc.hidesBottomBarWhenPushed = YES;
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+
+    self.navigationController.viewControllers = viewControllers;
+}
+
 -(void)requesttimeout
 {
     [self cancel];
 }
-
 
 #pragma mark - Cell Delegate
 -(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
