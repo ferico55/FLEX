@@ -122,7 +122,7 @@
     _networkManager.delegate = self;
     
     _page = 1;
-    _limit = kTKPDDETAILDEFAULT_LIMITPAGE;
+    _limit = 8;
     
     /// adjust refresh control
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -545,6 +545,7 @@
             
             if (_page == 1) {
                 [_list removeAllObjects];
+                [_table setContentOffset:CGPointZero animated:YES];
             }
             
             [_list addObjectsFromArray:list];
@@ -799,8 +800,6 @@
 #pragma mark - Sort Delegate
 -(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    [_list removeAllObjects];
-    [self.table reloadData];
     [_dataFilter addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
 }
@@ -932,9 +931,7 @@
     _requestcount = 0;
     _page = 1;
     
-    [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-    [_networkManager doRequest];
+    [self refreshView:_refreshControl];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

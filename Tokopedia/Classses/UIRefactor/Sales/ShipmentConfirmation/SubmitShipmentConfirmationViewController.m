@@ -5,7 +5,7 @@
 //  Created by Feizal Badri Asmoro on 2/3/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
+#import "BarCodeViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "GeneralTableViewController.h"
 #import "StickyAlertView.h"
@@ -20,6 +20,7 @@
     UITableViewDataSource,
     UITableViewDelegate,
     GeneralTableViewControllerDelegate,
+    BarCodeDelegate,
     ZBarReaderDelegate
 >
 {
@@ -28,7 +29,7 @@
     ShipmentCourier *_selectedCourier;
     ShipmentCourierPackage *_selectedCourierPackage;
     ZBarReaderViewController *codeReader;
-    
+
     NSString *strNoResi;
     BOOL _shouldReloadData;
 
@@ -268,36 +269,49 @@
     }];
 }
 
+- (void)addOverlayCamera:(UIView *)parentView withFrame:(CGRect)rectFrame cancelDelegate:(UIViewController *)delegate
+{
+    UIView *overLayView = [[UIView alloc] initWithFrame:rectFrame];
+    overLayView.backgroundColor = [UIColor lightGrayColor];
+    
+    int diameterCancel = 10;
+    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnCancel.frame = CGRectMake(diameterCancel, diameterCancel, overLayView.bounds.size.height-(diameterCancel*2), overLayView.bounds.size.height-(diameterCancel*2));
+    btnCancel.layer.borderColor = [btnCancel.titleLabel.textColor CGColor];
+    btnCancel.layer.borderWidth = 1.0f;
+    btnCancel.layer.cornerRadius = (btnCancel.bounds.size.height-diameterCancel)/2.0f;
+    btnCancel.layer.masksToBounds = YES;
+    [btnCancel addTarget:delegate action:@selector(cancelCamera:) forControlEvents:UIControlEventTouchUpInside];
+    [btnCancel setTitle:@"X" forState:UIControlStateNormal];
+    [overLayView addSubview:btnCancel];
+    [parentView addSubview:overLayView];
+}
+
 - (void)showCameraCode:(id)sender
 {
-    codeReader = [ZBarReaderViewController new];
-    codeReader.readerDelegate = self;
-    codeReader.supportedOrientationsMask = ZBarOrientationMaskAll;
-    codeReader.showsZBarControls = NO;
-    codeReader.showsCameraControls = NO;
-    
-    
-    ZBarImageScanner *scanner = codeReader.scanner;
-    [scanner setSymbology: ZBAR_CODE128 config: ZBAR_CFG_ENABLE to: 0];
-    [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];
-    
-    [self presentViewController:codeReader animated:YES completion:^{
-        UIView *overLayView = [[UIView alloc] initWithFrame:CGRectMake(0, codeReader.view.bounds.size.height-50, self.view.bounds.size.width, 50)];
-        overLayView.backgroundColor = [UIColor lightGrayColor];
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        BarCodeViewController *barCodeViewController = [BarCodeViewController new];
+        barCodeViewController.delegate = self;
+        [self presentViewController:barCodeViewController animated:YES completion:^{
+            [self addOverlayCamera:barCodeViewController.view withFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-50, self.view.bounds.size.width, 50) cancelDelegate:barCodeViewController];
+        }];
+    }
+    else {
+        codeReader = [ZBarReaderViewController new];
+        codeReader.readerDelegate = self;
+        codeReader.supportedOrientationsMask = ZBarOrientationMaskAll;
+        codeReader.showsZBarControls = NO;
+        codeReader.showsCameraControls = NO;
         
-        int diameterCancel = 10;
-        UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
-        btnCancel.frame = CGRectMake(diameterCancel, diameterCancel, overLayView.bounds.size.height-(diameterCancel*2), overLayView.bounds.size.height-(diameterCancel*2));
-        btnCancel.layer.borderColor = [btnCancel.titleLabel.textColor CGColor];
-        btnCancel.layer.borderWidth = 1.0f;
-        btnCancel.layer.cornerRadius = (btnCancel.bounds.size.height-diameterCancel)/2.0f;
-        btnCancel.layer.masksToBounds = YES;
-        [btnCancel addTarget:self action:@selector(cancelCamera:) forControlEvents:UIControlEventTouchUpInside];
-        [btnCancel setTitle:@"X" forState:UIControlStateNormal];
-        [overLayView addSubview:btnCancel];
         
-        [codeReader.view addSubview:overLayView];
-    }];
+        ZBarImageScanner *scanner = codeReader.scanner;
+        [scanner setSymbology: ZBAR_CODE128 config: ZBAR_CFG_ENABLE to: 0];
+        [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];
+        
+        [self presentViewController:codeReader animated:YES completion:^{
+            [self addOverlayCamera:codeReader.view withFrame:CGRectMake(0, codeReader.view.bounds.size.height-50, self.view.bounds.size.width, 50) cancelDelegate:self];
+        }];
+    }
 }
 
 - (IBAction)tap:(id)sender
@@ -463,4 +477,15 @@
 {
 }
 
+
+#pragma mark - BarCode Delegate
+- (void)didFinishScan:(NSString *)strResult
+{
+    if(strResult != nil) {
+        strNoResi = strResult;
+        [_tableView reloadData];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

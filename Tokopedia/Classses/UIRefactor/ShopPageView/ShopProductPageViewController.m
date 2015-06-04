@@ -771,6 +771,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             
             if (status) {
                 
+                if (_page == 1) {
+                    [_product removeAllObjects];
+                    [_table setContentOffset:CGPointZero animated:YES];
+                }
+                
                 [_product addObjectsFromArray: _searchitem.result.list];
                 
                 if (_product.count > 0) {
@@ -849,11 +854,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     /** clear object **/
     [self cancel];
     _requestCount = 0;
-    [_product removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     
-    [_table reloadData];
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    
     /** request data **/
     [self configureRestKit];
     [self loadData];
@@ -1061,10 +1067,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 #pragma mark - Filter Delegate
 -(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-//-(void)setDepartmentID:(NSNotification*)notification
 {
     [self cancel];
-    //NSDictionary* userinfo = notification.userInfo;
     [_detailfilter setObject:[userInfo objectForKey:DATA_ETALASE_KEY]?:@""
                       forKey:DATA_ETALASE_KEY];
     
