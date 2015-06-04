@@ -23,6 +23,7 @@
     AVCaptureMetadataOutput *deviceOutput;
     AVCaptureVideoPreviewLayer *previewLayer;
     
+    NSTimer *timerSchedule;
     int nCountBarcode;
 }
 
@@ -54,12 +55,26 @@
     
     deviceOutput.metadataObjectTypes = [deviceOutput availableMetadataObjectTypes];
     previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:session];
-    previewLayer.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-50);
+    previewLayer.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     
     [self.view.layer addSublayer:previewLayer];
     [session startRunning];
     [self.view bringSubviewToFront:viewDetectionBarCode];
+    
+    
+    
+    UIView *blurTop = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 50)];
+    UIView *blurBottom = [[UIView alloc] initWithFrame:CGRectMake(0, previewLayer.bounds.size.height-100, self.view.bounds.size.width, 50)];
+    UIView *blurLeft = [[UIView alloc] initWithFrame:CGRectMake(0, 50, 50, blurBottom.frame.origin.y-50)];
+    UIView *blurRight = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-blurLeft.bounds.size.width, blurLeft.frame.origin.y, blurLeft.bounds.size.width, blurLeft.bounds.size.height)];
+    
+    blurTop.alpha = blurBottom.alpha = blurLeft.alpha = blurRight.alpha = 0.7f;
+    blurTop.backgroundColor = blurBottom.backgroundColor = blurLeft.backgroundColor = blurRight.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:blurTop];
+    [self.view addSubview:blurBottom];
+    [self.view addSubview:blurLeft];
+    [self.view addSubview:blurRight];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,10 +105,21 @@
     [_delegate didFinishScan:nil];
 }
 
+- (void)timeoutReach:(id)sender
+{
+    nCountBarcode = 0;
+    viewDetectionBarCode.frame = CGRectZero;
+    [timerSchedule invalidate];
+    timerSchedule = nil;
+}
 
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
+    [timerSchedule invalidate];
+    timerSchedule = nil;
+    timerSchedule = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(timeoutReach:) userInfo:nil repeats:NO];
+
     CGRect highlightViewRect = CGRectZero;
     AVMetadataMachineReadableCodeObject *barCodeObject;
     NSString *detectionString = nil;
@@ -117,7 +143,8 @@
         }
     }
     
-    if(nCountBarcode==30 && detectionString!=nil) {
+    if(nCountBarcode>=30 && detectionString!=nil) {
+        [self timeoutReach:nil];
         [self clearObjectBarcode];
         [_delegate didFinishScan:detectionString];
     }
