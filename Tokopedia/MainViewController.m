@@ -532,7 +532,7 @@ typedef enum TagRequest {
 
 - (void)doApplicationLogout {
     
-    _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Logging out"
+    _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Tunggu sebentar.."
                                                      message:nil
                                                     delegate:self
                                            cancelButtonTitle:nil
