@@ -23,6 +23,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
+#import "AppsFlyerTracker.h"
+
 
 @interface LoginViewController () <FBLoginViewDelegate, LoginViewDelegate, CreatePasswordDelegate> {
     
@@ -496,6 +498,8 @@
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
             [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
             
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+            
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -524,6 +528,8 @@
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
             [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
@@ -582,6 +588,8 @@
                                                                   action:@"User Sign In"  // Event action (required)
                                                                    label:nil              // Event label
                                                                    value:nil] build]];    // Event value
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
             
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];

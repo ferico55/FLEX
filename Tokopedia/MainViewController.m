@@ -8,7 +8,6 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 
-#import "Helpshift.h"
 
 #import "MainViewController.h"
 #import "LoginViewController.h"
@@ -536,8 +535,6 @@ typedef enum TagRequest {
                                            cancelButtonTitle:nil
                                            otherButtonTitles:nil, nil];
     [_logingOutAlertView show];
-    
-    [Helpshift logout];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
                                                         object:nil];

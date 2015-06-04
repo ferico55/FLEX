@@ -153,6 +153,7 @@
     if ([self.delegate respondsToSelector:@selector(viewController:numberOfProcessedOrder:)]) {
         [self.delegate viewController:self numberOfProcessedOrder:_numberOfProcessedOrder];
     }
+    [_actionRequest cancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -290,6 +291,7 @@
     SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
     controller.delegate = self;
     controller.shipmentCouriers = _shipmentCouriers;
+    controller.order = _selectedOrder;
     navigationController.viewControllers = @[controller];
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -940,6 +942,21 @@
 - (void)requestShipmentCourierError
 {
     
+}
+
+- (void)successConfirmOrder:(OrderTransaction *)order
+{
+    NSInteger index = [_orders indexOfObject:order];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    [_orders removeObject:order];
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    if (_orders.count == 0) {
+        CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+        NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+        _tableView.tableFooterView = noResultView;
+        _tableView.sectionFooterHeight = noResultView.frame.size.height;
+    }
 }
 
 @end
