@@ -12,7 +12,7 @@
 @protocol ProductListMyShopFilterDelegate <NSObject>
 
 - (void)filterProductEtalase:(EtalaseList *)etalase
-                  department:(NSString *)department
+                  department:(Breadcrumb *)department
                      catalog:(NSString *)catalog
                      picture:(NSString *)picture
                    condition:(NSString *)condition;
@@ -23,5 +23,6 @@
 
 @property (weak, nonatomic) id<ProductListMyShopFilterDelegate> delegate;
 @property (strong, nonatomic) NSString *shopID;
+@property Breadcrumb *breadcrumb;
 
 @end

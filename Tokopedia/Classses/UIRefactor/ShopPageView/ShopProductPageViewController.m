@@ -228,7 +228,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _table.tableFooterView = _footer;
     
     
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshRequest:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
     if (_list.count > 0) {
@@ -262,6 +262,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                forState:UIControlStateNormal];
     }}
+    
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(refreshView:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -694,7 +698,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         [self requestSuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
         [_table reloadData];
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
         [_timer invalidate];
         _timer = nil;
         _isrefreshview = NO;
@@ -710,7 +714,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         }
 
         [_act stopAnimating];
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
         [_timer invalidate];
         _timer = nil;
         _isrefreshview = NO;
@@ -727,6 +731,14 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 
 
+}
+
+-(void)endRefreshing
+{
+    if (_refreshControl.isRefreshing) {
+        [_table setContentOffset:CGPointZero animated:YES];
+        [_refreshControl endRefreshing];
+    }
 }
 
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -829,6 +841,14 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 
 #pragma mark - Refresh View
+-(void)refreshRequest:(NSNotification*)notification
+{
+    _page = 1;
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    [self refreshView:_refreshControl];
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
