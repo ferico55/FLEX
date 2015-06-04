@@ -840,6 +840,13 @@
 
 - (void)updateProfilePicture:(NSNotification *)notification
 {
+    NSDictionary *userInfo = notification.userInfo;
+    
+    NSString *strAvatar = [userInfo objectForKey:@"file_th"]?:@"";
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:strAvatar withKey:@"user_image"];
+    _auth = [[secureStorage keychainDictionary] mutableCopy];
+    
     UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
     _profilePictureImageView.image = profilePicture;
 }
