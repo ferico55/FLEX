@@ -1330,7 +1330,7 @@
     return @{
              @"action" : _reportAction,
              @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-             @"comment_id" : [_datainput objectForKey:@"comment_id"]?:@(0),
+             @"talk_comment_id" : [_datainput objectForKey:@"comment_id"]?:@(0),
              @"product_id" : [_data objectForKey:@"product_id"],
              };
 }
