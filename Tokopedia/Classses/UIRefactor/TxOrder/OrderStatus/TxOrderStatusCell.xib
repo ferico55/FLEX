@@ -409,7 +409,7 @@
                                             <constraint firstAttribute="height" constant="1" id="1i6-OD-Z9U"/>
                                         </constraints>
                                     </view>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="df7-3O-XrJ" customClass="TextMenu">
+                                    <textView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="df7-3O-XrJ" customClass="TextMenu">
                                         <rect key="frame" x="10" y="28" width="256" height="70"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
