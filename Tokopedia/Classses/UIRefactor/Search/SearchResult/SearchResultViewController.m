@@ -637,6 +637,7 @@ LoadingViewDelegate
                 }
                 if (_page == 1) {
                     [_product removeAllObjects];
+                    [_table setContentOffset:CGPointZero animated:YES];
                 }
                 [_product addObjectsFromArray: _searchitem.result.list];
                 
@@ -669,9 +670,8 @@ LoadingViewDelegate
                     _isnodata = NO;
                     [_table reloadData];
                 }
-                
-            }
-            else{
+            
+            } else {
                 _uriredirect =  uriredirect;
                 NSURL *url = [NSURL URLWithString:_uriredirect];
                 NSArray* query = [[url path] componentsSeparatedByString: @"/"];
@@ -899,6 +899,9 @@ LoadingViewDelegate
     _isrefreshview = YES;
     _requestcount = 0;
     
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    
     [_table reloadData];
     [self request];
 }
@@ -907,7 +910,6 @@ LoadingViewDelegate
 -(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     [_params addEntriesFromDictionary:userInfo];
-    [_product removeAllObjects];
     [self refreshView:nil];
     _table.tableFooterView = _footer;
     [_act startAnimating];

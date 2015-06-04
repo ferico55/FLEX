@@ -221,6 +221,13 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                forState:UIControlStateNormal];
     }
+    
+    /// adjust refresh control
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -376,17 +383,19 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 - (GeneralProductCell *)tableView:(UITableView *)tableView twoColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GeneralProductCell* cell = nil;
-
     NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
     
-    cell = (GeneralProductCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+    GeneralProductCell *cell = (GeneralProductCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [GeneralProductCell newcell];
         cell.delegate = self;
     }
     
     [self reset:cell];
+    
+    for (UIView *viewCell in cell.viewcell) {
+        viewCell.hidden = YES;
+    }
     
     if (_product.count > indexPath.row) {
         /** Flexible view count **/
@@ -449,7 +458,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         cell = [GeneralPhotoProductCell initCell];
         cell.delegate = self;
     }
-    
     
     NSUInteger indexsegment = indexPath.row * 3;
     NSUInteger indexmax = indexsegment + 3;
@@ -949,6 +957,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 
                 if (_page == 1) {
                     [_product removeAllObjects];
+                    [self.table setContentOffset:CGPointZero animated:YES];
                 }
                 
                 [_product addObjectsFromArray: _hotlistdetail.result.list];
@@ -1161,6 +1170,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
+    
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
     [self configureRestKit];
     [self request];
