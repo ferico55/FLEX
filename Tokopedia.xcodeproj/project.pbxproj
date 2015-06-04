@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		7A84DE9F1B1E9F3400741F0D /* libAppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */; };
+		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1426,42 +1429,8 @@
 		FC7645D71B15E2830034A8F1 /* icon_upload_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763FEC1B15E2810034A8F1 /* icon_upload_image@2x.png */; };
 		FC7645D81B15E2830034A8F1 /* transparent_navigationbar.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763FED1B15E2810034A8F1 /* transparent_navigationbar.png */; };
 		FC7645D91B15E2830034A8F1 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC763FFA1B15E2810034A8F1 /* libGoogleAnalyticsServices.a */; };
-		FC7645DA1B15E2830034A8F1 /* HelpshiftLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC763FFE1B15E2810034A8F1 /* HelpshiftLocalizable.strings */; };
-		FC7645DB1B15E2830034A8F1 /* HS-Attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640131B15E2810034A8F1 /* HS-Attachment.png */; };
-		FC7645DC1B15E2830034A8F1 /* HS-Attachment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640141B15E2810034A8F1 /* HS-Attachment@2x.png */; };
-		FC7645DD1B15E2830034A8F1 /* HS-Attachment@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640151B15E2810034A8F1 /* HS-Attachment@3x.png */; };
-		FC7645DE1B15E2830034A8F1 /* HS-camera-button.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640161B15E2810034A8F1 /* HS-camera-button.png */; };
-		FC7645DF1B15E2830034A8F1 /* HS-camera-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640171B15E2810034A8F1 /* HS-camera-button@2x.png */; };
-		FC7645E01B15E2830034A8F1 /* HS-camera-button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640181B15E2810034A8F1 /* HS-camera-button@3x.png */; };
-		FC7645E11B15E2830034A8F1 /* HS-delete-button.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640191B15E2810034A8F1 /* HS-delete-button.png */; };
-		FC7645E21B15E2830034A8F1 /* HS-delete-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76401A1B15E2810034A8F1 /* HS-delete-button@2x.png */; };
-		FC7645E31B15E2830034A8F1 /* HS-delete-button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76401B1B15E2810034A8F1 /* HS-delete-button@3x.png */; };
-		FC7645E41B15E2830034A8F1 /* HS-no-connection.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76401C1B15E2810034A8F1 /* HS-no-connection.png */; };
-		FC7645E51B15E2830034A8F1 /* HS-no-connection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76401D1B15E2810034A8F1 /* HS-no-connection@2x.png */; };
-		FC7645E61B15E2830034A8F1 /* HS-powered-by-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76401E1B15E2810034A8F1 /* HS-powered-by-logo.png */; };
-		FC7645E71B15E2830034A8F1 /* HS-powered-by-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76401F1B15E2810034A8F1 /* HS-powered-by-logo@2x.png */; };
-		FC7645E81B15E2830034A8F1 /* HS-powered-by-logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640201B15E2810034A8F1 /* HS-powered-by-logo@3x.png */; };
-		FC7645E91B15E2830034A8F1 /* HS-screenshot-error.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640211B15E2810034A8F1 /* HS-screenshot-error.png */; };
-		FC7645EA1B15E2830034A8F1 /* HS-screenshot-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640221B15E2810034A8F1 /* HS-screenshot-error@2x.png */; };
-		FC7645EB1B15E2830034A8F1 /* HSChatBubbleBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640231B15E2810034A8F1 /* HSChatBubbleBlue.png */; };
-		FC7645EC1B15E2830034A8F1 /* HSChatBubbleBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640241B15E2810034A8F1 /* HSChatBubbleBlue@2x.png */; };
-		FC7645ED1B15E2830034A8F1 /* HSChatBubbleBlue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640251B15E2810034A8F1 /* HSChatBubbleBlue@3x.png */; };
-		FC7645EE1B15E2830034A8F1 /* HSChatBubbleWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640261B15E2810034A8F1 /* HSChatBubbleWhite.png */; };
-		FC7645EF1B15E2830034A8F1 /* HSChatBubbleWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640271B15E2810034A8F1 /* HSChatBubbleWhite@2x.png */; };
-		FC7645F01B15E2830034A8F1 /* HSChatBubbleWhite@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640281B15E2820034A8F1 /* HSChatBubbleWhite@3x.png */; };
-		FC7645F11B15E2830034A8F1 /* HSConfirmBox.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640291B15E2820034A8F1 /* HSConfirmBox.png */; };
-		FC7645F21B15E2830034A8F1 /* HSConfirmBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76402A1B15E2820034A8F1 /* HSConfirmBox@2x.png */; };
-		FC7645F31B15E2830034A8F1 /* HSTutorial.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76402B1B15E2820034A8F1 /* HSTutorial.png */; };
-		FC7645F41B15E2830034A8F1 /* HSTutorial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76402C1B15E2820034A8F1 /* HSTutorial@2x.png */; };
-		FC7645F51B15E2830034A8F1 /* HSTutorial@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76402D1B15E2820034A8F1 /* HSTutorial@3x.png */; };
-		FC7645F61B15E2830034A8F1 /* HSTutorialiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76402E1B15E2820034A8F1 /* HSTutorialiPad.png */; };
-		FC7645F71B15E2830034A8F1 /* HSTutorialiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76402F1B15E2820034A8F1 /* HSTutorialiPad@2x.png */; };
-		FC7645F81B15E2830034A8F1 /* HSTutorialiPad@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640301B15E2820034A8F1 /* HSTutorialiPad@3x.png */; };
-		FC7645F91B15E2830034A8F1 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = FC7640321B15E2820034A8F1 /* HelpshiftConfig.plist */; };
-		FC7645FA1B15E2830034A8F1 /* libHelpshift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC7640331B15E2820034A8F1 /* libHelpshift.a */; };
 		FC7645FB1B15E2830034A8F1 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7640351B15E2820034A8F1 /* HPGrowingTextView.m */; };
 		FC7645FC1B15E2830034A8F1 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7640371B15E2820034A8F1 /* HPTextViewInternal.m */; };
-		FC7645FD1B15E2830034A8F1 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC7640381B15E2820034A8F1 /* libGoogleAnalyticsServices.a */; };
 		FC7645FE1B15E2830034A8F1 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FC76403A1B15E2820034A8F1 /* MarqueeLabel.m */; };
 		FC7645FF1B15E2830034A8F1 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = FC76403C1B15E2820034A8F1 /* LICENSE */; };
 		FC7646001B15E2830034A8F1 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FC76403F1B15E2820034A8F1 /* MGSwipeButton.m */; };
@@ -1494,6 +1463,10 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7A84DE9D1B1E9F3400741F0D /* AppsFlyerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerTracker.h; sourceTree = "<group>"; };
+		7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
+		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -3630,63 +3603,10 @@
 		FC763FF81B15E2810034A8F1 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		FC763FF91B15E2810034A8F1 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		FC763FFA1B15E2810034A8F1 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		FC763FFC1B15E2810034A8F1 /* Helpshift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpshift.h; sourceTree = "<group>"; };
-		FC763FFF1B15E2810034A8F1 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640001B15E2810034A8F1 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640011B15E2810034A8F1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640021B15E2810034A8F1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640031B15E2810034A8F1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640041B15E2810034A8F1 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640051B15E2810034A8F1 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640061B15E2810034A8F1 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640071B15E2810034A8F1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640081B15E2810034A8F1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640091B15E2810034A8F1 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC76400A1B15E2810034A8F1 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC76400B1B15E2810034A8F1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC76400C1B15E2810034A8F1 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC76400D1B15E2810034A8F1 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC76400E1B15E2810034A8F1 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC76400F1B15E2810034A8F1 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
-		FC7640101B15E2810034A8F1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/HelpshiftLocalizable.strings"; sourceTree = "<group>"; };
-		FC7640111B15E2810034A8F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/HelpshiftLocalizable.strings"; sourceTree = "<group>"; };
-		FC7640131B15E2810034A8F1 /* HS-Attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-Attachment.png"; sourceTree = "<group>"; };
-		FC7640141B15E2810034A8F1 /* HS-Attachment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-Attachment@2x.png"; sourceTree = "<group>"; };
-		FC7640151B15E2810034A8F1 /* HS-Attachment@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-Attachment@3x.png"; sourceTree = "<group>"; };
-		FC7640161B15E2810034A8F1 /* HS-camera-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-camera-button.png"; sourceTree = "<group>"; };
-		FC7640171B15E2810034A8F1 /* HS-camera-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-camera-button@2x.png"; sourceTree = "<group>"; };
-		FC7640181B15E2810034A8F1 /* HS-camera-button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-camera-button@3x.png"; sourceTree = "<group>"; };
-		FC7640191B15E2810034A8F1 /* HS-delete-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-delete-button.png"; sourceTree = "<group>"; };
-		FC76401A1B15E2810034A8F1 /* HS-delete-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-delete-button@2x.png"; sourceTree = "<group>"; };
-		FC76401B1B15E2810034A8F1 /* HS-delete-button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-delete-button@3x.png"; sourceTree = "<group>"; };
-		FC76401C1B15E2810034A8F1 /* HS-no-connection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-no-connection.png"; sourceTree = "<group>"; };
-		FC76401D1B15E2810034A8F1 /* HS-no-connection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-no-connection@2x.png"; sourceTree = "<group>"; };
-		FC76401E1B15E2810034A8F1 /* HS-powered-by-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-powered-by-logo.png"; sourceTree = "<group>"; };
-		FC76401F1B15E2810034A8F1 /* HS-powered-by-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-powered-by-logo@2x.png"; sourceTree = "<group>"; };
-		FC7640201B15E2810034A8F1 /* HS-powered-by-logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-powered-by-logo@3x.png"; sourceTree = "<group>"; };
-		FC7640211B15E2810034A8F1 /* HS-screenshot-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-screenshot-error.png"; sourceTree = "<group>"; };
-		FC7640221B15E2810034A8F1 /* HS-screenshot-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-screenshot-error@2x.png"; sourceTree = "<group>"; };
-		FC7640231B15E2810034A8F1 /* HSChatBubbleBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSChatBubbleBlue.png; sourceTree = "<group>"; };
-		FC7640241B15E2810034A8F1 /* HSChatBubbleBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSChatBubbleBlue@2x.png"; sourceTree = "<group>"; };
-		FC7640251B15E2810034A8F1 /* HSChatBubbleBlue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSChatBubbleBlue@3x.png"; sourceTree = "<group>"; };
-		FC7640261B15E2810034A8F1 /* HSChatBubbleWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSChatBubbleWhite.png; sourceTree = "<group>"; };
-		FC7640271B15E2810034A8F1 /* HSChatBubbleWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSChatBubbleWhite@2x.png"; sourceTree = "<group>"; };
-		FC7640281B15E2820034A8F1 /* HSChatBubbleWhite@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSChatBubbleWhite@3x.png"; sourceTree = "<group>"; };
-		FC7640291B15E2820034A8F1 /* HSConfirmBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSConfirmBox.png; sourceTree = "<group>"; };
-		FC76402A1B15E2820034A8F1 /* HSConfirmBox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSConfirmBox@2x.png"; sourceTree = "<group>"; };
-		FC76402B1B15E2820034A8F1 /* HSTutorial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSTutorial.png; sourceTree = "<group>"; };
-		FC76402C1B15E2820034A8F1 /* HSTutorial@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSTutorial@2x.png"; sourceTree = "<group>"; };
-		FC76402D1B15E2820034A8F1 /* HSTutorial@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSTutorial@3x.png"; sourceTree = "<group>"; };
-		FC76402E1B15E2820034A8F1 /* HSTutorialiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSTutorialiPad.png; sourceTree = "<group>"; };
-		FC76402F1B15E2820034A8F1 /* HSTutorialiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSTutorialiPad@2x.png"; sourceTree = "<group>"; };
-		FC7640301B15E2820034A8F1 /* HSTutorialiPad@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSTutorialiPad@3x.png"; sourceTree = "<group>"; };
-		FC7640321B15E2820034A8F1 /* HelpshiftConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfig.plist; sourceTree = "<group>"; };
-		FC7640331B15E2820034A8F1 /* libHelpshift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHelpshift.a; sourceTree = "<group>"; };
 		FC7640341B15E2820034A8F1 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		FC7640351B15E2820034A8F1 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		FC7640361B15E2820034A8F1 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
 		FC7640371B15E2820034A8F1 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
-		FC7640381B15E2820034A8F1 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
 		FC7640391B15E2820034A8F1 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
 		FC76403A1B15E2820034A8F1 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
 		FC76403C1B15E2820034A8F1 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -3736,18 +3656,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */,
+				7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */,
 				853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */,
 				853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */,
 				FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */,
 				853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */,
 				853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */,
 				853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */,
+				7A84DE9F1B1E9F3400741F0D /* libAppsFlyerLib.a in Frameworks */,
 				854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */,
 				85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */,
 				85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */,
 				85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
-				FC7645FD1B15E2830034A8F1 /* libGoogleAnalyticsServices.a in Frameworks */,
 				85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */,
 				FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
@@ -3759,7 +3681,6 @@
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
 				FC7645D91B15E2830034A8F1 /* libGoogleAnalyticsServices.a in Frameworks */,
 				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
-				FC7645FA1B15E2830034A8F1 /* libHelpshift.a in Frameworks */,
 				FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3790,6 +3711,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7A84DE9C1B1E9F3400741F0D /* Appsflyer */ = {
+			isa = PBXGroup;
+			children = (
+				7A84DE9D1B1E9F3400741F0D /* AppsFlyerTracker.h */,
+				7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */,
+			);
+			path = Appsflyer;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -3813,6 +3743,8 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A84DEA21B1EA0C100741F0D /* iAd.framework */,
+				7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */,
 				853A22331ADD0AE300DD1508 /* libiconv.dylib */,
 				853A22311ADD0ADB00DD1508 /* AVFoundation.framework */,
 				853A222F1ADD0AC800DD1508 /* CoreMedia.framework */,
@@ -7813,13 +7745,12 @@
 		FC763FEE1B15E2810034A8F1 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7A84DE9C1B1E9F3400741F0D /* Appsflyer */,
 				FC763FEF1B15E2810034A8F1 /* GoogleAnalytics */,
-				FC763FFB1B15E2810034A8F1 /* Helpshift */,
 				FC7640341B15E2820034A8F1 /* HPGrowingTextView.h */,
 				FC7640351B15E2820034A8F1 /* HPGrowingTextView.m */,
 				FC7640361B15E2820034A8F1 /* HPTextViewInternal.h */,
 				FC7640371B15E2820034A8F1 /* HPTextViewInternal.m */,
-				FC7640381B15E2820034A8F1 /* libGoogleAnalyticsServices.a */,
 				FC7640391B15E2820034A8F1 /* MarqueeLabel.h */,
 				FC76403A1B15E2820034A8F1 /* MarqueeLabel.m */,
 				FC76403B1B15E2820034A8F1 /* MGSwipeTableCell */,
@@ -7844,71 +7775,6 @@
 				FC763FFA1B15E2810034A8F1 /* libGoogleAnalyticsServices.a */,
 			);
 			path = GoogleAnalytics;
-			sourceTree = "<group>";
-		};
-		FC763FFB1B15E2810034A8F1 /* Helpshift */ = {
-			isa = PBXGroup;
-			children = (
-				FC763FFC1B15E2810034A8F1 /* Helpshift.h */,
-				FC763FFD1B15E2810034A8F1 /* HSLocalization */,
-				FC7640121B15E2810034A8F1 /* HSResources */,
-				FC7640311B15E2820034A8F1 /* HSThemes */,
-				FC7640331B15E2820034A8F1 /* libHelpshift.a */,
-			);
-			path = Helpshift;
-			sourceTree = "<group>";
-		};
-		FC763FFD1B15E2810034A8F1 /* HSLocalization */ = {
-			isa = PBXGroup;
-			children = (
-				FC763FFE1B15E2810034A8F1 /* HelpshiftLocalizable.strings */,
-			);
-			path = HSLocalization;
-			sourceTree = "<group>";
-		};
-		FC7640121B15E2810034A8F1 /* HSResources */ = {
-			isa = PBXGroup;
-			children = (
-				FC7640131B15E2810034A8F1 /* HS-Attachment.png */,
-				FC7640141B15E2810034A8F1 /* HS-Attachment@2x.png */,
-				FC7640151B15E2810034A8F1 /* HS-Attachment@3x.png */,
-				FC7640161B15E2810034A8F1 /* HS-camera-button.png */,
-				FC7640171B15E2810034A8F1 /* HS-camera-button@2x.png */,
-				FC7640181B15E2810034A8F1 /* HS-camera-button@3x.png */,
-				FC7640191B15E2810034A8F1 /* HS-delete-button.png */,
-				FC76401A1B15E2810034A8F1 /* HS-delete-button@2x.png */,
-				FC76401B1B15E2810034A8F1 /* HS-delete-button@3x.png */,
-				FC76401C1B15E2810034A8F1 /* HS-no-connection.png */,
-				FC76401D1B15E2810034A8F1 /* HS-no-connection@2x.png */,
-				FC76401E1B15E2810034A8F1 /* HS-powered-by-logo.png */,
-				FC76401F1B15E2810034A8F1 /* HS-powered-by-logo@2x.png */,
-				FC7640201B15E2810034A8F1 /* HS-powered-by-logo@3x.png */,
-				FC7640211B15E2810034A8F1 /* HS-screenshot-error.png */,
-				FC7640221B15E2810034A8F1 /* HS-screenshot-error@2x.png */,
-				FC7640231B15E2810034A8F1 /* HSChatBubbleBlue.png */,
-				FC7640241B15E2810034A8F1 /* HSChatBubbleBlue@2x.png */,
-				FC7640251B15E2810034A8F1 /* HSChatBubbleBlue@3x.png */,
-				FC7640261B15E2810034A8F1 /* HSChatBubbleWhite.png */,
-				FC7640271B15E2810034A8F1 /* HSChatBubbleWhite@2x.png */,
-				FC7640281B15E2820034A8F1 /* HSChatBubbleWhite@3x.png */,
-				FC7640291B15E2820034A8F1 /* HSConfirmBox.png */,
-				FC76402A1B15E2820034A8F1 /* HSConfirmBox@2x.png */,
-				FC76402B1B15E2820034A8F1 /* HSTutorial.png */,
-				FC76402C1B15E2820034A8F1 /* HSTutorial@2x.png */,
-				FC76402D1B15E2820034A8F1 /* HSTutorial@3x.png */,
-				FC76402E1B15E2820034A8F1 /* HSTutorialiPad.png */,
-				FC76402F1B15E2820034A8F1 /* HSTutorialiPad@2x.png */,
-				FC7640301B15E2820034A8F1 /* HSTutorialiPad@3x.png */,
-			);
-			path = HSResources;
-			sourceTree = "<group>";
-		};
-		FC7640311B15E2820034A8F1 /* HSThemes */ = {
-			isa = PBXGroup;
-			children = (
-				FC7640321B15E2820034A8F1 /* HelpshiftConfig.plist */,
-			);
-			path = HSThemes;
 			sourceTree = "<group>";
 		};
 		FC76403B1B15E2820034A8F1 /* MGSwipeTableCell */ = {
@@ -8337,7 +8203,6 @@
 				FC7645471B15E2830034A8F1 /* icon_cart.png in Resources */,
 				FC7644B91B15E2830034A8F1 /* icon_grid_dua@2x.png in Resources */,
 				FC76442C1B15E2830034A8F1 /* icon_12.png in Resources */,
-				FC7645EC1B15E2830034A8F1 /* HSChatBubbleBlue@2x.png in Resources */,
 				FC7642761B15E2830034A8F1 /* HistoryProductViewController.xib in Resources */,
 				FCFF56EF1AB6D5CD0076000E /* MainViewController.xib in Resources */,
 				FC7644901B15E2830034A8F1 /* icon_category_white.png in Resources */,
@@ -8390,7 +8255,6 @@
 				FC7643C71B15E2830034A8F1 /* TransactionCartEditViewController.xib in Resources */,
 				FC7645A71B15E2830034A8F1 /* icon_category_actibe@2x.png in Resources */,
 				FC76443C1B15E2830034A8F1 /* icon_1@2x.png in Resources */,
-				FC7645E11B15E2830034A8F1 /* HS-delete-button.png in Resources */,
 				FC7645411B15E2830034A8F1 /* icon_urutkan_alt.png in Resources */,
 				FC7645431B15E2830034A8F1 /* icon_wishlist_active.png in Resources */,
 				FC7645A41B15E2830034A8F1 /* icon_cart_active@2x.png in Resources */,
@@ -8413,7 +8277,6 @@
 				FC7645191B15E2830034A8F1 /* icon_shop_setting.png in Resources */,
 				FC76453C1B15E2830034A8F1 /* icon_unread@2x.png in Resources */,
 				FC7642CA1B15E2830034A8F1 /* MyShopEtalaseViewController.xib in Resources */,
-				FC7645F51B15E2830034A8F1 /* HSTutorial@3x.png in Resources */,
 				FC7644351B15E2830034A8F1 /* icon_16@2x.png in Resources */,
 				FC7644361B15E2830034A8F1 /* icon_17.png in Resources */,
 				FC7644341B15E2830034A8F1 /* icon_16.png in Resources */,
@@ -8422,7 +8285,6 @@
 				FC7645351B15E2830034A8F1 /* icon_track_grey.png in Resources */,
 				FC76428C1B15E2830034A8F1 /* InboxMessageCell.xib in Resources */,
 				FC7644871B15E2830034A8F1 /* icon_7@3x.png in Resources */,
-				FC7645DA1B15E2830034A8F1 /* HelpshiftLocalizable.strings in Resources */,
 				FC76442F1B15E2830034A8F1 /* icon_13@2x.png in Resources */,
 				FC7645B01B15E2830034A8F1 /* icon_more_active.png in Resources */,
 				FC7643D41B15E2830034A8F1 /* TransactionCartResultCell.xib in Resources */,
@@ -8469,7 +8331,6 @@
 				FC7645251B15E2830034A8F1 /* icon_signin_active@2x.png in Resources */,
 				FC7644A01B15E2830034A8F1 /* icon_close_white@2x.png in Resources */,
 				FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */,
-				FC7645DE1B15E2830034A8F1 /* HS-camera-button.png in Resources */,
 				85D12B4A1B1C49F4001B9272 /* icon_button_share.png in Resources */,
 				FC7645D81B15E2830034A8F1 /* transparent_navigationbar.png in Resources */,
 				FC7642171B15E2820034A8F1 /* CatalogSellerHeaderView.xib in Resources */,
@@ -8490,7 +8351,6 @@
 				FC7645181B15E2830034A8F1 /* icon_shop_message_2x.png in Resources */,
 				FC7644CB1B15E2830034A8F1 /* icon_location.png in Resources */,
 				FC7645B71B15E2830034A8F1 /* icon_signin@2x.png in Resources */,
-				FC7645F91B15E2830034A8F1 /* HelpshiftConfig.plist in Resources */,
 				FC7645B21B15E2830034A8F1 /* icon_search.png in Resources */,
 				FC76435F1B15E2830034A8F1 /* SettingBankEditViewController.xib in Resources */,
 				FC7642F31B15E2830034A8F1 /* ProductTalkViewController.xib in Resources */,
@@ -8506,7 +8366,6 @@
 				FC7644621B15E2830034A8F1 /* icon_calendar.png in Resources */,
 				FC7642871B15E2830034A8F1 /* TKPDTabHomeViewController.xib in Resources */,
 				FC7642201B15E2820034A8F1 /* CategoryMenuViewController.xib in Resources */,
-				FC7645EE1B15E2830034A8F1 /* HSChatBubbleWhite.png in Resources */,
 				FC7645AD1B15E2830034A8F1 /* icon_home_active@2x.png in Resources */,
 				FC76443E1B15E2830034A8F1 /* icon_20.png in Resources */,
 				FC7644201B15E2830034A8F1 /* Lato-Regular.ttf in Resources */,
@@ -8522,7 +8381,6 @@
 				FC7644AA1B15E2830034A8F1 /* icon_diskusi_report_grey@2x.png in Resources */,
 				FC7643CB1B15E2830034A8F1 /* TransactionCartHeaderView.xib in Resources */,
 				FC7642581B15E2830034A8F1 /* GeneralCheckmarkCell.xib in Resources */,
-				FC7645E91B15E2830034A8F1 /* HS-screenshot-error.png in Resources */,
 				FC7643F91B15E2830034A8F1 /* TxOrderConfirmedBankCell.xib in Resources */,
 				FC7644D01B15E2830034A8F1 /* icon_login@2x.png in Resources */,
 				FC7644631B15E2830034A8F1 /* icon_calendar@2x.png in Resources */,
@@ -8530,7 +8388,6 @@
 				FC7642811B15E2830034A8F1 /* HotlistCell.xib in Resources */,
 				FC7642C01B15E2830034A8F1 /* MyShopAddressViewController.xib in Resources */,
 				FC7643771B15E2830034A8F1 /* ShopEditStatusViewController.xib in Resources */,
-				FC7645E71B15E2830034A8F1 /* HS-powered-by-logo@2x.png in Resources */,
 				FC7645C91B15E2830034A8F1 /* icon_info_grey@2x.png in Resources */,
 				FC76451C1B15E2830034A8F1 /* icon_shop_unfavorite.png in Resources */,
 				FC7643DC1B15E2830034A8F1 /* TransactionShipmentViewController.xib in Resources */,
@@ -8577,7 +8434,6 @@
 				FC7642921B15E2830034A8F1 /* InboxMessageViewController.xib in Resources */,
 				FC76450A1B15E2830034A8F1 /* icon_share@2x.png in Resources */,
 				85D12B451B1C4965001B9272 /* icon_retur@2x.png in Resources */,
-				FC7645F11B15E2830034A8F1 /* HSConfirmBox.png in Resources */,
 				FC76442D1B15E2830034A8F1 /* icon_12@2x.png in Resources */,
 				FC7645AB1B15E2830034A8F1 /* icon_home@2x.png in Resources */,
 				FC7642121B15E2820034A8F1 /* CatalogSpecificationCell.xib in Resources */,
@@ -8606,13 +8462,11 @@
 				FC7645931B15E2830034A8F1 /* icon_signin@3x.png in Resources */,
 				FC76442A1B15E2830034A8F1 /* icon_11.png in Resources */,
 				FC7644E11B15E2830034A8F1 /* icon_more_active@2x.png in Resources */,
-				FC7645F01B15E2830034A8F1 /* HSChatBubbleWhite@3x.png in Resources */,
 				FC7644FA1B15E2830034A8F1 /* icon_plus_blue.png in Resources */,
 				FC7642321B15E2830034A8F1 /* TKPDTabShopNavigationController.xib in Resources */,
 				FC7643491B15E2830034A8F1 /* SearchResultShopCell.xib in Resources */,
 				FC7645631B15E2830034A8F1 /* login.png in Resources */,
 				FC7642AD1B15E2830034A8F1 /* InboxReviewViewController.xib in Resources */,
-				FC7645EB1B15E2830034A8F1 /* HSChatBubbleBlue.png in Resources */,
 				FC76431C1B15E2830034A8F1 /* OrderRejectExplanationViewController.xib in Resources */,
 				FC7645081B15E2830034A8F1 /* icon_search_active@2x.png in Resources */,
 				FC7644A51B15E2830034A8F1 /* icon_default_shop.jpg in Resources */,
@@ -8659,7 +8513,6 @@
 				FC7645D01B15E2830034A8F1 /* icon_lihat_komplain.png in Resources */,
 				FC7643B61B15E2830034A8F1 /* ProductTalkFormViewController.xib in Resources */,
 				FC7643A81B15E2830034A8F1 /* FilterLocationViewController.xib in Resources */,
-				FC7645E41B15E2830034A8F1 /* HS-no-connection.png in Resources */,
 				FC7645721B15E2830034A8F1 /* image-1@2x.png in Resources */,
 				FC7644051B15E2830034A8F1 /* TxOrderPaymentViewController.xib in Resources */,
 				FC76422B1B15E2830034A8F1 /* TKPDTabInboxReviewNavigationController.xib in Resources */,
@@ -8668,7 +8521,6 @@
 				FC7645841B15E2830034A8F1 /* icon_grid_tiga@3x.png in Resources */,
 				FC76425A1B15E2830034A8F1 /* GeneralList1GestureCell.xib in Resources */,
 				FC7642781B15E2830034A8F1 /* HomeTabHeaderViewController.xib in Resources */,
-				FC7645ED1B15E2830034A8F1 /* HSChatBubbleBlue@3x.png in Resources */,
 				FC7644461B15E2830034A8F1 /* icon_4@2x.png in Resources */,
 				FC7645601B15E2830034A8F1 /* launch_image@2x.png in Resources */,
 				FC7642CC1B15E2830034A8F1 /* MyShopNoteDetailViewController.xib in Resources */,
@@ -8697,7 +8549,6 @@
 				FC7644C91B15E2830034A8F1 /* icon_info_grey.png in Resources */,
 				FC7643E31B15E2830034A8F1 /* TxOrderStatusViewController.xib in Resources */,
 				FC7645651B15E2830034A8F1 /* navigate-down@2x.png in Resources */,
-				FC7645F61B15E2830034A8F1 /* HSTutorialiPad.png in Resources */,
 				FC76458D1B15E2830034A8F1 /* icon_home_active@3x.png in Resources */,
 				FC7644761B15E2830034A8F1 /* icon_11@3x.png in Resources */,
 				FC7644131B15E2830034A8F1 /* ProfileFavoriteShopViewController.xib in Resources */,
@@ -8725,7 +8576,6 @@
 				FC7645201B15E2830034A8F1 /* icon_signin@2x (deleted 3215a80c68a23ca7d6e4274438f3c292).png in Resources */,
 				FC7644491B15E2830034A8F1 /* icon_6.png in Resources */,
 				FC7644B71B15E2830034A8F1 /* icon_green.png in Resources */,
-				FC7645DF1B15E2830034A8F1 /* HS-camera-button@2x.png in Resources */,
 				FC7642651B15E2830034A8F1 /* GeneralSingleProductCell.xib in Resources */,
 				FC7645901B15E2830034A8F1 /* icon_more_active@3x.png in Resources */,
 				FC7645311B15E2830034A8F1 /* icon_toped_loading_grey-02.png in Resources */,
@@ -8757,10 +8607,8 @@
 				FC7644AE1B15E2830034A8F1 /* icon_edit_grey@2x.png in Resources */,
 				FC7644781B15E2830034A8F1 /* icon_13@3x.png in Resources */,
 				FC7645791B15E2830034A8F1 /* top_bg.png in Resources */,
-				FC7645F41B15E2830034A8F1 /* HSTutorial@2x.png in Resources */,
 				FC7644EB1B15E2830034A8F1 /* icon_no_data@2x.png in Resources */,
 				85D12B401B1C47A6001B9272 /* icon_button_wishlist_nonactive@3x.png in Resources */,
-				FC7645E81B15E2830034A8F1 /* HS-powered-by-logo@3x.png in Resources */,
 				FC7644EF1B15E2830034A8F1 /* Icon_no_photo_transparan@2x.png in Resources */,
 				FC7643321B15E2830034A8F1 /* FilterShipmentConfirmationViewController.xib in Resources */,
 				FC7641E41B15E2820034A8F1 /* AlertCameraView.xib in Resources */,
@@ -8805,11 +8653,9 @@
 				FC7645A81B15E2830034A8F1 /* icon_category_active.png in Resources */,
 				FC76443A1B15E2830034A8F1 /* icon_19.png in Resources */,
 				FC7644F71B15E2830034A8F1 /* icon_order_check@2x.png in Resources */,
-				FC7645DC1B15E2830034A8F1 /* HS-Attachment@2x.png in Resources */,
 				FC7645971B15E2830034A8F1 /* ic_cart.png in Resources */,
 				FC7645321B15E2830034A8F1 /* icon_toped_loading_grey-02@2x.png in Resources */,
 				FC76439C1B15E2830034A8F1 /* ShopPageHeader.xib in Resources */,
-				FC7645E51B15E2830034A8F1 /* HS-no-connection@2x.png in Resources */,
 				FC7644E21B15E2830034A8F1 /* icon_move_etalase.png in Resources */,
 				FC7642831B15E2830034A8F1 /* HotlistViewController.xib in Resources */,
 				FC7642E51B15E2830034A8F1 /* DetailProductWholesaleTableCell.xib in Resources */,
@@ -8856,7 +8702,6 @@
 				FC76454D1B15E2830034A8F1 /* icon_category_actibe@2x.png in Resources */,
 				FC7645B11B15E2830034A8F1 /* icon_more_active@2x.png in Resources */,
 				FC76425B1B15E2830034A8F1 /* GeneralNoResult.xib in Resources */,
-				FC7645EF1B15E2830034A8F1 /* HSChatBubbleWhite@2x.png in Resources */,
 				FC7644811B15E2830034A8F1 /* icon_21@3x.png in Resources */,
 				FC7642901B15E2830034A8F1 /* InboxMessageDetailViewController.xib in Resources */,
 				FC7642DB1B15E2830034A8F1 /* DetailProductDescriptionCell.xib in Resources */,
@@ -8910,7 +8755,6 @@
 				FC7645691B15E2830034A8F1 /* icon_category_white.png in Resources */,
 				FC7643F51B15E2830034A8F1 /* TxOrderConfirmationViewController.xib in Resources */,
 				FC7644251B15E2830034A8F1 /* icon_0.png in Resources */,
-				FC7645EA1B15E2830034A8F1 /* HS-screenshot-error@2x.png in Resources */,
 				FC7645151B15E2830034A8F1 /* icon_shop_info.png in Resources */,
 				FC76447D1B15E2830034A8F1 /* icon_18@3x.png in Resources */,
 				FC7644FC1B15E2830034A8F1 /* icon_profile_picture.jpeg in Resources */,
@@ -8931,8 +8775,6 @@
 				FC7645AF1B15E2830034A8F1 /* icon_more@2x.png in Resources */,
 				FC7645C51B15E2830034A8F1 /* Icon_check_grey_bg@2x.png in Resources */,
 				FC7644CD1B15E2830034A8F1 /* icon_lock_grey.png in Resources */,
-				FC7645F71B15E2830034A8F1 /* HSTutorialiPad@2x.png in Resources */,
-				FC7645DB1B15E2830034A8F1 /* HS-Attachment.png in Resources */,
 				FC76432E1B15E2830034A8F1 /* SalesTransactionListViewController.xib in Resources */,
 				FC7644F61B15E2830034A8F1 /* icon_order_check.png in Resources */,
 				FC7644D41B15E2830034A8F1 /* icon_love@2x.png in Resources */,
@@ -8970,14 +8812,11 @@
 				FC7645451B15E2830034A8F1 /* icon_wishlist_unactive.png in Resources */,
 				FC7644581B15E2830034A8F1 /* icon_arrow_down.png in Resources */,
 				FC7644891B15E2830034A8F1 /* icon_9@3x.png in Resources */,
-				FC7645F31B15E2830034A8F1 /* HSTutorial.png in Resources */,
 				FC7645231B15E2830034A8F1 /* icon_signin_active.png in Resources */,
 				FC76424A1B15E2830034A8F1 /* DepositFormViewController.xib in Resources */,
 				FC76441F1B15E2830034A8F1 /* Lato-Bold.ttf in Resources */,
 				FC7642F21B15E2830034A8F1 /* ProductTalkDetailViewController.xib in Resources */,
-				FC7645E31B15E2830034A8F1 /* HS-delete-button@3x.png in Resources */,
 				FC7644821B15E2830034A8F1 /* icon_2@3x.png in Resources */,
-				FC7645DD1B15E2830034A8F1 /* HS-Attachment@3x.png in Resources */,
 				FC7643AA1B15E2830034A8F1 /* FilterLocationViewCell.xib in Resources */,
 				FC7645A11B15E2830034A8F1 /* icon_cart.png in Resources */,
 				FC76450D1B15E2830034A8F1 /* icon_shop.png in Resources */,
@@ -8996,7 +8835,6 @@
 				FC76457C1B15E2830034A8F1 /* person1.png in Resources */,
 				FC76455A1B15E2830034A8F1 /* icon_search_active.png in Resources */,
 				FC76452F1B15E2830034A8F1 /* icon_telephone@2x.png in Resources */,
-				FC7645E61B15E2830034A8F1 /* HS-powered-by-logo.png in Resources */,
 				FC7644A71B15E2830034A8F1 /* icon_diskusi_comment_grey.png in Resources */,
 				85D12B381B1C4796001B9272 /* icon_button_wishlist_active.png in Resources */,
 				FC7644B31B15E2830034A8F1 /* icon_filter.png in Resources */,
@@ -9028,7 +8866,6 @@
 				FC7644471B15E2830034A8F1 /* icon_5.png in Resources */,
 				FC76423F1B15E2830034A8F1 /* ProgressBarView.xib in Resources */,
 				FC76452D1B15E2830034A8F1 /* icon_success@2x.png in Resources */,
-				FC7645E21B15E2830034A8F1 /* HS-delete-button@2x.png in Resources */,
 				FC7645051B15E2830034A8F1 /* icon_search_active (deleted 9049b8eae695cf9632f6f1691fc7f40b).png in Resources */,
 				FC7645D41B15E2830034A8F1 /* icon_pesan_ulang.png in Resources */,
 				FC7642391B15E2830034A8F1 /* LoadingView.xib in Resources */,
@@ -9050,7 +8887,6 @@
 				FC7642101B15E2820034A8F1 /* CatalogShopViewController.xib in Resources */,
 				FC76455F1B15E2830034A8F1 /* icon_signin_active@2x.png in Resources */,
 				FC76457E1B15E2830034A8F1 /* hotlist.png in Resources */,
-				FC7645E01B15E2830034A8F1 /* HS-camera-button@3x.png in Resources */,
 				FC7644AF1B15E2830034A8F1 /* icon_etalase.png in Resources */,
 				FC7644A11B15E2830034A8F1 /* icon_comment_bubble.png in Resources */,
 				FC7643921B15E2830034A8F1 /* SendMessageViewController.xib in Resources */,
@@ -9063,7 +8899,6 @@
 				FC7644211B15E2830034A8F1 /* balloon_read_left.png in Resources */,
 				FC7642501B15E2830034A8F1 /* DepositSummaryCell.xib in Resources */,
 				FC7644A91B15E2830034A8F1 /* icon_diskusi_report_grey.png in Resources */,
-				FC7645F81B15E2830034A8F1 /* HSTutorialiPad@3x.png in Resources */,
 				FC76448A1B15E2830034A8F1 /* icon_category_actibe@2x.png in Resources */,
 				FC7642FF1B15E2830034A8F1 /* ProductListMyShopCell.xib in Resources */,
 				FC7644ED1B15E2830034A8F1 /* icon_no_data_grey@2x.png in Resources */,
@@ -9085,7 +8920,6 @@
 				FC7644841B15E2830034A8F1 /* icon_4@3x.png in Resources */,
 				FC7644441B15E2830034A8F1 /* icon_3@2x.png in Resources */,
 				FC7644711B15E2830034A8F1 /* icon_category.png in Resources */,
-				FC7645F21B15E2830034A8F1 /* HSConfirmBox@2x.png in Resources */,
 				FC76430C1B15E2830034A8F1 /* ReputationDetailViewController.xib in Resources */,
 				FC7643121B15E2830034A8F1 /* ReputationMyReviewViewController.xib in Resources */,
 			);
@@ -9872,32 +9706,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		FC763FFE1B15E2810034A8F1 /* HelpshiftLocalizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FC763FFF1B15E2810034A8F1 /* cs */,
-				FC7640001B15E2810034A8F1 /* de */,
-				FC7640011B15E2810034A8F1 /* en */,
-				FC7640021B15E2810034A8F1 /* es */,
-				FC7640031B15E2810034A8F1 /* fr */,
-				FC7640041B15E2810034A8F1 /* hu */,
-				FC7640051B15E2810034A8F1 /* id */,
-				FC7640061B15E2810034A8F1 /* it */,
-				FC7640071B15E2810034A8F1 /* ja */,
-				FC7640081B15E2810034A8F1 /* ko */,
-				FC7640091B15E2810034A8F1 /* nl */,
-				FC76400A1B15E2810034A8F1 /* pt */,
-				FC76400B1B15E2810034A8F1 /* ru */,
-				FC76400C1B15E2810034A8F1 /* sl */,
-				FC76400D1B15E2810034A8F1 /* th */,
-				FC76400E1B15E2810034A8F1 /* tr */,
-				FC76400F1B15E2810034A8F1 /* vi */,
-				FC7640101B15E2810034A8F1 /* zh-Hans */,
-				FC7640111B15E2810034A8F1 /* zh-Hant */,
-			);
-			name = HelpshiftLocalizable.strings;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -9983,7 +9791,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9996,7 +9804,7 @@
 					"$(SRCROOT)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -10007,9 +9815,11 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
+					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "25e3d81d-53d1-495c-b2dd-b52bd8fc5614";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -10021,8 +9831,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -10034,7 +9844,7 @@
 					"$(SRCROOT)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -10045,9 +9855,11 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
+					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "25e3d81d-53d1-495c-b2dd-b52bd8fc5614";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

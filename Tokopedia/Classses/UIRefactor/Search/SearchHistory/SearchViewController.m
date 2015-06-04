@@ -101,6 +101,7 @@
     
     self.navigationController.title = @"Cari";
     self.screenName = @"Search Page";
+    self.hidesBottomBarWhenPushed = NO;
     
     [self initNotificationManager];
 
@@ -115,7 +116,6 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    self.hidesBottomBarWhenPushed = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
