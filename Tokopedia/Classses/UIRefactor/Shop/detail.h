@@ -841,4 +841,8 @@ typedef enum
 
 #define kTKPDDETAILCATALOG_APIRESPONSEFILEFORMAT @"catalogdetail%zd.plist"
 
+#define kTKPD_URINEXTKEY @"uri_next"
+#define kTKPD_APIPAGINGKEY @"paging"
+#define kTKPD_APIPAGEKEY @"page"
+
 #endif

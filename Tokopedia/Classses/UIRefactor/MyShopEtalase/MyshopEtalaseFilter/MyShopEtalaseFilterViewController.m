@@ -18,6 +18,8 @@
 #define ETALASE_OBJECT_SELECTED_KEY @"object_selected"
 @interface MyShopEtalaseFilterViewController ()<UITableViewDataSource, UITableViewDelegate, MyShopEtalaseFilterCellDelegate, MyShopEtalaseEditViewControllerDelegate, TokopediaNetworkManagerDelegate>{
     BOOL _isnodata;
+    NSInteger _page;
+    NSString *_uriNext;
     
     NSMutableArray *_etalaseList;
     NSMutableDictionary *_selecteddata;
@@ -116,6 +118,8 @@
             [_etalaseList addObject:etalase];
         }
     }
+    
+    _page = 1;
 }
 
 - (void)didReceiveMemoryWarning
@@ -261,7 +265,9 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
-        
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            [_networkManager doRequest];
+        }
     }
 }
 
@@ -339,14 +345,30 @@
                                                  kTKPDSHOP_APIETALASETOTALPRODUCTKEY
                                                  ]];
     
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromArray:@[kTKPD_URINEXTKEY]];
+
     //add list relationship
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
+                                                                                 toKeyPath:kTKPD_APILISTKEY
+                                                                               withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                 toKeyPath:kTKPD_APIPAGINGKEY
+                                                                               withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+    
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDDETAILSHOP_APIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
     [objectmanager addResponseDescriptor:responseDescriptor];
@@ -375,7 +397,7 @@
             [_etalaseList addObject:etalase];
         }
         
-        if (_etalaseList.count >0) {
+        if (_etalaseList.count > 0) {
             _isnodata = NO;
             
             NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
@@ -392,6 +414,18 @@
             
             [_table reloadData];
             
+            _uriNext =  _etalase.result.paging.uri_next;
+            NSURL *url = [NSURL URLWithString:_uriNext];
+            NSArray *tmpQueries = [[url query] componentsSeparatedByString: @"&"];
+            NSMutableDictionary *queries = [NSMutableDictionary new];
+            [queries removeAllObjects];
+            for (NSString *keyValuePair in tmpQueries) {
+                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                NSString *key = [pairComponents objectAtIndex:0];
+                NSString *value = [pairComponents objectAtIndex:1];
+                [queries setObject:value forKey:key];
+            }
+            _page = [[queries objectForKey:kTKPD_APIPAGEKEY] integerValue];
         }
     }
 }
