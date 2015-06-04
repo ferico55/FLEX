@@ -224,7 +224,6 @@
     
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
-
 }
 
 - (void)didReceiveMemoryWarning

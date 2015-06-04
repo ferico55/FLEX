@@ -379,11 +379,13 @@
         switch (btn.tag) {
             case BUTTON_PRODUCT_CATEGORY:
             {
+                Breadcrumb *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
                 CategoryMenuViewController *categoryViewController = [CategoryMenuViewController new];
                 NSInteger d_id = [[_data objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY] integerValue];
                 categoryViewController.data = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:@(d_id),
                                                 DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
                                                 };
+                categoryViewController.selectedCategoryID = [category.department_id integerValue];
                 categoryViewController.delegate = self;
                 
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:categoryViewController];
@@ -658,11 +660,13 @@
                     break;
                 case BUTTON_PRODUCT_CATEGORY:
                 {
+                    Breadcrumb *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
                     CategoryMenuViewController *categoryViewController = [CategoryMenuViewController new];
                     NSInteger d_id = [[_data objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY] integerValue];
                     categoryViewController.data = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:@(d_id),
                                                     DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
                                                     };
+                    categoryViewController.selectedCategoryID = [category.department_id integerValue];
                     categoryViewController.delegate = self;
                     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:categoryViewController];
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -895,8 +899,11 @@
     //[_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
 }
 
--(void)failedGenerateHost
+-(void)failedGenerateHost:(NSArray *)errorMessages
 {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

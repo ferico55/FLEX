@@ -22,7 +22,7 @@
 >
 {
     EtalaseList *_etalase;
-    NSString *_departmentID;
+    Breadcrumb *_department;
     NSString *_departmentName;
     NSString *_catalogValue;
     NSString *_pictureValue;
@@ -37,8 +37,7 @@
     
     self.title = @"Filter";
     
-    _departmentID = @"0";
-    _departmentName = @"Semua Kategori";
+    _departmentName = _breadcrumb.department_name?:@"Semua Kategori";
     _catalogValue = @"Dengan & Tanpa Katalog";
     _pictureValue = @"Dengan & Tanpa Gambar";
     _conditionValue = @"Semua Kondisi";
@@ -90,7 +89,7 @@
         cell.detailTextLabel.text = _etalase.etalase_name?:@"Semua Produk";
     } else if (indexPath.row == 1) {
         cell.textLabel.text = @"Kategori";
-        cell.detailTextLabel.text = _departmentName;
+        cell.detailTextLabel.text = _breadcrumb.department_name?:@"Semua Kategori";
     } else if (indexPath.row == 2) {
         cell.textLabel.text = @"Katalog";
         cell.detailTextLabel.text = _catalogValue;
@@ -118,10 +117,9 @@
         CategoryMenuViewController *controller = [CategoryMenuViewController new];
         controller.delegate = self;
         controller.data = @{
-                            kTKPDCATEGORY_DATADEPARTMENTIDKEY:_departmentID,
                             DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
                             };
-
+        controller.selectedCategoryID = [_breadcrumb.department_id integerValue];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
         nav.navigationBar.translucent = NO;
         
@@ -210,7 +208,7 @@
                 }
                 
                 [self.delegate filterProductEtalase:_etalase
-                                         department:_departmentID
+                                         department:_breadcrumb
                                             catalog:catalogValueID
                                             picture:pictureValueID
                                           condition:conditionValueID];
@@ -234,8 +232,11 @@
 
 -(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
 {
-    _departmentID = [userInfo objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY];
+    NSString * departmentID = [userInfo objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY];
     _departmentName = [userInfo objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+    
+    _breadcrumb.department_name = _departmentName;
+    _breadcrumb.department_id = departmentID;
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
     cell.detailTextLabel.text = _departmentName;

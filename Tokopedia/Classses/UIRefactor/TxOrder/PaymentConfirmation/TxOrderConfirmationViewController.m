@@ -935,6 +935,7 @@
     
     _networkManager.delegate = self;
     [_networkManager doRequest];
+    [_act stopAnimating];
     //[self configureRestKitGetTransaction];
     //[self requestGetTransaction];
 }

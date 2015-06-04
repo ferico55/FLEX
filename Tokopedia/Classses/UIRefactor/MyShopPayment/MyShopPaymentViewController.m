@@ -1151,7 +1151,7 @@
         [self failedCreateShop];
     }
     else if(tag == CTagOpenShopPicture) {
-        [self failedGenerateHost];
+        [self failedGenerateHost:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULT]];
     }
     else if(tag == CTagOpenShopSubmit) {
         [self failedCreateShop];
@@ -1193,7 +1193,7 @@
     [uploadImageRequest requestActionUploadPhoto];
 }
 
-- (void)failedGenerateHost
+- (void)failedGenerateHost:(NSArray *)errorMessages
 {
     StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
     [stickyAlertView show];

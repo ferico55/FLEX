@@ -674,7 +674,18 @@
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
+    NSError *error = (NSError*)errorResult;
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[[error localizedDescription]] delegate:self];
+    [alert show];
+    
+    [self performSelector:@selector(dismissViewController) withObject:self afterDelay:3.0];
 
+}
+
+-(void)dismissViewController
+{
+    [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
