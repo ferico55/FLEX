@@ -531,12 +531,13 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
                             };
+                vc.selectedCategoryID = [[_detailfilter objectForKey:@"selected_id"] integerValue];
                 vc.delegate = self;
                 
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];                
             }
-                
+            break;
             case 12 : {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
@@ -1153,6 +1154,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
 {
     [_detailfilter addEntriesFromDictionary:userInfo];
+    [_detailfilter setObject:userInfo[@"department_id"] forKey:@"selected_id"];
     [self refreshView:nil];
 }
 
