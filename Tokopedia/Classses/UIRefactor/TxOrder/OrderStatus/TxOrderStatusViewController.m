@@ -1287,6 +1287,7 @@
     [_refreshControll beginRefreshing];
     [_tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [_networkManager doRequest];
+    [_act stopAnimating];
 }
 
 -(void)statusDetailAtIndexPath:(NSIndexPath *)indexPath
