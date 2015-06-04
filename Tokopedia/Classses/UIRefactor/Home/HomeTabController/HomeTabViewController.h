@@ -10,5 +10,7 @@
 
 @interface HomeTabViewController : UIViewController
 
-
+- (void)setIndexPage:(int)idxPage;
+- (void)redirectToProductFeed;
+- (void)redirectToWishList;
 @end

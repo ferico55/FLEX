@@ -185,6 +185,10 @@
 
 
 #pragma mark - Action
+- (void)setIndexPage:(int)idxPage
+{
+    _page = idxPage;
+}
 
 - (void)goToPage:(NSInteger)page {
     if(page == 0) {
@@ -255,6 +259,16 @@
     [UIView animateWithDuration:0.3 animations:^{
         _scrollView.contentOffset = CGPointMake(totalOffset, _scrollView.contentOffset.y);
     }];
+}
+
+- (void)redirectToWishList
+{
+    _scrollView.contentOffset = CGPointMake(_scrollView.frame.size.width*2, _scrollView.contentOffset.y);
+}
+
+- (void)redirectToProductFeed
+{
+    _scrollView.contentOffset = CGPointMake(_scrollView.frame.size.width, _scrollView.contentOffset.y);
 }
 
 

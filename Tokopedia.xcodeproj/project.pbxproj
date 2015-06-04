@@ -17,6 +17,8 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		8563A1481B1EEFE600DFF001 /* LabelMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A1471B1EEFE600DFF001 /* LabelMenu.m */; };
+		8563A14B1B1EFBAC00DFF001 /* TextMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A14A1B1EFBAC00DFF001 /* TextMenu.m */; };
 		85A53C971B1C880D00D626B7 /* DetailProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
@@ -1473,6 +1475,10 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8563A1461B1EEFE600DFF001 /* LabelMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelMenu.h; sourceTree = "<group>"; };
+		8563A1471B1EEFE600DFF001 /* LabelMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelMenu.m; sourceTree = "<group>"; };
+		8563A1491B1EFBAC00DFF001 /* TextMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMenu.h; sourceTree = "<group>"; };
+		8563A14A1B1EFBAC00DFF001 /* TextMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMenu.m; sourceTree = "<group>"; };
 		85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductViewController.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -3884,6 +3890,10 @@
 				FC76371C1B15E2720034A8F1 /* UIKitCategory.m */,
 				FC76371D1B15E2720034A8F1 /* UITextView+UITextView_Placeholder.h */,
 				FC76371E1B15E2720034A8F1 /* UITextView+UITextView_Placeholder.m */,
+				8563A1461B1EEFE600DFF001 /* LabelMenu.h */,
+				8563A1471B1EEFE600DFF001 /* LabelMenu.m */,
+				8563A1491B1EFBAC00DFF001 /* TextMenu.h */,
+				8563A14A1B1EFBAC00DFF001 /* TextMenu.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -9014,6 +9024,7 @@
 				FC76410C1B15E2820034A8F1 /* ManageProduct.m in Sources */,
 				FC7640811B15E2820034A8F1 /* DBManager.m in Sources */,
 				FC7642041B15E2820034A8F1 /* RequestGenerateHost.m in Sources */,
+				8563A1481B1EEFE600DFF001 /* LabelMenu.m in Sources */,
 				FC7642701B15E2830034A8F1 /* RedirectHandler.m in Sources */,
 				FC7641241B15E2820034A8F1 /* FavoriteShop.m in Sources */,
 				FC7641131B15E2820034A8F1 /* NotificationResult.m in Sources */,
@@ -9358,6 +9369,7 @@
 				FC7643E21B15E2830034A8F1 /* TxOrderStatusViewController.m in Sources */,
 				FC7640851B15E2820034A8F1 /* NSData+Encryption.m in Sources */,
 				FC76433C1B15E2830034A8F1 /* DetailShipmentStatusViewController.m in Sources */,
+				8563A14B1B1EFBAC00DFF001 /* TextMenu.m in Sources */,
 				FC7645FB1B15E2830034A8F1 /* HPGrowingTextView.m in Sources */,
 				FC7643311B15E2830034A8F1 /* FilterShipmentConfirmationViewController.m in Sources */,
 				FC7640FB1B15E2820034A8F1 /* ResolutionDispute.m in Sources */,

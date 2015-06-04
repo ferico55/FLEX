@@ -13,6 +13,7 @@
 #import "LoginViewController.h"
 #import "CreatePasswordViewController.h"
 #import "UserAuthentificationManager.h"
+#import "HomeTabViewController.h"
 
 #import "TKPDSecureStorage.h"
 #import "StickyAlertView.h"
@@ -594,7 +595,10 @@
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             } else {
+                UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
                 [self.tabBarController setSelectedIndex:0];
+                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
