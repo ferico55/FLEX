@@ -18,6 +18,7 @@
 #import "string_more.h"
 #import "WebViewController.h"
 
+#import "HomeTabViewController.h"
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
 
@@ -464,7 +465,7 @@
             break;
             
         case 1:
-            return 2;
+            return 3;
             break;
             
         case 2:
@@ -544,7 +545,12 @@
         purchaseController.notification = _notifManager.notification;
         [self.navigationController pushViewController:purchaseController animated:YES];
     }
-    
+    else if(indexPath.section==1 && indexPath.row==2) {
+        UINavigationController *tempNavController = (UINavigationController *) [self.tabBarController.viewControllers firstObject];
+        [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:2];
+        [self.tabBarController setSelectedIndex:0];
+        [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToWishList];
+    }
     
     else if (indexPath.section == 2) {
         if(indexPath.row == 0) {
