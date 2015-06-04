@@ -103,9 +103,8 @@
     
     self.navigationController.title = @"Cari";
     self.screenName = @"Search Page";
+    self.hidesBottomBarWhenPushed = NO;
     
-
-
     [self initNotificationManager];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -118,6 +117,7 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {

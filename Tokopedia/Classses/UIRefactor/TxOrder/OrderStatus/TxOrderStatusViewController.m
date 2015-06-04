@@ -30,6 +30,7 @@
 #import "TxOrderObjectMapping.h"
 #import "NoResultView.h"
 
+#import "TextMenu.h"
 #import "TokopediaNetworkManager.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
@@ -350,11 +351,23 @@
     
     NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
     
-    [cell.statusLabel setText:statusString animated:YES];
-    [cell.statusLabel setCustomAttributedText:cell.statusLabel.text];
+    [cell.statusTv setText:statusString];
     
-    if ([cell.statusLabel.text isEqualToString:@"0"] || [cell.statusLabel.text isEqual:@""]) {
-        cell.statusLabel.text = @"-";
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentLeft;
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
+                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:11.0f],
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:statusString?:@"" attributes:attributes];
+    cell.statusTv.attributedText = attributedText;
+    
+    if ([cell.statusTv.text isEqualToString:@"0"] || [cell.statusTv.text isEqual:@""]) {
+        cell.statusTv.text = @"-";
     }
 
     [cell hideAllButton];
@@ -1352,6 +1365,4 @@
     alert.tag = TAG_ALERT_COMPLAIN;
     [alert show];
 }
-
-
 @end

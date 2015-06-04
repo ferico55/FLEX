@@ -14,7 +14,7 @@
 #import "DetailShipmentStatusCell.h"
 #import "OrderDetailViewController.h"
 #import "ChangeReceiptNumberViewController.h"
-
+#import "LabelMenu.h"
 #import "StickyAlertView.h"
 
 @interface DetailShipmentStatusViewController ()
@@ -37,7 +37,7 @@
 @property (strong, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UILabel *invoiceNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *paymentMethodLabel;
-@property (weak, nonatomic) IBOutlet UILabel *receiptNumberLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *receiptNumberLabel;
 @property (weak, nonatomic) IBOutlet UIButton *changeReceiptButton;
 @property (weak, nonatomic) IBOutlet UIView *receiptNumberView;
 
@@ -62,6 +62,9 @@
     _invoiceNumberLabel.text = _order.order_detail.detail_invoice;
     _paymentMethodLabel.text = _order.order_payment.payment_gateway_name;
     _receiptNumberLabel.text = _order.order_detail.detail_ship_ref_num;
+    _receiptNumberLabel.userInteractionEnabled = YES;
+    _receiptNumberLabel.delegate = self;
+    [_receiptNumberLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
     
     _operationQueue = [NSOperationQueue new];
 
@@ -299,6 +302,27 @@
         
     }];
 }
+
+
+#pragma mark - Method
+- (void)copy:(id)sender
+{
+    [UIPasteboard generalPasteboard].string = _receiptNumberLabel.text;
+}
+
+- (void)longPress:(UILongPressGestureRecognizer *)sender
+{
+    if (sender.state==UIGestureRecognizerStateBegan) {
+        UILabel *lblResi = (UILabel *)sender.view;
+        [lblResi becomeFirstResponder];
+        
+        
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setTargetRect:lblResi.frame inView:lblResi.superview];
+        [menu setMenuVisible:YES animated:YES];
+    }
+}
+
 
 #pragma mark - Change receipt number delegate
 

@@ -14,6 +14,7 @@
 #define CTagUnWishList 6
 #define CTagNoteCanReture 7
 
+#import "LabelMenu.h"
 #import "Notes.h"
 #import "NoteDetails.h"
 #import "NotesResult.h"
@@ -84,8 +85,6 @@
 @implementation CustomButtonExpandDesc
 @synthesize objSection;
 @end
-
-
 
 
 #pragma mark - Detail Product View Controller
@@ -165,6 +164,7 @@ UIAlertViewDelegate
     NSTimer *_timer;
     
     __weak RKObjectManager  *_objectPromoteManager;
+    LabelMenu *lblDescription;
     
     BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
@@ -1031,6 +1031,24 @@ UIAlertViewDelegate
     return cell;
 }
 
+- (void)longPress:(UILongPressGestureRecognizer *)sender
+{
+    if (sender.state==UIGestureRecognizerStateBegan && isExpandDesc) {
+        UILabel *lblDesc = (UILabel *)sender.view;
+        [lblDesc becomeFirstResponder];
+        
+        
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setTargetRect:lblDesc.frame inView:lblDesc.superview];
+        [menu setMenuVisible:YES animated:YES];
+    }
+}
+
+- (void)copy:(id)sender
+{
+    [UIPasteboard generalPasteboard].string = lblDescription.text;
+}
+
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
 {
     ((DetailProductInfoCell*)cell).minorderlabel.text = _product.result.product.product_min_order;
@@ -1813,6 +1831,23 @@ UIAlertViewDelegate
                 
                 self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
                 [btnWishList removeFromSuperview];
+                
+                //Set position btn share
+                int n = (int)btnShare.constraints.count;
+                NSMutableArray *arrRemoveConstraint = [NSMutableArray new];
+
+                for(int i=0;i<n;i++) {
+                    if([[btnShare.constraints objectAtIndex:i] isMemberOfClass:[NSLayoutConstraint class]]) {
+                        [arrRemoveConstraint addObject:[btnShare.constraints objectAtIndex:i]];
+                    }
+                }
+                [btnShare removeConstraints:arrRemoveConstraint];
+                [arrRemoveConstraint removeAllObjects];
+                arrRemoveConstraint = nil;
+                
+                [btnShare removeConstraints:btnShare.constraints];
+                [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+                [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
             } else {
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
                 activityIndicator.color = [UIColor lightGrayColor];
@@ -2033,11 +2068,14 @@ UIAlertViewDelegate
     CGRect rectLblDesc = CGRectMake(15, originY, width, 9999);
     rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText];
     
-    UILabel *lblDescription = [[UILabel alloc] initWithFrame:rectLblDesc];
+    lblDescription = [[LabelMenu alloc] initWithFrame:rectLblDesc];
     lblDescription.backgroundColor = [UIColor clearColor];
     [lblDescription setNumberOfLines:0];
+    lblDescription.delegate = self;
     [self initAttributeText:lblDescription withStrText:strText withColor:[UIColor whiteColor]];
     lblDescription.textColor = [UIColor lightGrayColor];
+    lblDescription.userInteractionEnabled = YES;
+    [lblDescription addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
     [mView addSubview:lblDescription];
     
     return rectLblDesc;

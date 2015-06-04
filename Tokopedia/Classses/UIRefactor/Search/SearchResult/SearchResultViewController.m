@@ -187,8 +187,24 @@ LoadingViewDelegate
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
     
-    self.cellType = UITableViewCellTypeTwoColumn;
-}
+    NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
+    if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
+        self.cellType = [[data objectForKey:USER_LAYOUT_PREFERENCES] integerValue];
+        if (self.cellType == UITableViewCellTypeOneColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                                   forState:UIControlStateNormal];
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                                   forState:UIControlStateNormal];
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                                   forState:UIControlStateNormal];
+        }
+    } else {
+        self.cellType = UITableViewCellTypeTwoColumn;
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                               forState:UIControlStateNormal];
+    }}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -198,6 +214,7 @@ LoadingViewDelegate
             [self request];
         }
     }
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -661,25 +678,7 @@ LoadingViewDelegate
                 
                 // Redirect URI to hotlist
                 if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
-                    
-                    HotlistResultViewController *vc = [HotlistResultViewController new];
-                    vc.data = @{
-                                kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES),
-                                kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]
-                                };
-                    
-
-//
-//                    if ([self.delegate respondsToSelector:@selector(pushViewController:animated:)]) {
-//                        [self.delegate pushViewController:vc animated:NO];
-//                    }
-//                    
-//                    vc.delegate = self;
-                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                    [self.navigationController presentViewController:nav animated:YES completion:nil];
-                    
-                    [self.navigationController popViewControllerAnimated:NO];
-                    
+                    [self redirectToHotlistResult];
                 }
                 // redirect uri to search category
                 if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
@@ -702,11 +701,28 @@ LoadingViewDelegate
     }
 }
 
+- (void)redirectToHotlistResult
+{
+    NSURL *url = [NSURL URLWithString:_uriredirect];
+    NSArray* query = [[url path] componentsSeparatedByString: @"/"];
+    
+    HotlistResultViewController *vc = [HotlistResultViewController new];
+    vc.data = @{
+                kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES),
+                kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]
+                };
+
+    vc.hidesBottomBarWhenPushed = YES;
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+
+    self.navigationController.viewControllers = viewControllers;
+}
+
 -(void)requesttimeout
 {
     [self cancel];
 }
-
 
 #pragma mark - Cell Delegate
 -(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
@@ -812,24 +828,31 @@ LoadingViewDelegate
         }
         case 13:
         {
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            
             if (self.cellType == UITableViewCellTypeOneColumn) {
                 self.cellType = UITableViewCellTypeTwoColumn;
-                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                        forState:UIControlStateNormal];
                 
             } else if (self.cellType == UITableViewCellTypeTwoColumn) {
                 self.cellType = UITableViewCellTypeThreeColumn;
-                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                        forState:UIControlStateNormal];
                 
             } else if (self.cellType == UITableViewCellTypeThreeColumn) {
                 self.cellType = UITableViewCellTypeOneColumn;
-                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                        forState:UIControlStateNormal];
                 
             }
+            
             self.table.contentOffset = CGPointMake(0, 0);
             [self.table reloadData];
+            
+            NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
+            [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
+
             break;
         }
         default:
