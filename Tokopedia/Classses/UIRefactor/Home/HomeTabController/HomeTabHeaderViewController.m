@@ -134,6 +134,7 @@
     NSDictionary *userInfo = @{@"page" : @(button.tag)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
     [self setActiveButton];
+    NSLog(@"ANDRE - %d", button.tag);
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
@@ -188,6 +189,7 @@
 
 - (void)setActiveButton
 {
+    NSLog(@"TATATAT - %d", _scrollView.subviews.count);
     for (UIButton *button in _scrollView.subviews) {
         if ([button isKindOfClass:[UIButton class]]) {
             if (button.tag == _viewControllerIndex) {

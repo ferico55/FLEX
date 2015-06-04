@@ -263,12 +263,16 @@
 
 - (void)redirectToWishList
 {
-    _scrollView.contentOffset = CGPointMake(_scrollView.frame.size.width*2, _scrollView.contentOffset.y);
+    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    tempBtn.tag = 3;
+    [_homeHeaderController tapButton:tempBtn];
 }
 
 - (void)redirectToProductFeed
 {
-    _scrollView.contentOffset = CGPointMake(_scrollView.frame.size.width, _scrollView.contentOffset.y);
+    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    tempBtn.tag = 2;
+    [_homeHeaderController tapButton:tempBtn];
 }
 
 
