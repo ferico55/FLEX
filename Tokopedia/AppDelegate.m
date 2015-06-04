@@ -14,7 +14,6 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
-#import "Helpshift.h"
 #import "AppsFlyerTracker.h"
 
 
@@ -38,9 +37,6 @@
         [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
         [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
         [AppsFlyerTracker sharedTracker].currencyCode = @"IDR";
-        
-        //helpshift init
-        [Helpshift installForApiKey:HelpshiftKey domainName:HelpshiftDomain appID:HelpshiftAppid];
         
         //fabric init
         [Fabric with:@[CrashlyticsKit]];

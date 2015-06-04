@@ -49,7 +49,6 @@
 #import "ProductListMyShopViewController.h"
 #import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
-#import "Helpshift.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 #import <MessageUI/MessageUI.h>
