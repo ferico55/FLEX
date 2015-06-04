@@ -187,8 +187,24 @@ LoadingViewDelegate
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
     
-    self.cellType = UITableViewCellTypeTwoColumn;
-}
+    NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
+    if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
+        self.cellType = [[data objectForKey:USER_LAYOUT_PREFERENCES] integerValue];
+        if (self.cellType == UITableViewCellTypeOneColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                                   forState:UIControlStateNormal];
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                                   forState:UIControlStateNormal];
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                                   forState:UIControlStateNormal];
+        }
+    } else {
+        self.cellType = UITableViewCellTypeTwoColumn;
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                               forState:UIControlStateNormal];
+    }}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -812,24 +828,31 @@ LoadingViewDelegate
         }
         case 13:
         {
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            
             if (self.cellType == UITableViewCellTypeOneColumn) {
                 self.cellType = UITableViewCellTypeTwoColumn;
-                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                        forState:UIControlStateNormal];
                 
             } else if (self.cellType == UITableViewCellTypeTwoColumn) {
                 self.cellType = UITableViewCellTypeThreeColumn;
-                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                        forState:UIControlStateNormal];
                 
             } else if (self.cellType == UITableViewCellTypeThreeColumn) {
                 self.cellType = UITableViewCellTypeOneColumn;
-                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                        forState:UIControlStateNormal];
                 
             }
+            
             self.table.contentOffset = CGPointMake(0, 0);
             [self.table reloadData];
+            
+            NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
+            [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
+
             break;
         }
         default:
