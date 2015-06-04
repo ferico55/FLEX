@@ -259,7 +259,7 @@
 - (void)showCameraCode:(id)sender
 {
     codeReader = [ZBarReaderViewController new];
-    codeReader.readerDelegate=self;
+    codeReader.readerDelegate = self;
     codeReader.supportedOrientationsMask = ZBarOrientationMaskAll;
     codeReader.showsZBarControls = NO;
     codeReader.showsCameraControls = NO;
