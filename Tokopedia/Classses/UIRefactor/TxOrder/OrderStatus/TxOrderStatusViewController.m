@@ -359,7 +359,7 @@
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:11.0f],
+                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:12.0f],
                                  NSParagraphStyleAttributeName: style,
                                  };
     
@@ -463,6 +463,9 @@
         } else {
             height = tableView.rowHeight - 45;
         }
+    }
+    else
+    {
     }
 
     return height;
