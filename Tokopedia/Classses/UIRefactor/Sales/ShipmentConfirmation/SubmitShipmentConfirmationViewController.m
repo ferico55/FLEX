@@ -9,7 +9,6 @@
 #import "SubmitShipmentConfirmationViewController.h"
 #import "GeneralTableViewController.h"
 #import "StickyAlertView.h"
-#import "ZBarSDK.h"
 #import "ActionOrder.h"
 #import "Order.h"
 #import "OrderTransaction.h"
@@ -20,15 +19,13 @@
     UITableViewDataSource,
     UITableViewDelegate,
     GeneralTableViewControllerDelegate,
-    BarCodeDelegate,
-    ZBarReaderDelegate
+    BarCodeDelegate
 >
 {
     BOOL _changeCourier;
     NSString *_receiptNumber;
     ShipmentCourier *_selectedCourier;
     ShipmentCourierPackage *_selectedCourierPackage;
-    ZBarReaderViewController *codeReader;
 
     NSString *strNoResi;
     BOOL _shouldReloadData;
@@ -245,30 +242,6 @@
 
 }
 
-
-#pragma mark - UICamera Delegate
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    id<NSFastEnumeration> results = [info objectForKey: ZBarReaderControllerResults];
-    ZBarSymbol *symbol = nil;
-    for(symbol in results)  break;
-    
-    [picker dismissViewControllerAnimated:YES completion:^(void){
-        codeReader = nil;
-        strNoResi = symbol.data;
-        [_tableView reloadData];
-    }];
-}
-
-
-#pragma mark - Actions
-- (void)cancelCamera:(id)sender
-{
-    [codeReader dismissViewControllerAnimated:YES completion:^(void){
-        codeReader = nil;
-    }];
-}
-
 - (void)addOverlayCamera:(UIView *)parentView withFrame:(CGRect)rectFrame cancelDelegate:(UIViewController *)delegate
 {
     UIView *overLayView = [[UIView alloc] initWithFrame:rectFrame];
@@ -282,36 +255,20 @@
     btnCancel.layer.cornerRadius = (btnCancel.bounds.size.height-diameterCancel)/2.0f;
     btnCancel.layer.masksToBounds = YES;
     [btnCancel addTarget:delegate action:@selector(cancelCamera:) forControlEvents:UIControlEventTouchUpInside];
-    [btnCancel setTitle:@"X" forState:UIControlStateNormal];
+    [btnCancel setImage:[UIImage imageNamed:@"icon_close_white.png"] forState:UIControlStateNormal];
     [overLayView addSubview:btnCancel];
     [parentView addSubview:overLayView];
 }
 
 - (void)showCameraCode:(id)sender
 {
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        BarCodeViewController *barCodeViewController = [BarCodeViewController new];
-        barCodeViewController.delegate = self;
-        [self presentViewController:barCodeViewController animated:YES completion:^{
-            [self addOverlayCamera:barCodeViewController.view withFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-50, self.view.bounds.size.width, 50) cancelDelegate:barCodeViewController];
-        }];
-    }
-    else {
-        codeReader = [ZBarReaderViewController new];
-        codeReader.readerDelegate = self;
-        codeReader.supportedOrientationsMask = ZBarOrientationMaskAll;
-        codeReader.showsZBarControls = NO;
-        codeReader.showsCameraControls = NO;
-        
-        
-        ZBarImageScanner *scanner = codeReader.scanner;
-        [scanner setSymbology: ZBAR_CODE128 config: ZBAR_CFG_ENABLE to: 0];
-        [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];
-        
-        [self presentViewController:codeReader animated:YES completion:^{
-            [self addOverlayCamera:codeReader.view withFrame:CGRectMake(0, codeReader.view.bounds.size.height-50, self.view.bounds.size.width, 50) cancelDelegate:self];
-        }];
-    }
+
+    BarCodeViewController *barCodeViewController = [BarCodeViewController new];
+    barCodeViewController.delegate = self;
+    [self presentViewController:barCodeViewController animated:YES completion:^{
+        [self addOverlayCamera:barCodeViewController.view withFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-50, self.view.bounds.size.width, 50) cancelDelegate:barCodeViewController];
+    }];
+
 }
 
 - (IBAction)tap:(id)sender
