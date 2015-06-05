@@ -19,6 +19,7 @@
 #import "PriceAlert.h"
 #import "PriceAlertResult.h"
 #import "RKObjectManager.h"
+#import "string_product.h"
 #import "string_price_alert.h"
 #import "TokopediaNetworkManager.h"
 #define CCellIdentifier @"cell"
@@ -444,7 +445,7 @@
                     arrDepartment = [[NSMutableArray alloc] initWithArray:priceAlert.result.department];
                     Breadcrumb *breadCrumb = [Breadcrumb new];
                     breadCrumb.department_id = @"-1";
-                    breadCrumb.department_name = CStringAllDepartment;
+                    breadCrumb.department_name = CStringAllCategory;
                     [arrDepartment insertObject:breadCrumb atIndex:0];
                     priceAlert.result.department = nil;
                 }

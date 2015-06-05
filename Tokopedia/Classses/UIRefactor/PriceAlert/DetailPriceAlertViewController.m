@@ -757,6 +757,7 @@
         PriceAlert *priceAlert = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         if(page == 1) {
             catalogList = [NSMutableArray arrayWithArray:priceAlert.result.list];
+            [tblDetailPriceAlert scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
         }
         else {
             [catalogList addObjectsFromArray:priceAlert.result.list];
