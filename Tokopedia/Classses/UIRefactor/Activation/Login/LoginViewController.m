@@ -509,10 +509,11 @@
                 [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
                 [self.tabBarController setSelectedIndex:0];
                 [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
-                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                    object:nil
-                                                                  userInfo:nil];
             }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                object:nil
+                                                              userInfo:nil];
         } else if ([_login.result.status isEqualToString:@"1"]) {
             
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -582,6 +583,7 @@
             
             //add user login to GA
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:@"&uid" value:_login.result.user_id];
             // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)

@@ -35,6 +35,8 @@
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
 
+#define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
+
 @interface MainViewController ()
 <
     UITabBarControllerDelegate,
@@ -95,6 +97,7 @@ typedef enum TagRequest {
                selector:@selector(applicationLogin:)
                    name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
                  object:nil];
+    [center addObserver:self selector:@selector(forceLogout) name:TkpdNotificationForcedLogout object:nil];
     
     [center addObserver:self
                selector:@selector(applicationlogout:)
@@ -529,7 +532,7 @@ typedef enum TagRequest {
 
 - (void)doApplicationLogout {
     
-    _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Logging out"
+    _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Tunggu sebentar.."
                                                      message:nil
                                                     delegate:self
                                            cancelButtonTitle:nil
@@ -701,6 +704,10 @@ typedef enum TagRequest {
     
 }
 
+#pragma mark - Notification Observer Method
+- (void)forceLogout {
+    [self doApplicationLogout];
+}
 
 
 @end

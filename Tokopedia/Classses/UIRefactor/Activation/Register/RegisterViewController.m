@@ -615,14 +615,21 @@
         {
             // alert success login
             [self.navigationController popViewControllerAnimated:YES];
+            break;
         }
         case 12:
         {
             [self.navigationController popViewControllerAnimated:YES];
+            break;
         }
         default:
             break;
     }
+    
+    if ([alertView isKindOfClass:[TKPDAlert class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
 }
 
 -(void)alertViewCancel:(TKPDAlertView *)alertView

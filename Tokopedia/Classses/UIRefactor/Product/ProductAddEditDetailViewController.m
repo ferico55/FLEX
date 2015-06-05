@@ -691,6 +691,7 @@
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
     [tracker set:kGAIScreenName value:@"Add Product - Fail"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
@@ -1082,6 +1083,7 @@
         }
         if (setting.result.is_success == 1 || setting.result.product_id!=0) {
             id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"Add Product - Success"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             

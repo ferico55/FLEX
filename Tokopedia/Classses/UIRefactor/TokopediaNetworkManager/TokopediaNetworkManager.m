@@ -11,6 +11,8 @@
 
 #import "StickyAlertView.h"
 
+#define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
+
 @implementation TokopediaNetworkManager
 @synthesize tagRequest;
 
@@ -105,6 +107,9 @@
             
         } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
             [self requestMaintenance];
+        } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
+            NSLog(@"xxxxxxxxx REQUEST DENIED xxxxxxxxx");
+            [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil userInfo:@{}];
         }
     }
 }
