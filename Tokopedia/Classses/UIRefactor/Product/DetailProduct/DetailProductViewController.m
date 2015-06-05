@@ -1897,17 +1897,7 @@ UIAlertViewDelegate
                 }
                 
                 hasSetTokoTutup = !hasSetTokoTutup;
-                _dinkButton.hidden = YES;
-                _buyButton.hidden = YES;
-                [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
-                                                                                    options:0
-                                                                                    metrics:nil
-                                                                                      views:NSDictionaryOfVariableBindings(_dinkButton)]];
-                
-                [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
-                                                                                   options:0
-                                                                                   metrics:nil
-                                                                                     views:NSDictionaryOfVariableBindings(_buyButton)]];
+                [self hiddenButtonBuyAndPromo];
             }
             else {
                 if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
@@ -1921,9 +1911,10 @@ UIAlertViewDelegate
                 //Check is in warehouse
                 if(_product.result.product.product_returnable!=nil && ([_product.result.product.product_returnable isEqualToString:@"2"] || [_product.result.product.product_returnable isEqualToString:@"1"])) {
                     _buyButton.hidden = YES;
-                    _dinkButton.hidden = NO;
+                    if(_dinkButton.isHidden) {
+                        [self hiddenButtonBuyAndPromo];
+                    }
                 }
-                
             }
             
             
@@ -2043,6 +2034,21 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (void)hiddenButtonBuyAndPromo
+{
+    _dinkButton.hidden = YES;
+    _buyButton.hidden = YES;
+    [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:NSDictionaryOfVariableBindings(_dinkButton)]];
+    
+    [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
+                                                                       options:0
+                                                                       metrics:nil
+                                                                         views:NSDictionaryOfVariableBindings(_buyButton)]];
+}
+
 - (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
