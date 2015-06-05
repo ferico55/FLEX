@@ -175,6 +175,7 @@
 
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
     [tracker set:kGAIScreenName value:@"More Navigation Page"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
@@ -656,6 +657,7 @@
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
             id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
@@ -685,6 +687,7 @@
             
         } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"FAQ Center"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
@@ -694,6 +697,7 @@
             [self.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 2) {
             id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"Privacy Policy"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             

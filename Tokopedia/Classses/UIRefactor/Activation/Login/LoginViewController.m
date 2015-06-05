@@ -583,6 +583,7 @@
             
             //add user login to GA
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:@"&uid" value:_login.result.user_id];
             // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		7A54D06F1B2194B800243813 /* libAdIdAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A54D06E1B2194B800243813 /* libAdIdAccess.a */; };
 		7A84DE9F1B1E9F3400741F0D /* libAppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -1460,6 +1461,7 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7A54D06E1B2194B800243813 /* libAdIdAccess.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdIdAccess.a; sourceTree = "<group>"; };
 		7A84DE9D1B1E9F3400741F0D /* AppsFlyerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerTracker.h; sourceTree = "<group>"; };
 		7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -3648,6 +3650,7 @@
 				85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
 				85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */,
+				7A54D06F1B2194B800243813 /* libAdIdAccess.a in Frameworks */,
 				FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
@@ -7743,6 +7746,7 @@
 		FC763FEF1B15E2810034A8F1 /* GoogleAnalytics */ = {
 			isa = PBXGroup;
 			children = (
+				7A54D06E1B2194B800243813 /* libAdIdAccess.a */,
 				FC763FF01B15E2810034A8F1 /* GAI.h */,
 				FC763FF11B15E2810034A8F1 /* GAIDictionaryBuilder.h */,
 				FC763FF21B15E2810034A8F1 /* GAIEcommerceFields.h */,

@@ -3420,6 +3420,7 @@
 #pragma mark - Sending data to GA 
 - (void)sendingProductDataToGA {
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:@"Ecommerce"
                                                                            action:@"Checkout"
                                                                             label:nil
