@@ -18,8 +18,6 @@
 #define ETALASE_OBJECT_SELECTED_KEY @"object_selected"
 @interface MyShopEtalaseFilterViewController ()<UITableViewDataSource, UITableViewDelegate, MyShopEtalaseFilterCellDelegate, MyShopEtalaseEditViewControllerDelegate, TokopediaNetworkManagerDelegate>{
     BOOL _isnodata;
-    NSInteger _page;
-    NSString *_uriNext;
     
     NSMutableArray *_etalaseList;
     NSMutableDictionary *_selecteddata;
@@ -118,8 +116,6 @@
             [_etalaseList addObject:etalase];
         }
     }
-    
-    _page = 1;
 }
 
 - (void)didReceiveMemoryWarning
@@ -260,14 +256,6 @@
 {
     if (_isnodata) {
         cell.backgroundColor = [UIColor whiteColor];
-    }
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [_networkManager doRequest];
-        }
     }
 }
 
@@ -413,19 +401,6 @@
             }
             
             [_table reloadData];
-            
-            _uriNext =  _etalase.result.paging.uri_next;
-            NSURL *url = [NSURL URLWithString:_uriNext];
-            NSArray *tmpQueries = [[url query] componentsSeparatedByString: @"&"];
-            NSMutableDictionary *queries = [NSMutableDictionary new];
-            [queries removeAllObjects];
-            for (NSString *keyValuePair in tmpQueries) {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                NSString *key = [pairComponents objectAtIndex:0];
-                NSString *value = [pairComponents objectAtIndex:1];
-                [queries setObject:value forKey:key];
-            }
-            _page = [[queries objectForKey:kTKPD_APIPAGEKEY] integerValue];
         }
     }
 }

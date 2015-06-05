@@ -626,9 +626,10 @@
             break;
     }
     
-    if([alertView isKindOfClass:[TKPDAlert class]]) {
+    if ([alertView isKindOfClass:[TKPDAlert class]]) {
         [self.navigationController popViewControllerAnimated:YES];
     }
+    
 }
 
 -(void)alertViewCancel:(TKPDAlertView *)alertView
