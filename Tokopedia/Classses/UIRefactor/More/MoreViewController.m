@@ -72,6 +72,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
+@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profilePictureImageView;
@@ -136,6 +137,7 @@
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
+    _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
     
     self.navigationController.title = @"More";
     [self initNotificationManager];
@@ -455,7 +457,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 7;
+    return 8;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -492,6 +494,10 @@
             break;
             
         case 6:
+            return 1;
+            break;
+            
+        case 7 :
             return 1;
             break;
             
@@ -709,10 +715,13 @@
     }
     
     else if (indexPath.section == 6) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
-                                                            object:nil
-                                                          userInfo:@{}];
+        if(indexPath.row == 0) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                                                                object:nil
+                                                              userInfo:@{}];
+        }
+
     }
     
     self.hidesBottomBarWhenPushed = NO;

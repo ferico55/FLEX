@@ -1326,8 +1326,6 @@
 		FC7645661B15E2830034A8F1 /* actionbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763F701B15E2800034A8F1 /* actionbar_bg.png */; };
 		FC7645671B15E2830034A8F1 /* icon_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763F711B15E2800034A8F1 /* icon_arrow_white.png */; };
 		FC7645681B15E2830034A8F1 /* icon_arrow_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763F721B15E2800034A8F1 /* icon_arrow_white@2x.png */; };
-		FC7645691B15E2830034A8F1 /* icon_category_white.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763F731B15E2800034A8F1 /* icon_category_white.png */; };
-		FC76456A1B15E2830034A8F1 /* icon_category_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763F741B15E2800034A8F1 /* icon_category_white@2x.png */; };
 		FC76456B1B15E2830034A8F1 /* icon_location_14px.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763F751B15E2800034A8F1 /* icon_location_14px.png */; };
 		FC76456C1B15E2830034A8F1 /* icon_location_28px.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763F761B15E2800034A8F1 /* icon_location_28px.png */; };
 		FC76456D1B15E2830034A8F1 /* icon_sold_14px.png in Resources */ = {isa = PBXBuildFile; fileRef = FC763F771B15E2800034A8F1 /* icon_sold_14px.png */; };
@@ -8535,7 +8533,6 @@
 				FC7643411B15E2830034A8F1 /* ShipmentStatusCell.xib in Resources */,
 				FC76440E1B15E2830034A8F1 /* ProfileBiodataShopCell.xib in Resources */,
 				FC7645A91B15E2830034A8F1 /* icon_category_active@2x.png in Resources */,
-				FC76456A1B15E2830034A8F1 /* icon_category_white@2x.png in Resources */,
 				FC76446B1B15E2830034A8F1 /* icon_cart@2x.png in Resources */,
 				FC7641FC1B15E2820034A8F1 /* CameraAlbumListCell.xib in Resources */,
 				FC7644291B15E2830034A8F1 /* icon_10@2x.png in Resources */,
@@ -8691,7 +8688,6 @@
 				FC7643371B15E2830034A8F1 /* SubmitShipmentConfirmationViewController.xib in Resources */,
 				FC76420E1B15E2820034A8F1 /* CatalogShopCell.xib in Resources */,
 				FC7645221B15E2830034A8F1 /* icon_signin_active (deleted 63cad7fbff1b7fd53fd50f759a4b79c0).png in Resources */,
-				FC7645691B15E2830034A8F1 /* icon_category_white.png in Resources */,
 				FC7643F51B15E2830034A8F1 /* TxOrderConfirmationViewController.xib in Resources */,
 				FC7644251B15E2830034A8F1 /* icon_0.png in Resources */,
 				FC7645151B15E2830034A8F1 /* icon_shop_info.png in Resources */,
