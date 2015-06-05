@@ -1909,7 +1909,7 @@ UIAlertViewDelegate
                 }
                 
                 //Check is in warehouse
-                if(_product.result.product.product_returnable!=nil && ([_product.result.product.product_returnable isEqualToString:@"2"] || [_product.result.product.product_returnable isEqualToString:@"1"])) {
+                if([_product.result.product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE) {
                     _buyButton.hidden = YES;
                     if(_dinkButton.isHidden) {
                         [self hiddenButtonBuyAndPromo];
