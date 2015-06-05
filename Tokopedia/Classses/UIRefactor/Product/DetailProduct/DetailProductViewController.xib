@@ -398,11 +398,11 @@
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZQ-y3-gDO">
-                                    <rect key="frame" x="169" y="10" width="120" height="32"/>
+                                    <rect key="frame" x="168" y="5" width="142" height="40"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="120" id="VYo-0D-LRf"/>
-                                        <constraint firstAttribute="height" constant="32" id="wkJ-ud-bQG"/>
+                                        <constraint firstAttribute="width" constant="142" id="VYo-0D-LRf"/>
+                                        <constraint firstAttribute="height" constant="40" id="wkJ-ud-bQG"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                     <state key="normal" title="Wishlist" image="icon_button_wishlist_nonactive.png">
@@ -414,11 +414,11 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qan-1S-e2b">
-                                    <rect key="frame" x="30" y="10" width="120" height="32"/>
+                                    <rect key="frame" x="10" y="5" width="142" height="40"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="32" id="ear-fi-MQf"/>
-                                        <constraint firstAttribute="width" constant="120" id="isX-lf-FMN"/>
+                                        <constraint firstAttribute="height" constant="40" id="ear-fi-MQf"/>
+                                        <constraint firstAttribute="width" constant="142" id="isX-lf-FMN"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                     <state key="normal" title="Share" image="icon_button_share.png">
@@ -433,11 +433,11 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="6ja-ou-q2E"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" constant="30" id="UhW-tX-6Wk"/>
-                                <constraint firstAttribute="trailing" secondItem="NZQ-y3-gDO" secondAttribute="trailing" constant="31" id="VeS-vl-5fd"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="leading" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="19" id="d1Q-ib-zpb"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="t5G-7I-Akc"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="10" id="wJw-FM-xMh"/>
+                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" constant="10" id="UhW-tX-6Wk"/>
+                                <constraint firstAttribute="trailing" secondItem="NZQ-y3-gDO" secondAttribute="trailing" constant="10" id="VeS-vl-5fd"/>
+                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="leading" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="16" id="d1Q-ib-zpb"/>
+                                <constraint firstItem="Qan-1S-e2b" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="t5G-7I-Akc"/>
+                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="wJw-FM-xMh"/>
                                 <constraint firstAttribute="width" constant="320" id="zdP-Tg-4ZA"/>
                             </constraints>
                         </view>
