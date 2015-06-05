@@ -94,14 +94,18 @@
     if ( gateway == TYPE_GATEWAY_CLICK_BCA)
     {
         [_act startAnimating];
-        if ([request.URL.absoluteString isEqualToString:_BCAParam.callback]) {
+        if ([request.URL.absoluteString isEqualToString:_BCAParam.callback] ||
+            [request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION] ||
+            [webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]
+            ) {
+            _isSuccessBCA = YES;
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             [_delegate shouldDoRequestBCAClickPay];
             return NO;
         }
-        if ([request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION]) {
-            _isSuccessBCA = YES;
-        }
+        //if ([request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION]) {
+        //    _isSuccessBCA = YES;
+        //}
         
         if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]) {
             UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
