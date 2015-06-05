@@ -34,6 +34,7 @@
 @property NSString *action;
 @property NSString *fieldName;
 @property NSString *productID;
+@property NSString *paymentID;
 @property BOOL isNotUsingNewAdd;
 
 @end

@@ -23,7 +23,7 @@
 @protocol GenerateHostDelegate <NSObject>
 @required
 - (void)successGenerateHost:(GenerateHost*)generateHost;
-- (void)failedGenerateHost;
+- (void)failedGenerateHost:(NSArray*)errorMessages;
 
 @end
 

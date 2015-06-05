@@ -44,6 +44,7 @@
                                                         @"pic_id" : @"pic_id",
                                                         @"pic_obj" : @"pic_obj",
                                                         @"file_uploaded" : @"file_uploaded",
+                                                        @"pic_src" : @"pic_src"
                                                         }];
     
 
@@ -91,7 +92,8 @@
                          kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
                          kTKPD_USERIDKEY : @(userID),
                          @"product_id" : _productID?:@"",
-                         @"new_add" : @(newAdd)
+                         @"new_add" : @(newAdd),
+                         @"payment_id" : _paymentID?:@""
                          //@"is_temp" :@(1)
                          };
     
@@ -149,7 +151,7 @@
                        [self showErrorMessages:array?:@[]];
                        [_delegate failedUploadObject:_imageObject];
                    }
-                   else if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil) {
+                   else if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
                        [_delegate successUploadObject:_imageObject withMappingResult:images];
                    }
                    else
@@ -197,14 +199,15 @@
         for(int i=0;i<messages.count;i++) {
             NSString *str = [NSString stringWithFormat:@"%@", [messages objectAtIndex:i]];
             str = [NSString convertHTML:str];
-            if ([str containsString:@"SMALL"]) {
+            
+            if ([self string:str containsString:@"SMALL"]) {
                 str = @"Ukuran file yang diunggah terlalu kecil";
             }
-            else if ([str containsString:@"BIG"])
+            else if ([self string:str containsString:@"BIG"])
             {
                 str = @"Maksimum ukuran file yang diunggah adalah 500.000 bytes (500 Kilobytes)";
             }
-            else if([str containsString:@"SERVER_ERROR"])
+            else if([self string:str containsString:@"SERVER_ERROR"])
             {
                 str = @"Mohon maaf, terjadi kendala pada server. Mohon coba kembali";
             }
@@ -214,6 +217,11 @@
     
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messagesError delegate:_delegate];
     [alert show];
+}
+
+- (BOOL)string:(NSString*)string containsString:(NSString*)other {
+    NSRange range = [string rangeOfString:other];
+    return range.length != 0;
 }
 
 -(void)requesttimeoutUploadPhoto
