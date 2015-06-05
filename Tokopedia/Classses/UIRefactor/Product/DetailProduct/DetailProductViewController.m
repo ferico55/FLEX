@@ -333,7 +333,7 @@ UIAlertViewDelegate
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
     btnShare.layer.borderWidth = 1;
-    btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+    btnShare.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
     btnShare.layer.masksToBounds = YES;
     btnShare.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
     btnShare.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
@@ -1856,7 +1856,7 @@ UIAlertViewDelegate
                 btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
                 btnWishList.layer.cornerRadius = 5;
                 btnWishList.layer.masksToBounds = YES;
-                btnWishList.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+                btnWishList.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
                 btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
                 btnWishList.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
