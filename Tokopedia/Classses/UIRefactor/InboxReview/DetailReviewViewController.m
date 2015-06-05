@@ -219,12 +219,25 @@
         frameRating.origin.y += diff + 10;
         _ratingView.frame = frameRating;
         
-        CGRect frameComment = _commentView.frame;
-        frameComment.origin.y += diff;
-        _commentView.frame = frameComment;
+//        CGRect frameComment = _commentView.frame;
+//        frameComment.origin.y += diff;
+//        _commentView.frame = frameComment;
+        
+        if(_talkInputView.bounds.size.height == 0) {
+            scrollContent.frame = CGRectMake(0, 0, self.view.bounds.size.width, [UIScreen mainScreen].bounds.size.height-[UIApplication sharedApplication].statusBarFrame.size.height-self.navigationController.navigationBar.bounds.size.height);
+        }
+        else {
+            scrollContent.frame = CGRectMake(0, 0, self.view.bounds.size.width, [UIScreen mainScreen].bounds.size.height-[UIApplication sharedApplication].statusBarFrame.size.height-self.navigationController.navigationBar.bounds.size.height-_talkInputView.bounds.size.height);
+        }
+        
         
         CGRect frameRespond = _respondView.frame;
-        frameRespond.origin.y += diff;
+        frameRespond.origin.y = frameRating.origin.y+frameRating.size.height;
+        frameRespond.size.height = _reviewRespondLabel.frame.origin.y + _reviewRespondLabel.bounds.size.height+10;
+        
+        if(frameRespond.origin.y+frameRespond.size.height < scrollContent.bounds.size.height) {
+            frameRespond.size.height = scrollContent.bounds.size.height-frameRespond.origin.y;
+        }
         _respondView.frame = frameRespond;
     }
     
@@ -272,6 +285,9 @@
 #pragma clang diagnostic pop
     } failure:nil];
     
+    
+    //Set content scrollview
+    scrollContent.contentSize = CGSizeMake(self.view.bounds.size.width, _respondView.frame.origin.y+_respondView.bounds.size.height);
 }
 
 -(IBAction)tap:(id)sender {
