@@ -509,10 +509,11 @@
                 [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
                 [self.tabBarController setSelectedIndex:0];
                 [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
-                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                    object:nil
-                                                                  userInfo:nil];
             }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                object:nil
+                                                              userInfo:nil];
         } else if ([_login.result.status isEqualToString:@"1"]) {
             
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
