@@ -12,6 +12,12 @@
 		7A84DE9F1B1E9F3400741F0D /* libAppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AB7065C1B219C9C007F4FA4 /* icon_button_favorite_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB706561B219C9C007F4FA4 /* icon_button_favorite_active.png */; };
+		7AB7065D1B219C9C007F4FA4 /* icon_button_favorite_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB706571B219C9C007F4FA4 /* icon_button_favorite_active@2x.png */; };
+		7AB7065E1B219C9C007F4FA4 /* icon_button_favorite_active@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB706581B219C9C007F4FA4 /* icon_button_favorite_active@3x.png */; };
+		7AB7065F1B219C9C007F4FA4 /* icon_button_favorite_nonactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB706591B219C9C007F4FA4 /* icon_button_favorite_nonactive.png */; };
+		7AB706601B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB7065A1B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png */; };
+		7AB706611B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB7065B1B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png */; };
 		85046EA21B20395E00FF657B /* BarCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85046EA11B20395E00FF657B /* BarCodeViewController.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
@@ -1466,6 +1472,12 @@
 		7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AB706561B219C9C007F4FA4 /* icon_button_favorite_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_button_favorite_active.png; sourceTree = "<group>"; };
+		7AB706571B219C9C007F4FA4 /* icon_button_favorite_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_favorite_active@2x.png"; sourceTree = "<group>"; };
+		7AB706581B219C9C007F4FA4 /* icon_button_favorite_active@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_favorite_active@3x.png"; sourceTree = "<group>"; };
+		7AB706591B219C9C007F4FA4 /* icon_button_favorite_nonactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_button_favorite_nonactive.png; sourceTree = "<group>"; };
+		7AB7065A1B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_favorite_nonactive@2x.png"; sourceTree = "<group>"; };
+		7AB7065B1B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_favorite_nonactive@3x.png"; sourceTree = "<group>"; };
 		85046EA01B20395E00FF657B /* BarCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarCodeViewController.h; sourceTree = "<group>"; };
 		85046EA11B20395E00FF657B /* BarCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarCodeViewController.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -7121,6 +7133,12 @@
 		FC763E231B15E27E0034A8F1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AB706561B219C9C007F4FA4 /* icon_button_favorite_active.png */,
+				7AB706571B219C9C007F4FA4 /* icon_button_favorite_active@2x.png */,
+				7AB706581B219C9C007F4FA4 /* icon_button_favorite_active@3x.png */,
+				7AB706591B219C9C007F4FA4 /* icon_button_favorite_nonactive.png */,
+				7AB7065A1B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png */,
+				7AB7065B1B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png */,
 				FC763E241B15E27E0034A8F1 /* balloon_read_left.png */,
 				FC763E251B15E27E0034A8F1 /* balloon_read_right.png */,
 				FC763E261B15E27E0034A8F1 /* button_white.png */,
@@ -8125,6 +8143,7 @@
 				FC76442C1B15E2830034A8F1 /* icon_12.png in Resources */,
 				FC7642761B15E2830034A8F1 /* HistoryProductViewController.xib in Resources */,
 				FCFF56EF1AB6D5CD0076000E /* MainViewController.xib in Resources */,
+				7AB7065D1B219C9C007F4FA4 /* icon_button_favorite_active@2x.png in Resources */,
 				FC7644901B15E2830034A8F1 /* icon_category_white.png in Resources */,
 				FC76459C1B15E2830034A8F1 /* ic_home@2x.png in Resources */,
 				FC76423B1B15E2830034A8F1 /* NoResult.xib in Resources */,
@@ -8156,6 +8175,7 @@
 				FC7644BD1B15E2830034A8F1 /* icon_grid_tiga@2x.png in Resources */,
 				FC7645521B15E2830034A8F1 /* icon_home_active.png in Resources */,
 				FC76442E1B15E2830034A8F1 /* icon_13.png in Resources */,
+				7AB706601B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png in Resources */,
 				FC76430E1B15E2830034A8F1 /* ReputationShopHeader.xib in Resources */,
 				FC7643AE1B15E2830034A8F1 /* FilterViewController.xib in Resources */,
 				85D12B3F1B1C47A6001B9272 /* icon_button_wishlist_nonactive@2x.png in Resources */,
@@ -8480,6 +8500,7 @@
 				FC76451A1B15E2830034A8F1 /* icon_shop_setting@2x.png in Resources */,
 				FC7645B81B15E2830034A8F1 /* icon_signin_active.png in Resources */,
 				FC7645D71B15E2830034A8F1 /* icon_upload_image@2x.png in Resources */,
+				7AB706611B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png in Resources */,
 				FC7645CD1B15E2830034A8F1 /* icon_info_white@2x.png in Resources */,
 				FC7643C91B15E2830034A8F1 /* TransactionCartFormMandiriClickPayViewController.xib in Resources */,
 				FC76440C1B15E2830034A8F1 /* ProfileBiodataCell.xib in Resources */,
@@ -8520,6 +8541,7 @@
 				FC7644291B15E2830034A8F1 /* icon_10@2x.png in Resources */,
 				FC76451D1B15E2830034A8F1 /* icon_shop_unfavorite_2x.png in Resources */,
 				FC76422D1B15E2830034A8F1 /* TKPDTabInboxTalkNavigationController.xib in Resources */,
+				7AB7065C1B219C9C007F4FA4 /* icon_button_favorite_active.png in Resources */,
 				FC76449D1B15E2830034A8F1 /* icon_clock.png in Resources */,
 				FC7644AE1B15E2830034A8F1 /* icon_edit_grey@2x.png in Resources */,
 				FC7644781B15E2830034A8F1 /* icon_13@3x.png in Resources */,
@@ -8630,6 +8652,7 @@
 				FC7642001B15E2820034A8F1 /* CameraCollectionCell.xib in Resources */,
 				FC7643B01B15E2830034A8F1 /* SortCell.xib in Resources */,
 				FC76437D1B15E2830034A8F1 /* ShopFavoritedViewController.xib in Resources */,
+				7AB7065F1B219C9C007F4FA4 /* icon_button_favorite_nonactive.png in Resources */,
 				FC7644801B15E2830034A8F1 /* icon_20@3x.png in Resources */,
 				FC76456D1B15E2830034A8F1 /* icon_sold_14px.png in Resources */,
 				FC7644FD1B15E2830034A8F1 /* icon_quote.png in Resources */,
@@ -8706,6 +8729,7 @@
 				FC76422F1B15E2830034A8F1 /* TKPDTabNavigationController.xib in Resources */,
 				FC7645D21B15E2830034A8F1 /* icon_more_grey.png in Resources */,
 				FC7645C01B15E2830034A8F1 /* icon_cancel_grey.png in Resources */,
+				7AB7065E1B219C9C007F4FA4 /* icon_button_favorite_active@3x.png in Resources */,
 				FC7644C01B15E2830034A8F1 /* icon_home@2x (deleted 7bee73eed8e56609e3046416e568b8e0).png in Resources */,
 				FC7643E91B15E2830034A8F1 /* TxOrderConfirmationCostCell.xib in Resources */,
 				FC76456C1B15E2830034A8F1 /* icon_location_28px.png in Resources */,
