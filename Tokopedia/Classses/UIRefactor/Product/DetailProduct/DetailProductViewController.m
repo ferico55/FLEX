@@ -1917,6 +1917,13 @@ UIAlertViewDelegate
                     _buyButton.hidden = NO;
                     _dinkButton.hidden = YES;
                 }
+                
+                //Check is in warehouse
+                if(_product.result.product.product_returnable!=nil && ([_product.result.product.product_returnable isEqualToString:@"2"] || [_product.result.product.product_returnable isEqualToString:@"1"])) {
+                    _buyButton.hidden = YES;
+                    _dinkButton.hidden = NO;
+                }
+                
             }
             
             

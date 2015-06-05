@@ -79,8 +79,6 @@
     _pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     _pageController.dataSource = self;
-
-    //[_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     [[_pageController view] setFrame:_containerView.frame];
     
@@ -141,6 +139,13 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
     _isShouldRefreshingCart = NO;
 }
 
@@ -195,25 +200,27 @@
             self.navigationItem.leftBarButtonItem = nil;
             
             if (self.navigationController.viewControllers.count>1) {
-                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-                [backBarButtonItem setTintColor:[UIColor whiteColor]];
-                backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-                self.navigationItem.leftBarButtonItem = backBarButtonItem;
+                UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+                [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+                [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+                [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+                
+                UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+                
+                backButton.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+                self.navigationItem.leftBarButtonItem = barButton;
             }
             _isShouldRefreshingCart = NO;
-            if (_isLogin) {
+            if (_isLogin && self.navigationController.viewControllers.count<=1) {
                 [self initNotificationManager];
             }
             else
             {
                 self.navigationItem.rightBarButtonItem = nil;
+                self.navigationItem.titleView = nil;
+                self.navigationItem.title = @"Keranjang Belanja";
             }
-            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                           style:UIBarButtonItemStyleBordered
-                                                                          target:self
-                                                                          action:@selector(tap:)];
-            backButton.tag = 2;
-            self.navigationItem.backBarButtonItem = backButton;
             break;
         }
         case 1:
@@ -364,7 +371,14 @@
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         if (self.navigationController.viewControllers.count > 1 && _index!=1) {
-            UIViewController *destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-3];
+            UIViewController *destinationVC;
+            if (_index == 0) {
+                destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
+            }
+            else
+            {
+                destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
+            }
             [self.navigationController popToViewController:destinationVC animated:YES];
         }
         else if (_index == 1)
@@ -393,7 +407,18 @@
 
 -(void)tapBackButton:(id)sender
 {
-    if (_index == 1)
+    if (self.navigationController.viewControllers.count > 1 && _index!=1) {
+        UIViewController *destinationVC;
+        if (_index == 0) {
+            destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
+        }
+        else
+        {
+            destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
+        }
+        [self.navigationController popToViewController:destinationVC animated:YES];
+    }
+    else if (_index == 1)
     {
         [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
         ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
@@ -448,7 +473,7 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-    if (_isLogin) {
+    if (_isLogin && self.navigationController.viewControllers.count<=1) {
         [self initNotificationManager];
     }
     else
@@ -475,7 +500,7 @@
             }
         }
     }
-    if (_isLogin) {
+    if (_isLogin && self.navigationController.viewControllers.count<=1) {
         [self initNotificationManager];
     }
     else

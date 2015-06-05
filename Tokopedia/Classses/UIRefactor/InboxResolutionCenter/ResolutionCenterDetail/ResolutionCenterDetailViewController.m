@@ -1530,11 +1530,7 @@
     BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(resolution.message_error)
-        {
-            [self requestFailureActionWithErrorMessage:resolution.message_error];
-        }
-        else if (resolution.result.is_success == 1) {
+        if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
             [alert show];
             
@@ -1549,7 +1545,7 @@
         }
         else
         {
-            [self requestFailureActionWithErrorMessage:@[@"Error"]];
+            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
         }
     }
     else
@@ -1670,11 +1666,7 @@
     BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(resolution.message_error)
-        {
-            [self requestFailureEditReceiptWithErrorMessage:resolution.message_error];
-        }
-        else if (resolution.result.is_success == 1) {
+        if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
             [alert show];
             
@@ -1682,7 +1674,7 @@
         }
         else
         {
-            [self requestFailureEditReceiptWithErrorMessage:@[@"Error"]];
+            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
         }
     }
     else
@@ -1810,18 +1802,14 @@
     
     if (status) {
         [self refreshRequest];
-        if(resolution.message_error)
-        {
-            [self requestFailureReplayWithErrorMessage:resolution.message_error];
-        }
-        else if (resolution.result.is_success == 1) {
+        if (resolution.result.is_success == 1) {
             NSArray *successMessage = isChangeSolution?@[@"Anda telah berhasil mengubah solusi"]:@[@"Sukses mengirim pesan diskusi"];
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:successMessage delegate:self];
             [alert show];
         }
         else
         {
-            [self requestFailureReplayWithErrorMessage:@[@"Error"]];
+            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
         }
     }
     else
