@@ -8,9 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		7A54D06F1B2194B800243813 /* libAdIdAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A54D06E1B2194B800243813 /* libAdIdAccess.a */; };
 		7A84DE9F1B1E9F3400741F0D /* libAppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AB7065C1B219C9C007F4FA4 /* icon_button_favorite_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB706561B219C9C007F4FA4 /* icon_button_favorite_active.png */; };
+		7AB7065D1B219C9C007F4FA4 /* icon_button_favorite_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB706571B219C9C007F4FA4 /* icon_button_favorite_active@2x.png */; };
+		7AB7065E1B219C9C007F4FA4 /* icon_button_favorite_active@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB706581B219C9C007F4FA4 /* icon_button_favorite_active@3x.png */; };
+		7AB7065F1B219C9C007F4FA4 /* icon_button_favorite_nonactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB706591B219C9C007F4FA4 /* icon_button_favorite_nonactive.png */; };
+		7AB706601B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB7065A1B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png */; };
+		7AB706611B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB7065B1B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png */; };
 		85046EA21B20395E00FF657B /* BarCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85046EA11B20395E00FF657B /* BarCodeViewController.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
@@ -1440,12 +1447,6 @@
 		FC7646011B15E2830034A8F1 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7640411B15E2820034A8F1 /* MGSwipeTableCell.m */; };
 		FC7646021B15E2830034A8F1 /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = FC7640421B15E2820034A8F1 /* MGSwipeTableCell.podspec */; };
 		FC7646031B15E2830034A8F1 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = FC7640431B15E2820034A8F1 /* README.md */; };
-		FC7646041B15E2830034A8F1 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC76405C1B15E2820034A8F1 /* libzbar.a */; };
-		FC7646051B15E2830034A8F1 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = FC76405D1B15E2820034A8F1 /* README.md */; };
-		FC7646061B15E2830034A8F1 /* zbar-back.png in Resources */ = {isa = PBXBuildFile; fileRef = FC76405F1B15E2820034A8F1 /* zbar-back.png */; };
-		FC7646071B15E2830034A8F1 /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = FC7640601B15E2820034A8F1 /* zbar-help.html */; };
-		FC7646081B15E2830034A8F1 /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640611B15E2820034A8F1 /* zbar-helpicons.png */; };
-		FC7646091B15E2830034A8F1 /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = FC7640621B15E2820034A8F1 /* zbar-samples.png */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -1466,10 +1467,17 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7A54D06E1B2194B800243813 /* libAdIdAccess.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAdIdAccess.a; sourceTree = "<group>"; };
 		7A84DE9D1B1E9F3400741F0D /* AppsFlyerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerTracker.h; sourceTree = "<group>"; };
 		7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AB706561B219C9C007F4FA4 /* icon_button_favorite_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_button_favorite_active.png; sourceTree = "<group>"; };
+		7AB706571B219C9C007F4FA4 /* icon_button_favorite_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_favorite_active@2x.png"; sourceTree = "<group>"; };
+		7AB706581B219C9C007F4FA4 /* icon_button_favorite_active@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_favorite_active@3x.png"; sourceTree = "<group>"; };
+		7AB706591B219C9C007F4FA4 /* icon_button_favorite_nonactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_button_favorite_nonactive.png; sourceTree = "<group>"; };
+		7AB7065A1B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_favorite_nonactive@2x.png"; sourceTree = "<group>"; };
+		7AB7065B1B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_favorite_nonactive@3x.png"; sourceTree = "<group>"; };
 		85046EA01B20395E00FF657B /* BarCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarCodeViewController.h; sourceTree = "<group>"; };
 		85046EA11B20395E00FF657B /* BarCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarCodeViewController.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -3625,32 +3633,6 @@
 		FC7640411B15E2820034A8F1 /* MGSwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeTableCell.m; sourceTree = "<group>"; };
 		FC7640421B15E2820034A8F1 /* MGSwipeTableCell.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MGSwipeTableCell.podspec; sourceTree = "<group>"; };
 		FC7640431B15E2820034A8F1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		FC7640481B15E2820034A8F1 /* Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoder.h; sourceTree = "<group>"; };
-		FC7640491B15E2820034A8F1 /* Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exception.h; sourceTree = "<group>"; };
-		FC76404A1B15E2820034A8F1 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
-		FC76404B1B15E2820034A8F1 /* ImageScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScanner.h; sourceTree = "<group>"; };
-		FC76404C1B15E2820034A8F1 /* Processor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Processor.h; sourceTree = "<group>"; };
-		FC76404D1B15E2820034A8F1 /* Scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scanner.h; sourceTree = "<group>"; };
-		FC76404E1B15E2820034A8F1 /* Symbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Symbol.h; sourceTree = "<group>"; };
-		FC76404F1B15E2820034A8F1 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
-		FC7640501B15E2820034A8F1 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		FC7640511B15E2820034A8F1 /* zbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zbar.h; sourceTree = "<group>"; };
-		FC7640521B15E2820034A8F1 /* ZBarCameraSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarCameraSimulator.h; sourceTree = "<group>"; };
-		FC7640531B15E2820034A8F1 /* ZBarCaptureReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarCaptureReader.h; sourceTree = "<group>"; };
-		FC7640541B15E2820034A8F1 /* ZBarHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarHelpController.h; sourceTree = "<group>"; };
-		FC7640551B15E2820034A8F1 /* ZBarImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarImage.h; sourceTree = "<group>"; };
-		FC7640561B15E2820034A8F1 /* ZBarImageScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarImageScanner.h; sourceTree = "<group>"; };
-		FC7640571B15E2820034A8F1 /* ZBarReaderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarReaderController.h; sourceTree = "<group>"; };
-		FC7640581B15E2820034A8F1 /* ZBarReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarReaderView.h; sourceTree = "<group>"; };
-		FC7640591B15E2820034A8F1 /* ZBarReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarReaderViewController.h; sourceTree = "<group>"; };
-		FC76405A1B15E2820034A8F1 /* ZBarSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarSDK.h; sourceTree = "<group>"; };
-		FC76405B1B15E2820034A8F1 /* ZBarSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarSymbol.h; sourceTree = "<group>"; };
-		FC76405C1B15E2820034A8F1 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzbar.a; sourceTree = "<group>"; };
-		FC76405D1B15E2820034A8F1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		FC76405F1B15E2820034A8F1 /* zbar-back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-back.png"; sourceTree = "<group>"; };
-		FC7640601B15E2820034A8F1 /* zbar-help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "zbar-help.html"; sourceTree = "<group>"; };
-		FC7640611B15E2820034A8F1 /* zbar-helpicons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-helpicons.png"; sourceTree = "<group>"; };
-		FC7640621B15E2820034A8F1 /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -3680,11 +3662,11 @@
 				85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
 				85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */,
+				7A54D06F1B2194B800243813 /* libAdIdAccess.a in Frameworks */,
 				FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
 				FCFF63561ABA79660076000E /* FacebookSDK.framework in Frameworks */,
-				FC7646041B15E2830034A8F1 /* libzbar.a in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
@@ -7151,6 +7133,12 @@
 		FC763E231B15E27E0034A8F1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AB706561B219C9C007F4FA4 /* icon_button_favorite_active.png */,
+				7AB706571B219C9C007F4FA4 /* icon_button_favorite_active@2x.png */,
+				7AB706581B219C9C007F4FA4 /* icon_button_favorite_active@3x.png */,
+				7AB706591B219C9C007F4FA4 /* icon_button_favorite_nonactive.png */,
+				7AB7065A1B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png */,
+				7AB7065B1B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png */,
 				FC763E241B15E27E0034A8F1 /* balloon_read_left.png */,
 				FC763E251B15E27E0034A8F1 /* balloon_read_right.png */,
 				FC763E261B15E27E0034A8F1 /* button_white.png */,
@@ -7769,7 +7757,6 @@
 				FC7640391B15E2820034A8F1 /* MarqueeLabel.h */,
 				FC76403A1B15E2820034A8F1 /* MarqueeLabel.m */,
 				FC76403B1B15E2820034A8F1 /* MGSwipeTableCell */,
-				FC7640441B15E2820034A8F1 /* Zbar */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -7777,6 +7764,7 @@
 		FC763FEF1B15E2810034A8F1 /* GoogleAnalytics */ = {
 			isa = PBXGroup;
 			children = (
+				7A54D06E1B2194B800243813 /* libAdIdAccess.a */,
 				FC763FF01B15E2810034A8F1 /* GAI.h */,
 				FC763FF11B15E2810034A8F1 /* GAIDictionaryBuilder.h */,
 				FC763FF21B15E2810034A8F1 /* GAIEcommerceFields.h */,
@@ -7812,71 +7800,6 @@
 				FC7640411B15E2820034A8F1 /* MGSwipeTableCell.m */,
 			);
 			path = MGSwipeTableCell;
-			sourceTree = "<group>";
-		};
-		FC7640441B15E2820034A8F1 /* Zbar */ = {
-			isa = PBXGroup;
-			children = (
-				FC7640451B15E2820034A8F1 /* Headers */,
-				FC76405C1B15E2820034A8F1 /* libzbar.a */,
-				FC76405D1B15E2820034A8F1 /* README.md */,
-				FC76405E1B15E2820034A8F1 /* Resources */,
-			);
-			path = Zbar;
-			sourceTree = "<group>";
-		};
-		FC7640451B15E2820034A8F1 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				FC7640461B15E2820034A8F1 /* ZBarSDK */,
-			);
-			path = Headers;
-			sourceTree = "<group>";
-		};
-		FC7640461B15E2820034A8F1 /* ZBarSDK */ = {
-			isa = PBXGroup;
-			children = (
-				FC7640471B15E2820034A8F1 /* zbar */,
-				FC7640511B15E2820034A8F1 /* zbar.h */,
-				FC7640521B15E2820034A8F1 /* ZBarCameraSimulator.h */,
-				FC7640531B15E2820034A8F1 /* ZBarCaptureReader.h */,
-				FC7640541B15E2820034A8F1 /* ZBarHelpController.h */,
-				FC7640551B15E2820034A8F1 /* ZBarImage.h */,
-				FC7640561B15E2820034A8F1 /* ZBarImageScanner.h */,
-				FC7640571B15E2820034A8F1 /* ZBarReaderController.h */,
-				FC7640581B15E2820034A8F1 /* ZBarReaderView.h */,
-				FC7640591B15E2820034A8F1 /* ZBarReaderViewController.h */,
-				FC76405A1B15E2820034A8F1 /* ZBarSDK.h */,
-				FC76405B1B15E2820034A8F1 /* ZBarSymbol.h */,
-			);
-			path = ZBarSDK;
-			sourceTree = "<group>";
-		};
-		FC7640471B15E2820034A8F1 /* zbar */ = {
-			isa = PBXGroup;
-			children = (
-				FC7640481B15E2820034A8F1 /* Decoder.h */,
-				FC7640491B15E2820034A8F1 /* Exception.h */,
-				FC76404A1B15E2820034A8F1 /* Image.h */,
-				FC76404B1B15E2820034A8F1 /* ImageScanner.h */,
-				FC76404C1B15E2820034A8F1 /* Processor.h */,
-				FC76404D1B15E2820034A8F1 /* Scanner.h */,
-				FC76404E1B15E2820034A8F1 /* Symbol.h */,
-				FC76404F1B15E2820034A8F1 /* Video.h */,
-				FC7640501B15E2820034A8F1 /* Window.h */,
-			);
-			path = zbar;
-			sourceTree = "<group>";
-		};
-		FC76405E1B15E2820034A8F1 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				FC76405F1B15E2820034A8F1 /* zbar-back.png */,
-				FC7640601B15E2820034A8F1 /* zbar-help.html */,
-				FC7640611B15E2820034A8F1 /* zbar-helpicons.png */,
-				FC7640621B15E2820034A8F1 /* zbar-samples.png */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		FC7640631B15E2820034A8F1 /* Sound */ = {
@@ -8220,6 +8143,7 @@
 				FC76442C1B15E2830034A8F1 /* icon_12.png in Resources */,
 				FC7642761B15E2830034A8F1 /* HistoryProductViewController.xib in Resources */,
 				FCFF56EF1AB6D5CD0076000E /* MainViewController.xib in Resources */,
+				7AB7065D1B219C9C007F4FA4 /* icon_button_favorite_active@2x.png in Resources */,
 				FC7644901B15E2830034A8F1 /* icon_category_white.png in Resources */,
 				FC76459C1B15E2830034A8F1 /* ic_home@2x.png in Resources */,
 				FC76423B1B15E2830034A8F1 /* NoResult.xib in Resources */,
@@ -8238,7 +8162,6 @@
 				FC7644F41B15E2830034A8F1 /* icon_order_check-01.png in Resources */,
 				FC7645B31B15E2830034A8F1 /* icon_search@2x.png in Resources */,
 				FC7645851B15E2830034A8F1 /* icon_share@3x.png in Resources */,
-				FC7646091B15E2830034A8F1 /* zbar-samples.png in Resources */,
 				FC7645891B15E2830034A8F1 /* icon_cart_active@3x.png in Resources */,
 				FC7641FE1B15E2820034A8F1 /* CameraAlbumListViewController.xib in Resources */,
 				FC7644D71B15E2830034A8F1 /* icon_love_white.png in Resources */,
@@ -8252,6 +8175,7 @@
 				FC7644BD1B15E2830034A8F1 /* icon_grid_tiga@2x.png in Resources */,
 				FC7645521B15E2830034A8F1 /* icon_home_active.png in Resources */,
 				FC76442E1B15E2830034A8F1 /* icon_13.png in Resources */,
+				7AB706601B219C9C007F4FA4 /* icon_button_favorite_nonactive@2x.png in Resources */,
 				FC76430E1B15E2830034A8F1 /* ReputationShopHeader.xib in Resources */,
 				FC7643AE1B15E2830034A8F1 /* FilterViewController.xib in Resources */,
 				85D12B3F1B1C47A6001B9272 /* icon_button_wishlist_nonactive@2x.png in Resources */,
@@ -8358,11 +8282,9 @@
 				FC76428E1B15E2830034A8F1 /* InboxMessageDetailCell.xib in Resources */,
 				FC76444E1B15E2830034A8F1 /* icon_8@2x.png in Resources */,
 				FC7645AC1B15E2830034A8F1 /* icon_home_active.png in Resources */,
-				FC7646071B15E2830034A8F1 /* zbar-help.html in Resources */,
 				FC7642241B15E2830034A8F1 /* TKPDTabBarController.xib in Resources */,
 				FC7644E41B15E2830034A8F1 /* icon_move_gudang.png in Resources */,
 				FC7643241B15E2830034A8F1 /* OrderDetailProductCell.xib in Resources */,
-				FC7646061B15E2830034A8F1 /* zbar-back.png in Resources */,
 				FC7645181B15E2830034A8F1 /* icon_shop_message_2x.png in Resources */,
 				FC7644CB1B15E2830034A8F1 /* icon_location.png in Resources */,
 				FC7645B71B15E2830034A8F1 /* icon_signin@2x.png in Resources */,
@@ -8578,6 +8500,7 @@
 				FC76451A1B15E2830034A8F1 /* icon_shop_setting@2x.png in Resources */,
 				FC7645B81B15E2830034A8F1 /* icon_signin_active.png in Resources */,
 				FC7645D71B15E2830034A8F1 /* icon_upload_image@2x.png in Resources */,
+				7AB706611B219C9C007F4FA4 /* icon_button_favorite_nonactive@3x.png in Resources */,
 				FC7645CD1B15E2830034A8F1 /* icon_info_white@2x.png in Resources */,
 				FC7643C91B15E2830034A8F1 /* TransactionCartFormMandiriClickPayViewController.xib in Resources */,
 				FC76440C1B15E2830034A8F1 /* ProfileBiodataCell.xib in Resources */,
@@ -8618,6 +8541,7 @@
 				FC7644291B15E2830034A8F1 /* icon_10@2x.png in Resources */,
 				FC76451D1B15E2830034A8F1 /* icon_shop_unfavorite_2x.png in Resources */,
 				FC76422D1B15E2830034A8F1 /* TKPDTabInboxTalkNavigationController.xib in Resources */,
+				7AB7065C1B219C9C007F4FA4 /* icon_button_favorite_active.png in Resources */,
 				FC76449D1B15E2830034A8F1 /* icon_clock.png in Resources */,
 				FC7644AE1B15E2830034A8F1 /* icon_edit_grey@2x.png in Resources */,
 				FC7644781B15E2830034A8F1 /* icon_13@3x.png in Resources */,
@@ -8723,12 +8647,12 @@
 				FC7642EC1B15E2830034A8F1 /* ProductReviewCell.xib in Resources */,
 				FC7643881B15E2830034A8F1 /* ShopInfoShipmentCell.xib in Resources */,
 				FC76445A1B15E2830034A8F1 /* icon_arrow_down_white.png in Resources */,
-				FC7646081B15E2830034A8F1 /* zbar-helpicons.png in Resources */,
 				FC7644671B15E2830034A8F1 /* icon_cancel@2x.png in Resources */,
 				FC76445D1B15E2830034A8F1 /* icon_arrow_right_grey@2x.png in Resources */,
 				FC7642001B15E2820034A8F1 /* CameraCollectionCell.xib in Resources */,
 				FC7643B01B15E2830034A8F1 /* SortCell.xib in Resources */,
 				FC76437D1B15E2830034A8F1 /* ShopFavoritedViewController.xib in Resources */,
+				7AB7065F1B219C9C007F4FA4 /* icon_button_favorite_nonactive.png in Resources */,
 				FC7644801B15E2830034A8F1 /* icon_20@3x.png in Resources */,
 				FC76456D1B15E2830034A8F1 /* icon_sold_14px.png in Resources */,
 				FC7644FD1B15E2830034A8F1 /* icon_quote.png in Resources */,
@@ -8805,6 +8729,7 @@
 				FC76422F1B15E2830034A8F1 /* TKPDTabNavigationController.xib in Resources */,
 				FC7645D21B15E2830034A8F1 /* icon_more_grey.png in Resources */,
 				FC7645C01B15E2830034A8F1 /* icon_cancel_grey.png in Resources */,
+				7AB7065E1B219C9C007F4FA4 /* icon_button_favorite_active@3x.png in Resources */,
 				FC7644C01B15E2830034A8F1 /* icon_home@2x (deleted 7bee73eed8e56609e3046416e568b8e0).png in Resources */,
 				FC7643E91B15E2830034A8F1 /* TxOrderConfirmationCostCell.xib in Resources */,
 				FC76456C1B15E2830034A8F1 /* icon_location_28px.png in Resources */,
@@ -9528,7 +9453,6 @@
 				FC7641771B15E2820034A8F1 /* AddProductValidationResult.m in Sources */,
 				FC7640C71B15E2820034A8F1 /* TalkCommentResult.m in Sources */,
 				FC7641F91B15E2820034A8F1 /* CameraController.m in Sources */,
-				FC7646051B15E2830034A8F1 /* README.md in Sources */,
 				FC7640E81B15E2820034A8F1 /* InboxMessageDetailBetween.m in Sources */,
 				FC7643471B15E2830034A8F1 /* SearchResultCell.m in Sources */,
 				FC7643EA1B15E2830034A8F1 /* TxOrderConfirmationDetailHeaderView.m in Sources */,
@@ -9817,10 +9741,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"$(BUILT_PRODUCTS_DIR)/../../Headers\"",
-					"$(SRCROOT)/Tokopedia/Resources/Libraries/Zbar",
-				);
+				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -9835,8 +9756,9 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "25e3d81d-53d1-495c-b2dd-b52bd8fc5614";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -9849,7 +9771,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9857,10 +9779,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"$(BUILT_PRODUCTS_DIR)/../../Headers\"",
-					"$(SRCROOT)/Tokopedia/Resources/Libraries/Zbar",
-				);
+				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -9875,8 +9794,9 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "25e3d81d-53d1-495c-b2dd-b52bd8fc5614";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;

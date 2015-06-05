@@ -195,6 +195,8 @@ typedef enum TagRequest {
     _table.tableHeaderView = _searchView;
     _table.allowsSelectionDuringEditing = YES;
     _table.allowsMultipleSelectionDuringEditing = YES;
+    
+    [_networkManager doRequest];
 }
 
 
@@ -203,7 +205,7 @@ typedef enum TagRequest {
     [super viewWillAppear:animated];
     self.screenName = @"Inbox Message";
     if (!_isrefreshview) {
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+        if (_isnodata && _page < 1) {
             [_networkManager doRequest];
         }
     }

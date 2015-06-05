@@ -356,7 +356,7 @@
     </objects>
     <resources>
         <image name="icon_comment.png" width="14" height="14"/>
-        <image name="icon_report.png" width="14" height="14"/>
+        <image name="icon_report.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
