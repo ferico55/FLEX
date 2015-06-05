@@ -527,7 +527,7 @@
     self.hidesBottomBarWhenPushed = YES;
     
     if(indexPath.section == 0) {
-        if(!_depositRequest.isExecuting) {
+        if(![_depositLabel.text isEqualToString:@"-"]) {
             DepositSummaryViewController *depositController = [DepositSummaryViewController new];
             depositController.data = @{@"total_saldo":_depositLabel.text};
             [self.navigationController pushViewController:depositController animated:YES];
