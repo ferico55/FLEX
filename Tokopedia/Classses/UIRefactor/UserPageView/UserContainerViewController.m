@@ -127,7 +127,7 @@
     if([_userManager isLogin]) {
         if([_userManager isMyUser:[_data objectForKey:@"user_id"]]) {
             //button config
-            UIImage *infoImage = [UIImage imageNamed:@"icon_shop_setting_2x.png"];
+            UIImage *infoImage = [UIImage imageNamed:@"icon_shop_setting@2x.png"];
             
             CGRect frame = CGRectMake(0, 0, 20, 20);
             UIButton* button = [[UIButton alloc] initWithFrame:frame];
@@ -139,7 +139,7 @@
             self.navigationItem.rightBarButtonItem = barbuttonright;
         } else {
             //button message
-            UIImage *infoImage = [UIImage imageNamed:@"icon_shop_message_2x.png"];
+            UIImage *infoImage = [UIImage imageNamed:@"icon_shop_message@2x.png"];
             
             CGRect frame = CGRectMake(0, 0, 20, 20);
             UIButton* button = [[UIButton alloc] initWithFrame:frame];
