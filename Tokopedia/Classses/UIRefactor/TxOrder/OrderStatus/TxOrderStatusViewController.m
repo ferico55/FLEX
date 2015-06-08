@@ -32,6 +32,7 @@
 
 #import "TextMenu.h"
 #import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
@@ -41,7 +42,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -73,6 +74,7 @@
     TokopediaNetworkManager *_networkManager;
     
     TxOrderStatusList *_selectedTrackOrder;
+    LoadingView *_loadingView;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -146,7 +148,8 @@
                                              selector:@selector(refreshRequest)
                                                  name:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME
                                                object:nil];
-    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -707,11 +710,6 @@
     }
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    [self actionAfterFailRequestMaxTries:tag];
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_act stopAnimating];
@@ -720,6 +718,16 @@
     if (_page == 1) {
         _tableView.contentOffset = CGPointZero;
     }
+    
+    _tableView.tableFooterView = _loadingView.view;
+}
+
+#pragma mark - loading view delegate
+-(void)pressRetryButton
+{
+    [_act startAnimating];
+    _tableView.tableFooterView = _footer;
+    [_networkManager doRequest];
 }
 
 
