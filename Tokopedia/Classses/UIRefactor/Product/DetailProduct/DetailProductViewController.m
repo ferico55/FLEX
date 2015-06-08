@@ -1771,10 +1771,19 @@ UIAlertViewDelegate
         }
         
         //Set shop in warehouse
-        if(((int) _product.result.product.product_status) != PRODUCT_STATE_WAREHOUSE) {
-            constraintHeightWarehouse.constant = 0;
+        if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE && [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
+            [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
+            [viewContentWarehouse addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)]];
             viewContentWarehouse.hidden = YES;
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+        }
+        else if([_product.result.product.product_status intValue] == PRODUCT_STATE_PENDING) {
+            lblTitleWarehouse.text = CStringTitleBanned;
+            lblDescWarehouse.text = CStringDescBanned;
+            [self initAttributeText:lblDescWarehouse withStrText:lblDescWarehouse.text withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
+            
+            float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:lblDescWarehouse.text];
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 3 + tempHeight);
         }
         
         _table.tableHeaderView = _header;
@@ -2049,14 +2058,14 @@ UIAlertViewDelegate
                                                                          views:NSDictionaryOfVariableBindings(_buyButton)]];
 }
 
-- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color
+- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)alignment
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentLeft;
+    style.alignment = alignment;
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName: color,
-                                 NSFontAttributeName: fontDesc,
+                                 NSFontAttributeName:(font == nil)? fontDesc : font,
                                  NSParagraphStyleAttributeName: style,
                                  };
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:strText attributes:attributes];
@@ -2068,7 +2077,7 @@ UIAlertViewDelegate
 {
     if(strText == nil)  return 0.0f;
     UILabel *lblSize = [[UILabel alloc] init];
-    [self initAttributeText:lblSize withStrText:strText withColor:[UIColor whiteColor]];
+    [self initAttributeText:lblSize withStrText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
     lblSize.numberOfLines = 0;
     
     return [lblSize sizeThatFits:size].height;
@@ -2085,7 +2094,7 @@ UIAlertViewDelegate
     lblDescription.backgroundColor = [UIColor clearColor];
     [lblDescription setNumberOfLines:0];
     lblDescription.delegate = self;
-    [self initAttributeText:lblDescription withStrText:strText withColor:[UIColor whiteColor]];
+    [self initAttributeText:lblDescription withStrText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
     lblDescription.textColor = [UIColor lightGrayColor];
     lblDescription.userInteractionEnabled = YES;
     [lblDescription addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];

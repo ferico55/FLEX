@@ -625,6 +625,7 @@
             lblUnggahGambar.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
             lblUnggahGambar.backgroundColor = [UIColor clearColor];
             lblUnggahGambar.textColor = [UIColor blueColor];
+            lblUnggahGambar.userInteractionEnabled = YES;
             [viewImgGambar addSubview:lblUnggahGambar];
             
             int diameterImage = 100;
@@ -646,6 +647,7 @@
             
             
             [imgGambar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage:)]];
+            [lblUnggahGambar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage:)]];
             [viewImgGambar addSubview:imgGambar];
             viewImgGambar.userInteractionEnabled = YES;
         }
