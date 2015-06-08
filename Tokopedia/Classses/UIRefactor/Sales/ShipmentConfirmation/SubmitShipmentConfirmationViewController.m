@@ -340,8 +340,8 @@
 {
     [self configureActionReskit];
     
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userId = auth.getUserId;
     
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     UITextField *textField = (UITextField *)[cell viewWithTag:1];
@@ -351,7 +351,7 @@
         param = @{
                   API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
                   API_ACTION_TYPE_KEY         : @"confirm",
-                  API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
+                  API_USER_ID_KEY             : userId,
                   API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
                   API_SHIPMENT_REF_KEY        : textField.text ?: @"",
                   };
@@ -359,7 +359,7 @@
         param = @{
             API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
             API_ACTION_TYPE_KEY         : @"confirm",
-            API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
+            API_USER_ID_KEY             : userId,
             API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
             API_SHIPMENT_ID_KEY         : _selectedCourier.shipment_id ?: [NSNumber numberWithInteger:_order.order_shipment.shipment_id],
             API_SHIPMENT_NAME_KEY       : _selectedCourier.shipment_name ?: _order.order_shipment.shipment_name,

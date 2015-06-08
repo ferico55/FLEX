@@ -55,7 +55,7 @@
 
 - (IBAction)didTapLoginButton:(UIButton *)sender {
     [super dismissWithClickedButtonIndex:0 animated:YES];
-    if (self.delegate && [self.delegate performSelector:@selector(alertView:clickedButtonAtIndex:) withObject:nil]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
         [self.delegate alertView:self clickedButtonAtIndex:0];
         [self dismissindex:0 silent:NO animated:YES];
     }

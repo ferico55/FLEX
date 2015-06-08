@@ -950,7 +950,7 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [_orders removeObject:order];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    
+    [self.tableView reloadData];
     if (_orders.count == 0) {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
         NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];

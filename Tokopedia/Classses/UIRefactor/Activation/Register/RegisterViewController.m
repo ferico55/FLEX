@@ -477,7 +477,7 @@
 
             TKPDAlert *alert = [TKPDAlert newview];
             alert.text = @"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke akun Anda. Apabila tidak menemukan email tersebut, periksa terlebih dahulu kotak spam Anda. Selamat berbelanja!";
-            alert.tag = 12;
+            alert.tag = 13;
             alert.delegate = self;
             [alert show];
             
@@ -622,14 +622,15 @@
             [self.navigationController popViewControllerAnimated:YES];
             break;
         }
+        case 13:
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+        }
         default:
             break;
+            
     }
-    
-    if ([alertView isKindOfClass:[TKPDAlert class]]) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    
 }
 
 -(void)alertViewCancel:(TKPDAlertView *)alertView
