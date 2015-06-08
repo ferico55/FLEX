@@ -538,7 +538,7 @@
 #pragma mark - Notification
 - (void)postNotificationSetProfileHeader {
     if(_profile) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage" object:nil userInfo:@{@"profile" : _profile}];        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage" object:nil userInfo:@{@"profile" : _profile}];
     }
 
 }
