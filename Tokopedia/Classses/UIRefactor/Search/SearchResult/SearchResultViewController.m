@@ -681,7 +681,7 @@ LoadingViewDelegate
                     [self redirectToHotlistResult];
                 }
                 // redirect uri to search category
-                if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
+                else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
                     NSString *departementID = _searchitem.result.department_id;
                     [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
                     [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
@@ -694,6 +694,22 @@ LoadingViewDelegate
                     }
                     
                     [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                
+                else if ([query[1] isEqualToString:@"catalog"]) {
+                    NSString *catalogID = query[2];
+                    CatalogViewController *vc = [CatalogViewController new];
+                    vc.catalogID = catalogID;
+                    NSArray *catalogNames = [query[3] componentsSeparatedByCharactersInSet:
+                                             [NSCharacterSet characterSetWithCharactersInString:@"-"]
+                                             ];
+                    vc.catalogName = [[catalogNames componentsJoinedByString:@" "] capitalizedString];
+                    vc.catalogPrice = @"";
+                    vc.hidesBottomBarWhenPushed = YES;
+                    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+                    [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+                    
+                    self.navigationController.viewControllers = viewControllers;
                 }
             }
             _catalogproductview.hidden = NO;

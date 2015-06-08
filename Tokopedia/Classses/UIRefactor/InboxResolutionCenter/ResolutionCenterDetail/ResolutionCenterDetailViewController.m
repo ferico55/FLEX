@@ -475,12 +475,12 @@
     if(conversation.action_by == ACTION_BY_BUYER)
     {
         //profile
-        [_navigate navigateToProfileFromViewController:self withUserID:@""];
+        NSArray *query = [[[NSURL URLWithString:conversation.user_url] path] componentsSeparatedByString: @"/"];
+        [_navigate navigateToProfileFromViewController:self withUserID:[query objectAtIndex:2]?:@""];
     }
     else if(conversation.action_by == ACTION_BY_SELLER)
     {
-        //shop
-        [_navigate navigateToShopFromViewController:self withShopID:@""];
+        [_navigate navigateToProfileFromViewController:self withUserID:@""];
     }
     else if(conversation.action_by == ACTION_BY_TOKOPEDIA)
     {
@@ -1845,10 +1845,12 @@
     else
     {
         if (_resolutionDetail.resolution_by.by_customer == 1) {
-            [_navigate navigateToShopFromViewController:self withShopID:@""]; //TODO
+            [_navigate navigateToProfileFromViewController:self withUserID:@""];
         }
         else if (_resolutionDetail.resolution_by.by_seller == 1) {
-            [_navigate navigateToProfileFromViewController:self withUserID:@""];
+            NSArray *query = [[[NSURL URLWithString:_resolutionDetail.resolution_customer.customer_url] path] componentsSeparatedByString: @"/"];
+            [_navigate navigateToProfileFromViewController:self withUserID:[query objectAtIndex:2]?:@""];
+            
         }
     }
 }

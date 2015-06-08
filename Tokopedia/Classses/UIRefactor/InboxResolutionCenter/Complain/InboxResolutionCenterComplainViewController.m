@@ -321,7 +321,8 @@
     else
     {
         //gotoProfile
-        [_navigate navigateToProfileFromViewController:self withUserID:(resolution.resolution_detail.resolution_customer.customer_id)?:@""];
+        NSArray *query = [[[NSURL URLWithString:resolution.resolution_detail.resolution_customer.customer_url] path] componentsSeparatedByString: @"/"];
+        [_navigate navigateToProfileFromViewController:self withUserID:[query objectAtIndex:2]?:@""];
         
     }
 }
