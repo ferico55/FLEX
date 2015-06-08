@@ -24,6 +24,7 @@
               courierPackage:(ShipmentCourierPackage *)courierPackage
                receiptNumber:(NSString *)receiptNumber
              rejectionReason:(NSString *)rejectionReason;
+- (void)successConfirmOrder:(OrderTransaction *)order;
 
 @end
 
