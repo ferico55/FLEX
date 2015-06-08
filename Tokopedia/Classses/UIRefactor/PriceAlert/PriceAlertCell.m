@@ -17,6 +17,8 @@
 - (void)awakeFromNib {
     dateFormat = [NSDateFormatter new];
     dateFormat.dateFormat = @"dd MM yyyy, HH:mm WIB";
+    viewUnread.layer.cornerRadius = viewUnread.bounds.size.width/2.0f;
+    viewUnread.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -98,6 +100,11 @@
 - (UIView *)getViewContent
 {
     return viewContent;
+}
+
+- (UIView *)getViewUnread
+{
+    return viewUnread;
 }
 
 - (UIButton *)getBtnClose

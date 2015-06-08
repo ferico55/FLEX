@@ -15,7 +15,7 @@
     IBOutlet UILabel *lblDateProduct;
     IBOutlet UILabel *lblPriceNotification;
     IBOutlet UILabel *lblLowPrice;
-    IBOutlet UIView *viewContent;
+    IBOutlet UIView *viewContent, *viewUnread;
     IBOutlet UIButton *btnClose;
     IBOutlet NSLayoutConstraint *constraintYViewContent;
     IBOutlet NSLayoutConstraint *constraintXViewContent;
@@ -34,6 +34,7 @@
 - (IBAction)actionDelete:(id)sender;
 - (UIImageView *)getProductImage;
 - (UIView *)getViewContent;
+- (UIView *)getViewUnread;
 - (UIButton *)getBtnClose;
 - (UIButton *)getBtnProductName;
 - (NSLayoutConstraint *)getConstraintY;

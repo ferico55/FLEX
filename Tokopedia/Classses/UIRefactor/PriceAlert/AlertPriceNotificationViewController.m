@@ -32,6 +32,7 @@
 @end
 
 @implementation AlertPriceNotificationViewController {
+    NSIndexPath *tempUnreadIndexPath;
     LoadingView *loadingView;
     UIRefreshControl *refreshControl;
     NoResultView *noResultView;
@@ -72,8 +73,13 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if(tempUnreadIndexPath != nil) {
+        ((DetailPriceAlert *) [arrList objectAtIndex:tempUnreadIndexPath.row]).pricealert_total_unread = @"0";
+    }
+    
     [tblPriceAlert reloadData];
     tempPriceAlert = nil;
+    tempUnreadIndexPath = nil;
 }
 
 - (void)dealloc
@@ -124,6 +130,9 @@
     tempPriceAlert = [arrList objectAtIndex:indexPath.row];
     PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
     
+    if(! [tempPriceAlert.pricealert_total_unread isEqualToString:@"0"]) {
+        tempUnreadIndexPath = indexPath;
+    }
     DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
     detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
     detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
@@ -153,12 +162,14 @@
     }
     
     DetailPriceAlert *detailPriceAlert = [arrList objectAtIndex:indexPath.row];
+    //Set Image Product
     if(detailPriceAlert.pricealert_product_image != nil) {
-        [cell.getProductImage setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:detailPriceAlert.pricealert_product_image]]  placeholderImage:[UIImage imageNamed:@""] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [cell.getProductImage setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:detailPriceAlert.pricealert_product_image]]  placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey-01" ofType:@".png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                 cell.getProductImage.image = image;
         } failure:nil];
     }
     
+    cell.getViewUnread.hidden = ([detailPriceAlert.pricealert_total_unread isEqualToString:@"0"]);
     [cell setTagBtnClose:(int)indexPath.row];
     [cell setLblDateProduct:[NSDate date]];
     [cell setProductName:detailPriceAlert.pricealert_product_name];
