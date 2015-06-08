@@ -38,6 +38,7 @@
 
 #import "TokopediaNetworkManager.h"
 #import "TKPDPhotoPicker.h"
+#import "LoadingView.h"
 
 @interface TxOrderConfirmedViewController ()
 <
@@ -50,7 +51,8 @@
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
     TKPDPhotoPickerDelegate,
-    TxOrderPaymentViewControllerDelegate
+    TxOrderPaymentViewControllerDelegate,
+    LoadingViewDelegate
 >
 {
     BOOL _isNodata;
@@ -87,6 +89,7 @@
     
     TokopediaNetworkManager *_networkManager;
     TKPDPhotoPicker *_photoPicker;
+    LoadingView *_loadingView;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -130,6 +133,9 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     [_networkManager doRequest];
+    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -448,6 +454,7 @@
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    [_act stopAnimating];
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     TxOrderConfirmed *order = [result objectForKey:@""];
     
@@ -489,11 +496,15 @@
         _tableView.contentOffset = CGPointZero;
     }
     [_refreshControl endRefreshing];
-    _tableView.tableFooterView = _act;
+    [_act stopAnimating];
+    _tableView.tableFooterView = _loadingView.view;
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+-(void)pressRetryButton
 {
+    [_act startAnimating];
+    _tableView.tableFooterView = _act;
+    [_networkManager doRequest];
 }
 
 #pragma mark - Request Detail

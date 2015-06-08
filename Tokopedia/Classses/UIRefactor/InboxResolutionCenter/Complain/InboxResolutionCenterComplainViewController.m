@@ -21,6 +21,7 @@
 #import "ResolutionAction.h"
 
 #import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
 
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
@@ -39,6 +40,7 @@
     GeneralTableViewControllerDelegate,
     ResolutionCenterDetailViewControllerDelegate,
     InboxResolutionCenterComplainCellDelegate,
+    LoadingViewDelegate,
     TokopediaNetworkManagerDelegate>
 {
     NavigateViewController *_navigate;
@@ -67,6 +69,8 @@
     TokopediaNetworkManager *_networkManagerCancelComplain;
     
     NSDictionary *_objectCancelComplain;
+    
+    LoadingView *_loadingView;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -125,6 +129,9 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
     [self refreshRequest];
+    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -601,6 +608,7 @@
     if (tag == TAG_REQUEST_LIST) {
         [_refreshControl endRefreshing];
         [_act stopAnimating];
+        _tableView.tableFooterView = _loadingView;
     }
     if (tag == TAG_REQUEST_CANCEL_COMPLAIN) {
         [self requestFailureCancelComplain:_objectCancelComplain];
@@ -609,10 +617,10 @@
 
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+-(void)pressRetryButton
 {
-    [_refreshControl endRefreshing];
-    [_act stopAnimating];
+    [_act startAnimating];
+    [_networkManager doRequest];
 }
 
 -(void)requestFailureCancelComplain:(NSDictionary*)object
