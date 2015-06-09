@@ -124,9 +124,12 @@
                                         <constraint firstItem="J66-ln-im6" firstAttribute="top" secondItem="pGp-JI-Eri" secondAttribute="top" id="zQt-le-Gew"/>
                                     </constraints>
                                 </view>
-                                <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zuc-Ke-wX3">
+                                <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zuc-Ke-wX3">
                                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                     <color key="backgroundColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="Sa5-dd-tzk"/>
+                                    </constraints>
                                     <state key="normal" title="Hapus Gambar">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -136,7 +139,7 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="pGp-JI-Eri" firstAttribute="leading" secondItem="IMI-jH-FbR" secondAttribute="leading" id="9uD-Vv-fal"/>
                                 <constraint firstItem="pGp-JI-Eri" firstAttribute="top" secondItem="L8P-0R-FbF" secondAttribute="bottom" id="CnG-v7-mUU"/>
@@ -146,7 +149,10 @@
                                 <constraint firstItem="57h-1U-x0N" firstAttribute="leading" secondItem="IMI-jH-FbR" secondAttribute="leading" id="W0i-HW-nof"/>
                                 <constraint firstAttribute="trailing" secondItem="pGp-JI-Eri" secondAttribute="trailing" id="W8D-Bp-1c7"/>
                                 <constraint firstAttribute="trailing" secondItem="57h-1U-x0N" secondAttribute="trailing" id="gPo-I8-zHT"/>
+                                <constraint firstAttribute="trailing" secondItem="zuc-Ke-wX3" secondAttribute="trailing" id="iRd-aR-nGg"/>
                                 <constraint firstItem="L8P-0R-FbF" firstAttribute="leading" secondItem="IMI-jH-FbR" secondAttribute="leading" id="tc1-UP-8LB"/>
+                                <constraint firstAttribute="bottom" secondItem="zuc-Ke-wX3" secondAttribute="bottom" id="uNQ-tS-8xW"/>
+                                <constraint firstItem="zuc-Ke-wX3" firstAttribute="leading" secondItem="IMI-jH-FbR" secondAttribute="leading" id="ytc-3P-95P"/>
                             </constraints>
                         </view>
                     </subviews>
