@@ -264,5 +264,5 @@ typedef enum
 #define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
 #define CStringSyaratDanKetentuan @"Syarat & Ketentuan"
 #define CStringTitleBanned @"Produk ini berada dalam pengawasan."
-#define CStringDescBanned @"Saat ini produk tidak dapat dipesan. Produk dapat kembali dipesan setelah pengawasan."
+#define CStringDescBanned @"Saat ini produk tidak dapat dipesan. Produk dapat dipesan kembali setelah pengawasan selesai."
 #endif
