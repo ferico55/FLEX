@@ -24,6 +24,7 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSelesai style:UIBarButtonItemStylePlain target:self action:@selector(actionSelesai:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringBatal style:UIBarButtonItemStylePlain target:self action:@selector(actionBatal:)];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)didReceiveMemoryWarning {
