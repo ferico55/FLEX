@@ -7,6 +7,7 @@
 //
 
 #import "ProductFeedList.h"
+#import "ProductModelView.h"
 
 @implementation ProductFeedList
 
@@ -16,6 +17,20 @@
 
 - (NSString*)shop_name {
     return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
+- (ProductModelView *)viewModel {
+    if(_viewModel == nil) {
+        ProductModelView *viewModel = [[ProductModelView alloc] init];
+        [viewModel setProductName:self.product_name];
+        [viewModel setProductPrice:self.product_price];
+        [viewModel setProductShop:self.shop_name];
+        [viewModel setProductThumbUrl:self.product_image];
+        
+        _viewModel = viewModel;
+    }
+    
+    return _viewModel;
 }
 
 @end
