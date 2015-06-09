@@ -14,5 +14,6 @@
 @property (strong, nonatomic) NSString *productPrice;
 @property (strong, nonatomic) NSString *productShop;
 @property (strong, nonatomic) NSString *productThumbUrl;
+@property BOOL isGoldShopProduct;
 
 @end
