@@ -209,6 +209,18 @@
                 ((ProductEditWholesaleCell*)cell).productCurrencyLabel.text = @"Rp";
             else if (priceCurencyID == PRICE_CURRENCY_ID_USD)
                 ((ProductEditWholesaleCell*)cell).productCurrencyLabel.text = @"US$";
+            if (indexPath.row == 0 && _wholesaleList.count>0) {
+                NSInteger priceInteger = [[wholesale objectForKey:wholesalePriceKey] integerValue];
+                NSInteger wholesaleMinQty = [[wholesale objectForKey:wholesaleQuantityMinimum]integerValue];
+                NSInteger wholesaleMaxQty = [[wholesale objectForKey:wholesaleQuantityMaximum]integerValue];
+                if (priceInteger != 0 && wholesaleMaxQty !=0 && wholesaleMinQty != 0) {
+                    ((ProductEditWholesaleCell*)cell).deleteWholesaleButton.hidden = NO;
+                }
+                else
+                {
+                    ((ProductEditWholesaleCell*)cell).deleteWholesaleButton.hidden = YES;
+                }
+            }
         }
         return cell;
     } else {
@@ -294,6 +306,18 @@
         }
         
         [_wholesaleList replaceObjectAtIndex:indexPath.row withObject:wholesale];
+        if (indexPath.row == 0 && _wholesaleList.count>0) {
+            NSInteger priceInteger = [[wholesale objectForKey:wholesalePriceKey] integerValue];
+            NSInteger wholesaleMinQty = [[wholesale objectForKey:wholesaleQuantityMinimum]integerValue];
+            NSInteger wholesaleMaxQty = [[wholesale objectForKey:wholesaleQuantityMaximum]integerValue];
+            if (priceInteger != 0 && wholesaleMaxQty !=0 && wholesaleMinQty != 0) {
+                cell.deleteWholesaleButton.hidden = NO;
+            }
+            else
+            {
+                cell.deleteWholesaleButton.hidden = YES;
+            }
+        }
     }
 }
 
@@ -343,6 +367,17 @@
         if (indexPath.row == 0) {
             NSRange rangeDeletedWholesale = NSMakeRange(1, wholesaleCount-1);
             [_wholesaleList removeObjectsInRange:rangeDeletedWholesale];
+            cell.deleteWholesaleButton.hidden = YES;
+            NSMutableDictionary *wholesale = [NSMutableDictionary new];
+            [wholesale addEntriesFromDictionary:_wholesaleList[indexPath.row]];
+            NSString *wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,1];
+            NSString *wholesaleQuantityMaximum = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_QUANTITY_MAXIMUM_KEY,1];
+            NSString *wholesaleQuantityMinimum = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_QUANTITY_MINIMUM_KEY,1];
+            
+            [wholesale setObject:@"0" forKey:wholesalePriceKey];
+            [wholesale setObject:@"0" forKey:wholesaleQuantityMinimum];
+            [wholesale setObject:@"0" forKey:wholesaleQuantityMaximum];
+            [_wholesaleList replaceObjectAtIndex:0 withObject:[wholesale copy]];
         }
         else
         {
@@ -362,11 +397,7 @@
                       withRowAnimation:UITableViewRowAnimationLeft];
         [_table endUpdates];
         [_table reloadData];
-        
-        if (indexPath.row==0) {
-            [_wholesaleList removeAllObjects];
-        }
-
+    
     //}
 }
 
@@ -468,6 +499,7 @@
     
     NSInteger wholesaleListIndex = _wholesaleList.count;
     NSInteger wholesaleIndex = _wholesaleList.count-1;
+    wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];
     if(wholesaleIndex<0)
     {
         wholesaleIndex = 0;
@@ -477,7 +509,6 @@
     {
         wholesalePrice = [[_wholesaleList[wholesaleIndex]objectForKey:wholesalePriceKey]integerValue];
     }
-    wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];
     if (wholesalePrice>=netPrice) {
         isValidWholesalePriceCompareNet = NO;
     }
@@ -592,13 +623,13 @@
         isValidPrice = NO;
     }
     else if (_wholesaleList.count>=2) {
-        NSInteger wholesaleListIndexPrevious = wholesaleListIndex-1;
+        NSInteger wholesaleListIndexPrevious = wholesaleListKeyIndex-1;
         NSString *wholesalePricePreviousKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndexPrevious];
 
         NSDictionary *wholesalePrevious = _wholesaleList[wholesaleListIndex-1];
         NSInteger wholesalePricePrevious = [[wholesalePrevious objectForKey:wholesalePricePreviousKey]integerValue];
         
-        if (wholesalePrice < wholesalePricePrevious) {
+        if (wholesalePrice > wholesalePricePrevious) {
             isValidPrice = NO;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:ERRORMESSAGE_INVALID_PRICE_WHOLESALE delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
