@@ -487,6 +487,7 @@
 		7AC55DEC1B26DAFF00D1E816 /* GeneralProductCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AC55DEA1B26DAFF00D1E816 /* GeneralProductCollectionViewCell.xib */; };
 		7AC55DF01B26E04A00D1E816 /* ProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC55DEE1B26E04A00D1E816 /* ProductCell.m */; };
 		7AC55DF11B26E04A00D1E816 /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AC55DEF1B26E04A00D1E816 /* ProductCell.xib */; };
+		7AC55DFA1B27026400D1E816 /* CollectionScrollAndSwipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC55DF91B27026400D1E816 /* CollectionScrollAndSwipe.m */; };
 		85046EA21B20395E00FF657B /* BarCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85046EA11B20395E00FF657B /* BarCodeViewController.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
@@ -1964,6 +1965,10 @@
 		7AC55DED1B26E04A00D1E816 /* ProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductCell.h; path = UIRefactor/ViewModels/ProductCell.h; sourceTree = "<group>"; };
 		7AC55DEE1B26E04A00D1E816 /* ProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductCell.m; path = UIRefactor/ViewModels/ProductCell.m; sourceTree = "<group>"; };
 		7AC55DEF1B26E04A00D1E816 /* ProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProductCell.xib; path = UIRefactor/ViewModels/ProductCell.xib; sourceTree = "<group>"; };
+		7AC55DF21B26F7C400D1E816 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AC55DF31B26F90200D1E816 /* TokopediaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AC55DF81B27026400D1E816 /* CollectionScrollAndSwipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionScrollAndSwipe.h; sourceTree = "<group>"; };
+		7AC55DF91B27026400D1E816 /* CollectionScrollAndSwipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionScrollAndSwipe.m; sourceTree = "<group>"; };
 		85046EA01B20395E00FF657B /* BarCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarCodeViewController.h; sourceTree = "<group>"; };
 		85046EA11B20395E00FF657B /* BarCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarCodeViewController.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -1994,7 +1999,6 @@
 		FC1C7B5C1AAD56A3001C510E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
-		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Tokopedia.app; path = "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/build/Debug-iphoneos/Tokopedia.app"; sourceTree = "<absolute>"; };
 		FC36DF8619B0656400AF74C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		FC36DF8A19B0656400AF74C1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -2004,7 +2008,6 @@
 		FC36DF9519B0656400AF74C1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FC36DF9619B0656400AF74C1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		FC36DF9819B0656400AF74C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		FC36DF9E19B0656400AF74C1 /* TokopediaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TokopediaTests.xctest; path = "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/build/Debug-iphoneos/TokopediaTests.xctest"; sourceTree = "<absolute>"; };
 		FC36DF9F19B0656400AF74C1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		FC36DFA719B0656400AF74C1 /* TokopediaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TokopediaTests-Info.plist"; sourceTree = "<group>"; };
 		FC36DFA919B0656400AF74C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -4397,6 +4400,8 @@
 				FC36DFA519B0656400AF74C1 /* TokopediaTests */,
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
 				53AC970CF2132927344A64C3 /* Pods */,
+				7AC55DF21B26F7C400D1E816 /* Tokopedia.app */,
+				7AC55DF31B26F90200D1E816 /* TokopediaTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -6269,6 +6274,8 @@
 		FC763AB41B15E2780034A8F1 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				7AC55DF81B27026400D1E816 /* CollectionScrollAndSwipe.h */,
+				7AC55DF91B27026400D1E816 /* CollectionScrollAndSwipe.m */,
 				FC763AB51B15E2780034A8F1 /* BackgroundLayer.h */,
 				FC763AB61B15E2780034A8F1 /* BackgroundLayer.m */,
 				FC763AB71B15E2780034A8F1 /* ImageShaper.h */,
@@ -8093,7 +8100,7 @@
 			);
 			name = Tokopedia;
 			productName = Tokopedia;
-			productReference = FC36DF8319B0656400AF74C1 /* Tokopedia.app */;
+			productReference = 7AC55DF21B26F7C400D1E816 /* Tokopedia.app */;
 			productType = "com.apple.product-type.application";
 		};
 		FC36DF9D19B0656400AF74C1 /* TokopediaTests */ = {
@@ -8113,7 +8120,7 @@
 			);
 			name = TokopediaTests;
 			productName = TokopediaTests;
-			productReference = FC36DF9E19B0656400AF74C1 /* TokopediaTests.xctest */;
+			productReference = 7AC55DF31B26F90200D1E816 /* TokopediaTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -9530,6 +9537,7 @@
 				FC76408F1B15E2820034A8F1 /* UIKitCategory.m in Sources */,
 				FC76424B1B15E2830034A8F1 /* DepositListBankCell.m in Sources */,
 				FC7641521B15E2820034A8F1 /* SearchData.m in Sources */,
+				7AC55DFA1B27026400D1E816 /* CollectionScrollAndSwipe.m in Sources */,
 				FC76411E1B15E2820034A8F1 /* ChangePhoneNumberResult.m in Sources */,
 				FC7641211B15E2820034A8F1 /* ProfileEditFormResult.m in Sources */,
 				FC7642FE1B15E2830034A8F1 /* ProductListMyShopCell.m in Sources */,
@@ -9828,7 +9836,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "51b0d74a-b137-4ee9-adcc-ed4d2248d881";
+				PROVISIONING_PROFILE = "32d13167-bb7e-4b61-a682-87746276e324";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -9866,7 +9874,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "51b0d74a-b137-4ee9-adcc-ed4d2248d881";
+				PROVISIONING_PROFILE = "32d13167-bb7e-4b61-a682-87746276e324";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
