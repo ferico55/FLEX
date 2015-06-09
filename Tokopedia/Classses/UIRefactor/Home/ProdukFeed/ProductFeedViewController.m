@@ -22,7 +22,6 @@
 NSString *const ProductCellIdentifier = @"ProductCellIdentifier";
 NSInteger const normalWidth = 320;
 NSInteger const normalHeight = 568;
-NSInteger const itemPerPage = 10;
 
 @interface ProductFeedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
@@ -176,7 +175,7 @@ typedef enum TagRequest {
 
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:kTKPDHOMEPRODUCTFEEDACT, kTKPDHOME_APIACTIONKEY, @(_page),kTKPDHOME_APIPAGEKEY, itemPerPage, kTKPDHOME_APILIMITPAGEKEY, nil];
+    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:kTKPDHOMEPRODUCTFEEDACT, kTKPDHOME_APIACTIONKEY, @(_page),kTKPDHOME_APIPAGEKEY, @(kTKPDHOMEHOTLIST_LIMITPAGE), kTKPDHOME_APILIMITPAGEKEY, nil];
     
     return parameter;
 }
