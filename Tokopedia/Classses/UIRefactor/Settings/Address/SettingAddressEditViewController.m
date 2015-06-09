@@ -92,6 +92,17 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGRect frame = _scrollView.frame;
+    frame.size.width = screenWidth;
+    _scrollView.frame = frame;
+    
+     frame = _contentView.frame;
+    frame.size.width = screenWidth;
+    _contentView.frame = frame;
+    
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
@@ -135,6 +146,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [_scrollView addSubview:_contentView];
     self.scrollView.delegate = self;
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height)];
 }

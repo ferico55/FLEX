@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -64,25 +64,34 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="88"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="prominent" placeholder="Cari Alamat" translatesAutoresizingMaskIntoConstraints="NO" id="Mmg-ks-BQ4">
+                <searchBar contentMode="redraw" searchBarStyle="prominent" placeholder="Cari Alamat" translatesAutoresizingMaskIntoConstraints="NO" id="Mmg-ks-BQ4">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="shB-Za-R54"/>
+                    </constraints>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="HEb-lG-y4i"/>
                     </connections>
                 </searchBar>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cxr-RD-2mr">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cxr-RD-2mr">
                     <rect key="frame" x="0.0" y="44" width="320" height="44"/>
                     <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rmn-uq-QFV" userLabel="Border Top">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rmn-uq-QFV" userLabel="Border Top">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="eJi-6J-Hih"/>
+                            </constraints>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GRW-Tx-azr" userLabel="Border Bottom">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GRW-Tx-azr" userLabel="Border Bottom">
                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="xwO-f9-kqZ"/>
+                            </constraints>
                         </view>
-                        <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Yi-kY-WdD">
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Yi-kY-WdD">
                             <rect key="frame" x="15" y="0.0" width="305" height="44"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                             <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -96,9 +105,30 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="7Yi-kY-WdD" secondAttribute="bottom" id="3Kq-aZ-AzF"/>
+                        <constraint firstAttribute="bottom" secondItem="GRW-Tx-azr" secondAttribute="bottom" id="8hu-TZ-BwU"/>
+                        <constraint firstAttribute="trailing" secondItem="Rmn-uq-QFV" secondAttribute="trailing" id="9zf-3i-kuL"/>
+                        <constraint firstAttribute="trailing" secondItem="7Yi-kY-WdD" secondAttribute="trailing" id="ACl-nA-9k2"/>
+                        <constraint firstItem="Rmn-uq-QFV" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" id="GBc-y2-zm2"/>
+                        <constraint firstItem="7Yi-kY-WdD" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" constant="15" id="GsP-Nl-PnL"/>
+                        <constraint firstItem="Rmn-uq-QFV" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="dY1-2p-Jam"/>
+                        <constraint firstAttribute="trailing" secondItem="GRW-Tx-azr" secondAttribute="trailing" id="goi-nu-c1T"/>
+                        <constraint firstItem="7Yi-kY-WdD" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" id="poA-SB-gLc"/>
+                        <constraint firstItem="GRW-Tx-azr" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="t6F-JV-IaJ"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Cxr-RD-2mr" secondAttribute="bottom" id="9n4-V2-Obo"/>
+                <constraint firstItem="Cxr-RD-2mr" firstAttribute="leading" secondItem="IzA-Ue-aRU" secondAttribute="leading" id="GUa-WL-8Ed"/>
+                <constraint firstItem="Cxr-RD-2mr" firstAttribute="top" secondItem="Mmg-ks-BQ4" secondAttribute="bottom" id="MVJ-pZ-d4g"/>
+                <constraint firstAttribute="trailing" secondItem="Cxr-RD-2mr" secondAttribute="trailing" id="Sco-hE-tAL"/>
+                <constraint firstItem="Mmg-ks-BQ4" firstAttribute="top" secondItem="IzA-Ue-aRU" secondAttribute="top" id="eE9-5k-TEa"/>
+                <constraint firstAttribute="trailing" secondItem="Mmg-ks-BQ4" secondAttribute="trailing" id="g2w-oc-d7d"/>
+                <constraint firstItem="Mmg-ks-BQ4" firstAttribute="leading" secondItem="IzA-Ue-aRU" secondAttribute="leading" id="wsv-qW-Ig9"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="644" y="181"/>
         </view>
@@ -106,7 +136,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="prominent" placeholder="Cari Alamat" translatesAutoresizingMaskIntoConstraints="NO" id="fYi-0l-G6g">
+                <searchBar contentMode="redraw" searchBarStyle="prominent" placeholder="Cari Alamat" translatesAutoresizingMaskIntoConstraints="NO" id="fYi-0l-G6g">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
@@ -115,6 +145,12 @@
                 </searchBar>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="fYi-0l-G6g" firstAttribute="top" secondItem="mMR-Gb-1FO" secondAttribute="top" id="5dr-pO-SCv"/>
+                <constraint firstAttribute="trailing" secondItem="fYi-0l-G6g" secondAttribute="trailing" id="BVe-DL-FyP"/>
+                <constraint firstItem="fYi-0l-G6g" firstAttribute="leading" secondItem="mMR-Gb-1FO" secondAttribute="leading" id="Q0Q-Il-dNH"/>
+                <constraint firstAttribute="bottom" secondItem="fYi-0l-G6g" secondAttribute="bottom" id="XZX-uB-Xw7"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="734" y="30"/>
         </view>
