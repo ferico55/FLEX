@@ -79,6 +79,7 @@ typedef enum TagRequest {
     _page = 1;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -292,6 +293,10 @@ typedef enum TagRequest {
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
     [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (void)userDidLogin:(NSNotification*)notification {
+    [self refreshView:_refreshControl];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
