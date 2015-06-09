@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -152,8 +152,11 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Silahkan menghubungi kami apabila Anda mengalami kesulitan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYq-D9-MRs">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silahkan menghubungi kami apabila Anda mengalami kesulitan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYq-D9-MRs">
                     <rect key="frame" x="15" y="129" width="290" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="ZhO-9X-VqY"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -181,9 +184,12 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="e70-yU-41l" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="2b2-n1-3Ys"/>
+                <constraint firstItem="wYq-D9-MRs" firstAttribute="top" secondItem="V33-g9-JWw" secondAttribute="bottom" constant="13" id="3UJ-Kv-MLH"/>
                 <constraint firstAttribute="trailing" secondItem="V33-g9-JWw" secondAttribute="trailing" constant="15" id="83n-ya-J9Z"/>
                 <constraint firstItem="e70-yU-41l" firstAttribute="top" relation="greaterThanOrEqual" secondItem="QEA-BO-1aG" secondAttribute="top" constant="20" id="DWK-Rz-7ca"/>
                 <constraint firstAttribute="trailing" secondItem="e70-yU-41l" secondAttribute="trailing" constant="15" id="H6I-DI-EhI"/>
+                <constraint firstAttribute="trailing" secondItem="wYq-D9-MRs" secondAttribute="trailing" constant="15" id="Lyk-h1-ZCi"/>
+                <constraint firstItem="wYq-D9-MRs" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="MRo-2C-g8W"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="e70-yU-41l" secondAttribute="trailing" constant="15" id="cbb-cS-Brn"/>
                 <constraint firstItem="e70-yU-41l" firstAttribute="top" secondItem="QEA-BO-1aG" secondAttribute="top" constant="20" id="o8J-3m-3nl"/>
                 <constraint firstItem="e70-yU-41l" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="sWq-lc-u7U"/>
@@ -244,7 +250,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran transfer manual." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZH-Og-jzx">
                     <rect key="frame" x="15" y="0.0" width="290" height="89"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
