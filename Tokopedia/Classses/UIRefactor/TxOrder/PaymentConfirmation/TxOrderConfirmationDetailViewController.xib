@@ -273,9 +273,9 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tVC-KZ-fF9">
-                            <rect key="frame" x="0.0" y="15" width="305" height="14"/>
+                            <rect key="frame" x="194" y="15" width="111" height="14"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="14" id="tvf-Mu-zY8"/>
+                                <constraint firstAttribute="height" constant="14" id="M8u-rM-vYU"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -293,11 +293,11 @@
                     <constraints>
                         <constraint firstItem="Bi1-om-xTD" firstAttribute="leading" secondItem="XyP-VE-kGM" secondAttribute="leading" id="4h7-W6-pI5"/>
                         <constraint firstItem="LRT-Lg-Qfa" firstAttribute="top" secondItem="XyP-VE-kGM" secondAttribute="top" constant="15" id="68U-v9-cYd"/>
-                        <constraint firstItem="tVC-KZ-fF9" firstAttribute="top" secondItem="XyP-VE-kGM" secondAttribute="top" constant="15" id="CfM-jt-wPI"/>
-                        <constraint firstItem="tVC-KZ-fF9" firstAttribute="leading" secondItem="XyP-VE-kGM" secondAttribute="leading" id="RGC-Ko-bEd"/>
-                        <constraint firstAttribute="trailing" secondItem="tVC-KZ-fF9" secondAttribute="trailing" constant="15" id="RYu-kh-vrV"/>
+                        <constraint firstAttribute="trailing" secondItem="tVC-KZ-fF9" secondAttribute="trailing" constant="15" id="MKm-db-vpr"/>
+                        <constraint firstItem="tVC-KZ-fF9" firstAttribute="top" secondItem="XyP-VE-kGM" secondAttribute="top" constant="15" id="Rlk-UX-cH9"/>
                         <constraint firstAttribute="trailing" secondItem="Bi1-om-xTD" secondAttribute="trailing" id="WeM-vz-ffh"/>
                         <constraint firstItem="LRT-Lg-Qfa" firstAttribute="leading" secondItem="XyP-VE-kGM" secondAttribute="leading" constant="15" id="f0R-hN-b3h"/>
+                        <constraint firstItem="tVC-KZ-fF9" firstAttribute="leading" secondItem="LRT-Lg-Qfa" secondAttribute="trailing" id="hZX-TW-pyt"/>
                         <constraint firstAttribute="height" constant="44" id="nIq-1r-0F6"/>
                         <constraint firstAttribute="bottom" secondItem="Bi1-om-xTD" secondAttribute="bottom" id="tjW-4o-g0R"/>
                     </constraints>
@@ -316,9 +316,9 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6oL-TT-AGw">
-                            <rect key="frame" x="0.0" y="15" width="305" height="14"/>
+                            <rect key="frame" x="194" y="15" width="111" height="14"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="14" id="k44-Wx-UxU"/>
+                                <constraint firstAttribute="height" constant="14" id="D8V-zu-gsa"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -334,13 +334,13 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="6oL-TT-AGw" firstAttribute="top" secondItem="P3n-nQ-anG" secondAttribute="top" constant="15" id="2om-N4-Dbc"/>
-                        <constraint firstItem="6oL-TT-AGw" firstAttribute="leading" secondItem="P3n-nQ-anG" secondAttribute="leading" id="3uD-eQ-SyB"/>
                         <constraint firstItem="xR6-mh-XkK" firstAttribute="leading" secondItem="P3n-nQ-anG" secondAttribute="leading" id="D5v-yb-rJc"/>
-                        <constraint firstAttribute="trailing" secondItem="6oL-TT-AGw" secondAttribute="trailing" constant="15" id="DpT-bd-iha"/>
+                        <constraint firstAttribute="trailing" secondItem="6oL-TT-AGw" secondAttribute="trailing" constant="15" id="EIt-Ji-SrV"/>
                         <constraint firstAttribute="bottom" secondItem="xR6-mh-XkK" secondAttribute="bottom" id="Eqt-PW-SDs"/>
+                        <constraint firstItem="6oL-TT-AGw" firstAttribute="leading" secondItem="YFS-ad-3uK" secondAttribute="trailing" id="Rzd-6g-fvo"/>
                         <constraint firstItem="YFS-ad-3uK" firstAttribute="leading" secondItem="P3n-nQ-anG" secondAttribute="leading" constant="15" id="ShR-Bo-N9p"/>
                         <constraint firstAttribute="height" constant="44" id="aeh-5z-qyl"/>
+                        <constraint firstItem="6oL-TT-AGw" firstAttribute="top" secondItem="P3n-nQ-anG" secondAttribute="top" constant="15" id="kVB-gK-VWK"/>
                         <constraint firstAttribute="trailing" secondItem="xR6-mh-XkK" secondAttribute="trailing" id="vG8-oB-Hsq"/>
                         <constraint firstItem="YFS-ad-3uK" firstAttribute="top" secondItem="P3n-nQ-anG" secondAttribute="top" constant="15" id="yxf-uT-OVn"/>
                     </constraints>
@@ -359,9 +359,9 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rjl-rt-zDG">
-                            <rect key="frame" x="0.0" y="15" width="305" height="15"/>
+                            <rect key="frame" x="194" y="15" width="111" height="15"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="15" id="50l-m5-VoT"/>
+                                <constraint firstAttribute="height" constant="15" id="Hv6-xe-ywH"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -377,15 +377,15 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="rjl-rt-zDG" firstAttribute="leading" secondItem="ylt-UT-8wv" secondAttribute="trailing" id="6mI-Mf-7S5"/>
+                        <constraint firstItem="rjl-rt-zDG" firstAttribute="top" secondItem="HAT-eM-EWL" secondAttribute="top" constant="15" id="7kW-Zr-oib"/>
                         <constraint firstAttribute="trailing" secondItem="5d3-Si-rcA" secondAttribute="trailing" id="A84-2g-Pkp"/>
-                        <constraint firstItem="rjl-rt-zDG" firstAttribute="top" secondItem="HAT-eM-EWL" secondAttribute="top" constant="15" id="AWx-Hn-wmq"/>
                         <constraint firstItem="ylt-UT-8wv" firstAttribute="top" secondItem="HAT-eM-EWL" secondAttribute="top" constant="15" id="Ec5-Nv-1Vy"/>
                         <constraint firstAttribute="height" constant="44" id="NB2-VR-knX"/>
                         <constraint firstItem="5d3-Si-rcA" firstAttribute="leading" secondItem="HAT-eM-EWL" secondAttribute="leading" id="TaM-Uv-WaM"/>
                         <constraint firstItem="ylt-UT-8wv" firstAttribute="leading" secondItem="HAT-eM-EWL" secondAttribute="leading" constant="15" id="jaQ-SS-QpP"/>
-                        <constraint firstItem="rjl-rt-zDG" firstAttribute="leading" secondItem="HAT-eM-EWL" secondAttribute="leading" id="mH6-SK-MYM"/>
                         <constraint firstAttribute="bottom" secondItem="5d3-Si-rcA" secondAttribute="bottom" id="q5t-Pf-ia5"/>
-                        <constraint firstAttribute="trailing" secondItem="rjl-rt-zDG" secondAttribute="trailing" constant="15" id="qM9-Gc-K9C"/>
+                        <constraint firstAttribute="trailing" secondItem="rjl-rt-zDG" secondAttribute="trailing" constant="15" id="rS2-Ou-adg"/>
                     </constraints>
                 </view>
                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="DETAIL TRANSAKSI" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r01-gg-4yG">

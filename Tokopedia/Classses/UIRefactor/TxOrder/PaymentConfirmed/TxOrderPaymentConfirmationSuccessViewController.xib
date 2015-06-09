@@ -56,20 +56,10 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pembayaran Anda akan diverifikasi oleh Tokopedia dalam 1 x 24 jam dan akan diteruskan kepada penjual." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SI-bg-yxa">
-                    <rect key="frame" x="15" y="297" width="289" height="50"/>
+                    <rect key="frame" x="15" y="295" width="289" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="3No-cI-Iby"/>
-                        <constraint firstAttribute="width" constant="289" id="E2b-mB-vgM"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Klik disini untuk memantau status pemesanan Anda." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTg-F7-3Ys">
-                    <rect key="frame" x="26" y="360" width="267" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="267" id="gT6-hB-zeG"/>
-                        <constraint firstAttribute="height" constant="50" id="z7J-ex-9Q0"/>
+                        <constraint firstAttribute="height" constant="50" id="OrO-4b-pQK"/>
+                        <constraint firstAttribute="width" constant="289" id="bZo-MD-SVM"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -78,37 +68,71 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XBL-Mv-7jJ">
                     <rect key="frame" x="0.0" y="158" width="320" height="110"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp. 0,-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uqL-jT-XLh">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 0,-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uqL-jT-XLh">
                             <rect key="frame" x="0.0" y="59" width="320" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="wKh-r7-fRI"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
                             <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Jumlah Pembayaran" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r52-tG-qtj">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah Pembayaran" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r52-tG-qtj">
                             <rect key="frame" x="0.0" y="30" width="320" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="AiO-1S-1w5"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="osh-lu-E0y" userLabel="Horizontal Border">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="osh-lu-E0y" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="31J-mM-Q9H"/>
+                            </constraints>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L5i-Fw-6ny" userLabel="Horizontal Border">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5i-Fw-6ny" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="109" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="3AV-uu-H3z"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="osh-lu-E0y" secondAttribute="trailing" id="3d2-hq-iul"/>
+                        <constraint firstAttribute="trailing" secondItem="L5i-Fw-6ny" secondAttribute="trailing" id="6XJ-jB-nzP"/>
+                        <constraint firstItem="L5i-Fw-6ny" firstAttribute="leading" secondItem="XBL-Mv-7jJ" secondAttribute="leading" id="6zt-7h-ae7"/>
+                        <constraint firstItem="uqL-jT-XLh" firstAttribute="leading" secondItem="XBL-Mv-7jJ" secondAttribute="leading" id="9tN-PU-P33"/>
+                        <constraint firstItem="osh-lu-E0y" firstAttribute="leading" secondItem="XBL-Mv-7jJ" secondAttribute="leading" id="DOS-Nd-ESw"/>
+                        <constraint firstItem="r52-tG-qtj" firstAttribute="leading" secondItem="XBL-Mv-7jJ" secondAttribute="leading" id="VXC-ci-ugX"/>
+                        <constraint firstItem="osh-lu-E0y" firstAttribute="top" secondItem="XBL-Mv-7jJ" secondAttribute="top" id="Vhc-Lc-7LL"/>
+                        <constraint firstAttribute="trailing" secondItem="uqL-jT-XLh" secondAttribute="trailing" id="WvB-Jd-eCC"/>
+                        <constraint firstItem="r52-tG-qtj" firstAttribute="top" secondItem="osh-lu-E0y" secondAttribute="bottom" constant="29" id="dOh-wN-u8O"/>
+                        <constraint firstItem="uqL-jT-XLh" firstAttribute="top" secondItem="r52-tG-qtj" secondAttribute="bottom" constant="8" id="hx0-go-qOl"/>
                         <constraint firstAttribute="height" constant="110" id="ie7-XP-0kY"/>
+                        <constraint firstAttribute="trailing" secondItem="r52-tG-qtj" secondAttribute="trailing" id="srl-q6-IJH"/>
+                        <constraint firstAttribute="bottom" secondItem="L5i-Fw-6ny" secondAttribute="bottom" id="vQs-fS-lSg"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYh-og-O2J">
-                    <rect key="frame" x="37" y="360" width="246" height="44"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Klik disini untuk memantau status pemesanan Anda." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTg-F7-3Ys">
+                    <rect key="frame" x="26" y="368" width="267" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="246" id="IXG-h8-hUp"/>
-                        <constraint firstAttribute="height" constant="44" id="IsD-bi-RDi"/>
+                        <constraint firstAttribute="width" constant="267" id="aAV-Ny-1fd"/>
+                        <constraint firstAttribute="height" constant="50" id="zSJ-Ue-OjC"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYh-og-O2J">
+                    <rect key="frame" x="37" y="368" width="246" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="246" id="64V-JF-1yv"/>
+                        <constraint firstAttribute="height" constant="44" id="Yun-bg-HnQ"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <state key="normal">
@@ -123,17 +147,17 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
             <constraints>
                 <constraint firstAttribute="centerX" secondItem="GZF-jR-FgY" secondAttribute="centerX" id="5I9-wD-BoF"/>
                 <constraint firstItem="XBL-Mv-7jJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Hqv-w4-hDw"/>
-                <constraint firstAttribute="centerX" secondItem="wTg-F7-3Ys" secondAttribute="centerX" id="JmU-dV-eok"/>
-                <constraint firstItem="3SI-bg-yxa" firstAttribute="top" secondItem="XBL-Mv-7jJ" secondAttribute="bottom" constant="29" id="LaZ-Wd-xT8"/>
-                <constraint firstItem="XBL-Mv-7jJ" firstAttribute="top" secondItem="mF2-Is-kca" secondAttribute="bottom" constant="27" id="QuK-Kk-wvT"/>
+                <constraint firstAttribute="centerY" secondItem="GZF-jR-FgY" secondAttribute="centerY" constant="234.5" id="TlS-gv-SPF"/>
                 <constraint firstAttribute="trailing" secondItem="XBL-Mv-7jJ" secondAttribute="trailing" id="U8J-8d-fT3"/>
-                <constraint firstItem="mF2-Is-kca" firstAttribute="top" secondItem="GZF-jR-FgY" secondAttribute="bottom" constant="13" id="Xmk-od-9Bn"/>
-                <constraint firstAttribute="centerX" secondItem="FYh-og-O2J" secondAttribute="centerX" id="agx-aQ-BLM"/>
-                <constraint firstItem="FYh-og-O2J" firstAttribute="top" secondItem="3SI-bg-yxa" secondAttribute="bottom" constant="13" id="d4S-IG-p7O"/>
-                <constraint firstItem="wTg-F7-3Ys" firstAttribute="top" secondItem="3SI-bg-yxa" secondAttribute="bottom" constant="13" id="eio-Y9-cpN"/>
+                <constraint firstAttribute="centerX" secondItem="FYh-og-O2J" secondAttribute="centerX" id="d9s-cd-6Mn"/>
+                <constraint firstAttribute="centerY" secondItem="mF2-Is-kca" secondAttribute="centerY" constant="182" id="eDJ-kT-rlJ"/>
+                <constraint firstAttribute="centerX" secondItem="wTg-F7-3Ys" secondAttribute="centerX" id="m0H-d6-QUH"/>
                 <constraint firstAttribute="centerX" secondItem="mF2-Is-kca" secondAttribute="centerX" id="m1b-y8-rdY"/>
-                <constraint firstAttribute="centerX" secondItem="3SI-bg-yxa" secondAttribute="centerX" id="mKr-Hb-rf0"/>
-                <constraint firstItem="GZF-jR-FgY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="39" id="wYu-hU-dT6"/>
+                <constraint firstAttribute="centerY" secondItem="FYh-og-O2J" secondAttribute="centerY" constant="-106" id="mxm-cS-r7n"/>
+                <constraint firstAttribute="centerY" secondItem="wTg-F7-3Ys" secondAttribute="centerY" constant="-109" id="nTo-3A-NfH"/>
+                <constraint firstAttribute="centerX" secondItem="3SI-bg-yxa" secondAttribute="centerX" id="s4E-wl-V4u"/>
+                <constraint firstAttribute="centerY" secondItem="3SI-bg-yxa" secondAttribute="centerY" constant="-36" id="uZQ-bI-SdY"/>
+                <constraint firstAttribute="centerY" secondItem="XBL-Mv-7jJ" secondAttribute="centerY" constant="71" id="yXL-rB-zTz"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="-306" y="54"/>
