@@ -54,8 +54,7 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isShowRefreshControl = NO;
@@ -65,8 +64,7 @@ typedef enum TagRequest {
     return self;
 }
 
-- (void) viewDidLoad
-{
+- (void) viewDidLoad {
     [super viewDidLoad];
     
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
@@ -114,8 +112,7 @@ typedef enum TagRequest {
     [_networkManager doRequest];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Home - Product Feed";
 }
