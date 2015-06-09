@@ -50,6 +50,11 @@
 //    [_messageTextView becomeFirstResponder];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_messageTextView resignFirstResponder];
+}
+
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
 {
     _messageTextView.delegate = self;

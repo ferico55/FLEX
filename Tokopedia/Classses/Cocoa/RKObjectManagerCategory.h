@@ -16,5 +16,6 @@ extern NSString * const kTraktBaseURLString;
 @interface RKObjectManager (TkpdCategory)
 
 + (RKObjectManager *)sharedClient;
++ (RKObjectManager *)sharedClientUploadImage:(NSString*)baseURLString;
 
 @end

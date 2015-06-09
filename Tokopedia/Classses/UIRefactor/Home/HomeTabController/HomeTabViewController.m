@@ -190,6 +190,10 @@
 
 
 #pragma mark - Action
+- (void)setIndexPage:(int)idxPage
+{
+    _page = idxPage;
+}
 
 - (void)goToPage:(NSInteger)page {
     if(page == 0) {
@@ -260,6 +264,20 @@
     [UIView animateWithDuration:0.3 animations:^{
         _scrollView.contentOffset = CGPointMake(totalOffset, _scrollView.contentOffset.y);
     }];
+}
+
+- (void)redirectToWishList
+{
+    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    tempBtn.tag = 3;
+    [_homeHeaderController tapButton:tempBtn];
+}
+
+- (void)redirectToProductFeed
+{
+    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    tempBtn.tag = 2;
+    [_homeHeaderController tapButton:tempBtn];
 }
 
 

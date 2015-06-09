@@ -26,6 +26,7 @@
 #import "ProductDetail.h"
 #import "MyShopNoteDetailViewController.h"
 #import "TokopediaNetworkManager.h"
+#import "GAIDictionaryBuilder.h"
 
 @interface ProductAddEditDetailViewController ()
 <
@@ -673,11 +674,27 @@
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
+    NSError *error = (NSError*)errorResult;
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[[error localizedDescription]] delegate:self];
+    [alert show];
+    
+    [self performSelector:@selector(dismissViewController) withObject:self afterDelay:3.0];
 
+}
+
+-(void)dismissViewController
+{
+    [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    [tracker set:kGAIScreenName value:@"Add Product - Fail"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
     if (tag == TAG_REQUEST_VALIDATION) {
         [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         _saveBarButtonItem.enabled = YES;
@@ -709,15 +726,15 @@
 -(void)showErrorAlert
 {
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    NSString *errorString = @"";
+    NSArray *errorString;
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
-        errorString = @"Gagal menambahkan produk. Mohon coba kembali.";
+        errorString = [[NSArray alloc] initWithObjects:@"Gagal menambahkan produk. Mohon coba kembali.", nil];
     }
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-        errorString = @"Gagal mengubah produk. Mohon coba kembali.";
+        errorString = [[NSArray alloc] initWithObjects:@"Gagal mengubah produk. Mohon coba kembali.", nil];
     }
     if (type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        errorString = @"Gagal mensalin produk. Mohon coba kembali.";
+        errorString = [[NSArray alloc] initWithObjects:@"Gagal menyalin produk. Mohon coba kembali.", nil];
     }
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorString delegate:self];
     [alert show];
@@ -909,7 +926,7 @@
 {
     //_objectManagerActionAddProductPicture = [RKObjectManager sharedClient];
     NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generateHost.result.generated_host.upload_host];
-    RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
+    RKObjectManager *objectManager = [RKObjectManager sharedClientUploadImage:urlString];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductPicture class]];
@@ -928,6 +945,8 @@
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/upload-image-helper.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [objectManager addResponseDescriptor:responseDescriptor];
+    
+    NSLog(@"%@",objectManager);
     
     return objectManager;
 }
@@ -1063,6 +1082,11 @@
             [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         }
         if (setting.result.is_success == 1 || setting.result.product_id!=0) {
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:kGAIScreenName value:@"Add Product - Success"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            
             NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
             NSString *defaultSuccessMessage = (type == TYPE_ADD_EDIT_PRODUCT_ADD)?SUCCESSMESSAGE_ADD_PRODUCT:SUCCESSMESSAGE_EDIT_PRODUCT;SUCCESSMESSAGE_ADD_PRODUCT;
             NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:defaultSuccessMessage, nil];

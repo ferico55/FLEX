@@ -122,7 +122,7 @@
     _networkManager.delegate = self;
     
     _page = 1;
-    _limit = kTKPDDETAILDEFAULT_LIMITPAGE;
+    _limit = 8;
     
     /// adjust refresh control
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -317,6 +317,7 @@
                 
                 ProductListMyShopFilterViewController *controller = [ProductListMyShopFilterViewController new];
                 controller.delegate = self;
+                controller.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
                 controller.shopID = [auth objectForKey:kTKPD_SHOPIDKEY];
                 
                 UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -432,7 +433,9 @@
     NSString *etalase = [_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]?:@"";
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
     
-    NSString *departmentID = [_dataFilter objectForKey:API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY]?:@"";
+    Breadcrumb *department = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
+    
+    NSString *departmentID = department.department_id?:@"";
     NSString *catalogID = [_dataFilter objectForKey:API_MANAGE_PRODUCT_CATALOG_ID_KEY]?:@"";
     NSString *pictureStatus = [_dataFilter objectForKey:API_MANAGE_PRODUCT_PICTURE_STATUS_KEY]?:@"";
     NSString *productCondition = [_dataFilter objectForKey:API_MANAGE_PRODUCT_CONDITION_KEY]?:@"";
@@ -542,6 +545,7 @@
             
             if (_page == 1) {
                 [_list removeAllObjects];
+                [_table setContentOffset:CGPointZero animated:YES];
             }
             
             [_list addObjectsFromArray:list];
@@ -796,8 +800,6 @@
 #pragma mark - Sort Delegate
 -(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    [_list removeAllObjects];
-    [self.table reloadData];
     [_dataFilter addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
 }
@@ -915,13 +917,13 @@
 
 #pragma mark - Product list filter delegate
 
-- (void)filterProductEtalase:(EtalaseList *)etalase department:(NSString *)department catalog:(NSString *)catalog picture:(NSString *)picture condition:(NSString *)condition
+- (void)filterProductEtalase:(EtalaseList *)etalase department:(Breadcrumb *)department catalog:(NSString *)catalog picture:(NSString *)picture condition:(NSString *)condition
 {
     [_dataFilter setValue:etalase.etalase_id forKey:API_PRODUCT_ETALASE_ID_KEY];
-    [_dataFilter setValue:department forKey:API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY];
     [_dataFilter setValue:catalog forKey:API_MANAGE_PRODUCT_CATALOG_ID_KEY];
     [_dataFilter setValue:picture forKey:API_MANAGE_PRODUCT_PICTURE_STATUS_KEY];
     [_dataFilter setValue:condition forKey:API_MANAGE_PRODUCT_CONDITION_KEY];
+    [_dataFilter setObject:department forKey:DATA_DEPARTMENT_KEY];
  
     [_list removeAllObjects];
     [self.table reloadData];
@@ -929,9 +931,7 @@
     _requestcount = 0;
     _page = 1;
     
-    [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-    [_networkManager doRequest];
+    [self refreshView:_refreshControl];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

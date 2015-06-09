@@ -105,7 +105,7 @@
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _generatehost = [GenerateHost new];
-    _photos = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
+    _photos = (_photos)?_photos:[[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _uploadingPhotos = [NSMutableArray new];
     
     _networkManagerOpenComplain = [TokopediaNetworkManager new];
@@ -841,7 +841,7 @@
     vc.selectedProblem = _selectedProblem;
     vc.isGotTheOrder = _isGotTheOrder;
     vc.order = _order?:[TxOrderStatusList new];
-    vc.uploadedPhotos = _uploadedPhotos?:_photos?:@[];
+    vc.uploadedPhotos = (_uploadedPhotos.count>0)?_uploadedPhotos:_photos?:@[];
     vc.generatehost = _generatehost;
     vc.delegate = _delegate;
     vc.detailOpenAmount = _detailOpenAmount;
@@ -1112,8 +1112,9 @@
     }
 }
 
-- (void)failedGenerateHost {
-    
+- (void)failedGenerateHost:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
 }
 
 @end

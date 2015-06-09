@@ -18,6 +18,7 @@
 #import "string_more.h"
 #import "WebViewController.h"
 
+#import "HomeTabViewController.h"
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
 
@@ -49,7 +50,6 @@
 #import "ProductListMyShopViewController.h"
 #import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
-#import "Helpshift.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 #import <MessageUI/MessageUI.h>
@@ -72,6 +72,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
+@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profilePictureImageView;
@@ -136,6 +137,7 @@
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
+    _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
     
     self.navigationController.title = @"More";
     [self initNotificationManager];
@@ -175,6 +177,7 @@
 
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
     [tracker set:kGAIScreenName value:@"More Navigation Page"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
@@ -454,7 +457,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 7;
+    return 8;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -465,7 +468,7 @@
             break;
             
         case 1:
-            return 2;
+            return 3;
             break;
             
         case 2:
@@ -491,6 +494,10 @@
             break;
             
         case 6:
+            return 1;
+            break;
+            
+        case 7 :
             return 1;
             break;
             
@@ -527,7 +534,7 @@
     self.hidesBottomBarWhenPushed = YES;
     
     if(indexPath.section == 0) {
-        if(!_depositRequest.isExecuting) {
+        if(![_depositLabel.text isEqualToString:@"-"]) {
             DepositSummaryViewController *depositController = [DepositSummaryViewController new];
             depositController.data = @{@"total_saldo":_depositLabel.text};
             [self.navigationController pushViewController:depositController animated:YES];
@@ -545,7 +552,12 @@
         purchaseController.notification = _notifManager.notification;
         [self.navigationController pushViewController:purchaseController animated:YES];
     }
-    
+    else if(indexPath.section==1 && indexPath.row==2) {
+        UINavigationController *tempNavController = (UINavigationController *) [self.tabBarController.viewControllers firstObject];
+        [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:2];
+        [self.tabBarController setSelectedIndex:0];
+        [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToWishList];
+    }
     
     else if (indexPath.section == 2) {
         if(indexPath.row == 0) {
@@ -651,6 +663,7 @@
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
             id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
@@ -680,6 +693,7 @@
             
         } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"FAQ Center"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
@@ -689,6 +703,7 @@
             [self.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 2) {
             id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"Privacy Policy"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
@@ -700,10 +715,13 @@
     }
     
     else if (indexPath.section == 6) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
-                                                            object:nil
-                                                          userInfo:@{}];
+        if(indexPath.row == 0) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                                                                object:nil
+                                                              userInfo:@{}];
+        }
+
     }
     
     self.hidesBottomBarWhenPushed = NO;
@@ -840,6 +858,13 @@
 
 - (void)updateProfilePicture:(NSNotification *)notification
 {
+    NSDictionary *userInfo = notification.userInfo;
+    
+    NSString *strAvatar = [userInfo objectForKey:@"file_th"]?:@"";
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:strAvatar withKey:@"user_image"];
+    _auth = [[secureStorage keychainDictionary] mutableCopy];
+    
     UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
     _profilePictureImageView.image = profilePicture;
 }

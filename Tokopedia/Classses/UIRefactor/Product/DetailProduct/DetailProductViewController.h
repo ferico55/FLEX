@@ -19,9 +19,8 @@
 }
 @property (strong,nonatomic) NSDictionary *data;
 
-- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText;
+- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment;
 - (void)setBackgroundPriceAlert:(BOOL)isActive;
 - (IBAction)actionShare:(id)sender;
 - (IBAction)actionWishList:(id)sender;
-- (IBAction)actionPriceAlert:(id)sender;
 @end

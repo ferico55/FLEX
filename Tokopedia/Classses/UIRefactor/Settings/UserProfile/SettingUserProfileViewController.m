@@ -150,6 +150,8 @@
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
     
+    _thumb = [UIImageView circleimageview:_thumb];
+    
     [self requestProfileForm];
 }
 
@@ -334,8 +336,9 @@
     _generatehost = generateHost;
 }
 
-- (void)failedGenerateHost {
-    
+- (void)failedGenerateHost:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
 }
 
 #pragma mark Request Action Upload Photo
@@ -350,18 +353,26 @@
     uploadImage.fieldName = API_UPLOAD_PROFILE_IMAGE_DATA_NAME;
     [uploadImage configureRestkitUploadPhoto];
     [uploadImage requestActionUploadPhoto];
+    _editProfilePictButton.enabled = NO;
 }
 
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
     _images = uploadImage;
     [self configureRestKitProfileImage];
-    [self requestUploadProfilePicture:uploadImage.result.file_uploaded];
+    [self requestUploadProfilePicture:uploadImage.result.pic_obj?:@""];
+    
 }
 
 -(void)failedUploadObject:(id)object
 {
-    NSURL *profilePictureURL = [NSURL URLWithString:_profile.result.data_user.user_image];
+    [self setImageWithStringURL:_profile.result.data_user.user_image?:@""];
+    _editProfilePictButton.enabled = YES;
+}
+
+-(void)setImageWithStringURL:(NSString*)stringURL
+{
+    NSURL *profilePictureURL = [NSURL URLWithString:stringURL];
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:profilePictureURL
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -371,13 +382,13 @@
     thumb.image = nil;
     
     [thumb setImageWithURLRequest:request
-                 placeholderImage:nil
+                 placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
+                              [thumb setImage:image];
 #pragma clang diagnostic pop
-    } failure:nil];
+                          } failure:nil];
     
     _thumb.alpha = 1;
 }
@@ -553,23 +564,7 @@
 {
     if (object) {
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_profile.result.data_user.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
-        
-        UIImageView *thumb = _thumb;
-        thumb = [UIImageView circleimageview:thumb];
-        
-        thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
-        
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image];
-#pragma clang diagnostic pop
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        }];
+        [self setImageWithStringURL:_profile.result.data_user.user_image];
         
         _textfieldemail.text = _profile.result.data_user.user_email;
         NSString *hobby =_profile.result.data_user.hobby;
@@ -830,11 +825,6 @@
     NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     
     UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
     
     imageView.image = image;
     imageView.hidden = NO;
@@ -846,9 +836,9 @@
 
 - (void)configureRestKitProfileImage
 {
-    //_uploadProfileImageObjectManager = [RKObjectManager sharedClient];
-    NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generatehost.result.generated_host.upload_host];
-    _uploadProfileImageObjectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
+    _uploadProfileImageObjectManager = [RKObjectManager sharedClient];
+    //NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generatehost.result.generated_host.upload_host];
+    //_uploadProfileImageObjectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
 
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEditForm class]];
@@ -886,7 +876,8 @@
     
     NSDictionary *param = @{
                             kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIUPLOADPROFILEPICTUREKEY,
-                            kTKPDPROFILE_APIFILEUPLOADEDKEY    : fileUploaded,
+                            kTKPDPROFILE_APIFILEUPLOADEDKEY    : fileUploaded?:@"",
+                            @"server_id" : _generatehost.result.generated_host.server_id?:@""
                             };
     
     _uploadProfileImageRequest = [_uploadProfileImageObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
@@ -919,7 +910,9 @@
     if (status) {
         if ([uploadImageResponse.result.is_success boolValue]) {
             _thumb.alpha = 1;
-            NSDictionary *userinfo = @{kTKPDPROFILE_APIPROFILEPHOTOKEY : self.thumb.image};
+            NSDictionary *userinfo = @{kTKPDPROFILE_APIPROFILEPHOTOKEY : self.thumb.image,
+                                       @"file_th": _images.result.file_th
+                                       };
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                                 object:nil
                                                               userInfo:userinfo];
@@ -928,28 +921,12 @@
             [alert show];
         }
     }
+    _editProfilePictButton.enabled = YES;
 }
 
 - (void)uploadImageRequestError:(NSError *)error
 {
-    NSURL *profilePictureURL = [NSURL URLWithString:_profile.result.data_user.user_image];
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:profilePictureURL
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = _thumb;
-    thumb = [UIImageView circleimageview:thumb];
-    thumb.image = nil;
-    
-    [thumb setImageWithURLRequest:request
-                 placeholderImage:nil
-                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                              [thumb setImage:image];
-#pragma clang diagnostic pop
-                          } failure:nil];
-    
+    [self setImageWithStringURL:_profile.result.data_user.user_image];
     _thumb.alpha = 1;
 }
 

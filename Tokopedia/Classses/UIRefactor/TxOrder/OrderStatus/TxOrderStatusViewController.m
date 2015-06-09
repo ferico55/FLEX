@@ -30,7 +30,9 @@
 #import "TxOrderObjectMapping.h"
 #import "NoResultView.h"
 
+#import "TextMenu.h"
 #import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
@@ -40,7 +42,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -72,6 +74,7 @@
     TokopediaNetworkManager *_networkManager;
     
     TxOrderStatusList *_selectedTrackOrder;
+    LoadingView *_loadingView;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -145,7 +148,8 @@
                                              selector:@selector(refreshRequest)
                                                  name:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME
                                                object:nil];
-    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -350,11 +354,23 @@
     
     NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
     
-    [cell.statusLabel setText:statusString animated:YES];
-    [cell.statusLabel setCustomAttributedText:cell.statusLabel.text];
+    [cell.statusTv setText:statusString];
     
-    if ([cell.statusLabel.text isEqualToString:@"0"] || [cell.statusLabel.text isEqual:@""]) {
-        cell.statusLabel.text = @"-";
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentLeft;
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
+                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:12.0f],
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:statusString?:@"" attributes:attributes];
+    cell.statusTv.attributedText = attributedText;
+    
+    if ([cell.statusTv.text isEqualToString:@"0"] || [cell.statusTv.text isEqual:@""]) {
+        cell.statusTv.text = @"-";
     }
 
     [cell hideAllButton];
@@ -450,6 +466,9 @@
         } else {
             height = tableView.rowHeight - 45;
         }
+    }
+    else
+    {
     }
 
     return height;
@@ -691,11 +710,6 @@
     }
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    [self actionAfterFailRequestMaxTries:tag];
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_act stopAnimating];
@@ -704,6 +718,16 @@
     if (_page == 1) {
         _tableView.contentOffset = CGPointZero;
     }
+    
+    _tableView.tableFooterView = _loadingView.view;
+}
+
+#pragma mark - loading view delegate
+-(void)pressRetryButton
+{
+    [_act startAnimating];
+    _tableView.tableFooterView = _footer;
+    [_networkManager doRequest];
 }
 
 
@@ -1287,6 +1311,7 @@
     [_refreshControll beginRefreshing];
     [_tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [_networkManager doRequest];
+    [_act stopAnimating];
 }
 
 -(void)statusDetailAtIndexPath:(NSIndexPath *)indexPath
@@ -1351,6 +1376,4 @@
     alert.tag = TAG_ALERT_COMPLAIN;
     [alert show];
 }
-
-
 @end

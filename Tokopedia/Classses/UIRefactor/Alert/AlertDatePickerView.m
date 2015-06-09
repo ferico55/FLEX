@@ -55,6 +55,28 @@
     }
 }
 
+- (IBAction)gesture:(UITapGestureRecognizer *)sender
+{
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan: {
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            UIView* view = [_window.subviews lastObject];
+            if (self == view) {
+                [self dismissWithClickedButtonIndex:-1 animated:YES];
+            }
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+}
+
 
 #pragma mark - Methods
 - (void)show
@@ -82,9 +104,15 @@
 	self.center = hidecenter;
 	self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
 	
-	if (_background.superview == nil) {	//fix dismiss - show race condition
-		[_window addSubview:_background];
-	}
+    if (_background.superview == nil) {	//fix dismiss - show race condition
+        [_window addSubview:_background];
+    }
+    
+     _background.userInteractionEnabled = YES;
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
+    [_background addGestureRecognizer:gesture];
+    _gesture = gesture;
+    
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	
@@ -125,6 +153,7 @@
             break;
         }
     }
+    
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {

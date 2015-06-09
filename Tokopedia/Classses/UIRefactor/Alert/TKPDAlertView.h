@@ -44,7 +44,6 @@
 
 
 @property (nonatomic, weak) IBOutlet id<TKPDAlertViewDelegate> delegate;
-
 @property (nonatomic, strong, setter = setData:) NSDictionary* data;
 
 + (id)newview;

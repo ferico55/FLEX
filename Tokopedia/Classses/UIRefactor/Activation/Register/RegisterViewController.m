@@ -19,6 +19,7 @@
 #import "TextField.h"
 
 #import <FacebookSDK/FacebookSDK.h>
+#import "AppsFlyerTracker.h"
 
 #pragma mark - Register View Controller
 @interface RegisterViewController ()
@@ -471,10 +472,12 @@
             [alertView show];
         } else {
             [self.view layoutSubviews];
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
 
             TKPDAlert *alert = [TKPDAlert newview];
-            alert.text = @"Anda telah berhasil membuat akun Tokopedia";
-            alert.tag = 12;
+            alert.text = @"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke akun Anda. Apabila tidak menemukan email tersebut, periksa terlebih dahulu kotak spam Anda. Selamat berbelanja!";
+            alert.tag = 13;
             alert.delegate = self;
             [alert show];
             
@@ -612,13 +615,21 @@
         {
             // alert success login
             [self.navigationController popViewControllerAnimated:YES];
+            break;
         }
         case 12:
         {
             [self.navigationController popViewControllerAnimated:YES];
+            break;
+        }
+        case 13:
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
         }
         default:
             break;
+            
     }
 }
 
@@ -866,6 +877,8 @@
             controller.login = _login;
             controller.delegate = self;
             controller.facebookUser = _facebookUser;
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Facebook Registration"}];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
             navigationController.navigationBar.translucent = NO;

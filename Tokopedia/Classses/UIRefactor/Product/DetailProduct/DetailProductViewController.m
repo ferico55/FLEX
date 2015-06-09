@@ -14,7 +14,7 @@
 #define CTagUnWishList 6
 #define CTagNoteCanReture 7
 
-
+#import "LabelMenu.h"
 #import "Notes.h"
 #import "NoteDetails.h"
 #import "NotesResult.h"
@@ -85,8 +85,6 @@
 @implementation CustomButtonExpandDesc
 @synthesize objSection;
 @end
-
-
 
 
 #pragma mark - Detail Product View Controller
@@ -166,6 +164,7 @@ UIAlertViewDelegate
     NSTimer *_timer;
     
     __weak RKObjectManager  *_objectPromoteManager;
+    LabelMenu *lblDescription;
     
     BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
@@ -334,8 +333,10 @@ UIAlertViewDelegate
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
     btnShare.layer.borderWidth = 1;
-    btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+    btnShare.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
     btnShare.layer.masksToBounds = YES;
+    btnShare.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+    btnShare.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
     
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
@@ -440,13 +441,16 @@ UIAlertViewDelegate
         [btnWishList setImage:[UIImage imageNamed:@"icon_button_wishlist_active.png"] forState:UIControlStateNormal];
         btnWishList.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
         [btnWishList setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        btnWishList.layer.borderWidth = 0;
     }
     else {
         [btnWishList setImage:[UIImage imageNamed:@"icon_button_wishlist_nonactive.png"] forState:UIControlStateNormal];
         btnWishList.backgroundColor = [UIColor whiteColor];
         [btnWishList setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        btnWishList.layer.borderWidth = 1.0f;
     }
 }
+
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
@@ -863,17 +867,17 @@ UIAlertViewDelegate
         {
             //            return 200;
             if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
             else
-                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
         }
     }
     else if(section == 1)
     {
         if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
         else
-            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
     }
     
     return 40;
@@ -1027,6 +1031,24 @@ UIAlertViewDelegate
     return cell;
 }
 
+- (void)longPress:(UILongPressGestureRecognizer *)sender
+{
+    if (sender.state==UIGestureRecognizerStateBegan && isExpandDesc) {
+        UILabel *lblDesc = (UILabel *)sender.view;
+        [lblDesc becomeFirstResponder];
+        
+        
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setTargetRect:lblDesc.frame inView:lblDesc.superview];
+        [menu setMenuVisible:YES animated:YES];
+    }
+}
+
+- (void)copy:(id)sender
+{
+    [UIPasteboard generalPasteboard].string = lblDescription.text;
+}
+
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
 {
     ((DetailProductInfoCell*)cell).minorderlabel.text = _product.result.product.product_min_order;
@@ -1042,7 +1064,7 @@ UIAlertViewDelegate
         button.hidden = NO;
         [button setTitle:breadcrumb.department_name forState:UIControlStateNormal];
     }
-    if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE)
+    if ([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING)
         [cell.etalasebutton setTitle:@"-" forState:UIControlStateNormal];
     else
         [cell.etalasebutton setTitle:_product.result.product.product_etalase?:@"-" forState:UIControlStateNormal];
@@ -1749,10 +1771,18 @@ UIAlertViewDelegate
         }
         
         //Set shop in warehouse
-        if(((int) _product.result.product.product_status) != PRODUCT_STATE_WAREHOUSE) {
-            constraintHeightWarehouse.constant = 0;
+        if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE && [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
+            [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
+            [viewContentWarehouse addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)]];
             viewContentWarehouse.hidden = YES;
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+        }
+        else if([_product.result.product.product_status intValue] == PRODUCT_STATE_PENDING) {
+            lblTitleWarehouse.text = CStringTitleBanned;
+            [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
+            
+            float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 8 + tempHeight);
         }
         
         _table.tableHeaderView = _header;
@@ -1809,6 +1839,23 @@ UIAlertViewDelegate
                 
                 self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
                 [btnWishList removeFromSuperview];
+                
+                //Set position btn share
+                int n = (int)btnShare.constraints.count;
+                NSMutableArray *arrRemoveConstraint = [NSMutableArray new];
+
+                for(int i=0;i<n;i++) {
+                    if([[btnShare.constraints objectAtIndex:i] isMemberOfClass:[NSLayoutConstraint class]]) {
+                        [arrRemoveConstraint addObject:[btnShare.constraints objectAtIndex:i]];
+                    }
+                }
+                [btnShare removeConstraints:arrRemoveConstraint];
+                [arrRemoveConstraint removeAllObjects];
+                arrRemoveConstraint = nil;
+                
+                [btnShare removeConstraints:btnShare.constraints];
+                [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+                [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
             } else {
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
                 activityIndicator.color = [UIColor lightGrayColor];
@@ -1817,8 +1864,7 @@ UIAlertViewDelegate
                 btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
                 btnWishList.layer.cornerRadius = 5;
                 btnWishList.layer.masksToBounds = YES;
-                btnWishList.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-                btnWishList.layer.borderWidth = 1.0f;
+                btnWishList.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
                 btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
                 btnWishList.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
@@ -1859,17 +1905,7 @@ UIAlertViewDelegate
                 }
                 
                 hasSetTokoTutup = !hasSetTokoTutup;
-                _dinkButton.hidden = YES;
-                _buyButton.hidden = YES;
-                [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
-                                                                                    options:0
-                                                                                    metrics:nil
-                                                                                      views:NSDictionaryOfVariableBindings(_dinkButton)]];
-                
-                [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
-                                                                                   options:0
-                                                                                   metrics:nil
-                                                                                     views:NSDictionaryOfVariableBindings(_buyButton)]];
+                [self hiddenButtonBuyAndPromo];
             }
             else {
                 if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
@@ -1878,6 +1914,11 @@ UIAlertViewDelegate
                 } else {
                     _buyButton.hidden = NO;
                     _dinkButton.hidden = YES;
+                }
+                
+                //Check is in warehouse
+                if([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING) {
+                    [self hiddenButtonBuyAndPromo];
                 }
             }
             
@@ -1998,14 +2039,29 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
-- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color
+- (void)hiddenButtonBuyAndPromo
+{
+    _dinkButton.hidden = YES;
+    _buyButton.hidden = YES;
+    [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:NSDictionaryOfVariableBindings(_dinkButton)]];
+    
+    [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
+                                                                       options:0
+                                                                       metrics:nil
+                                                                         views:NSDictionaryOfVariableBindings(_buyButton)]];
+}
+
+- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)alignment
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentLeft;
+    style.alignment = alignment;
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName: color,
-                                 NSFontAttributeName: fontDesc,
+                                 NSFontAttributeName:(font == nil)? fontDesc : font,
                                  NSParagraphStyleAttributeName: style,
                                  };
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:strText attributes:attributes];
@@ -2013,11 +2069,11 @@ UIAlertViewDelegate
     
 }
 
-- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText
+- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment
 {
     if(strText == nil)  return 0.0f;
     UILabel *lblSize = [[UILabel alloc] init];
-    [self initAttributeText:lblSize withStrText:strText withColor:[UIColor whiteColor]];
+    [self initAttributeText:lblSize withStrText:strText withColor:color withFont:font withAlignment:textAlignment];
     lblSize.numberOfLines = 0;
     
     return [lblSize sizeThatFits:size].height;
@@ -2028,13 +2084,16 @@ UIAlertViewDelegate
 {
     if(strText == nil)  return CGRectZero;
     CGRect rectLblDesc = CGRectMake(15, originY, width, 9999);
-    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText];
+    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
     
-    UILabel *lblDescription = [[UILabel alloc] initWithFrame:rectLblDesc];
+    lblDescription = [[LabelMenu alloc] initWithFrame:rectLblDesc];
     lblDescription.backgroundColor = [UIColor clearColor];
     [lblDescription setNumberOfLines:0];
-    [self initAttributeText:lblDescription withStrText:strText withColor:[UIColor whiteColor]];
+    lblDescription.delegate = self;
+    [self initAttributeText:lblDescription withStrText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
     lblDescription.textColor = [UIColor lightGrayColor];
+    lblDescription.userInteractionEnabled = YES;
+    [lblDescription addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
     [mView addSubview:lblDescription];
     
     return rectLblDesc;

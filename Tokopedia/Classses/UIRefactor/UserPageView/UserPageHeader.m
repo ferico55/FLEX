@@ -104,6 +104,7 @@
     
     [self.scrollView setContentSize:CGSizeMake(640, 77)];
     
+    _profileImage = [UIImageView circleimageview:_profileImage];
 }
 
 - (void)didReceiveMemoryWarning
@@ -129,16 +130,13 @@
     
     [_avatarIndicator startAnimating];
     [_profileImage setImageWithURLRequest:requestAvatar
-                         placeholderImage:nil
+                         placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         _profileImage.image = image;
         _profileImage.hidden = NO;
-        
-        _profileImage.layer.cornerRadius = _profileImage.frame.size.height /2;
-        _profileImage.layer.masksToBounds = YES;
-        _profileImage.layer.borderWidth = 0;
+    
 #pragma clang diagnostic pop
     } failure:nil];
     
