@@ -165,6 +165,7 @@
 
     CGRect frame = _contentView.frame;
     frame.origin = CGPointZero;
+    frame.size.width = self.view.bounds.size.width;
     _contentView.frame = frame;
 }
 
