@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "GeneralTableViewController.h"
 #import "detail.h"
 #import "string_product.h"
 #import "string_alert.h"
@@ -15,6 +16,7 @@
 #import "UploadImage.h"
 #import "Product.h"
 #import "ShopSettings.h"
+#import "CatalogAddProduct.h"
 #import "ManageProduct.h"
 #import "AlertPickerView.h"
 #import "ProductAddEditViewController.h"
@@ -48,7 +50,8 @@
     CameraCollectionViewControllerDelegate,
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
-    TKPDPhotoPickerDelegate
+    TKPDPhotoPickerDelegate,
+    GeneralTableViewControllerDelegate
 >
 {
     NSMutableDictionary *_dataInput;
@@ -69,6 +72,7 @@
     UploadImage *_images;
     Product *_product;
     ShopSettings *_setting;
+    CatalogAddProduct *_catalog;
     
     __weak RKObjectManager *_objectmanagerEditProductPicture;
     __weak RKManagedObjectRequestOperation *_requestEditProductPicture;
@@ -98,11 +102,18 @@
     
     TokopediaNetworkManager *_networkManager;
     TokopediaNetworkManager *_networkManagerDeleteImage;
+    TokopediaNetworkManager *_networkManagerCatalog;
     
     ProductAddEditDetailViewController *_detailVC;
 
     TKPDPhotoPicker *_photoPicker;
     UIAlertView *_alertProcessing;
+    
+    GeneralTableViewController *_catalogVC;
+    
+    CatalogList *_selectedCatalog;
+    
+    BOOL _isCatalog;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
@@ -128,6 +139,8 @@
 
 #define TAG_REQUEST_DETAIL 10
 #define TAG_REQUEST_DELETE_IMAGE 11
+#define TAG_REQUEST_LIST_CATALOG 12
+
 
 @implementation ProductAddEditViewController
 
@@ -153,6 +166,9 @@
     _section2TableViewCell = [NSArray sortViewsWithTagInArray:_section2TableViewCell];
     _section3TableViewCell = [NSArray sortViewsWithTagInArray:_section3TableViewCell];
     
+    _catalogVC = [GeneralTableViewController new];
+    _catalogVC.delegate = self;
+    
     _dataInput = [NSMutableDictionary new];
     _errorMessage = [NSMutableArray new];
     _cacheconnection = [URLCacheConnection new];
@@ -174,6 +190,10 @@
     _networkManagerDeleteImage = [TokopediaNetworkManager new];
     _networkManagerDeleteImage.tagRequest = TAG_REQUEST_DELETE_IMAGE;
     _networkManagerDeleteImage.delegate = self;
+    
+    _networkManagerCatalog = [TokopediaNetworkManager new];
+    _networkManagerCatalog.tagRequest = TAG_REQUEST_LIST_CATALOG;
+    _networkManagerCatalog.delegate = self;
     
     _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -565,7 +585,10 @@
                         departmentTitle = breadcrumb.department_name;
                     }
                     cell.detailTextLabel.text = departmentTitle;
-                    }
+                }
+                if (indexPath.row == BUTTON_PRODUCT_CATALOG) {
+                    cell.detailTextLabel.text = _selectedCatalog.catalog_name?:@"Pilih Katalog";
+                }
                 break;
             case 2:
                 cell = _section2TableViewCell[indexPath.row];
@@ -627,6 +650,13 @@
             break;
         case 1:
             cellHeight = ((UITableViewCell*)_section1TableViewCell[indexPath.row]).frame.size.height;
+            if (!_isCatalog && indexPath.row == BUTTON_PRODUCT_CATALOG) {
+                cellHeight = 0;
+            }
+            else
+            {
+                cellHeight = 44;
+            }
             break;
         case 2:
             cellHeight = ((UITableViewCell*)_section2TableViewCell[indexPath.row]).frame.size.height;
@@ -673,6 +703,17 @@
                     //[self.navigationController pushViewController:categoryViewController animated:YES];
                     break;
                 }
+                case BUTTON_PRODUCT_CATALOG:
+                {
+                    NSMutableArray *catalogs =[NSMutableArray new];
+                    for (CatalogList *catalog in _catalog.result.list) {
+                        [catalogs addObject:catalog.catalog_name];
+                    }
+                    _catalogVC.objects = [catalogs copy];
+                    _catalogVC.selectedObject = _selectedCatalog.catalog_name?:@"";
+                    [self.navigationController pushViewController:_catalogVC animated:YES];
+                }
+                    break;
                 case BUTTON_PRODUCT_MIN_ORDER:
                     [_minimumOrderTextField becomeFirstResponder];
                     break;
@@ -747,6 +788,9 @@
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         return [self objectManagerDeleteImage];
     }
+    if (tag == TAG_REQUEST_LIST_CATALOG) {
+        return [self objectManagerCatalog];
+    }
     return nil;
 }
 
@@ -775,6 +819,14 @@
                                 };
         return param;
     }
+    if (tag == TAG_REQUEST_LIST_CATALOG) {
+        Breadcrumb *department = [_dataInput objectForKey:DATA_CATEGORY_KEY]?:[Breadcrumb new];
+        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY: ACTION_GET_CATALOG,
+                                @"product_name":_productNameTextField.text?:@"",
+                                @"product_department_id": department.department_id?:@""
+                                };
+        return param;
+    }
     return nil;
 }
 
@@ -785,6 +837,9 @@
     }
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         return kTKPDDETAILACTIONPRODUCT_APIPATH;
+    }
+    if (tag == TAG_REQUEST_LIST_CATALOG) {
+        return kTKDPDETAILCATALOG_APIPATH;
     }
     return nil;
 }
@@ -803,6 +858,10 @@
         _setting = stats;
         return _setting.status;
     }
+    if (tag == TAG_REQUEST_LIST_CATALOG) {
+        _catalog = stats;
+        return _catalog.status;
+    }
     
     return nil;
 }
@@ -814,6 +873,9 @@
         [_alertProcessing show];
     }
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
+        
+    }
+    if (tag == TAG_REQUEST_LIST_CATALOG) {
         
     }
 }
@@ -828,6 +890,17 @@
     }
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         [self requestSuccessDeleteImage:successResult withOperation:operation];
+    }
+    if (tag == TAG_REQUEST_LIST_CATALOG) {
+        if (_catalog.result.list.count>0) {
+            _isCatalog = YES;
+            [_tableView reloadData];
+        }
+        else
+        {
+            _isCatalog = NO;
+            [_tableView reloadData];
+        }
     }
 }
 
@@ -1302,6 +1375,7 @@
         [secureStorage setKeychainWithValue:departmentID withKey:LAST_CATEGORY_VALUE];
         [secureStorage setKeychainWithValue:departmentName withKey:LAST_CATEGORY_NAME];
     }
+    [_networkManagerCatalog doRequest];
 }
 
 #pragma mark - Product Edit Image Delegate
@@ -1589,20 +1663,38 @@
     }
     else if (textField == _productNameTextField) {
 #define PRODUCT_NAME_CHARACTER_LIMIT 70
+        [self performSelector:@selector(requestCatalog) withObject:nil afterDelay:1.0f];
         return textField.text.length + (string.length - range.length) <= PRODUCT_NAME_CHARACTER_LIMIT;
     }
     else
         return YES;
 }
 
+-(void)requestCatalog
+{
+    [_networkManagerCatalog doRequest];
+}
 
-#pragma mark - Product Edit Detail Delegate 
+
+#pragma mark - Product Edit Detail Delegate
 -(void)ProductEditDetailViewController:(ProductAddEditDetailViewController *)cell withUserInfo:(NSDictionary *)userInfo
 {
     NSDictionary *updatedDataInput = [userInfo objectForKey:DATA_INPUT_KEY];
     
     [_dataInput removeAllObjects];
     [_dataInput addEntriesFromDictionary:updatedDataInput];
+}
+
+-(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
+{
+    for (CatalogList *catalog in _catalog.result.list) {
+        if ([catalog.catalog_name isEqualToString:object]) {
+            _selectedCatalog = catalog;
+        }
+    }
+    [_dataInput setObject:_selectedCatalog?:[CatalogList new] forKey:DATA_CATALOG_KEY];    
+    
+    [_tableView reloadData];
 }
 
 -(void)DidEditReturnableNote
@@ -2062,5 +2154,37 @@
     return objectmanager;
 }
 
+-(RKObjectManager*)objectManagerCatalog
+{
+    RKObjectManager *objectManager =[RKObjectManager sharedClient];
+    
+    RKObjectMapping *catalogMapping = [RKObjectMapping mappingForClass:[CatalogAddProduct class]];
+    [catalogMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                         kTKPD_APISERVERPROCESSTIMEKEY:
+                                                             kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[CatalogResult class]];
+    
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[CatalogList class]];
+    [listMapping addAttributeMappingsFromArray:@[@"catalog_description",
+                                                      @"catalog_id",
+                                                      @"catalog_name",
+                                                      @"catalog_price",
+                                                      @"catalog_image"
+                                                      ]];
+    
+    [catalogMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listCatalog = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:listMapping];
+    [resultMapping addPropertyMapping:listCatalog];
+    
+    // Response Descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:catalogMapping method:RKRequestMethodGET pathPattern:kTKDPDETAILCATALOG_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+
+    return objectManager;
+}
 
 @end

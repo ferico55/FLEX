@@ -27,6 +27,7 @@
 #import "MyShopNoteDetailViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "GAIDictionaryBuilder.h"
+#import "CatalogAddProduct.h"
 
 @interface ProductAddEditDetailViewController ()
 <
@@ -775,6 +776,7 @@
     
     Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    CatalogList *catalog = [_dataInput objectForKey:DATA_CATALOG_KEY];
     
     NSString *action = ACTION_ADD_PRODUCT_VALIDATION;
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
@@ -814,6 +816,8 @@
     //    returnableProduct = 2; // not returnable
     //}
     
+    NSString *catalogID = catalog.catalog_id?:@"";
+    
     NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
     
     NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date]
@@ -846,6 +850,7 @@
                                       API_PRODUCT_NAME_KEY: productName,
                                       API_PRODUCT_PRICE_KEY: productPrice,
                                       API_PRODUCT_PRICE_CURRENCY_ID_KEY: productPriceCurrencyID,
+                                      @"product_catalog_id":catalogID,
                                       API_PRODUCT_WEIGHT_KEY: productWeight,
                                       API_PRODUCT_WEIGHT_UNIT_KEY: productWeightUnitID,
                                       API_PRODUCT_DEPARTMENT_ID_KEY: departmentID,

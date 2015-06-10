@@ -22,7 +22,8 @@ typedef enum
     BUTTON_PRODUCT_DEFAULT = 0,
     BUTTON_PRODUCT_PRODUCT_NAME = 0,
     BUTTON_PRODUCT_CATEGORY = 1,
-    BUTTON_PRODUCT_MIN_ORDER = 2,
+    BUTTON_PRODUCT_CATALOG = 2,
+    BUTTON_PRODUCT_MIN_ORDER = 3,
     
     BUTTON_PRODUCT_PRICE_CURRENCY = 0,
     BUTTON_PRODUCT_PRICE = 1,
@@ -111,6 +112,7 @@ typedef enum
 #define DATA_PRODUCT_DETAIL_KEY @"productdetail"
 #define DATA_SHOP_HAS_TERM_KEY @"data_shop_has_term"
 #define DATA_TYPE_ADD_EDIT_PRODUCT_KEY @"type"
+#define DATA_CATALOG_KEY @"data_catalog"
 
 #define API_SERVER_ID_KEY @"server_id"
 #define API_PRODUCT_WEIGHT_UNIT_KEY @"product_weight_unit"
