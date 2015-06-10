@@ -12,8 +12,13 @@
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
 #import "ProductFeedViewController.h"
+#import "SearchAutoCompleteViewController.h"
 
 #import "NotificationManager.h"
+
+#import "SearchAutoCompleteDomains.h"
+#import "SearchAutoCompleteObject.h"
+#import "SearchAutoCompleteCell.h"
 
 @interface SearchViewController ()
 <
@@ -37,6 +42,15 @@
     
     //Notification *_notification;
     NotificationManager *_notifManager;
+    SearchAutoCompleteViewController *_searchAutoCompleteController;
+    
+    __weak RKObjectManager *_objectManager;
+    __weak RKManagedObjectRequestOperation *_objectRequest;
+    NSInteger *_requestCount;
+    NSOperationQueue *_operationQueue;
+    
+    NSMutableArray *_catalogs;
+    NSMutableArray *_categories;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -49,6 +63,7 @@
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) UIImageView *notificationArrowImageView;
 @property (strong, nonatomic) NotificationViewController *notificationController;
+
 
 @end
 
@@ -69,6 +84,7 @@
 {
     [super viewDidLoad];
     
+    _operationQueue = [NSOperationQueue new];
     [self.navigationController.navigationBar setTranslucent:NO];
 
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
@@ -93,7 +109,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
     
-    [_searchbar becomeFirstResponder];
+    UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
+    [_table registerNib:cellNib forCellReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
+    
+//    [_searchbar becomeFirstResponder];
 }
 
 
@@ -212,38 +231,79 @@
 
 #pragma mark - Table View Data Source
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    if (_searchresultarray == nil || _searchresultarray.count == 0) {
-        return [_historysearch count];
-    } else {
-        return [_searchresultarray count];
-    }
+//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+//    
+//    if (_searchresultarray == nil || _searchresultarray.count == 0) {
+//        return [_historysearch count];
+//    } else {
+//        return [_searchresultarray count];
+//    }
+//}
+//
+//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    UITableViewCell* cell = nil;
+//    NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
+//    
+//    NSString *searchresult;
+//    if (_searchresultarray == nil || _searchresultarray.count == 0) {
+//        searchresult = [_historysearch objectAtIndex:indexPath.row];
+//    } else {
+//        searchresult = [_searchresultarray objectAtIndex:indexPath.row];
+//    }
+//    
+//    if (cell == nil) {
+//        
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+//        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+//    }
+//    if (_historysearch.count > indexPath.row) {
+//        cell.textLabel.text = searchresult;
+//        cell.textLabel.font = [UIFont fontWithName:@"GothamMedium" size:14.0f];
+//    }
+//	
+//	return cell;
+//}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return 2;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell* cell = nil;
-    NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
-    
-    NSString *searchresult;
-    if (_searchresultarray == nil || _searchresultarray.count == 0) {
-        searchresult = [_historysearch objectAtIndex:indexPath.row];
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if(section == 0) {
+        return @"Catalog";
     } else {
-        searchresult = [_searchresultarray objectAtIndex:indexPath.row];
+        return @"Kategori";
     }
     
-    if (cell == nil) {
-        
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+    if(section == 0) {
+        return _catalogs.count;
+    } else if(section == 1) {
+        return _categories.count;
     }
-    if (_historysearch.count > indexPath.row) {
-        cell.textLabel.text = searchresult;
-        cell.textLabel.font = [UIFont fontWithName:@"GothamMedium" size:14.0f];
+    
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    SearchAutoCompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchAutoCompleteCellIdentifier"];
+    
+    if(indexPath.section == 0) {
+        SearchAutoCompleteCatalog *catalog = _catalogs[indexPath.row];
+        [cell setViewModel:catalog.viewModel];
+    } else if(indexPath.section == 1) {
+        SearchAutoCompleteCategory *category = _categories[indexPath.row];
+        [cell setViewModel:category.viewModel];
     }
-	
-	return cell;
+
+
+    return cell;
 }
 
 #pragma mark - TableView Delegate
@@ -292,22 +352,30 @@
 #pragma mark - UISearchBar Delegate
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [_searchresultarray removeAllObjects];
-    if (![searchBar.text isEqualToString: @""]&&![searchBar.text isEqualToString:@" "]) {
-        _labelsearchfor.hidden = NO;
-        //_labelsearchfor.text = [NSString stringWithFormat:@"Search for '%@'", searchBar.text];
-        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
-        NSArray *historiesresult;
-        historiesresult = [_historysearch filteredArrayUsingPredicate:resultPredicate];
-        [_searchresultarray addObjectsFromArray:historiesresult];
-        [_table reloadData];
+//    [_searchresultarray removeAllObjects];
+//    if (![searchBar.text isEqualToString: @""]&&![searchBar.text isEqualToString:@" "]) {
+//        _labelsearchfor.hidden = NO;
+//        //_labelsearchfor.text = [NSString stringWithFormat:@"Search for '%@'", searchBar.text];
+//        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
+//        NSArray *historiesresult;
+//        historiesresult = [_historysearch filteredArrayUsingPredicate:resultPredicate];
+//        [_searchresultarray addObjectsFromArray:historiesresult];
+//        [_table reloadData];
+//    }
+//    else
+//    {
+//        [_searchresultarray removeAllObjects];
+//        [_table reloadData];
+//        _labelsearchfor.hidden = YES;
+//    }
+    
+    if([searchText isEqualToString:@""]) {
+        [_table setHidden:YES];
+    } else {
+        [self configureRestkit];
+        [self doRequest];
     }
-    else
-    {
-        [_searchresultarray removeAllObjects];
-        [_table reloadData];
-        _labelsearchfor.hidden = YES;
-    }
+
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -365,19 +433,24 @@
 {
     [_searchbar setText:@""];
     [_searchbar resignFirstResponder];
-    self.hidesBottomBarWhenPushed = YES;
-    self.navigationController.tabBarController.tabBar.hidden = NO;
+
 }
+
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
+    [searchBar resignFirstResponder];
+    [self deActivateSearchBar];
+    
     return YES;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
+    [self activateSearchBar];
+
     return YES;
 }
 
@@ -434,5 +507,84 @@
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:animated];
 }
+
+#pragma mark - Network
+- (void)configureRestkit {
+    NSString *urlString = [NSString stringWithFormat:@"http://ec2-52-74-246-185.ap-southeast-1.compute.amazonaws.com/"];
+    _objectManager = [RKObjectManager sharedClientUploadImage:urlString];
+    
+    RKObjectMapping *searchMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteObject class]];;
+    RKObjectMapping *domainsMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteDomains class]];
+    
+    RKObjectMapping *catalogMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteCatalog class]];
+    [catalogMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"image", @"catalogID"]];
+    
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteCategory class]];
+    [categoryMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"categoryID"]];
+    
+    RKRelationshipMapping *catalogRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog" toKeyPath:@"catalog" withMapping:catalogMapping];
+    RKRelationshipMapping *categoryRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"category" toKeyPath:@"category" withMapping:categoryMapping];
+    RKRelationshipMapping *domainsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"domains" toKeyPath:@"domains" withMapping:domainsMapping];
+    
+    
+    [domainsMapping addPropertyMapping:catalogRel];
+    [domainsMapping addPropertyMapping:categoryRel];
+    [searchMapping addPropertyMapping:domainsRel];
+    
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:searchMapping
+                                                                                                  method:RKRequestMethodGET
+                                                                                             pathPattern:[NSString stringWithFormat:@"search/product/%@", _searchbar.text]
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)doRequest {
+    _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
+                                                                          method:RKRequestMethodGET
+                                                                            path:[NSString stringWithFormat:@"search/product/%@", _searchbar.text]
+                                                                      parameters:nil];
+    
+    [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSDictionary *result = ((RKMappingResult*)mappingResult).dictionary;
+        SearchAutoCompleteObject *search = [result objectForKey:@""];
+        
+        _catalogs = search.domains.catalog;
+        _categories = search.domains.category;
+        
+        [_table reloadData];
+        [_table setHidden:NO];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+
+    }];
+    
+    [_operationQueue addOperation:_objectRequest];
+    
+}
+
+#pragma mark - SearchBar Method 
+- (void)activateSearchBar {
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    
+    [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+        _searchbar.frame = (CGRect){.origin = {0, 0}, .size = _searchbar.frame.size};
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)deActivateSearchBar {
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    
+    [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+        _searchbar.frame = (CGRect){.origin = {0, 0}, .size = _searchbar.frame.size};
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 
 @end
