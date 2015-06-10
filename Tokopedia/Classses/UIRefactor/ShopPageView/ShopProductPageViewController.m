@@ -173,6 +173,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor redColor];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
     

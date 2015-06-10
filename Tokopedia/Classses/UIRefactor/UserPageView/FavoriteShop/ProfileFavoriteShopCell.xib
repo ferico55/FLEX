@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamMedium.ttf">
@@ -19,22 +19,48 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMJ-xp-oCg">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nx5-T4-FTa">
+                        <rect key="frame" x="8" y="9" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="3la-6w-nol"/>
+                            <constraint firstAttribute="height" constant="50" id="Qlq-aU-Ee0"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMJ-xp-oCg">
                         <rect key="frame" x="66" y="23" width="174" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="dH5-0E-K86"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_love_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="k2N-aq-yUJ">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_love_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="k2N-aq-yUJ">
                         <rect key="frame" x="282" y="24" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="Bsh-nx-nlI"/>
+                            <constraint firstAttribute="height" constant="20" id="rEI-fi-hhD"/>
+                        </constraints>
                     </imageView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Sxg-HD-u8r">
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Sxg-HD-u8r">
                         <rect key="frame" x="23" y="24" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="JDt-Xf-DZ3"/>
+                            <constraint firstAttribute="width" constant="20" id="mAV-ww-IwU"/>
+                        </constraints>
                     </activityIndicatorView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nx5-T4-FTa">
-                        <rect key="frame" x="8" y="9" width="50" height="50"/>
-                    </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="Sxg-HD-u8r" firstAttribute="top" secondItem="gpL-fE-sk9" secondAttribute="top" constant="24" id="6A4-le-al0"/>
+                    <constraint firstAttribute="trailing" secondItem="k2N-aq-yUJ" secondAttribute="trailing" constant="18" id="EJY-4i-l2d"/>
+                    <constraint firstItem="k2N-aq-yUJ" firstAttribute="leading" secondItem="TMJ-xp-oCg" secondAttribute="trailing" constant="42" id="GjX-ba-SHB"/>
+                    <constraint firstItem="nx5-T4-FTa" firstAttribute="top" secondItem="gpL-fE-sk9" secondAttribute="top" constant="9" id="HkP-iS-dVh"/>
+                    <constraint firstItem="TMJ-xp-oCg" firstAttribute="leading" secondItem="nx5-T4-FTa" secondAttribute="trailing" constant="8" id="RgB-jn-Rx2"/>
+                    <constraint firstItem="TMJ-xp-oCg" firstAttribute="top" secondItem="gpL-fE-sk9" secondAttribute="top" constant="23" id="Sbb-R2-6nm"/>
+                    <constraint firstItem="nx5-T4-FTa" firstAttribute="leading" secondItem="gpL-fE-sk9" secondAttribute="leading" constant="8" id="Uev-CH-1w8"/>
+                    <constraint firstItem="Sxg-HD-u8r" firstAttribute="leading" secondItem="gpL-fE-sk9" secondAttribute="leading" constant="23" id="b7E-Pp-uiH"/>
+                    <constraint firstAttribute="centerY" secondItem="k2N-aq-yUJ" secondAttribute="centerY" id="oZK-P6-Tz7"/>
+                </constraints>
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>

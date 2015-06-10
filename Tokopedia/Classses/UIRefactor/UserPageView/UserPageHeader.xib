@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -26,26 +26,33 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="205"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="nZg-u9-ck3">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nZg-u9-ck3">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="205"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_profile_picture.jpeg" id="JiC-f4-WZ6">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_profile_picture.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="JiC-f4-WZ6">
                             <rect key="frame" x="125" y="25" width="70" height="70"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="W8C-Ld-kzM"/>
+                                <constraint firstAttribute="height" constant="70" id="rAe-oK-2J0"/>
+                            </constraints>
                         </imageView>
-                        <view tag="18" contentMode="scaleToFill" id="x2A-bO-C2I" userLabel="ViewSelf">
+                        <view tag="18" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x2A-bO-C2I" userLabel="ViewSelf">
                             <rect key="frame" x="0.0" y="165" width="320" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" id="Qbl-bf-ass">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qbl-bf-ass">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="OjY-vM-lye"/>
+                                        <constraint firstAttribute="height" constant="1" id="ZyZ-Qn-oXd"/>
+                                    </constraints>
                                 </view>
-                                <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WLb-0H-vcy">
+                                <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WLb-0H-vcy">
                                     <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="160" id="2vG-uM-H9h"/>
+                                        <constraint firstAttribute="height" constant="40" id="Fti-vq-oRD"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                     <state key="normal" title="Info Profil">
                                         <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -55,14 +62,18 @@
                                         <action selector="tap:" destination="-2" eventType="touchUpInside" id="bYP-HO-RT1"/>
                                     </connections>
                                 </button>
-                                <view hidden="YES" tag="19" contentMode="scaleToFill" id="eer-od-Wff" userLabel="InfoGreen">
+                                <view hidden="YES" tag="19" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eer-od-Wff" userLabel="InfoGreen">
                                     <rect key="frame" x="0.0" y="37" width="160" height="3"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="3" id="mAM-U9-TIP"/>
+                                    </constraints>
                                 </view>
-                                <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nZE-Jm-b9m">
+                                <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZE-Jm-b9m">
                                     <rect key="frame" x="160" y="0.0" width="160" height="40"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="160" id="T9f-c9-fAq"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                     <state key="normal" title="Toko Favoritku">
                                         <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -72,37 +83,91 @@
                                         <action selector="tap:" destination="-2" eventType="touchUpInside" id="qan-Ct-Ie3"/>
                                     </connections>
                                 </button>
-                                <view hidden="YES" tag="20" contentMode="scaleToFill" id="B7W-qM-GHw" userLabel="TokoGreen">
+                                <view hidden="YES" tag="20" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B7W-qM-GHw" userLabel="TokoGreen">
                                     <rect key="frame" x="160" y="37" width="160" height="3"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="3" id="InW-D2-7Pq"/>
+                                    </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" id="Lzy-ml-JsX">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lzy-ml-JsX">
                                     <rect key="frame" x="0.0" y="39" width="320" height="1"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="In9-fE-7Qz"/>
+                                        <constraint firstAttribute="height" constant="1" id="dsS-Cc-Lja"/>
+                                    </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" id="CWr-1b-A1Q">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CWr-1b-A1Q">
                                     <rect key="frame" x="160" y="10" width="1" height="20"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="PdS-MV-0wy"/>
+                                        <constraint firstAttribute="width" constant="1" id="mra-oX-9Es"/>
+                                    </constraints>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="eer-od-Wff" firstAttribute="leading" secondItem="x2A-bO-C2I" secondAttribute="leading" id="03R-7p-4K2"/>
+                                <constraint firstItem="eer-od-Wff" firstAttribute="top" secondItem="WLb-0H-vcy" secondAttribute="bottom" constant="-3" id="2G6-hc-8qA"/>
+                                <constraint firstAttribute="height" constant="40" id="46c-bq-K2C"/>
+                                <constraint firstItem="CWr-1b-A1Q" firstAttribute="leading" secondItem="WLb-0H-vcy" secondAttribute="trailing" id="4vy-BP-5yL"/>
+                                <constraint firstItem="Qbl-bf-ass" firstAttribute="top" secondItem="x2A-bO-C2I" secondAttribute="top" id="8Zc-BM-fUm"/>
+                                <constraint firstItem="B7W-qM-GHw" firstAttribute="top" secondItem="nZE-Jm-b9m" secondAttribute="bottom" constant="-3" id="9AW-Wq-4O8"/>
+                                <constraint firstAttribute="centerY" secondItem="CWr-1b-A1Q" secondAttribute="centerY" id="AAs-PQ-Oeh"/>
+                                <constraint firstItem="nZE-Jm-b9m" firstAttribute="width" secondItem="B7W-qM-GHw" secondAttribute="width" id="EyV-Ou-1ks"/>
+                                <constraint firstAttribute="trailing" secondItem="Lzy-ml-JsX" secondAttribute="trailing" id="Ezy-Z3-zY5"/>
+                                <constraint firstItem="WLb-0H-vcy" firstAttribute="top" secondItem="Qbl-bf-ass" secondAttribute="bottom" constant="-1" id="Glk-J5-JCy"/>
+                                <constraint firstItem="nZE-Jm-b9m" firstAttribute="height" secondItem="WLb-0H-vcy" secondAttribute="height" id="IIj-Jb-P9Q"/>
+                                <constraint firstItem="Lzy-ml-JsX" firstAttribute="leading" secondItem="x2A-bO-C2I" secondAttribute="leading" id="Jrr-3N-keC"/>
+                                <constraint firstAttribute="centerX" secondItem="CWr-1b-A1Q" secondAttribute="centerX" id="LNf-Ja-I4H"/>
+                                <constraint firstItem="Qbl-bf-ass" firstAttribute="leading" secondItem="x2A-bO-C2I" secondAttribute="leading" id="LpD-4u-Phd"/>
+                                <constraint firstAttribute="trailing" secondItem="nZE-Jm-b9m" secondAttribute="trailing" id="N7o-6J-Moe"/>
+                                <constraint firstAttribute="bottom" secondItem="Lzy-ml-JsX" secondAttribute="bottom" id="NOB-DZ-KdE"/>
+                                <constraint firstItem="WLb-0H-vcy" firstAttribute="leading" secondItem="x2A-bO-C2I" secondAttribute="leading" id="PE7-0b-tqe"/>
+                                <constraint firstAttribute="trailing" secondItem="Qbl-bf-ass" secondAttribute="trailing" id="YQq-Xl-dSx"/>
+                                <constraint firstAttribute="bottom" secondItem="eer-od-Wff" secondAttribute="bottom" id="eg3-QJ-dTI"/>
+                                <constraint firstAttribute="bottom" secondItem="B7W-qM-GHw" secondAttribute="bottom" id="g58-nS-Tc4"/>
+                                <constraint firstItem="nZE-Jm-b9m" firstAttribute="top" secondItem="Qbl-bf-ass" secondAttribute="bottom" constant="-1" id="lAZ-32-fHc"/>
+                                <constraint firstItem="eer-od-Wff" firstAttribute="width" secondItem="WLb-0H-vcy" secondAttribute="width" id="mPm-uU-abB"/>
+                                <constraint firstAttribute="trailing" secondItem="B7W-qM-GHw" secondAttribute="trailing" id="oZU-tF-umq"/>
+                                <constraint firstItem="nZE-Jm-b9m" firstAttribute="width" secondItem="WLb-0H-vcy" secondAttribute="width" id="oq1-vL-xsu"/>
+                                <constraint firstItem="nZE-Jm-b9m" firstAttribute="leading" secondItem="CWr-1b-A1Q" secondAttribute="trailing" constant="-1" id="rxO-cE-rEc"/>
+                            </constraints>
                         </view>
-                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2rd-5a-AW8">
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2rd-5a-AW8">
                             <rect key="frame" x="10" y="117" width="300" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="oru-bD-qcM"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="sFw-zC-m2y"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="x2A-bO-C2I" secondAttribute="bottom" id="9un-v0-TQF"/>
+                        <constraint firstItem="2rd-5a-AW8" firstAttribute="top" secondItem="JiC-f4-WZ6" secondAttribute="bottom" constant="22" id="BJH-7O-COw"/>
+                        <constraint firstAttribute="centerX" secondItem="2rd-5a-AW8" secondAttribute="centerX" id="IWk-Xu-lTp"/>
+                        <constraint firstItem="x2A-bO-C2I" firstAttribute="leading" secondItem="nZg-u9-ck3" secondAttribute="leading" id="Zxr-wH-W56"/>
+                        <constraint firstItem="JiC-f4-WZ6" firstAttribute="top" secondItem="nZg-u9-ck3" secondAttribute="top" constant="25" id="aRT-r7-M0e"/>
+                        <constraint firstAttribute="trailing" secondItem="x2A-bO-C2I" secondAttribute="trailing" id="leN-1e-jw8"/>
+                        <constraint firstItem="x2A-bO-C2I" firstAttribute="top" secondItem="2rd-5a-AW8" secondAttribute="bottom" constant="27" id="nAf-kx-FhT"/>
+                        <constraint firstAttribute="centerX" secondItem="JiC-f4-WZ6" secondAttribute="centerX" id="r4W-YP-fg5"/>
+                        <constraint firstAttribute="height" constant="205" id="sJf-VJ-6wK"/>
+                    </constraints>
                 </view>
             </subviews>
+            <constraints>
+                <constraint firstItem="nZg-u9-ck3" firstAttribute="leading" secondItem="bKn-su-j17" secondAttribute="leading" id="52f-eE-sBT"/>
+                <constraint firstItem="nZg-u9-ck3" firstAttribute="top" secondItem="bKn-su-j17" secondAttribute="top" id="TRU-7g-5Jb"/>
+                <constraint firstAttribute="trailing" secondItem="nZg-u9-ck3" secondAttribute="trailing" id="axy-Ce-IwK"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-204" y="56"/>
+            <point key="canvasLocation" x="-204" y="55.5"/>
         </view>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>

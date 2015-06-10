@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -20,24 +20,41 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="346"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lg8-hH-4Gt">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lg8-hH-4Gt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hobiku" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="og0-66-aQc">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hobiku" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="og0-66-aQc">
                                 <rect key="frame" x="10" y="8" width="300" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="iCI-BS-Kkm"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDg-TD-amR">
-                                <rect key="frame" x="10" y="28" width="300" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDg-TD-amR">
+                                <rect key="frame" x="10" y="28" width="300" height="13"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="GDg-TD-amR" firstAttribute="top" secondItem="og0-66-aQc" secondAttribute="bottom" constant="-1" id="5Z7-S2-Fgw"/>
+                            <constraint firstAttribute="trailing" secondItem="GDg-TD-amR" secondAttribute="trailing" constant="10" id="Esl-2X-ghD"/>
+                            <constraint firstItem="og0-66-aQc" firstAttribute="leading" secondItem="Lg8-hH-4Gt" secondAttribute="leading" constant="10" id="Ief-hh-VQR"/>
+                            <constraint firstAttribute="trailing" secondItem="og0-66-aQc" secondAttribute="trailing" constant="10" id="RfN-K0-PkT"/>
+                            <constraint firstAttribute="height" constant="122" id="qaQ-pq-CSp"/>
+                            <constraint firstItem="GDg-TD-amR" firstAttribute="leading" secondItem="Lg8-hH-4Gt" secondAttribute="leading" constant="10" id="uhR-0g-8A2"/>
+                            <constraint firstItem="og0-66-aQc" firstAttribute="top" secondItem="Lg8-hH-4Gt" secondAttribute="top" constant="8" id="vLJ-cm-eMP"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="Lg8-hH-4Gt" firstAttribute="leading" secondItem="4jR-za-fuB" secondAttribute="leading" id="4Py-ti-Ams"/>
+                    <constraint firstItem="Lg8-hH-4Gt" firstAttribute="top" secondItem="4jR-za-fuB" secondAttribute="top" id="nK1-P7-ChK"/>
+                    <constraint firstAttribute="trailing" secondItem="Lg8-hH-4Gt" secondAttribute="trailing" id="xSX-OD-qdd"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="labelhobbies" destination="GDg-TD-amR" id="HCe-2m-0L4"/>
