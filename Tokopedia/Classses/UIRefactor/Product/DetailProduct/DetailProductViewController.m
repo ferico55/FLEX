@@ -2256,6 +2256,16 @@ UIAlertViewDelegate
         [_headerimages addObject:thumb];
     }
     
+    if(images.count == 0) {
+        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
+        thumb.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Icon_no_photo_transparan@2x" ofType:@"png"]];
+        thumb.contentMode = UIViewContentModeScaleAspectFit;
+        [_imagescrollview addSubview:thumb];
+        
+        [headerActivityIndicator removeFromSuperview];
+        [headerActivityIndicator stopAnimating];
+    }
+    
     _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = images.count;
     
@@ -2596,11 +2606,12 @@ UIAlertViewDelegate
     
     
     //    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
-    GalleryViewController *gallery = [GalleryViewController new];
-    gallery.canDownload = YES;
-    [gallery initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
-    
-    [self.navigationController presentViewController:gallery animated:YES completion:nil];
+    if(_headerimages.count > 0) {
+        GalleryViewController *gallery = [GalleryViewController new];
+        gallery.canDownload = YES;
+        [gallery initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+        [self.navigationController presentViewController:gallery animated:YES completion:nil];
+    }
 }
 
 - (void)tapShop {
