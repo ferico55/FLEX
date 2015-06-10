@@ -1794,7 +1794,7 @@
     NSString *productPriceCurrencyID = product.product_currency_id;
     NSString *productWeight = product.product_weight;
     NSString *productWeightUnitID = product.product_weight_unit;
-    NSString *departmentID = department.department_id;
+    NSInteger departmentID = [department.department_id integerValue];
     
     BOOL isPriceCurrencyRupiah = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH);
     BOOL isPriceCurrencyUSD = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD);
