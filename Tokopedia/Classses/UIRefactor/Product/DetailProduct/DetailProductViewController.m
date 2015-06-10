@@ -867,17 +867,17 @@ UIAlertViewDelegate
         {
             //            return 200;
             if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
             else
-                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
         }
     }
     else if(section == 1)
     {
         if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
-            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT] withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
         else
-            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
     }
     
     return 40;
@@ -1064,7 +1064,7 @@ UIAlertViewDelegate
         button.hidden = NO;
         [button setTitle:breadcrumb.department_name forState:UIControlStateNormal];
     }
-    if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE)
+    if ([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING)
         [cell.etalasebutton setTitle:@"-" forState:UIControlStateNormal];
     else
         [cell.etalasebutton setTitle:_product.result.product.product_etalase?:@"-" forState:UIControlStateNormal];
@@ -1779,11 +1779,10 @@ UIAlertViewDelegate
         }
         else if([_product.result.product.product_status intValue] == PRODUCT_STATE_PENDING) {
             lblTitleWarehouse.text = CStringTitleBanned;
-            lblDescWarehouse.text = CStringDescBanned;
-            [self initAttributeText:lblDescWarehouse withStrText:lblDescWarehouse.text withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
+            [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
             
-            float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:lblDescWarehouse.text];
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 3 + tempHeight);
+            float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 8 + tempHeight);
         }
         
         _table.tableHeaderView = _header;
@@ -1918,11 +1917,8 @@ UIAlertViewDelegate
                 }
                 
                 //Check is in warehouse
-                if([_product.result.product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE) {
-                    _buyButton.hidden = YES;
-                    if(_dinkButton.isHidden) {
-                        [self hiddenButtonBuyAndPromo];
-                    }
+                if([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING) {
+                    [self hiddenButtonBuyAndPromo];
                 }
             }
             
@@ -2073,11 +2069,11 @@ UIAlertViewDelegate
     
 }
 
-- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText
+- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment
 {
     if(strText == nil)  return 0.0f;
     UILabel *lblSize = [[UILabel alloc] init];
-    [self initAttributeText:lblSize withStrText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
+    [self initAttributeText:lblSize withStrText:strText withColor:color withFont:font withAlignment:textAlignment];
     lblSize.numberOfLines = 0;
     
     return [lblSize sizeThatFits:size].height;
@@ -2088,7 +2084,7 @@ UIAlertViewDelegate
 {
     if(strText == nil)  return CGRectZero;
     CGRect rectLblDesc = CGRectMake(15, originY, width, 9999);
-    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText];
+    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
     
     lblDescription = [[LabelMenu alloc] initWithFrame:rectLblDesc];
     lblDescription.backgroundColor = [UIColor clearColor];
