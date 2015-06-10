@@ -86,6 +86,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGRect frame = _headerView.frame;
+    frame.size.width = screenWidth;
+    _headerView.frame = frame;
+    
+    frame = _footerView.frame;
+    frame.size.width = screenWidth;
+    _footerView.frame = frame;
+    
     _operationQueue = [NSOperationQueue new];
     _generatehost = [GenerateHost new];
     
@@ -788,14 +799,14 @@
                              _keyboardPosition = [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
                              _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
                              _scrollviewContentSize.height += _keyboardSize.height;
-
-                             UIEdgeInsets inset = _messageTextView.contentInset;
-                             inset.bottom = _keyboardPosition.y - _headerView.frame.size.height +30;
-                             [_messageTextView setContentInset:inset];
                              
                              CGRect frame = _footerView.frame;
                              frame.origin.y = _keyboardPosition.y - _footerView.frame.size.height - _headerView.frame.size.height + 15;
                              _footerView.frame = frame;
+                             
+                             UIEdgeInsets inset = _messageTextView.contentInset;
+                             inset.bottom = _footerView.frame.origin.y;
+                             [_messageTextView setContentInset:inset];
                          }
                          completion:^(BOOL finished){
                          }];
