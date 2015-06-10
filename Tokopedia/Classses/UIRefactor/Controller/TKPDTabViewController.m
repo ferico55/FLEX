@@ -13,8 +13,11 @@
 @property (weak, nonatomic) IBOutlet UIView *menuView;
 @property (weak, nonatomic) IBOutlet UIView *menuContainerView;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *menuButton;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *menuButtonView;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *menuButtonCheckmark;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *menuContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *menuTopConstraint;
+@property NSInteger selectedMenuIndex;
+@property (strong, nonatomic) UIImage *arrowImage;
 
 @end
 
@@ -40,11 +43,26 @@
     // Show first child view controller
     [self valueChangedSegmentedControl:_segmentedControl];
     
-    [self setTitleViewAtIndex:0];
-    
-    self.menuContainerTopConstraint.constant = -self.menuContainerView.frame.size.height;
     self.menuView.hidden = YES;
+    self.menuView.alpha = 0;
+    self.menuTopConstraint.constant = 0 - self.menuContainerView.frame.size.height;
     
+    CGRect frame = self.menuContainerView.frame;
+    frame.origin.y = 0 - frame.size.height;
+    self.menuContainerView.frame = frame;
+    
+    UITapGestureRecognizer *backgroundTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                    action:@selector(navigationBarTap)];
+    backgroundTap.numberOfTapsRequired = 1;
+    self.menuView.userInteractionEnabled = YES;
+    [self.menuView addGestureRecognizer:backgroundTap];
+    
+    self.selectedMenuIndex = 0;
+    [self touchUpMenuButton:[self.menuButton objectAtIndex:_selectedMenuIndex]];
+    
+    [self setTitleViewAtIndex];
+    
+    [self configureMenu];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,6 +74,8 @@
     controller.view.frame = _containerView.bounds;
     [_containerView addSubview:controller.view];
     [controller didMoveToParentViewController:self];
+    
+    self.delegate = controller;    
 }
 
 - (IBAction)touchUpMenuButton:(UIButton *)sender {
@@ -66,53 +86,113 @@
             iconCheckmark.hidden = YES;
         }
     }
+    _selectedMenuIndex = sender.tag?:0;
+    [self setTitleViewAtIndex];
+    [self hideMenu];
+        
+    if ([self.delegate respondsToSelector:@selector(tabViewController:didTapButtonAtIndex:)]) {
+        [self.delegate tabViewController:self didTapButtonAtIndex:_selectedMenuIndex];
+    }
+    
 }
 
-- (void)setTitleViewAtIndex:(NSInteger)index
+- (void)setTitleViewAtIndex
 {
+    NSString *title = [self.menuTitles objectAtIndex:_selectedMenuIndex];
     
-    NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:1],
-                                 NSFontAttributeName            : [UIFont boldSystemFontOfSize:16],
-                                 };
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    NSString *title = [self.tabTitles objectAtIndex:index];
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:title
-                                                                               attributes:attributes];
+    CGSize calculateSize = [title sizeWithFont:button.titleLabel.font constrainedToSize:CGSizeMake(320, 9999) lineBreakMode:NSLineBreakByWordWrapping];
+    CGRect tempButtonRect = button.frame;
+    tempButtonRect.size.width = calculateSize.width;
+    button.frame = tempButtonRect;
+    [button addTarget:self action:@selector(navigationBarTap) forControlEvents:UIControlEventTouchUpInside];
+    button.titleLabel.font = [self.navigationController.navigationBar.titleTextAttributes objectForKey:NSFontAttributeName];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:@"Semua Layanan Pengguna" forState:UIControlStateNormal];
     
-    UIImage *arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
-    
-    CGRect rect = CGRectMake(0,0,10,7);
+    CGRect rect = CGRectMake(0,0,16,10);
     UIGraphicsBeginImageContext( rect.size );
-    [arrowImage drawInRect:rect];
-    arrowImage = UIGraphicsGetImageFromCurrentImageContext();
+    [self.arrowImage drawInRect:rect];
+    UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    [button setImage:arrowImage forState:UIControlStateNormal];
+    CGRect frame = CGRectMake(tempButtonRect.origin.x+tempButtonRect.size.width,
+                              (self.navigationController.navigationBar.bounds.size.height-8)/2.0f, 16, 10);
+    UIImageView *img = [[UIImageView alloc] initWithFrame:frame];
+    img.image = picture1;
     
-    
-    
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
-
-
-    button.frame = CGRectMake(0, 0, 70, 44);
-    [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-    button.tag = 11;
-    button.backgroundColor = [UIColor blackColor];
-    button.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:13.0f];
-    
-    self.navigationItem.titleView = button;
-    float test = [@"Semua Layanan Pengguna" sizeWithFont:button.titleLabel.font constrainedToSize:CGSizeMake(self.view.bounds.size.width, 44) lineBreakMode:NSLineBreakByWordWrapping].width;
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, test, 0, -45);
+    CGRect contentFrame = CGRectMake(0, 0, img.frame.origin.x+img.bounds.size.width,
+                                     self.navigationController.navigationBar.bounds.size.height);
+    UIView *viewContent = [[UIView alloc] initWithFrame:contentFrame];
+    [viewContent addSubview:img];
+    [viewContent addSubview:button];
+    self.navigationItem.titleView = viewContent;
+    viewContent.center = self.navigationController.navigationBar.center;
 }
 
-- (void)tapButton:(UIButton *)button
+- (void)navigationBarTap
 {
-    if ([self.delegate respondsToSelector:@selector(segmentController:didSelectSegmentAtIndex:)]) {
-        [self.delegate segmentController:_segmentedControl didSelectSegmentAtIndex:_segmentedControl.selectedSegmentIndex];
+    if (self.menuView.isHidden) {
+        [self showMenu];
+    } else {
+        [self hideMenu];
+    }
+}
+
+- (void)hideMenu
+{
+    self.arrowImage = [UIImage imageNamed:@"icon_arrow_white_down.png"];
+
+    [UIView animateWithDuration:0.15 animations:^{
+        self.menuTopConstraint.constant = 0 - self.menuContainerView.frame.size.height;
+        CGRect frame = self.menuContainerView.frame;
+        frame.origin.y = 0 - self.menuContainerView.frame.size.height;
+        self.menuContainerView.frame = frame;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.15 animations:^{
+            self.menuView.alpha = 0;
+        } completion:^(BOOL finished) {
+            self.menuView.hidden = YES;
+        }];
+    }];
+    
+    [self setTitleViewAtIndex];
+}
+
+- (void)showMenu
+{
+    self.arrowImage = [UIImage imageNamed:@"icon_arrow_white_up.png"];
+    
+    self.menuView.hidden = NO;
+    [UIView animateWithDuration:0.15 animations:^{
+        self.menuView.alpha = 1;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.15 animations:^{
+            self.menuTopConstraint.constant = 0;
+            CGRect frame = self.menuContainerView.frame;
+            frame.origin.y = 0;
+            self.menuContainerView.frame = frame;
+        }];
+    }];
+    
+    [self setTitleViewAtIndex];
+}
+
+- (void)configureMenu
+{
+    for (int i = 0; i < self.menuButton.count; i++) {
+        UIButton *button = [self.menuButton objectAtIndex:i];
+        UIView *menuButtonView = [self.menuButtonView objectAtIndex:i];
+        if (i < self.menuTitles.count) {
+            [button setTitle:[self.menuTitles objectAtIndex:i] forState:UIControlStateNormal];
+            [button setHidden:NO];
+            [menuButtonView setHidden:NO];
+        } else {
+            [button setHidden:YES];
+            [menuButtonView setHidden:YES];
+        }
     }
 }
 

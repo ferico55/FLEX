@@ -10,7 +10,7 @@
 
 @protocol TKPDTabViewDelegate <NSObject>
 
-- (void)segmentController:(UISegmentedControl *)segmentedController didSelectSegmentAtIndex:(NSInteger)index;
+- (void)tabViewController:(id)controller didTapButtonAtIndex:(NSInteger)index;
 
 @end
 
@@ -21,6 +21,7 @@
 
 @property (strong, nonatomic) NSArray *viewControllers;
 @property (strong, nonatomic) NSArray *tabTitles;
+@property (strong, nonatomic) NSArray *menuTitles;
 
 @property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;
 

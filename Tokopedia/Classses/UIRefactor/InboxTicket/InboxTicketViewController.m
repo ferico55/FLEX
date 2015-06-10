@@ -1,44 +1,48 @@
 //
-//  InboxCustomerServiceViewController.m
+//  InboxTicketViewController.m
 //  Tokopedia
 //
-//  Created by Feizal Badri Asmoro on 5/21/15.
+//  Created by Feizal Badri Asmoro on 6/8/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "InboxCustomerServiceViewController.h"
-#import "InboxCustomerServiceCell.h"
+#import "InboxTicketViewController.h"
+#import "InboxTicketCell.h"
 #import "TokopediaNetworkManager.h"
-#import "string_inbox_ticket.h"
 #import "InboxTicket.h"
 #import "InboxTicketList.h"
 #import "InboxTicketPaging.h"
 #import "InboxTicketUserInvolve.h"
+#import "string_inbox_ticket.h"
+#import "TKPDTabViewController.h"
 
-@interface InboxCustomerServiceViewController () <TokopediaNetworkManagerDelegate> {
+@interface InboxTicketViewController () <TokopediaNetworkManagerDelegate, TKPDTabViewDelegate> {
     TokopediaNetworkManager *_networkManager;
     NSMutableArray *_tickets;
     NSString *_uriNext;
     NSInteger _page;
+    NSString *_filter;
 }
 
 @end
 
-@implementation InboxCustomerServiceViewController
+@implementation InboxTicketViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.tableView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.contentInset = UIEdgeInsetsMake(5, 0, 15, 0);
-    
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 12, 0);
     
     _tickets = [NSMutableArray new];
     _uriNext = @"";
     _page = 1;
+    _filter = @"all";
+
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    [_networkManager doRequest];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,21 +56,63 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return _tickets.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 135;
+    return 124;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    InboxCustomerServiceCell *cell = (InboxCustomerServiceCell *)[tableView dequeueReusableCellWithIdentifier:@"InboxCustomerServiceCell"];
+    InboxTicketCell *cell = (InboxTicketCell *)[tableView dequeueReusableCellWithIdentifier:@"InboxCustomerServiceCell"];
     if (cell == nil) {
-        cell = [InboxCustomerServiceCell initCell];
+        cell = [InboxTicketCell initCell];
     }
+    
+    InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
+    if ([ticket.ticket_status isEqualToString:@"1"]) {
+        cell.statusLabel.text = @"   Dalam Proses   ";
+        cell.statusLabel.textColor = [UIColor whiteColor];
+        cell.statusLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
+                                                           green:87.0/255.0
+                                                            blue:34.0/255.0
+                                                           alpha:1];
+        cell.statusLabel.layer.cornerRadius = 2;
+    } else {
+        cell.statusLabel.text = @"   Ditutup   ";
+        cell.statusLabel.textColor = [UIColor whiteColor];
+        cell.statusLabel.backgroundColor = [UIColor colorWithRed:97.0/255.0
+                                                           green:97.0/255.0
+                                                            blue:97.0/255.0
+                                                           alpha:1];
+        cell.statusLabel.layer.cornerRadius = 2;
+    }
+    
+    NSInteger index = ticket.ticket_update_time_fmt.length;
+    cell.dateLabel.text = [ticket.ticket_update_time_fmt substringToIndex:index-7];
+    
+    cell.titleLabel.text = ticket.ticket_title;
+    if ([ticket.ticket_read_status isEqualToString:@"1"]) {
+        cell.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
+    }
+    
+    [cell.ticketTotalMessageButton setTitle:ticket.ticket_total_message forState:UIControlStateNormal];
+    
+    cell.userInvolvedNameLabel.text = [[ticket.ticket_user_involve valueForKey:@"description"] componentsJoinedByString:@", "];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            [_networkManager doRequest];
+        }
+    }
 }
 
 #pragma mark - Tokopedia network manager
@@ -74,15 +120,17 @@
 - (NSDictionary *)getParameter:(int)tag
 {
     NSString *status = @"";
-    if (_inboxCustomerServiceType == InboxCustomerServiceTypeInProcess) {
+    if (self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess) {
         status = @"1";
-    } else if (_inboxCustomerServiceType == InboxCustomerServiceTypeClosed) {
+    } else if (self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed) {
         status = @"2";
     }
     
     NSDictionary *dictionary = @{
                                  API_ACTION_KEY : API_GET_INBOX_TICKET,
                                  API_STATUS_KEY : status,
+                                 API_FILTER_KEY : _filter,
+                                 API_PAGE_KEY   : @(_page),
                                  };
     return dictionary;
 }
@@ -172,22 +220,57 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [indicator startAnimating];
+    
+    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
+    UIView *loadingView = [[UIView alloc] initWithFrame:frame];
+    [loadingView addSubview:indicator];
+    
+    indicator.center = loadingView.center;
+    
+    self.tableView.tableFooterView = loadingView;
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
     InboxTicket *inboxTicket = [mappingResult.dictionary objectForKey:@""];
     [_tickets addObjectsFromArray: inboxTicket.result.list];
     
-    if (_tickets.count >0) {
+    if (_tickets.count > 0) {
         _uriNext =  inboxTicket.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_uriNext] integerValue];
+        self.tableView.tableFooterView = nil;
+    } else {
+        CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+        NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+        self.tableView.tableFooterView = noResultView;
     }
     
     [self.tableView reloadData];
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
+}
 
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+}
+
+#pragma mark - TKPDTabView delegate
+
+- (void)tabViewController:(id)controller didTapButtonAtIndex:(NSInteger)index
+{
+    if (index == 1) {
+        _filter = @"unread";
+    } else {
+        _filter = @"all";
+    }
+
+    _page = 1;
+
+    [_tickets removeAllObjects];
+    [self.tableView reloadData];
+
+    [_networkManager doRequest];
 }
 
 @end
