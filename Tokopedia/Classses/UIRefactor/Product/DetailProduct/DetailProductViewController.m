@@ -2257,8 +2257,8 @@ UIAlertViewDelegate
     }
     
     if(images.count == 0) {
-        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
-        thumb.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Icon_no_photo_transparan@2x" ofType:@"png"]];
+        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake((_imagescrollview.bounds.size.width-100)/2.0f, (_imagescrollview.bounds.size.height-100)/2.0f, 100, 100)];
+        thumb.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_no_photo" ofType:@"png"]];
         thumb.contentMode = UIViewContentModeScaleAspectFit;
         [_imagescrollview addSubview:thumb];
         

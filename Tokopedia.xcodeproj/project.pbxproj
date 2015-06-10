@@ -488,6 +488,7 @@
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		85D12B341B1C4668001B9272 /* DetailProductInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85D12B331B1C4668001B9272 /* DetailProductInfoCell.xib */; };
+		85E36BCE1B284C0C005997EF /* icon_no_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E36BCD1B284C0C005997EF /* icon_no_photo.png */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -1947,6 +1948,7 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		85D12B331B1C4668001B9272 /* DetailProductInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductInfoCell.xib; sourceTree = "<group>"; };
+		85E36BCD1B284C0C005997EF /* icon_no_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_no_photo.png; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -3842,6 +3844,7 @@
 				7A1D2C8C1B235E54002F9341 /* icon_move_etalase@2x.png */,
 				7A1D2C8D1B235E54002F9341 /* icon_move_gudang.png */,
 				7A1D2C8E1B235E54002F9341 /* icon_move_gudang@2x.png */,
+				85E36BCD1B284C0C005997EF /* icon_no_photo.png */,
 				7A1D2C8F1B235E54002F9341 /* icon_nav_arrow_down.png */,
 				7A1D2C901B235E54002F9341 /* icon_nav_arrow_down@2x.png */,
 				7A1D2C911B235E54002F9341 /* icon_nav_arrow_up.png */,
@@ -8463,6 +8466,7 @@
 				7A1D2EC51B235E55002F9341 /* icon_triangle_up_white.png in Resources */,
 				FC7643571B15E2830034A8F1 /* SettingBankNameCell.xib in Resources */,
 				FC7642F91B15E2830034A8F1 /* ProductEditImageViewController.xib in Resources */,
+				85E36BCE1B284C0C005997EF /* icon_no_photo.png in Resources */,
 				FC7642A51B15E2830034A8F1 /* ResolutionCenterInputViewController.xib in Resources */,
 				7A1D2F471B235E55002F9341 /* icon_signin_active.png in Resources */,
 				7A1D2DD61B235E55002F9341 /* icon_arrow_up@2x.png in Resources */,
