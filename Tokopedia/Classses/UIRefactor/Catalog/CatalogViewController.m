@@ -199,7 +199,9 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    CatalogSectionHeaderView *view = [CatalogSectionHeaderView new];
+    NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView" owner:nil options:0];
+    CatalogSectionHeaderView *view = [tempArr objectAtIndex:0];
+    
     view.titleLabel.text = [_specificationTitles objectAtIndex:section];
     return view;
 }
