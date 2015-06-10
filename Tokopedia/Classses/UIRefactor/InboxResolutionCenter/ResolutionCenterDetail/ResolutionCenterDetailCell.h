@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ConversationViewModel.h"
 
 #define RESOLUTION_CENTER_DETAIL_CELL_IDENTIFIER @"ResolutionCenterDetailCellIdentifier"
 
@@ -46,9 +47,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageConstraintHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *oneButtonConstraintHeight;
 
-+(id)newCell;
--(void)hideAllViews;
-
-
++ (id)newCell;
+- (void)hideAllViews;
+- (void)setViewModel:(ConversationViewModel *)viewModel;
 
 @end

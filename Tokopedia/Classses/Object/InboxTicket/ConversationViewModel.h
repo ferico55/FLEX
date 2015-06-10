@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) NSString *userName;
 @property (strong, nonatomic) NSString *userProfilePicture;
-@property (strong, nonatomic) NSString *userStatus;
+@property (strong, nonatomic) NSString *conversationOwner;
 @property (strong, nonatomic) NSString *conversationMessage;
 @property (strong, nonatomic) NSArray *conversationPhotos;
 

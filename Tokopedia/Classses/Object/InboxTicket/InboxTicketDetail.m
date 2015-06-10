@@ -13,6 +13,14 @@
 - (ConversationViewModel *)viewModel {
     if (_viewModel == nil) {
         ConversationViewModel *viewModel = [ConversationViewModel new];
+        viewModel.userName = _ticket_detail_user_name;
+        viewModel.userProfilePicture = _ticket_detail_user_image;
+        viewModel.conversationMessage = _ticket_detail_message;
+        if (_ticket_detail_is_cs) {
+            viewModel.conversationOwner = @"Administrator";
+        } else {
+            viewModel.conversationOwner = @"Pengguna";
+        }
     }
     return _viewModel;
 }

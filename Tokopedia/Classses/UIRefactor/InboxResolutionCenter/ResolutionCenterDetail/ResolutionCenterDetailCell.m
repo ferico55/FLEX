@@ -122,4 +122,25 @@
     self.markLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.markLabel.frame);
 }
 
+- (void)setViewModel:(ConversationViewModel *)viewModel {
+    self.buyerNameLabel.text = viewModel.userName;
+
+    NSURL *url = [NSURL URLWithString:viewModel.userProfilePicture];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    UIImage *buyerDefaultImage = [UIImage imageNamed:@"icon_profile_picture.jpeg"];
+    
+    [self.buyerProfileImageView setImageWithURLRequest:request
+                                      placeholderImage:buyerDefaultImage
+                                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [self.buyerProfileImageView setImage:image];
+    } failure:nil];
+    
+    self.markLabel.text = viewModel.conversationMessage;
+}
+
 @end

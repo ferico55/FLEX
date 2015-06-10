@@ -34,41 +34,79 @@
                     <view tag="15" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HU8-BV-kCh" userLabel="User View">
                         <rect key="frame" x="10" y="5" width="300" height="62"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_profile_picture.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="ul6-rf-nr2">
-                                <rect key="frame" x="10" y="10" width="44" height="44"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aiL-Ab-rOE" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="UgJ-hv-HGH"/>
+                                </constraints>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_profile_picture.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="ul6-rf-nr2">
+                                <rect key="frame" x="10" y="9" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="2aq-5x-WoK"/>
+                                    <constraint firstAttribute="height" constant="44" id="naq-k8-KxL"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kf3-Hr-fSO">
-                                <rect key="frame" x="62" y="34" width="140" height="17"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
-                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4xe-3J-8jl">
-                                <rect key="frame" x="62" y="13" width="223" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4xe-3J-8jl">
+                                <rect key="frame" x="62" y="13" width="140" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="4Lz-bS-LVh"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                 <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wbg-nK-3fN" userLabel="Horizontal Border">
-                                <rect key="frame" x="0.0" y="61" width="300" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aiL-Ab-rOE" userLabel="Horizontal Border">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pembeli" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nWc-fE-O2J">
-                                <rect key="frame" x="210" y="22" width="80" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kf3-Hr-fSO">
+                                <rect key="frame" x="62" y="34" width="140" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="dyj-dR-2ZK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pembeli" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nWc-fE-O2J">
+                                <rect key="frame" x="210" y="21" width="80" height="20"/>
                                 <color key="backgroundColor" red="1" green="0.56862745100000001" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="ho0-lv-yJE"/>
+                                    <constraint firstAttribute="width" constant="80" id="sFJ-8o-qd0"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="10"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wbg-nK-3fN" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="61" width="300" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="U5N-LV-WYQ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="Wbg-nK-3fN" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" id="0LE-zM-YVX"/>
+                            <constraint firstItem="Kf3-Hr-fSO" firstAttribute="top" secondItem="4xe-3J-8jl" secondAttribute="bottom" id="4XG-5R-pN9"/>
+                            <constraint firstItem="Wbg-nK-3fN" firstAttribute="top" secondItem="ul6-rf-nr2" secondAttribute="bottom" constant="8" id="AM2-6y-Gsq"/>
+                            <constraint firstAttribute="bottom" secondItem="Wbg-nK-3fN" secondAttribute="bottom" id="ChO-dZ-KGY"/>
+                            <constraint firstItem="ul6-rf-nr2" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" constant="10" id="J44-E2-OtT"/>
+                            <constraint firstItem="ul6-rf-nr2" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="8" id="P3J-iN-FHu"/>
+                            <constraint firstItem="aiL-Ab-rOE" firstAttribute="top" secondItem="HU8-BV-kCh" secondAttribute="top" id="Rym-aq-boC"/>
+                            <constraint firstItem="4xe-3J-8jl" firstAttribute="leading" secondItem="ul6-rf-nr2" secondAttribute="trailing" constant="8" id="StB-kf-7qx"/>
+                            <constraint firstAttribute="trailing" secondItem="nWc-fE-O2J" secondAttribute="trailing" constant="10" id="cki-Ck-8NN"/>
                             <constraint firstAttribute="height" constant="62" id="daO-xt-WI4"/>
+                            <constraint firstItem="nWc-fE-O2J" firstAttribute="leading" secondItem="Kf3-Hr-fSO" secondAttribute="trailing" constant="8" id="eQ5-Ki-Cgz"/>
+                            <constraint firstItem="Kf3-Hr-fSO" firstAttribute="leading" secondItem="ul6-rf-nr2" secondAttribute="trailing" constant="8" id="foY-5w-abV"/>
+                            <constraint firstItem="nWc-fE-O2J" firstAttribute="leading" secondItem="4xe-3J-8jl" secondAttribute="trailing" constant="8" id="lbJ-w1-toV"/>
+                            <constraint firstAttribute="trailing" secondItem="aiL-Ab-rOE" secondAttribute="trailing" id="oJR-MX-ZHp"/>
+                            <constraint firstItem="4xe-3J-8jl" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="12" id="uly-GD-pMc"/>
+                            <constraint firstAttribute="trailing" secondItem="Wbg-nK-3fN" secondAttribute="trailing" id="w5S-Fa-0Kp"/>
+                            <constraint firstItem="Wbg-nK-3fN" firstAttribute="top" secondItem="nWc-fE-O2J" secondAttribute="bottom" constant="20" id="xLs-kz-mgy"/>
+                            <constraint firstItem="aiL-Ab-rOE" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" id="xbi-UP-eld"/>
+                            <constraint firstItem="nWc-fE-O2J" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="20" id="xqF-R5-zTm"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="1zP-Cu-oOw" appends="YES" id="oce-Vm-ngL"/>
