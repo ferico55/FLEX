@@ -81,7 +81,7 @@
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
-    CGFloat cellWidth = screenWidth/3-1;
+    CGFloat cellWidth = screenWidth/3-0.75;
     return CGSizeMake(cellWidth, cellWidth*64/53);
 }
 
