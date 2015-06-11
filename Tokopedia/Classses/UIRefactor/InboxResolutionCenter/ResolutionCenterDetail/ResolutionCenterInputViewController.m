@@ -782,13 +782,6 @@
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        _scrollviewContentSize = [_messageTextView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_messageTextView setContentSize:_scrollviewContentSize];
-    }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
                             options: UIViewAnimationOptionCurveEaseOut
@@ -811,27 +804,32 @@
                          completion:^(BOOL finished){
                          }];
         
-    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {
     NSDictionary* info = [aNotification userInfo];
-    CGRect kbFrame = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    
-    UIEdgeInsets inset = _messageTextView.contentInset;
-    inset.bottom = 0;
-    [_messageTextView setContentInset:inset];
+    CGRect kbFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
+                         if (kbFrame.origin.y>self.view.frame.size.height) {
+                             
+                         }
                          CGRect frame = _footerView.frame;
-                         frame.origin.y = kbFrame.origin.y + _footerView.frame.size.height + _headerView.frame.size.height - 15;
-                         _footerView.frame = frame;
+                         frame.origin.y = self.view.frame.size.height - _footerView.frame.size.height;
+                         if (frame.origin.y<self.view.frame.size.height) {
+                             _footerView.frame = frame;
+                         }
                      }
                      completion:^(BOOL finished){
                      }];
+    
+    UIEdgeInsets inset = _messageTextView.contentInset;
+    inset.bottom = 0;
+    [_messageTextView setContentInset:inset];
+
     
 }
 

@@ -40,6 +40,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = _readOption.frame;
+    frame.size.height = screenRect.size.height;
+    frame.size.width = screenRect.size.width;
+    _readOption.frame = frame;
+    
     _checkListImageViews = [NSArray sortViewsWithTagInArray:_checkListImageViews];
     _filterButtons = [NSArray sortViewsWithTagInArray:_filterButtons];
     
