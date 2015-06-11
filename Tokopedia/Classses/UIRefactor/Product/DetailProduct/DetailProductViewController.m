@@ -2331,6 +2331,7 @@ UIAlertViewDelegate
         [v setFrame:CGRectMake(x, 0, widthOtherProductView, (widthOtherProductView+(widthOtherProductView/2.0f)))];
         
         x += 10 + v.bounds.size.width;
+        x += (i%2==1&&i<(_otherProductObj.count-1)? 10 : 0);
         v.delegate = self;
         v.index = i;
         [v.act startAnimating];
