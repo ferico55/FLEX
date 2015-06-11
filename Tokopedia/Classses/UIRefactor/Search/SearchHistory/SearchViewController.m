@@ -51,6 +51,7 @@
     
     NSMutableArray *_catalogs;
     NSMutableArray *_categories;
+    NSMutableDictionary *_domains;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -93,10 +94,12 @@
     
     _historysearch =[NSMutableArray new];
     _searchresultarray = [NSMutableArray new];
+    _domains = [NSMutableDictionary new];
     
     _searchbar.delegate = self;
     
     _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _table.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
 
     _filter = @"search_product";
     
@@ -111,8 +114,7 @@
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
-    
-//    [_searchbar becomeFirstResponder];
+
 }
 
 
@@ -266,14 +268,15 @@
 //}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if(section == 0) {
-        return @"Catalog";
-    } else {
+    if(section == 0 && _searchresultarray.count > 0) {
+        return @"History";
+    } else if(section == 1 && _catalogs.count > 0) {
+        return @"Katalog";
+    } else if(section == 2 && _categories.count > 0) {
         return @"Kategori";
     }
     
@@ -283,25 +286,33 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if(section == 0) {
-        return _catalogs.count;
+        return _searchresultarray.count;
     } else if(section == 1) {
+        return _catalogs.count;
+    } else if(section == 2) {
         return _categories.count;
     }
     
-    return 1;
+    return 0;
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     SearchAutoCompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     if(indexPath.section == 0) {
+        if(_searchresultarray.count > 0) {
+            NSString *searchResult = [_searchresultarray objectAtIndex:indexPath.row];
+            cell.searchTitle.text = searchResult;
+            cell.searchImage = nil;
+        }
+    } else if(indexPath.section == 1) {
         SearchAutoCompleteCatalog *catalog = _catalogs[indexPath.row];
         [cell setViewModel:catalog.viewModel];
-    } else if(indexPath.section == 1) {
+    } else if(indexPath.section == 2) {
         SearchAutoCompleteCategory *category = _categories[indexPath.row];
         [cell setViewModel:category.viewModel];
     }
-
 
     return cell;
 }
@@ -352,31 +363,29 @@
 #pragma mark - UISearchBar Delegate
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-//    [_searchresultarray removeAllObjects];
-//    if (![searchBar.text isEqualToString: @""]&&![searchBar.text isEqualToString:@" "]) {
-//        _labelsearchfor.hidden = NO;
-//        //_labelsearchfor.text = [NSString stringWithFormat:@"Search for '%@'", searchBar.text];
-//        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
-//        NSArray *historiesresult;
-//        historiesresult = [_historysearch filteredArrayUsingPredicate:resultPredicate];
-//        [_searchresultarray addObjectsFromArray:historiesresult];
-//        [_table reloadData];
-//    }
-//    else
-//    {
-//        [_searchresultarray removeAllObjects];
-//        [_table reloadData];
-//        _labelsearchfor.hidden = YES;
-//    }
+    [_searchresultarray removeAllObjects];
     
     if([searchText isEqualToString:@""]) {
         [_table setHidden:YES];
     } else {
+        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
+        NSArray *historiesresult;
+        historiesresult = [_historysearch filteredArrayUsingPredicate:resultPredicate];
+        NSInteger preferredNumber = 3;
+        if(historiesresult.count > preferredNumber) {
+            NSRange endRange = NSMakeRange((historiesresult.count-preferredNumber), preferredNumber);
+            NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
+            [_searchresultarray addObjectsFromArray:lastThree];
+        } else {
+            [_searchresultarray addObjectsFromArray:historiesresult];
+        }
+        
         [self configureRestkit];
         [self doRequest];
     }
 
 }
+
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
@@ -552,6 +561,22 @@
         
         _catalogs = search.domains.catalog;
         _categories = search.domains.category;
+        [_domains removeAllObjects];
+        
+        if(_searchresultarray.count > 0) {
+            NSDictionary *historyDictionary = @{@"History" : _searchresultarray};
+            [_domains addEntriesFromDictionary:historyDictionary];
+        }
+        
+        if(_catalogs.count > 0) {
+            NSDictionary *catalogDictionary = @{@"Katalog" : _catalogs};
+            [_domains addEntriesFromDictionary:catalogDictionary];
+        }
+            
+        if(_categories.count > 0) {
+            NSDictionary *categoriesDictionary = @{@"Kategori" : _categories};
+            [_domains addEntriesFromDictionary:categoriesDictionary];
+        }
         
         [_table reloadData];
         [_table setHidden:NO];
