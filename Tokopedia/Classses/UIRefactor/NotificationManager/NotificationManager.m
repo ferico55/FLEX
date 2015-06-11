@@ -122,7 +122,7 @@
     _notificationController.tableView.frame = notificationTableFrame;
     [_notificationController.tableView endUpdates];
     
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, _attachedViewController.view.frame.size.height, 0);
+    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, _attachedViewController.view.frame.size.height+40, 0);
     
     CGRect windowFrame = _notificationWindow.frame;
     windowFrame.size.height = 0;
