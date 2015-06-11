@@ -81,12 +81,8 @@
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
-    
-    if (screenWidth == 414) {
-        return CGSizeMake(103, 128);
-    }
-    else
-        return CGSizeMake(106, 128);
+    CGFloat cellWidth = screenWidth/3-1;
+    return CGSizeMake(cellWidth, cellWidth*64/53);
 }
 
 - (void)viewWillAppear:(BOOL)animated
