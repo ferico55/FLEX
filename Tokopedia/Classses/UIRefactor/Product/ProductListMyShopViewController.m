@@ -538,10 +538,6 @@
         
         if (status) {
             NSArray *list = _product.result.list;
-            if (_isrefreshview) {
-                [_list removeAllObjects];
-                _isrefreshview = NO;
-            }
             
             if (_page == 1) {
                 [_list removeAllObjects];
@@ -552,8 +548,6 @@
             
             if (_list.count>0) {
                 _isnodata = NO;
-                
-                [_table reloadData];
                 
                 _urinext =  _product.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
@@ -582,6 +576,7 @@
                 NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
                 _table.tableFooterView = noResultView;
             }
+            [_table reloadData];
         }
     }
 }
@@ -751,7 +746,7 @@
     _requestcount = 0;
     _page = 1;
     [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height+44) animated:YES];
     [_networkManager doRequest];
 }
 
@@ -780,13 +775,12 @@
 {
     [searchBar setShowsCancelButton:NO animated:YES];
     
-    [_list removeAllObjects];
-    [self.table reloadData];
-    
-    [_networkManager requestCancel];
-    
+    NSString *searchBarBefore = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
     [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
-    [self refreshView:nil];
+    
+    if (![searchBarBefore isEqualToString:searchBar.text]) {
+        [self refreshView:nil];
+    }
     
     return YES;
 }
