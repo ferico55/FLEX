@@ -88,6 +88,12 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    CGRect frame = _detailTransactionView.frame;
+    frame.size.width = screenWidth;
+    _detailTransactionView.frame = frame;
+    
     self.title = @"Detail Transaksi";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
