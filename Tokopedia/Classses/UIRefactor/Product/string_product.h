@@ -167,6 +167,7 @@ typedef enum
 #define API_MANAGE_PRODUCT_CATALOG_ID_KEY       @"catalog_id"
 #define API_MANAGE_PRODUCT_PICTURE_STATUS_KEY   @"picture_status"
 #define API_MANAGE_PRODUCT_CONDITION_KEY        @"condition"
+#define DATA_DEPARTMENT_KEY                     @"data_department"
 
 #define API_WHOLESALE_QUANTITY_MINIMUM_KEY @"qty_min_"
 #define API_WHOLESALE_QUANTITY_MAXIMUM_KEY @"qty_max_"
@@ -262,4 +263,6 @@ typedef enum
 #define CStringSuccessFavoriteShop @"Anda berhasil memfavoritkan toko ini!"
 #define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
 #define CStringSyaratDanKetentuan @"Syarat & Ketentuan"
+#define CStringTitleBanned @"Produk ini berada dalam pengawasan."
+#define CStringDescBanned @"Saat ini produk tidak dapat dipesan. Produk dapat dipesan kembali setelah pengawasan selesai."
 #endif

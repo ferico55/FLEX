@@ -172,7 +172,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
     
-
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -203,8 +202,32 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
     self.navigationController.navigationBar.translucent = NO;
+ 
+    NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
+    if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
+        self.cellType = [[data objectForKey:USER_LAYOUT_PREFERENCES] integerValue];
+        if (self.cellType == UITableViewCellTypeOneColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                                   forState:UIControlStateNormal];
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                                   forState:UIControlStateNormal];
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                                   forState:UIControlStateNormal];
+        }
+    } else {
+        self.cellType = UITableViewCellTypeTwoColumn;
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                               forState:UIControlStateNormal];
+    }
     
-    self.cellType = UITableViewCellTypeTwoColumn;
+    /// adjust refresh control
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -360,17 +383,19 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 - (GeneralProductCell *)tableView:(UITableView *)tableView twoColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GeneralProductCell* cell = nil;
-
     NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
     
-    cell = (GeneralProductCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+    GeneralProductCell *cell = (GeneralProductCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [GeneralProductCell newcell];
         cell.delegate = self;
     }
     
     [self reset:cell];
+    
+    for (UIView *viewCell in cell.viewcell) {
+        viewCell.hidden = YES;
+    }
     
     if (_product.count > indexPath.row) {
         /** Flexible view count **/
@@ -433,7 +458,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         cell = [GeneralPhotoProductCell initCell];
         cell.delegate = self;
     }
-    
     
     NSUInteger indexsegment = indexPath.row * 3;
     NSUInteger indexmax = indexsegment + 3;
@@ -525,10 +549,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
                             };
+                vc.selectedCategoryID = [[_detailfilter objectForKey:@"selected_id"] integerValue];
                 vc.delegate = self;
                 
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];                
+            }
+            break;
+            case 12 : {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
             default:
                 break;
@@ -614,24 +643,31 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 }
                 case 13:
                 {
+                    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+
                     if (self.cellType == UITableViewCellTypeOneColumn) {
                         self.cellType = UITableViewCellTypeTwoColumn;
-                        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                                forState:UIControlStateNormal];
                         
                     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
                         self.cellType = UITableViewCellTypeThreeColumn;
-                        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                                forState:UIControlStateNormal];
 
                     } else if (self.cellType == UITableViewCellTypeThreeColumn) {
                         self.cellType = UITableViewCellTypeOneColumn;
-                        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                                forState:UIControlStateNormal];
                         
                     }
+                    
                     self.table.contentOffset = CGPointMake(0, 0);
                     [self.table reloadData];
+                    
+                    NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
+                    [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
+
                     break;
                 }
                 default:
@@ -922,6 +958,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 
                 if (_page == 1) {
                     [_product removeAllObjects];
+                    [self.table setContentOffset:CGPointZero animated:YES];
                 }
                 
                 [_product addObjectsFromArray: _hotlistdetail.result.list];
@@ -1135,6 +1172,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _requestcount = 0;
     _isrefreshview = YES;
     
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    
     [self configureRestKit];
     [self request];
 }
@@ -1143,6 +1183,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
 {
     [_detailfilter addEntriesFromDictionary:userInfo];
+    [_detailfilter setObject:userInfo[@"department_id"] forKey:@"selected_id"];
     [self refreshView:nil];
 }
 

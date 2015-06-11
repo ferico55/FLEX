@@ -10,4 +10,9 @@
 
 @implementation CatalogInfo
 
+- (NSString *)catalog_description
+{
+    return [NSString convertHTML:[_catalog_description kv_decodeHTMLCharacterEntities]];
+}
+
 @end

@@ -38,6 +38,7 @@
 
 #import "TokopediaNetworkManager.h"
 #import "TKPDPhotoPicker.h"
+#import "LoadingView.h"
 
 @interface TxOrderConfirmedViewController ()
 <
@@ -50,7 +51,8 @@
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
     TKPDPhotoPickerDelegate,
-    TxOrderPaymentViewControllerDelegate
+    TxOrderPaymentViewControllerDelegate,
+    LoadingViewDelegate
 >
 {
     BOOL _isNodata;
@@ -87,6 +89,7 @@
     
     TokopediaNetworkManager *_networkManager;
     TKPDPhotoPicker *_photoPicker;
+    LoadingView *_loadingView;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -130,6 +133,9 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     [_networkManager doRequest];
+    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -151,10 +157,6 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
-    _tableView.delegate = nil;
-    _tableView.dataSource = nil;
-    _networkManager.delegate = nil;
 }
 
 -(void)refreshRequest
@@ -164,6 +166,7 @@
     [_refreshControl beginRefreshing];
     [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     [_networkManager doRequest];
+    [_act stopAnimating];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -444,27 +447,32 @@
 
 - (void)actionBeforeRequest:(int)tag {
 
-    _tableView.tableFooterView = nil;
-    [_act startAnimating];
+    if (!_refreshControl.isRefreshing) {
+        _tableView.tableFooterView = _footer;
+        [_act startAnimating];
+    }
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    [_act stopAnimating];
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     TxOrderConfirmed *order = [result objectForKey:@""];
     
     if(_refreshControl.isRefreshing) {
-        if (_page == 1) {
+        if (_page == 1||_page == 0) {
             _tableView.contentOffset = CGPointZero;
         }
         [_refreshControl endRefreshing];
     }
     
-    if (_page == 1) {
-        [_list removeAllObjects];
+    if (_page == 1||_page == 0) {
+        _list = [order.result.list mutableCopy];
         [_isExpandedCell removeAllObjects];
     }
-    
-    [_list addObjectsFromArray:order.result.list];
+    else
+    {
+        [_list addObjectsFromArray:order.result.list];
+    }
     
     if (_list.count >0) {
         _isNodata = NO;
@@ -488,11 +496,15 @@
         _tableView.contentOffset = CGPointZero;
     }
     [_refreshControl endRefreshing];
-    _tableView.tableFooterView = _act;
+    [_act stopAnimating];
+    _tableView.tableFooterView = _loadingView.view;
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+-(void)pressRetryButton
 {
+    [_act startAnimating];
+    _tableView.tableFooterView = _act;
+    [_networkManager doRequest];
 }
 
 #pragma mark - Request Detail
@@ -683,7 +695,7 @@
     _generateHost = generateHost;
 }
 
-- (void)failedGenerateHost
+- (void)failedGenerateHost:(NSArray *)errorMessages
 {
 
 }
@@ -747,37 +759,23 @@
     
     TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     
-    //contoh format URL :
-    //http://tkpdevel-pg.api/img/cache/100-square/temp/2015/2/16/20000/1176/1176-93b1b124-b5c1-11e4-8017-ebaa1cb33c34.jpg
-    
     NSString * paymentID = selectedConfirmation.payment_id?:@"";
     UploadImageResult *image = object;
 
     NSString *filePath = image.file_path?:@"";
     NSString *fileName = image.file_name?:@"";
     
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_UPLOAD_PROOF_BY_PAYMENT_ID,
+    NSDictionary* param = @{@"pic_obj":image.pic_obj?:@"",
+                            @"pic_src":image.pic_src?:@"",
+                            API_ACTION_KEY : @"upload_valid_proof_by_payment",
                             API_PAYMENT_ID_KEY: paymentID,
                             API_FILE_NAME_KEY: fileName,
                             API_FILE_PATH_KEY : filePath,
-                            kTKPDGENERATEDHOST_APISERVERIDKEY :_generateHost.result.generated_host.server_id
+                            kTKPDGENERATEDHOST_APISERVERIDKEY :_generateHost.result.generated_host.server_id,
+                            @"new_add" : @(1)
                             };
     
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _requestProof = [_objectManagerProof appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
-//#else
     _requestProof = [_objectManagerProof appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-//#endif
     
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
@@ -883,6 +881,8 @@
     requestImage.action = ACTION_UPLOAD_PROOF_IMAGE;
     requestImage.fieldName = API_FORM_FIELD_NAME_PROOF;
     requestImage.delegate = self;
+    TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+    requestImage.paymentID = selectedConfirmation.payment_id?:@"";
     [requestImage configureRestkitUploadPhoto];
     [requestImage requestActionUploadPhoto];
 }

@@ -745,27 +745,28 @@
     
     _namelabel.text = _profileinfo.result.user_info.user_name;
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_profileinfo.result.user_info.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    //request.URL = url;
-    
     UIImageView *thumb = _thumb;
     thumb = [UIImageView circleimageview:thumb];
     thumb.layer.borderColor = [UIColor whiteColor].CGColor;
     thumb.layer.borderWidth = 2;
     thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
-    
-    [_actpp startAnimating];
     __weak typeof(thumb) wthumb = thumb;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [wthumb setImage:image];
-        [_actpp stopAnimating];
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_actpp stopAnimating];
-    }];
     
-    if (!_isnodata) {
+    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+    NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];
+    [thumb setImageWithURLRequest:request
+                 placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+         //NSLOG(@"thumb: %@", thumb);
+         [wthumb setImage:image];
+    #pragma clang diagnostic pop
+     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+     }];
+    
+     if (!_isnodata) {
         id userinfo = _profileinfo;
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
     }

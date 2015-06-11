@@ -47,6 +47,10 @@
     UIActivityIndicatorView *_act;
     
     BOOL _isBeingPresented;
+    
+    NSDictionary *_selectedProvince;
+    NSDictionary *_selectedDistrict;
+    NSDictionary *_selectedCity;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
@@ -162,16 +166,13 @@
 {
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
-        Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
         switch (btn.tag) {
             case 10:
             {
                 //location province
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 AddressViewController *vc = [AddressViewController new];
                 vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEPROVINCEKEY),
-                            kTKPDLOCATION_DATAINDEXPATHKEY : indexpath,
-                            kTKPDLOCATION_DATAPROVINCEIDKEY : list.location_province_id?:@(0)
+                            DATA_SELECTED_LOCATION_KEY : _selectedProvince?:@{}
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -179,12 +180,10 @@
             }
             case 11:
             {
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDLOCATION_DATACITYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 AddressViewController *vc = [AddressViewController new];
-                vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEREGIONKEY),
-                            kTKPDLOCATION_DATAINDEXPATHKEY : indexpath,
-                            kTKPDLOCATION_DATACITYIDKEY : list.location_city_id?:@(0),
-                            kTKPDLOCATION_DATAPROVINCEIDKEY : [_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.location_province_id?:@(0)
+                vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEREGIONKEY), //city
+                            kTKPDLOCATION_DATAPROVINCEIDKEY : _selectedProvince[DATA_ID_KEY]?:@(0),
+                            DATA_SELECTED_LOCATION_KEY :_selectedCity?:@{}
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -192,13 +191,11 @@
             }
             case 12:
             {
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 AddressViewController *vc = [AddressViewController new];
                 vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEDISTICTKEY),
-                            kTKPDLOCATION_DATAINDEXPATHKEY : indexpath,
-                            kTKPDLOCATION_DATAPROVINCEIDKEY : [_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.location_province_id?:@(0),
-                            kTKPDLOCATION_DATACITYIDKEY : [_datainput objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.location_city_id?:@(0),
-                            kTKPDLOCATION_DATADISTRICTIDKEY : list.location_district_id?:@(0)
+                            kTKPDLOCATION_DATAPROVINCEIDKEY : _selectedProvince[DATA_ID_KEY]?:@(0),
+                            kTKPDLOCATION_DATACITYIDKEY : _selectedCity[DATA_ID_KEY]?:@(0),
+                            DATA_SELECTED_LOCATION_KEY : _selectedDistrict?:@{}
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -226,9 +223,9 @@
                 NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
                 NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
                 NSInteger postcode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
-                NSString *district = [_datainput objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]?:list.location_district_id;
-                NSString *city = [_datainput objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.location_city_id;
-                NSString *prov = [_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.location_province_id;
+                NSString *district = _selectedDistrict[DATA_ID_KEY]?:list.location_district_id;
+                NSString *city = _selectedCity[DATA_ID_KEY]?:list.location_city_id;
+                NSString *prov = _selectedProvince[DATA_ID_KEY]?:list.location_province_id;
                 NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
                 NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
                 //NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax;
@@ -348,11 +345,11 @@
     NSString *addressname = [userinfo objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
     NSString *address = [userinfo objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
     NSInteger postcode = [[userinfo objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
-    NSString *district = [userinfo objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]?:list.location_district_id;
-    NSString *city = [userinfo objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.location_city_id;
-    NSString *prov = [userinfo objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.location_province_id;
-    NSString *phone = [userinfo objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
-    NSString *email = [userinfo objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
+    NSString *district = _selectedDistrict[@"ID"]?:list.location_district_id?:@"";
+    NSString *city = _selectedCity[@"ID"]?:list.location_city_id?:@"";
+    NSString *prov = _selectedProvince[@"ID"]?:list.location_province_id?:@"";
+    NSString *phone = [userinfo objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone?:@"";
+    NSString *email = [userinfo objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email?:@"";
     NSString *fax = [userinfo objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax?:@"";
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
@@ -436,6 +433,12 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY
                                                                         object:nil
                                                                       userInfo:userinfo];
+                    
+                    Address *address = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+                    address.location_city_name = _selectedCity[DATA_NAME_KEY]?:@"";
+                    address.location_district_name = _selectedDistrict[DATA_NAME_KEY]?:@"";
+                    address.location_province_name = _selectedProvince[DATA_NAME_KEY]?:@"";
+                    [_delegate successEditAddress:address];
 
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
@@ -481,7 +484,11 @@
         [_buttoncity setTitle:list.location_city_name?:@"Pilih" forState:UIControlStateNormal];
         [_buttondistrict setTitle:list.location_district_name?:@"Pilih" forState:UIControlStateNormal];
         
-        if (list.location_province_id == 0) {
+        _selectedProvince =@{DATA_ID_KEY:list.location_province_id?:@"",DATA_NAME_KEY:list.location_province_name?:@""};
+        _selectedCity =@{DATA_ID_KEY:list.location_city_id?:@"",DATA_NAME_KEY:list.location_city_name?:@""};
+        _selectedDistrict =@{DATA_ID_KEY:list.location_district_id?:@"",DATA_NAME_KEY:list.location_district_name?:@""};
+        
+        if ([list.location_province_id isEqualToString:@""]||list.location_province_id == nil) {
             _buttondistrict.enabled = NO;
             _buttoncity.enabled = NO;
         }
@@ -491,68 +498,50 @@
 #pragma mark - Setting Address Delegate
 -(void)SettingAddressLocationView:(UIViewController *)vc withData:(NSDictionary *)data
 {
-    NSIndexPath *indexpath;
-    NSString *name;
-    NSInteger locationid;
+    NSString *name = data[DATA_SELECTED_LOCATION_KEY][DATA_NAME_KEY]?:@"";
+    NSInteger locationid = [data[DATA_SELECTED_LOCATION_KEY][DATA_ID_KEY] integerValue];
     
     switch ([[data objectForKey:kTKPDLOCATION_DATALOCATIONTYPEKEY] integerValue]) {
         case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
-            indexpath = [data objectForKey:kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            name = [data objectForKey:kTKPDLOCATION_DATALOCATIONNAMEKEY];
-            locationid = [[data objectForKey:kTKPDLOCATION_DATALOCATIONVALUEKEY] integerValue];
-            if (locationid != [[_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue]) {
+            if (locationid != [_selectedProvince[@"ID"] integerValue]) {
                 //reset city and district
-                [_datainput removeObjectForKey:kTKPDLOCATION_DATACITYINDEXPATHKEY];
-                [_datainput removeObjectForKey:kTKPDLOCATION_DATACITYIDKEY];
-                [_datainput removeObjectForKey:kTKPDSHOP_APICITYNAMEKEY];
-                
-                [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
-                [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTIDKEY];
-                [_datainput removeObjectForKey:kTKPDSHOP_APIDISTRICTNAMEKEY];
+                _selectedCity = @{};
+                _selectedDistrict = @{};
                 
                 [_buttoncity setTitle:@"Pilih" forState:UIControlStateNormal];
                 [_buttondistrict setTitle:@"Pilih" forState:UIControlStateNormal];
                 _buttondistrict.enabled = NO;
             }
             _buttoncity.enabled = YES;
-            [_datainput setObject:indexpath forKey:kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY];
+            
             [_buttonprovince setTitle:name forState:UIControlStateNormal];
             [_datainput setObject:name forKey:kTKPDSHOP_APIPROVINCENAMEKEY];
             [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATAPROVINCEIDKEY];
+            
+            _selectedProvince = data[DATA_SELECTED_LOCATION_KEY];
             
             break;
         }
         case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
-            indexpath = [data objectForKey:kTKPDLOCATION_DATACITYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            name = [data objectForKey:kTKPDLOCATION_DATALOCATIONNAMEKEY];
-            locationid = [[data objectForKey:kTKPDLOCATION_DATALOCATIONVALUEKEY] integerValue];
-            [_datainput setObject:indexpath forKey:kTKPDLOCATION_DATACITYINDEXPATHKEY];
-            
-            if (locationid != [[_datainput objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue]) {
+            if (locationid != [_selectedCity[@"ID"] integerValue]) {
                 //reset district
-                [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
-                [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTIDKEY];
-                [_datainput removeObjectForKey:kTKPDSHOP_APIDISTRICTNAMEKEY];
+                _selectedDistrict = @{};
                 
                 [_buttondistrict setTitle:@"Pilih" forState:UIControlStateNormal];
             }
             _buttondistrict.enabled = YES;
             [_buttoncity setTitle:name forState:UIControlStateNormal];
-            [_datainput setObject:name forKey:kTKPDSHOP_APICITYNAMEKEY];
-            [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATACITYIDKEY];
+            
+            _selectedCity = data[DATA_SELECTED_LOCATION_KEY];
             break;
         }
         case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
-            indexpath = [data objectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            name = [data objectForKey:kTKPDLOCATION_DATALOCATIONNAMEKEY];
-            locationid = [[data objectForKey:kTKPDLOCATION_DATALOCATIONVALUEKEY] integerValue];
-            [_datainput setObject:indexpath forKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
             [_buttondistrict setTitle:name forState:UIControlStateNormal];
-            [_datainput setObject:name forKey:kTKPDSHOP_APIDISTRICTNAMEKEY];
-            [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATADISTRICTIDKEY];
+            
+            _selectedDistrict = data[DATA_SELECTED_LOCATION_KEY];
             break;
         }
         default:

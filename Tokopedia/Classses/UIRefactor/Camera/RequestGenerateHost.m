@@ -113,10 +113,10 @@
     }
 }
 
--(void)requestFailureGenerateHost:(id)object
+-(void)requestFailureGenerateHost:(NSError*)object
 {
-    if(_delegate!=nil && [_delegate respondsToSelector:@selector(failedGenerateHost)])
-        [_delegate failedGenerateHost];
+    if(_delegate!=nil && [_delegate respondsToSelector:@selector(failedGenerateHost:)])
+        [_delegate failedGenerateHost:@[[object localizedDescription]]];
 }
 
 -(void)requestProcessGenerateHost:(id)object
@@ -143,7 +143,7 @@
                         }
                         else{
                             //error
-                            [_delegate failedGenerateHost];
+                            [_delegate failedGenerateHost:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULT]];
                         }
                     }
                     else{

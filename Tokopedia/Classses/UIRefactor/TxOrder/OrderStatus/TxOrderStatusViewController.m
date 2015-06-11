@@ -30,7 +30,9 @@
 #import "TxOrderObjectMapping.h"
 #import "NoResultView.h"
 
+#import "TextMenu.h"
 #import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
@@ -40,7 +42,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -72,6 +74,7 @@
     TokopediaNetworkManager *_networkManager;
     
     TxOrderStatusList *_selectedTrackOrder;
+    LoadingView *_loadingView;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -145,7 +148,8 @@
                                              selector:@selector(refreshRequest)
                                                  name:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME
                                                object:nil];
-    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -350,11 +354,23 @@
     
     NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
     
-    [cell.statusLabel setText:statusString animated:YES];
-    [cell.statusLabel setCustomAttributedText:cell.statusLabel.text];
+    [cell.statusTv setText:statusString];
     
-    if ([cell.statusLabel.text isEqualToString:@"0"] || [cell.statusLabel.text isEqual:@""]) {
-        cell.statusLabel.text = @"-";
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentLeft;
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
+                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:12.0f],
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:statusString?:@"" attributes:attributes];
+    cell.statusTv.attributedText = attributedText;
+    
+    if ([cell.statusTv.text isEqualToString:@"0"] || [cell.statusTv.text isEqual:@""]) {
+        cell.statusTv.text = @"-";
     }
 
     [cell hideAllButton];
@@ -450,6 +466,9 @@
         } else {
             height = tableView.rowHeight - 45;
         }
+    }
+    else
+    {
     }
 
     return height;
@@ -640,7 +659,10 @@
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
-    _tableView.contentOffset = CGPointZero;
+    if (_page == 1) {
+        _tableView.contentOffset = CGPointZero;
+    }
+    
     NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
     TxOrderStatus *order = stat;
@@ -688,16 +710,24 @@
     }
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    [self actionAfterFailRequestMaxTries:tag];
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_act stopAnimating];
     [_refreshControll endRefreshing];
-    _tableView.contentOffset = CGPointZero;
+    
+    if (_page == 1) {
+        _tableView.contentOffset = CGPointZero;
+    }
+    
+    _tableView.tableFooterView = _loadingView.view;
+}
+
+#pragma mark - loading view delegate
+-(void)pressRetryButton
+{
+    [_act startAnimating];
+    _tableView.tableFooterView = _footer;
+    [_networkManager doRequest];
 }
 
 
@@ -940,20 +970,24 @@
     BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(order.message_error)
-        {
-            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-            [alert show];
-        }
         if (order.result.is_success == 1) {
             TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
             [self.navigationController pushViewController:vc animated:YES];
         }
         else
         {
-            [self requestFailureReOrder:object withError:nil];
-        }
+            if(order.message_error)
+            {
+                NSMutableArray *errors = [order.message_error mutableCopy];
+                for (int i = 0; i<errors.count; i++) {
+                    if ([order.message_error[i] containsString:@"Alamat"]) {
+                        [errors replaceObjectAtIndex:i withObject:@"Pesan ulang tidak dapat dilakukan karena alamat tidak valid."];
+                    }
+                }
+                NSArray *array = errors?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                [alert show];
+            }        }
     }
     else
     {
@@ -1131,6 +1165,7 @@
         vc.isChangeSolution = NO;
         vc.isCanEditProblem = YES;
         vc.order = order;
+        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -1276,6 +1311,7 @@
     [_refreshControll beginRefreshing];
     [_tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
     [_networkManager doRequest];
+    [_act stopAnimating];
 }
 
 -(void)statusDetailAtIndexPath:(NSIndexPath *)indexPath
@@ -1340,6 +1376,4 @@
     alert.tag = TAG_ALERT_COMPLAIN;
     [alert show];
 }
-
-
 @end

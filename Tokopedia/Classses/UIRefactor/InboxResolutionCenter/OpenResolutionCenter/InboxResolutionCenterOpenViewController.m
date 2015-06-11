@@ -41,7 +41,8 @@
     GenerateHostDelegate,
     RequestUploadImageDelegate,
     SyncroDelegate,
-    TKPDPhotoPickerDelegate
+    TKPDPhotoPickerDelegate,
+    TokopediaNetworkManagerDelegate
 >
 {
     BOOL _isNodata;
@@ -56,15 +57,14 @@
     
     NSOperationQueue *_operationQueue;
     
-    __weak RKObjectManager *_objectManagerComplain;
-    __weak RKManagedObjectRequestOperation *_requestComplain;
-    
     __weak RKObjectManager *_objectManagerUploadPhoto;
     NSURLRequest *_requestActionUploadPhoto;
     
     BOOL _isFinishUploadingImage;
 
     TKPDPhotoPicker *_photoPicker;
+    
+    TokopediaNetworkManager *_networkManagerOpenComplain;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewUploadPhoto;
@@ -95,6 +95,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *rightArrowImageView;
 
 @end
+#define TAG_REQUEST_OPEN_COMPLAIN 10
 
 @implementation InboxResolutionCenterOpenViewController
 
@@ -104,8 +105,12 @@
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _generatehost = [GenerateHost new];
-    _photos = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
+    _photos = (_photos)?_photos:[[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _uploadingPhotos = [NSMutableArray new];
+    
+    _networkManagerOpenComplain = [TokopediaNetworkManager new];
+    _networkManagerOpenComplain.delegate = self;
+    _networkManagerOpenComplain.tagRequest = TAG_REQUEST_OPEN_COMPLAIN;
     
     _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
     _uploadedImages = [NSArray sortViewsWithTagInArray:_uploadedImages];
@@ -213,6 +218,12 @@
     [super viewDidDisappear:animated];
 }
 
+-(void)dealloc
+{
+    _networkManagerOpenComplain.delegate = nil;
+    _networkManagerOpenComplain = nil;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -236,11 +247,6 @@
         
         UIImage *image = [[userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
         
-        UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-        [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-        image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
         for (UIButton *button in _uploadButtons) {
             if (button.tag == picker.tag) {
                 button.enabled = NO;
@@ -258,48 +264,6 @@
         [self actionUploadImage:object];   
     }
 }
-
-//-(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
-//{
-//    NSMutableDictionary *object = [NSMutableDictionary new];
-//    [object setObject:userinfo forKey:DATA_SELECTED_PHOTO_KEY];
-//    UIImageView *imageView;
-//    for (UIImageView *image in _uploadedImages) {
-//        if (image.tag == controller.tag)
-//        {
-//            imageView = image;
-//        }
-//    }
-//    
-//    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-//    
-//    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-//    
-//    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-//    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-//    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-//    image = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    
-//    for (UIButton *button in _uploadButtons) {
-//        if (button.tag == controller.tag) {
-//            button.enabled = NO;
-//            button.hidden = YES;
-//        }
-//        if (button.tag == controller.tag+1)
-//        {
-//            button.enabled = YES;
-//            button.hidden = NO;
-//        }
-//    }
-//    
-//    imageView.image = image;
-//    imageView.hidden = NO;
-//    imageView.alpha = 0.5f;
-//    
-//    [self actionUploadImage:object];
-//}
-
 
 -(void)viewDidLayoutSubviews
 {
@@ -332,7 +296,7 @@
             if (_indexPage==0)
             {
                 if (!_isFinishUploadingImage) {
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Belum selesai meng-upload image"] delegate:self];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Anda belum selesai mengunggah gambar."] delegate:self];
                     [alert show];
                 }
                 else if(!_isGotTheOrder)
@@ -357,6 +321,7 @@
     for (UIButton *button in _uploadButtons) {
         if (button.tag == sender.tag) {
             button.hidden = NO;
+            button.enabled = YES;
         }
     }
     
@@ -403,8 +368,7 @@
         }
         else
         {
-            [self configureRestKitComplain];
-            [self requestComplain];
+            [_networkManagerOpenComplain doRequest];
         }
     }
 }
@@ -877,7 +841,7 @@
     vc.selectedProblem = _selectedProblem;
     vc.isGotTheOrder = _isGotTheOrder;
     vc.order = _order?:[TxOrderStatusList new];
-    vc.uploadedPhotos = _uploadedPhotos?:_photos?:@[];
+    vc.uploadedPhotos = (_uploadedPhotos.count>0)?_uploadedPhotos:_photos?:@[];
     vc.generatehost = _generatehost;
     vc.delegate = _delegate;
     vc.detailOpenAmount = _detailOpenAmount;
@@ -898,17 +862,86 @@
 }
 
 #pragma mark - Request Complaint
--(void)cancelComplain
+
+-(id)getObjectManager:(int)tag
 {
-    [_requestComplain cancel];
-    _requestComplain = nil;
-    [_objectManagerComplain.operationQueue cancelAllOperations];
-    _objectManagerComplain = nil;
+    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
+        return [self objectManagerOpenComplain];
+    }
+    
+    return nil;
 }
 
--(void)configureRestKitComplain
+-(NSDictionary *)getParameter:(int)tag
 {
-    _objectManagerComplain = [RKObjectManager sharedClient];
+    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
+        NSString *troubleType = [self troubleType]?:@"";
+        NSString *solutionType = [self solutionType]?:@"";
+        
+        NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+        
+        NSDictionary* param = @{API_ACTION_KEY : ACTION_CREATE_RESOLUTION,
+                                API_ORDER_ID_KEY : _order.order_detail.detail_order_id?:@"",
+                                API_FLAG_RECIEVED_KEY : @(_isGotTheOrder),
+                                API_TROUBLE_TYPE_KEY: troubleType,
+                                API_SOLUTION_KEY : solutionType,
+                                API_REFUND_AMOUNT_KEY : _totalRefund?:@"",
+                                API_REMARK_KEY : _note?:@"",
+                                API_PHOTOS_KEY : photos,
+                                API_SERVER_ID_KEY : _generatehost.result.generated_host.server_id?:@"0"
+                                };
+        return param;
+    }
+    return nil;
+}
+
+-(NSString *)getPath:(int)tag
+{
+    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
+        return API_PATH_ACTION_RESOLUTION_CENTER;
+    }
+    return nil;
+}
+
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
+        TransactionAction *order = stat;
+        return order.status;
+    }
+    return nil;
+}
+
+-(void)actionBeforeRequest:(int)tag
+{
+
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
+        [self requestSuccessComplain:successResult withOperation:operation];
+    }
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
+        
+    }
+}
+
+-(RKObjectManager*)objectManagerOpenComplain
+{
+    RKObjectManager *objectManagerComplain = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
@@ -926,8 +959,9 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_PATH_ACTION_RESOLUTION_CENTER keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManagerComplain addResponseDescriptor:responseDescriptor];
+    [objectManagerComplain addResponseDescriptor:responseDescriptor];
     
+    return objectManagerComplain;
 }
 
 //TROUBLE_DIFF_DESCRIPTION    => 1,
@@ -978,56 +1012,6 @@
     return solutionType;
 }
 
--(void)requestComplain
-{
-    if (_requestComplain.isExecuting) return;
-    NSTimer *timer;
-    
-    NSString *troubleType = [self troubleType]?:@"";
-    NSString *solutionType = [self solutionType]?:@"";
-    
-    NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-    
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_CREATE_RESOLUTION,
-                            API_ORDER_ID_KEY : _order.order_detail.detail_order_id?:@"",
-                            API_FLAG_RECIEVED_KEY : @(_isGotTheOrder),
-                            API_TROUBLE_TYPE_KEY: troubleType,
-                            API_SOLUTION_KEY : solutionType,
-                            API_REFUND_AMOUNT_KEY : _totalRefund?:@"",
-                            API_REMARK_KEY : _note?:@"",
-                            API_PHOTOS_KEY : photos,
-                            API_SERVER_ID_KEY : _generatehost.result.generated_host.server_id?:@"0"
-                            };
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _requestComplain = [_objectManagerComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-//#else
-    _requestComplain = [_objectManagerComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-//#endif
-    
-    [_requestComplain setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessComplain:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureComplain:error];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestComplain];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutComplain) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
 
 -(void)requestSuccessComplain:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
@@ -1037,62 +1021,29 @@
     BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessComplain:object];
-    }
-}
-
--(void)requestFailureComplain:(id)object
-{
-    [self requestProcessComplain:object];
-}
-
--(void)requestProcessComplain:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionAction *order = stat;
-            BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        if (order.result.is_success == 1) {
+            NSArray *array = order.message_status?:@[@"Anda telah berhasil membuka komplain."];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
+            [alert show];
             
-            if (status) {
-                if(order.message_error)
-                {
-                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                else{
-                    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:self];
-                    [[NSNotificationCenter defaultCenter]postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:self];
-                    NSArray *viewControllers = self.navigationController.viewControllers;
-                    UIViewController *destinationVC;
-                    for (UIViewController *vc in viewControllers) {
-                        if ([vc isKindOfClass:[_delegate class]]) {
-                            destinationVC = vc;
-                        }
-                    }
-                    [self.navigationController popToViewController:destinationVC animated:YES];
-                    
+            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:self];
+            [[NSNotificationCenter defaultCenter]postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:self];
+            NSArray *viewControllers = self.navigationController.viewControllers;
+            UIViewController *destinationVC;
+            for (UIViewController *vc in viewControllers) {
+                if ([vc isKindOfClass:[_delegate class]]) {
+                    destinationVC = vc;
                 }
             }
+            [self.navigationController popToViewController:destinationVC animated:YES];
         }
-        else{
-            
-            [self cancelComplain];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+        else
+        {
+            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+            [alert show];
         }
     }
-}
-
--(void)requestTimeoutComplain
-{
-    [self cancelComplain];
 }
 
 #pragma mark Request Action Upload Photo
@@ -1110,6 +1061,7 @@
     RequestUploadImage *uploadImage = [RequestUploadImage new];
     uploadImage.imageObject = object;
     uploadImage.delegate = self;
+    uploadImage.isNotUsingNewAdd = YES;
     uploadImage.generateHost = _generatehost;
     uploadImage.action = ACTION_UPLOAD_CONTACT_IMAGE;
     uploadImage.fieldName = API_UPLOAD_PRODUCT_IMAGE_DATA_NAME;
@@ -1119,7 +1071,6 @@
 
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
-    _isFinishUploadingImage = YES;
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.alpha = 1.0;
     [_photos replaceObjectAtIndex:imageView.tag-10 withObject:uploadImage.result.file_th];
@@ -1131,13 +1082,11 @@
         }
     }
     
-    //[self requestProcessUploadPhoto];
+    [self requestProcessUploadPhoto];
 }
 
 -(void)failedUploadObject:(id)object
 {
-    _isFinishUploadingImage = YES;
-    
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.image = nil; //TODO::placeholder image
     
@@ -1149,18 +1098,23 @@
     }
     [_uploadingPhotos removeObject:object];
     
-    //[self requestProcessUploadPhoto];
+    [self requestProcessUploadPhoto];
 }
 
 - (void)requestProcessUploadPhoto
 {
     if (_uploadingPhotos.count > 0) {
-        [self actionUploadImage:[_uploadingPhotos firstObject]];
+        _isFinishUploadingImage = NO;
+    }
+    else
+    {
+        _isFinishUploadingImage = YES;
     }
 }
 
-- (void)failedGenerateHost {
-    
+- (void)failedGenerateHost:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
 }
 
 @end

@@ -8,7 +8,6 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 
-#import "Helpshift.h"
 
 #import "MainViewController.h"
 #import "LoginViewController.h"
@@ -35,6 +34,8 @@
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
+
+#define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
 <
@@ -96,6 +97,7 @@ typedef enum TagRequest {
                selector:@selector(applicationLogin:)
                    name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
                  object:nil];
+    [center addObserver:self selector:@selector(forceLogout) name:TkpdNotificationForcedLogout object:nil];
     
     [center addObserver:self
                selector:@selector(applicationlogout:)
@@ -109,6 +111,7 @@ typedef enum TagRequest {
     [center addObserver:self
                selector:@selector(updateTabBarMore:)
                    name:UPDATE_TABBAR object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -529,14 +532,12 @@ typedef enum TagRequest {
 
 - (void)doApplicationLogout {
     
-    _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Logging out"
+    _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Tunggu sebentar.."
                                                      message:nil
                                                     delegate:self
                                            cancelButtonTitle:nil
                                            otherButtonTitles:nil, nil];
     [_logingOutAlertView show];
-    
-    [Helpshift logout];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
                                                         object:nil];
@@ -703,6 +704,10 @@ typedef enum TagRequest {
     
 }
 
+#pragma mark - Notification Observer Method
+- (void)forceLogout {
+    [self doApplicationLogout];
+}
 
 
 @end

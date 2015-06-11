@@ -123,6 +123,7 @@ static CGFloat messageTextSize = 17.0;
 #pragma mark Layouting
 
 - (void)layoutSubviews {
+    [super layoutSubviews];
     /*This method layouts the TableViewCell. It calculates the frame for the different subviews, to set the layout according to size and orientation.*/
     
     /*Calculates the size of the message. */

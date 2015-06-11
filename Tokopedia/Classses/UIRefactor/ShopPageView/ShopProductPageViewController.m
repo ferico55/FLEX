@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
@@ -129,7 +129,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSTimeInterval _timeinterval;
     NSMutableArray *_product;
     Shop *_shop;
-    NoResult *_noResult;
+    NoResultView *_noResult;
     
     BOOL _navigationBarIsAnimating;
     
@@ -180,7 +180,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
 
     _product = [NSMutableArray new];
-    _noResult = [NoResult new];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
 
     _isrefreshview = NO;
     
@@ -229,7 +229,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _table.tableFooterView = _footer;
     
     
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshRequest:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
     if (_list.count > 0) {
@@ -245,7 +245,27 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [self configureRestKit];
     [self loadData];
  
-    self.cellType = UITableViewCellTypeTwoColumn;
+    NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
+    if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
+        self.cellType = [[data objectForKey:USER_LAYOUT_PREFERENCES] integerValue];
+        if (self.cellType == UITableViewCellTypeOneColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                                   forState:UIControlStateNormal];
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                                   forState:UIControlStateNormal];
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+            [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                                   forState:UIControlStateNormal];
+        }
+    } else {
+        self.cellType = UITableViewCellTypeTwoColumn;
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                               forState:UIControlStateNormal];
+    }
+
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(refreshView:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -678,9 +698,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
-        _table.tableFooterView = nil;
         [_table reloadData];
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
         [_timer invalidate];
         _timer = nil;
         _isrefreshview = NO;
@@ -696,7 +715,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         }
 
         [_act stopAnimating];
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
         [_timer invalidate];
         _timer = nil;
         _isrefreshview = NO;
@@ -713,6 +732,14 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 
 
+}
+
+-(void)endRefreshing
+{
+    if (_refreshControl.isRefreshing) {
+        [_table setContentOffset:CGPointZero animated:YES];
+        [_refreshControl endRefreshing];
+    }
 }
 
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -745,6 +772,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             
             if (status) {
                 
+                if (_page == 1) {
+                    [_product removeAllObjects];
+                    [_table setContentOffset:CGPointZero animated:YES];
+                }
+                
                 [_product addObjectsFromArray: _searchitem.result.list];
                 
                 if (_product.count > 0) {
@@ -771,15 +803,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                     
                     _isNoData = NO;
                     
-                    if (_product.count == 0) {
-                        _table.tableFooterView = _noResult;
-                        _act.hidden = YES;
-                    }
-                    
                 } else {
                     _isNoData = YES;
                     _table.tableFooterView = _noResult;
-                }
+                    _act.hidden = YES;
+               }
             }
         }
         else{
@@ -814,16 +842,25 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 
 #pragma mark - Refresh View
+-(void)refreshRequest:(NSNotification*)notification
+{
+    _page = 1;
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    [self refreshView:_refreshControl];
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
     [self cancel];
     _requestCount = 0;
-    [_product removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     
-    [_table reloadData];
+    [_refreshControl beginRefreshing];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    
     /** request data **/
     [self configureRestKit];
     [self loadData];
@@ -973,26 +1010,33 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             }
             case 13:
             {
+                TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                
                 if (self.cellType == UITableViewCellTypeOneColumn) {
                     self.cellType = UITableViewCellTypeTwoColumn;
-                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                            forState:UIControlStateNormal];
                     
                 } else if (self.cellType == UITableViewCellTypeTwoColumn) {
                     self.cellType = UITableViewCellTypeThreeColumn;
-                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                            forState:UIControlStateNormal];
                     
                 } else if (self.cellType == UITableViewCellTypeThreeColumn) {
                     self.cellType = UITableViewCellTypeOneColumn;
-                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                            forState:UIControlStateNormal];
                     
                 }
-                self.table.contentOffset = CGPointMake(0, self.header.frame.size.height-84);
+                
+                self.table.contentOffset = CGPointMake(0, 0);
                 [self.table reloadData];
+                
+                NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
+                [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
+
                 break;
-            }            
+            }
             default:
                 break;
         }
@@ -1024,10 +1068,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 #pragma mark - Filter Delegate
 -(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-//-(void)setDepartmentID:(NSNotification*)notification
 {
     [self cancel];
-    //NSDictionary* userinfo = notification.userInfo;
     [_detailfilter setObject:[userInfo objectForKey:DATA_ETALASE_KEY]?:@""
                       forKey:DATA_ETALASE_KEY];
     

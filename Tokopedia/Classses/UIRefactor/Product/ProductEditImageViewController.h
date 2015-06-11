@@ -12,7 +12,7 @@
 #pragma mark - Product Edit Image Delegate
 @protocol ProductEditImageViewControllerDelegate <NSObject>
 @required
--(void)deleteProductImageAtIndex:(NSInteger)index;
+-(void)deleteProductImageAtIndex:(NSInteger)index isDefaultImage:(BOOL)isDefaultImage;
 -(void)setDefaultImageAtIndex:(NSInteger)index;
 -(void)setProductImageName:(NSString*)name atIndex:(NSInteger)index;
 
@@ -30,5 +30,7 @@
 
 @property (nonatomic,strong) NSDictionary *data;
 @property (nonatomic, strong) UIImage *uploadedImage;
+@property (nonatomic) BOOL isDefaultFromWS;
+@property (nonatomic) NSInteger type;
 
 @end

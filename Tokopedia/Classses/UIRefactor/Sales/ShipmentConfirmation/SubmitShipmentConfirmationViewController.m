@@ -5,28 +5,36 @@
 //  Created by Feizal Badri Asmoro on 2/3/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
+#import "BarCodeViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "GeneralTableViewController.h"
 #import "StickyAlertView.h"
-#import "ZBarSDK.h"
+#import "ActionOrder.h"
+#import "Order.h"
+#import "OrderTransaction.h"
+#import "string_order.h"
 
 @interface SubmitShipmentConfirmationViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     GeneralTableViewControllerDelegate,
-    ZBarReaderDelegate
+    BarCodeDelegate
 >
 {
     BOOL _changeCourier;
     NSString *_receiptNumber;
     ShipmentCourier *_selectedCourier;
     ShipmentCourierPackage *_selectedCourierPackage;
-    ZBarReaderViewController *codeReader;
-    
+
     NSString *strNoResi;
     BOOL _shouldReloadData;
+
+    __weak RKObjectManager *_actionObjectManager;
+    __weak RKManagedObjectRequestOperation *_actionRequest;
+    RKResponseDescriptor *_responseActionDescriptorStatus;
+
+    NSOperationQueue *_operationQueue;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -66,6 +74,8 @@
     _selectedCourierPackage = [_selectedCourier.shipment_package objectAtIndex:0];
     
     _shouldReloadData = NO;
+    
+    _operationQueue = [NSOperationQueue new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -104,6 +114,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             
             UISwitch *changeCourierSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 65, 7, 0, 0)];
+            [changeCourierSwitch setOn:_changeCourier];
             [changeCourierSwitch addTarget:self action:@selector(changeSwitch:) forControlEvents:UIControlEventValueChanged];
             [cell addSubview:changeCourierSwitch];
             
@@ -231,60 +242,33 @@
 
 }
 
-
-#pragma mark - UICamera Delegate
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+- (void)addOverlayCamera:(UIView *)parentView withFrame:(CGRect)rectFrame cancelDelegate:(UIViewController *)delegate
 {
-    id<NSFastEnumeration> results = [info objectForKey: ZBarReaderControllerResults];
-    ZBarSymbol *symbol = nil;
-    for(symbol in results)  break;
+    UIView *overLayView = [[UIView alloc] initWithFrame:rectFrame];
+    overLayView.backgroundColor = [UIColor lightGrayColor];
     
-    [picker dismissViewControllerAnimated:YES completion:^(void){
-        codeReader = nil;
-        strNoResi = symbol.data;
-        [_tableView reloadData];
-    }];
-}
-
-
-#pragma mark - Actions
-- (void)cancelCamera:(id)sender
-{
-    [codeReader dismissViewControllerAnimated:YES completion:^(void){
-        codeReader = nil;
-    }];
+    int diameterCancel = 10;
+    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnCancel.frame = CGRectMake(diameterCancel, diameterCancel, overLayView.bounds.size.height-(diameterCancel*2), overLayView.bounds.size.height-(diameterCancel*2));
+    btnCancel.layer.borderColor = [btnCancel.titleLabel.textColor CGColor];
+    btnCancel.layer.borderWidth = 1.0f;
+    btnCancel.layer.cornerRadius = (btnCancel.bounds.size.height-diameterCancel)/2.0f;
+    btnCancel.layer.masksToBounds = YES;
+    [btnCancel addTarget:delegate action:@selector(cancelCamera:) forControlEvents:UIControlEventTouchUpInside];
+    [btnCancel setImage:[UIImage imageNamed:@"icon_close_white.png"] forState:UIControlStateNormal];
+    [overLayView addSubview:btnCancel];
+    [parentView addSubview:overLayView];
 }
 
 - (void)showCameraCode:(id)sender
 {
-    codeReader = [ZBarReaderViewController new];
-    codeReader.readerDelegate=self;
-    codeReader.supportedOrientationsMask = ZBarOrientationMaskAll;
-    codeReader.showsZBarControls = NO;
-    codeReader.showsCameraControls = NO;
-    
-    
-    ZBarImageScanner *scanner = codeReader.scanner;
-    [scanner setSymbology: ZBAR_CODE128 config: ZBAR_CFG_ENABLE to: 0];
-    [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];
-    
-    [self presentViewController:codeReader animated:YES completion:^{
-        UIView *overLayView = [[UIView alloc] initWithFrame:CGRectMake(0, codeReader.view.bounds.size.height-50, self.view.bounds.size.width, 50)];
-        overLayView.backgroundColor = [UIColor lightGrayColor];
-        
-        int diameterCancel = 10;
-        UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
-        btnCancel.frame = CGRectMake(diameterCancel, diameterCancel, overLayView.bounds.size.height-(diameterCancel*2), overLayView.bounds.size.height-(diameterCancel*2));
-        btnCancel.layer.borderColor = [btnCancel.titleLabel.textColor CGColor];
-        btnCancel.layer.borderWidth = 1.0f;
-        btnCancel.layer.cornerRadius = (btnCancel.bounds.size.height-diameterCancel)/2.0f;
-        btnCancel.layer.masksToBounds = YES;
-        [btnCancel addTarget:self action:@selector(cancelCamera:) forControlEvents:UIControlEventTouchUpInside];
-        [btnCancel setTitle:@"X" forState:UIControlStateNormal];
-        [overLayView addSubview:btnCancel];
-        
-        [codeReader.view addSubview:overLayView];
+
+    BarCodeViewController *barCodeViewController = [BarCodeViewController new];
+    barCodeViewController.delegate = self;
+    [self presentViewController:barCodeViewController animated:YES completion:^{
+        [self addOverlayCamera:barCodeViewController.view withFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-50, self.view.bounds.size.width, 50) cancelDelegate:barCodeViewController];
     }];
+
 }
 
 - (IBAction)tap:(id)sender
@@ -297,16 +281,7 @@
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
             if (textField.text.length >= 8 && textField.text.length <= 17) {
-                if (_changeCourier) {
-                    [self.delegate submitConfirmationReceiptNumber:textField.text
-                                                           courier:_selectedCourier
-                                                    courierPackage:_selectedCourierPackage];
-                } else {
-                    [self.delegate submitConfirmationReceiptNumber:textField.text
-                                                           courier:nil
-                                                    courierPackage:nil];
-                }
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self request];
             } else {
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 8 - 17 karakter"]
                                                                                delegate:self];
@@ -324,11 +299,150 @@
                             [NSIndexPath indexPathForRow:1 inSection:0],
                             [NSIndexPath indexPathForRow:2 inSection:0],
                             ];
-    if (_changeCourier) {
+    if (_changeCourier && [self.tableView numberOfRowsInSection:0] == 1) {
         [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-    } else {
+    } else if (!_changeCourier && [self.tableView numberOfRowsInSection:0] == 3) {
         [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
+#pragma mark - Resktit methods for actions
+
+- (void)configureActionReskit
+{
+    _actionObjectManager =  [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{
+                                                        kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY        : kTKPD_APIERRORMESSAGEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY : kTKPD_APIISSUCCESSKEY}];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKResponseDescriptor *actionResponseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                        method:RKRequestMethodPOST
+                                                                                                   pathPattern:API_NEW_ORDER_ACTION_PATH
+                                                                                                       keyPath:@""
+                                                                                                   statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_actionObjectManager addResponseDescriptor:actionResponseDescriptorStatus];
+}
+
+- (void)request
+{
+    [self configureActionReskit];
+    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userId = auth.getUserId;
+    
+    UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    UITextField *textField = (UITextField *)[cell viewWithTag:1];
+    
+    NSDictionary *param;
+    if (_changeCourier) {
+        param = @{
+                  API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
+                  API_ACTION_TYPE_KEY         : @"confirm",
+                  API_USER_ID_KEY             : userId,
+                  API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
+                  API_SHIPMENT_REF_KEY        : textField.text ?: @"",
+                  };
+    } else {
+        param = @{
+            API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
+            API_ACTION_TYPE_KEY         : @"confirm",
+            API_USER_ID_KEY             : userId,
+            API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
+            API_SHIPMENT_ID_KEY         : _selectedCourier.shipment_id ?: [NSNumber numberWithInteger:_order.order_shipment.shipment_id],
+            API_SHIPMENT_NAME_KEY       : _selectedCourier.shipment_name ?: _order.order_shipment.shipment_name,
+            API_SHIPMENT_PACKAGE_ID_KEY : _selectedCourierPackage.sp_id ?: _order.order_shipment.shipment_package_id,
+            API_SHIPMENT_REF_KEY        : textField.text ?: @"",
+        };
+    }
+    
+    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
+                                                                                method:RKRequestMethodPOST
+                                                                                  path:API_NEW_ORDER_ACTION_PATH
+                                                                            parameters:[param encrypt]];
+    [_operationQueue addOperation:_actionRequest];
+    
+    NSLog(@"\n\n\nRequest Operation : %@\n\n\n", _actionRequest);
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                      target:self
+                                                    selector:@selector(timeout:)
+                                                    userInfo:nil
+                                                     repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    
+    [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self actionRequestSuccess:mappingResult withOperation:operation];
+        [timer invalidate];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self actionRequestFailure:error orderId:self.order.order_detail.detail_order_id];
+        [timer invalidate];
+    }];
+}
+
+- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult *)object).dictionary;
+    
+    ActionOrder *actionOrder = [result objectForKey:@""];
+    BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status && [actionOrder.result.is_success boolValue]) {
+        
+        NSString *message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
+    
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[(message) ?: @""] delegate:self];
+        [alert show];
+
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        
+        if ([self.delegate respondsToSelector:@selector(successConfirmOrder:)]) {
+            [self.delegate successConfirmOrder:self.order];
+        }
+        
+    } else {
+        NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_error);
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
+                                                                       delegate:self];
+        [alert show];
+    }
+}
+
+- (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
+{
+    NSLog(@"\n\nRequest error : %@\n\n", object);
+    NSString *error = [object localizedDescription];
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[error]
+                                                                   delegate:self];
+    [alert show];
+}
+
+- (void)timeout:(NSTimer *)timer
+{
+}
+
+
+#pragma mark - BarCode Delegate
+- (void)didFinishScan:(NSString *)strResult
+{
+    if(strResult != nil) {
+        strNoResi = strResult;
+        [_tableView reloadData];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

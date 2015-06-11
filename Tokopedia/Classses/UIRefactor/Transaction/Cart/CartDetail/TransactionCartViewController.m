@@ -26,6 +26,8 @@
 #import "AlertInfoView.h"
 #import "StickyAlertView.h"
 #import "GeneralTableViewController.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIEcommerceFields.h"
 
 #import "TxEmoney.h"
 
@@ -111,9 +113,11 @@
     TokopediaNetworkManager *_networkManagerEMoney;
     TokopediaNetworkManager *_networkManagerBCAClickPay;
     
-    TransactionCartShippingViewController *_shipmentViewController;
-    
     UIAlertView *_alertLoading;
+    
+    NSInteger _indexSelectedShipment;
+    
+    NSNumberFormatter *_IDRformatter;
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
@@ -202,7 +206,6 @@
     _listProductFirstObjectIndexPath =[NSMutableArray new];
     _mapping = [TransactionObjectMapping new];
     _navigate = [NavigateViewController new];
-    _shipmentViewController = [TransactionCartShippingViewController new];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.tagRequest = TAG_REQUEST_CART;
@@ -289,6 +292,14 @@
     
     _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     _popFromShipment = NO;
+    
+    _IDRformatter = [[NSNumberFormatter alloc] init];
+    _IDRformatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    _IDRformatter.currencyCode = @"Rp ";
+    _IDRformatter.currencyGroupingSeparator = @".";
+    _IDRformatter.currencyDecimalSeparator = @",";
+    _IDRformatter.maximumFractionDigits = 0;
+    _IDRformatter.minimumFractionDigits = 0;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -514,10 +525,11 @@
             NSArray *listProducts = list.cart_products;
             ProductDetail *product = listProducts[indexProduct];
             
-            NSString *string = product.product_notes;
+            NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+            NSString *string = productNotes;
             
             //Calculate the expected size based on the font and linebreak mode of your label
-            CGSize maximumLabelSize = CGSizeMake(190,9999);
+            CGSize maximumLabelSize = CGSizeMake(290,9999);
             CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
                                           constrainedToSize:maximumLabelSize
                                               lineBreakMode:NSLineBreakByTruncatingTail];
@@ -666,19 +678,18 @@
         }
     }
 
-    if (!_shipmentViewController) {
-        _shipmentViewController = [TransactionCartShippingViewController new];
-    }
-    _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
+    TransactionCartShippingViewController *shipmentViewController = [TransactionCartShippingViewController new];
+    shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
                                     DATA_DROPSHIPPER_NAME_KEY: dropshipName,
                                     DATA_DROPSHIPPER_PHONE_KEY:dropshipPhone,
                                     DATA_PARTIAL_LIST_KEY :partial,
                                     DATA_INDEX_KEY : @(index)
                                     };
     [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-    _shipmentViewController.indexPage = _indexPage;
-    _shipmentViewController.delegate = self;
-    [self.navigationController pushViewController:_shipmentViewController animated:YES];
+    _indexSelectedShipment = index;
+    shipmentViewController.indexPage = _indexPage;
+    shipmentViewController.delegate = self;
+    [self.navigationController pushViewController:shipmentViewController animated:YES];
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
@@ -745,7 +756,7 @@
 
                     
                     _cart.grand_total = [NSString stringWithFormat:@"%zd", totalInteger];
-                    _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
+                    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
                     
                     [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
                     
@@ -757,6 +768,7 @@
                     break;
                 default:
                     if([self isValidInput]) {
+                        [self sendingProductDataToGA];
                         [_networkManagerCheckout doRequest];
                     }
                 break;
@@ -771,6 +783,7 @@
                         [_networkManagerBuy doRequest];
                     }
                 }
+                break;
                 case TYPE_GATEWAY_TRANSFER_BANK:
                     [_networkManagerBuy doRequest];
                     break;
@@ -795,17 +808,17 @@
                     navigationController.navigationBar.translucent = NO;
                     navigationController.navigationBar.tintColor = [UIColor whiteColor];
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                    break;
                 }
+                    break;
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
                 {
                     [_networkManagerBuy doRequest];
-                    break;
                 }
+                    break;
                 default:
                     break;
             }
-
+            [self sendingProductDataToGA];
         }
     }
 }
@@ -868,7 +881,7 @@
 
         _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
         
-        _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+        _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
         
         _saldoTokopediaAmountTextField.text = @"";
         
@@ -1031,7 +1044,7 @@
     }
     else if (_indexPage == 1 && [_cartSummary.deposit_amount integerValue]>0) {
         NSString *password = [_dataInput objectForKey:API_PASSWORD_KEY];
-        if ([password isEqualToString:@""] || !(password)) {
+        if ([password isEqualToString:@""] || password == nil) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
         }
@@ -1057,6 +1070,7 @@
         }
     }
     
+    NSLog(@"%d",isValid);
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messageError delegate:self];
         [alert show];
@@ -1319,7 +1333,7 @@
         
         _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
         
-        _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+        _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
         
         _saldoTokopediaAmountTextField.text = @"";
         
@@ -1499,7 +1513,7 @@
             }
             
             _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
-            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+            _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
             _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
             
             NSString *depositAmount = [textFieldRemoveOneChar stringByReplacingOccurrencesOfString:@"." withString:@""];
@@ -1538,7 +1552,7 @@
             
             NSLog(@"%zd",deposit);
             _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
-            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+            _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
             [_dataInput setObject:@(deposit) forKey:DATA_USED_SALDO_KEY];
             
             _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
@@ -1629,9 +1643,6 @@
     [_stockPartialDetail removeAllObjects];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-    if (_shipmentViewController) {
-        _shipmentViewController = nil;
-    }
 }
 
 -(void)addArrayObjectTemp
@@ -1644,19 +1655,6 @@
     [_stockPartialDetail addObject:@(0)];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-}
-
--(NSNumberFormatter*)grandTotalFormater
-{
-    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    formatter.currencyCode = @"Rp ";
-    formatter.currencyGroupingSeparator = @".";
-    formatter.currencyDecimalSeparator = @",";
-    formatter.maximumFractionDigits = 0;
-    formatter.minimumFractionDigits = 0;
-    
-    return formatter;
 }
 
 -(NSInteger)depositAmountUser
@@ -1792,7 +1790,7 @@
     view.infoButton.hidden = ([list.cart_logistic_fee integerValue]==0);
     [view.subtotalLabel setText:list.cart_total_product_price_idr animated:YES];
     NSInteger aditionalFeeValue = [list.cart_logistic_fee integerValue]+[list.cart_insurance_price integerValue];
-    NSString *formatAdditionalFeeValue = [NSString stringWithFormat:@"Rp %zd,-",aditionalFeeValue];
+    NSString *formatAdditionalFeeValue = [_IDRformatter stringFromNumber:@(aditionalFeeValue)];
     [view.insuranceLabel setText:formatAdditionalFeeValue animated:YES];
     [view.shippingCostLabel setText:list.cart_shipping_rate_idr animated:YES];
     [view.totalLabel setText:list.cart_total_amount_idr animated:YES];
@@ -2121,14 +2119,17 @@
     
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section];
     ((TransactionCartCell*)cell).indexPath = indexPathCell;
-    [cell.remarkLabel setCustomAttributedText:product.product_notes?:@"-"];
+    NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+    [cell.remarkLabel setCustomAttributedText:productNotes?:@"-"];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = cell.productThumbImageView;
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey2.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
         [thumb setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {}];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        thumb.image = [UIImage imageNamed:@"Icon_no_photo_transparan.png"];
+    }];
     
     cell.editButton.hidden = (_indexPage == 1);
     
@@ -2438,7 +2439,7 @@
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         [self requestSuccessActionCancelCart:successResult withOperation:operation];
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
     }
     if (tag == TAG_REQUEST_CHECKOUT) {
         [self requestSuccessActionCheckout:successResult withOperation:operation];
@@ -2470,7 +2471,14 @@
         [_act stopAnimating];
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }
-    [_refreshControl endRefreshing];
+}
+
+-(void)endRefreshing
+{
+    if (_refreshControl.isRefreshing) {
+        [_tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+        [_refreshControl endRefreshing];
+    }
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -2481,12 +2489,12 @@
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_CART) {
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
         [_act stopAnimating];
         _isLoadingRequest = NO;
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
-        [_refreshControl endRefreshing];
+        [self endRefreshing];
     }
     
     if (tag == TAG_REQUEST_CHECKOUT) {
@@ -2515,7 +2523,7 @@
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
         [_act stopAnimating];
     }
-    [_refreshControl endRefreshing];
+    [self endRefreshing];
 }
 
 #pragma mark - Request Cart
@@ -2577,7 +2585,7 @@
 
 -(void)requestSuccessCart:(id)successResult withOperation:(RKObjectRequestOperation*)operation
 {
-    [_refreshControl endRefreshing];
+    [self endRefreshing];
     [_act stopAnimating];
     _isLoadingRequest = NO;
     
@@ -2605,15 +2613,8 @@
             
             [self adjustAfterUpdateList];
             
-            if (_shipmentViewController) {
-                NSInteger index = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue];
-                _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list[index],
-                                                 DATA_INDEX_KEY : @(index)
-                                                 };
-                [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-                _shipmentViewController.indexPage = _indexPage;
-                _shipmentViewController.delegate = self;
-            }
+            NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
+            [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         }
     }
 }
@@ -2668,8 +2669,6 @@
         
     }
     if (listCount>0) {
-        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
-        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         
         
         if (_indexPage == 0) {
@@ -2735,7 +2734,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
     
     
     _refreshFromShipment = NO;
@@ -3120,16 +3119,8 @@
             _voucherCodeButton.hidden = YES;
             _voucherAmountLabel.hidden = NO;
             
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-            formatter.currencyCode = @"Rp ";
-            formatter.currencyGroupingSeparator = @".";
-            formatter.currencyDecimalSeparator = @",";
-            formatter.maximumFractionDigits = 0;
-            formatter.minimumFractionDigits = 0;
-            
             NSInteger voucher = [dataVoucher.result.data_voucher.voucher_amount integerValue];
-            NSString *voucherString = [formatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
+            NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
             voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
             _voucherAmountLabel.text = voucherString;
             _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
@@ -3157,7 +3148,7 @@
                 totalInteger = 0;
             }
             _cart.grand_total = [NSString stringWithFormat:@"%zd",totalInteger];
-            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
+            _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
             [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
             [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
             [_tableView reloadData];
@@ -3424,6 +3415,37 @@
 
 - (void)refreshCartAfterCancelPayment {
     
+}
+
+#pragma mark - Sending data to GA 
+- (void)sendingProductDataToGA {
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:@"Ecommerce"
+                                                                           action:@"Checkout"
+                                                                            label:nil
+                                                                            value:nil];
+    
+    // Add the step number and additional info about the checkout to the action.
+    GAIEcommerceProductAction *action = [[GAIEcommerceProductAction alloc] init];
+    [action setAction:kGAIPACheckout];
+    [action setCheckoutStep:(_indexPage == 0)?@1:@2];
+    [action setCheckoutOption:[_dataInput objectForKey:@"gateway"]];
+    
+    for(TransactionCartList *list in _cart.list) {
+        for(ProductDetail *detailProduct in list.cart_products) {
+            GAIEcommerceProduct *product = [[GAIEcommerceProduct alloc] init];
+            [product setId:detailProduct.product_id?:@""];
+            [product setName:detailProduct.product_name?:@""];
+            [product setCategory:[NSString stringWithFormat:@"%zd", detailProduct.product_department_id]];
+            [product setPrice:@([detailProduct.product_price integerValue])];
+            [product setQuantity:@([detailProduct.product_quantity integerValue])];
+            
+            [builder addProduct:product];
+            [builder setProductAction:action];
+        }
+    }
+    [tracker send:[builder build]];
 }
 
 @end

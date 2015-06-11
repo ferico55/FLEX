@@ -77,6 +77,8 @@
 {
     [super viewDidLoad];
     
+    _data = [NSMutableDictionary new];
+    
     if (_unloadSelectedIndex != -1) {
         [self setViewControllers:_unloadViewControllers];
         
@@ -160,7 +162,7 @@
 
 -(void)setData:(NSDictionary *)data
 {
-    _data = data;
+    _data = [data mutableCopy];
     
     if (data) {
         if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)])
@@ -459,6 +461,7 @@
                 }
                 vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:d_id};
                 vc.delegate = self;
+                vc.selectedCategoryID = [_data[@"selected_id"] integerValue];
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }
@@ -535,6 +538,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                         object:nil
                                                       userInfo:userInfo];
+    
+    [_data setObject:userInfo[kTKPDCONTROLLER_DATADEPARTMENTIDKEY] forKey:@"selected_id"];
 }
 
 #pragma mark - Notification setsegmentcontroll

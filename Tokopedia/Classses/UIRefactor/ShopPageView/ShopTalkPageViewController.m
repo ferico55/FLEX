@@ -427,6 +427,11 @@ UIAlertViewDelegate>
                                                                       path:kTKPDDETAILSHOP_APIPATH
                                                                 parameters:[param encrypt]];
     
+    if (!_isrefreshview) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
+    
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [_timer invalidate];
         _timer = nil;
