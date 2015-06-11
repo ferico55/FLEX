@@ -113,6 +113,7 @@
     [_background addGestureRecognizer:gesture];
     _gesture = gesture;
     
+    self.frame = CGRectMake(0, self.frame.origin.y, _window.bounds.size.width, self.bounds.size.height);
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	

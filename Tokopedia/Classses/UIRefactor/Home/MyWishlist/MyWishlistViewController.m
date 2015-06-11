@@ -9,19 +9,18 @@
 #import "string_home.h"
 #import "string_product.h"
 #import "detail.h"
-#import "GeneralProductCell.h"
-#import "ProductFeedViewController.h"
-#import "GeneralProductCell.h"
-#import "ProductFeed.h"
+
+#import "MyWishlistViewController.h"
 #import "DetailProductViewController.h"
 #import "TokopediaNetworkManager.h"
-#import "LoadingView.h"
 #import "NoResultView.h"
 
 #import "GeneralProductCollectionViewCell.h"
 #import "NavigateViewController.h"
+#import "WishListObject.h"
+#import "WishListObjectList.h"
 
-@interface ProductFeedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
+@interface MyWishlistViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -31,13 +30,13 @@
 
 
 typedef enum TagRequest {
-    ProductFeedTag
+    ProductTag
 } TagRequest;
 
 @end
 
 
-@implementation ProductFeedViewController {
+@implementation MyWishlistViewController {
     NSInteger _page;
     NSInteger _itemPerPage;
     
@@ -72,14 +71,16 @@ typedef enum TagRequest {
     
     //todo with variable
     _product = [NSMutableArray new];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
     _isNoData = (_product.count > 0);
     _page = 1;
     _itemPerPage = kTKPDHOMEHOTLIST_LIMITPAGE;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
     
     //todo with view
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
+    
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
@@ -111,14 +112,14 @@ typedef enum TagRequest {
     //todo with network
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    _networkManager.tagRequest = ProductFeedTag;
+    _networkManager.tagRequest = ProductTag;
     [_networkManager doRequest];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - Product Feed";
+    self.screenName = @"Home - Wishlist";
 }
 
 #pragma mark - Collection Delegate
@@ -131,7 +132,7 @@ typedef enum TagRequest {
     NSString *cellid = @"GeneralProductCollectionViewIdentifier";
     GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
 
-    ProductFeedList *list = [_product objectAtIndex:indexPath.row];
+    WishListObjectList *list = [_product objectAtIndex:indexPath.row];
     cell.productPrice.text = list.product_price;
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
@@ -141,9 +142,8 @@ typedef enum TagRequest {
     cell.productName.attributedText = attributedString;
     cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.productShop.text = list.shop_name?:@"";
-    cell.backgroundColor = [UIColor blueColor];
     
-    if([list.shop_gold_status isEqualToString:@"1"]) {
+    if(list.shop_gold_status == 1) {
         cell.goldShopBadge.hidden = NO;
     } else {
         cell.goldShopBadge.hidden = YES;
@@ -189,7 +189,7 @@ typedef enum TagRequest {
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    ProductFeedList *product = [_product objectAtIndex:indexPath.row];
+    WishListObjectList *product = [_product objectAtIndex:indexPath.row];
     [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
 }
 
@@ -220,9 +220,9 @@ typedef enum TagRequest {
 
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:kTKPDHOMEPRODUCTFEEDACT, kTKPDHOME_APIACTIONKEY, @(_page),kTKPDHOME_APIPAGEKEY, @(kTKPDHOMEHOTLIST_LIMITPAGE), kTKPDHOME_APILIMITPAGEKEY, nil];
-    
-    return parameter;
+    return @{kTKPDHOME_APIACTIONKEY      :   kTKPDGET_WISH_LIST,
+             kTKPDHOME_APIPAGEKEY        :       @(_page),
+             kTKPDHOME_APILIMITPAGEKEY   :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
 }
 
 - (NSString *)getPath:(int)tag {
@@ -232,7 +232,7 @@ typedef enum TagRequest {
 - (NSString *)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
-    ProductFeed *list = stat;
+    WishListObject *list = stat;
     
     return list.status;
 }
@@ -242,45 +242,70 @@ typedef enum TagRequest {
     _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductFeed class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[WishListObject class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductFeedResult class]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ProductFeedList class]];
+    
+    
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[WishListObjectList class]];
     [listMapping addAttributeMappingsFromArray:@[
-                                                 kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY,
-                                                 kTKPDDETAILCATALOG_APIPRODUCTIDKEY,
-                                                 kTKPDDETAILCATALOG_APISHOPGOLDSTATUSKEY,
-                                                 kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                 kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                 kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
-                                                 API_PRODUCT_NAME_KEY
+                                                 KTKPDSHOP_GOLD_STATUS,
+                                                 KTKPDSHOP_ID,
+                                                 KTKPDPRODUCT_RATING_POINT,
+                                                 KTKPDPRODUCT_DEPARTMENT_ID,
+                                                 KTKPDPRODUCT_ETALASE,
+                                                 KTKPDSHOP_FEATURED_SHOP,
+                                                 KTKPDSHOP_URL,
+                                                 KTKPDPRODUCT_STATUS,
+                                                 KTKPDPRODUCT_ID,
+                                                 KTKPDPRODUCT_IMAGE_FULL,
+                                                 KTKPDPRODUCT_CURRENCY_ID,
+                                                 KTKPDPRODUCT_RATING_DESC,
+                                                 KTKPDPRODUCT_CURRENCY,
+                                                 KTKPDPRODUCT_TALK_COUNT,
+                                                 KTKPDPRODUCT_PRICE_NO_IDR,
+                                                 KTKPDPRODUCT_IMAGE,
+                                                 KTKPDPRODUCT_PRICE,
+                                                 KTKPDPRODUCT_SOLD_COUNT,
+                                                 KTKPDPRODUCT_RETURNABLE,
+                                                 KTKPDSHOP_LOCATION,
+                                                 KTKPDPRODUCT_NORMAL_PRICE,
+                                                 KTKPDPRODUCT_IMAGE_300,
+                                                 KTKPDSHOP_NAME,
+                                                 KTKPDPRODUCT_REVIEW_COUNT,
+                                                 KTKPDSHOP_IS_OWNER,
+                                                 KTKPDPRODUCT_URL,
+                                                 KTKPDPRODUCT_NAME
                                                  ]];
     
     //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[WishListObjectResult class]];
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
+    
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    
+    
+    
     //register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
-    
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-    
     return _objectmanager;
+
 }
 
 - (void)actionBeforeRequest:(int)tag {
@@ -289,7 +314,7 @@ typedef enum TagRequest {
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    ProductFeed *feed = [result objectForKey:@""];
+    WishListObject *feed = [result objectForKey:@""];
     
     if(_page == 1) {
         _product = [feed.result.list mutableCopy];

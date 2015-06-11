@@ -15,12 +15,12 @@
 #import "WishListObjectList.h"
 #import "NoResultView.h"
 #import "WishListObjectResult.h"
-@interface WishListViewController()<LoadingViewDelegate>
+
+@interface WishListViewController()<LoadingViewDelegate, UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, TokopediaNetworkManagerDelegate>
 
 @end
 
-@implementation WishListViewController
-{
+@implementation WishListViewController {
     NSMutableArray *product;
     int page, limit, requestCount;
     BOOL isNoData, isRefreshView, hasInitData;
@@ -39,7 +39,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //todo with variable
     isNoData = YES;
+    
+    //todo with view
+    
+    //todo with network
+    
+
     operationQueue = [NSOperationQueue new];
     tokoPediaNetworkManager = [TokopediaNetworkManager new];
     tokoPediaNetworkManager.delegate = self;
