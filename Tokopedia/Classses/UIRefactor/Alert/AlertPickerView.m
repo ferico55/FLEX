@@ -18,6 +18,9 @@
 @end
 
 @implementation AlertPickerView
+{
+    UITapGestureRecognizer *_newGesture;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -134,9 +137,8 @@
 		[_window addSubview:_background];
 	}
     _background.userInteractionEnabled = YES;
-    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
-    [_background addGestureRecognizer:gesture];
-    _gesture = gesture;
+    _newGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
+    [_background addGestureRecognizer:_newGesture];
     
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
@@ -158,6 +160,7 @@
     [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     if(self.superview != nil){
+        [_background removeGestureRecognizer:_newGesture];
         [self dismissindex:buttonIndex silent:NO animated:animated];
     }
 }
