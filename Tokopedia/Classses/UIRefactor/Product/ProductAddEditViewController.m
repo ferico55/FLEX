@@ -134,6 +134,7 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumbProductImageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *defaultImageLabels;
 
+@property (weak, nonatomic) IBOutlet UIView *productNameViewCell;
 
 @end
 
@@ -579,6 +580,12 @@
                 break;
             case 1:
                 cell = _section1TableViewCell[indexPath.row];
+                if (indexPath.row == BUTTON_PRODUCT_PRODUCT_NAME) {
+                    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+                    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+                        _productNameViewCell.hidden = NO;
+                    }
+                }
                 if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
                     NSString *departmentTitle = @"Pilih Kategori";
                     if (breadcrumb.department_name && ![breadcrumb.department_name isEqualToString:@""]) {
@@ -935,7 +942,8 @@
         [data addEntriesFromDictionary:_data];
         [self setDefaultData:data];
         
-        
+        [_networkManagerCatalog doRequest];
+
         if(_detailVC)
         {
             NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
@@ -955,6 +963,7 @@
             _detailVC.shopHasTerm = _product.result.info.shop_has_terms;
             _detailVC.generateHost = _generateHost;
             _detailVC.delegate = self;
+            
             //_detailVC.isNeedRequestAddProductPicture = YES;
         }
         
@@ -1561,6 +1570,7 @@
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     if (textField == _productNameTextField) {
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+        [self requestCatalog];
         if (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
             product.product_name = textField.text;
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
@@ -1663,7 +1673,6 @@
     }
     else if (textField == _productNameTextField) {
 #define PRODUCT_NAME_CHARACTER_LIMIT 70
-        [self performSelector:@selector(requestCatalog) withObject:nil afterDelay:1.0f];
         return textField.text.length + (string.length - range.length) <= PRODUCT_NAME_CHARACTER_LIMIT;
     }
     else
@@ -1770,6 +1779,9 @@
         
         NSArray *images = result.product_images;
         NSInteger imageCount = images.count;
+        if (imageCount>5) {
+            imageCount = 5;
+        }
         NSInteger addProductImageCount = (imageCount<_addImageButtons.count)?imageCount:imageCount-1;
         if (_generateHost.result.generated_host != nil) {
             ((UIButton*)_addImageButtons[addProductImageCount]).enabled = YES;
