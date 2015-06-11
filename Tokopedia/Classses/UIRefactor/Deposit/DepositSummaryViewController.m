@@ -136,7 +136,6 @@
     
     _operationQueue = [NSOperationQueue new];
     _depositSummary = [NSMutableArray new];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     _noResult = [NoResult new];
     
     _table.delegate = self;
@@ -174,6 +173,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Withdraw Page";
+    
+    
+    if(_noResultView == nil)
+        _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
 }
 
 
@@ -191,6 +194,7 @@
         cell = (DepositSummaryCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if (cell == nil) {
             cell = [DepositSummaryCell newcell];
+            ((DepositSummaryCell *) cell).contentView.backgroundColor = [UIColor redColor];
         }
         
         if (_depositSummary.count > indexPath.row) {
@@ -335,8 +339,11 @@
                     [_withdrawalButton addSubview:_infoReviewSaldo];
                     CGRect newFrame4 = _infoReviewSaldo.frame;
                     newFrame4.origin.y += 47;
+                    newFrame4.size.width = self.view.bounds.size.width;
                     newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
                     _infoReviewSaldo.frame = newFrame4;
+                    constraintHeightHeader.constant += 47;
+                    constraintHeightSuperHeader.constant += 47;
                 }
             }
             
