@@ -7,6 +7,7 @@
 //
 
 #import "TxOrderStatusCell.h"
+#import "TextMenu.h"
 #import "string_tx_order.h"
 
 @implementation TxOrderStatusCell
@@ -49,6 +50,11 @@
     frame.origin.y = _statusView.frame.origin.y + _statusView.frame.size.height;
     _threeButtonsView.frame = frame;
     [_containerView addSubview:_threeButtonsView];
+    
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        _statusTv.textContainer.lineFragmentPadding = 0;
+        _statusTv.textContainerInset = UIEdgeInsetsZero;
+    }
 }
 
 
@@ -158,7 +164,7 @@
     [super layoutSubviews];
     
     [self.contentView layoutIfNeeded];
-    self.statusLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.statusLabel.frame);
+//    self.statusTv.preferredMaxLayoutWidth = CGRectGetWidth(self.statusTv.frame);
 }
 
 

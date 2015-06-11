@@ -475,12 +475,12 @@
     if(conversation.action_by == ACTION_BY_BUYER)
     {
         //profile
-        [_navigate navigateToProfileFromViewController:self withUserID:@""];
+        NSArray *query = [[[NSURL URLWithString:conversation.user_url] path] componentsSeparatedByString: @"/"];
+        [_navigate navigateToProfileFromViewController:self withUserID:[query objectAtIndex:2]?:@""];
     }
     else if(conversation.action_by == ACTION_BY_SELLER)
     {
-        //shop
-        [_navigate navigateToShopFromViewController:self withShopID:@""];
+        [_navigate navigateToProfileFromViewController:self withUserID:@""];
     }
     else if(conversation.action_by == ACTION_BY_TOKOPEDIA)
     {
@@ -634,17 +634,10 @@
     cell.timeDateLabel.text = (lastConversation == _addedLastConversation)?_resolutionDetail.resolution_last.last_create_time_str:sinceDateString;
     
     [cell hideAllViews];
-    if ([self isShowTwoButton:conversation])
-    {
-        cell.twoButtonView.hidden = NO;
-        [self adjustTwoButtonsTitleConversation:conversation cell:cell];
 
-    }
-    else if ([self isShowOneButton:conversation atIndexPath:indexPath])
-    {
-        cell.oneButtonView.hidden = NO;
-        [self adjustOneButtonTitleConversation:conversation cell:cell];
-    }
+    
+    UIColor *lastCellColour = [UIColor colorWithRed:255.f/255.f green:243.f/255.f blue:224.f/255.f alpha:1];
+    UIColor *buttonCellColour = [UIColor colorWithRed:249.f/255.f green:249.f/255.f blue:249.f/255.f alpha:1];
     
     [cell.markLabel setCustomAttributedText:cell.markLabel.text];
     cell.indexPath = indexPath;
@@ -659,7 +652,31 @@
     else {
         cell.oneButtonConstraintHeight.constant = 44;
         cell.twoButtonConstraintHeight.constant = 44;
+        if ([self isShowTwoButton:conversation])
+        {
+            cell.twoButtonView.hidden = NO;
+            [self adjustTwoButtonsTitleConversation:conversation cell:cell];
+            
+        }
+        else if ([self isShowOneButton:conversation atIndexPath:indexPath])
+        {
+            cell.oneButtonView.hidden = NO;
+            [self adjustOneButtonTitleConversation:conversation cell:cell];
+        }
     }
+    
+    if (_listResolutionConversation.count>0)
+    {
+        if (indexPath.row == (_listResolutionConversation.count-1))
+        {
+            cell.titleView.backgroundColor = lastCellColour;
+        }
+        else
+        {
+            cell.titleView.backgroundColor = buttonCellColour;
+        }
+    }
+
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -1399,7 +1416,13 @@
     _loadMoreButton.enabled = YES;
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+//{
+////    _tableView.tableFooterView = nil;
+////    [_act stopAnimating];
+//}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
 {
     _tableView.tableFooterView = nil;
     [_act stopAnimating];
@@ -1507,11 +1530,7 @@
     BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(resolution.message_error)
-        {
-            [self requestFailureActionWithErrorMessage:resolution.message_error];
-        }
-        else if (resolution.result.is_success == 1) {
+        if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
             [alert show];
             
@@ -1526,7 +1545,7 @@
         }
         else
         {
-            [self requestFailureActionWithErrorMessage:@[@"Error"]];
+            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
         }
     }
     else
@@ -1647,11 +1666,7 @@
     BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(resolution.message_error)
-        {
-            [self requestFailureEditReceiptWithErrorMessage:resolution.message_error];
-        }
-        else if (resolution.result.is_success == 1) {
+        if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
             [alert show];
             
@@ -1659,7 +1674,7 @@
         }
         else
         {
-            [self requestFailureEditReceiptWithErrorMessage:@[@"Error"]];
+            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
         }
     }
     else
@@ -1787,18 +1802,14 @@
     
     if (status) {
         [self refreshRequest];
-        if(resolution.message_error)
-        {
-            [self requestFailureReplayWithErrorMessage:resolution.message_error];
-        }
-        else if (resolution.result.is_success == 1) {
+        if (resolution.result.is_success == 1) {
             NSArray *successMessage = isChangeSolution?@[@"Anda telah berhasil mengubah solusi"]:@[@"Sukses mengirim pesan diskusi"];
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:successMessage delegate:self];
             [alert show];
         }
         else
         {
-            [self requestFailureReplayWithErrorMessage:@[@"Error"]];
+            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
         }
     }
     else
@@ -1834,10 +1845,12 @@
     else
     {
         if (_resolutionDetail.resolution_by.by_customer == 1) {
-            [_navigate navigateToShopFromViewController:self withShopID:@""]; //TODO
+            [_navigate navigateToProfileFromViewController:self withUserID:@""];
         }
         else if (_resolutionDetail.resolution_by.by_seller == 1) {
-            [_navigate navigateToProfileFromViewController:self withUserID:@""];
+            NSArray *query = [[[NSURL URLWithString:_resolutionDetail.resolution_customer.customer_url] path] componentsSeparatedByString: @"/"];
+            [_navigate navigateToProfileFromViewController:self withUserID:[query objectAtIndex:2]?:@""];
+            
         }
     }
 }

@@ -12,6 +12,7 @@
 @protocol SettingAddressDetailViewControllerDelegate <NSObject>
 @required
 -(void)DidTapButton:(UIButton*)button withdata:(NSDictionary*)data;
+-(void)setDefaultAddressData:(NSDictionary*)data;
 @end
 
 @interface SettingAddressDetailViewController : UIViewController

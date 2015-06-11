@@ -13,6 +13,7 @@
 #import "LoginViewController.h"
 #import "CreatePasswordViewController.h"
 #import "UserAuthentificationManager.h"
+#import "HomeTabViewController.h"
 
 #import "TKPDSecureStorage.h"
 #import "StickyAlertView.h"
@@ -22,6 +23,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
+#import "AppsFlyerTracker.h"
+
 
 @interface LoginViewController () <FBLoginViewDelegate, LoginViewDelegate, CreatePasswordDelegate> {
     
@@ -495,19 +498,22 @@
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
             [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
             
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             } else {
+                UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
                 [self.tabBarController setSelectedIndex:0];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                    object:nil
-                                                                  userInfo:nil];
+                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
             }
-        
-            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                object:nil
+                                                              userInfo:nil];
         } else if ([_login.result.status isEqualToString:@"1"]) {
             
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -523,6 +529,8 @@
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
             [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
@@ -575,6 +583,7 @@
             
             //add user login to GA
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
             [tracker set:@"&uid" value:_login.result.user_id];
             // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
@@ -582,17 +591,22 @@
                                                                    label:nil              // Event label
                                                                    value:nil] build]];    // Event value
             
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+            
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             } else {
+                UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
                 [self.tabBarController setSelectedIndex:0];
+                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil
                                                               userInfo:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else
         {

@@ -248,6 +248,7 @@
         if (cell == nil) {
             cell = [GeneralTalkCell newcell];
             ((GeneralTalkCell*)cell).delegate = self;
+            cell.contentView.backgroundColor = [UIColor redColor];
         }
         
         if (_talkList.count > indexPath.row) {
@@ -531,7 +532,7 @@
                 
             } else {
                 _isnodata = YES;
-                _table.tableFooterView = _noResultView;
+                _table.tableFooterView = _noResultView.view;
             }
         }
         else{
@@ -549,13 +550,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = _noResultView;
+                    _table.tableFooterView = _noResultView.view;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = _noResultView;
+                _table.tableFooterView = _noResultView.view;
             }
         }
     }

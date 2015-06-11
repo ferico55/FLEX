@@ -12,7 +12,9 @@
 #import "Shop.h"
 
 @interface DetailReviewViewController : UIViewController
-
+{
+    IBOutlet UIScrollView *scrollContent;
+}
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong,nonatomic) Shop *shop;
 @property (strong,nonatomic) NSString *is_owner;

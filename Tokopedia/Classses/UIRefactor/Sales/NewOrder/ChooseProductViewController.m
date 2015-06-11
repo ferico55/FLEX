@@ -12,6 +12,7 @@
 
 @interface ChooseProductViewController () <UITableViewDataSource, UITableViewDelegate> {
     NSMutableArray *_selectedProducts;
+    NSInteger _numberOfSelectedProduct;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -34,13 +35,14 @@
     self.navigationItem.leftBarButtonItem = cancelButton;
 
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                                     style:UIBarButtonItemStyleBordered
-                                                                    target:self
-                                                                    action:@selector(tap:)];
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
     doneButton.tag = 2;
     self.navigationItem.rightBarButtonItem = doneButton;
     
     _selectedProducts = [[NSMutableArray alloc] initWithArray:_products];
+    _numberOfSelectedProduct = _selectedProducts.count;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -123,10 +125,20 @@
         cell.checkBoxImageView.image = [UIImage imageNamed:@"icon_checkmark.png"];
         cell.checkBoxImageView.layer.borderWidth = 0;
         [_selectedProducts replaceObjectAtIndex:indexPath.row withObject:[_products objectAtIndex:indexPath.row]];
+        _numberOfSelectedProduct++;
     } else {
         cell.checkBoxImageView.image = nil;
         cell.checkBoxImageView.layer.borderWidth = 1;
         [_selectedProducts replaceObjectAtIndex:indexPath.row withObject:[NSNull null]];
+        _numberOfSelectedProduct--;
+    }
+    
+    if (_numberOfSelectedProduct == 0) {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.rightBarButtonItem.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+    } else {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
     }
 }
 
@@ -139,18 +151,22 @@
         if (button.tag == 1) {
             [self dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
-            [self.delegate didSelectProducts:_selectedProducts];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            if (_numberOfSelectedProduct > 0) {
+                [self.delegate didSelectProducts:_selectedProducts];
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
         }
     } else if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
         if ([button.titleLabel.text isEqualToString:@"Select All"]) {
             [button setTitle:@"Deselect All" forState:UIControlStateNormal];
             _selectedProducts = [NSMutableArray arrayWithArray:_products];
+            _numberOfSelectedProduct = _selectedProducts.count;
         } else {
             [button setTitle:@"Select All" forState:UIControlStateNormal];
             for (int i = 0; i < _selectedProducts.count; i++) {
                 [_selectedProducts replaceObjectAtIndex:i withObject:[NSNull null]];
+                _numberOfSelectedProduct = 0;
             }
         }
         [self.tableView reloadData];

@@ -841,8 +841,9 @@
     [_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:)withObject:@(YES)];
 }
 
-- (void)failedGenerateHost {
-    
+- (void)failedGenerateHost:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
 }
 
 

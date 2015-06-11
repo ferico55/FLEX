@@ -199,7 +199,9 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    CatalogSectionHeaderView *view = [CatalogSectionHeaderView new];
+    NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView" owner:nil options:0];
+    CatalogSectionHeaderView *view = [tempArr objectAtIndex:0];
+    
     view.titleLabel.text = [_specificationTitles objectAtIndex:section];
     return view;
 }
@@ -455,7 +457,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                     [catalogImageView setImage:image];
-                    [catalogImageView setContentMode:UIViewContentModeScaleAspectFill];
+                    [catalogImageView setContentMode:UIViewContentModeScaleAspectFit];
 #pragma clang diagnostic pop
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                     [catalogImageView setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];

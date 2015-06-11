@@ -21,5 +21,7 @@
 @property (nonatomic, weak) IBOutlet id<CategoryMenuViewDelegate> delegate;
 
 @property (strong,nonatomic)NSDictionary *data;
+@property (nonatomic) NSInteger selectedCategoryID;
+@property (nonatomic, strong) NSString *selectedCategoryName;
 
 @end

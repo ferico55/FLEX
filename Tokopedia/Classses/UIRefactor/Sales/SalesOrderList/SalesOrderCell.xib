@@ -37,9 +37,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="51"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INV/20150113/XV/I/8327373" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PrC-Kp-7oA">
-                                        <rect key="frame" x="10" y="8" width="174.5" height="21"/>
+                                        <rect key="frame" x="10" y="8" width="190" height="21"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="tcF-p2-yrK"/>
+                                            <constraint firstAttribute="height" constant="21" id="PdL-Os-eBf"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                                         <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -59,8 +59,8 @@
                                         <rect key="frame" x="210" y="24" width="80" height="18"/>
                                         <color key="backgroundColor" red="0.0" green="0.47450980392156861" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="Afg-gX-5bP"/>
-                                            <constraint firstAttribute="width" constant="80" id="Z8O-W7-dVO"/>
+                                            <constraint firstAttribute="width" constant="80" id="U0x-IF-cOg"/>
+                                            <constraint firstAttribute="height" constant="18" id="zYe-6b-g49"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="10"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -94,19 +94,20 @@
                                 <constraints>
                                     <constraint firstItem="dLS-pK-Cm4" firstAttribute="leading" secondItem="pNe-LS-TvB" secondAttribute="leading" constant="10" id="0KG-Ml-rK2"/>
                                     <constraint firstItem="hVC-C2-pGX" firstAttribute="top" secondItem="pNe-LS-TvB" secondAttribute="top" id="3xg-zo-9hx"/>
-                                    <constraint firstItem="PrC-Kp-7oA" firstAttribute="top" secondItem="hVC-C2-pGX" secondAttribute="bottom" constant="7" id="5tS-6T-ZwB"/>
                                     <constraint firstAttribute="bottom" secondItem="KDg-04-LxQ" secondAttribute="bottom" id="8yo-gQ-oPg"/>
-                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="top" secondItem="xlz-Gd-6D1" secondAttribute="bottom" constant="3" id="Ayt-nG-5qq"/>
                                     <constraint firstItem="hVC-C2-pGX" firstAttribute="leading" secondItem="pNe-LS-TvB" secondAttribute="leading" id="BaC-oU-SWv"/>
+                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="leading" secondItem="dLS-pK-Cm4" secondAttribute="trailing" constant="10" id="H5c-sB-0tW"/>
                                     <constraint firstAttribute="trailing" secondItem="KDg-04-LxQ" secondAttribute="trailing" id="HsR-OX-zXd"/>
-                                    <constraint firstItem="PrC-Kp-7oA" firstAttribute="leading" secondItem="pNe-LS-TvB" secondAttribute="leading" constant="10" id="KE0-wY-JxF"/>
+                                    <constraint firstItem="PrC-Kp-7oA" firstAttribute="top" secondItem="hVC-C2-pGX" secondAttribute="bottom" constant="7" id="KfI-Gf-5NN"/>
                                     <constraint firstItem="KDg-04-LxQ" firstAttribute="leading" secondItem="pNe-LS-TvB" secondAttribute="leading" id="Ky2-6Z-Skg"/>
                                     <constraint firstItem="dLS-pK-Cm4" firstAttribute="top" secondItem="hVC-C2-pGX" secondAttribute="bottom" constant="26" id="Lf7-Ir-eae"/>
+                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="top" secondItem="xlz-Gd-6D1" secondAttribute="bottom" constant="3" id="O56-6O-xOM"/>
                                     <constraint firstAttribute="trailing" secondItem="xlz-Gd-6D1" secondAttribute="trailing" constant="10" id="OXH-TA-auD"/>
                                     <constraint firstAttribute="trailing" secondItem="hVC-C2-pGX" secondAttribute="trailing" id="Q8t-Ht-7lX"/>
-                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="leading" secondItem="dLS-pK-Cm4" secondAttribute="trailing" constant="10" id="aUj-U9-gbC"/>
                                     <constraint firstAttribute="height" constant="51" id="caa-Jw-RuP"/>
-                                    <constraint firstAttribute="trailing" secondItem="M7n-Xq-FLP" secondAttribute="trailing" constant="10" id="fuZ-cM-UAx"/>
+                                    <constraint firstItem="PrC-Kp-7oA" firstAttribute="leading" secondItem="pNe-LS-TvB" secondAttribute="leading" constant="10" id="dac-rI-bli"/>
+                                    <constraint firstItem="M7n-Xq-FLP" firstAttribute="leading" secondItem="PrC-Kp-7oA" secondAttribute="trailing" constant="10" id="h2k-FZ-3z6"/>
+                                    <constraint firstAttribute="trailing" secondItem="M7n-Xq-FLP" secondAttribute="trailing" constant="10" id="kGb-6Z-1OV"/>
                                     <constraint firstItem="xlz-Gd-6D1" firstAttribute="top" secondItem="hVC-C2-pGX" secondAttribute="bottom" constant="8" id="lGA-Ot-zEd"/>
                                 </constraints>
                             </view>
@@ -218,7 +219,7 @@
                                 <rect key="frame" x="0.0" y="182" width="300" height="44"/>
                                 <subviews>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkI-l2-Vuj">
-                                        <rect key="frame" x="0.0" y="0.0" width="149.5" height="43"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="43"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-6" minY="-2" maxX="0.0" maxY="0.0"/>
@@ -231,7 +232,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oyH-rR-Xdy">
-                                        <rect key="frame" x="151" y="0.0" width="149" height="43"/>
+                                        <rect key="frame" x="150" y="0.0" width="149.5" height="43"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>

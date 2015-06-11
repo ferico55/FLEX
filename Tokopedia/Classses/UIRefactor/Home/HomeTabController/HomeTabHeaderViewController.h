@@ -10,4 +10,5 @@
 
 @interface HomeTabHeaderViewController : UIViewController
 
+- (void)tapButton:(UIButton*)button;
 @end

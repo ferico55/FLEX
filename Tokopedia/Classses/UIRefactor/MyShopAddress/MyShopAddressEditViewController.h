@@ -8,7 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ShopAddressEditViewControllerDelegate <NSObject>
+@optional
+- (void)successEditAddress:(Address *)address;
+@end
+
 @interface MyShopAddressEditViewController : UIViewController
+
+@property (nonatomic, weak) IBOutlet id<ShopAddressEditViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSDictionary *data;
 

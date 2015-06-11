@@ -36,6 +36,28 @@
     }
 }
 
+- (IBAction)gesture:(UITapGestureRecognizer *)sender
+{
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan: {
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            UIView* view = [_window.subviews lastObject];
+            if (self == view) {
+                [self dismissWithClickedButtonIndex:-1 animated:YES];
+            }
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+}
+
 #pragma mark - Picker Data Source
 // The number of columns of data
 - (int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -111,6 +133,12 @@
 	if (_background.superview == nil) {	//fix dismiss - show race condition
 		[_window addSubview:_background];
 	}
+    _background.userInteractionEnabled = YES;
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
+    [_background addGestureRecognizer:gesture];
+    _gesture = gesture;
+    
+    self.frame = CGRectMake(0, self.frame.origin.y, _window.bounds.size.width, self.bounds.size.height);
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	

@@ -506,6 +506,7 @@
         SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
         controller.delegate = self;
         controller.shipmentCouriers = _shipmentCouriers;
+        controller.order = _transaction;
         navigationController.viewControllers = @[controller];
         
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -786,6 +787,14 @@
                                                         green:121.0/255.0
                                                          blue:255.0/255.0
                                                         alpha:1];
+    }
+}
+
+- (void)successConfirmOrder:(OrderTransaction *)order
+{
+    [self.navigationController popViewControllerAnimated:NO];
+    if ([self.delegate respondsToSelector:@selector(successConfirmOrder:)]) {
+        [self.delegate successConfirmOrder:_transaction];
     }
 }
 

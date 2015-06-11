@@ -856,11 +856,37 @@
 }
 
 #pragma mark - Actions
-
-- (void)tap:(id)sender
+- (void)validateShipment
 {
-    if(createShopViewController != nil)
-    {
+    NSMutableArray *errorMessage = [NSMutableArray new];
+    if(_showJNEExtraFeeTextField) {
+        if(((long)_shipment.jne.jne_fee) == 0) {
+            [errorMessage addObject:@"Biaya Tambahan JNE harus diisi."];
+        }
+        else if(((long)_shipment.jne.jne_fee) > 5000) {
+            [errorMessage addObject:@"Maksimum Biaya JNE adalah Rp 5.000,-"];
+        }
+    }
+    
+    if(_showTikiExtraFee) {
+        if(((long)_shipment.tiki.tiki_fee) == 0) {
+            [errorMessage addObject:@"Biaya Tambahan Tiki harus diisi."];
+        }
+        else if(((long)_shipment.tiki.tiki_fee) > 5000) {
+            [errorMessage addObject:@"Maksimum Biaya Tiki adalah Rp 5.000,-"];
+        }
+    }
+    
+    if(_showPosExtraFee) {
+        if(((long)_shipment.pos.pos_fee) == 0) {
+            [errorMessage addObject:@"Biaya Tambahan Pos Indonesia harus diisi."];
+        }
+        else if(((long)_shipment.pos.pos_fee) > 5000) {
+            [errorMessage addObject:@"Maksimum Biaya Pos Indonesia adalah Rp 5.000,-"];
+        }
+    }
+    
+    if(errorMessage.count == 0) {
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *_auth = [_userManager getUserLoginData];
         
@@ -869,6 +895,19 @@
         myShopPaymentViewController.arrDataPayment = _shipment.payment_options;
         myShopPaymentViewController.myShopShipmentTableViewController = self;
         [self.navigationController pushViewController:myShopPaymentViewController animated:YES];
+    }
+    else {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
+    }
+}
+
+
+- (void)tap:(id)sender
+{
+    if(createShopViewController != nil)
+    {
+        [self validateShipment];
     }
     else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         [self configureRestKitAction];

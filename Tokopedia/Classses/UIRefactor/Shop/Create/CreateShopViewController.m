@@ -67,12 +67,12 @@
     {
         if (_placeHolderLabel == nil )
         {
-            _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, self.bounds.size.width - 16, 0)];
+            _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 8, self.bounds.size.width - 16, 0)];
             _placeHolderLabel.lineBreakMode = NSLineBreakByWordWrapping;
             _placeHolderLabel.numberOfLines = 0;
             _placeHolderLabel.font = self.font;
+            _placeHolderLabel.textColor = [UIColor colorWithRed:200/255.0f green:200/255.0f blue:206/255.0f alpha:1.0f];
             _placeHolderLabel.backgroundColor = [UIColor clearColor];
-            _placeHolderLabel.textColor = self.placeholderColor;
             _placeHolderLabel.alpha = 0;
             _placeHolderLabel.tag = 999;
             [self addSubview:_placeHolderLabel];
@@ -625,6 +625,7 @@
             lblUnggahGambar.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
             lblUnggahGambar.backgroundColor = [UIColor clearColor];
             lblUnggahGambar.textColor = [UIColor blueColor];
+            lblUnggahGambar.userInteractionEnabled = YES;
             [viewImgGambar addSubview:lblUnggahGambar];
             
             int diameterImage = 100;
@@ -646,6 +647,7 @@
             
             
             [imgGambar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage:)]];
+            [lblUnggahGambar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage:)]];
             [viewImgGambar addSubview:imgGambar];
             viewImgGambar.userInteractionEnabled = YES;
         }
@@ -671,7 +673,7 @@
                 
                 if(txtNamaToko == nil)
                 {
-                    txtNamaToko = [[UITextField alloc] initWithFrame:CGRectMake(CPaddingLeft+7, 0, tableView.bounds.size.width-(CPaddingLeft*2), CHeightHeaderCell)];
+                    txtNamaToko = [[UITextField alloc] initWithFrame:CGRectMake(CPaddingLeft, 0, tableView.bounds.size.width-(CPaddingLeft*2), CHeightHeaderCell)];
                     txtNamaToko.placeholder = CStringPlaceHolderNamaToko;
                     txtNamaToko.tag = CTagNamaToko;
                     txtNamaToko.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
@@ -701,6 +703,12 @@
                     txtSlogan.createShopViewController = self;
                     txtSlogan.tag = CTagSlogan;
                     txtSlogan.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
+                    
+                    if([txtSlogan respondsToSelector:@selector(textContainerInset)]) {
+                        txtSlogan.textContainerInset = UIEdgeInsetsMake(txtSlogan.textContainerInset.top, 0, 0, txtSlogan.textContainerInset.top);
+                        txtSlogan.textContainer.lineFragmentPadding = 0;
+                    }
+                    
                     
                     int diameter = 30;
                     lblCountSlogan = [[UILabel alloc] initWithFrame:CGRectMake(txtSlogan.frame.origin.x+txtSlogan.bounds.size.width-diameter, txtSlogan.frame.origin.y+txtSlogan.bounds.size.height-diameter, diameter, diameter)];
@@ -733,6 +741,12 @@
                     txtDesc.tag = CTagDeskripsi;
                     txtDesc.createShopViewController = self;
                     txtDesc.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
+                    
+                    if([txtDesc respondsToSelector:@selector(textContainerInset)]) {
+                        txtDesc.textContainerInset = UIEdgeInsetsMake(txtDesc.textContainerInset.top, 0, 0, txtDesc.textContainerInset.top);
+                        txtDesc.textContainer.lineFragmentPadding = 0;
+                    }
+                    
                     
                     int diameter = 30;
                     lblCountDescripsi = [[UILabel alloc] initWithFrame:CGRectMake(txtDesc.frame.origin.x+txtDesc.bounds.size.width-diameter, txtDesc.frame.origin.y+txtDesc.bounds.size.height-diameter, diameter, diameter)];
@@ -1021,7 +1035,9 @@
     if(textView.tag == CTagSlogan)
     {
         [self checkValidation:nil withSlogan:strText withDesc:nil];
-        lblCountSlogan.text = [NSString stringWithFormat:@"%d", (int)(CMaxSlogan-strText.length)];
+        
+        if((int)(CMaxSlogan-strText.length) != -1)
+            lblCountSlogan.text = [NSString stringWithFormat:@"%d", (int)(CMaxSlogan-strText.length)];
         if (text.length == 0)
             return YES;
         else if(textView.text.length >= CMaxSlogan)
@@ -1031,7 +1047,9 @@
     else if(textView.tag == CTagDeskripsi)
     {
         [self checkValidation:nil withSlogan:nil withDesc:strText];
-        lblCountDescripsi.text = [NSString stringWithFormat:@"%d", (int)(CMaxDesc-strText.length)];
+        
+        if((int)(CMaxDesc-strText.length) != -1)
+            lblCountDescripsi.text = [NSString stringWithFormat:@"%d", (int)(CMaxDesc-strText.length)];
         if (text.length == 0)
             return YES;
         else if(textView.text.length >= CMaxDesc)

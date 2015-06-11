@@ -54,7 +54,7 @@
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="kHl-0B-Nql"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qAN-Ed-Ppu" userLabel="Vertical Border">

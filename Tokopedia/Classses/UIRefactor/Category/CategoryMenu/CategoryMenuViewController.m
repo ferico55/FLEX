@@ -16,8 +16,6 @@
 
 @interface CategoryMenuViewController () <UITableViewDataSource, UITableViewDelegate>
 {
-    // ceck berapa kali view di tampilkan
-    NSInteger _pushcount;
     NSMutableArray *_choosenindexpaths;
     BOOL _ispushotomatis;
     
@@ -27,8 +25,6 @@
     
     //NSMutableArray *_hotlist;
     NSMutableDictionary *_paging;
-    
-    NSMutableDictionary *_selectedcategory;
     
     /** url to the next page **/
     NSString *_urinext;
@@ -58,7 +54,6 @@
     _choosenindexpaths = [NSMutableArray new];
     _paging = [NSMutableDictionary new];
     _menu = [NSMutableArray new];
-    _selectedcategory = [NSMutableDictionary new];
 
     _isBeingPresented = self.navigationController.isBeingPresented;
     if (_isBeingPresented) {
@@ -93,22 +88,9 @@
     
     if (_menu.count > 0) {
         _isnodata = NO;
-        _pushcount = [[_data objectForKey: kTKPDCATEGORY_DATAPUSHCOUNTKEY]integerValue]?:0;
-
-        if (_pushcount>0 && _ispushotomatis) {
-            self.view.userInteractionEnabled = NO;
-            [self performSelector:@selector(pushSelf) withObject:nil afterDelay:1.0]; //TODO::
-        }
-        else if (_pushcount==0 && _ispushotomatis)
-        {
-            NSIndexPath *selectedindexpath = [_data objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            [_selectedcategory setObject:selectedindexpath forKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
-            [_table reloadData];
-        }
     }
     
     NSLog(@"choosen indexpath %@", _choosenindexpaths);
-    NSLog(@"push count %zd", _pushcount);
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -144,22 +126,9 @@
             case 11:
             {
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
+                vc.selectedCategoryID = _selectedCategoryID;
                 vc.delegate = self.delegate;
                 [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                //Action Reset
-                [_selectedcategory removeAllObjects];
-                [_table reloadData];
                 break;
             }
             default:
@@ -190,18 +159,21 @@
         }
 
         if (_menu.count > indexPath.row) {
-            NSIndexPath *selectedindex =[_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
-            if (indexPath.row == selectedindex.row && selectedindex) {
+            BOOL isNullChild = [[_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)];
+            if (([_menu[indexPath.row][kTKPDCATEGORY_DATADIDKEY] integerValue] == _selectedCategoryID
+                && !isNullChild) ||
+                (_selectedindexpath !=0 && indexPath.row==0 && _selectedCategoryID !=0)) {
                 [((CategoryMenuViewCell*)cell).imagenext setImage:[UIImage imageNamed:@"icon_check_orange.png"]];
             }
             else{
-                if ([[_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)]) {
+                if (isNullChild) {
                     ((CategoryMenuViewCell*)cell).imagenext.hidden = NO;
                     [((CategoryMenuViewCell*)cell).imagenext setImage:[UIImage imageNamed:@"ic_arrow_right.png"]];
                 }
                 else
                     ((CategoryMenuViewCell*)cell).imagenext.hidden = YES;
             }
+            
             ((CategoryMenuViewCell*)cell).label.text = [_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
             ((CategoryMenuViewCell*)cell).indexpath = indexPath;
         }
@@ -235,10 +207,10 @@
                     kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],
                     kTKPDCATEGORY_DATATITLEKEY : [_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY],
                     kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
-                    kTKPDCATEGORY_DATAINDEXPATHKEY : indexPath,
                     kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
                     DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE : @([[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue])
                     };
+        vc.selectedCategoryID = _selectedCategoryID;
         vc.delegate = self.delegate;
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -248,37 +220,19 @@
             [_choosenindexpaths removeLastObject];
         }
         [_choosenindexpaths addObject:indexPath];
-        [_selectedcategory setObject:indexPath forKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
+        _selectedCategoryID = [_menu[indexPath.row][kTKPDCATEGORY_DATADIDKEY] integerValue];
+        _selectedCategoryName = _menu[indexPath.row][kTKPDCATEGORY_DATATITLEKEY];
         [_table reloadData];
         
-        _pushcount =self.navigationController.viewControllers.count-2; 
-        
-        NSIndexPath *indexpath = [_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-        NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
-                                   
-                                   kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount?:0),
-                                   kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
+        NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:@(_selectedCategoryID),
+                                    kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
                                    kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @(YES),
-                                   kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY :indexpath,
-                                   kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]
+                                   kTKPDCATEGORY_DATATITLEKEY : _selectedCategoryName
                                    };
+        
         [_delegate CategoryMenuViewController:self userInfo:userinfo];
-        //if (_isBeingPresented) {
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        //} else {
-        //    NSArray *viewControllers = self.navigationController.viewControllers;
-        //    UIViewController *destinationVC = nil;
-        //    for (UIViewController *vc in viewControllers) {
-        //        if ([vc isKindOfClass:[_delegate class]]) {
-        //            destinationVC = vc;
-        //            break;
-        //        }
-        //    }
-        //    if (destinationVC)
-        //        [self.navigationController popToViewController:destinationVC animated:YES];
-        //    else
-        //        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        //}
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
     }
 }
 
@@ -348,33 +302,6 @@
     }
 }
 
--(void)pushSelf
-{
-    NSIndexPath *selectedindexpath = [_data objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    //[_choosenindexpaths addObject:selectedindexpath];
-    NSInteger choosenIndexPathsIndex = (_pushcount>0)?(_choosenindexpaths.count) - _pushcount:_choosenindexpaths.count-1;
-    if (choosenIndexPathsIndex <0) {
-        choosenIndexPathsIndex = _choosenindexpaths.count-1;
-    }
-    _selectedindexpath = (_choosenindexpaths)?_choosenindexpaths[choosenIndexPathsIndex]:[NSIndexPath indexPathForRow:0 inSection:0];
-    NSLog(@"selected indexpath %@", _selectedindexpath);
-    if([[_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)] && _selectedindexpath.row<_menu.count){
-        CategoryMenuViewController *vc = [CategoryMenuViewController new];
-        NSArray *childs =[_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:@[];
-        vc.data = @{kTKPDCATEGORY_APIDEPARTMENTTREEKEY : childs,
-                    kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],
-                    kTKPDCATEGORY_DATATITLEKEY : [_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY],
-                    kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount-1),
-                    kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : [_data objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]?:@[],
-                    kTKPDCATEGORY_DATAINDEXPATHKEY : selectedindexpath,
-                    kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @(_ispushotomatis)
-                    };
-        vc.delegate = self.delegate;
-        [self.navigationController pushViewController:vc animated:NO];
-        self.view.userInteractionEnabled = YES;
-    }
-}
-
 -(void)adjustChoosenIndexPath:(NSNotification*)notification
 {
     NSDictionary *userInfo = notification.userInfo;
@@ -383,7 +310,6 @@
     [_choosenindexpaths removeAllObjects];
     [_choosenindexpaths addObjectsFromArray:choosenNotification];
     [_choosenindexpaths removeLastObject];
-    _pushcount -=1;
 }
 
 @end
