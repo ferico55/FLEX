@@ -719,7 +719,10 @@ LoadingViewDelegate
     vc.catalogPrice = @"";
     vc.hidesBottomBarWhenPushed = YES;
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-    [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+    
+    if(viewControllers.count > 0) {
+        [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+    }
     
     self.navigationController.viewControllers = viewControllers;
 }
@@ -737,8 +740,10 @@ LoadingViewDelegate
 
     vc.hidesBottomBarWhenPushed = YES;
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-    [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
-
+    
+    if(viewControllers.count > 0) {
+        [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+    }
     self.navigationController.viewControllers = viewControllers;
 }
 
