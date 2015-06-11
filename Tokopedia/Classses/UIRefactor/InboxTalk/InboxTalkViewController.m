@@ -248,6 +248,7 @@
         if (cell == nil) {
             cell = [GeneralTalkCell newcell];
             ((GeneralTalkCell*)cell).delegate = self;
+            cell.contentView.backgroundColor = [UIColor redColor];
         }
         
         if (_talkList.count > indexPath.row) {
