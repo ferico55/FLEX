@@ -111,6 +111,9 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
@@ -226,9 +229,6 @@
 - (IBAction)tap:(id)sender {
     [_searchbar resignFirstResponder];
     [self clearHistory];
-}
-- (IBAction)gesture:(id)sender {
-    [_searchbar resignFirstResponder];
 }
 
 #pragma mark - Table View Data Source
@@ -355,10 +355,6 @@
     self.hidesBottomBarWhenPushed = NO;
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_searchbar resignFirstResponder];
-}
 
 #pragma mark - UISearchBar Delegate
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
@@ -449,7 +445,6 @@
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
-    [searchBar resignFirstResponder];
     [self deActivateSearchBar];
     
     return YES;
@@ -492,6 +487,20 @@
     NSDictionary *userInfo = notification.userInfo;
     [self.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
 }
+
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    _table.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+    _table.contentInset = UIEdgeInsetsZero;
+}
+
 
 - (void)reloadNotification
 {
