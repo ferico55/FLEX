@@ -43,6 +43,11 @@
     _notificationButton = [[NotificationBarButton alloc] init];
     UIButton *button = (UIButton *)_notificationButton.customView;
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = _attachedViewController.view.frame;
+    frame.size.height = screenRect.size.height;
+    _attachedViewController.view.frame = frame;
+    
     [button addTarget:_attachedViewController action:@selector(tapNotificationBar) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -54,7 +59,7 @@
     _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
     _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
     _notificationArrowImageView.clipsToBounds = YES;
-    _notificationArrowImageView.frame = CGRectMake(280, 60, 10, 5);
+    _notificationArrowImageView.frame = CGRectMake(_notificationWindow.frame.size.width-40, 60, 10, 5);
     _notificationArrowImageView.alpha = 0;
     [_notificationWindow addSubview:_notificationArrowImageView];
 }
@@ -81,6 +86,7 @@
 
 - (void)setViewController:(UIViewController*)vc {
     _attachedViewController = vc;
+    
     NSString* userId = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
     if(![userId isEqualToString:IS_NOT_LOGIN]) {
         [self initNotificationBarButton];
@@ -92,7 +98,13 @@
 - (void)tapNotificationBar {
     [_notificationWindow makeKeyAndVisible];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = _attachedViewController.view.frame;
+    frame.size.height = screenRect.size.height;
+    _attachedViewController.view.frame = frame;
+    
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:_attachedViewController action:@selector(tapWindowBar)];
+    
     
     UIView *tapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 64)];
     [tapView addGestureRecognizer:tapRecognizer];
@@ -106,16 +118,17 @@
     [_notificationController.tableView beginUpdates];
     CGRect notificationTableFrame = _notificationController.tableView.frame;
     notificationTableFrame.origin.y = 64;
-    notificationTableFrame.size.height = 300;
+    notificationTableFrame.size.height = _attachedViewController.view.frame.size.height;
     _notificationController.tableView.frame = notificationTableFrame;
     [_notificationController.tableView endUpdates];
     
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 355, 0);
+    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, _attachedViewController.view.frame.size.height, 0);
     
     CGRect windowFrame = _notificationWindow.frame;
     windowFrame.size.height = 0;
     _notificationWindow.frame = windowFrame;
     
+
     windowFrame.size.height = _attachedViewController.view.frame.size.height-64;
     
     [_notificationWindow addSubview:_notificationController.view];
@@ -127,7 +140,7 @@
     }];
     
     [UIView animateWithDuration:0.25 animations:^{
-        _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 568);
+        _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, _attachedViewController.view.frame.size.height);
     }];
     
     [self setUnreadNotification:nil];

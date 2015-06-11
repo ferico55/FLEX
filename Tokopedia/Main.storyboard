@@ -4104,13 +4104,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TxM-hZ-8iB">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TxM-hZ-8iB">
                                                     <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="72" id="uKK-ix-gNm"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="TxM-hZ-8iB" firstAttribute="top" secondItem="fV0-Yy-0SH" secondAttribute="top" id="2ep-Jq-zb3"/>
+                                                <constraint firstAttribute="bottom" secondItem="TxM-hZ-8iB" secondAttribute="bottom" id="gzt-8U-3sl"/>
+                                                <constraint firstAttribute="trailing" secondItem="TxM-hZ-8iB" secondAttribute="trailing" constant="2" id="rhk-XF-P7E"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sa1-80-BoH">
@@ -4125,13 +4133,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6L8-pJ-HnF">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6L8-pJ-HnF">
                                                     <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="72" id="POq-hx-9mF"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="6L8-pJ-HnF" secondAttribute="bottom" id="1qg-UU-VND"/>
+                                                <constraint firstAttribute="trailing" secondItem="6L8-pJ-HnF" secondAttribute="trailing" constant="2" id="jbZ-Dw-yr8"/>
+                                                <constraint firstItem="6L8-pJ-HnF" firstAttribute="top" secondItem="9eu-Rr-Dzp" secondAttribute="top" id="zjU-LP-p1k"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nuc-da-GJH">
@@ -4146,13 +4162,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Kt-UC-SF9">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Kt-UC-SF9">
                                                     <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="72" id="or3-jj-E5i"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="5Kt-UC-SF9" secondAttribute="trailing" constant="2" id="NLs-t5-nO8"/>
+                                                <constraint firstItem="5Kt-UC-SF9" firstAttribute="top" secondItem="wTn-Um-RCN" secondAttribute="top" id="Tx8-Wg-pcf"/>
+                                                <constraint firstAttribute="bottom" secondItem="5Kt-UC-SF9" secondAttribute="bottom" id="veD-gC-2jP"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="F6o-fS-6QM">
@@ -4167,13 +4191,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="814-OG-8Cs">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="814-OG-8Cs">
                                                     <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="72" id="uXD-AI-rAJ"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="814-OG-8Cs" secondAttribute="trailing" constant="2" id="aAC-P0-ZAY"/>
+                                                <constraint firstItem="814-OG-8Cs" firstAttribute="top" secondItem="dWX-c6-nO2" secondAttribute="top" id="pCR-R8-Ll6"/>
+                                                <constraint firstAttribute="bottom" secondItem="814-OG-8Cs" secondAttribute="bottom" id="x6z-pc-4kF"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -4192,13 +4224,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Oh-50-UTG">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Oh-50-UTG">
                                                     <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="72" id="CeG-ro-F1y"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="9Oh-50-UTG" firstAttribute="top" secondItem="EAp-Za-J8G" secondAttribute="top" id="MhL-ad-0BQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="9Oh-50-UTG" secondAttribute="trailing" constant="2" id="P7f-Iw-UPV"/>
+                                                <constraint firstAttribute="bottom" secondItem="9Oh-50-UTG" secondAttribute="bottom" id="sqi-uB-f7k"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="TEv-87-j3Y">
@@ -4213,13 +4253,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOf-C1-gSn">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOf-C1-gSn">
                                                     <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="72" id="YAV-Dk-RS0"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="fOf-C1-gSn" secondAttribute="trailing" constant="2" id="UeD-xD-6nH"/>
+                                                <constraint firstAttribute="bottom" secondItem="fOf-C1-gSn" secondAttribute="bottom" id="h7u-jE-zbu"/>
+                                                <constraint firstItem="fOf-C1-gSn" firstAttribute="top" secondItem="Chb-2U-o9k" secondAttribute="top" id="y9c-Cz-iwD"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="vxc-XL-N2V">
@@ -4234,13 +4282,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lGZ-JE-mCT">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lGZ-JE-mCT">
                                                     <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="72" id="Q9U-mt-Jh5"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="lGZ-JE-mCT" secondAttribute="trailing" constant="2" id="fdr-1Q-GHw"/>
+                                                <constraint firstAttribute="bottom" secondItem="lGZ-JE-mCT" secondAttribute="bottom" id="j1h-kx-E1K"/>
+                                                <constraint firstItem="lGZ-JE-mCT" firstAttribute="top" secondItem="c36-pk-jam" secondAttribute="top" id="w3q-hj-NGV"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -4259,13 +4315,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S0i-rh-Hfs">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S0i-rh-Hfs">
                                                     <rect key="frame" x="223" y="2" width="62" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="62" id="URs-Xg-lxN"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="S0i-rh-Hfs" firstAttribute="top" secondItem="e38-P8-uDn" secondAttribute="top" id="76C-Kk-xLL"/>
+                                                <constraint firstAttribute="bottom" secondItem="S0i-rh-Hfs" secondAttribute="bottom" id="CKQ-lI-Q3u"/>
+                                                <constraint firstAttribute="trailing" secondItem="S0i-rh-Hfs" secondAttribute="trailing" constant="2" id="UBI-as-ZJN"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="r8K-DU-Gt7">
@@ -4280,13 +4344,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUg-PO-kvQ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUg-PO-kvQ">
                                                     <rect key="frame" x="233" y="1" width="52" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="52" id="wBR-HF-Wx4"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="kUg-PO-kvQ" firstAttribute="top" secondItem="4jC-g3-Yry" secondAttribute="top" id="eEH-GI-8aq"/>
+                                                <constraint firstAttribute="bottom" secondItem="kUg-PO-kvQ" secondAttribute="bottom" id="kWA-pM-teP"/>
+                                                <constraint firstAttribute="trailing" secondItem="kUg-PO-kvQ" secondAttribute="trailing" constant="2" id="uKc-ap-myw"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="OdX-Ho-xGt">
@@ -4301,13 +4373,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nzS-0h-AaV">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nzS-0h-AaV">
                                                     <rect key="frame" x="233" y="1" width="52" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="52" id="8P5-0E-dVz"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="nzS-0h-AaV" secondAttribute="bottom" id="7Cz-wU-A6X"/>
+                                                <constraint firstItem="nzS-0h-AaV" firstAttribute="top" secondItem="47I-kq-Sbi" secondAttribute="top" id="8Vg-Jd-LT9"/>
+                                                <constraint firstAttribute="trailing" secondItem="nzS-0h-AaV" secondAttribute="trailing" constant="2" id="a8c-Rl-ODT"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="FPH-i8-0IG">
@@ -4322,13 +4402,21 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xnc-us-OGw">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xnc-us-OGw">
                                                     <rect key="frame" x="230" y="1" width="55" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="55" id="o6b-IW-IuE"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="xnc-us-OGw" secondAttribute="bottom" id="TsZ-Bn-n0j"/>
+                                                <constraint firstItem="xnc-us-OGw" firstAttribute="top" secondItem="sNr-Tf-JpQ" secondAttribute="top" id="ZMM-Od-Pbr"/>
+                                                <constraint firstAttribute="trailing" secondItem="xnc-us-OGw" secondAttribute="trailing" constant="2" id="sRH-RZ-ZnW"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -4352,6 +4440,7 @@
                         <outlet property="paymentConfirmationLabel" destination="kUg-PO-kvQ" id="z0M-mj-X0x"/>
                         <outlet property="receiveConfirmation" destination="FPH-i8-0IG" id="vh5-f8-uhe"/>
                         <outlet property="receiveConfirmationCountLabel" destination="xnc-us-OGw" id="Fh7-tm-1dD"/>
+                        <outlet property="resolutionCenterCountLabel" destination="814-OG-8Cs" id="TwS-D0-gej"/>
                         <outlet property="reviewCountLabel" destination="5Kt-UC-SF9" id="jKe-lH-Ac8"/>
                         <outlet property="salesNewOrder" destination="iN2-7A-Xxx" id="JKz-Ov-IzQ"/>
                         <outlet property="salesOrderLabel" destination="9Oh-50-UTG" id="ShY-iJ-ksT"/>
