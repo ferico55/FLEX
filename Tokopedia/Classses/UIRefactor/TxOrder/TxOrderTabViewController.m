@@ -84,7 +84,7 @@
     
     
     _isMultipleSelect = NO;
-    _isNodata = NO;
+    _isNodata = YES;
     self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -249,10 +249,13 @@
         self.navigationItem.rightBarButtonItem = nil;
     }
     else{
-        UIBarButtonItem *selectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Pilih" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
-        [selectBarButtonItem setTintColor:[UIColor whiteColor]];
-        selectBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-        self.navigationItem.rightBarButtonItem = selectBarButtonItem;
+        if (_index == 0)
+        {
+            UIBarButtonItem *selectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Pilih" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
+            [selectBarButtonItem setTintColor:[UIColor whiteColor]];
+            selectBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+            self.navigationItem.rightBarButtonItem = selectBarButtonItem;
+        }
     }
     _isNodata = isNodata;
 }

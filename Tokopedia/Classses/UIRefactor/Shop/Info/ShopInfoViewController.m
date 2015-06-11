@@ -120,6 +120,11 @@
     [self setData:_data];
     [_tablepayment reloadData];
     [_tableshipment reloadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateShopPicture:)
+                                                 name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -374,6 +379,27 @@
 }
 
 #pragma mark - Methods
+
+-(void)updateShopPicture:(NSNotification*)notif
+{
+    NSDictionary *userInfo = notif.userInfo;
+    
+    NSString *strAvatar = [userInfo objectForKey:@"file_th"]?:@"";
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strAvatar]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_thumb setImageWithURLRequest:request
+                          placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                       //NSLOG(@"thumb: %@", thumb);
+                                       [_thumb setImage:image];
+#pragma clang diagnostic pop
+                                   } failure: nil];
+}
+
 -(void)setShopInfoData
 {
     _labelshopname.text = _shop.result.info.shop_name;

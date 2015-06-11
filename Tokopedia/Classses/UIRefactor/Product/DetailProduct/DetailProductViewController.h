@@ -7,20 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TTTAttributedLabel;
-
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController : GAITrackedViewController
 {
-    IBOutlet UIView *viewTableContentHeader, *viewContentDescToko, *viewContentSoldAndView, *viewContentUlasanAndDiskusi;
+    IBOutlet UIView *viewTableContentHeader, *viewContentWishList, *viewContentUlasanAndDiskusi, *viewContentWarehouse;
     IBOutlet UIButton *btnWishList, *btnShare;
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;
-    IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle;
-    TTTAttributedLabel *lblDescToko;
+    IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle, *lblTitleWarehouse, *lblDescWarehouse;
+    IBOutlet NSLayoutConstraint *constraintHeightWarehouse, *constraintHeightScrollOtherView;
 }
 @property (strong,nonatomic) NSDictionary *data;
 
+- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment;
+- (void)setBackgroundPriceAlert:(BOOL)isActive;
 - (IBAction)actionShare:(id)sender;
 - (IBAction)actionWishList:(id)sender;
 @end

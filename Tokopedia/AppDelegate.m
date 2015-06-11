@@ -14,7 +14,8 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
-#import "Helpshift.h"
+#import "AppsFlyerTracker.h"
+
 
 @implementation AppDelegate
 
@@ -32,8 +33,10 @@
     [_window makeKeyAndVisible];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        //helpshift init
-        [Helpshift installForApiKey:HelpshiftKey domainName:HelpshiftDomain appID:HelpshiftAppid];
+        //appsflyer init
+        [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
+        [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
+        [AppsFlyerTracker sharedTracker].currencyCode = @"IDR";
         
         //fabric init
         [Fabric with:@[CrashlyticsKit]];
@@ -55,7 +58,7 @@
         [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
         [GAI sharedInstance].dispatchInterval = 20;
         [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
-        
+        [[[GAI sharedInstance] trackerWithTrackingId:GATrackingId] setAllowIDFACollection:YES];
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
         [self preparePersistData];
     });
@@ -65,6 +68,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [FBAppEvents activateApp];
+    [[AppsFlyerTracker sharedTracker]trackAppLaunch];
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken

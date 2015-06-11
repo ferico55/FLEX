@@ -10,18 +10,9 @@
 
 #define ADDRRESS_CELL_IDENTIFIER @"AddressCellIdentifier"
 
-#pragma mark - Address Cell Delegate
-@protocol AddressCellDelegate <NSObject>
-@required
--(void)AddressCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
-
-@end
-
 #pragma mark - SettingAddress Location Cell
 @interface AddressCell : UITableViewCell
 
-
-@property (nonatomic, weak) IBOutlet id<AddressCellDelegate> delegate;
 @property (strong,nonatomic) NSDictionary *data;
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
 

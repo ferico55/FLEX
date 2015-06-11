@@ -721,7 +721,7 @@
 }
 
 - (NSDictionary *)getParameter {
-    return @{@"action" : @"report_comment_review", @"review_id" : _reportedReviewId};
+    return @{@"action" : @"report_review", @"review_id" : _reportedReviewId};
 }
 
 #pragma mark - Action Skip Review

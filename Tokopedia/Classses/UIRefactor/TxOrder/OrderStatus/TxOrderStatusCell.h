@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class TextMenu;
 
 #define TRANSACTION_ORDER_STATUS_CELL_IDENTIFIER @"TxOrderStatusCellIdentifier"
 
@@ -45,7 +46,8 @@
 @property (weak, nonatomic) IBOutlet UIView *oneButtonView;
 @property (weak, nonatomic) IBOutlet UIView *oneButtonReOrderView;
 
-@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet TextMenu *statusTv;
+//@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *twoButtons;
 

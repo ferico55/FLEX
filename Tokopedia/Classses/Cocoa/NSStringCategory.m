@@ -98,9 +98,9 @@
     if(minutes) seconds -= minutes * 60;
     
     if(days) {
-//        if (days<0) {
-//            days = days;
-//        }
+        if (days<0) {
+            days = days;
+        }
         timeLeft = [NSString stringWithFormat:@"%ld hari yang lalu", (long)days];
     }
     else if(hours) {
@@ -110,21 +110,18 @@
         else timeLeft = [NSString stringWithFormat: @"%ld jam yang lalu", (long)hours];
     }
     else if(minutes) {
-//        if (minutes<0) {
-//            minutes = minutes;
-//        }
+        if (minutes<0) {
+            minutes = -minutes;
+        }
         timeLeft = [NSString stringWithFormat: @"%ld menit yang lalu", (long)minutes];
     }
     else if(seconds)
     {
-//        if (seconds<0) {
-//            seconds = seconds;
-//        }
         timeLeft = [NSString stringWithFormat: @"%lds detik yang lalu", (long)seconds];
     }
     else
     {
-         timeLeft = [NSString stringWithFormat: @"sekitar satu menit yang lalu"];
+        timeLeft = [NSString stringWithFormat: @"sekitar satu menit yang lalu"];
     }
     return timeLeft;
 }

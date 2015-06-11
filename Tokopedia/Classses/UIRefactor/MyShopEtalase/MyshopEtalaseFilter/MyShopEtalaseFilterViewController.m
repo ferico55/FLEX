@@ -257,12 +257,6 @@
     if (_isnodata) {
         cell.backgroundColor = [UIColor whiteColor];
     }
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        
-    }
 }
 
 #pragma mark - Request + Mapping Etalase
@@ -339,14 +333,30 @@
                                                  kTKPDSHOP_APIETALASETOTALPRODUCTKEY
                                                  ]];
     
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromArray:@[kTKPD_URINEXTKEY]];
+
     //add list relationship
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
+                                                                                 toKeyPath:kTKPD_APILISTKEY
+                                                                               withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                 toKeyPath:kTKPD_APIPAGINGKEY
+                                                                               withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+    
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDDETAILSHOP_APIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
     [objectmanager addResponseDescriptor:responseDescriptor];
@@ -375,7 +385,7 @@
             [_etalaseList addObject:etalase];
         }
         
-        if (_etalaseList.count >0) {
+        if (_etalaseList.count > 0) {
             _isnodata = NO;
             
             NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
@@ -391,7 +401,6 @@
             }
             
             [_table reloadData];
-            
         }
     }
 }

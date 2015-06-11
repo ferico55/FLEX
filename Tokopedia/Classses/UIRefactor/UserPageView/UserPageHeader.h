@@ -29,4 +29,6 @@
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) id<UserPageHeaderDelegate> delegate;
 
+
+- (UIView *)getManipulatedView;
 @end

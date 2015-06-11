@@ -21,10 +21,10 @@
 #import "TxOrderPaymentViewController.h"
 
 #import "TransactionAction.h"
-
 #import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
 
-@interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, TokopediaNetworkManagerDelegate, TxOrderPaymentViewControllerDelegate>
+@interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, TokopediaNetworkManagerDelegate, TxOrderPaymentViewControllerDelegate, LoadingViewDelegate>
 {
     NSInteger _page;
     NSMutableArray *_list;
@@ -54,6 +54,7 @@
     NSMutableArray *_objectProcessingCancel;
     
     TokopediaNetworkManager *_networkManager;
+    LoadingView *_loadingView;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -94,6 +95,8 @@
                                              selector:@selector(refreshRequest)
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -520,6 +523,7 @@
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
+    [_act stopAnimating];
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     TxOrderConfirmed *order = [result objectForKey:@""];
     
@@ -556,15 +560,20 @@
     [_tableView reloadData];
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    [self actionAfterFailRequestMaxTries:tag];
-}
-
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
     }
+    [_act stopAnimating];
+    _tableView.tableFooterView = _loadingView.view;
+}
+
+#pragma loading view delegate
+-(void)pressRetryButton
+{
+    [_act startAnimating];
+    _tableView.tableFooterView = _footer;
+    [_networkManager doRequest];
 }
 
 #pragma mark - Request Cancel Payment Confirmation
@@ -935,6 +944,7 @@
     
     _networkManager.delegate = self;
     [_networkManager doRequest];
+    [_act stopAnimating];
     //[self configureRestKitGetTransaction];
     //[self requestGetTransaction];
 }

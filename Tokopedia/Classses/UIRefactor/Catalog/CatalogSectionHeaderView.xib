@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamMedium.ttf">
@@ -10,36 +10,21 @@
         </mutableArray>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CatalogSectionHeaderView">
-            <connections>
-                <outlet property="titleLabel" destination="2fi-Ha-BkW" id="MgK-3m-gzM"/>
-                <outlet property="view" destination="zhR-l7-T4y" id="nfF-nc-P1q"/>
-            </connections>
-        </placeholder>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="zhR-l7-T4y">
+        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="zhR-l7-T4y" customClass="CatalogSectionHeaderView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iQ8-wg-ir0">
                     <rect key="frame" x="15" y="17" width="290" height="46"/>
                     <subviews>
-                        <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fGG-j0-nrx" userLabel="Border">
-                            <rect key="frame" x="0.0" y="0.0" width="1" height="46"/>
-                            <color key="backgroundColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
-                        <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wme-X5-GgX" userLabel="Border">
-                            <rect key="frame" x="289" y="0.0" width="1" height="46"/>
-                            <color key="backgroundColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
-                        <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gnt-PJ-VbF" userLabel="Border">
-                            <rect key="frame" x="0.0" y="0.0" width="290" height="1"/>
-                            <color key="backgroundColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fi-Ha-BkW">
-                            <rect key="frame" x="10" y="14" width="270" height="18"/>
+                            <rect key="frame" x="10" y="0.0" width="270" height="46"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="270" id="OWM-8J-PtY"/>
+                                <constraint firstAttribute="height" constant="46" id="G94-y7-InC"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="270" id="eYY-1c-0VI"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                             <color key="textColor" red="0.25882352941176473" green="0.25882352941176473" blue="0.25882352941176473" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -48,33 +33,33 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="Wme-X5-GgX" firstAttribute="trailing" secondItem="gnt-PJ-VbF" secondAttribute="trailing" id="1jp-sT-FQ7"/>
-                        <constraint firstAttribute="bottom" secondItem="2fi-Ha-BkW" secondAttribute="bottom" constant="14" id="3F2-6L-Le1"/>
-                        <constraint firstItem="gnt-PJ-VbF" firstAttribute="leading" secondItem="iQ8-wg-ir0" secondAttribute="leading" id="9bJ-c1-3rO"/>
-                        <constraint firstItem="Wme-X5-GgX" firstAttribute="leading" secondItem="2fi-Ha-BkW" secondAttribute="trailing" constant="9" id="IzW-eB-Sgx"/>
-                        <constraint firstItem="gnt-PJ-VbF" firstAttribute="top" secondItem="iQ8-wg-ir0" secondAttribute="top" id="KDy-ER-HL7"/>
-                        <constraint firstItem="2fi-Ha-BkW" firstAttribute="leading" secondItem="fGG-j0-nrx" secondAttribute="trailing" constant="9" id="a0R-XX-CEy"/>
-                        <constraint firstItem="fGG-j0-nrx" firstAttribute="leading" secondItem="gnt-PJ-VbF" secondAttribute="leading" id="dUy-Ox-KiA"/>
-                        <constraint firstItem="fGG-j0-nrx" firstAttribute="bottom" secondItem="Wme-X5-GgX" secondAttribute="bottom" id="dcQ-ZL-PNe"/>
-                        <constraint firstAttribute="bottom" secondItem="fGG-j0-nrx" secondAttribute="bottom" id="fFj-kb-LmU"/>
-                        <constraint firstItem="gnt-PJ-VbF" firstAttribute="top" secondItem="fGG-j0-nrx" secondAttribute="top" id="i4k-33-Ows"/>
-                        <constraint firstItem="2fi-Ha-BkW" firstAttribute="top" secondItem="gnt-PJ-VbF" secondAttribute="bottom" constant="13" id="ooz-xx-OYn"/>
-                        <constraint firstItem="2fi-Ha-BkW" firstAttribute="centerX" secondItem="gnt-PJ-VbF" secondAttribute="centerX" id="wXH-A1-E9H"/>
-                        <constraint firstAttribute="trailing" secondItem="gnt-PJ-VbF" secondAttribute="trailing" id="wfe-XA-YAi"/>
-                        <constraint firstItem="fGG-j0-nrx" firstAttribute="centerY" secondItem="2fi-Ha-BkW" secondAttribute="centerY" id="x2r-Oe-jMb"/>
-                        <constraint firstItem="Wme-X5-GgX" firstAttribute="top" secondItem="gnt-PJ-VbF" secondAttribute="top" id="zkE-Kh-wId"/>
+                        <constraint firstAttribute="height" constant="46" id="EK2-kd-Ofn"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="EXj-hs-JC7"/>
+                        <constraint firstAttribute="trailing" secondItem="2fi-Ha-BkW" secondAttribute="trailing" constant="10" id="F1e-UC-pcQ"/>
+                        <constraint firstAttribute="bottom" secondItem="2fi-Ha-BkW" secondAttribute="bottom" id="IoZ-um-dgG"/>
+                        <constraint firstItem="2fi-Ha-BkW" firstAttribute="leading" secondItem="iQ8-wg-ir0" secondAttribute="leading" constant="10" id="XPw-CU-lNM"/>
+                        <constraint firstItem="2fi-Ha-BkW" firstAttribute="top" secondItem="iQ8-wg-ir0" secondAttribute="top" id="pdr-Hg-RJM"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="iQ8-wg-ir0" firstAttribute="leading" secondItem="zhR-l7-T4y" secondAttribute="leading" constant="15" id="ROU-S0-qds"/>
-                <constraint firstItem="iQ8-wg-ir0" firstAttribute="centerX" secondItem="zhR-l7-T4y" secondAttribute="centerX" id="eeX-fE-Y51"/>
-                <constraint firstItem="iQ8-wg-ir0" firstAttribute="top" secondItem="zhR-l7-T4y" secondAttribute="top" constant="17" id="gb2-p1-cJP"/>
-                <constraint firstAttribute="bottom" secondItem="iQ8-wg-ir0" secondAttribute="bottom" id="s3Y-Ej-Cd8"/>
+                <constraint firstItem="iQ8-wg-ir0" firstAttribute="top" secondItem="zhR-l7-T4y" secondAttribute="top" constant="17" id="LEX-Xw-UnA"/>
+                <constraint firstAttribute="bottom" secondItem="iQ8-wg-ir0" secondAttribute="bottom" id="goA-B0-JYc"/>
+                <constraint firstItem="iQ8-wg-ir0" firstAttribute="leading" secondItem="zhR-l7-T4y" secondAttribute="leading" constant="15" id="gwI-vd-9Iy"/>
+                <constraint firstAttribute="trailing" secondItem="iQ8-wg-ir0" secondAttribute="trailing" constant="15" id="zHx-3V-B9d"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="1089" y="-241"/>
+            <connections>
+                <outlet property="titleLabel" destination="2fi-Ha-BkW" id="sb3-h2-Ybd"/>
+                <outlet property="viewContent" destination="iQ8-wg-ir0" id="jMh-sg-XsO"/>
+            </connections>
+            <point key="canvasLocation" x="1089" y="-241.5"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

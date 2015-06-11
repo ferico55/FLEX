@@ -1,4 +1,4 @@
-//
+             //
 //  UserProfileBiodataViewController.m
 //  Tokopedia
 //
@@ -20,7 +20,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
 @property (strong, nonatomic) IBOutlet UIView *stickyTab;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 
 @end
 
@@ -54,7 +54,6 @@
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateProfilePicture:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
     
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -267,8 +266,16 @@
 
 - (void)updateProfilePicture:(NSNotification *)notification
 {
+    UIImageView *thumb = _userHeader.profileImage;
+    thumb = [UIImageView circleimageview:thumb];
+    thumb.image = nil;
+    
+    NSString *strAvatar = [notification.userInfo objectForKey:@"file_th"]?:@"";
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:strAvatar withKey:@"user_image"];
+    
     UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
-    _userHeader.profileImage.image = profilePicture;
+    thumb.image = profilePicture;
 }
 
 #pragma mark - Memory Management
