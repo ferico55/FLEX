@@ -54,7 +54,6 @@
     BOOL _isNewNoteReturnableProduct;
 }
 
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *titleNoteTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeNoteLabel;
 @property (weak, nonatomic) IBOutlet UITextView *contentNoteTextView;
@@ -133,7 +132,6 @@
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
             self.title = kTKPDTITLE_NEW_NOTE;
             _barbuttonedit.tag = 11;
-            _titleNoteTextField.hidden = NO;
             [_titleNoteTextField becomeFirstResponder];
             _timeNoteLabel.hidden = NO;
             break;
@@ -154,12 +152,12 @@
             self.title = [_data objectForKey:kTKPDNOTES_APINOTETITLEKEY];
             _barbuttonedit.tag = 12;
             _barbuttonedit.enabled = NO;
-            _titleNoteTextField.hidden = YES;
+            _titleNoteTextField.enabled = NO;
             break;
         case NOTES_RETURNABLE_PRODUCT:
             self.title = @"Tambah Catatan";
             _barbuttonedit.tag = 11;
-            _titleNoteTextField.hidden = YES;
+            _titleNoteTextField.enabled = NO;
             break;
         default:
             break;
@@ -477,26 +475,12 @@
                 }
                 _barbuttonedit.enabled = YES;
                 
-                _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                
-                NSString *note = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
                 
-                NSDictionary *titleAttributes = @{NSParagraphStyleAttributeName : style,
-                                                  NSFontAttributeName : [UIFont fontWithName:@"GothamMedium" size:15]};
-                
-                _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:note]
-                                                                             attributes:titleAttributes];
-                _titleLabel.numberOfLines = 2;
-                [_titleLabel sizeToFit];
-            
-                
-                
                 _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
                 _timeNoteLabel.hidden = NO;
-                _titleNoteTextField.hidden = NO;
+                
 
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 
@@ -522,15 +506,9 @@
                     [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
                 }];
                 _contentNoteTextView.attributedText = attributedString;
-
-                if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
-                    _barbuttonedit.enabled = YES;
-                    _barbuttonedit.tintColor = [UIColor whiteColor];
-                }
                 
-                if (_type == NOTES_RETURNABLE_PRODUCT && [_note.result.detail.notes_title isEqual:@"0"])
+                if (_type == NOTES_RETURNABLE_PRODUCT)
                 {
-                    _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
                     _titleNoteTextField.enabled = NO;
                     _barbuttonedit.enabled = YES;
                     
@@ -553,32 +531,14 @@
                                            day, monthString, year, currentTime];
                     [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
                 }
-                
-                switch (_type) {
-                    case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
-                        _titleNoteTextField.hidden = NO;
-                        _titleLabel.hidden = YES;
-                        break;
-                    case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
-                        _titleNoteTextField.hidden = NO;
-                        _titleLabel.hidden = YES;
-                        break;
-                    case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
-                        _titleNoteTextField.hidden = NO;
-                        _titleLabel.hidden = YES;
-                        break;
-                    case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
-                        _titleNoteTextField.hidden = YES;
-                        _titleLabel.hidden = NO;
-                        break;
-                    case NOTES_RETURNABLE_PRODUCT:
-                        _titleNoteTextField.hidden = YES;
-                        _titleLabel.hidden = NO;
-                        _titleLabel.text = @"Kebijakan Pengembalian Produk";
-                        _titleLabel.hidden = NO;
-                        break;
-                    default:
-                        break;
+                else
+                {
+                    _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
+                }
+
+                if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
+                    _barbuttonedit.enabled = YES;
+                    _barbuttonedit.tintColor = [UIColor whiteColor];
                 }
             }
         } else {
@@ -926,8 +886,6 @@
                 _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
                 _titleNoteTextField.enabled = NO;
                 _barbuttonedit.enabled = YES;
-                _titleLabel.text = @"Kebijakan Pengembalian Produk";
-                _titleLabel.hidden = NO;
                 
                 
                 [self setTimeLabelBecomeCurrentDate];
@@ -1005,8 +963,8 @@
 
 - (void)successEditNote:(NSString *)title text:(NSString *)text
 {
-    _titleLabel.text = title;
-    [_titleLabel sizeToFit];
+    _titleNoteTextField.text = title;
+    [_titleNoteTextField sizeToFit];
     
     _contentNoteTextView.text = text;
 }
