@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamMedium.ttf">
@@ -32,19 +32,25 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jfm-jd-bnJ">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jfm-jd-bnJ">
                     <rect key="frame" x="0.0" y="60" width="320" height="508"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eZK-20-GGe">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eZK-20-GGe">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="93J-XY-PvE">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="93J-XY-PvE">
                             <rect key="frame" x="0.0" y="59" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="RDA-Gq-dri"/>
+                            </constraints>
                         </view>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2i6-tg-M3N">
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2i6-tg-M3N">
                             <rect key="frame" x="9" y="16" width="302" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="WLy-XO-fQz"/>
+                            </constraints>
                             <segments>
                                 <segment title="Komplain Saya"/>
                                 <segment title="Komplain Pembeli"/>
@@ -55,9 +61,28 @@
                         </segmentedControl>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="2i6-tg-M3N" secondAttribute="trailing" constant="9" id="HFl-EB-uCJ"/>
+                        <constraint firstItem="2i6-tg-M3N" firstAttribute="leading" secondItem="eZK-20-GGe" secondAttribute="leading" constant="9" id="KK3-7L-lR1"/>
+                        <constraint firstItem="2i6-tg-M3N" firstAttribute="top" secondItem="eZK-20-GGe" secondAttribute="top" constant="16" id="LFS-Hs-PWL"/>
+                        <constraint firstAttribute="bottom" secondItem="93J-XY-PvE" secondAttribute="bottom" id="MzZ-xj-QQ1"/>
+                        <constraint firstAttribute="height" constant="60" id="Ugn-zf-60u"/>
+                        <constraint firstItem="93J-XY-PvE" firstAttribute="leading" secondItem="eZK-20-GGe" secondAttribute="leading" id="dZr-Ih-698"/>
+                        <constraint firstAttribute="trailing" secondItem="93J-XY-PvE" secondAttribute="trailing" id="ruI-Dz-VLO"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Jfm-jd-bnJ" secondAttribute="bottom" id="24r-gi-cpl"/>
+                <constraint firstItem="Jfm-jd-bnJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7Sx-8t-JIz"/>
+                <constraint firstItem="Jfm-jd-bnJ" firstAttribute="top" secondItem="eZK-20-GGe" secondAttribute="bottom" id="Bqr-wZ-Y3O"/>
+                <constraint firstItem="eZK-20-GGe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="WP6-gP-uVD"/>
+                <constraint firstAttribute="trailing" secondItem="eZK-20-GGe" secondAttribute="trailing" id="XDG-Va-5CN"/>
+                <constraint firstItem="eZK-20-GGe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="daz-XK-M7t"/>
+                <constraint firstItem="Jfm-jd-bnJ" firstAttribute="top" secondItem="eZK-20-GGe" secondAttribute="bottom" id="e5r-HJ-k0n"/>
+                <constraint firstAttribute="trailing" secondItem="Jfm-jd-bnJ" secondAttribute="trailing" id="ucC-eS-XLf"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
         <tapGestureRecognizer id="QST-Sh-zAP">
@@ -66,7 +91,7 @@
             </connections>
         </tapGestureRecognizer>
         <view hidden="YES" contentMode="scaleToFill" id="2nM-yr-YlM">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="feS-Sf-lDU">

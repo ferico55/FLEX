@@ -7071,8 +7071,6 @@
 				FC834E2F1B0B3C86003739A3 /* Images */,
 				FC834FF71B0B3C87003739A3 /* Libraries */,
 				FC83506C1B0B3C87003739A3 /* Sound */,
-				FC83506D1B0B3C87003739A3 /* UI */,
-				FC83507C1B0B3C87003739A3 /* UIRefactor */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -7879,212 +7877,6 @@
 			children = (
 			);
 			path = Sound;
-			sourceTree = "<group>";
-		};
-		FC83506D1B0B3C87003739A3 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				FC83506E1B0B3C87003739A3 /* Camera */,
-				FC83506F1B0B3C87003739A3 /* Controller */,
-				FC8350701B0B3C87003739A3 /* Detail */,
-				FC8350761B0B3C87003739A3 /* GeneralCell */,
-				FC8350771B0B3C87003739A3 /* Profile */,
-				FC8350781B0B3C87003739A3 /* Search */,
-				FC8350791B0B3C87003739A3 /* Transaction */,
-				FC83507B1B0B3C87003739A3 /* TxOrder */,
-			);
-			path = UI;
-			sourceTree = "<group>";
-		};
-		FC83506E1B0B3C87003739A3 /* Camera */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Camera;
-			sourceTree = "<group>";
-		};
-		FC83506F1B0B3C87003739A3 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		FC8350701B0B3C87003739A3 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				FC8350711B0B3C87003739A3 /* Shop */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		FC8350711B0B3C87003739A3 /* Shop */ = {
-			isa = PBXGroup;
-			children = (
-				FC8350721B0B3C87003739A3 /* Info */,
-				FC8350731B0B3C87003739A3 /* Product */,
-				FC8350741B0B3C87003739A3 /* Settings */,
-				FC8350751B0B3C87003739A3 /* Talk */,
-			);
-			path = Shop;
-			sourceTree = "<group>";
-		};
-		FC8350721B0B3C87003739A3 /* Info */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Info;
-			sourceTree = "<group>";
-		};
-		FC8350731B0B3C87003739A3 /* Product */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Product;
-			sourceTree = "<group>";
-		};
-		FC8350741B0B3C87003739A3 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		FC8350751B0B3C87003739A3 /* Talk */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Talk;
-			sourceTree = "<group>";
-		};
-		FC8350761B0B3C87003739A3 /* GeneralCell */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GeneralCell;
-			sourceTree = "<group>";
-		};
-		FC8350771B0B3C87003739A3 /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Profile;
-			sourceTree = "<group>";
-		};
-		FC8350781B0B3C87003739A3 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
-		FC8350791B0B3C87003739A3 /* Transaction */ = {
-			isa = PBXGroup;
-			children = (
-				FC83507A1B0B3C87003739A3 /* Cart */,
-			);
-			path = Transaction;
-			sourceTree = "<group>";
-		};
-		FC83507A1B0B3C87003739A3 /* Cart */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cart;
-			sourceTree = "<group>";
-		};
-		FC83507B1B0B3C87003739A3 /* TxOrder */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = TxOrder;
-			sourceTree = "<group>";
-		};
-		FC83507C1B0B3C87003739A3 /* UIRefactor */ = {
-			isa = PBXGroup;
-			children = (
-				FC83507D1B0B3C87003739A3 /* Home */,
-				FC83507E1B0B3C87003739A3 /* Hotlist */,
-				FC83507F1B0B3C87003739A3 /* InboxTalk */,
-				FC8350801B0B3C87003739A3 /* MyShopEtalase */,
-				FC8350811B0B3C87003739A3 /* Product */,
-				FC8350821B0B3C87003739A3 /* Settings */,
-				FC8350851B0B3C87003739A3 /* Shop */,
-			);
-			path = UIRefactor;
-			sourceTree = "<group>";
-		};
-		FC83507D1B0B3C87003739A3 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		FC83507E1B0B3C87003739A3 /* Hotlist */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Hotlist;
-			sourceTree = "<group>";
-		};
-		FC83507F1B0B3C87003739A3 /* InboxTalk */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = InboxTalk;
-			sourceTree = "<group>";
-		};
-		FC8350801B0B3C87003739A3 /* MyShopEtalase */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MyShopEtalase;
-			sourceTree = "<group>";
-		};
-		FC8350811B0B3C87003739A3 /* Product */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Product;
-			sourceTree = "<group>";
-		};
-		FC8350821B0B3C87003739A3 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				FC8350831B0B3C87003739A3 /* Address */,
-				FC8350841B0B3C87003739A3 /* BankAccount */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		FC8350831B0B3C87003739A3 /* Address */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Address;
-			sourceTree = "<group>";
-		};
-		FC8350841B0B3C87003739A3 /* BankAccount */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = BankAccount;
-			sourceTree = "<group>";
-		};
-		FC8350851B0B3C87003739A3 /* Shop */ = {
-			isa = PBXGroup;
-			children = (
-				FC8350861B0B3C87003739A3 /* Settings */,
-			);
-			path = Shop;
-			sourceTree = "<group>";
-		};
-		FC8350861B0B3C87003739A3 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -9763,6 +9555,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9779,9 +9572,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "32d13167-bb7e-4b61-a682-87746276e324";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -9803,6 +9596,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -9813,9 +9607,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "32d13167-bb7e-4b61-a682-87746276e324";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -9828,8 +9622,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9841,7 +9635,7 @@
 					"$(SRCROOT)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9854,7 +9648,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "606a3c67-4e4a-4dc4-b655-2ec0413065f2";
+				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -9866,8 +9660,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9879,7 +9673,7 @@
 					"$(SRCROOT)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9892,7 +9686,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "606a3c67-4e4a-4dc4-b655-2ec0413065f2";
+				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

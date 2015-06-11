@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -29,23 +29,36 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygm-pX-z3l" userLabel="Invoice View">
                         <rect key="frame" x="10" y="5" width="300" height="51"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7gm-Kw-IFm" userLabel="Horizontal Border">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gm-Kw-IFm" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="jRi-tw-Fq9"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tgp-OR-ALK" userLabel="Horizontal Border">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgp-OR-ALK" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="50" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="Hv6-MZ-09O"/>
+                                </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="4 bulan yang lalu" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMB-bb-70z">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 bulan yang lalu" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMB-bb-70z">
                                 <rect key="frame" x="10" y="20" width="145" height="12"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="12" id="dgT-6E-Hw6"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tokopedia" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68e-hd-Cmy">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tokopedia" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68e-hd-Cmy">
                                 <rect key="frame" x="210" y="16" width="80" height="20"/>
                                 <color key="backgroundColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="NnP-J5-PT2"/>
+                                    <constraint firstAttribute="width" constant="80" id="zdz-AS-uUN"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="10"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -53,7 +66,18 @@
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="tgp-OR-ALK" secondAttribute="trailing" id="0G2-BM-XXX"/>
+                            <constraint firstAttribute="centerY" secondItem="XMB-bb-70z" secondAttribute="centerY" id="HTi-PB-nhd"/>
                             <constraint firstAttribute="height" constant="51" id="LOK-kz-mfN"/>
+                            <constraint firstAttribute="centerY" secondItem="68e-hd-Cmy" secondAttribute="centerY" id="Mci-rw-7yU"/>
+                            <constraint firstItem="7gm-Kw-IFm" firstAttribute="top" secondItem="ygm-pX-z3l" secondAttribute="top" id="Own-aq-v3q"/>
+                            <constraint firstItem="XMB-bb-70z" firstAttribute="leading" secondItem="ygm-pX-z3l" secondAttribute="leading" constant="10" id="Rhz-Zu-0rU"/>
+                            <constraint firstAttribute="trailing" secondItem="68e-hd-Cmy" secondAttribute="trailing" constant="10" id="TGF-jx-18W"/>
+                            <constraint firstItem="68e-hd-Cmy" firstAttribute="leading" secondItem="XMB-bb-70z" secondAttribute="trailing" constant="55" id="XrH-dx-VQl"/>
+                            <constraint firstItem="7gm-Kw-IFm" firstAttribute="leading" secondItem="ygm-pX-z3l" secondAttribute="leading" id="arf-Mw-D1r"/>
+                            <constraint firstItem="tgp-OR-ALK" firstAttribute="leading" secondItem="ygm-pX-z3l" secondAttribute="leading" id="giw-x5-jn4"/>
+                            <constraint firstAttribute="bottom" secondItem="tgp-OR-ALK" secondAttribute="bottom" id="rY5-xz-Bc7"/>
+                            <constraint firstAttribute="trailing" secondItem="7gm-Kw-IFm" secondAttribute="trailing" id="rgH-zi-3WA"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65T-Th-yiP" userLabel="Status View">

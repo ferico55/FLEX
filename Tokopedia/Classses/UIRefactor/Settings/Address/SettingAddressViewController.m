@@ -128,6 +128,17 @@
     [super viewDidLoad];
     _listTemp = [NSMutableArray new];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGRect frame = _searchBarView.frame;
+    frame.size.width = screenWidth;
+    _searchBarView.frame = frame;
+    
+    frame = _addNewAddressView.frame;
+    frame.size.width = screenWidth;
+    _addNewAddressView.frame = frame;
+    
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
         _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"

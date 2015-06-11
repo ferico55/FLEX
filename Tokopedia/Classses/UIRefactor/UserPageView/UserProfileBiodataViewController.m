@@ -38,7 +38,6 @@
     _userHeader.delegate = self;
     _userHeader.data = _data;
 
-    
     _header = _userHeader.view;
     _table.tableHeaderView = _header;
     _table.tableFooterView = _footer;

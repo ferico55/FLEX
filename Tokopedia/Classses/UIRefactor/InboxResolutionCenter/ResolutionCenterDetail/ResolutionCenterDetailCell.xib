@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -34,32 +34,52 @@
                     <view tag="15" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HU8-BV-kCh" userLabel="User View">
                         <rect key="frame" x="10" y="5" width="300" height="62"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_profile_picture.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="ul6-rf-nr2">
-                                <rect key="frame" x="10" y="10" width="44" height="44"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_profile_picture.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="ul6-rf-nr2">
+                                <rect key="frame" x="10" y="9" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Zyc-CU-xCu"/>
+                                    <constraint firstAttribute="width" constant="44" id="chx-wW-egt"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kf3-Hr-fSO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kf3-Hr-fSO">
                                 <rect key="frame" x="62" y="34" width="140" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="hYt-QA-sDe"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4xe-3J-8jl">
-                                <rect key="frame" x="62" y="13" width="223" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4xe-3J-8jl">
+                                <rect key="frame" x="62" y="13" width="140" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="iLu-Dw-QkS"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                 <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wbg-nK-3fN" userLabel="Horizontal Border">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wbg-nK-3fN" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="61" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="h6y-VT-Df7"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aiL-Ab-rOE" userLabel="Horizontal Border">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aiL-Ab-rOE" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="CdL-ex-n4v"/>
+                                </constraints>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pembeli" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nWc-fE-O2J">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pembeli" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nWc-fE-O2J">
                                 <rect key="frame" x="210" y="22" width="80" height="20"/>
                                 <color key="backgroundColor" red="1" green="0.56862745100000001" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="tmV-LK-rjH"/>
+                                    <constraint firstAttribute="height" constant="20" id="uVL-hG-kQo"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="10"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -68,7 +88,23 @@
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="aiL-Ab-rOE" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" id="14h-JZ-Npo"/>
+                            <constraint firstAttribute="trailing" secondItem="nWc-fE-O2J" secondAttribute="trailing" constant="10" id="1mm-PJ-hyP"/>
+                            <constraint firstAttribute="trailing" secondItem="aiL-Ab-rOE" secondAttribute="trailing" id="3lg-3w-kgG"/>
+                            <constraint firstItem="4xe-3J-8jl" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="12" id="Fnp-b0-o7q"/>
+                            <constraint firstItem="4xe-3J-8jl" firstAttribute="leading" secondItem="ul6-rf-nr2" secondAttribute="trailing" constant="8" id="GFk-2v-w2c"/>
+                            <constraint firstAttribute="trailing" secondItem="Wbg-nK-3fN" secondAttribute="trailing" id="I9Q-jn-TCG"/>
+                            <constraint firstItem="nWc-fE-O2J" firstAttribute="leading" secondItem="Kf3-Hr-fSO" secondAttribute="trailing" constant="8" id="Iyx-gj-Nsv"/>
+                            <constraint firstItem="Kf3-Hr-fSO" firstAttribute="leading" secondItem="ul6-rf-nr2" secondAttribute="trailing" constant="8" id="Tmz-Qg-vf5"/>
+                            <constraint firstItem="nWc-fE-O2J" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="21" id="VoG-Rl-AHb"/>
+                            <constraint firstItem="Kf3-Hr-fSO" firstAttribute="top" secondItem="4xe-3J-8jl" secondAttribute="bottom" id="Zxl-aD-Mow"/>
+                            <constraint firstItem="ul6-rf-nr2" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" constant="10" id="bgY-LL-CdG"/>
                             <constraint firstAttribute="height" constant="62" id="daO-xt-WI4"/>
+                            <constraint firstItem="aiL-Ab-rOE" firstAttribute="top" secondItem="HU8-BV-kCh" secondAttribute="top" id="ezk-xG-heM"/>
+                            <constraint firstItem="nWc-fE-O2J" firstAttribute="leading" secondItem="4xe-3J-8jl" secondAttribute="trailing" constant="8" id="fAp-xg-3eQ"/>
+                            <constraint firstItem="Wbg-nK-3fN" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" id="h8a-Ws-56S"/>
+                            <constraint firstAttribute="bottom" secondItem="Wbg-nK-3fN" secondAttribute="bottom" id="kDj-zf-9Vn"/>
+                            <constraint firstAttribute="centerY" secondItem="ul6-rf-nr2" secondAttribute="centerY" id="vPc-UL-9O3"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="1zP-Cu-oOw" appends="YES" id="oce-Vm-ngL"/>
@@ -329,7 +365,7 @@
                 <outletCollection property="twoButtons" destination="616-cY-QtC" id="RKz-hx-RMk"/>
                 <outletCollection property="twoButtons" destination="cRI-kN-knU" id="hI5-xb-4iH"/>
             </connections>
-            <point key="canvasLocation" x="135" y="182"/>
+            <point key="canvasLocation" x="135" y="181.5"/>
         </tableViewCell>
         <view contentMode="scaleToFill" id="q48-ie-aba" userLabel="Lacak - Ubah Resi Buttons View">
             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
