@@ -119,6 +119,13 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGRect frame = _contentView.frame;
+    frame.size.width = screenWidth;
+    _contentView.frame = frame;
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationItem setTitle:kTKPDPROFILEEDIT_TITLE];
     
@@ -165,6 +172,7 @@
 
     CGRect frame = _contentView.frame;
     frame.origin = CGPointZero;
+    frame.size.width = self.view.bounds.size.width;
     _contentView.frame = frame;
 }
 

@@ -25,15 +25,16 @@
 #import "InboxReviewViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
-#import "WishListViewController.h"
+//#import "WishListViewController.h"
+
+#import "MyWishlistViewController.h"
 
 #import "RedirectHandler.h"
 
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
                                     RedirectHandlerDelegate,
-                                    TKPDTabHomeDelegate>
-{
+                                    TKPDTabHomeDelegate> {
     NotificationManager *_notifManager;
     NSInteger _page;
     BOOL _isAbleToSwipe;
@@ -46,7 +47,7 @@
 @property (strong, nonatomic) HistoryProductViewController *historyController;
 @property (strong, nonatomic) FavoritedShopViewController *shopViewController;
 @property (strong, nonatomic) HomeTabHeaderViewController *homeHeaderController;
-@property (strong, nonatomic) WishListViewController *wishListViewController;
+@property (strong, nonatomic) MyWishlistViewController *wishListViewController;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIView *homeHeaderView;
 
@@ -85,11 +86,12 @@
     
     _homeHeaderController = [HomeTabHeaderViewController new];
     
-    _wishListViewController = [WishListViewController new];
+    _wishListViewController = [MyWishlistViewController new];
     _wishListViewController.delegate = self;
 
     _redirectHandler = [RedirectHandler new];
     _redirectHandler.delegate = self;
+    
     
     [self initNotificationCenter];
 
@@ -105,7 +107,7 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    [_scrollView setFrame:self.view.frame];
+    [_scrollView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
     [_scrollView setPagingEnabled:YES];
     _scrollView.delegate = self;
@@ -156,7 +158,7 @@
     CGRect frame = greenArrowImageView.frame;
     frame.size.width = 13;
     frame.size.height = 7;
-    frame.origin.x = self.view.frame.size.width/2 - 6.5f;
+    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
     frame.origin.y = 64;
     greenArrowImageView.frame = frame;
 //    [self.navigationController.navigationBar addSubview:greenArrowImageView];
@@ -180,6 +182,10 @@
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
     NSInteger page = lround(fractionalPage);
     [self goToPage:page];
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+    return YES;
 }
 
 
@@ -241,7 +247,7 @@
 - (void)didSwipeHomePage:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"page"]integerValue];
-    
+    [self goToPage:index-1];
     if(index == 1) {
         [self tapButtonAnimate:0];
     } else if(index == 2) {

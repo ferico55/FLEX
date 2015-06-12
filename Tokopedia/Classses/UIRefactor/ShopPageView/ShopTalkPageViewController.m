@@ -258,8 +258,6 @@ UIAlertViewDelegate>
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
             
-            //            ((GeneralTalkCell*)cell).deleteButton.hidden = NO;
-            //            ((GeneralTalkCell*)cell).reportView.hidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             ((GeneralTalkCell*)cell).data = list;
             [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal];
@@ -281,8 +279,9 @@ UIAlertViewDelegate>
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                 
+                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 75;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralTalkCell*)cell).commentbutton.frame.size.width) / 2;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             
@@ -301,12 +300,7 @@ UIAlertViewDelegate>
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
             
-//            if([list.talk_product_status isEqualToString:@"0"]) {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
-//            } else {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
-//            }
-            
+
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
             userImageView.image = nil;

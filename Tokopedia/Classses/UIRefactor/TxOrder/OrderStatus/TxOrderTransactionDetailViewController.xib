@@ -97,10 +97,7 @@
                     <rect key="frame" x="0.0" y="26" width="320" height="51"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INV/20150113/XV/I/8327373" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oEA-an-8q3">
-                            <rect key="frame" x="15" y="0.0" width="285" height="51"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="285" id="Cfr-Lf-uBl"/>
-                            </constraints>
+                            <rect key="frame" x="15" y="0.0" width="290" height="51"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -126,13 +123,14 @@
                         <constraint firstAttribute="bottom" secondItem="3Vr-2X-CVA" secondAttribute="bottom" id="1Sn-H2-n7W"/>
                         <constraint firstAttribute="height" constant="51" id="2Zm-s5-1nj"/>
                         <constraint firstItem="3Vr-2X-CVA" firstAttribute="leading" secondItem="rfs-MY-jim" secondAttribute="leading" id="9rD-iB-6KZ"/>
-                        <constraint firstAttribute="bottom" secondItem="oEA-an-8q3" secondAttribute="bottom" id="AYa-5U-p5M"/>
+                        <constraint firstAttribute="trailing" secondItem="oEA-an-8q3" secondAttribute="trailing" constant="15" id="EFA-oF-NFB"/>
                         <constraint firstItem="IIE-OE-goa" firstAttribute="leading" secondItem="rfs-MY-jim" secondAttribute="leading" id="GBo-F6-ZmQ"/>
-                        <constraint firstItem="oEA-an-8q3" firstAttribute="leading" secondItem="rfs-MY-jim" secondAttribute="leading" constant="15" id="Qpz-oZ-nRt"/>
                         <constraint firstItem="IIE-OE-goa" firstAttribute="top" secondItem="rfs-MY-jim" secondAttribute="top" id="WLG-qt-0AS"/>
-                        <constraint firstItem="oEA-an-8q3" firstAttribute="top" secondItem="rfs-MY-jim" secondAttribute="top" id="hCJ-f9-ETd"/>
+                        <constraint firstItem="oEA-an-8q3" firstAttribute="leading" secondItem="rfs-MY-jim" secondAttribute="leading" constant="15" id="aqi-Qc-W09"/>
+                        <constraint firstItem="oEA-an-8q3" firstAttribute="top" secondItem="rfs-MY-jim" secondAttribute="top" id="haf-iu-I73"/>
                         <constraint firstAttribute="trailing" secondItem="3Vr-2X-CVA" secondAttribute="trailing" id="hmQ-jc-BzK"/>
                         <constraint firstAttribute="trailing" secondItem="IIE-OE-goa" secondAttribute="trailing" id="naQ-sO-fTz"/>
+                        <constraint firstAttribute="bottom" secondItem="oEA-an-8q3" secondAttribute="bottom" id="uMs-Ez-QDw"/>
                     </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="fXr-yt-wq7" appends="YES" id="UbZ-al-JVV"/>
@@ -584,7 +582,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="ZYM-gf-Qjk" secondAttribute="trailing" id="7Qh-OY-D9D"/>
                 <constraint firstAttribute="trailing" secondItem="tyX-g2-cUY" secondAttribute="trailing" id="9pl-1c-x7Q"/>

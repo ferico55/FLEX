@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -166,7 +166,7 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pengembalian produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6pM-QP-qIU">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uRz-fI-ZBd">
@@ -185,8 +185,8 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ylq-OL-RvK" id="Xrr-La-SRF">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oQq-CV-OQw">
-                        <rect key="frame" x="15" y="25" width="287" height="88"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oQq-CV-OQw">
+                        <rect key="frame" x="15" y="25" width="290" height="91.5"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -194,12 +194,24 @@
                             <outlet property="delegate" destination="-1" id="1St-t0-lyd"/>
                         </connections>
                     </textView>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="Deskripsi Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jR-5d-aiL">
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Deskripsi Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jR-5d-aiL">
                         <rect key="frame" x="15" y="8" width="118" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="13" id="EjT-JF-yk8"/>
+                            <constraint firstAttribute="width" constant="118" id="lI5-vf-cf3"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="oQq-CV-OQw" firstAttribute="top" secondItem="9jR-5d-aiL" secondAttribute="bottom" constant="4" id="8Th-mx-1aa"/>
+                    <constraint firstItem="9jR-5d-aiL" firstAttribute="leading" secondItem="Xrr-La-SRF" secondAttribute="leading" constant="15" id="IWA-hw-51b"/>
+                    <constraint firstItem="9jR-5d-aiL" firstAttribute="top" secondItem="Xrr-La-SRF" secondAttribute="top" constant="8" id="LqD-At-YWN"/>
+                    <constraint firstItem="oQq-CV-OQw" firstAttribute="leading" secondItem="Xrr-La-SRF" secondAttribute="leading" constant="15" id="aMk-Ih-cks"/>
+                    <constraint firstAttribute="trailing" secondItem="oQq-CV-OQw" secondAttribute="trailing" constant="15" id="bNT-E6-rvt"/>
+                    <constraint firstAttribute="bottom" secondItem="oQq-CV-OQw" secondAttribute="bottom" constant="4" id="fch-2Y-ytG"/>
+                </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="342" y="1247.5"/>
         </tableViewCell>
@@ -222,14 +234,14 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Untuk melihat atau mengubah kebijakan pengembalian toko Anda, silahkan Klik Disini" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="bwI-Gp-XHN">
-                    <rect key="frame" x="15" y="5" width="291" height="33"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk melihat atau mengubah kebijakan pengembalian toko Anda, silahkan Klik Disini" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="bwI-Gp-XHN">
+                    <rect key="frame" x="15" y="5" width="290" height="33"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                     <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edg-1c-OCo">
-                    <rect key="frame" x="71" y="13" width="173" height="32"/>
+                <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edg-1c-OCo">
+                    <rect key="frame" x="20" y="13" width="280" height="32"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -240,6 +252,16 @@
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Edg-1c-OCo" firstAttribute="leading" secondItem="BZp-DP-v2U" secondAttribute="leading" constant="20" id="2sN-oM-def"/>
+                <constraint firstItem="bwI-Gp-XHN" firstAttribute="leading" secondItem="BZp-DP-v2U" secondAttribute="leading" constant="15" id="8ie-Oz-HzL"/>
+                <constraint firstAttribute="trailing" secondItem="bwI-Gp-XHN" secondAttribute="trailing" constant="15" id="AZr-vT-O6w"/>
+                <constraint firstItem="Edg-1c-OCo" firstAttribute="top" secondItem="BZp-DP-v2U" secondAttribute="top" constant="13" id="Cvb-ai-YoZ"/>
+                <constraint firstAttribute="trailing" secondItem="Edg-1c-OCo" secondAttribute="trailing" constant="20" id="DO6-in-QvR"/>
+                <constraint firstItem="bwI-Gp-XHN" firstAttribute="top" secondItem="BZp-DP-v2U" secondAttribute="top" constant="5" id="LNL-EJ-viV"/>
+                <constraint firstAttribute="bottom" secondItem="bwI-Gp-XHN" secondAttribute="bottom" constant="12" id="N3n-w9-8Pw"/>
+                <constraint firstAttribute="bottom" secondItem="Edg-1c-OCo" secondAttribute="bottom" constant="5" id="TFs-0X-h9Y"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="342" y="834"/>
         </view>

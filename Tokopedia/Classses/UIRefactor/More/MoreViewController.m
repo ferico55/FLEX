@@ -111,7 +111,7 @@
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
-        
+         
     }
     return self;
 }

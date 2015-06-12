@@ -20,7 +20,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
 @property (strong, nonatomic) IBOutlet UIView *stickyTab;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 
 @end
 
@@ -38,7 +38,6 @@
     _userHeader.delegate = self;
     _userHeader.data = _data;
 
-    
     _header = _userHeader.view;
     _table.tableHeaderView = _header;
     _table.tableFooterView = _footer;

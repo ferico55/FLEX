@@ -193,6 +193,11 @@ typedef enum {
 #define TokopediaNotificationRedirect @"redirectNotification"
 #define TokopediaNotificationReload @"reloadNotification"
 
+#define productCollectionViewCellWidth6plus 192
+#define productCollectionViewCellWidthNormal 145
+#define productCollectionViewCellHeight6plus 250
+#define productCollectionViewCellHeightNormal 205
+
 
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"

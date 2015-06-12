@@ -42,6 +42,7 @@
     _categorybuttons = [NSArray sortViewsWithTagInArray:_categorybuttons];
     self.productInformationView.layer.borderWidth = 0.5f;
     self.productInformationView.layer.borderColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1].CGColor;
+    self.productInformationView.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -75,7 +76,7 @@
     }
     
     
-    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText];
+    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
     lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5, CPaddingTopDescToko, viewRetur.bounds.size.width-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15, height);
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
 }

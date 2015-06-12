@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -25,8 +25,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ZqR-aE-Wza">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ZqR-aE-Wza">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="separatorColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -35,15 +35,21 @@
                         <outlet property="delegate" destination="-1" id="5FV-hD-NqW"/>
                     </connections>
                 </tableView>
-                <view hidden="YES" tag="18" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XDx-uR-7dp" userLabel="ViewSelf">
+                <view hidden="YES" tag="18" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XDx-uR-7dp" userLabel="ViewSelf">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                     <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y8B-j3-f6e">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y8B-j3-f6e">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="JjT-vO-cpV"/>
+                            </constraints>
                         </view>
-                        <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5Q-cD-EY3">
+                        <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5Q-cD-EY3">
                             <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="y3L-h9-OQK"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <state key="normal" title="Info Profil">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -53,8 +59,11 @@
                                 <action selector="tap:" destination="-2" eventType="touchUpInside" id="nhf-AX-cZY"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RL1-5d-mhO">
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RL1-5d-mhO">
                             <rect key="frame" x="160" y="0.0" width="160" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="Axg-LU-vts"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <state key="normal" title="Toko Favoritku">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -64,22 +73,64 @@
                                 <action selector="tap:" destination="-2" eventType="touchUpInside" id="SJ6-3F-oQh"/>
                             </connections>
                         </button>
-                        <view tag="20" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lSe-tx-0qA" userLabel="TokoGreen">
+                        <view tag="20" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lSe-tx-0qA" userLabel="TokoGreen">
                             <rect key="frame" x="160" y="37" width="160" height="3"/>
                             <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="3" id="kYs-H5-vld"/>
+                            </constraints>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GnJ-aK-VAG">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GnJ-aK-VAG">
                             <rect key="frame" x="0.0" y="39" width="320" height="1"/>
                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="hWv-Mq-eTM"/>
+                            </constraints>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S0f-xT-Ox7">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S0f-xT-Ox7">
                             <rect key="frame" x="160" y="10" width="1" height="20"/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="wuS-CS-jJ8"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="RL1-5d-mhO" secondAttribute="trailing" id="1Oh-Cw-8Cy"/>
+                        <constraint firstItem="I5Q-cD-EY3" firstAttribute="leading" secondItem="XDx-uR-7dp" secondAttribute="leading" id="6TT-mJ-Q14"/>
+                        <constraint firstAttribute="bottom" secondItem="S0f-xT-Ox7" secondAttribute="bottom" constant="10" id="7h2-xp-Iu2"/>
+                        <constraint firstAttribute="bottom" secondItem="RL1-5d-mhO" secondAttribute="bottom" id="7st-Mz-KxO"/>
+                        <constraint firstItem="S0f-xT-Ox7" firstAttribute="leading" secondItem="I5Q-cD-EY3" secondAttribute="trailing" id="BVm-mW-Lwu"/>
+                        <constraint firstAttribute="bottom" secondItem="GnJ-aK-VAG" secondAttribute="bottom" id="J5v-Ww-wvp"/>
+                        <constraint firstAttribute="trailing" secondItem="Y8B-j3-f6e" secondAttribute="trailing" id="KrH-pV-U1S"/>
+                        <constraint firstItem="RL1-5d-mhO" firstAttribute="leading" secondItem="I5Q-cD-EY3" secondAttribute="trailing" id="NNr-Lr-OkR"/>
+                        <constraint firstItem="I5Q-cD-EY3" firstAttribute="top" secondItem="XDx-uR-7dp" secondAttribute="top" id="QSI-E9-Dku"/>
+                        <constraint firstItem="RL1-5d-mhO" firstAttribute="top" secondItem="XDx-uR-7dp" secondAttribute="top" id="Skw-3z-4lW"/>
+                        <constraint firstAttribute="trailing" secondItem="GnJ-aK-VAG" secondAttribute="trailing" id="TTT-lG-COn"/>
+                        <constraint firstAttribute="height" constant="40" id="bo6-gf-Gi1"/>
+                        <constraint firstAttribute="bottom" secondItem="lSe-tx-0qA" secondAttribute="bottom" id="fIR-3A-4jp"/>
+                        <constraint firstItem="S0f-xT-Ox7" firstAttribute="top" secondItem="XDx-uR-7dp" secondAttribute="top" constant="10" id="gI6-Xg-aQ8"/>
+                        <constraint firstAttribute="trailing" secondItem="lSe-tx-0qA" secondAttribute="trailing" id="ggV-H1-RlS"/>
+                        <constraint firstAttribute="bottom" secondItem="I5Q-cD-EY3" secondAttribute="bottom" id="ghr-xO-3cp"/>
+                        <constraint firstItem="Y8B-j3-f6e" firstAttribute="leading" secondItem="XDx-uR-7dp" secondAttribute="leading" id="hem-ii-kdQ"/>
+                        <constraint firstItem="I5Q-cD-EY3" firstAttribute="width" secondItem="RL1-5d-mhO" secondAttribute="width" id="j5a-l7-y9D"/>
+                        <constraint firstItem="GnJ-aK-VAG" firstAttribute="leading" secondItem="XDx-uR-7dp" secondAttribute="leading" id="t1y-gx-XvO"/>
+                        <constraint firstItem="I5Q-cD-EY3" firstAttribute="width" secondItem="lSe-tx-0qA" secondAttribute="width" id="xEJ-WU-gnG"/>
+                        <constraint firstItem="lSe-tx-0qA" firstAttribute="top" secondItem="Y8B-j3-f6e" secondAttribute="bottom" constant="36" id="xWb-nm-Tgc"/>
+                        <constraint firstItem="Y8B-j3-f6e" firstAttribute="top" secondItem="XDx-uR-7dp" secondAttribute="top" id="zjI-dY-W18"/>
+                    </constraints>
                 </view>
             </subviews>
+            <constraints>
+                <constraint firstItem="ZqR-aE-Wza" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="17C-Gi-C8m"/>
+                <constraint firstAttribute="trailing" secondItem="XDx-uR-7dp" secondAttribute="trailing" id="2Fj-LX-aWK"/>
+                <constraint firstAttribute="trailing" secondItem="ZqR-aE-Wza" secondAttribute="trailing" id="CGI-UV-TBr"/>
+                <constraint firstItem="XDx-uR-7dp" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jKj-WQ-pPx"/>
+                <constraint firstItem="ZqR-aE-Wza" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pKd-tw-ySc"/>
+                <constraint firstItem="XDx-uR-7dp" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="rDk-H7-Vzf"/>
+                <constraint firstAttribute="bottom" secondItem="ZqR-aE-Wza" secondAttribute="bottom" id="zcU-y5-4dr"/>
+            </constraints>
         </view>
         <view contentMode="scaleToFill" id="VL4-zl-ZBy" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>

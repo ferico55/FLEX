@@ -15,11 +15,11 @@
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;
     IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle, *lblTitleWarehouse, *lblDescWarehouse;
-    IBOutlet NSLayoutConstraint *constraintHeightWarehouse;
+    IBOutlet NSLayoutConstraint *constraintHeightWarehouse, *constraintHeightScrollOtherView;
 }
 @property (strong,nonatomic) NSDictionary *data;
 
-- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText;
+- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment;
 - (void)setBackgroundPriceAlert:(BOOL)isActive;
 - (IBAction)actionShare:(id)sender;
 - (IBAction)actionWishList:(id)sender;

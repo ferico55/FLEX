@@ -207,6 +207,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     UIView *searchView = _shopPageHeader.searchView;
+    [searchView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, searchView.frame.size.height)];
     UISearchBar *searchBar = _shopPageHeader.searchBar;
     searchBar.delegate = self;
     

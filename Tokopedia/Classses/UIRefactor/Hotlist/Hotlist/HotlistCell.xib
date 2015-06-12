@@ -3,14 +3,14 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
             <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -26,82 +26,82 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wkt-6B-BtT">
                         <rect key="frame" x="10" y="8" width="300" height="173"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp 1rb" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8t-Vu-9rj">
-                                <rect key="frame" x="243" y="149" width="42" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="SvX-nz-aQK"/>
-                                    <constraint firstAttribute="height" constant="16" id="vBO-gu-JEv"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                <color key="textColor" red="0.93769106657608692" green="0.44360182746835053" blue="0.14870811547253557" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai dari" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXB-Hl-0Ls">
-                                <rect key="frame" x="185" y="150" width="55" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="16" id="3uL-pp-BKP"/>
-                                    <constraint firstAttribute="width" constant="55" id="7kq-Lp-52l"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Nsd-Xa-ZQO">
-                                <rect key="frame" x="131" y="49" width="37" height="37"/>
-                            </activityIndicatorView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="F4B8DF46-E5F7-49BC-80FC-60B5853233F2" translatesAutoresizingMaskIntoConstraints="NO" id="s7f-1u-P6T" userLabel="Toped Icon">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="141"/>
-                                <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
-                            </imageView>
                             <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wAf-xN-EU4">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="141"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="141" id="2u7-Fc-XcX"/>
-                                    <constraint firstAttribute="width" constant="300" id="QGH-2W-bqQ"/>
-                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="Ev2-Sh-dk5" appends="YES" id="2Fe-GI-Esb"/>
                                 </connections>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k48-fz-ULg">
-                                <rect key="frame" x="8" y="147" width="148" height="20"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jP7-8C-OZe">
+                                <rect key="frame" x="0.0" y="143" width="300" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5m1-8w-hzi">
+                                        <rect key="frame" x="5" y="5" width="162" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="162" id="wz6-ea-dMH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp.30.000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Btf-hw-uIO">
+                                        <rect key="frame" x="223" y="5" width="74" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="74" id="4Uk-hF-QCv"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                        <color key="textColor" red="1" green="0.3411764705882353" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Un9-kF-Gui">
+                                        <rect key="frame" x="187" y="5" width="36" height="21"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                        <color key="textColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="148" id="gas-4X-CF6"/>
+                                    <constraint firstItem="5m1-8w-hzi" firstAttribute="baseline" secondItem="Btf-hw-uIO" secondAttribute="baseline" id="01W-2a-Px9"/>
+                                    <constraint firstItem="Un9-kF-Gui" firstAttribute="leading" secondItem="5m1-8w-hzi" secondAttribute="trailing" constant="20" id="72J-RN-pux"/>
+                                    <constraint firstAttribute="trailing" secondItem="Btf-hw-uIO" secondAttribute="trailing" constant="3" id="GPc-rO-lk4"/>
+                                    <constraint firstItem="5m1-8w-hzi" firstAttribute="centerY" secondItem="jP7-8C-OZe" secondAttribute="centerY" id="KMC-s7-SCR"/>
+                                    <constraint firstItem="5m1-8w-hzi" firstAttribute="leading" secondItem="jP7-8C-OZe" secondAttribute="leading" constant="5" id="UG0-Pa-zRf"/>
+                                    <constraint firstItem="5m1-8w-hzi" firstAttribute="top" secondItem="Un9-kF-Gui" secondAttribute="top" id="bWB-Q5-UwY"/>
+                                    <constraint firstItem="5m1-8w-hzi" firstAttribute="top" secondItem="jP7-8C-OZe" secondAttribute="top" constant="5" id="g0T-jj-a1f"/>
+                                    <constraint firstItem="5m1-8w-hzi" firstAttribute="firstBaseline" secondItem="Btf-hw-uIO" secondAttribute="firstBaseline" id="gVp-3j-XK2"/>
+                                    <constraint firstItem="5m1-8w-hzi" firstAttribute="bottom" secondItem="Un9-kF-Gui" secondAttribute="bottom" id="wf1-Lf-xzI"/>
+                                    <constraint firstItem="Btf-hw-uIO" firstAttribute="leading" secondItem="Un9-kF-Gui" secondAttribute="trailing" id="xYw-z0-SDg"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="k48-fz-ULg" secondAttribute="bottom" constant="6" id="7rk-U9-cPi"/>
-                            <constraint firstAttribute="height" constant="173" id="AqW-vE-T3I"/>
-                            <constraint firstAttribute="trailing" secondItem="wAf-xN-EU4" secondAttribute="trailing" id="CLY-Kr-HqC"/>
-                            <constraint firstItem="j8t-Vu-9rj" firstAttribute="leading" secondItem="xXB-Hl-0Ls" secondAttribute="trailing" constant="3" id="Dan-52-B4f"/>
-                            <constraint firstAttribute="bottom" secondItem="j8t-Vu-9rj" secondAttribute="bottom" constant="8" id="LGT-L1-IZw"/>
-                            <constraint firstAttribute="bottom" secondItem="xXB-Hl-0Ls" secondAttribute="bottom" constant="7" id="MOO-w3-IZA"/>
-                            <constraint firstItem="k48-fz-ULg" firstAttribute="top" secondItem="wAf-xN-EU4" secondAttribute="bottom" constant="6" id="Os7-h7-TO5"/>
-                            <constraint firstAttribute="width" constant="300" id="ZFq-jA-K99"/>
-                            <constraint firstItem="wAf-xN-EU4" firstAttribute="top" secondItem="Wkt-6B-BtT" secondAttribute="top" id="kEE-82-BCr"/>
-                            <constraint firstAttribute="trailing" secondItem="j8t-Vu-9rj" secondAttribute="trailing" constant="15" id="khC-0t-fFo"/>
-                            <constraint firstItem="k48-fz-ULg" firstAttribute="leading" secondItem="Wkt-6B-BtT" secondAttribute="leading" constant="8" id="taz-ne-m8W"/>
+                            <constraint firstItem="jP7-8C-OZe" firstAttribute="trailing" secondItem="wAf-xN-EU4" secondAttribute="trailing" id="2Hg-Qn-0eI"/>
+                            <constraint firstAttribute="bottom" secondItem="jP7-8C-OZe" secondAttribute="bottom" id="2TL-7G-kI1"/>
+                            <constraint firstItem="jP7-8C-OZe" firstAttribute="top" secondItem="wAf-xN-EU4" secondAttribute="bottom" constant="2" id="9or-cd-fOl"/>
+                            <constraint firstItem="jP7-8C-OZe" firstAttribute="leading" secondItem="wAf-xN-EU4" secondAttribute="leading" id="HGj-iU-OrK"/>
+                            <constraint firstAttribute="bottom" secondItem="wAf-xN-EU4" secondAttribute="bottom" constant="32" id="R3p-ig-S6j"/>
+                            <constraint firstItem="wAf-xN-EU4" firstAttribute="top" secondItem="Wkt-6B-BtT" secondAttribute="top" id="Sc0-xx-h6l"/>
+                            <constraint firstItem="wAf-xN-EU4" firstAttribute="leading" secondItem="Wkt-6B-BtT" secondAttribute="leading" id="WYv-nO-VrQ"/>
+                            <constraint firstAttribute="width" secondItem="wAf-xN-EU4" secondAttribute="width" id="gv4-GL-Vna"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Wkt-6B-BtT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="D8M-IM-C47"/>
-                    <constraint firstAttribute="trailing" secondItem="Wkt-6B-BtT" secondAttribute="trailing" constant="10" id="aSd-sR-42f"/>
+                    <constraint firstItem="Wkt-6B-BtT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="AKE-m9-EJj"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Wkt-6B-BtT" secondAttribute="bottom" constant="1.5" id="FxT-pq-8l6"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Wkt-6B-BtT" secondAttribute="trailing" constant="2" id="XYg-Mv-HFy"/>
+                    <constraint firstItem="Wkt-6B-BtT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="XZI-hm-yVC"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="act" destination="Nsd-Xa-ZQO" id="NS6-pY-jzH"/>
                 <outlet property="contentSubview" destination="Wkt-6B-BtT" id="I0o-xA-myO"/>
-                <outlet property="namelabel" destination="k48-fz-ULg" id="PLU-Y6-Ces"/>
-                <outlet property="pricelabel" destination="j8t-Vu-9rj" id="SYA-o7-uuX"/>
+                <outlet property="namelabel" destination="5m1-8w-hzi" id="Dg5-Qv-ynC"/>
+                <outlet property="pricelabel" destination="Btf-hw-uIO" id="nnP-Rz-RIR"/>
                 <outlet property="productimageview" destination="wAf-xN-EU4" id="JnX-Nw-vk6"/>
             </connections>
             <point key="canvasLocation" x="408" y="232.5"/>
@@ -112,138 +112,6 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
-    <resources>
-        <image name="F4B8DF46-E5F7-49BC-80FC-60B5853233F2" width="30" height="30">
-            <mutableData key="keyedArchiveRepresentation">
-YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
-GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
-DBIAwAAAgAKACtISCRMVWk5TLm9iamVjdHOhFIADgAnSEgkXGqIYGYAEgAWACBAA0h0JHh9fEBROU1RJ
-RkZSZXByZXNlbnRhdGlvboAGgAdPERseTU0AKgAADhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAwMDAgMjIycDQ0NIA0NDSANDQ0gDAwMCAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAMDAwEDMzM6AzMzP/MzMz/zMzM/8zMzP/MzMz/zMzM/8zMzOwMDAwEAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAwMDAQMzMz0DMzM/8zMzP/MzMzoDIyMmAyMjJgMzMzoDMzM/8zMzP/MzMz0DAwMBAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAzMzOQMzMz/zMzM/A1NTUwAAAAAAAAAAAAAAAAAAAAADU1NTAzMzPwMzMz/zMzM5AAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAADAwMBAzMzP/MzMz/zU1NTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1NTUwMzMz/zMzM/8wMDAg
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQ0NEA0NDRANDQ0QDQ0NEA0NDRA
-NDQ0QDMzM4gzMzP/MzMzxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzujMzM/8zMzOI
-NDQ0QDQ0NEA0NDRANDQ0QDQ0NEA0NDRAAAAAAAAAAAAAAAAAAAAAADMzM/9TU1P/U1NT/1NTU/9TU1P/
-U1NT/09PT/9LS0v/RUVF/zMzM/8zMzPgMzMzoDQ0NEAwMDAgMzMzkDMzM9AzMzP/MzMz/01NTf9cXFz/
-YmJi/2JiYv9iYmL/YmJi/2JiYv8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7S0tP+0tLT/
-tLS0/7S0tP+0tLT/tLS0/7S0tP+cnJz/fHx8/0NDQ/9AQED/fHx8/5GRkf+SkpL/kJCQ/5CQkP+QkJD/
-kJCQ/5CQkP+QkJD/kJCQ/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7S0tP+0tLT/
-tLS0/7S0tP+0tLT/tLS0/7S0tP+0tLT/tLS0/7S0tP+SkpL/kJCQ/5CQkP+QkJD/kJCQ/5CQkP+QkJD/
-kJCQ/5CQkP+QkJD/kJCQ/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7S0tP+0tLT/
-rKys/5SUlP+UlJT/lJSU/6ysrP+0tLT/tLS0/7S0tP+QkJD/kJCQ/5CQkP+Kior/eXl5/3l5ef95eXn/
-ioqK/5CQkP+QkJD/kJCQ/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/6ysrP9jY2P/
-MzMz/4mJif+JiYn/iYmJ/zMzM/9ra2v/rKys/7S0tP+QkJD/ioqK/1tbW/8zMzP/iYmJ/4mJif+JiYn/
-MzMz/1ZWVv+Kior/kJCQ/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/pKSk/0NDQ/+7u7v/
-/f39//////////////////39/f+bm5v/S0tL/6ysrP+Kior/RERE/5ubm//9/f3/////////////////
-/f39/7u7u/8+Pj7/ioqK/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/U1NT/9TU1P//////
-///////////l5eX/paWl/+Xl5f//////q6ur/1tbW/9QUFD/q6ur////////////5eXl/6Wlpf/l5eX/
-///////////U1NT/SkpK/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+UlJT/YWFh////////////
-///////////y8vL/MzMz/zMzM/+ysrL//f39/09PT/9LS0v//f39////////////2dnZ/zMzM/8/Pz//
-srKy////////////YWFh/3l5ef8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/9ra2v/wcHB////////////
-cnJy/9nZ2f9ZWVn/MzMz/zMzM/8zMzP/5eXl/2tra/+kpKT/8vLy/39/f//l5eX/WVlZ/zMzM/8zMzP/
-Pz8///Ly8v//////wcHB/1tbW/8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/9TU1P/yMjI//7+/v/Z2dn/
-MzMz/zMzM/8zMzP/MzMz/zMzM/8zMzP/paWl/2VlZf+YmJj/srKy/zMzM/8zMzP/MzMz/zMzM/8zMzP/
-MzMz/8zMzP/+/v7/yMjI/0pKSv8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/9bW1v/qKio//T09P/MzMz/
-MzMz/zMzM/8zMzP/MzMz/zMzM/8zMzP/qqqq/2JiYv+RkZH/np6e/zMzM/8zMzP/MzMz/zMzM/8zMzP/
-MzMz/8zMzP/09PT/qKio/1BQUP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/97e3v/eXl5/+7u7v/y8vL/
-S0tL/zMzM/8zMzP/MzMz/zMzM/8+Pj7/19fX/1hYWP9ubm7/19fX/z4+Pv8zMzP/MzMz/zMzM/8zMzP/
-S0tL//Ly8v/u7u7/eXl5/2dnZ/8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+kpKT/Pz8//9fX1//u7u7/
-y8vL/0pKSv8zMzP/MzMz/z4+Pv+zs7P/zMzM/zo6Ov84ODj/zMzM/7Ozs/8+Pj7/MzMz/zMzM/9KSkr/
-y8vL/+7u7v/X19f/Pz8//4SEhP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/c3Nz/1ZWVv/j4+P/
-7u7u/+7u7v+/v7//v7+//+Li4v/X19f/VlZW/0RERP9GRkb/VlZW/9fX1//u7u7/v7+//7+/v//u7u7/
-7u7u/+Pj4/9WVlb/YWFh/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/2tra/8/Pz//
-nZ2d/8zMzP/u7u7/zMzM/5GRkf8/Pz//YGBg/9zc3P/MzMz/c3Nz/z8/P/+RkZH/wMDA/+7u7v/MzMz/
-nZ2d/z8/P/9bW1v/kJCQ/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7S0tP+UlJT/
-Y2Nj/0NDQ/8zMzP/Q0ND/2FhYf9OTk7/6Ojo//Pz8//Kysr/zMzM/1tbW/9cXFz/R0dH/zMzM/8+Pj7/
-VlZW/3l5ef+QkJD/kJCQ/5CQkP8zMzP/AAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7S0tP+0tLT/
-tLS0/7e3t/+/v7//wsLC/8LCwv+enp7/V1dX/+jo6P/MzMz/bW1t/5SUlP+0tLT/tLS0/62trf+Xl5f/
-kJCQ/5CQkP+QkJD/kJCQ/5KSkv8zMzPgAAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7S0tP+0tLT/
-t7e3/8HBwf/CwsL/wsLC/8LCwv/CwsL/jIyM/3t7e/+ZmZn/g4OD/7S0tP+0tLT/tLS0/7S0tP+ysrL/
-l5eX/5CQkP+QkJD/kJCQ/4eHh/8zMzOgAAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7S0tP+2trb/
-wcHB/8LCwv/CwsL/wsLC/8LCwv/CwsL/wsLC/4yMjP+Dg4P/tLS0/7S0tP+0tLT/tLS0/7S0tP+0tLT/
-srKy/5WVlf+QkJD/kJCQ/01NTf80NDRAAAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7S0tP+/v7//
-wsLC/8LCwv/CwsL/wsLC/8LCwv/CwsL/wsLC/8LCwv+0tLT/tLS0/7S0tP+0tLT/tLS0/7S0tP+0tLT/
-tLS0/6urq/+QkJD/goKC/zIyMsAAAAAAAAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/7i4uP/CwsL/
-wsLC/8LCwv/CwsL/wsLC/8LCwv/CwsL/wsLC/8LCwv+0tLT/tLS0/7S0tP+0tLT/tLS0/7S0tP+0tLT/
-tLS0/7S0tP+Xl5f/MzMz8DAwMCAAAAAAAAAAAAAAAAAAAAAAAAAAADMzM/+0tLT/tLS0/729vf/CwsL/
-wsLC/8LCwv/CwsL/wsLC/8LCwv/CwsL/wsLC/8LCwv+0tLT/tLS0/7S0tP+0tLT/tLS0/7S0tP+0tLT/
-srKy/6CgoP8zMzPgNTU1MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMzM/90dHT/dHR0/5GRkf+bm5v/
-m5ub/5ubm/+bm5v/m5ub/5ubm/+bm5v/m5ub/5ubm/+lpaX/paWl/6Wlpf+lpaX/paWl/6Wlpf+SkpL/
-MzMz/zMzM6AwMDAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQ0NIA0NDSANDQ0gDQ0NIA0NDSA
-NDQ0gDQ0NIA0NDSANDQ0gDQ0NIA0NDSANDQ0gDQ0NIA0NDSANDQ0gDQ0NIA0NDSANDQ0gDQ0NIAyMjJg
-MDAwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgEAAAMAAAABAB4AAAEBAAMAAAABAB4AAAEC
-AAMAAAAEAAAOxgEDAAMAAAABAAEAAAEGAAMAAAABAAIAAAERAAQAAAABAAAACAESAAMAAAABAAEAAAEV
-AAMAAAABAAQAAAEWAAMAAAABAB4AAAEXAAQAAAABAAAOEAEcAAMAAAABAAEAAAFSAAMAAAABAAIAAAFT
-AAMAAAAEAAAOzodzAAcAAAxIAAAO1gAAAAAACAAIAAgACAABAAEAAQABAAAMSExpbm8CEAAAbW50clJH
-QiBYWVogB84AAgAJAAYAMQAAYWNzcE1TRlQAAAAASUVDIHNSR0IAAAAAAAAAAAAAAAAAAPbWAAEAAAAA
-0y1IUCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARY3BydAAA
-AVAAAAAzZGVzYwAAAYQAAABsd3RwdAAAAfAAAAAUYmtwdAAAAgQAAAAUclhZWgAAAhgAAAAUZ1hZWgAA
-AiwAAAAUYlhZWgAAAkAAAAAUZG1uZAAAAlQAAABwZG1kZAAAAsQAAACIdnVlZAAAA0wAAACGdmlldwAA
-A9QAAAAkbHVtaQAAA/gAAAAUbWVhcwAABAwAAAAkdGVjaAAABDAAAAAMclRSQwAABDwAAAgMZ1RSQwAA
-BDwAAAgMYlRSQwAABDwAAAgMdGV4dAAAAABDb3B5cmlnaHQgKGMpIDE5OTggSGV3bGV0dC1QYWNrYXJk
-IENvbXBhbnkAAGRlc2MAAAAAAAAAEnNSR0IgSUVDNjE5NjYtMi4xAAAAAAAAAAAAAAASc1JHQiBJRUM2
-MTk2Ni0yLjEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFhZ
-WiAAAAAAAADzUQABAAAAARbMWFlaIAAAAAAAAAAAAAAAAAAAAABYWVogAAAAAAAAb6IAADj1AAADkFhZ
-WiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9kZXNjAAAAAAAAABZJRUMgaHR0cDov
-L3d3dy5pZWMuY2gAAAAAAAAAAAAAABZJRUMgaHR0cDovL3d3dy5pZWMuY2gAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZGVzYwAAAAAAAAAuSUVDIDYxOTY2LTIuMSBEZWZh
-dWx0IFJHQiBjb2xvdXIgc3BhY2UgLSBzUkdCAAAAAAAAAAAAAAAuSUVDIDYxOTY2LTIuMSBEZWZhdWx0
-IFJHQiBjb2xvdXIgc3BhY2UgLSBzUkdCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGRlc2MAAAAAAAAALFJl
-ZmVyZW5jZSBWaWV3aW5nIENvbmRpdGlvbiBpbiBJRUM2MTk2Ni0yLjEAAAAAAAAAAAAAACxSZWZlcmVu
-Y2UgVmlld2luZyBDb25kaXRpb24gaW4gSUVDNjE5NjYtMi4xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAB2aWV3AAAAAAATpP4AFF8uABDPFAAD7cwABBMLAANcngAAAAFYWVogAAAAAABMCVYAUAAAAFcf521l
-YXMAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAKPAAAAAnNpZyAAAAAAQ1JUIGN1cnYAAAAAAAAEAAAA
-AAUACgAPABQAGQAeACMAKAAtADIANwA7AEAARQBKAE8AVABZAF4AYwBoAG0AcgB3AHwAgQCGAIsAkACV
-AJoAnwCkAKkArgCyALcAvADBAMYAywDQANUA2wDgAOUA6wDwAPYA+wEBAQcBDQETARkBHwElASsBMgE4
-AT4BRQFMAVIBWQFgAWcBbgF1AXwBgwGLAZIBmgGhAakBsQG5AcEByQHRAdkB4QHpAfIB+gIDAgwCFAId
-AiYCLwI4AkECSwJUAl0CZwJxAnoChAKOApgCogKsArYCwQLLAtUC4ALrAvUDAAMLAxYDIQMtAzgDQwNP
-A1oDZgNyA34DigOWA6IDrgO6A8cD0wPgA+wD+QQGBBMEIAQtBDsESARVBGMEcQR+BIwEmgSoBLYExATT
-BOEE8AT+BQ0FHAUrBToFSQVYBWcFdwWGBZYFpgW1BcUF1QXlBfYGBgYWBicGNwZIBlkGagZ7BowGnQav
-BsAG0QbjBvUHBwcZBysHPQdPB2EHdAeGB5kHrAe/B9IH5Qf4CAsIHwgyCEYIWghuCIIIlgiqCL4I0gjn
-CPsJEAklCToJTwlkCXkJjwmkCboJzwnlCfsKEQonCj0KVApqCoEKmAquCsUK3ArzCwsLIgs5C1ELaQuA
-C5gLsAvIC+EL+QwSDCoMQwxcDHUMjgynDMAM2QzzDQ0NJg1ADVoNdA2ODakNww3eDfgOEw4uDkkOZA5/
-DpsOtg7SDu4PCQ8lD0EPXg96D5YPsw/PD+wQCRAmEEMQYRB+EJsQuRDXEPURExExEU8RbRGMEaoRyRHo
-EgcSJhJFEmQShBKjEsMS4xMDEyMTQxNjE4MTpBPFE+UUBhQnFEkUahSLFK0UzhTwFRIVNBVWFXgVmxW9
-FeAWAxYmFkkWbBaPFrIW1hb6Fx0XQRdlF4kXrhfSF/cYGxhAGGUYihivGNUY+hkgGUUZaxmRGbcZ3RoE
-GioaURp3Gp4axRrsGxQbOxtjG4obshvaHAIcKhxSHHscoxzMHPUdHh1HHXAdmR3DHeweFh5AHmoelB6+
-HukfEx8+H2kflB+/H+ogFSBBIGwgmCDEIPAhHCFIIXUhoSHOIfsiJyJVIoIiryLdIwojOCNmI5QjwiPw
-JB8kTSR8JKsk2iUJJTglaCWXJccl9yYnJlcmhya3JugnGCdJJ3onqyfcKA0oPyhxKKIo1CkGKTgpaymd
-KdAqAio1KmgqmyrPKwIrNitpK50r0SwFLDksbiyiLNctDC1BLXYtqy3hLhYuTC6CLrcu7i8kL1ovkS/H
-L/4wNTBsMKQw2zESMUoxgjG6MfIyKjJjMpsy1DMNM0YzfzO4M/E0KzRlNJ402DUTNU01hzXCNf02NzZy
-Nq426TckN2A3nDfXOBQ4UDiMOMg5BTlCOX85vDn5OjY6dDqyOu87LTtrO6o76DwnPGU8pDzjPSI9YT2h
-PeA+ID5gPqA+4D8hP2E/oj/iQCNAZECmQOdBKUFqQaxB7kIwQnJCtUL3QzpDfUPARANER0SKRM5FEkVV
-RZpF3kYiRmdGq0bwRzVHe0fASAVIS0iRSNdJHUljSalJ8Eo3Sn1KxEsMS1NLmkviTCpMcky6TQJNSk2T
-TdxOJU5uTrdPAE9JT5NP3VAnUHFQu1EGUVBRm1HmUjFSfFLHUxNTX1OqU/ZUQlSPVNtVKFV1VcJWD1Zc
-VqlW91dEV5JX4FgvWH1Yy1kaWWlZuFoHWlZaplr1W0VblVvlXDVchlzWXSddeF3JXhpebF69Xw9fYV+z
-YAVgV2CqYPxhT2GiYfViSWKcYvBjQ2OXY+tkQGSUZOllPWWSZedmPWaSZuhnPWeTZ+loP2iWaOxpQ2ma
-afFqSGqfavdrT2una/9sV2yvbQhtYG25bhJua27Ebx5veG/RcCtwhnDgcTpxlXHwcktypnMBc11zuHQU
-dHB0zHUodYV14XY+dpt2+HdWd7N4EXhueMx5KnmJeed6RnqlewR7Y3vCfCF8gXzhfUF9oX4BfmJ+wn8j
-f4R/5YBHgKiBCoFrgc2CMIKSgvSDV4O6hB2EgITjhUeFq4YOhnKG14c7h5+IBIhpiM6JM4mZif6KZIrK
-izCLlov8jGOMyo0xjZiN/45mjs6PNo+ekAaQbpDWkT+RqJIRknqS45NNk7aUIJSKlPSVX5XJljSWn5cK
-l3WX4JhMmLiZJJmQmfyaaJrVm0Kbr5wcnImc951kndKeQJ6unx2fi5/6oGmg2KFHobaiJqKWowajdqPm
-pFakx6U4pammGqaLpv2nbqfgqFKoxKk3qamqHKqPqwKrdavprFys0K1ErbiuLa6hrxavi7AAsHWw6rFg
-sdayS7LCszizrrQltJy1E7WKtgG2ebbwt2i34LhZuNG5SrnCuju6tbsuu6e8IbybvRW9j74KvoS+/796
-v/XAcMDswWfB48JfwtvDWMPUxFHEzsVLxcjGRsbDx0HHv8g9yLzJOsm5yjjKt8s2y7bMNcy1zTXNtc42
-zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp22vvbgNwF3IrdEN2W
-3hzeot8p36/gNuC94UThzOJT4tvjY+Pr5HPk/OWE5g3mlucf56noMui86Ubp0Opb6uXrcOv77IbtEe2c
-7ijutO9A78zwWPDl8XLx//KM8xnzp/Q09ML1UPXe9m32+/eK+Bn4qPk4+cf6V/rn+3f8B/yY/Sn9uv5L
-/tz/bf//0iIjJCVaJGNsYXNzbmFtZVgkY2xhc3Nlc18QEE5TQml0bWFwSW1hZ2VSZXCjJicoXxAQTlNC
-aXRtYXBJbWFnZVJlcFpOU0ltYWdlUmVwWE5TT2JqZWN00iIjKitXTlNBcnJheaIqKNIiIy0uXk5TTXV0
-YWJsZUFycmF5oy0qKNMwMQkyMzRXTlNXaGl0ZVxOU0NvbG9yU3BhY2VEMCAwABADgAvSIiM2N1dOU0Nv
-bG9yojYo0iIjOTpXTlNJbWFnZaI5KF8QD05TS2V5ZWRBcmNoaXZlctE9PlRyb290gAEACAARABoAIwAt
-ADIANwBFAEsAVABbAGgAbwB3AHkAfgCAAIIAhwCSAJQAlgCYAJ0AoACiAKQApgCoAK0AxADGAMgb6hvv
-G/ocAxwWHBocLRw4HEEcRhxOHFEcVhxlHGkccBx4HIUcihyMHI4ckxybHJ4coxyrHK4cwBzDHMgAAAAA
-AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAAAcyg
-</mutableData>
-        </image>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
