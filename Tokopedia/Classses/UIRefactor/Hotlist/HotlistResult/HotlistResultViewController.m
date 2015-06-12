@@ -744,7 +744,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              [_descriptionview setFrame:CGRectMake(self.view.bounds.size.width, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
-                             [self.view addSubview:_descriptionview];
+//                             [self.view addSubview:_descriptionview];
                          }
                          completion:^(BOOL finished){
                          }];
