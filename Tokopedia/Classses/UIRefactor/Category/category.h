@@ -51,7 +51,7 @@ typedef enum
 #define kTKPDCATEGORY_NODATACELLTITLE @"no data"
 #define kTKPDCATEGORY_NODATACELLDESCS @"no data description"
 
-#define kTKPDCATEGORY_TITLEARRAY @[@"Pakaian",@"Handphone & Tablet", @"Office & Stationary", @"Fashion & Aksesoris", @"Laptop & Aksesoris", @"Souvenir, Kado & Hadiah", @"Kecantikan", @"Komputer & Aksesoris", @"Mainan & Hobi", @"Kesehatan", @"Elektronik", @"Makanan & Minuman", @"Rumah Tangga", @"Kamera, Foto & Video", @"Buku", @"Dapur", @"Otomotif", @"Software", @"Perawatan Bayi", @"Olahraga", @"Film, Musik & Game", @"Produk Lainnya"]
+#define kTKPDCATEGORY_TITLEARRAY @[@"Pakaian",@"Handphone & Tablet", @"Office & Stationery", @"Fashion & Aksesoris", @"Laptop & Aksesoris", @"Souvenir, Kado & Hadiah", @"Kecantikan", @"Komputer & Aksesoris", @"Mainan & Hobi", @"Kesehatan", @"Elektronik", @"Makanan & Minuman", @"Rumah Tangga", @"Kamera, Foto & Video", @"Buku", @"Dapur", @"Otomotif", @"Software", @"Perawatan Bayi", @"Olahraga", @"Film, Musik & Game", @"Produk Lainnya"]
 
 #define kTKPDCATEGORY_IDARRAY @[@"78",@"65",@"642",  @"79",@"288",@"54",  @"61",@"297",@"55",  @"715",@"60",@"35",  @"984",@"578",@"8",  @"983",@"63",@"20",  @"56",@"62",@"57",  @"36"]
 

@@ -20,7 +20,7 @@
 @interface AlertDatePickerView ()
 {
     NSInteger _type;
-    UITapGestureRecognizer *_newGeture;
+    UITapGestureRecognizer *_newGesture;
 }
 @property (weak, nonatomic) IBOutlet UIDatePicker *datepicker;
 @property (weak, nonatomic) IBOutlet UIButton *doneButton;
@@ -110,8 +110,8 @@
     }
     
      _background.userInteractionEnabled = YES;
-    _newGeture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
-    [_background addGestureRecognizer:_newGeture];
+    _newGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
+    [_background addGestureRecognizer:_newGesture];
     
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
@@ -160,7 +160,7 @@
     [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     if(self.superview != nil){
-        [_background removeGestureRecognizer:_newGeture];
+        [_background removeGestureRecognizer:_newGesture];
         [self dismissindex:buttonIndex silent:NO animated:animated];
     }
 }
