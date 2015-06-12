@@ -7,13 +7,14 @@
 //
 
 #import "search.h"
+#import "category.h"
 #import "SearchViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
 #import "ProductFeedViewController.h"
 #import "SearchAutoCompleteViewController.h"
-
+#import "CatalogViewController.h"
 #import "NotificationManager.h"
 
 #import "SearchAutoCompleteDomains.h"
@@ -46,7 +47,7 @@
     
     NSMutableArray *_catalogs;
     NSMutableArray *_categories;
-    NSMutableDictionary *_domains;
+    NSMutableArray *_domains;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -60,11 +61,9 @@
 
 @implementation SearchViewController
 
-typedef enum {
-    SearchAutoCompleteTypeHistory = 0,
-    SearchAutoCompleteTypeCatalog = 1,
-    SearchAutoCompleteTypeCategory = 2
-} SearchAutoCompleteType;
+NSString *const SearchDomainHistory = @"History";
+NSString *const SearchDomainCatalog = @"Katalog";
+NSString *const SearchDomainCategory = @"Kategori";
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:@"SearchViewController" bundle:nibBundleOrNil];
@@ -88,7 +87,7 @@ typedef enum {
     
     _historyResult =[NSMutableArray new];
     _typedHistoryResult = [NSMutableArray new];
-    _domains = [NSMutableDictionary new];
+    _domains = [NSMutableArray new];
     _catalogs = [NSMutableArray new];
     _categories = [NSMutableArray new];
     
@@ -204,40 +203,27 @@ typedef enum {
 
 #pragma mark - Table View Data Source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return [_domains count];
 }
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if(section == SearchAutoCompleteTypeHistory && _typedHistoryResult.count > 0)  {
-        return @"History";
-    } else if(section == SearchAutoCompleteTypeCatalog && _catalogs.count > 0) {
-        return @"Katalog";
-    } else if(section == SearchAutoCompleteTypeCategory && _categories.count > 0) {
-        return @"Kategori";
-    }
-    
-    return nil;
+    NSDictionary *domain = [_domains objectAtIndex:section];
+    return [domain objectForKey:@"title"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    if(section == SearchAutoCompleteTypeHistory) {
-        return _typedHistoryResult.count;
-    } else if(section == SearchAutoCompleteTypeCatalog) {
-        return _catalogs.count;
-    } else if(section == SearchAutoCompleteTypeCategory) {
-        return _categories.count;
-    }
-    
-    return 0;
+    NSDictionary *domain = [_domains objectAtIndex:section];
+    NSArray *domainData = [domain objectForKey:@"data"];
+    return [domainData count];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     SearchAutoCompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchAutoCompleteCellIdentifier"];
-    
-    if(indexPath.section == SearchAutoCompleteTypeHistory) {
+    NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
+    NSString *domainName = [domain objectForKey:@"title"];
+    if([domainName isEqualToString:SearchDomainHistory]) {
         if(_typedHistoryResult.count > 0) {
             NSString *searchResult = [_typedHistoryResult objectAtIndex:indexPath.row];
             NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
@@ -247,11 +233,11 @@ typedef enum {
             cell.searchTitle.attributedText = attributedText;
             [cell.searchImage setHidden:YES];
         }
-    } else if(indexPath.section == SearchAutoCompleteTypeCatalog) {
+    } else if([domainName isEqualToString:SearchDomainCatalog]) {
         SearchAutoCompleteCatalog *catalog = _catalogs[indexPath.row];
         [cell setViewModel:catalog.viewModel];
         [cell setBoldSearchText:_searchBar.text];
-    } else if(indexPath.section == SearchAutoCompleteTypeCategory) {
+    } else if([domainName isEqualToString:SearchDomainCategory]) {
         SearchAutoCompleteCategory *category = _categories[indexPath.row];
         [cell setViewModel:category.viewModel];
         [cell setBoldSearchText:_searchBar.text];
@@ -264,13 +250,51 @@ typedef enum {
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-//    NSString *result;
-//    if (_typedHistoryResult == nil || _typedHistoryResult.count == 0) {
-//        result = [_historyResult objectAtIndex:indexPath.row];
-//    } else {
-//        result = [_typedHistoryResult objectAtIndex:indexPath.row];
-//    }
-//    [self goToResultPage:result];
+    NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
+    NSString *domainName = [domain objectForKey:@"title"];
+    if([domainName isEqualToString:SearchDomainHistory]) {
+        [self goToResultPage:[_typedHistoryResult objectAtIndex:indexPath.row]];
+    } else if([domainName isEqualToString:SearchDomainCatalog]) {
+        NSArray *catalogs = [domain objectForKey:@"data"];
+        SearchAutoCompleteCatalog *catalog = [catalogs objectAtIndex:indexPath.row];
+
+        CatalogViewController *vc = [CatalogViewController new];
+        vc.catalogID = catalog.id;
+        vc.catalogName = catalog.title;
+        vc.hidesBottomBarWhenPushed = YES;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if([domainName isEqualToString:SearchDomainCategory]) {
+        NSArray *categories = [domain objectForKey:@"data"];
+        SearchAutoCompleteCategory *category = [categories objectAtIndex:indexPath.row];
+        
+        SearchResultViewController *vc = [SearchResultViewController new];
+        vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : category.id?:@"",
+                   kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : category.title?:@"",
+                   kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+        
+        SearchResultViewController *vc1 = [SearchResultViewController new];
+        vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : category.id?:@"",
+                    kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : category.title?:@"",
+                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+        
+        SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+        vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : category.id?:@"",
+                    kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : category.title?:@"",
+                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+        
+        NSArray *viewcontrollers = @[vc,vc1,vc2];
+        
+        TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+        [viewController setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTMENTIDKEY : category.id?:@"" }];
+        [viewController setNavigationTitle:category.title];
+        [viewController setSelectedIndex:0];
+        [viewController setViewControllers:viewcontrollers];
+        [viewController setNavigationTitle:category.title?:@""];
+        
+        viewController.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
 }
 
 
@@ -279,7 +303,8 @@ typedef enum {
     [_typedHistoryResult removeAllObjects];
     
     if([searchText isEqualToString:@""]) {
-        [_table setHidden:YES];
+        [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
+        [_table reloadData];
     } else {
         NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
         NSArray *historiesresult;
@@ -416,10 +441,10 @@ typedef enum {
     RKObjectMapping *domainsMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteDomains class]];
     
     RKObjectMapping *catalogMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteCatalog class]];
-    [catalogMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"image", @"catalogID"]];
+    [catalogMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"image", @"id"]];
     
     RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteCategory class]];
-    [categoryMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"categoryID"]];
+    [categoryMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"id"]];
     
     RKRelationshipMapping *catalogRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog" toKeyPath:@"catalog" withMapping:catalogMapping];
     RKRelationshipMapping *categoryRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"category" toKeyPath:@"category" withMapping:categoryMapping];
@@ -458,18 +483,15 @@ typedef enum {
 
         
         if(_typedHistoryResult.count > 0) {
-            NSDictionary *historyDictionary = @{@"History" : _typedHistoryResult};
-            [_domains addEntriesFromDictionary:historyDictionary];
+            [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
         }
         
         if(_catalogs.count > 0) {
-            NSDictionary *catalogDictionary = @{@"Katalog" : _catalogs};
-            [_domains addEntriesFromDictionary:catalogDictionary];
+            [_domains addObject:@{@"title" : SearchDomainCatalog, @"data" : _catalogs}];
         }
             
         if(_categories.count > 0) {
-            NSDictionary *categoriesDictionary = @{@"Kategori" : _categories};
-            [_domains addEntriesFromDictionary:categoriesDictionary];
+            [_domains addObject:@{@"title" : SearchDomainCategory, @"data" : _categories}];
         }
         
         [_table reloadData];

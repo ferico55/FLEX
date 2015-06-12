@@ -14,7 +14,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *rating;
-@property (nonatomic, strong) NSString *categoryID;
+@property (nonatomic, strong) NSString *id;
 
 @property (strong, nonatomic) SearchAutoCompleteViewModel *viewModel;
 

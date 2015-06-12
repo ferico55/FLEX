@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *rating;
 @property (nonatomic, strong) NSString *image;
-@property (nonatomic, strong) NSString *catalogID;
+@property (nonatomic, strong) NSString *id;
 
 @property (strong, nonatomic) SearchAutoCompleteViewModel *viewModel;
 
