@@ -82,6 +82,7 @@
 #pragma mark - View Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initNetworkManager];
     
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -118,7 +119,7 @@
     
     self.tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
     
-    [self initNetworkManager];
+
 }
 
 -(void)initNetworkManager
