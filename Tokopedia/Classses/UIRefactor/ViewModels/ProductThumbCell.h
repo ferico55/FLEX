@@ -1,5 +1,5 @@
 //
-//  GeneralSingleProductCollectionViewCell.h
+//  ProductThumbCell.h
 //  Tokopedia
 //
 //  Created by Renny Runiawati on 6/12/15.
@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ProductModelView;
 
-@interface GeneralSingleProductCollectionViewCell : UICollectionViewCell
+@interface ProductThumbCell : UICollectionViewCell
+
+- (void)setViewModel:(ProductModelView*)viewModel;
 
 @end

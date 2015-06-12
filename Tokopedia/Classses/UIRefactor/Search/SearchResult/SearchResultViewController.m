@@ -32,7 +32,10 @@
 #import "URLCacheController.h"
 #import "GeneralPhotoProductCell.h"
 #import "GeneralSingleProductCell.h"
-#import "GeneralProductCollectionViewCell.h"
+
+#import "ProductCell.h"
+#import "ProductSingleViewCell.h"
+#import "ProductThumbCell.h"
 
 #import "NavigateViewController.h"
 
@@ -212,8 +215,14 @@ UICollectionViewDelegate
                                forState:UIControlStateNormal];
     }
 
-    UINib *cellNib = [UINib nibWithNibName:@"GeneralProductCollectionViewCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"GeneralProductCollectionViewIdentifier"];
+    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
+    
+    UINib *singleCellNib = [UINib nibWithNibName:@"ProductSingleViewCell" bundle:nil];
+    [_collectionView registerNib:singleCellNib forCellWithReuseIdentifier:@"ProductSingleViewIdentifier"];
+    UINib *thumbCellNib = [UINib nibWithNibName:@"ProductThumbCell" bundle:nil];
+    [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];
+    
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
@@ -263,37 +272,23 @@ UICollectionViewDelegate
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellid = @"GeneralProductCollectionViewIdentifier";
-    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+    NSString *cellid;
+    UICollectionViewCell *cell = nil;
     
     List *list = [_product objectAtIndex:indexPath.row];
-    cell.productPrice.text = list.product_price;
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name?:@""];
-    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:5];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
-    cell.productName.attributedText = attributedString;
-    cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
-    cell.productShop.text = list.shop_name?:@"";
-    
-    if([list.shop_gold_status integerValue] == 1) {
-        cell.goldShopBadge.hidden = NO;
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        cellid = @"ProductSingleViewIdentifier";
+        cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+        [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        cellid = @"ProductCellIdentifier";
+        cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+        [(ProductCell*)cell setViewModel:list.viewModel];
     } else {
-        cell.goldShopBadge.hidden = YES;
+        cellid = @"ProductThumbCellIdentifier";
+        cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+        [(ProductThumbCell*)cell setViewModel:list.viewModel];
     }
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    UIImageView *thumb = cell.productImage;
-    thumb.image = nil;
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-        [thumb setContentMode:UIViewContentModeScaleAspectFill];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
     
     //next page if already last cell
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
@@ -330,6 +325,7 @@ UICollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     CGSize cellSize = CGSizeMake(0, 0);
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     
@@ -342,7 +338,7 @@ UICollectionViewDelegate
 
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellCount = 1;
-        heightRatio = 289;
+        heightRatio = 389;
         widhtRatio = 300;
         inset = 15;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
@@ -354,7 +350,7 @@ UICollectionViewDelegate
         cellCount = 3;
         heightRatio = 1;
         widhtRatio = 1;
-        inset = 15;
+        inset = 14;
     }
     
     CGFloat cellWidth = screenWidth/cellCount-inset;
