@@ -14,6 +14,8 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		858073C51B2A9A7B0037798C /* HeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 858073C31B2A9A7B0037798C /* HeaderCollectionReusableView.m */; };
+		858073C61B2A9A7B0037798C /* HeaderCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 858073C41B2A9A7B0037798C /* HeaderCollectionReusableView.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1485,6 +1487,9 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		858073C21B2A9A7B0037798C /* HeaderCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderCollectionReusableView.h; sourceTree = "<group>"; };
+		858073C31B2A9A7B0037798C /* HeaderCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderCollectionReusableView.m; sourceTree = "<group>"; };
+		858073C41B2A9A7B0037798C /* HeaderCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCollectionReusableView.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -6223,6 +6228,9 @@
 				85E790A01B2943C000A545BB /* RetryCollectionReusableView.h */,
 				85E790A11B2943C000A545BB /* RetryCollectionReusableView.m */,
 				85E790A21B2943C000A545BB /* RetryCollectionReusableView.xib */,
+				858073C21B2A9A7B0037798C /* HeaderCollectionReusableView.h */,
+				858073C31B2A9A7B0037798C /* HeaderCollectionReusableView.m */,
+				858073C41B2A9A7B0037798C /* HeaderCollectionReusableView.xib */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -8429,6 +8437,7 @@
 				85E798851B2943C800A545BB /* icon_button_wishlist_nonactive@3x.png in Resources */,
 				85E797BD1B2943C800A545BB /* FilterLocationViewCell.xib in Resources */,
 				85E796071B2943C800A545BB /* CameraCollectionCell.xib in Resources */,
+				858073C61B2A9A7B0037798C /* HeaderCollectionReusableView.xib in Resources */,
 				85E799D11B2943C800A545BB /* icon_cart_active@2x.png in Resources */,
 				85E799EF1B2943C800A545BB /* Icon_check_green_bg.png in Resources */,
 				85E798DD1B2943C800A545BB /* icon_grid_dua@2x.png in Resources */,
@@ -9071,6 +9080,7 @@
 				85E796EA1B2943C800A545BB /* DetailProductInfoCell.m in Sources */,
 				85E794EF1B2943C800A545BB /* InboxMessageDetailBetween.m in Sources */,
 				85E797881B2943C800A545BB /* ShopDeliveryCell.m in Sources */,
+				858073C51B2A9A7B0037798C /* HeaderCollectionReusableView.m in Sources */,
 				85E7966E1B2943C800A545BB /* GeneralSingleProductCell.m in Sources */,
 				85E7958B1B2943C800A545BB /* ShippingInfoShipmentPackage.m in Sources */,
 				85E796F61B2943C800A545BB /* GalleryViewController.m in Sources */,

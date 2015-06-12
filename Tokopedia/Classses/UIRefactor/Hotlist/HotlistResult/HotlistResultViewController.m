@@ -5,7 +5,7 @@
 //  Created by IT Tkpd on 9/2/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "GeneralProductCollectionViewCell.h"
 #import "HotlistDetail.h"
 #import "SearchResult.h"
 #import "List.h"
@@ -34,6 +34,16 @@
 #import "GeneralSingleProductCell.h"
 #import "GeneralPhotoProductCell.h"
 
+
+#define CTagGeneralProductCollectionView @"GeneralProductCollectionViewCell"
+#define CTagGeneralProductIdentifier @"GeneralProductCollectionViewIdentifier"
+#define CTagFooterCollectionView @"FooterCollectionReusableView"
+#define CTagFooterCollectionIdentifier @"FooterView"
+#define CTagRetryCollectionView @"RetryCollectionReusableView"
+#define CTagRetryCollectionIdentifier @"RetryView"
+#define CTagHeaderCollectionView @"HeaderCollectionReusableView"
+#define CTagHeaderIdentifier @"HeaderIdentifier"
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -42,8 +52,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 @interface HotlistResultViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
     GeneralProductCellDelegate,
     CategoryMenuViewDelegate,
     SortViewControllerDelegate,
@@ -68,6 +76,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     BOOL _isnodata;
     BOOL _isrefreshview;
+    BOOL isFailedRequest;
     
     UIRefreshControl *_refreshControl;
     
@@ -90,8 +99,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
@@ -132,7 +139,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
     // set title navigation
     if ([_data objectForKey:kTKPDHOME_DATATITLEKEY]) {
         self.title = [_data objectForKey:kTKPDHOME_DATATITLEKEY];
@@ -155,7 +161,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     _page = 1;
     
-    _table.tableHeaderView = _header;
     
     if (_product.count > 0) {
         _isnodata = NO;
@@ -226,7 +231,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    [_table addSubview:_refreshControl];
+    [viewCollection addSubview:_refreshControl];
 
 }
 
@@ -234,13 +239,32 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 {
     [super viewWillAppear:animated];
     
+    //Set CollectionView
+    if(viewCollection.backgroundColor != [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f]) {
+        [self registerNibCell:CTagGeneralProductCollectionView withIdentifier:CTagGeneralProductIdentifier isFooterView:NO isHeader:NO];
+        [self registerNibCell:CTagFooterCollectionView withIdentifier:CTagFooterCollectionIdentifier isFooterView:YES isHeader:NO];
+        [self registerNibCell:CTagRetryCollectionView withIdentifier:CTagRetryCollectionIdentifier isFooterView:YES isHeader:NO];
+        [self registerNibCell:CTagHeaderCollectionView withIdentifier:CTagHeaderIdentifier isFooterView:NO isHeader:YES];
+        
+        viewCollection.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
+        [viewCollection setAlwaysBounceVertical:YES];
+        flowLayout.headerReferenceSize = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
+        [flowLayout setFooterReferenceSize:CGSizeMake(self.view.bounds.size.height, 50)];
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+        
+        if([[UIScreen mainScreen]bounds].size.width > 320) {
+            [flowLayout setItemSize:CGSizeMake(productCollectionViewCellWidth6plus, productCollectionViewCellHeight6plus)];
+        } else {
+            [flowLayout setItemSize:CGSizeMake(productCollectionViewCellWidthNormal, productCollectionViewCellHeightNormal)];
+        }
+    }
+    
+    
     self.screenName = @"Browse HotList Detail";
     [self configureRestKit];
     if (_isnodata) {
         [self request];
     }
-
-    
     self.hidesBottomBarWhenPushed = YES;
 }
 
@@ -259,7 +283,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
-
+/*
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = 0;
@@ -398,7 +422,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
     
     if (_product.count > indexPath.row) {
-        /** Flexible view count **/
+        // Flexible view count
         NSUInteger indexSegment = indexPath.row * 2;
         NSUInteger indexMax = indexSegment + 2;
         NSUInteger indexLimit = MIN(indexMax, _product.count);
@@ -516,14 +540,14 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            /** called if need to load next page **/
+            // called if need to load next page
             //NSLog(@"%@", NSStringFromSelector(_cmd));
             [self configureRestKit];
             [self request];
         }
 	}
 }
-
+*/
 
 #pragma mark - Action View
 -(IBAction)tap:(id)sender{
@@ -719,7 +743,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                               delay:0
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
+                             [_descriptionview setFrame:CGRectMake(self.view.bounds.size.width, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
                              [self.view addSubview:_descriptionview];
                          }
                          completion:^(BOOL finished){
@@ -877,13 +901,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         //[_cachecontroller clearCache];
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
-            [_act stopAnimating];
-            [_act setHidden:YES];
-//            _table.tableFooterView = nil;
             [_table reloadData];
             [_refreshControl endRefreshing];
             [_timer invalidate];
@@ -892,9 +911,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
-            [_act stopAnimating];
-            [_act setHidden:YES];
-//            _table.tableFooterView = nil;
             [_refreshControl endRefreshing];
             [_timer invalidate];
             _timer = nil;
@@ -942,7 +958,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if (_isrefreshview) {
         [self requestprocess:object];
     }
-    
+    else {
+        isFailedRequest = YES;
+        [viewCollection reloadData];
+    }
 }
 
 -(void)requestprocess:(id)object
@@ -1003,14 +1022,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                     _isnodata = NO;
                     
                     _filterview.hidden = NO;
-                    
-                } else {
-                    
-                    NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
-                    _table.tableFooterView = noResultView;
-                    _table.sectionFooterHeight = noResultView.frame.size.height;
-                    
                 }
+                
+                [viewCollection reloadData];
             }
         }
     }
@@ -1019,8 +1033,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
         if ([(NSError*)object code] == NSURLErrorCancelled) {
             if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                _table.tableFooterView = _footer;
-                [_act startAnimating];
                 [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
             }
@@ -1034,9 +1046,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         }
         else
         {
-            [_act stopAnimating];
-            [_act setHidden:YES];
-//            _table.tableFooterView = nil;
+            [viewCollection reloadData];
             NSError *error = object;
             if (!([error code] == NSURLErrorCancelled)){
                 NSString *errorDescription = error.localizedDescription;
@@ -1052,26 +1062,25 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [self cancel];
 }
 
-#pragma mark - Cell Delegate
-
--(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger index = 0;
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        index = indexPath.row;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        index = indexPath.section+2*(indexPath.row);
-    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
-        index = indexPath.section+3*(indexPath.row);
-    }
-    List *list = _product[index];
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
 #pragma mark - Methods
+- (IBAction)pressRetryButton:(id)sender
+{
+    [viewCollection reloadData];
+    [self configureRestKit];
+    [self request];
+}
+
+- (void)registerNibCell:(NSString *)strTag withIdentifier:(NSString *)strIdentifier isFooterView:(BOOL)isFooter isHeader:(BOOL)isHeader
+{
+    UINib *cellNib = [UINib nibWithNibName:strTag bundle:nil];
+    if(isFooter || isHeader) {
+        [viewCollection registerNib:cellNib forSupplementaryViewOfKind:(isFooter?UICollectionElementKindSectionFooter:UICollectionElementKindSectionHeader) withReuseIdentifier:strIdentifier];
+    }
+    else {
+        [viewCollection registerNib:cellNib forCellWithReuseIdentifier:strIdentifier];
+    }
+}
 
 -(void)setHeaderData
 {
@@ -1085,19 +1094,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
         
-        [_act startAnimating];
-        
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             [thumb setImage:image];
 #pragma clang diagnostic pop
-            [_act stopAnimating];
-            [_act setHidden:YES];
-            
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [_act stopAnimating];
-            [_act setHidden:YES];
         }];
     }
     
@@ -1201,4 +1203,103 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [self refreshView:nil];
 }
 
+
+#pragma mark - CollectionView Delegate And Datasource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _isnodata?0:_product.count;
+}
+
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
+    List *list = [_product objectAtIndex:indexPath.row];
+    cell.productPrice.text = list.catalog_price?:list.product_price;
+
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.catalog_name?:list.product_name];
+    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragrahStyle setLineSpacing:5];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.catalog_name?:list.product_name length])];
+    cell.productName.attributedText = attributedString;
+    cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
+    cell.productShop.text = list.shop_name?:@"";
+    if([list.shop_gold_status isEqualToString:@"1"]) {
+        cell.goldShopBadge.hidden = NO;
+    } else {
+        cell.goldShopBadge.hidden = YES;
+    }
+    
+    
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image?:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    UIImageView *thumb = cell.productImage;
+    thumb.image = nil;
+    
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [thumb setImage:image];
+        [thumb setContentMode:UIViewContentModeScaleAspectFill];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+    }];
+    
+    return cell;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (_isnodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
+    
+    
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] -1;
+    if (row == indexPath.row) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+            /** called if need to load next page **/
+            //NSLog(@"%@", NSStringFromSelector(_cmd));
+            [self configureRestKit];
+            [self request];
+        }
+        else {
+            [flowLayout setFooterReferenceSize:CGSizeZero];
+        }
+    }
+}
+
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    
+    if(kind == UICollectionElementKindSectionFooter) {
+        if(isFailedRequest) {
+            isFailedRequest = !isFailedRequest;
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:CTagFooterCollectionIdentifier forIndexPath:indexPath];
+        }
+    }
+    else if(kind == UICollectionElementKindSectionHeader) {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CTagHeaderIdentifier forIndexPath:indexPath];
+        [_header removeFromSuperview];
+        _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _header.bounds.size.height);
+        [reusableView addSubview:_header];
+    }
+    
+    return reusableView;
+}
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    List *list = _product[indexPath.row];
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+    [self.navigationController pushViewController:vc animated:YES];
+}
 @end
