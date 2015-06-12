@@ -82,6 +82,7 @@
 #pragma mark - View Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initNetworkManager];
     
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -118,7 +119,7 @@
     
     self.tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
     
-    [self initNetworkManager];
+
 }
 
 -(void)initNetworkManager
@@ -1139,7 +1140,7 @@
             else
             {
                 insuranceName = cart.cart_insurance_name?:([cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.accessoryType = UITableViewCellAccessoryNone;
             }
             cell.detailTextLabel.text = insuranceName;
             break;
