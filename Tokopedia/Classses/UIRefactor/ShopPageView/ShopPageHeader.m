@@ -72,22 +72,22 @@
 
 
 - (void)initButton {
-//    self.leftButton.layer.cornerRadius = 3;
-//    self.leftButton.layer.borderWidth = 1;
-//    self.leftButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-//    
-//    self.rightButton.layer.cornerRadius = 3;
-//    self.rightButton.layer.borderWidth = 1;
-//    self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-//
+    //    self.leftButton.layer.cornerRadius = 3;
+    //    self.leftButton.layer.borderWidth = 1;
+    //    self.leftButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    //
+    //    self.rightButton.layer.cornerRadius = 3;
+    //    self.rightButton.layer.borderWidth = 1;
+    //    self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    //
     _auth = [_userManager getUserLoginData];
     if ([_auth allValues] > 0) {
         //toko sendiri dan login
-         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-             
-         } else {
-             
-         }
+        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+            
+        } else {
+            
+        }
     }
     
     
@@ -106,7 +106,7 @@
             
             [self.rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
             [self.rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-//            self.rightButton.tintColor = [UIColor lightGrayColor];
+            //            self.rightButton.tintColor = [UIColor lightGrayColor];
         }
     } else {
         [self.leftButton setTitle:@"Message" forState:UIControlStateNormal];
@@ -114,7 +114,7 @@
         
         [self.rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
         [self.rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-//        self.rightButton.tintColor = [UIColor lightGrayColor];
+        //        self.rightButton.tintColor = [UIColor lightGrayColor];
     }
     
     self.leftButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -129,7 +129,6 @@
 
 - (void)viewDidLoad
 {
-    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     [_shopImageView.layer setCornerRadius:(_shopImageView.bounds.size.width / 2.0f)];
     [_shopImageView.layer setMasksToBounds:YES];
     
@@ -138,14 +137,13 @@
     [self initButton];
     
     _descriptionView = [ShopDescriptionView newView];
-    _descriptionView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width, _descriptionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);
+    _descriptionView.frame = CGRectMake(_descriptionView.frame.origin.x, _descriptionView.frame.origin.y, _descriptionView.bounds.size.width, self.scrollView.bounds.size.height);
     [self.scrollView addSubview:_descriptionView];
     
     _statView = [ShopStatView newView];
-    _statView.frame = CGRectMake(0, _descriptionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);
     [self.scrollView addSubview:_statView];
     
- 
+    
     self.scrollView.hidden = YES;
     self.scrollView.delegate = self;
     _operationQueue = [NSOperationQueue new];
@@ -155,7 +153,7 @@
     [_navigationTab.layer setShadowRadius:1];
     [_navigationTab.layer setShadowOpacity:0.3];
     
-    [self.scrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width * 2, 77)];
+    [self.scrollView setContentSize:CGSizeMake(640, 77)];
     
 }
 
@@ -172,60 +170,60 @@
     
     _descriptionView.nameLabel.text = [NSString stringWithFormat:@"Terakhir Online : %@", _shop.result.info.shop_owner_last_login];
     
-//    [_descriptionView.nameLabel sizeToFit];
+    //    [_descriptionView.nameLabel sizeToFit];
     
     if (_shop.result.info.shop_is_gold == 1) {
         _goldBadgeView.hidden = NO;
         
-//        CGRect newFrame = self.view.frame;
-//        newFrame.size.height += 70;
-//        self.view.frame = newFrame;
-//        
-//        CGRect newFrame2 = _manipulatedView.frame;
-//        newFrame2.origin.y += 70;
-//        _manipulatedView.frame = newFrame2;
+        //        CGRect newFrame = self.view.frame;
+        //        newFrame.size.height += 70;
+        //        self.view.frame = newFrame;
+        //
+        //        CGRect newFrame2 = _manipulatedView.frame;
+        //        newFrame2.origin.y += 70;
+        //        _manipulatedView.frame = newFrame2;
     } else {
-//        CGRect newFrame = _manipulatedView.frame;
-//        newFrame.origin.y -= 70;
-//        _manipulatedView.frame = newFrame;
-//        
-//        CGRect newFrame2 = self.view.frame;
-//        newFrame2.size.height -= 70;
-//        self.view.frame = newFrame2;
+        //        CGRect newFrame = _manipulatedView.frame;
+        //        newFrame.origin.y -= 70;
+        //        _manipulatedView.frame = newFrame;
+        //
+        //        CGRect newFrame2 = self.view.frame;
+        //        newFrame2.size.height -= 70;
+        //        self.view.frame = newFrame2;
         
     }
     
     if(_shop.result.info.shop_already_favorited == 1) {
-//        [self setButtonFav];
+        //        [self setButtonFav];
     }
     
-//    self.title = _shop.result.info.shop_name;
+    //    self.title = _shop.result.info.shop_name;
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 3.0;
     style.alignment = NSTextAlignmentCenter;
-
+    
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
                                  NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: style
                                  };
-
+    
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_shop.result.info.shop_description?:@""
                                                                                     attributes:attributes];
     _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
     _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
     _descriptionView.descriptionLabel.numberOfLines = 4;
     
-//    CGRect newFrame = CGRectMake(20, 50, 280, 150);
-//    _descriptionView.descriptionLabel.frame = newFrame;
-//    [_descriptionView.descriptionLabel sizeToFit];
+    CGRect newFrame = CGRectMake(20, 50, 280, 150);
+    _descriptionView.descriptionLabel.frame = newFrame;
+    [_descriptionView.descriptionLabel sizeToFit];
     
-//    CGRect myFrame = _descriptionView.descriptionLabel.frame;
-//    myFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y, 280, myFrame.size.height);
-//    _descriptionView.descriptionLabel.frame = myFrame;
+    CGRect myFrame = _descriptionView.descriptionLabel.frame;
+    myFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y, 280, myFrame.size.height);
+    _descriptionView.descriptionLabel.frame = myFrame;
     
     
     
@@ -241,7 +239,7 @@
                        _shop.result.stats.shop_item_sold,
                        _shop.result.info.shop_total_favorit];
     
-
+    
     
     [_statView.statLabel setText:stats];
     // Set cover image
@@ -258,7 +256,7 @@
     } else {
         _shopClosedView.hidden = YES;
     }
-
+    
     if(_shop.result.info.shop_is_gold == 1) {
         [_coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -276,8 +274,8 @@
     
     //set shop image
     NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar?:@""]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                    timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     [_avatarIndicator startAnimating];
     [_shopImageView setImageWithURLRequest:requestAvatar placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -335,7 +333,7 @@
                 settingController.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                                            kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
                                            };
-
+                
                 nav.hidesBottomBarWhenPushed = YES;
                 [nav.navigationController pushViewController:settingController animated:YES];
                 break;
@@ -349,7 +347,7 @@
                                            kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
                                            };
                 [nav.navigationController pushViewController:messageController animated:YES];
-               
+                
             } else {
                 UINavigationController *navigationController = [[UINavigationController alloc] init];
                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -372,56 +370,56 @@
             
         case 15: {
             
-//            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
-//                ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
-//                productViewController.data = @{
-//                                               kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-//                                               DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-//                                               };
-//                [nav.navigationController pushViewController:productViewController animated:YES];
-//                break;
-//            }
-//            
-//            if(_auth) {
-//                // Favorite shop action
-//                [self configureFavoriteRestkit];
-//                [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
-//                [self setButtonFav];
-//                
-//            } else {
-//                UINavigationController *navigationController = [[UINavigationController alloc] init];
-//                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-//                navigationController.navigationBar.translucent = NO;
-//                navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//                
-//                
-//                LoginViewController *controller = [LoginViewController new];
-//                controller.delegate = self;
-//                controller.isPresentedViewController = YES;
-//                controller.redirectViewController = self;
-//                navigationController.viewControllers = @[controller];
-//                
-//                [nav.navigationController presentViewController:navigationController animated:YES completion:nil];
-//            }
+            //            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
+            //                ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
+            //                productViewController.data = @{
+            //                                               kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+            //                                               DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
+            //                                               };
+            //                [nav.navigationController pushViewController:productViewController animated:YES];
+            //                break;
+            //            }
+            //
+            //            if(_auth) {
+            //                // Favorite shop action
+            //                [self configureFavoriteRestkit];
+            //                [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
+            //                [self setButtonFav];
+            //
+            //            } else {
+            //                UINavigationController *navigationController = [[UINavigationController alloc] init];
+            //                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+            //                navigationController.navigationBar.translucent = NO;
+            //                navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            //
+            //
+            //                LoginViewController *controller = [LoginViewController new];
+            //                controller.delegate = self;
+            //                controller.isPresentedViewController = YES;
+            //                controller.redirectViewController = self;
+            //                navigationController.viewControllers = @[controller];
+            //
+            //                [nav.navigationController presentViewController:navigationController animated:YES completion:nil];
+            //            }
             
             
             break;
         }
             
         case 16: {
-//            [self configureFavoriteRestkit];
-//            
-//            [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
-//            
-//            _rightButton.tag = 15;
-//            [_rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
-//            [_rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-//            [_rightButton.layer setBorderWidth:1];
-////            self.rightButton.tintColor = [UIColor lightGrayColor];
-//            [UIView animateWithDuration:0.3 animations:^(void) {
-//                [_rightButton setBackgroundColor:[UIColor whiteColor]];
-//                [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//            }];
+            //            [self configureFavoriteRestkit];
+            //
+            //            [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
+            //
+            //            _rightButton.tag = 15;
+            //            [_rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
+            //            [_rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+            //            [_rightButton.layer setBorderWidth:1];
+            ////            self.rightButton.tintColor = [UIColor lightGrayColor];
+            //            [UIView animateWithDuration:0.3 animations:^(void) {
+            //                [_rightButton setBackgroundColor:[UIColor whiteColor]];
+            //                [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            //            }];
         }
             
         default:

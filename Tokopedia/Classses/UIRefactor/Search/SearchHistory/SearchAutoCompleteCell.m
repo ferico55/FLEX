@@ -36,5 +36,13 @@
     }];
 }
 
+- (void)setBoldSearchText:(NSString *)searchText {
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[_searchTitle text]];
+    
+    NSRange range = [[_searchTitle text] rangeOfString:searchText options:NSCaseInsensitiveSearch];
+    [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
+    [_searchTitle setAttributedText:attributedText];
+}
+
 
 @end

@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchViewController">
             <connections>
-                <outlet property="searchbar" destination="7Xm-Sf-r27" id="GFB-Hx-xs8"/>
                 <outlet property="table" destination="3gY-Wm-LpU" id="SpY-sx-Q8e"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -17,18 +16,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <searchBar contentMode="scaleToFill" placeholder="Cari katalog dan kategori" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Xm-Sf-r27">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="BpI-NQ-T71"/>
-                    </constraints>
-                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <color key="barTintColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="p3n-bA-ELj"/>
-                    </connections>
-                </searchBar>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGu-Sr-Afb" userLabel="Search History - View">
                     <rect key="frame" x="0.0" y="44" width="320" height="524"/>
                     <subviews>
@@ -53,12 +40,9 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="7Xm-Sf-r27" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Enb-5j-7SY"/>
                 <constraint firstAttribute="bottom" secondItem="UGu-Sr-Afb" secondAttribute="bottom" id="Gxb-T3-vvo"/>
-                <constraint firstItem="UGu-Sr-Afb" firstAttribute="top" secondItem="7Xm-Sf-r27" secondAttribute="bottom" id="Jtn-2j-9R8"/>
-                <constraint firstItem="7Xm-Sf-r27" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="OJu-IQ-xyS"/>
                 <constraint firstAttribute="trailing" secondItem="UGu-Sr-Afb" secondAttribute="trailing" id="RSP-2i-Cbd"/>
-                <constraint firstAttribute="trailing" secondItem="7Xm-Sf-r27" secondAttribute="trailing" id="e5M-rJ-faP"/>
+                <constraint firstItem="UGu-Sr-Afb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="44" id="hdR-JC-mNF"/>
                 <constraint firstItem="UGu-Sr-Afb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="tnf-dv-1aL"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

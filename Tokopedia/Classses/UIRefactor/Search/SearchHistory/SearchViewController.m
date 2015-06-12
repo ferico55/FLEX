@@ -29,18 +29,13 @@
     SearchResultDelegate,
     NotificationDelegate,
     NotificationManagerDelegate
->
-{
-    /** real time search result array **/
-    NSMutableArray *_searchresultarray;
-    /** variable for segment control **/
+> {
+    NSMutableArray *_typedHistoryResult;
     NSString *_filter;
-    /** all histories from property list **/
-    NSMutableArray *_historysearch;
+    NSMutableArray *_historyResult;
     
     UITextField *_activeTextField;
     
-    //Notification *_notification;
     NotificationManager *_notifManager;
     SearchAutoCompleteViewController *_searchAutoCompleteController;
     
@@ -55,14 +50,9 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
-@property (weak, nonatomic) IBOutlet UIButton *buttonclear;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
-@property (weak, nonatomic) IBOutlet UIView *searchhistoryview;
-@property (weak, nonatomic) IBOutlet UILabel *labelsearchfor;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
-@property (strong, nonatomic) UIView *notificationView;
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
-@property (strong, nonatomic) UIImageView *notificationArrowImageView;
 @property (strong, nonatomic) NotificationViewController *notificationController;
 
 
@@ -70,8 +60,13 @@
 
 @implementation SearchViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+typedef enum {
+    SearchAutoCompleteTypeHistory = 0,
+    SearchAutoCompleteTypeCatalog = 1,
+    SearchAutoCompleteTypeCategory = 2
+} SearchAutoCompleteType;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:@"SearchViewController" bundle:nibBundleOrNil];
     if (self) {
         self.title = kTKPDSEARCH_TITLE;
@@ -81,8 +76,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     _operationQueue = [NSOperationQueue new];
@@ -92,14 +86,27 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    _historysearch =[NSMutableArray new];
-    _searchresultarray = [NSMutableArray new];
+    _historyResult =[NSMutableArray new];
+    _typedHistoryResult = [NSMutableArray new];
     _domains = [NSMutableDictionary new];
+    _catalogs = [NSMutableArray new];
+    _categories = [NSMutableArray new];
     
-    _searchbar.delegate = self;
+
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
+    [searchBar setPlaceholder:@"Sudah cek tokopedia belum ?"];
+    [searchBar setOpaque:YES];
+    [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
+    [searchBar setTintColor:[UIColor whiteColor]];
+    [[UITextField appearance] setTintColor:[UIColor blueColor]];
+    _searchBar = searchBar;
+    [self.view addSubview:_searchBar];
+
+    _searchBar.delegate = self;
     
     _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _table.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
+
 
     _filter = @"search_product";
     
@@ -117,31 +124,20 @@
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
-
 }
 
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self initNotificationManager];
     
     self.navigationController.title = @"Cari";
     self.screenName = @"Search Page";
     self.hidesBottomBarWhenPushed = NO;
     
-    [self initNotificationManager];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadNotification)
-                                                 name:@"reloadNotification"
-                                               object:nil];
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -150,7 +146,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [_searchbar resignFirstResponder];
+    [_searchBar resignFirstResponder];
 }
 
 #pragma mark - Memory Management
@@ -160,123 +156,64 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];    
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Methods
--(void)SaveHistory:(id)history{
+-(void)saveHistory:(id)history {
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
-    [_historysearch insertObject:history atIndex:0];
-    [_historysearch writeToFile:destPath atomically:YES];
+    [_historyResult insertObject:history atIndex:0];
+    [_historyResult writeToFile:destPath atomically:YES];
     
     [_table reloadData];
-    
-    if (_historysearch.count == 0) {
-        _searchhistoryview.hidden = YES;
-    }else {
-        _searchhistoryview.hidden = NO;
-    }
 }
 
--(void)loadHistory
-{
+-(void)loadHistory {
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
-        
-    // Load the Property List
-    [_historysearch addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
-    
-    if (_historysearch.count == 0) {
-        _searchhistoryview.hidden = YES;
-    }else {
-        _searchhistoryview.hidden = NO;
-    }
+
+    [_historyResult addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
 }
 
--(void)clearHistory
-{
-    [_historysearch removeAllObjects];
+-(void)clearHistory {
+    [_historyResult removeAllObjects];
     
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
-    // If the file doesn't exist in the Documents Folder, copy it.
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    
     if (![fileManager fileExistsAtPath:destPath]) {
         NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"history_search" ofType:@"plist"];
         [fileManager copyItemAtPath:sourcePath toPath:destPath error:nil];
     }
     
-    [_historysearch writeToFile:destPath atomically:YES];
+    [_historyResult writeToFile:destPath atomically:YES];
     
     [_table reloadData];
-    
-    if (_historysearch.count == 0) {
-        _searchhistoryview.hidden = YES;
-    }else {
-        _searchhistoryview.hidden = NO;
-    }
 }
 
 
 #pragma mark - View Gesture
 - (IBAction)tap:(id)sender {
-    [_searchbar resignFirstResponder];
+    [_searchBar resignFirstResponder];
     [self clearHistory];
 }
 
 #pragma mark - Table View Data Source
-
-//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    
-//    if (_searchresultarray == nil || _searchresultarray.count == 0) {
-//        return [_historysearch count];
-//    } else {
-//        return [_searchresultarray count];
-//    }
-//}
-//
-//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    UITableViewCell* cell = nil;
-//    NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
-//    
-//    NSString *searchresult;
-//    if (_searchresultarray == nil || _searchresultarray.count == 0) {
-//        searchresult = [_historysearch objectAtIndex:indexPath.row];
-//    } else {
-//        searchresult = [_searchresultarray objectAtIndex:indexPath.row];
-//    }
-//    
-//    if (cell == nil) {
-//        
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-//        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-//    }
-//    if (_historysearch.count > indexPath.row) {
-//        cell.textLabel.text = searchresult;
-//        cell.textLabel.font = [UIFont fontWithName:@"GothamMedium" size:14.0f];
-//    }
-//	
-//	return cell;
-//}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
 }
 
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if(section == 0 && _searchresultarray.count > 0) {
+    if(section == SearchAutoCompleteTypeHistory && _typedHistoryResult.count > 0)  {
         return @"History";
-    } else if(section == 1 && _catalogs.count > 0) {
+    } else if(section == SearchAutoCompleteTypeCatalog && _catalogs.count > 0) {
         return @"Katalog";
-    } else if(section == 2 && _categories.count > 0) {
+    } else if(section == SearchAutoCompleteTypeCategory && _categories.count > 0) {
         return @"Kategori";
     }
     
@@ -285,11 +222,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    if(section == 0) {
-        return _searchresultarray.count;
-    } else if(section == 1) {
+    if(section == SearchAutoCompleteTypeHistory) {
+        return _typedHistoryResult.count;
+    } else if(section == SearchAutoCompleteTypeCatalog) {
         return _catalogs.count;
-    } else if(section == 2) {
+    } else if(section == SearchAutoCompleteTypeCategory) {
         return _categories.count;
     }
     
@@ -300,80 +237,61 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     SearchAutoCompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
-    if(indexPath.section == 0) {
-        if(_searchresultarray.count > 0) {
-            NSString *searchResult = [_searchresultarray objectAtIndex:indexPath.row];
-            cell.searchTitle.text = searchResult;
-            cell.searchImage = nil;
+    if(indexPath.section == SearchAutoCompleteTypeHistory) {
+        if(_typedHistoryResult.count > 0) {
+            NSString *searchResult = [_typedHistoryResult objectAtIndex:indexPath.row];
+            NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
+
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
+            [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
+            cell.searchTitle.attributedText = attributedText;
+            [cell.searchImage setHidden:YES];
         }
-    } else if(indexPath.section == 1) {
+    } else if(indexPath.section == SearchAutoCompleteTypeCatalog) {
         SearchAutoCompleteCatalog *catalog = _catalogs[indexPath.row];
         [cell setViewModel:catalog.viewModel];
-    } else if(indexPath.section == 2) {
+        [cell setBoldSearchText:_searchBar.text];
+    } else if(indexPath.section == SearchAutoCompleteTypeCategory) {
         SearchAutoCompleteCategory *category = _categories[indexPath.row];
         [cell setViewModel:category.viewModel];
+        [cell setBoldSearchText:_searchBar.text];
     }
 
     return cell;
 }
 
 #pragma mark - TableView Delegate
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSString *searchresult;
-    if (_searchresultarray == nil || _searchresultarray.count == 0) {
-        searchresult = [_historysearch objectAtIndex:indexPath.row];
-    } else {
-        searchresult = [_searchresultarray objectAtIndex:indexPath.row];
-    }
-    
-    SearchResultViewController *vc = [SearchResultViewController new];
-    vc.delegate = self;
-    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
-               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.delegate = self;
-    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    NSArray *viewcontrollers = @[vc,vc1,vc2];
-    
-    TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
-    [viewController setSelectedIndex:0];
-    [viewController setViewControllers:viewcontrollers];
-    [viewController setNavigationTitle:searchresult];
-    
-    viewController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
+//    NSString *result;
+//    if (_typedHistoryResult == nil || _typedHistoryResult.count == 0) {
+//        result = [_historyResult objectAtIndex:indexPath.row];
+//    } else {
+//        result = [_typedHistoryResult objectAtIndex:indexPath.row];
+//    }
+//    [self goToResultPage:result];
 }
 
 
 #pragma mark - UISearchBar Delegate
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    [_searchresultarray removeAllObjects];
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [_typedHistoryResult removeAllObjects];
     
     if([searchText isEqualToString:@""]) {
         [_table setHidden:YES];
     } else {
         NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
         NSArray *historiesresult;
-        historiesresult = [_historysearch filteredArrayUsingPredicate:resultPredicate];
-        NSInteger preferredNumber = 3;
-        if(historiesresult.count > preferredNumber) {
-            NSRange endRange = NSMakeRange((historiesresult.count-preferredNumber), preferredNumber);
+        historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
+        NSInteger limit = 3;
+
+        if(historiesresult.count > limit) {
+            NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
             NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
-            [_searchresultarray addObjectsFromArray:lastThree];
+            [_typedHistoryResult addObjectsFromArray:lastThree];
         } else {
-            [_searchresultarray addObjectsFromArray:historiesresult];
+            [_typedHistoryResult addObjectsFromArray:historiesresult];
         }
         
         [self configureRestkit];
@@ -383,75 +301,43 @@
 }
 
 
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    NSArray *histories = _historysearch;
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    NSArray *histories = _historyResult;
     NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([searchString length]) {
-    
-        [_searchresultarray removeAllObjects];
-        [_searchbar resignFirstResponder];
+        [_typedHistoryResult removeAllObjects];
+        [_searchBar resignFirstResponder];
         
         if (histories.count == 0 || [histories isEqualToArray: @[]]) {
-            [self SaveHistory:searchBar.text];
+            [self saveHistory:searchBar.text];
         }
-        else{
+        else {
             if (![histories containsObject:searchBar.text]) {
-                [self SaveHistory:searchBar.text];
+                [self saveHistory:searchBar.text];
             }
         }
-        
-        /** Goto result page **/
-        SearchResultViewController *vc = [SearchResultViewController new];
-        vc.delegate = self;
-        vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
-                   kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-        SearchResultViewController *vc1 = [SearchResultViewController new];
-        vc.delegate = self;
-        vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
-                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-        SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-        vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
-                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-        NSArray *viewcontrollers = @[vc,vc1,vc2];
-        
-        TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
-        
-        [viewController setSelectedIndex:0];
-        [viewController setViewControllers:viewcontrollers];
-        [viewController setNavigationTitle:_searchbar.text];
-
-        viewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self goToResultPage:_searchBar.text];
     }
-    else
-    {
-        [_searchresultarray removeAllObjects];
+    else {
+        [_typedHistoryResult removeAllObjects];
         [_table reloadData];
     }
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [_searchbar setText:@""];
-    [_searchbar resignFirstResponder];
-
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [_searchBar setText:@""];
+    [_searchBar resignFirstResponder];
 }
 
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
-{
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:YES];
     [self deActivateSearchBar];
     
     return YES;
 }
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
     [self activateSearchBar];
 
@@ -459,8 +345,7 @@
 }
 
 #pragma mark - properties
--(void)setData:(NSDictionary *)data
-{
+-(void)setData:(NSDictionary *)data {
     _data = data;
 }
 
@@ -474,7 +359,7 @@
 }
 
 - (void)tapNotificationBar {
-    [_searchbar resignFirstResponder];
+    [_searchBar resignFirstResponder];
     [_notifManager tapNotificationBar];
 }
 
@@ -502,26 +387,22 @@
 }
 
 
-- (void)reloadNotification
-{
+- (void)reloadNotification {
     [self initNotificationManager];
 }
 
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
-{
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController {
     [notificationManager tapWindowBar];
     [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
 }
 
-- (void)pushViewController:(id)viewController
-{
+- (void)pushViewController:(id)viewController {
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
 
-- (void)pushViewController:(id)viewController animated:(BOOL)animated
-{
+- (void)pushViewController:(id)viewController animated:(BOOL)animated {
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:animated];
 }
@@ -551,7 +432,7 @@
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:searchMapping
                                                                                                   method:RKRequestMethodGET
-                                                                                             pathPattern:[NSString stringWithFormat:@"search/product/%@", _searchbar.text]
+                                                                                             pathPattern:[NSString stringWithFormat:@"search/product/%@", _searchBar.text]
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -561,19 +442,23 @@
 - (void)doRequest {
     _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                           method:RKRequestMethodGET
-                                                                            path:[NSString stringWithFormat:@"search/product/%@", _searchbar.text]
+                                                                            path:[NSString stringWithFormat:@"search/product/%@", _searchBar.text]
                                                                       parameters:nil];
     
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSDictionary *result = ((RKMappingResult*)mappingResult).dictionary;
         SearchAutoCompleteObject *search = [result objectForKey:@""];
         
-        _catalogs = search.domains.catalog;
-        _categories = search.domains.category;
         [_domains removeAllObjects];
+        [_catalogs removeAllObjects];
+        [_categories removeAllObjects];
         
-        if(_searchresultarray.count > 0) {
-            NSDictionary *historyDictionary = @{@"History" : _searchresultarray};
+        [_catalogs addObjectsFromArray:search.domains.catalog];
+        [_categories addObjectsFromArray:search.domains.category];
+
+        
+        if(_typedHistoryResult.count > 0) {
+            NSDictionary *historyDictionary = @{@"History" : _typedHistoryResult};
             [_domains addEntriesFromDictionary:historyDictionary];
         }
         
@@ -597,13 +482,14 @@
     
 }
 
-#pragma mark - SearchBar Method 
+
+#pragma mark - SearchBar Method
 - (void)activateSearchBar {
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     
     [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-        _searchbar.frame = (CGRect){.origin = {0, 0}, .size = _searchbar.frame.size};
+        _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
     } completion:^(BOOL finished) {
         
     }];
@@ -614,11 +500,40 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     
     [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-        _searchbar.frame = (CGRect){.origin = {0, 0}, .size = _searchbar.frame.size};
+        _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
     } completion:^(BOOL finished) {
         
     }];
 }
+
+#pragma mark - Method
+- (void)goToResultPage:(NSString*)searchText {
+    SearchResultViewController *vc = [SearchResultViewController new];
+    vc.delegate = self;
+    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchBar.text?:@"" ,
+               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
+               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc.delegate = self;
+    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchBar.text?:@"" ,
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchBar.text?:@"" ,
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    NSArray *viewcontrollers = @[vc,vc1,vc2];
+    
+    TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+    
+    [viewController setSelectedIndex:0];
+    [viewController setViewControllers:viewcontrollers];
+    [viewController setNavigationTitle:searchText];
+    
+    viewController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 
 
 @end

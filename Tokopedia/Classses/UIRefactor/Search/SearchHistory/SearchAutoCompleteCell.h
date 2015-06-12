@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *searchImage;
 
 - (void)setViewModel:(SearchAutoCompleteViewModel *)viewModel;
+- (void)setBoldSearchText:(NSString*)searchText;
 
 
 @end
