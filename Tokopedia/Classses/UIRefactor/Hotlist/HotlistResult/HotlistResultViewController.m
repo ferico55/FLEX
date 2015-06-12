@@ -248,7 +248,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         
         viewCollection.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
         [viewCollection setAlwaysBounceVertical:YES];
-        flowLayout.headerReferenceSize = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
         [flowLayout setFooterReferenceSize:CGSizeMake(self.view.bounds.size.height, 50)];
         [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
         
@@ -725,6 +724,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 -(void)descriptionviewshowanimation:(BOOL)animated
 {
     if (animated) {
+        _descriptionview.frame = CGRectMake(_descriptionview.frame.origin.x, _descriptionview.frame.origin.y, _imageview.bounds.size.width, _imageview.bounds.size.height);
         [UIView animateWithDuration:0.5
                               delay:0
                             options: UIViewAnimationOptionCurveEaseInOut
@@ -1273,6 +1273,13 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
+    return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
+}
+
+
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     
@@ -1287,7 +1294,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     else if(kind == UICollectionElementKindSectionHeader) {
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CTagHeaderIdentifier forIndexPath:indexPath];
         [_header removeFromSuperview];
-        _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _header.bounds.size.height);
         [reusableView addSubview:_header];
     }
     

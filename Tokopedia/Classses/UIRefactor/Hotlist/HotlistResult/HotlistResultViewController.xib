@@ -249,6 +249,9 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q9k-15-37M" userLabel="Hashtags Scroll View">
                     <rect key="frame" x="0.0" y="150" width="320" height="40"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="xF3-0f-Irq"/>
+                    </constraints>
                     <connections>
                         <outlet property="delegate" destination="-1" id="fdA-1u-QWh"/>
                     </connections>
@@ -257,9 +260,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="150" id="SHx-Wq-ceZ"/>
-                    </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="pSV-5V-5RB" appends="YES" id="i58-DX-Fsp"/>
                     </connections>
@@ -276,8 +276,8 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="Q9k-15-37M" firstAttribute="top" secondItem="CGm-73-BvT" secondAttribute="bottom" id="8kQ-DK-x2A"/>
                 <constraint firstAttribute="trailing" secondItem="CGm-73-BvT" secondAttribute="trailing" id="GNO-Hr-yuv"/>
-                <constraint firstItem="wpV-ue-3NP" firstAttribute="top" secondItem="HKl-uZ-hi3" secondAttribute="top" constant="113" id="IKf-CJ-Sdc"/>
                 <constraint firstItem="Q9k-15-37M" firstAttribute="top" secondItem="wpV-ue-3NP" secondAttribute="bottom" id="PI4-04-vjD"/>
                 <constraint firstAttribute="bottom" secondItem="Q9k-15-37M" secondAttribute="bottom" id="RLj-K1-X0n"/>
                 <constraint firstItem="CGm-73-BvT" firstAttribute="top" secondItem="HKl-uZ-hi3" secondAttribute="top" id="dvs-M0-enr"/>
