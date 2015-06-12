@@ -29,6 +29,8 @@
 
 #import "TokopediaNetworkManager.h"
 
+#import "LoadingView.h"
+
 @interface ProductListMyShopViewController ()
 <
     UITableViewDataSource,
@@ -40,7 +42,8 @@
     ProductListMyShopFilterDelegate,
     MyShopEtalaseFilterViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
-    RequestMoveToDelegate
+    RequestMoveToDelegate,
+    LoadingViewDelegate
 >
 {
     NSInteger _page;
@@ -78,6 +81,8 @@
     RequestMoveTo *_requestMoveTo;
     
     TokopediaNetworkManager *_networkManager;
+    
+    LoadingView *_loadingView;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -120,6 +125,9 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.tagRequest = TAG_LIST_REQUEST;
     _networkManager.delegate = self;
+    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
     
     _page = 1;
     _limit = 8;
@@ -394,7 +402,6 @@
 {
     if (tag == TAG_LIST_REQUEST) {
         if (![_refreshControl isRefreshing]) {
-            _table.tableFooterView = nil;
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
@@ -411,19 +418,18 @@
     }
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    
-}
-
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_refreshControl endRefreshing];
     [_act stopAnimating];
-    _table.tableFooterView = nil;
+    _table.tableFooterView = _loadingView.view;
 }
 
+-(void)pressRetryButton
+{
+    _table.tableFooterView = _footer;
+    [_networkManager doRequest];
+}
 
 -(NSDictionary*)parameterRequestList
 {
