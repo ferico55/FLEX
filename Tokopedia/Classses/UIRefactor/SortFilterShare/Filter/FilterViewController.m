@@ -69,6 +69,24 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = self.view.frame;
+    frame.size.width = screenRect.size.width;
+    frame.size.height = screenRect.size.height;
+    self.view.frame = frame;
+    frame = self.productview.frame;
+    frame.size.width = screenRect.size.width;
+    frame.size.height = screenRect.size.height;
+    self.productview.frame = frame;
+    frame = self.catalogview.frame;
+    frame.size.width = screenRect.size.width;
+    frame.size.height = screenRect.size.height;
+    self.catalogview.frame = frame;
+    frame = self.shopview.frame;
+    frame.size.width = screenRect.size.width;
+    frame.size.height = screenRect.size.height;
+    self.shopview.frame = frame;
+    
     [self.navigationController.navigationBar setTranslucent:NO];
         
     _type = [[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] integerValue]?:0;
