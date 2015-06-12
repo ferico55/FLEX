@@ -678,7 +678,7 @@ LoadingViewDelegate
                 
                 // Redirect URI to hotlist
                 if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
-                    [self redirectToHotlistResult];
+                    [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
                 }
                 // redirect uri to search category
                 else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
@@ -697,24 +697,34 @@ LoadingViewDelegate
                 }
                 
                 else if ([query[1] isEqualToString:@"catalog"]) {
-                    NSString *catalogID = query[2];
-                    CatalogViewController *vc = [CatalogViewController new];
-                    vc.catalogID = catalogID;
-                    NSArray *catalogNames = [query[3] componentsSeparatedByCharactersInSet:
-                                             [NSCharacterSet characterSetWithCharactersInString:@"-"]
-                                             ];
-                    vc.catalogName = [[catalogNames componentsJoinedByString:@" "] capitalizedString];
-                    vc.catalogPrice = @"";
-                    vc.hidesBottomBarWhenPushed = YES;
-                    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-                    [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
-                    
-                    self.navigationController.viewControllers = viewControllers;
+                    [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
                 }
             }
             _catalogproductview.hidden = NO;
         }
     }
+}
+
+- (void)redirectToCatalogResult {
+    NSURL *url = [NSURL URLWithString:_uriredirect];
+    NSArray* query = [[url path] componentsSeparatedByString: @"/"];
+    
+    NSString *catalogID = query[2];
+    CatalogViewController *vc = [CatalogViewController new];
+    vc.catalogID = catalogID;
+    NSArray *catalogNames = [query[3] componentsSeparatedByCharactersInSet:
+                             [NSCharacterSet characterSetWithCharactersInString:@"-"]
+                             ];
+    vc.catalogName = [[catalogNames componentsJoinedByString:@" "] capitalizedString];
+    vc.catalogPrice = @"";
+    vc.hidesBottomBarWhenPushed = YES;
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    
+    if(viewControllers.count > 0) {
+        [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+    }
+    
+    self.navigationController.viewControllers = viewControllers;
 }
 
 - (void)redirectToHotlistResult
@@ -730,8 +740,10 @@ LoadingViewDelegate
 
     vc.hidesBottomBarWhenPushed = YES;
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-    [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
-
+    
+    if(viewControllers.count > 0) {
+        [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+    }
     self.navigationController.viewControllers = viewControllers;
 }
 

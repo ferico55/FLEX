@@ -476,13 +476,6 @@
 		7A84DE9F1B1E9F3400741F0D /* libAppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
-		7AC2DE421B2818DE0036E266 /* SearchAutoCompleteDomains.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC2DE411B2818DE0036E266 /* SearchAutoCompleteDomains.m */; };
-		7AC2DE451B2819030036E266 /* SearchAutoCompleteCatalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC2DE441B2819030036E266 /* SearchAutoCompleteCatalog.m */; };
-		7AC2DE481B28191E0036E266 /* SearchAutoCompleteCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC2DE471B28191E0036E266 /* SearchAutoCompleteCategory.m */; };
-		7AC2DE4B1B283CA10036E266 /* SearchAutoCompleteObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC2DE4A1B283CA10036E266 /* SearchAutoCompleteObject.m */; };
-		7AC2DE541B2846020036E266 /* SearchAutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC2DE521B2846020036E266 /* SearchAutoCompleteCell.m */; };
-		7AC2DE551B2846020036E266 /* SearchAutoCompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AC2DE531B2846020036E266 /* SearchAutoCompleteCell.xib */; };
-		7AC2DE581B2846370036E266 /* SearchAutoCompleteViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC2DE571B2846370036E266 /* SearchAutoCompleteViewModel.m */; };
 		85046EA21B20395E00FF657B /* BarCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85046EA11B20395E00FF657B /* BarCodeViewController.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
@@ -1224,6 +1217,7 @@
 		FC7643411B15E2830034A8F1 /* ShipmentStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763C971B15E27B0034A8F1 /* ShipmentStatusCell.xib */; };
 		FC7643421B15E2830034A8F1 /* ShipmentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763C991B15E27B0034A8F1 /* ShipmentStatusViewController.m */; };
 		FC7643431B15E2830034A8F1 /* ShipmentStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763C9A1B15E27B0034A8F1 /* ShipmentStatusViewController.xib */; };
+		FC7643441B15E2830034A8F1 /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763C9F1B15E27B0034A8F1 /* SearchCell.xib */; };
 		FC7643451B15E2830034A8F1 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763CA11B15E27B0034A8F1 /* SearchViewController.m */; };
 		FC7643461B15E2830034A8F1 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763CA21B15E27B0034A8F1 /* SearchViewController.xib */; };
 		FC7643471B15E2830034A8F1 /* SearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763CA51B15E27B0034A8F1 /* SearchResultCell.m */; };
@@ -1942,19 +1936,6 @@
 		7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		7AC2DE401B2818DE0036E266 /* SearchAutoCompleteDomains.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchAutoCompleteDomains.h; path = SearchAutoComplete/SearchAutoCompleteDomains.h; sourceTree = "<group>"; };
-		7AC2DE411B2818DE0036E266 /* SearchAutoCompleteDomains.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchAutoCompleteDomains.m; path = SearchAutoComplete/SearchAutoCompleteDomains.m; sourceTree = "<group>"; };
-		7AC2DE431B2819030036E266 /* SearchAutoCompleteCatalog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchAutoCompleteCatalog.h; path = SearchAutoComplete/SearchAutoCompleteCatalog.h; sourceTree = "<group>"; };
-		7AC2DE441B2819030036E266 /* SearchAutoCompleteCatalog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchAutoCompleteCatalog.m; path = SearchAutoComplete/SearchAutoCompleteCatalog.m; sourceTree = "<group>"; };
-		7AC2DE461B28191E0036E266 /* SearchAutoCompleteCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchAutoCompleteCategory.h; path = SearchAutoComplete/SearchAutoCompleteCategory.h; sourceTree = "<group>"; };
-		7AC2DE471B28191E0036E266 /* SearchAutoCompleteCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchAutoCompleteCategory.m; path = SearchAutoComplete/SearchAutoCompleteCategory.m; sourceTree = "<group>"; };
-		7AC2DE491B283CA10036E266 /* SearchAutoCompleteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchAutoCompleteObject.h; path = SearchAutoComplete/SearchAutoCompleteObject.h; sourceTree = "<group>"; };
-		7AC2DE4A1B283CA10036E266 /* SearchAutoCompleteObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchAutoCompleteObject.m; path = SearchAutoComplete/SearchAutoCompleteObject.m; sourceTree = "<group>"; };
-		7AC2DE511B2846020036E266 /* SearchAutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchAutoCompleteCell.h; sourceTree = "<group>"; };
-		7AC2DE521B2846020036E266 /* SearchAutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAutoCompleteCell.m; sourceTree = "<group>"; };
-		7AC2DE531B2846020036E266 /* SearchAutoCompleteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchAutoCompleteCell.xib; sourceTree = "<group>"; };
-		7AC2DE561B2846370036E266 /* SearchAutoCompleteViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchAutoCompleteViewModel.h; sourceTree = "<group>"; };
-		7AC2DE571B2846370036E266 /* SearchAutoCompleteViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAutoCompleteViewModel.m; sourceTree = "<group>"; };
 		85046EA01B20395E00FF657B /* BarCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarCodeViewController.h; sourceTree = "<group>"; };
 		85046EA11B20395E00FF657B /* BarCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarCodeViewController.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -3285,6 +3266,7 @@
 		FC763C9A1B15E27B0034A8F1 /* ShipmentStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShipmentStatusViewController.xib; sourceTree = "<group>"; };
 		FC763C9B1B15E27B0034A8F1 /* string_order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_order.h; sourceTree = "<group>"; };
 		FC763C9D1B15E27B0034A8F1 /* search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = search.h; sourceTree = "<group>"; };
+		FC763C9F1B15E27B0034A8F1 /* SearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCell.xib; sourceTree = "<group>"; };
 		FC763CA01B15E27B0034A8F1 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		FC763CA11B15E27B0034A8F1 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		FC763CA21B15E27B0034A8F1 /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
@@ -4344,21 +4326,6 @@
 			path = Appsflyer;
 			sourceTree = "<group>";
 		};
-		7AC2DE3F1B2818990036E266 /* SearchAutoComplete */ = {
-			isa = PBXGroup;
-			children = (
-				7AC2DE401B2818DE0036E266 /* SearchAutoCompleteDomains.h */,
-				7AC2DE411B2818DE0036E266 /* SearchAutoCompleteDomains.m */,
-				7AC2DE431B2819030036E266 /* SearchAutoCompleteCatalog.h */,
-				7AC2DE441B2819030036E266 /* SearchAutoCompleteCatalog.m */,
-				7AC2DE461B28191E0036E266 /* SearchAutoCompleteCategory.h */,
-				7AC2DE471B28191E0036E266 /* SearchAutoCompleteCategory.m */,
-				7AC2DE491B283CA10036E266 /* SearchAutoCompleteObject.h */,
-				7AC2DE4A1B283CA10036E266 /* SearchAutoCompleteObject.m */,
-			);
-			name = SearchAutoComplete;
-			sourceTree = "<group>";
-		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -5356,7 +5323,6 @@
 		FC7638D51B15E2750034A8F1 /* SearchItem */ = {
 			isa = PBXGroup;
 			children = (
-				7AC2DE3F1B2818990036E266 /* SearchAutoComplete */,
 				FC7638D61B15E2750034A8F1 /* HotlistDetail.h */,
 				FC7638D71B15E2750034A8F1 /* HotlistDetail.m */,
 				FC7638D81B15E2750034A8F1 /* List.h */,
@@ -7079,14 +7045,10 @@
 		FC763C9E1B15E27B0034A8F1 /* SearchHistory */ = {
 			isa = PBXGroup;
 			children = (
-				7AC2DE511B2846020036E266 /* SearchAutoCompleteCell.h */,
-				7AC2DE521B2846020036E266 /* SearchAutoCompleteCell.m */,
-				7AC2DE531B2846020036E266 /* SearchAutoCompleteCell.xib */,
+				FC763C9F1B15E27B0034A8F1 /* SearchCell.xib */,
 				FC763CA01B15E27B0034A8F1 /* SearchViewController.h */,
 				FC763CA11B15E27B0034A8F1 /* SearchViewController.m */,
 				FC763CA21B15E27B0034A8F1 /* SearchViewController.xib */,
-				7AC2DE561B2846370036E266 /* SearchAutoCompleteViewModel.h */,
-				7AC2DE571B2846370036E266 /* SearchAutoCompleteViewModel.m */,
 			);
 			path = SearchHistory;
 			sourceTree = "<group>";
@@ -8386,6 +8348,7 @@
 				FC7642961B15E2830034A8F1 /* InboxResolutionCenterComplainCell.xib in Resources */,
 				7A1D2F0E1B235E55002F9341 /* thumb_product.png in Resources */,
 				FC7643391B15E2830034A8F1 /* ChangeReceiptNumberViewController.xib in Resources */,
+				FC7643441B15E2830034A8F1 /* SearchCell.xib in Resources */,
 				FC76435D1B15E2830034A8F1 /* SettingBankDetailViewController.xib in Resources */,
 				7A1D2F231B235E55002F9341 /* icon_signin_active@3x.png in Resources */,
 				FC76438C1B15E2830034A8F1 /* ShopNotesDetailViewController.xib in Resources */,
@@ -8855,7 +8818,6 @@
 				FC7643DF1B15E2830034A8F1 /* TxOrderStatusCell.xib in Resources */,
 				FC76434D1B15E2830034A8F1 /* SearchResultViewController.xib in Resources */,
 				7A1D2ED21B235E55002F9341 /* icon_wishlist_active.png in Resources */,
-				7AC2DE551B2846020036E266 /* SearchAutoCompleteCell.xib in Resources */,
 				FC76430A1B15E2830034A8F1 /* ReputationDetailFormViewController.xib in Resources */,
 				FC7641F71B15E2820034A8F1 /* TKPDAlert.xib in Resources */,
 				FC7641DE1B15E2820034A8F1 /* RegisterViewController.xib in Resources */,
@@ -9136,7 +9098,6 @@
 				FC76417E1B15E2820034A8F1 /* District.m in Sources */,
 				FC7646011B15E2830034A8F1 /* MGSwipeTableCell.m in Sources */,
 				FC76431F1B15E2830034A8F1 /* ProductQuantityViewController.m in Sources */,
-				7AC2DE541B2846020036E266 /* SearchAutoCompleteCell.m in Sources */,
 				FC7643211B15E2830034A8F1 /* SalesNewOrderViewController.m in Sources */,
 				FC7640A31B15E2820034A8F1 /* DepositSummaryDetail.m in Sources */,
 				FC76421F1B15E2820034A8F1 /* CategoryMenuViewController.m in Sources */,
@@ -9169,7 +9130,6 @@
 				FC7643BB1B15E2830034A8F1 /* TokopediaNetworkManager.m in Sources */,
 				FC7643251B15E2830034A8F1 /* OrderDetailProductInformationCell.m in Sources */,
 				FC7643CE1B15E2830034A8F1 /* TransactionCartViewController.m in Sources */,
-				7AC2DE481B28191E0036E266 /* SearchAutoCompleteCategory.m in Sources */,
 				FC7640FD1B15E2820034A8F1 /* ResolutionOrder.m in Sources */,
 				FC7641D11B15E2820034A8F1 /* UploadImage.m in Sources */,
 				FC7641AB1B15E2820034A8F1 /* TransactionVoucher.m in Sources */,
@@ -9218,7 +9178,6 @@
 				FC7640D21B15E2820034A8F1 /* FavoritedShopList.m in Sources */,
 				FC7641E11B15E2820034A8F1 /* AddressViewController.m in Sources */,
 				FC7640D31B15E2820034A8F1 /* FavoritedShopResult.m in Sources */,
-				7AC2DE581B2846370036E266 /* SearchAutoCompleteViewModel.m in Sources */,
 				FC7641D41B15E2820034A8F1 /* UploadImageResult.m in Sources */,
 				FC7640861B15E2820034A8F1 /* NSDictionaryCategory.m in Sources */,
 				FC7643E01B15E2830034A8F1 /* TxOrderStatusDetailViewController.m in Sources */,
@@ -9259,7 +9218,6 @@
 				FC7641CB1B15E2820034A8F1 /* TxOrderStatusList.m in Sources */,
 				FC7641801B15E2820034A8F1 /* POSIndonesia.m in Sources */,
 				FC7640DB1B15E2820034A8F1 /* DepartmentChild.m in Sources */,
-				7AC2DE4B1B283CA10036E266 /* SearchAutoCompleteObject.m in Sources */,
 				FC7643401B15E2830034A8F1 /* ShipmentStatusCell.m in Sources */,
 				FC76424D1B15E2830034A8F1 /* DepositListBankViewController.m in Sources */,
 				FC76436C1B15E2830034A8F1 /* SettingUserPhoneViewController.m in Sources */,
@@ -9274,7 +9232,6 @@
 				FC7641431B15E2820034A8F1 /* Order.m in Sources */,
 				FC7640EF1B15E2820034A8F1 /* InboxResolutionCenter.m in Sources */,
 				FC7640F11B15E2820034A8F1 /* InboxResolutionCenterResult.m in Sources */,
-				7AC2DE421B2818DE0036E266 /* SearchAutoCompleteDomains.m in Sources */,
 				FC7642251B15E2830034A8F1 /* TKPDTabBarNavigationController.m in Sources */,
 				FC7641641B15E2820034A8F1 /* NoteDetail.m in Sources */,
 				FC7641E51B15E2820034A8F1 /* AlertDatePickerView.m in Sources */,
@@ -9467,7 +9424,6 @@
 				FC7643D71B15E2830034A8F1 /* TransactionCartResultViewController.m in Sources */,
 				FC7643F41B15E2830034A8F1 /* TxOrderConfirmationViewController.m in Sources */,
 				FC7640C31B15E2820034A8F1 /* Statistic.m in Sources */,
-				7AC2DE451B2819030036E266 /* SearchAutoCompleteCatalog.m in Sources */,
 				FC76416C1B15E2820034A8F1 /* DetailShopResult.m in Sources */,
 				FC7644001B15E2830034A8F1 /* TxOrderConfirmedViewController.m in Sources */,
 				FC7642571B15E2830034A8F1 /* GeneralCheckmarkCell.m in Sources */,
@@ -9802,7 +9758,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
+				PROVISIONING_PROFILE = "bf92f4e1-e1cd-41ad-bb31-1d92ac382e67";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -9840,7 +9796,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
+				PROVISIONING_PROFILE = "bf92f4e1-e1cd-41ad-bb31-1d92ac382e67";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
