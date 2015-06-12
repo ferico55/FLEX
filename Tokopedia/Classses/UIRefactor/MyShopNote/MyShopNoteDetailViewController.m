@@ -478,9 +478,6 @@
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
                 
-                _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
-                _timeNoteLabel.hidden = NO;
-                
 
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 
@@ -533,6 +530,10 @@
                 }
                 else
                 {
+                    if (_type == kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY) {
+                        _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
+                        _timeNoteLabel.hidden = NO;
+                    }
                     _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
                 }
 
