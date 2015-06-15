@@ -224,15 +224,18 @@ NSString *const SearchDomainCategory = @"Kategori";
     NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
     NSString *domainName = [domain objectForKey:@"title"];
     if([domainName isEqualToString:SearchDomainHistory]) {
+        NSString *searchResult;
         if(_typedHistoryResult.count > 0) {
-            NSString *searchResult = [_typedHistoryResult objectAtIndex:indexPath.row];
-            NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
-
-            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
-            [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
-            cell.searchTitle.attributedText = attributedText;
-            [cell.searchImage setHidden:YES];
+            searchResult = [_typedHistoryResult objectAtIndex:indexPath.row];
+        } else {
+            searchResult = [_historyResult objectAtIndex:indexPath.row];
         }
+        NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
+
+        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
+        [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
+        cell.searchTitle.attributedText = attributedText;
+        [cell.searchImage setHidden:YES];
     } else if([domainName isEqualToString:SearchDomainCatalog]) {
         SearchAutoCompleteCatalog *catalog = _catalogs[indexPath.row];
         [cell setViewModel:catalog.viewModel];
@@ -303,6 +306,7 @@ NSString *const SearchDomainCategory = @"Kategori";
     [_typedHistoryResult removeAllObjects];
     
     if([searchText isEqualToString:@""]) {
+        [_domains removeAllObjects];
         [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
         [_table reloadData];
     } else {
