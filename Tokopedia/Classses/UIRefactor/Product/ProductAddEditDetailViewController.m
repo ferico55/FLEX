@@ -1449,6 +1449,7 @@ TokopediaNetworkManagerDelegate
             product.product_move_to = value;//([value integerValue]==1)?@"0":value;
             if (index == 0) {
                 product.product_etalase_id = @(0);
+                product.product_etalase = nil;
             }
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];

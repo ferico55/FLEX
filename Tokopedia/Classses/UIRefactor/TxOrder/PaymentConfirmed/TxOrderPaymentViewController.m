@@ -1095,7 +1095,17 @@
             isValid = NO;
         }
     }
-    else if ([self isPaymentTypeTransfer]) {}
+    else if ([self isPaymentTypeTransfer]) {
+        NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
+        if (depositor == nil || [depositor isEqualToString:@""]) {
+            [errorMessage addObject:@"Nama penyetor harus diisi"];
+            isValid = NO;
+        }
+        if (!systemBank.sysbank_id) {
+            [errorMessage addObject:ERRORMESSAGE_NILL_SYSTEM_BANK];
+            isValid = NO;
+        }
+    }
     NSString *paymentAmount = [_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY]?:@"";
     
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
