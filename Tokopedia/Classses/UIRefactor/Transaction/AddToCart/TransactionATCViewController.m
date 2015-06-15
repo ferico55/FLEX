@@ -911,6 +911,7 @@
             product = ATCForm.result.form.product_detail;
             _productQuantityStepper.value = [product.product_min_order integerValue]?:1;
             _productQuantityLabel.text = product.product_min_order?:@"1";
+            _productQuantityStepper.minimumValue = [product.product_min_order integerValue]?:1;
             [_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
             
             [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
