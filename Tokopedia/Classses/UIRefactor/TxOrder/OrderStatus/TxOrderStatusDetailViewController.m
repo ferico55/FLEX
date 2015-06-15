@@ -107,13 +107,40 @@
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
         status = history.history_buyer_status;
     } else {
-        status = history.history_seller_status;
+        if (indexPath.row ==0) {
+            status = [NSString stringWithFormat:@"%@\n%@",history.history_seller_status, [self statusString]];
+        }
+        else
+            status = history.history_seller_status;
+
     }
     if (![history.history_comments isEqualToString:@"0"]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
+        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@%@", history.history_comments,[self statusString]]];
     }
     CGSize messageSize = [DetailShipmentStatusCell messageSize:status];
     return messageSize.height;
+}
+
+-(NSString*)statusString
+{
+    NSString *shipRef = _order.order_detail.detail_ship_ref_num?:@"";
+    NSLog(@"shipping resi :%@",shipRef);
+    NSString *lastComment = _order.order_last.last_comments?:@"";
+    
+    NSMutableArray *comment = [NSMutableArray new];
+    
+    if (shipRef &&
+        ![shipRef isEqualToString:@""] &&
+        ![shipRef isEqualToString:@"0"])
+    {
+        [comment addObject:[NSString stringWithFormat:@"Nomor resi: %@", _order.order_last.last_shipping_ref_num]];
+    }
+    if (lastComment && ![lastComment isEqualToString:@"0"] && [lastComment isEqualToString:@""]) {
+        [comment addObject:lastComment];
+    }
+    
+    NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
+    return statusString;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,11 +163,17 @@
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
         status = history.history_buyer_status;
     } else {
-        status = history.history_seller_status;
+        if (indexPath.row ==0) {
+            status = [NSString stringWithFormat:@"%@\n%@",history.history_seller_status, [self statusString]];
+        }
+        else
+            status = history.history_seller_status;
+
     }
     if (![history.history_comments isEqualToString:@"0"]) {
         status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
     }
+    
     [cell setStatusLabelText:status];
     
     [cell setColorThemeForActionBy:history.history_action_by];

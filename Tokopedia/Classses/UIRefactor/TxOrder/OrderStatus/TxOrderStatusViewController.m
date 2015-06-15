@@ -331,6 +331,7 @@
     }
     
     NSString *shipRef = order.order_detail.detail_ship_ref_num?:@"";
+    NSLog(@"shipping resi :%@",shipRef);
     NSString *lastComment = order.order_last.last_comments?:@"";
     
     [cell.shopNameLabel setText:order.order_shop.shop_name animated:YES];
@@ -362,7 +363,7 @@
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:12.0f],
+                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:11.0f],
                                  NSParagraphStyleAttributeName: style,
                                  };
     
