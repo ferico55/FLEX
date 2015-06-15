@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "OrderTransaction.h"
+#import "OrderHistory.h"
+
+@protocol DetailShipmentStatusDelegate <NSObject>
+
+- (void)successChangeReceiptWithOrderHistory:(OrderHistory *)history;
+
+@end
+
 @class LabelMenu;
 
 @interface DetailShipmentStatusViewController : UIViewController
@@ -17,5 +25,6 @@
 
 @property (strong, nonatomic) OrderTransaction *order;
 @property (strong, nonatomic) NSString *is_allow_manage_tx;
+@property (weak, nonatomic) id<DetailShipmentStatusDelegate> delegate;
 
 @end

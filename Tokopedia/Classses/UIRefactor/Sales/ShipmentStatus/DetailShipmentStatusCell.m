@@ -50,8 +50,8 @@ static CGFloat messageTextSize = 14.0;
 - (void)setStatusLabelText:(NSString *)text;
 {
     if (text) {
-        text = [text stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n\n"];
-        text = [text stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n\n"];
+        text = [text stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
+        text = [text stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
         [_textAttributes setObject:[UIFont fontWithName:@"GothamMedium" size:12] forKey:NSFontAttributeName];
         _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:_textAttributes];    
     }
@@ -86,7 +86,7 @@ static CGFloat messageTextSize = 14.0;
 + (CGSize)messageSize:(NSString*)message {
     message = [message stringByAppendingString:@"\n\n"];
     CGSize size = [message sizeWithFont:[UIFont systemFontOfSize:messageTextSize]
-                      constrainedToSize:CGSizeMake([self maxTextWidth], CGFLOAT_MAX)
+                      constrainedToSize:CGSizeMake([self maxTextWidth], 600)
                           lineBreakMode:NSLineBreakByWordWrapping];
     size.height += 40;
     return size;

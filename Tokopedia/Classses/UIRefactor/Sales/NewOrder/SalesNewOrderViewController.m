@@ -407,6 +407,7 @@
 
 - (void)didUpdateProductQuantity:(NSArray *)productQuantity explanation:(NSString *)explanation
 {
+    [self configureActionReskit];
     [self requestActionType:@"partial"
                      reason:explanation
                    products:nil
@@ -936,6 +937,7 @@
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
                                                         kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY        : kTKPD_APIERRORMESSAGEKEY
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
@@ -981,14 +983,17 @@
     NSDictionary *param = @{
                             API_ACTION_KEY           : API_PROCEED_ORDER_KEY,
                             API_ACTION_TYPE_KEY      : type,
-                            API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
+                            API_USER_ID_KEY          : [[auth objectForKey:API_USER_ID_KEY] stringValue],
                             API_ORDER_ID_KEY         : _selectedTransaction.order_detail.detail_order_id,
                             API_REASON_KEY           : reason ?: @"",
                             API_LIST_PRODUCT_ID_KEY  : productIds ?: @"",
                             API_PRODUCT_QUANTITY_KEY : productQuantities ?: @"",
                             };
 
-    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_NEW_ORDER_ACTION_PATH parameters:[param encrypt]];
+    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
+                                                                                method:RKRequestMethodPOST
+                                                                                  path:API_NEW_ORDER_ACTION_PATH
+                                                                            parameters:[param encrypt]];
     
     NSLog(@"\n\n\n%@\n\n\n", _actionRequest);
     
@@ -1060,23 +1065,29 @@
             self.tableView.tableFooterView = noResultView;
         }
     
+    } else if (actionOrder.message_error) {
+
+        [self performSelector:@selector(restoreData:errorMessages:)
+                   withObject:orderId
+                   withObject:actionOrder.message_error];
+
     } else {
         NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_status);
-        [self performSelector:@selector(restoreData:) withObject:orderId];
+        [self performSelector:@selector(restoreData:errorMessages:) withObject:orderId];
     }
 }
 
 - (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
 {
     NSLog(@"\n\nRequest error : %@\n\n", object);
-    [self performSelector:@selector(restoreData:) withObject:orderId];
+    [self performSelector:@selector(restoreData:errorMessages:) withObject:orderId];
 }
 
 - (void)timeoutAtIndexPath:(NSTimer *)timer
 {
     NSLog(@"%@", NSStringFromSelector(_cmd));
     NSString *orderId = [[timer userInfo] objectForKey:@"orderId"];
-    [self performSelector:@selector(restoreData:) withObject:orderId];
+    [self performSelector:@selector(restoreData:errorMessages:) withObject:orderId];
 }
 
 - (void)reloadData
@@ -1084,11 +1095,12 @@
     [_tableView reloadData];
 }
 
-- (void)restoreData:(NSString *)orderId
+- (void)restoreData:(NSString *)orderId errorMessages:(NSArray *)errorMessages
 {
     NSDictionary *dict = [_orderInProcess objectForKey:orderId];
     if (dict) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses transaksi gagal."] delegate:self];
+        NSArray *messages = errorMessages?:@[@"Proses transaksi gagal."];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
         [alert show];
 
         OrderTransaction *order = [dict objectForKey:@"order"];
