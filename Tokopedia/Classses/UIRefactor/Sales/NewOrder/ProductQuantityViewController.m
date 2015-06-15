@@ -17,7 +17,8 @@
     UITableViewDataSource,
     UITableViewDelegate,
     UITextFieldDelegate,
-    UITextViewDelegate
+    UITextViewDelegate,
+    UIAlertViewDelegate
 >
 {
     NSMutableArray *_productQuantity;
@@ -153,11 +154,47 @@
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 2) {
-            [self.delegate didUpdateProductQuantity:_productQuantity explanation:_explanationTextView.text];            
+        if (button.tag == 1) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            NSString *title = @"Konfirmasi Pemrosesan Barang";
+            NSString *message = @"Apakah Anda yakin ingin menerima pesanan ini?\nUntuk penerimaan pesanan sebagian, produk dengan harga bersifat grosir tetap menggunakan harga produk yang tertulis di invoice";
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                                message:message
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Batal"
+                                                      otherButtonTitles:@"Ok", nil];
+            alertView.delegate = self;
+            [alertView show];
         }
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self validateProductQuantity];
+    }
+}
+
+- (void)validateProductQuantity {
+    BOOL valid = YES;
+    for (OrderProduct *product in _products) {
+        for (NSDictionary *dict in _productQuantity) {
+            if ([dict objectForKey:@"order_detail_id"] == product.order_detail_id) {
+                if ([[dict objectForKey:@"product_quantity"] integerValue] > product.product_quantity) {
+                    valid = NO;
+                }
+            }
+        }
+    }
+    if (valid) {
+        [self.delegate didUpdateProductQuantity:_productQuantity explanation:_explanationTextView.text];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        NSString *errorMessage = @"Anda memasukkan jumlah terlalu banyak";
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
+        [alert show];
+    }
 }
 
 @end
