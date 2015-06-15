@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "OrderTransaction.h"
+#import "OrderHistory.h"
 
 @protocol ChangeReceiptNumberDelegate <NSObject>
 
-- (void)changeReceiptNumber:(NSString *)receiptNumber;
+- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history;
 
 @end
 
