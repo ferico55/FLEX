@@ -10,8 +10,11 @@
 #define Tokopedia_string_inbox_ticket_h
 
 #define API_PATH                    @"inbox-ticket.pl"
+#define API_PATH_ACTION             @"action/ticket.pl"
 #define API_ACTION_KEY              @"action"
 #define API_GET_INBOX_TICKET        @"get_inbox_ticket"
+#define API_GET_INBOX_TICKET_DETAIL @"get_inbox_ticket_detail"
+#define API_GET_INBOX_TICKET_VIEW_MORE  @"get_inbox_ticket_view_more"
 
 #define API_STATUS_KEY              @"status"
 #define API_CONFIG_KEY              @"config"
@@ -21,6 +24,8 @@
 #define API_PAGING_KEY              @"paging"
 #define API_PAGING_URI_NEXT_KEY     @"uri_next"
 #define API_PAGING_URI_PREV_KEY     @"uri_previous"
+
+#define API_TICKET_INBOX_ID_KEY     @"ticket_inbox_id"
 
 #define API_FILTER_KEY              @"filter"
 
@@ -75,5 +80,21 @@
 
 #define API_TICKET_REPLY_TOTAL_DATA_KEY         @"ticket_reply_total_data"
 #define API_TICKET_REPLY_TOTAL_PAGE_KEY         @"ticket_reply_total_page"
+
+#define API_TICKET_REPLY_TICKET_VALIDATION_KEY  @"reply_ticket_validation"
+#define API_TICKET_REPLY_TICKET_ID_KEY          @"ticket_id"
+#define API_TICKET_REPLY_MESSAGE_KEY            @"ticket_reply_message"
+#define API_TICKET_REPLY_ATTACHMENT_STRING_KEY  @"attachment_string"
+#define API_TICKET_REPLY_NEW_TICKET_STATUS_KEY  @"new_ticket_status"
+#define API_TICKET_REPLY_RATE_KEY               @"rate"
+#define API_TICKET_REPLY_SERVER_ID_KEY          @"server_id"
+
+#define API_TICKET_REPLY_VALIDATION             @"reply_ticket_validation"
+#define API_TICKET_REPLY_PICTURE                @"reply_ticket_picture"
+#define API_TICKET_REPLY_SUBMIT                 @"reply_ticket_submit"
+
+#define API_TICKET_REPLY_IS_SUCCESS_KEY         @"is_success"
+#define API_TICKET_REPLY_POST_KEY               @"post_key"
+#define API_TICKET_REPLY_FILE_UPLOADED_KEY      @"file_uploaded"
 
 #endif

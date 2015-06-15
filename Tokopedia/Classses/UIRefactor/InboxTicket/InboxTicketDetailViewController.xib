@@ -1,19 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InboxTicketDetailViewController">
             <connections>
+                <outlet property="replyButton" destination="Q1R-Ob-TpQ" id="lC3-RY-Qug"/>
+                <outlet property="tableView" destination="FMp-8T-iEx" id="Rcp-VY-5V2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="231" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-8T-iEx">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="430"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Bjh-IZ-28m"/>
+                        <outlet property="delegate" destination="-1" id="5c0-4W-rg9"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8aI-YU-Rat">
+                    <rect key="frame" x="0.0" y="430" width="320" height="50"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ALt-TU-l2G" userLabel="Horizontal Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="6eg-Jx-ghJ"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q1R-Ob-TpQ">
+                            <rect key="frame" x="20" y="10" width="280" height="31"/>
+                            <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="31" id="Z1i-A8-124"/>
+                            </constraints>
+                            <state key="normal" title="Balas">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="didTouchUpReplyButton:" destination="-1" eventType="touchUpInside" id="nwy-bw-7ya"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="8IH-PC-spL"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="9nN-c9-Kec"/>
+                        <constraint firstAttribute="trailing" secondItem="Q1R-Ob-TpQ" secondAttribute="trailing" constant="20" id="9zt-Sh-YRM"/>
+                        <constraint firstItem="Q1R-Ob-TpQ" firstAttribute="leading" secondItem="8aI-YU-Rat" secondAttribute="leading" constant="20" id="Maj-kZ-BH7"/>
+                        <constraint firstAttribute="trailing" secondItem="ALt-TU-l2G" secondAttribute="trailing" id="RVZ-sO-wQs"/>
+                        <constraint firstItem="ALt-TU-l2G" firstAttribute="top" secondItem="8aI-YU-Rat" secondAttribute="top" id="Wr2-My-nWQ"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="f33-lk-fDX"/>
+                        <constraint firstItem="ALt-TU-l2G" firstAttribute="leading" secondItem="8aI-YU-Rat" secondAttribute="leading" id="kh9-0O-zCt"/>
+                        <constraint firstItem="Q1R-Ob-TpQ" firstAttribute="top" secondItem="ALt-TU-l2G" secondAttribute="bottom" constant="9" id="mpf-bk-e08"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="FMp-8T-iEx" secondAttribute="trailing" id="0xi-RF-X2A"/>
+                <constraint firstItem="FMp-8T-iEx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="22c-3D-Y7M"/>
+                <constraint firstAttribute="bottom" secondItem="FMp-8T-iEx" secondAttribute="bottom" constant="50" id="4qi-6v-bN4"/>
+                <constraint firstItem="FMp-8T-iEx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="BBc-k6-3vE"/>
+                <constraint firstItem="8aI-YU-Rat" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="f3l-qd-xSp"/>
+                <constraint firstAttribute="bottom" secondItem="8aI-YU-Rat" secondAttribute="bottom" id="kRA-L5-WBr"/>
+                <constraint firstAttribute="trailing" secondItem="8aI-YU-Rat" secondAttribute="trailing" id="qyH-H7-OD4"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
 </document>

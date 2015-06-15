@@ -10,4 +10,8 @@
 
 @implementation ConversationViewModel
 
+- (NSString *)conversationMessage {
+    return [_conversationMessage kv_decodeHTMLCharacterEntities];
+}
+
 @end

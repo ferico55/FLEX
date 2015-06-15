@@ -10,7 +10,9 @@
 
 @protocol TKPDTabViewDelegate <NSObject>
 
+@optional;
 - (void)tabViewController:(id)controller didTapButtonAtIndex:(NSInteger)index;
+- (void)pushViewController:(id)controller;
 
 @end
 

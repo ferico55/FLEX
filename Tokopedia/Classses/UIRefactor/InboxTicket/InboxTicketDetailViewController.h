@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "InboxTicket.h"
+#import "InboxTicketList.h"
 
 @interface InboxTicketDetailViewController : UIViewController
 
-- (void)setViewModel:(InboxTicket *)viewModel;
+@property (strong, nonatomic) InboxTicketList *inboxTicket;
 
 @end

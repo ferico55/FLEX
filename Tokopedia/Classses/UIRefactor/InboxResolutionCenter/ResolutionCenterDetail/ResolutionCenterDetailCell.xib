@@ -24,10 +24,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ResolutionCenterDetailCellIdentifier" rowHeight="231" id="RWp-0U-G7a" userLabel="Resolution Center Detail Cell" customClass="ResolutionCenterDetailCell">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ResolutionCenterDetailCellIdentifier" rowHeight="231" id="RWp-0U-G7a" userLabel="Resolution Center Detail Cell" customClass="ResolutionCenterDetailCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="231"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RWp-0U-G7a" id="AvZ-D3-CUY">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RWp-0U-G7a" id="AvZ-D3-CUY">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -134,7 +134,7 @@
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="vXp-jY-9Y7"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ry9-Nv-Ulq">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ry9-Nv-Ulq">
                         <rect key="frame" x="10" y="107" width="300" height="74"/>
                         <subviews>
                             <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yyR-P0-y9m">
@@ -213,7 +213,7 @@
                             <constraint firstAttribute="bottom" secondItem="lxm-Z9-Kso" secondAttribute="bottom" constant="20" id="yZg-SJ-fRn"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W71-x8-j3X" userLabel="Lacak - Ubah Resi Buttons View">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W71-x8-j3X" userLabel="Lacak - Ubah Resi Buttons View">
                         <rect key="frame" x="10" y="181" width="300" height="44"/>
                         <subviews>
                             <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="616-cY-QtC">
@@ -282,7 +282,7 @@
                             <constraint firstAttribute="trailing" secondItem="EFU-xv-HAV" secondAttribute="trailing" id="weS-Wl-QPE"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tCw-34-6BU" userLabel="Ubah Resi Buttons View">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tCw-34-6BU" userLabel="Ubah Resi Buttons View">
                         <rect key="frame" x="10" y="181" width="300" height="44"/>
                         <subviews>
                             <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWv-uc-nAx">
@@ -326,17 +326,17 @@
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="HU8-BV-kCh" secondAttribute="trailing" constant="10" id="0aV-1i-ZLj"/>
                     <constraint firstItem="W71-x8-j3X" firstAttribute="top" secondItem="ry9-Nv-Ulq" secondAttribute="bottom" id="9PG-vS-suN"/>
-                    <constraint firstAttribute="bottom" secondItem="W71-x8-j3X" secondAttribute="bottom" constant="5" id="Fvb-0b-6gC"/>
                     <constraint firstAttribute="trailing" secondItem="xOv-PQ-eQD" secondAttribute="trailing" constant="10" id="Ic4-6b-bEd"/>
                     <constraint firstItem="xOv-PQ-eQD" firstAttribute="leading" secondItem="AvZ-D3-CUY" secondAttribute="leading" constant="10" id="Lx3-t5-Diw"/>
                     <constraint firstItem="tCw-34-6BU" firstAttribute="top" secondItem="ry9-Nv-Ulq" secondAttribute="bottom" id="ReL-5R-Uhl"/>
                     <constraint firstItem="ry9-Nv-Ulq" firstAttribute="leading" secondItem="AvZ-D3-CUY" secondAttribute="leading" constant="10" id="WV4-mz-Mi1"/>
+                    <constraint firstAttribute="bottom" secondItem="W71-x8-j3X" secondAttribute="bottom" constant="5.5" id="XbI-Tk-mYp"/>
                     <constraint firstItem="tCw-34-6BU" firstAttribute="leading" secondItem="AvZ-D3-CUY" secondAttribute="leading" constant="10" id="ahw-nH-6ML"/>
                     <constraint firstItem="HU8-BV-kCh" firstAttribute="top" secondItem="AvZ-D3-CUY" secondAttribute="top" constant="5" id="bdv-ML-Xoz"/>
-                    <constraint firstAttribute="bottom" secondItem="tCw-34-6BU" secondAttribute="bottom" constant="5" id="dJx-3C-CA7"/>
                     <constraint firstAttribute="trailing" secondItem="ry9-Nv-Ulq" secondAttribute="trailing" constant="10" id="gN7-7C-cic"/>
                     <constraint firstItem="W71-x8-j3X" firstAttribute="leading" secondItem="AvZ-D3-CUY" secondAttribute="leading" constant="10" id="hbc-gE-xBw"/>
                     <constraint firstAttribute="trailing" secondItem="W71-x8-j3X" secondAttribute="trailing" constant="10" id="jk4-Fg-f9N"/>
+                    <constraint firstAttribute="bottom" secondItem="tCw-34-6BU" secondAttribute="bottom" constant="5.5" id="kNQ-CH-avA"/>
                     <constraint firstAttribute="trailing" secondItem="tCw-34-6BU" secondAttribute="trailing" constant="10" id="kZ7-gU-jqi"/>
                     <constraint firstItem="HU8-BV-kCh" firstAttribute="leading" secondItem="AvZ-D3-CUY" secondAttribute="leading" constant="10" id="sW4-dP-kl7"/>
                     <constraint firstItem="ry9-Nv-Ulq" firstAttribute="top" secondItem="xOv-PQ-eQD" secondAttribute="bottom" id="ugW-73-fPt"/>
@@ -357,6 +357,7 @@
                 <outlet property="oneButtonConstraintHeight" destination="gvD-0n-qEl" id="E1C-HN-v97"/>
                 <outlet property="oneButtonView" destination="tCw-34-6BU" id="Gap-xD-PRu"/>
                 <outlet property="timeRemainingLabel" destination="Kf3-Hr-fSO" id="F9e-VY-eQZ"/>
+                <outlet property="topMarginConstraint" destination="bdv-ML-Xoz" id="kMd-b8-aS0"/>
                 <outlet property="twoButtonView" destination="W71-x8-j3X" id="eI6-le-8Cz"/>
                 <outlet property="twobuttonConstraintHeight" destination="MA1-CP-tBs" id="zi0-Ap-V1e"/>
                 <outletCollection property="attachmentImages" destination="yyR-P0-y9m" id="Uz1-sp-VdV"/>
@@ -367,9 +368,9 @@
                 <outletCollection property="twoButtons" destination="616-cY-QtC" id="RKz-hx-RMk"/>
                 <outletCollection property="twoButtons" destination="cRI-kN-knU" id="hI5-xb-4iH"/>
             </connections>
-            <point key="canvasLocation" x="135" y="182"/>
+            <point key="canvasLocation" x="135" y="181.5"/>
         </tableViewCell>
-        <view contentMode="scaleToFill" id="q48-ie-aba" userLabel="Lacak - Ubah Resi Buttons View">
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="q48-ie-aba" userLabel="Lacak - Ubah Resi Buttons View">
             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -412,7 +413,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="352" y="439"/>
         </view>
-        <view contentMode="scaleToFill" id="wsv-tB-9JN" userLabel="Ubah Resi Buttons View">
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="wsv-tB-9JN" userLabel="Ubah Resi Buttons View">
             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -437,7 +438,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="352" y="526"/>
         </view>
-        <view contentMode="scaleToFill" id="RCZ-ET-Qtj" userLabel="Images View">
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="RCZ-ET-Qtj" userLabel="Images View">
             <rect key="frame" x="0.0" y="0.0" width="300" height="104"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>

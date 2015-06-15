@@ -640,18 +640,21 @@
             [self.navigationController pushViewController:nc animated:YES];
             
         } else if (indexPath.row == 3) {
-        
-            InboxTicketViewController *allInbox = [InboxTicketViewController new];
-            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
-            
-            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
-            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
-            
-            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
-            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
             
             TKPDTabViewController *controller = [TKPDTabViewController new];
             controller.hidesBottomBarWhenPushed = YES;
+        
+            InboxTicketViewController *allInbox = [InboxTicketViewController new];
+            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+            allInbox.delegate = controller;
+            
+            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+            unreadInbox.delegate = controller;
+            
+            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+            closedInbox.delegate = controller;
             
             controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
             controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];

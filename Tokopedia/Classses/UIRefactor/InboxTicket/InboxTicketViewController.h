@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TKPDTabViewController.h"
 
 typedef NS_ENUM(NSInteger, InboxCustomerServiceType) {
     InboxCustomerServiceTypeAll,
@@ -17,5 +18,6 @@ typedef NS_ENUM(NSInteger, InboxCustomerServiceType) {
 @interface InboxTicketViewController : UITableViewController
 
 @property InboxCustomerServiceType inboxCustomerServiceType;
+@property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;
 
 @end

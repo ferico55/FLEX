@@ -15,6 +15,7 @@
 #import "InboxTicketUserInvolve.h"
 #import "string_inbox_ticket.h"
 #import "TKPDTabViewController.h"
+#import "InboxTicketDetailViewController.h"
 
 @interface InboxTicketViewController () <TokopediaNetworkManagerDelegate, TKPDTabViewDelegate> {
     TokopediaNetworkManager *_networkManager;
@@ -90,7 +91,9 @@
     }
     
     NSInteger index = ticket.ticket_update_time_fmt.length;
-    cell.dateLabel.text = [ticket.ticket_update_time_fmt substringToIndex:index-7];
+    if (![ticket.ticket_update_time_fmt isEqualToString:@"0"]) {
+        cell.dateLabel.text = [ticket.ticket_update_time_fmt substringToIndex:index-7];
+    }
     
     cell.titleLabel.text = ticket.ticket_title;
     if ([ticket.ticket_read_status isEqualToString:@"1"]) {
@@ -112,6 +115,17 @@
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
             [_networkManager doRequest];
         }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
+    
+    InboxTicketDetailViewController *controller = [InboxTicketDetailViewController new];
+    controller.inboxTicket = ticket;
+    
+    if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
+        [self.delegate pushViewController:controller];
     }
 }
 

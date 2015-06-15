@@ -8,7 +8,7 @@
 
 #import "TKPDTabViewController.h"
 
-@interface TKPDTabViewController ()
+@interface TKPDTabViewController () <TKPDTabViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *menuView;
 @property (weak, nonatomic) IBOutlet UIView *menuContainerView;
@@ -26,6 +26,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
+    
     // Reset segment
     [self.segmentedControl removeSegmentAtIndex:0 animated:NO];
     [self.segmentedControl removeSegmentAtIndex:0 animated:NO];
@@ -194,6 +200,10 @@
             [menuButtonView setHidden:YES];
         }
     }
+}
+
+- (void)pushViewController:(id)controller {
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

@@ -10,17 +10,23 @@
 
 @implementation InboxTicketDetail
 
+- (NSString *)ticket_detail_message {
+    return [_ticket_detail_message kv_decodeHTMLCharacterEntities];
+}
+
 - (ConversationViewModel *)viewModel {
     if (_viewModel == nil) {
         ConversationViewModel *viewModel = [ConversationViewModel new];
         viewModel.userName = _ticket_detail_user_name;
         viewModel.userProfilePicture = _ticket_detail_user_image;
         viewModel.conversationMessage = _ticket_detail_message;
-        if (_ticket_detail_is_cs) {
+        viewModel.conversationDate = _ticket_detail_create_time_fmt;
+        if ([_ticket_detail_is_cs boolValue]) {
             viewModel.conversationOwner = @"Administrator";
         } else {
             viewModel.conversationOwner = @"Pengguna";
         }
+        _viewModel = viewModel;
     }
     return _viewModel;
 }

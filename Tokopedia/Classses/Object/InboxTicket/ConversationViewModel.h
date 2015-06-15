@@ -15,5 +15,6 @@
 @property (strong, nonatomic) NSString *conversationOwner;
 @property (strong, nonatomic) NSString *conversationMessage;
 @property (strong, nonatomic) NSArray *conversationPhotos;
+@property (strong, nonatomic) NSString *conversationDate;
 
 @end
