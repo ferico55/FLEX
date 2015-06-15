@@ -280,6 +280,13 @@ UICollectionViewDelegate
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+            ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
+        }
+        else
+        {
+            ((ProductSingleViewCell*)cell).infoContraint.constant = 30;
+        }
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -339,6 +346,9 @@ UICollectionViewDelegate
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellCount = 1;
         heightRatio = 389;
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+            heightRatio = 370;
+        }
         widhtRatio = 300;
         inset = 15;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
