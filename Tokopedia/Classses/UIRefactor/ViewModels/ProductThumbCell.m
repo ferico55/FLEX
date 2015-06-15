@@ -38,7 +38,7 @@
         [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
         [self.productImage setImage:image];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [self.productImage setImage:[UIImage imageNamed:@""]];
+        [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
 }

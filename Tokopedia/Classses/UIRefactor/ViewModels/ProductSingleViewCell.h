@@ -10,6 +10,7 @@
 @class ProductModelView;
 
 @interface ProductSingleViewCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *infoContraint;
 
 - (void)setViewModel:(ProductModelView*)viewModel;
 

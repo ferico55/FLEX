@@ -36,13 +36,11 @@
     
     UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
     
-    NSString *stats = [NSString stringWithFormat:@"%@ Ulasan   %@ Diskusi",
-                       viewModel.product_review_count,
-                       viewModel.product_talk_count];
+    NSString *stats = viewModel.statusInfo;
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
     [attributedText addAttribute:NSFontAttributeName
                            value:boldFont
-                           range:NSMakeRange(0, viewModel.product_review_count.length)];
+                           range:NSMakeRange(0, viewModel.statusInfo.length)];
     [attributedText addAttribute:NSFontAttributeName
                            value:boldFont
                            range:NSMakeRange(viewModel.product_review_count.length + 10, viewModel.product_talk_count.length)];
@@ -57,7 +55,7 @@
         [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
         [self.productImage setImage:image];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [self.productImage setImage:[UIImage imageNamed:@""]];
+        [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
 }

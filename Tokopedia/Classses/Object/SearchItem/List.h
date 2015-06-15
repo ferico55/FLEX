@@ -39,6 +39,8 @@
 @property (nonatomic, strong) NSString *product_talk_count;
 @property (nonatomic, strong) NSString *product_review_count;
 
+@property (nonatomic, strong) NSString *statusInfo;
+
 @property (nonatomic, strong) ProductModelView *viewModel;
 
 @end
