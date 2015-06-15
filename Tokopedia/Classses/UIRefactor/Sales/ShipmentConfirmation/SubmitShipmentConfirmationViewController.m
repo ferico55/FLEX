@@ -38,6 +38,8 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
+@property (weak, nonatomic) IBOutlet UILabel *footerLabel;
 
 @end
 
@@ -86,6 +88,18 @@
     _shouldReloadData = NO;
     
     _operationQueue = [NSOperationQueue new];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor grayColor],
+                                 };
+    
+    _footerLabel.attributedText = [[NSAttributedString alloc] initWithString:_footerLabel.text
+                                                                  attributes:attributes];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -182,12 +196,20 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return @"Biaya pergantian kurir ditanggung sepenuhnya oleh penjual";
+        return _footerView;
     } else {
         return nil;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == 0) {
+        return _footerView.frame.size.height;
+    } else {
+        return 0;
     }
 }
 
@@ -455,4 +477,9 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (void)cancelCamera:(id)camera {
+    
+}
+
 @end
