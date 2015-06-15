@@ -30,6 +30,9 @@
     RKResponseDescriptor *_responseActionDescriptorStatus;
     
     NSOperationQueue *_operationQueue;
+    
+    NSArray *_history;
+    NSString *_currentReceiptNumber;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -93,6 +96,9 @@
     } else {
         _changeReceiptButton.enabled = NO;
     }
+    
+    _history = _order.order_history;
+    _currentReceiptNumber = self.order.order_detail.detail_ship_ref_num;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -171,12 +177,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_order.order_history count];
+    return _history.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    OrderHistory *history = [_order.order_history objectAtIndex:indexPath.row];
+    OrderHistory *history = [_history objectAtIndex:indexPath.row];
     NSString *status;
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
         status = history.history_buyer_status;
@@ -201,7 +207,7 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     
-    OrderHistory *history = [_order.order_history objectAtIndex:indexPath.row];
+    OrderHistory *history = [_history objectAtIndex:indexPath.row];
     
     [cell setSubjectLabelText:history.history_action_by];
     cell.dateLabel.text = history.history_status_date_full;
@@ -220,7 +226,7 @@
     
     [cell setColorThemeForActionBy:history.history_action_by];
     
-    if (indexPath.row == (_order.order_history.count-1)) {
+    if (indexPath.row == (_history.count-1)) {
         [cell hideLine];
     }
     
@@ -238,6 +244,7 @@
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
                                                         kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY        : kTKPD_APIERRORMESSAGEKEY
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
@@ -265,7 +272,7 @@
     
     NSDictionary *param = @{
                             API_ACTION_KEY              : API_EDIT_SHIPPING_REF,
-                            API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
+                            API_USER_ID_KEY             : [[auth objectForKey:API_USER_ID_KEY] stringValue],
                             API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
                             API_SHIPMENT_REF_KEY        : receiptNumber,
                             };
@@ -293,7 +300,7 @@
             if ([self.delegate respondsToSelector:@selector(successChangeReceiptWithOrderHistory:)]) {
 
                 NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
-                                             self.order.order_detail.detail_ship_ref_num,
+                                             _currentReceiptNumber,
                                              receiptNumber];
 
                 NSDate *now = [NSDate date];
@@ -313,12 +320,29 @@
                 history.history_buyer_status = @"Perubahan nomor resi pengiriman";
                 history.history_seller_status = @"Perubahan nomor resi pengiriman";
 
+                NSMutableArray *histories = [NSMutableArray arrayWithArray:_history];
+                [histories insertObject:history atIndex:0];
+                _history = histories;
+
+                [self.tableView reloadData];
+
                 [self.delegate successChangeReceiptWithOrderHistory:history];
+                
+                _currentReceiptNumber = receiptNumber;
             }
             
-        } else {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+        } else if (actionOrder.message_error) {
+
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
+                                                                           delegate:self];
             [alert show];
+            
+        } else {
+            
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."]
+                                                                           delegate:self];
+            [alert show];
+        
         }
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
