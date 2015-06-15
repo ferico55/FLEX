@@ -9,23 +9,24 @@
 #import "string_home.h"
 #import "string_product.h"
 #import "detail.h"
-#import "GeneralProductCell.h"
 #import "ProductFeedViewController.h"
-#import "GeneralProductCell.h"
 #import "ProductFeed.h"
-#import "DetailProductViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "NoResultView.h"
 
 #import "GeneralProductCollectionViewCell.h"
 #import "NavigateViewController.h"
+#import "ProductCell.h"
+
+NSString *const ProductCellIdentifier = @"ProductCellIdentifier";
+NSInteger const normalWidth = 320;
+NSInteger const normalHeight = 568;
 
 @interface ProductFeedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
 
 @property (nonatomic, strong) NSMutableArray *product;
-@property (nonatomic, assign) CGFloat lastContentOffset;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
@@ -39,8 +40,6 @@ typedef enum TagRequest {
 
 @implementation ProductFeedViewController {
     NSInteger _page;
-    NSInteger _itemPerPage;
-    
     NSString *_nextPageUri;
     
     BOOL _isNoData;
@@ -55,8 +54,7 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isShowRefreshControl = NO;
@@ -66,18 +64,20 @@ typedef enum TagRequest {
     return self;
 }
 
-- (void) viewDidLoad
-{
+- (void) viewDidLoad {
     [super viewDidLoad];
+    
+    double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
+    double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
     
     //todo with variable
     _product = [NSMutableArray new];
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
     _isNoData = (_product.count > 0);
     _page = 1;
-    _itemPerPage = kTKPDHOMEHOTLIST_LIMITPAGE;
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -89,18 +89,15 @@ typedef enum TagRequest {
     [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
+    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     
-    if([[UIScreen mainScreen]bounds].size.width > 320) {
-        [_flowLayout setItemSize:CGSizeMake(productCollectionViewCellWidth6plus, productCollectionViewCellHeight6plus)];
-    } else {
-        [_flowLayout setItemSize:CGSizeMake(productCollectionViewCellWidthNormal, productCollectionViewCellHeightNormal)];
-    }
+     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
-    [self setTableInset];
+
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
-    UINib *cellNib = [UINib nibWithNibName:@"GeneralProductCollectionViewCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"GeneralProductCollectionViewIdentifier"];
+    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
@@ -115,8 +112,7 @@ typedef enum TagRequest {
     [_networkManager doRequest];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Home - Product Feed";
 }
@@ -128,38 +124,10 @@ typedef enum TagRequest {
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellid = @"GeneralProductCollectionViewIdentifier";
-    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-
-    ProductFeedList *list = [_product objectAtIndex:indexPath.row];
-    cell.productPrice.text = list.product_price;
+    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ProductCellIdentifier forIndexPath:indexPath];
     
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
-    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:5];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
-    cell.productName.attributedText = attributedString;
-    cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
-    cell.productShop.text = list.shop_name?:@"";
-    cell.backgroundColor = [UIColor blueColor];
-    
-    if([list.shop_gold_status isEqualToString:@"1"]) {
-        cell.goldShopBadge.hidden = NO;
-    } else {
-        cell.goldShopBadge.hidden = YES;
-    }
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    UIImageView *thumb = cell.productImage;
-    thumb.image = nil;
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        #pragma clang diagnostic push
-        #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-        [thumb setContentMode:UIViewContentModeScaleAspectFill];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    ProductFeedList *product = _product[indexPath.row];
+    [cell setViewModel:product.viewModel];
     
     //next page if already last cell
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
@@ -201,21 +169,6 @@ typedef enum TagRequest {
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     _networkManager = nil;
-}
-
-
-
-#pragma Methods
--(void)refreshView:(UIRefreshControl*)refresh {
-    _page = 1;
-    _isShowRefreshControl = YES;
-    [_networkManager doRequest];
-}
-
-
-#pragma mark - ScrollView Delegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    self.lastContentOffset = scrollView.contentOffset.x;
 }
 
 #pragma mark - Tokopedia Network Delegate
@@ -261,7 +214,6 @@ typedef enum TagRequest {
                                                  kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
                                                  API_PRODUCT_NAME_KEY
                                                  ]];
-    
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
     [statusMapping addPropertyMapping:resulRel];
@@ -284,20 +236,20 @@ typedef enum TagRequest {
 }
 
 - (void)actionBeforeRequest:(int)tag {
-
+    
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
+    [_noResult removeFromSuperview];
     
     if(_page == 1) {
         _product = [feed.result.list mutableCopy];
     } else {
         [_product addObjectsFromArray: feed.result.list];
     }
-
-    [_noResult removeFromSuperview];
+    
     if (_product.count >0) {
         _isNoData = NO;
         _nextPageUri =  feed.result.paging.uri_next;
@@ -320,7 +272,7 @@ typedef enum TagRequest {
     } else  {
         [_collectionView reloadData];
     }
-
+    
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
@@ -335,10 +287,13 @@ typedef enum TagRequest {
     
 }
 
-
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
     [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (void)userDidLogin:(NSNotification*)notification {
+    [self refreshView:_refreshControl];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
@@ -360,12 +315,10 @@ typedef enum TagRequest {
     [_collectionView reloadData];
 }
 
-- (void) setTableInset {
-    if([[UIScreen mainScreen]bounds].size.height > 568) {
-        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
-    } else {
-        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
-    }
+-(void)refreshView:(UIRefreshControl*)refresh {
+    _page = 1;
+    _isShowRefreshControl = YES;
+    [_networkManager doRequest];
 }
 
 @end

@@ -22,8 +22,16 @@
 {    
     _oneButtonView.hidden = YES;
     
-    CGRect frame = _oneButtonView.frame;
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGRect frame = _containerView.frame;
+    frame.size.width = screenWidth-20;
+    _containerView.frame = frame;
+    
+    frame = _oneButtonView.frame;
     frame.origin.y = 201;
+    frame.size.width = _containerView.frame.size.width;
     _oneButtonView.frame = frame;
     [_containerView addSubview:_oneButtonView];
 
@@ -31,6 +39,7 @@
     
     frame = _twoButtonsView.frame;
     frame.origin.y = 201;
+    frame.size.width = _containerView.frame.size.width;
     _twoButtonsView.frame = frame;
     [_containerView addSubview:_twoButtonsView];
     

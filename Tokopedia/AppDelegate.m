@@ -55,8 +55,8 @@
         
         //Google Analytics init
         [GAI sharedInstance].trackUncaughtExceptions = YES;
-        [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
-        [GAI sharedInstance].dispatchInterval = 20;
+//        [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+        [GAI sharedInstance].dispatchInterval = 60;
         [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
         [[[GAI sharedInstance] trackerWithTrackingId:GATrackingId] setAllowIDFACollection:YES];
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
