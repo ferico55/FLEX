@@ -179,8 +179,8 @@
     }];
     
     [_operationQueue addOperation:_request];
-
-    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    
+    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:16.0 target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
 }
 
