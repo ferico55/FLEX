@@ -285,7 +285,7 @@ UICollectionViewDelegate
         }
         else
         {
-            ((ProductSingleViewCell*)cell).infoContraint.constant = 30;
+            ((ProductSingleViewCell*)cell).infoContraint.constant = 19;
         }
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
@@ -345,7 +345,7 @@ UICollectionViewDelegate
 
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellCount = 1;
-        heightRatio = 389;
+        heightRatio = 390;
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
             heightRatio = 370;
         }

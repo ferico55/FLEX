@@ -33,6 +33,11 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="xYp-Qr-lkc" secondAttribute="height" multiplier="150:157" id="WR0-Wy-cOh"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="WR0-Wy-cOh"/>
+                                    </mask>
+                                </variation>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeI-5m-9NG">
                                 <rect key="frame" x="10" y="328" width="280" height="21"/>
