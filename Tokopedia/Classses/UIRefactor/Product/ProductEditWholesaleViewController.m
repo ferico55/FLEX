@@ -497,21 +497,26 @@
     NSInteger wholesalePrice;
     NSString *wholesalePriceKey;
     
-    NSInteger wholesaleListIndex = _wholesaleList.count;
-    NSInteger wholesaleIndex = _wholesaleList.count-1;
-    wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];
-    if(wholesaleIndex<0)
+    for(int i = 0;i<_wholesaleList.count;i++)
     {
-        wholesaleIndex = 0;
-        wholesalePrice=0;
+        NSInteger wholesaleListIndex = i;
+        NSInteger wholesaleIndex = i-1;
+        wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];
+        if(wholesaleIndex<0)
+        {
+            wholesaleIndex = 0;
+            wholesalePrice=0;
+        }
+        else
+        {
+            wholesalePrice = [[_wholesaleList[wholesaleIndex]objectForKey:wholesalePriceKey]integerValue];
+        }
+        if (wholesalePrice>=netPrice) {
+            isValidWholesalePriceCompareNet = NO;
+            break;
+        }
     }
-    else
-    {
-        wholesalePrice = [[_wholesaleList[wholesaleIndex]objectForKey:wholesalePriceKey]integerValue];
-    }
-    if (wholesalePrice>=netPrice) {
-        isValidWholesalePriceCompareNet = NO;
-    }
+    
     if (!isValidWholesalePriceCompareNet) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:ERRORMESSAGE_INVALID_PRICE_WHOLESALE_COMPARE_NET delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
