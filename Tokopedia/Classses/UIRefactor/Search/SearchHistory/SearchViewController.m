@@ -461,7 +461,7 @@ NSString *const SearchDomainCategory = @"Kategori";
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:searchMapping
                                                                                                   method:RKRequestMethodGET
-                                                                                             pathPattern:[NSString stringWithFormat:@"search/product/%@", _searchBar.text]
+                                                                                             pathPattern:[NSString stringWithFormat:@"search/%@", _searchBar.text]
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -471,7 +471,7 @@ NSString *const SearchDomainCategory = @"Kategori";
 - (void)doRequest {
     _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                           method:RKRequestMethodGET
-                                                                            path:[NSString stringWithFormat:@"search/product/%@", _searchBar.text]
+                                                                            path:[NSString stringWithFormat:@"search/%@", _searchBar.text]
                                                                       parameters:nil];
     
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
