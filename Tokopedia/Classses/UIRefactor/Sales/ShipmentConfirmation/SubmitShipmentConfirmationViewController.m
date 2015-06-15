@@ -70,8 +70,18 @@
     self.navigationItem.rightBarButtonItem = doneButton;
 
     _changeCourier = NO;
-    _selectedCourier = [_shipmentCouriers objectAtIndex:0];
-    _selectedCourierPackage = [_selectedCourier.shipment_package objectAtIndex:0];
+
+    for (ShipmentCourier *courier in _shipmentCouriers) {
+        if ([courier.shipment_name isEqualToString:_order.order_shipment.shipment_name]) {
+            _selectedCourier = courier;
+        }
+    }
+    
+    for (ShipmentCourierPackage *package in _selectedCourier.shipment_package) {
+        if ([package.sp_id isEqualToString:_order.order_shipment.shipment_package_id]) {
+            _selectedCourierPackage = package;
+        }
+    }
     
     _shouldReloadData = NO;
     
@@ -353,19 +363,19 @@
                   API_ACTION_TYPE_KEY         : @"confirm",
                   API_USER_ID_KEY             : userId,
                   API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
+                  API_SHIPMENT_ID_KEY         : _selectedCourier.shipment_id ?: [NSNumber numberWithInteger:_order.order_shipment.shipment_id],
+                  API_SHIPMENT_NAME_KEY       : _selectedCourier.shipment_name ?: _order.order_shipment.shipment_name,
+                  API_SHIPMENT_PACKAGE_ID_KEY : _selectedCourierPackage.sp_id ?: _order.order_shipment.shipment_package_id,
                   API_SHIPMENT_REF_KEY        : textField.text ?: @"",
                   };
     } else {
         param = @{
-            API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
-            API_ACTION_TYPE_KEY         : @"confirm",
-            API_USER_ID_KEY             : userId,
-            API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
-            API_SHIPMENT_ID_KEY         : _selectedCourier.shipment_id ?: [NSNumber numberWithInteger:_order.order_shipment.shipment_id],
-            API_SHIPMENT_NAME_KEY       : _selectedCourier.shipment_name ?: _order.order_shipment.shipment_name,
-            API_SHIPMENT_PACKAGE_ID_KEY : _selectedCourierPackage.sp_id ?: _order.order_shipment.shipment_package_id,
-            API_SHIPMENT_REF_KEY        : textField.text ?: @"",
-        };
+                  API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
+                  API_ACTION_TYPE_KEY         : @"confirm",
+                  API_USER_ID_KEY             : userId,
+                  API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
+                  API_SHIPMENT_REF_KEY        : textField.text ?: @"",
+                  };
     }
     
     _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
