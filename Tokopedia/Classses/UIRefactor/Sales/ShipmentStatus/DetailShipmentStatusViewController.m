@@ -208,12 +208,13 @@
     
     NSString *status;
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
-        status = history.history_buyer_status;
+        status = [history.history_buyer_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
     } else {
-        status = history.history_seller_status;
+        status = [history.history_seller_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
     }
     if (![history.history_comments isEqualToString:@"0"]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
+        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@",
+                                                  history.history_comments]];
     }
     [cell setStatusLabelText:status];
     
@@ -289,6 +290,32 @@
             _order.order_detail.detail_ship_ref_num = receiptNumber;
             labelReceiptNumber.text = receiptNumber;
             
+            if ([self.delegate respondsToSelector:@selector(successChangeReceiptWithOrderHistory:)]) {
+
+                NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
+                                             self.order.order_detail.detail_ship_ref_num,
+                                             receiptNumber];
+
+                NSDate *now = [NSDate date];
+                
+                NSDateFormatter *dateFormatFull = [[NSDateFormatter alloc] init];
+                [dateFormatFull setDateFormat:@"d MM yyyy HH:mm"];
+                
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"d/MM/yyyy HH:mm"];
+                
+                OrderHistory *history = [OrderHistory new];
+                history.history_status_date = [dateFormat stringFromDate:now];
+                history.history_status_date_full = [dateFormatFull stringFromDate:now];
+                history.history_order_status = @"530";
+                history.history_comments = historyComments;
+                history.history_action_by = @"Seller";
+                history.history_buyer_status = @"Perubahan nomor resi pengiriman";
+                history.history_seller_status = @"Perubahan nomor resi pengiriman";
+
+                [self.delegate successChangeReceiptWithOrderHistory:history];
+            }
+            
         } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
             [alert show];
@@ -325,7 +352,7 @@
 
 #pragma mark - Change receipt number delegate
 
-- (void)changeReceiptNumber:(NSString *)receiptNumber
+- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history
 {
     [self requestChangeReceiptNumber:receiptNumber];
 }
