@@ -107,13 +107,40 @@
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
         status = history.history_buyer_status;
     } else {
-        status = history.history_seller_status;
+        NSRange range = [history.history_seller_status rangeOfString:@"Pesanan telah dikirim"];
+        if(range.location != NSNotFound){
+            status = [NSString stringWithFormat:@"%@\n\n%@",history.history_seller_status, [self AWBString]];
+        }
+        else
+            status = history.history_seller_status;
     }
     if (![history.history_comments isEqualToString:@"0"]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
+        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@%@", history.history_comments,[self AWBString]]];
     }
     CGSize messageSize = [DetailShipmentStatusCell messageSize:status];
     return messageSize.height;
+}
+
+-(NSString*)AWBString
+{
+    NSString *shipRef = _order.order_detail.detail_ship_ref_num?:@"";
+    NSLog(@"shipping resi :%@",shipRef);
+    NSString *lastComment = _order.order_last.last_comments?:@"";
+    
+    NSMutableArray *comment = [NSMutableArray new];
+    
+    if (shipRef &&
+        ![shipRef isEqualToString:@""] &&
+        ![shipRef isEqualToString:@"0"])
+    {
+        [comment addObject:[NSString stringWithFormat:@"Nomor resi: %@", _order.order_last.last_shipping_ref_num]];
+    }
+    if (lastComment && ![lastComment isEqualToString:@"0"] && [lastComment isEqualToString:@""]) {
+        [comment addObject:lastComment];
+    }
+    
+    NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
+    return statusString;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,11 +163,18 @@
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
         status = history.history_buyer_status;
     } else {
-        status = history.history_seller_status;
+        NSRange range = [history.history_seller_status rangeOfString:@"Pesanan telah dikirim"];
+        if(range.location != NSNotFound){
+            status = [NSString stringWithFormat:@"%@\n\n%@",history.history_seller_status, [self AWBString]];
+        }
+        else
+            status = history.history_seller_status;
+        
     }
     if (![history.history_comments isEqualToString:@"0"]) {
         status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
     }
+    
     [cell setStatusLabelText:status];
     
     [cell setColorThemeForActionBy:history.history_action_by];
@@ -223,7 +257,7 @@
         InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
         vc.controllerTitle = @"Buka Komplain";
         if (buttonIndex == 0) {
-            //Tidak Terima Barang 
+            //Tidak Terima Barang
             vc.isGotTheOrder = NO;
         }
         else if (buttonIndex ==1)
