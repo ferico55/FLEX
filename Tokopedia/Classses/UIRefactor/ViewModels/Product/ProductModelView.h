@@ -18,6 +18,13 @@
 @property (nonatomic, strong) NSString *product_image_full;
 @property (nonatomic, strong) NSString *product_talk_count;
 @property (nonatomic, strong) NSString *product_review_count;
+
+@property (nonatomic, strong) NSString *catalog_price;
+@property (nonatomic, strong) NSString *catalog_name;
+@property (nonatomic, strong) NSString *catalog_image;
+
+@property (nonatomic, strong) NSString *shop_name;
+@property (nonatomic, strong) NSString *shop_gold_status;
 @property BOOL isGoldShopProduct;
 
 @end

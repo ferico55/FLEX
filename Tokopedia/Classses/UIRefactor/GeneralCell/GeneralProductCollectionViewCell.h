@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ProductModelView.h"
 
 @interface GeneralProductCollectionViewCell : UICollectionViewCell
 
@@ -16,4 +17,5 @@
 @property (strong, nonatomic) IBOutlet UILabel *productName;
 @property (strong, nonatomic) IBOutlet UIImageView *goldShopBadge;
 
+- (void)setViewModel:(ProductModelView *)productModelView;
 @end

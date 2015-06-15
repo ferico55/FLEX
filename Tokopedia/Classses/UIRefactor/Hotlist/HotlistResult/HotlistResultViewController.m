@@ -30,6 +30,8 @@
 
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"
+#import "ProductSingleViewCell.h"
+#import "ProductThumbCell.h"
 
 #import "GeneralSingleProductCell.h"
 #import "GeneralPhotoProductCell.h"
@@ -43,6 +45,10 @@
 #define CTagRetryCollectionIdentifier @"RetryView"
 #define CTagHeaderCollectionView @"HeaderCollectionReusableView"
 #define CTagHeaderIdentifier @"HeaderIdentifier"
+#define CProductSingleView @"ProductSingleViewCell"
+#define CProductSingleViewIdentifier @"ProductSingleViewIdentifier"
+#define CProductThumbView @"ProductThumbCell"
+#define CProductThumbIdentifier @"ProductThumbCellIdentifier"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -245,17 +251,13 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         [self registerNibCell:CTagFooterCollectionView withIdentifier:CTagFooterCollectionIdentifier isFooterView:YES isHeader:NO];
         [self registerNibCell:CTagRetryCollectionView withIdentifier:CTagRetryCollectionIdentifier isFooterView:YES isHeader:NO];
         [self registerNibCell:CTagHeaderCollectionView withIdentifier:CTagHeaderIdentifier isFooterView:NO isHeader:YES];
+        [self registerNibCell:CProductSingleView withIdentifier:CProductSingleViewIdentifier isFooterView:NO isHeader:NO];
+        [self registerNibCell:CProductThumbView withIdentifier:CProductThumbIdentifier isFooterView:NO isHeader:NO];
         
         viewCollection.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
         [viewCollection setAlwaysBounceVertical:YES];
         [flowLayout setFooterReferenceSize:CGSizeMake(self.view.bounds.size.height, 50)];
         [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-        
-        if([[UIScreen mainScreen]bounds].size.width > 320) {
-            [flowLayout setItemSize:CGSizeMake(productCollectionViewCellWidth6plus, productCollectionViewCellHeight6plus)];
-        } else {
-            [flowLayout setItemSize:CGSizeMake(productCollectionViewCellWidthNormal, productCollectionViewCellHeightNormal)];
-        }
     }
     
     
@@ -685,11 +687,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                         
                     }
                     
-                    self.table.contentOffset = CGPointMake(0, 0);
-                    [self.table reloadData];
-                    
                     NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
                     [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
+                    [viewCollection reloadData];
 
                     break;
                 }
@@ -1205,42 +1205,60 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 
 #pragma mark - CollectionView Delegate And Datasource
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    CGSize cellSize = CGSizeMake(0, 0);
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    
+    NSInteger cellCount;
+    float heightRatio;
+    float widhtRatio;
+    float inset;
+    
+    CGFloat screenWidth = screenRect.size.width;
+    
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        cellCount = 1;
+        heightRatio = 389;
+        widhtRatio = 300;
+        inset = 15;
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        cellCount = 2;
+        heightRatio = 41;
+        widhtRatio = 29;
+        inset = 15;
+    } else {
+        cellCount = 3;
+        heightRatio = 1;
+        widhtRatio = 1;
+        inset = 14;
+    }
+    
+    CGFloat cellWidth = screenWidth/cellCount-inset;
+    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    return cellSize;
+}
+
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _isnodata?0:_product.count;
 }
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
+    UICollectionViewCell *cell;
     List *list = [_product objectAtIndex:indexPath.row];
-    cell.productPrice.text = list.catalog_price?:list.product_price;
-
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.catalog_name?:list.product_name];
-    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:5];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.catalog_name?:list.product_name length])];
-    cell.productName.attributedText = attributedString;
-    cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
-    cell.productShop.text = list.shop_name?:@"";
-    if([list.shop_gold_status isEqualToString:@"1"]) {
-        cell.goldShopBadge.hidden = NO;
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        cell = (ProductSingleViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductSingleViewIdentifier forIndexPath:indexPath];
+        [(ProductSingleViewCell *)cell setViewModel:list.viewModel];
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        cell = (GeneralProductCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
+        [(GeneralProductCollectionViewCell *)cell setViewModel:list.viewModel];
     } else {
-        cell.goldShopBadge.hidden = YES;
+        cell = (ProductThumbCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductThumbIdentifier forIndexPath:indexPath];
+        [(ProductThumbCell *)cell setViewModel:list.viewModel];
     }
-    
-    
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image?:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    UIImageView *thumb = cell.productImage;
-    thumb.image = nil;
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-        [thumb setContentMode:UIViewContentModeScaleAspectFill];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
     
     return cell;
 }
