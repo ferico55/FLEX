@@ -906,7 +906,7 @@ UIAlertViewDelegate
         if (indexPath.section == 0) {
             return _informationHeight+50;
         } else if (indexPath.section == 1 && _product.result.wholesale_price.count > 0) {
-            return 230;
+            return (44*2) + (_product.result.wholesale_price.count*44);//44 is standart height of uitableviewcell
         } else {
             return _descriptionHeight+50;
         }
@@ -990,6 +990,9 @@ UIAlertViewDelegate
             cell = (DetailProductWholesaleCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {
                 cell = [DetailProductWholesaleCell newcell];
+                CGRect tempContentView = cell.contentView.frame;
+                tempContentView.size.height = (_product.result.wholesale_price.count*4)+(44*2); //44 is height that currently is used(standard height uitableviewcell)
+                cell.contentView.frame = tempContentView;
             }
             ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY : _product.result.wholesale_price};
             
