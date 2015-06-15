@@ -98,6 +98,7 @@
                 <outlet property="productPrice" destination="mlD-8n-5Cw" id="SXa-LS-3vo"/>
                 <outlet property="productShop" destination="Uc5-k1-Ud2" id="EXH-rg-uo7"/>
             </connections>
+            <point key="canvasLocation" x="243.5" y="223.5"/>
         </collectionViewCell>
     </objects>
     <resources>
