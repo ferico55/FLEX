@@ -161,6 +161,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    self.view.frame = screenRect;
+    
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _operationSendCommentQueue = [NSOperationQueue new];

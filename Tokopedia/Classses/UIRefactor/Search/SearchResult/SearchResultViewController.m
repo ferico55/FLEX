@@ -369,29 +369,7 @@ UICollectionViewDelegate
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
-    float top;
-    float left;
-    float bottom;
-    float right;
-    
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        top = 5;
-        bottom = 5;
-        right = 5;
-        left = 40;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        top = 10;
-        bottom = 10;
-        left = 10;
-        right = 15;
-    } else {
-        top = 5;
-        bottom = 5;
-        left = 5;
-        bottom = 5;
-    }
-    
+
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 

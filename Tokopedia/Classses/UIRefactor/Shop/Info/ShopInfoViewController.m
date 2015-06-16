@@ -100,6 +100,11 @@
     [super viewDidLoad];
     self.title = @"Informasi Toko";
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = _containerview.frame;
+    frame.size.width = screenRect.size.width;
+    _containerview.frame = frame;
+    
     _navigateController = [NavigateViewController new];
     
     _scrollview.delegate = self;

@@ -82,6 +82,9 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _contentView.frame = screenRect;
+    
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
