@@ -71,6 +71,16 @@
 
     [_explanationTextView setText:@"Terima sebagian"];
     _explanationTextView.delegate = self;
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:)
+               name:UIKeyboardWillShowNotification
+             object:nil];
+    
+    [nc addObserver:self selector:@selector(keyboardWillHide:)
+               name:UIKeyboardWillHideNotification
+             object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -136,18 +146,17 @@
 
 #pragma mark - Text field method
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    CGPoint point = textField.frame.origin;
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionMiddle
+                                  animated:YES];
+}
+
 - (void)textFieldDidChange:(UITextField *)textField
 {
     [[_productQuantity objectAtIndex:textField.tag] setObject:textField.text forKey:@"product_quantity"];
-}
-
-#pragma mark - Text view delegate
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    if ([textView.text isEqualToString:@""]) {
-        [textView setPlaceholder:@"Keterangan"];
-    }
 }
 
 - (IBAction)tap:(id)sender
@@ -194,6 +203,39 @@
         NSString *errorMessage = @"Anda memasukkan jumlah terlalu banyak";
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
         [alert show];
+    }
+}
+
+#pragma mark - Keyboard Notification
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSValue *keyboardFrameBegin = [[notification userInfo] valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    self.tableView.contentInset = UIEdgeInsetsMake(22, 0, keyboardFrameBeginRect.size.height + 15, 0);
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+    self.tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
+}
+
+#pragma mark - Text view delegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self scrollToBottom];
+    });
+}
+
+- (void)scrollToBottom {
+    CGRect rect = [self.tableView convertRect:self.tableView.tableFooterView.bounds
+                                     fromView:self.tableView.tableFooterView];
+    [self.tableView scrollRectToVisible:rect animated:YES];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@""]) {
+        [textView setPlaceholder:@"Keterangan"];
     }
 }
 
