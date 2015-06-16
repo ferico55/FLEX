@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -55,8 +55,8 @@
                                         <color key="textColor" red="1" green="0.3411764705882353" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Un9-kF-Gui">
-                                        <rect key="frame" x="187" y="5" width="36" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai dari" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Un9-kF-Gui">
+                                        <rect key="frame" x="170" y="5" width="53" height="21"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                                         <color key="textColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -65,13 +65,13 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="baseline" secondItem="Btf-hw-uIO" secondAttribute="baseline" id="01W-2a-Px9"/>
-                                    <constraint firstItem="Un9-kF-Gui" firstAttribute="leading" secondItem="5m1-8w-hzi" secondAttribute="trailing" constant="20" id="72J-RN-pux"/>
                                     <constraint firstAttribute="trailing" secondItem="Btf-hw-uIO" secondAttribute="trailing" constant="3" id="GPc-rO-lk4"/>
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="centerY" secondItem="jP7-8C-OZe" secondAttribute="centerY" id="KMC-s7-SCR"/>
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="leading" secondItem="jP7-8C-OZe" secondAttribute="leading" constant="5" id="UG0-Pa-zRf"/>
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="top" secondItem="Un9-kF-Gui" secondAttribute="top" id="bWB-Q5-UwY"/>
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="top" secondItem="jP7-8C-OZe" secondAttribute="top" constant="5" id="g0T-jj-a1f"/>
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="firstBaseline" secondItem="Btf-hw-uIO" secondAttribute="firstBaseline" id="gVp-3j-XK2"/>
+                                    <constraint firstItem="Un9-kF-Gui" firstAttribute="leading" secondItem="5m1-8w-hzi" secondAttribute="trailing" constant="3" id="m2f-aj-Hzd"/>
                                     <constraint firstItem="5m1-8w-hzi" firstAttribute="bottom" secondItem="Un9-kF-Gui" secondAttribute="bottom" id="wf1-Lf-xzI"/>
                                     <constraint firstItem="Btf-hw-uIO" firstAttribute="leading" secondItem="Un9-kF-Gui" secondAttribute="trailing" id="xYw-z0-SDg"/>
                                 </constraints>
