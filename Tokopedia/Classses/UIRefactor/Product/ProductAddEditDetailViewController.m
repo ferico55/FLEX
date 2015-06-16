@@ -27,6 +27,7 @@
 #import "MyShopNoteDetailViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "GAIDictionaryBuilder.h"
+#import "UserAuthentificationManager.h"
 
 @interface ProductAddEditDetailViewController ()
 <
@@ -78,6 +79,7 @@ TokopediaNetworkManagerDelegate
     TokopediaNetworkManager *_moveToWarehouseNetworkManager;
     
     UIBarButtonItem *_saveBarButtonItem;
+    UserAuthentificationManager *_userManager;
     
     BOOL _isNodata;
     BOOL _isBeingPresented;
@@ -135,6 +137,7 @@ TokopediaNetworkManagerDelegate
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _userManager = [UserAuthentificationManager new];
     
     _processingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading..." delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -530,8 +533,9 @@ TokopediaNetworkManagerDelegate
                         newEtalase.etalase_id = [product.product_etalase_id stringValue];
                         NSIndexPath *indexpath = [_dataInput objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                         MyShopEtalaseFilterViewController *etalaseViewController = [MyShopEtalaseFilterViewController new];
-                        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-                        etalaseViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+//                        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+                        
+                        etalaseViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:[_userManager getShopId],
                                                        kTKPDFILTER_DATAINDEXPATHKEY: indexpath,
                                                        DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT),
                                                        ETALASE_OBJECT_SELECTED_KEY : newEtalase
