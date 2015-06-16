@@ -126,6 +126,7 @@ typedef enum
 #pragma mark - Get Action
 #define kTKPDADD_WISHLIST_PRODUCT @"add_wishlist_product"
 #define kTKPDREMOVE_WISHLIST_PRODUCT @"remove_wishlist_product"
+#define kTKPDREMOVE_PRODUCT_PRICE_ALERT @"remove_product_price_alert"
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"

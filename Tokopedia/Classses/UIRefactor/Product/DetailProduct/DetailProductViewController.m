@@ -13,7 +13,7 @@
 #define CTagWishList 5
 #define CTagUnWishList 6
 #define CTagNoteCanReture 7
-
+#define CTagPriceAlert 8
 
 #import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
@@ -27,6 +27,7 @@
 #import "string_product.h"
 #import "string_transaction.h"
 #import "string_more.h"
+#import "string_price_alert.h"
 #import "string_home.h"
 #import "Product.h"
 #import "WishListObjectResult.h"
@@ -157,6 +158,9 @@ UIAlertViewDelegate
     __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
     
+    TokopediaNetworkManager *tokopediaNetworkManagerPriceAlert;
+    RKObjectManager *objectPriceAlertManager;
+    
     __weak RKObjectManager *_objectmanagerActionMoveToEtalase;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
     
@@ -267,6 +271,10 @@ UIAlertViewDelegate
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
+    
+    tokopediaNetworkManagerPriceAlert = [TokopediaNetworkManager new];
+    tokopediaNetworkManagerPriceAlert.tagRequest = CTagPriceAlert;
+    tokopediaNetworkManagerPriceAlert.delegate = self;
     
     _requestMoveTo =[RequestMoveTo new];
     _requestMoveTo.delegate = self;
@@ -1094,6 +1102,10 @@ UIAlertViewDelegate
                  kTKPDNOTES_APINOTEIDKEY:_product.result.shop_info.shop_has_terms,
                  NOTES_TERMS_FLAG_KEY:@(1),
                  kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id};
+    else if(tag == CTagPriceAlert) {
+        return @{kTKPDDETAIL_APIPRODUCTIDKEY:_product.result.product.product_id,
+                 kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_PRODUCT_PRICE_ALERT};
+    }
     
     return nil;
 }
@@ -1114,6 +1126,8 @@ UIAlertViewDelegate
         return [NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH];
     else if(tag == CTagNoteCanReture)
         return kTKPDDETAILNOTES_APIPATH;
+    else if(tag == CTagPriceAlert)
+        return [NSString stringWithFormat:@"action/%@", CPriceAlertPL];
     
     return nil;
 }
@@ -1394,6 +1408,28 @@ UIAlertViewDelegate
         
         return _objectNoteCanReture;
     }
+    else if(tag == CTagPriceAlert) {
+        objectPriceAlertManager = [RKObjectManager sharedClient];
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        [objectPriceAlertManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return objectPriceAlertManager;
+    }
     
     return nil;
 }
@@ -1437,6 +1473,10 @@ UIAlertViewDelegate
     else if(tag == CTagNoteCanReture) {
         Notes *notes = stat;
         return notes.status;
+    }
+    else if(tag == CTagPriceAlert) {
+        GeneralAction *generalAction = stat;
+        return generalAction.status;
     }
     
     return nil;
@@ -1521,19 +1561,14 @@ UIAlertViewDelegate
             [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
-            
-            [activityIndicator removeFromSuperview];
-            [activityIndicator stopAnimating];
-            [btnWishList setHidden:NO];
+            [self setRequestingAction:btnWishList isLoading:NO];
         }
         else
         {
             alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
             [self setBackgroundWishlist:YES];
             btnWishList.tag = 0;
-            [activityIndicator removeFromSuperview];
-            [activityIndicator stopAnimating];
-            [btnWishList setHidden:NO];
+            [self setRequestingAction:btnWishList isLoading:NO];
         }
         [alert show];
     }
@@ -1550,18 +1585,14 @@ UIAlertViewDelegate
             [self setBackgroundWishlist:YES];
             btnWishList.tag = 0;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
-            [activityIndicator removeFromSuperview];
-            [activityIndicator stopAnimating];
-            [btnWishList setHidden:NO];
+            [self setRequestingAction:btnWishList isLoading:NO];
         }
         else
         {
             alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
             [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
-            [activityIndicator removeFromSuperview];
-            [activityIndicator stopAnimating];
-            [btnWishList setHidden:NO];
+            [self setRequestingAction:btnWishList isLoading:NO];
         }
         
         [alert show];
@@ -1570,6 +1601,18 @@ UIAlertViewDelegate
         NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
         Notes *tempNotes = [result objectForKey:@""];
         notesDetail = tempNotes.result.detail;
+    }
+    else if(tag == CTagPriceAlert) {
+        NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
+        GeneralAction *generalAction = [result objectForKey:@""];
+        if([generalAction.result.is_success isEqualToString:@"1"]) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:generalAction.message_status delegate:self];
+            [stickyAlertView show];
+            
+            _product.result.product.product_price_alert = @"0";
+            [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
+        }
+        [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
 }
 
@@ -1594,9 +1637,8 @@ UIAlertViewDelegate
         [alert show];
         [self setBackgroundWishlist:YES];
         btnWishList.tag = 0;
-        [activityIndicator removeFromSuperview];
-        [activityIndicator stopAnimating];
-        [btnWishList setHidden:NO];
+        
+        [self setRequestingAction:btnWishList isLoading:NO];
     }
     else if(tag == CTagWishList)
     {
@@ -1604,12 +1646,13 @@ UIAlertViewDelegate
         [alert show];
         [self setBackgroundWishlist:NO];
         btnWishList.tag = 1;
-        [activityIndicator removeFromSuperview];
-        [activityIndicator stopAnimating];
-        [btnWishList setHidden:NO];
+        [self setRequestingAction:btnWishList isLoading:NO];
     }
     else if(tag == CTagNoteCanReture) {
     
+    }
+    else if(tag == CTagPriceAlert) {
+        [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
 }
 
@@ -1634,6 +1677,9 @@ UIAlertViewDelegate
     {}
     else if(tag == CTagWishList)
     {}
+    else if(tag == CTagPriceAlert) {
+    
+    }
 }
 
 - (void)actionRequestAsync:(int)tag
@@ -1654,6 +1700,8 @@ UIAlertViewDelegate
     {}
     else if(tag == CTagWishList)
     {}
+    else if(tag == CTagPriceAlert)
+    {}
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag
@@ -1673,6 +1721,8 @@ UIAlertViewDelegate
     else if(tag == CTagUnWishList)
     {}
     else if(tag == CTagWishList)
+    {}
+    else if(tag == CTagPriceAlert)
     {}
 }
 
@@ -1831,7 +1881,7 @@ UIAlertViewDelegate
                 [btnWishList removeFromSuperview];
                 [btnPriceAlert removeFromSuperview];
             } else {
-                activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
+                activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
                 [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
@@ -2023,6 +2073,21 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (void)setRequestingAction:(UIButton *)btnView isLoading:(BOOL)isLoading
+{
+    if(isLoading) {
+        activityIndicator.frame = btnView.frame;
+        [viewContentWishList addSubview:activityIndicator];
+        [activityIndicator startAnimating];
+        btnView.hidden = YES;
+    }
+    else {
+        [activityIndicator stopAnimating];
+        [activityIndicator removeFromSuperview];
+        btnView.hidden = NO;
+    }
+}
+
 - (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -2097,9 +2162,15 @@ UIAlertViewDelegate
 - (IBAction)actionPriceAlert:(id)sender
 {
     if(_auth) {
-        PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
-        priceAlertViewController.productDetail = _product.result.product;
-        [self.navigationController pushViewController:priceAlertViewController animated:YES];
+        if(btnPriceAlert.backgroundColor == [UIColor whiteColor]) { //Not price alert yet
+            PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+            priceAlertViewController.productDetail = _product.result.product;
+            [self.navigationController pushViewController:priceAlertViewController animated:YES];
+        }
+        else {
+            [self setRequestingAction:btnPriceAlert isLoading:YES];
+            [tokopediaNetworkManagerPriceAlert doRequest];
+        }
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -2490,10 +2561,7 @@ UIAlertViewDelegate
 - (void)setUnWishList
 {
     if(_auth) {
-        [viewContentWishList addSubview:activityIndicator];
-        [activityIndicator startAnimating];
-        [btnWishList setHidden:YES];
-        
+        [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagUnWishList;
         [tokopediaNetworkManagerWishList doRequest];
     } else {
@@ -2518,9 +2586,7 @@ UIAlertViewDelegate
 - (void)setWishList
 {
     if(_auth) {
-        [viewContentWishList addSubview:activityIndicator];
-        [activityIndicator startAnimating];
-        [btnWishList setHidden:YES];
+        [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
         [tokopediaNetworkManagerWishList doRequest];
     } else {
