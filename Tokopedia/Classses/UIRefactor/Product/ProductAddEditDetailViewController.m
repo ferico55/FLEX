@@ -82,6 +82,8 @@ TokopediaNetworkManagerDelegate
     BOOL _isNodata;
     BOOL _isBeingPresented;
     EtalaseList *_selectedEtalase;
+    
+    NSString *_uniqueID;
 }
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1TableViewCell;
@@ -868,7 +870,7 @@ TokopediaNetworkManagerDelegate
     
     NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date]
                                                           dateStyle:NSDateFormatterShortStyle
-                                                          timeStyle:NSDateFormatterShortStyle];
+                                                          timeStyle:NSDateFormatterFullStyle];
     //NSString *uniqueID = [NSString stringWithFormat:@"%zd2365364365645644564564",userID];
     NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSString *uniqueID = [NSString stringWithFormat:@"%zd%@%@",userID,udid,dateString];
@@ -876,7 +878,7 @@ TokopediaNetworkManagerDelegate
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
-    
+    _uniqueID = uniqueID;
     [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
     
     NSString *myString = productImage;
@@ -1101,7 +1103,7 @@ TokopediaNetworkManagerDelegate
     NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
     
     NSInteger randomNumber = arc4random() % 16;
-    NSString *uniqueID = [NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
+    NSString *uniqueID = _uniqueID;//[NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
