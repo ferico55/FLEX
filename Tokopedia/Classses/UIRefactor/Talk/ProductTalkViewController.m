@@ -889,10 +889,9 @@
     
     NSDate *today = [NSDate date];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
-    NSString *dateString = [dateFormat stringFromDate:today];
+    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:mm"];
     
-    list.talk_create_time = [dateString stringByAppendingString:@" WIB"];
+    list.talk_create_time = [dateFormat stringFromDate:today];
     list.talk_message = [userinfo objectForKey:TKPD_TALK_MESSAGE];
     
     list.disable_comment = YES;
