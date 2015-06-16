@@ -191,6 +191,7 @@
     }
     if (![history.history_comments isEqualToString:@"0"]) {
         status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
+        status = [status stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     }
     CGSize messageSize = [DetailShipmentStatusCell messageSize:status];
     return messageSize.height;
