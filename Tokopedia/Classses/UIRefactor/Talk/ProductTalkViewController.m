@@ -708,6 +708,12 @@
                     _table.tableFooterView = _noResultView;
                     NSError *error = object;
                     NSString *errorDescription = error.localizedDescription;
+                    
+                    if(error.code == -1011) {
+                        errorDescription = CStringFailedInServer;
+                    } else if (error.code==-1009 || error.code==-999) {
+                        errorDescription = CStringNoConnection;
+                    }
                     UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                     [errorAlert show];
                 }
@@ -718,6 +724,12 @@
                 _table.tableFooterView = _noResultView;
                 NSError *error = object;
                 NSString *errorDescription = error.localizedDescription;
+                
+                if(error.code == -1011) {
+                    errorDescription = CStringFailedInServer;
+                } else if (error.code==-1009 || error.code==-999) {
+                    errorDescription = CStringNoConnection;
+                }
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
             }

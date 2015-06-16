@@ -44,7 +44,6 @@
     /** url to the next page **/
     NSString *_urinext;
     NSTimer *_timer;
-    BOOL hasInitData;
     NSString *strUserID;
     
     UIRefreshControl *_refreshControl;
@@ -128,22 +127,16 @@
     _auth = [_auth mutableCopy];
     self.screenName = @"Home - Favorite Shop";
     
-    if(hasInitData)
-    {
-        hasInitData = !hasInitData;
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-    }
-    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-        _page = 1;
-        _isnodata = YES;
-        _shop = [NSMutableArray new];
-        _goldshop = [NSMutableArray new];
-        _isrefreshview = NO;
-        _urinext = nil;
-        [self configureRestKit];
-        [self request];
-    }
+
+    strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+    _page = 1;
+    _isnodata = YES;
+    _shop = [NSMutableArray new];
+    _goldshop = [NSMutableArray new];
+    _isrefreshview = NO;
+    _urinext = nil;
+    [self configureRestKit];
+    [self request];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

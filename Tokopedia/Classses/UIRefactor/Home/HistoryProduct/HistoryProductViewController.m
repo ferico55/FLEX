@@ -59,7 +59,6 @@
     LoadingView *_loadingView;
     NoResultView *_noResult;
     NSString *strUserID;
-    BOOL hasInitData;
 }
 
 #pragma mark - Factory Method
@@ -127,7 +126,6 @@
     
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            hasInitData = YES;
             [_networkManager doRequest];
         }
     }
@@ -155,22 +153,15 @@
     NSDictionary *_auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
 
-    if(hasInitData)
-    {
-        hasInitData = !hasInitData;
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-    }
-    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-        _product = [NSMutableArray new];
-        _lastStoredArray = [NSMutableArray new];
-        _refreshedArray = [NSMutableArray new];
-        _urinext = nil;
-        _page = 1;
-        _isnodata = YES;
-        _isrefreshview = NO;
-        [_networkManager doRequest];
-    }
+    strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+    _product = [NSMutableArray new];
+    _lastStoredArray = [NSMutableArray new];
+    _refreshedArray = [NSMutableArray new];
+    _urinext = nil;
+    _page = 1;
+    _isnodata = YES;
+    _isrefreshview = NO;
+    [_networkManager doRequest];
 }
 
 - (void) setTableInset {

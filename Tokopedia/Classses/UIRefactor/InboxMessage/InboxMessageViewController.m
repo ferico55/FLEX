@@ -290,6 +290,10 @@ typedef enum TagRequest {
     }
     
     [_messages removeObjectsAtIndexes:discardedItems];
+    if(_messages.count == 0) {
+        _isnodata = YES;
+        _table.tableFooterView = _noresult;
+    }
     
     NSString *joinedArr = [arr componentsJoinedByString:@"and"];
     

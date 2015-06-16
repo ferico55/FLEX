@@ -23,7 +23,7 @@
 {
     NSMutableArray *product;
     int page, limit, requestCount;
-    BOOL isNoData, isRefreshView, hasInitData;
+    BOOL isNoData, isRefreshView;
     NSString *uriNext, *strUserID;
     __weak RKObjectManager *objectManager;
     __weak RKManagedObjectRequestOperation *request;
@@ -119,20 +119,13 @@
     NSDictionary *_auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
     
-    if(hasInitData)
-    {
-        hasInitData = !hasInitData;
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-    }
-    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-        product = [NSMutableArray new];
-        page = 1;
-        isNoData = YES;
-        isRefreshView = NO;
-        uriNext = nil;
-        [tokoPediaNetworkManager doRequest];
-    }
+    strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+    product = [NSMutableArray new];
+    page = 1;
+    isNoData = YES;
+    isRefreshView = NO;
+    uriNext = nil;
+    [tokoPediaNetworkManager doRequest];
 }
 
 - (void) setTableInset {
