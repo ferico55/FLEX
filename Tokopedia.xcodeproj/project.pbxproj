@@ -184,9 +184,7 @@
 		7A1D2E451B235E55002F9341 /* icon_home.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C681B235E54002F9341 /* icon_home.png */; };
 		7A1D2E461B235E55002F9341 /* icon_home@2x (deleted 7bee73eed8e56609e3046416e568b8e0).png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C691B235E54002F9341 /* icon_home@2x (deleted 7bee73eed8e56609e3046416e568b8e0).png */; };
 		7A1D2E471B235E55002F9341 /* icon_home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C6A1B235E54002F9341 /* icon_home@2x.png */; };
-		7A1D2E481B235E55002F9341 /* icon_home_active (deleted fda4f3a6d03a49df4fc141672e840c4a).png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C6B1B235E54002F9341 /* icon_home_active (deleted fda4f3a6d03a49df4fc141672e840c4a).png */; };
 		7A1D2E491B235E55002F9341 /* icon_home_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C6C1B235E54002F9341 /* icon_home_active.png */; };
-		7A1D2E4A1B235E55002F9341 /* icon_home_active@2x (deleted c926c3cec83acdad76005f4c6bce9d3c).png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C6D1B235E54002F9341 /* icon_home_active@2x (deleted c926c3cec83acdad76005f4c6bce9d3c).png */; };
 		7A1D2E4B1B235E55002F9341 /* icon_home_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C6E1B235E54002F9341 /* icon_home_active@2x.png */; };
 		7A1D2E4C1B235E55002F9341 /* icon_incorrect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C6F1B235E54002F9341 /* icon_incorrect@2x.png */; };
 		7A1D2E4D1B235E55002F9341 /* icon_info.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2C701B235E54002F9341 /* icon_info.png */; };
@@ -8335,7 +8333,6 @@
 				7A1D2EEC1B235E55002F9341 /* icon_signin@2x.png in Resources */,
 				FC7643141B15E2830034A8F1 /* ReputationPageViewController.xib in Resources */,
 				7A1D2F321B235E55002F9341 /* icon_cart_active.png in Resources */,
-				7A1D2E4A1B235E55002F9341 /* icon_home_active@2x (deleted c926c3cec83acdad76005f4c6bce9d3c).png in Resources */,
 				7A1D2E2A1B235E55002F9341 /* icon_correct@2x.png in Resources */,
 				FC7641E01B15E2820034A8F1 /* AddressCell.xib in Resources */,
 				FC7643F61B15E2830034A8F1 /* TxOrderDropshipCell.xib in Resources */,
@@ -8580,7 +8577,6 @@
 				7A1D2F191B235E55002F9341 /* icon_category@3x.png in Resources */,
 				FC7643A01B15E2830034A8F1 /* ShopReviewPageViewController.xib in Resources */,
 				7A1D2E071B235E55002F9341 /* icon_21@3x.png in Resources */,
-				7A1D2E481B235E55002F9341 /* icon_home_active (deleted fda4f3a6d03a49df4fc141672e840c4a).png in Resources */,
 				FC76434B1B15E2830034A8F1 /* SearchResultShopViewController.xib in Resources */,
 				7A1D2F1F1B235E55002F9341 /* icon_more_active@3x.png in Resources */,
 				FC7643901B15E2830034A8F1 /* ShopReviewViewController.xib in Resources */,
@@ -9760,7 +9756,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
+				PROVISIONING_PROFILE = "8abb589b-05d4-4d66-b60b-0dc59a9e2ea9";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -9798,7 +9794,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
+				PROVISIONING_PROFILE = "8abb589b-05d4-4d66-b60b-0dc59a9e2ea9";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
