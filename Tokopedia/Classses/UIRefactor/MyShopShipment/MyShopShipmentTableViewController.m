@@ -68,7 +68,7 @@
     
     __weak RKObjectManager *_objectManagerAction;
     __weak RKManagedObjectRequestOperation *_requestAction;
-    BOOL hasSelectKotaAsal;
+    BOOL _hasSelectKotaAsal;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *provinceLabel;
@@ -162,11 +162,6 @@
     [super viewDidLoad];
     self.title = @"Pengiriman";
     
-//    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-//                                                                      style:UIBarButtonItemStyleBordered
-//                                                                     target:self
-//                                                                     action:nil];
-//    self.navigationItem.backBarButtonItem = backBarButton;
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:(createShopViewController!=nil? CStringLanjut:@"Simpan")
@@ -246,7 +241,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (_shipment) {
-        if(createShopViewController!=nil && !hasSelectKotaAsal)
+        if(createShopViewController!=nil && !_hasSelectKotaAsal)
             return 1;
         return 8;
     } else {
@@ -1103,12 +1098,9 @@
 
 - (void)didSelectObject:(id)object
 {
-    if(createShopViewController != nil)
-    {
-        hasSelectKotaAsal = YES;
-        [self validateEnableRightBarButtonItem];
-    }
-    
+    _hasSelectKotaAsal = YES;
+    [self validateEnableRightBarButtonItem];
+
     NSInteger index = [_districts indexOfObject:object];
     District *district = [_shipment.district objectAtIndex:index];
     _provinceLabel.text = district.district_name;
@@ -1332,7 +1324,11 @@
         }
         _districts = districts;
         
-        _provinceLabel.text = _shipment.shop_shipping.district_name;
+        if (_shipment.shop_shipping.district_name) {
+            _provinceLabel.text = _shipment.shop_shipping.district_name;
+            _hasSelectKotaAsal = YES;
+        }
+        
         _postCodeTextField.text = _shipment.shop_shipping.postal_code;
         
         if(createShopViewController != nil)
@@ -1777,7 +1773,7 @@
 
 - (void)validateEnableRightBarButtonItem
 {
-    if(hasSelectKotaAsal && _postCodeTextField.text.length>1)
+    if(_hasSelectKotaAsal && _postCodeTextField.text.length > 4)
     {
         UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
         saveButton.tintColor = [UIColor whiteColor];
