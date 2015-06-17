@@ -21,8 +21,8 @@
 
 @interface MyShopShipmentTableViewController ()
 <
-    UITextFieldDelegate,
-    GeneralTableViewControllerDelegate
+UITextFieldDelegate,
+GeneralTableViewControllerDelegate
 >
 {
     ShippingInfoResult *_shipment;
@@ -41,7 +41,7 @@
     ShippingInfoShipmentPackage *_tikiPackageReguler;
     ShippingInfoShipmentPackage *_tikiPackageONS;
     BOOL _showTikiExtraFee;
-
+    
     ShippingInfoShipments *_posIndonesia;
     ShippingInfoShipmentPackage *_posPackageKhusus;
     ShippingInfoShipmentPackage *_posPackageBiasa;
@@ -61,7 +61,7 @@
     
     ShippingInfoShipments *_pandu;
     ShippingInfoShipmentPackage *_panduPackageRegular;
-
+    
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
@@ -180,7 +180,7 @@
     [_postCodeTextField addTarget:self
                            action:@selector(textFieldDidEndEditing:)
                  forControlEvents:UIControlEventEditingChanged];
-
+    
     [_shipmentJNEMinimumWeightTextField addTarget:self
                                            action:@selector(textFieldDidEndEditing:)
                                  forControlEvents:UIControlEventEditingChanged];
@@ -209,13 +209,13 @@
                                  };
     
     _shipmentJNEDifferentDistrictLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentJNEDifferentDistrictLabel.text attributes:attributes];
-
+    
     _shipmentJNEExtraFeeLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentJNEExtraFeeLabel.text attributes:attributes];
     
     _shipmentTikiExtraFeeLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentTikiExtraFeeLabel.text attributes:attributes];
     
     _shipmePanduNotAvailableLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmePanduNotAvailableLabel.text attributes:attributes];
-
+    
     _shipmentCahayaNotAvailabelLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentCahayaNotAvailabelLabel.text attributes:attributes];
     
     _shipmentPosMinWeightLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentPosMinWeightLabel.text attributes:attributes];
@@ -261,12 +261,12 @@
             }
             break;
         }
-
+            
         case 1: {
             height = [self heightForJNEAtRow:indexPath.row];
             break;
         }
-        
+            
         case 2: {
             height = [self heightForTikiAtRow:indexPath.row];
             break;
@@ -281,17 +281,17 @@
             height = [self heightForWahanaAtRow:indexPath.row];
             break;
         }
-
+            
         case 5: {
             height = [self heightForPosAtRow:indexPath.row];
             break;
         }
-
+            
         case 6: {
             height = [self heightForCahayaAtRow:indexPath.row];
             break;
         }
-
+            
         case 7: {
             height = [self heightForPanduAtRow:indexPath.row];
             break;
@@ -351,7 +351,7 @@
                 height = 0;
             }
         }
-            
+        
         // minimum weight text field appear only if OKE package is activated
         else if (row == 5) {
             if ([_JNEPackageOke.active boolValue]) {
@@ -360,7 +360,7 @@
                 height = 0;
             }
         }
-            
+        
         // return cell minimum weight textfield
         else if (row == 6) {
             if ([_JNEPackageOke.active boolValue] &&
@@ -370,7 +370,7 @@
                 height = 0;
             }
         }
-            
+        
         // return cell "Hanya dapat melayani pengiriman luar kota." if OKE is activated
         else if (row == 7) {
             if ([_JNEPackageOke.active boolValue]) {
@@ -379,7 +379,7 @@
                 height = 0;
             }
         }
-            
+        
         // return switch to activate extra fee if at least one package is activated
         else if (row == 8) {
             if ([_JNEPackageOke.active boolValue] ||
@@ -390,7 +390,7 @@
                 height = 0;
             }
         }
-            
+        
         // return height for extra fee text field cell
         else if (row == 9) {
             if (_showJNEExtraFeeTextField) {
@@ -399,12 +399,12 @@
                 height = 0;
             }
         }
-            
+        
         // cell to show "more information" cell
         else if (row == 10) {
             height = 44;
         }
-
+        
     } else {
         if (row == 0) {
             height = 50;
@@ -422,7 +422,7 @@
 {
     CGFloat height = 0.0f;
     if ([_availableShipments containsObject:_tiki.shipment_id]) {
-
+        
         // cell to show courier name and logo
         if (row == 0) {
             height = 50;
@@ -470,11 +470,11 @@
         else if (row == 5) {
             height = 44;
         }
-
+        
         else if (row == 6) {
             height = 70;
         }
-
+        
     } else {
         if (row == 0) {
             height = 50;
@@ -492,7 +492,7 @@
 {
     CGFloat height = 0.0f;
     if ([_availableShipments containsObject:_RPX.shipment_id]) {
-
+        
         // cell to show courier name and logo
         if (row == 0) {
             height = 50;
@@ -545,8 +545,8 @@
         // cell to show courier name and logo
         if (row == 0) {
             height = 50;
-
-        // return cell if information about package is existing
+            
+            // return cell if information about package is existing
         } else if (row == 1) {
             if (_wahanaPackageNormal) {
                 height = 44;
@@ -635,7 +635,7 @@
                 height = 0;
             }
         }
-
+        
         // return switch to activate extra fee if at least one package is activated
         else if (row == 6) {
             if ([_posPackageBiasa.active boolValue] ||
@@ -658,7 +658,7 @@
                 height = 0;
             }
         }
-
+        
         else if (row == 8) {
             height = 44;
         }
@@ -714,12 +714,12 @@
 {
     CGFloat height = 0.0f;
     if ([_availableShipments containsObject:_pandu.shipment_id]) {
-
+        
         // cell to show courier name and logo
         if (row == 0) {
             height = 50;
         }
-
+        
         // return cell if information about package is existing
         else if (row == 1) {
             if (_panduPackageRegular) {
@@ -756,7 +756,7 @@
         case 0:
             numberOfRows = 2;
             break;
-        
+            
         case 1:
             numberOfRows = 12;
             break;
@@ -780,7 +780,7 @@
         case 6:
             numberOfRows = 5;
             break;
-
+            
         case 7:
             numberOfRows = 5;
             break;
@@ -841,12 +841,12 @@
         alert.text = @"Sistem AWB Otomatis";
         alert.detailText = @"Dengan menggunakan Sistem Kode Resi Otomatis, Anda tidak perlu lagi melakukan input nomor resi secara manual. Cukup cetak kode booking dan tunjukkan ke agen JNE yang mendukung, nomor resi akan otomatis masuk ke Tokopedia.";
         [alert show];
-
+        
         CGRect frame = alert.frame;
         frame.origin.y -= 25;
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
-
+        
     }
 }
 
@@ -1100,7 +1100,7 @@
 {
     _hasSelectKotaAsal = YES;
     [self validateEnableRightBarButtonItem];
-
+    
     NSInteger index = [_districts indexOfObject:object];
     District *district = [_shipment.district objectAtIndex:index];
     _provinceLabel.text = district.district_name;
@@ -1111,9 +1111,9 @@
     
     _shipment.shop_shipping.district_name = district.district_name;
     _shipment.shop_shipping.district_id = district.district_id;
-
+    
     _availableShipments = district.district_shipping_supported;
-
+    
     [self.tableView reloadData];
 }
 
@@ -1425,9 +1425,9 @@
                 [_shipmentJNELogoImageView setImageWithURLRequest:request
                                                  placeholderImage:nil
                                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                    _shipmentJNELogoImageView.image = image;
-                } failure:nil];
-
+                                                              _shipmentJNELogoImageView.image = image;
+                                                          } failure:nil];
+                
                 if (_JNEPackageReguler) {
                     _shipmentJNERegulerLabel.text = _JNEPackageReguler.name;
                     _shipmentJNERegulerSwitch.on = [_JNEPackageReguler.active boolValue];
@@ -1482,9 +1482,9 @@
                 [_shipmentTikiLogoImageView setImageWithURLRequest:request
                                                   placeholderImage:nil
                                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                    _shipmentTikiLogoImageView.image = image;
-                } failure:nil];
-
+                                                               _shipmentTikiLogoImageView.image = image;
+                                                           } failure:nil];
+                
                 if (_tikiPackageReguler) {
                     _shipmentTikiRegulerLabel.text = _tikiPackageReguler.name;
                     _shipmentTikiRegulerSwitch.on = [_tikiPackageReguler.active boolValue];
@@ -1494,7 +1494,7 @@
                     _shipmentTikiONSLabel.text = _tikiPackageONS.name;
                     _shipmentTikiONSSwitch.on = [_tikiPackageONS.active boolValue];
                 }
-
+                
                 if (_shipment.tiki.tiki_fee == 0) {
                     _shipmentTikiExtraFeeSwitch.on = NO;
                     _showTikiExtraFee = NO;
@@ -1510,10 +1510,10 @@
                 NSURL *url = [NSURL URLWithString:_RPX.shipment_image];
                 NSURLRequest *request = [NSURLRequest requestWithURL:url];
                 [_shipmentRPXLogoImageView setImageWithURLRequest:request
-                                                  placeholderImage:nil
-                                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                               _shipmentRPXLogoImageView.image = image;
-                                                           } failure:nil];
+                                                 placeholderImage:nil
+                                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                              _shipmentRPXLogoImageView.image = image;
+                                                          } failure:nil];
                 
                 if (_RPXPackageEconomy) {
                     _shipmentRPXEconomySwitch.on = [_RPXPackageEconomy.active boolValue];
@@ -1529,11 +1529,11 @@
                 NSURL *url = [NSURL URLWithString:_wahana.shipment_image];
                 NSURLRequest *request = [NSURLRequest requestWithURL:url];
                 [_shipmentWahanaLogoImageView setImageWithURLRequest:request
-                                                 placeholderImage:nil
-                                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                              _shipmentWahanaLogoImageView.image = image;
-                                                          } failure:nil];
-
+                                                    placeholderImage:nil
+                                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                                 _shipmentWahanaLogoImageView.image = image;
+                                                             } failure:nil];
+                
                 if (_wahanaPackageNormal) {
                     _shipmentWahanaNextDayLabel.text = _wahanaPackageNormal.name;
                     _shipmentWahanaNextDaySwitch.on = [_wahanaPackageNormal.active boolValue];
@@ -1545,10 +1545,10 @@
                 NSURL *url = [NSURL URLWithString:_posIndonesia.shipment_image];
                 NSURLRequest *request = [NSURLRequest requestWithURL:url];
                 [_shipmentPosLogoImageView setImageWithURLRequest:request
-                                                    placeholderImage:nil
-                                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                                 _shipmentPosLogoImageView.image = image;
-                                                             } failure:nil];
+                                                 placeholderImage:nil
+                                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                              _shipmentPosLogoImageView.image = image;
+                                                          } failure:nil];
                 
                 if (_posPackageKhusus) {
                     _shipmentPosKilatKhususLabel.text = _posPackageKhusus.name;
@@ -1573,7 +1573,7 @@
                     _shipmentPosMinWeightTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_min_weight];
                     _showPosMinimumWeight = YES;
                 }
-
+                
                 if (_shipment.pos.pos_fee == 0) {
                     _shipmentPosExtraFeeSwitch.on = NO;
                     _showPosExtraFee = NO;
@@ -1589,10 +1589,10 @@
                 NSURL *url = [NSURL URLWithString:_cahaya.shipment_image];
                 NSURLRequest *request = [NSURLRequest requestWithURL:url];
                 [_shipmentCahayaLogoImageView setImageWithURLRequest:request
-                                                 placeholderImage:nil
-                                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                              _shipmentCahayaLogoImageView.image = image;
-                                                          } failure:nil];
+                                                    placeholderImage:nil
+                                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                                 _shipmentCahayaLogoImageView.image = image;
+                                                             } failure:nil];
                 
                 if (_cahayaPackageNormal) {
                     _shipmentCahayaNormalLabel.text = _cahayaPackageNormal.name;
@@ -1605,10 +1605,10 @@
                 NSURL *url = [NSURL URLWithString:_pandu.shipment_image];
                 NSURLRequest *request = [NSURLRequest requestWithURL:url];
                 [_shipmentPanduLogoImageView setImageWithURLRequest:request
-                                                    placeholderImage:nil
-                                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                            _shipmentPanduLogoImageView.image = image;
-                                                             } failure:nil];
+                                                   placeholderImage:nil
+                                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                                _shipmentPanduLogoImageView.image = image;
+                                                            } failure:nil];
                 
                 if (_panduPackageRegular) {
                     _shipmentPanduRegulerLabel.text = _panduPackageRegular.name;
@@ -1793,7 +1793,7 @@
 - (void)configureRestKitAction
 {
     _objectManagerAction = [RKObjectManager sharedClient];
-
+    
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
     [statusMapping addAttributeMappingsFromArray:@[
@@ -1832,13 +1832,13 @@
     self.navigationItem.rightBarButtonItem = loadingBarButton;
     
     NSDictionary *parameters = [[self getRequestParameters] encrypt];
-
+    
     _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self
                                                                                 method:RKRequestMethodPOST
                                                                                   path:kTKPDDETAILSHOPACTIONEDITOR_APIPATH parameters:parameters];
     
     [_operationQueue addOperation:_requestAction];
-
+    
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestActionSuccessResult:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -1876,14 +1876,14 @@
 {
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal mengganti pengaturan pengiriman",]
                                                                    delegate:self];
-    [alert show];    
+    [alert show];
 }
 
 - (NSDictionary *)getRequestParameters
 {
     NSString *courier_origin = [NSString stringWithFormat:@"%ld", (long)_shipment.shop_shipping.district_id];
     NSString *postal = _shipment.shop_shipping.postal_code;
-
+    
     NSString *jne_diff_district = @"";
     NSString *jne_fee = @"";
     NSString *jne_fee_value = @"";
@@ -1920,7 +1920,7 @@
     }
     
     NSMutableDictionary *shipments = [NSMutableDictionary new];
-
+    
     NSMutableDictionary *jne = [NSMutableDictionary new];
     if ([_availableShipments containsObject:_JNE.shipment_id]) {
         if ([_JNEPackageYes.active boolValue]) {
@@ -1976,7 +1976,7 @@
             [shipments setObject:wahana forKey:_wahana.shipment_id];
         }
     }
-
+    
     NSMutableDictionary *pos = [NSMutableDictionary new];
     if ([_availableShipments containsObject:_posIndonesia.shipment_id]) {
         if ([_posPackageKhusus.active boolValue]) {
@@ -1993,7 +1993,7 @@
             [shipments setObject:pos forKey:_posIndonesia.shipment_id];
         }
     }
-
+    
     NSMutableDictionary *cahaya = [NSMutableDictionary new];
     if ([_availableShipments containsObject:_cahaya.shipment_id]) {
         if ([_cahayaPackageNormal.active boolValue]) {
@@ -2004,7 +2004,7 @@
             [shipments setObject:cahaya forKey:_cahaya.shipment_id];
         }
     }
-
+    
     NSMutableDictionary *pandu = [NSMutableDictionary new];
     if ([_availableShipments containsObject:_pandu.shipment_id]) {
         if ([_panduPackageRegular.active boolValue]) {
@@ -2013,7 +2013,7 @@
         
         if ([[pandu allValues] count] > 0) {
             [shipments setObject:pandu forKey:_pandu.shipment_id];
-        }        
+        }
     }
     
     NSData *data = [NSJSONSerialization dataWithJSONObject:shipments
@@ -2025,23 +2025,23 @@
                                                      encoding:NSUTF8StringEncoding];
     
     NSDictionary *parameters = @{
-        kTKPDDETAIL_APIACTIONKEY                : kTKPDDETAIL_APIEDITSHIPPINGINFOKEY,
-        kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY    : courier_origin,
-        kTKPDSHOPSHIPMENT_APIPOSTALKEY          : postal,
-        kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY    : jne_diff_district,
-        kTKPDSHOPSHIPMENT_APIJNEFEEKEY          : jne_fee,
-        kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY     : jne_fee_value,
-        kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY       : jne_min_weight,
-        kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY  : jne_min_weight_value,
-        kTKPDSHOPSHIPMENT_APIJNETICKETKEY       : jne_tiket,
-        kTKPDSHOPSHIPMENT_APITIKIFEEKEY         : tiki_fee,
-        kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY    : tiki_fee_value,
-        kTKPDSHOPSHIPMENT_APIPOSFEEKEY          : pos_fee,
-        kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY     : pos_fee_value,
-        kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY    : pos_min_weight,
-        kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY : pos_min_weight_value,
-        kTKPDSHOPSHIPMENT_APISHIPMENTIDS        : shipments_ids,
-    };
+                                 kTKPDDETAIL_APIACTIONKEY                : kTKPDDETAIL_APIEDITSHIPPINGINFOKEY,
+                                 kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY    : courier_origin,
+                                 kTKPDSHOPSHIPMENT_APIPOSTALKEY          : postal,
+                                 kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY    : jne_diff_district,
+                                 kTKPDSHOPSHIPMENT_APIJNEFEEKEY          : jne_fee,
+                                 kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY     : jne_fee_value,
+                                 kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY       : jne_min_weight,
+                                 kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY  : jne_min_weight_value,
+                                 kTKPDSHOPSHIPMENT_APIJNETICKETKEY       : jne_tiket,
+                                 kTKPDSHOPSHIPMENT_APITIKIFEEKEY         : tiki_fee,
+                                 kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY    : tiki_fee_value,
+                                 kTKPDSHOPSHIPMENT_APIPOSFEEKEY          : pos_fee,
+                                 kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY     : pos_fee_value,
+                                 kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY    : pos_min_weight,
+                                 kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY : pos_min_weight_value,
+                                 kTKPDSHOPSHIPMENT_APISHIPMENTIDS        : shipments_ids,
+                                 };
     
     return parameters;
 }
@@ -2049,7 +2049,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     UITableViewCell *cell = (UITableViewCell *)sender;
-
+    
     NSArray *shipmentPackages;
     NSString *title;
     if ([cell isEqual:_shipmentJNEMoreInfoCell]) {

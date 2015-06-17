@@ -1085,6 +1085,10 @@
     [_talkInputView becomeFirstResponder];
     // commit animations
     [UIView commitAnimations];
+    
+    if(_list.count > 0) {
+        [_table scrollRectToVisible:CGRectMake(0, _table.contentSize.height-keyboardBounds.size.height, _table.bounds.size.width, _table.bounds.size.height) animated:YES];
+    }
 }
 
 -(void) keyboardWillHide:(NSNotification *)note{
