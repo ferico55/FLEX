@@ -1017,20 +1017,14 @@
     if(status) {
         //if success
         if([commentaction.result.is_success isEqualToString:@"0"]) {
-            TalkCommentList *commentlist = _list[_list.count-1];
-            commentlist.is_not_delivered = @"1";
-            commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
             _growingtextview.text = _savedComment;
             
-            if(((int)_list.count)-2 >= 0) {
-                TalkCommentList *tempTalkCommentList = _list[_list.count-2];
-                if([tempTalkCommentList.is_not_delivered isEqualToString:@"1"]) {
-                    [_list removeObject:_list[_list.count-1]];
-                    [_table beginUpdates];
-                    [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                    [_table endUpdates];
-                }
-            }
+            TalkCommentList *commentlist = _list[_list.count-1];
+            [_list removeObject:commentlist];
+            [_table beginUpdates];
+            [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            [_table endUpdates];
+
             
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:commentaction.message_error
                                                                            delegate:self];
