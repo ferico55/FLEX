@@ -149,12 +149,13 @@
     _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _growingtextview.layer.cornerRadius = 5;
     _growingtextview.layer.masksToBounds = YES;
+    
 
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
