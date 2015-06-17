@@ -31,16 +31,16 @@
 
 @interface ProductListMyShopViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
-    UISearchBarDelegate,
-    MGSwipeTableCellDelegate,
-    SortViewControllerDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
-    ProductListMyShopFilterDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
-    TokopediaNetworkManagerDelegate,
-    RequestMoveToDelegate
+UITableViewDataSource,
+UITableViewDelegate,
+UISearchBarDelegate,
+MGSwipeTableCellDelegate,
+SortViewControllerDelegate,
+MyShopEtalaseFilterViewControllerDelegate,
+ProductListMyShopFilterDelegate,
+MyShopEtalaseFilterViewControllerDelegate,
+TokopediaNetworkManagerDelegate,
+RequestMoveToDelegate
 >
 {
     NSInteger _page;
@@ -135,7 +135,7 @@
                                                                      target:self action:@selector(tap:)];
     barButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = barButtonItem;
-
+    
     UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                   target:self
                                                                                   action:@selector(tap:)];
@@ -154,7 +154,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Shop - Manage Product";
-
+    
 }
 
 
@@ -169,12 +169,12 @@
     if (!_isnodata) {
         
         NSString *cellid = kTKPDSETTINGPRODUCTCELL_IDENTIFIER;
-		
-		cell = (ProductListMyShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [ProductListMyShopCell newcell];
+        
+        cell = (ProductListMyShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+        if (cell == nil) {
+            cell = [ProductListMyShopCell newcell];
             ((ProductListMyShopCell*)cell).delegate = self;
-		}
+        }
         
         if (_list.count > indexPath.row) {
             ManageProductList *list = _list[indexPath.row];
@@ -206,17 +206,17 @@
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                thumb.image = image;
-                thumb.contentMode = UIViewContentModeScaleAspectFill;
+                                      thumb.image = image;
+                                      thumb.contentMode = UIViewContentModeScaleAspectFill;
 #pragma clang diagnosti c pop
-                [act stopAnimating];
-                [act setHidden:YES];
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-                thumb.contentMode = UIViewContentModeCenter;
-                [act stopAnimating];
-                [act setHidden:YES];
-            }];
+                                      [act stopAnimating];
+                                      [act setHidden:YES];
+                                  } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                      thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+                                      thumb.contentMode = UIViewContentModeCenter;
+                                      [act stopAnimating];
+                                      [act setHidden:YES];
+                                  }];
         }
         return cell;
     } else {
@@ -248,7 +248,7 @@
     detailProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
                              kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                              DATA_PRODUCT_DETAIL_KEY : list,
-                            };
+                             };
     [self.navigationController pushViewController:detailProductVC animated:YES];
 }
 
@@ -261,18 +261,18 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
+    if (_isnodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
+    if (row == indexPath.row) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             [_networkManager doRequest];
         }
-	}
+    }
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -322,7 +322,7 @@
                 
                 UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
                 navigation.navigationBar.translucent = NO;
-
+                
                 [self.navigationController presentViewController:navigation animated:YES completion:nil];
                 
                 break;
@@ -465,7 +465,7 @@
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ManageProduct class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-
+    
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ManageProductResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPDDETAILPRODUCT_APIDEFAULTSORTKEY:kTKPDDETAILPRODUCT_APIDEFAULTSORTKEY,
@@ -478,7 +478,7 @@
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-
+    
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ManageProductList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIPRODUCTCOUNTREVIEWKEY,
                                                  kTKPDDETAILPRODUCT_APIPRODUCTCOUNTTALKKEY,
@@ -538,10 +538,6 @@
         
         if (status) {
             NSArray *list = _product.result.list;
-            if (_isrefreshview) {
-                [_list removeAllObjects];
-                _isrefreshview = NO;
-            }
             
             if (_page == 1) {
                 [_list removeAllObjects];
@@ -552,8 +548,6 @@
             
             if (_list.count>0) {
                 _isnodata = NO;
-                
-                [_table reloadData];
                 
                 _urinext =  _product.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
@@ -576,12 +570,13 @@
                     [_act stopAnimating];
                     _table.tableFooterView = _footer;
                 }
-
+                
             } else {
                 CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
                 NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
                 _table.tableFooterView = noResultView;
             }
+            [_table reloadData];
         }
     }
 }
@@ -751,7 +746,7 @@
     _requestcount = 0;
     _page = 1;
     [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height+44) animated:YES];
     [_networkManager doRequest];
 }
 
@@ -780,13 +775,12 @@
 {
     [searchBar setShowsCancelButton:NO animated:YES];
     
-    [_list removeAllObjects];
-    [self.table reloadData];
-    
-    [_networkManager requestCancel];
-    
+    NSString *searchBarBefore = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
     [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
-    [self refreshView:nil];
+    
+    if (![searchBarBefore isEqualToString:searchBar.text]) {
+        [self refreshView:nil];
+    }
     
     return YES;
 }
@@ -830,7 +824,7 @@
 -(void)updateView:(NSNotification*)notification
 {
     [self refreshView:nil];
-
+    
 }
 
 #pragma mark - Swipe Delegate
@@ -861,7 +855,7 @@
             [self deleteListAtIndexPath:indexPath];
             return YES;
         }];
-
+        
         MGSwipeButton * warehouse = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_WAREHOUSE backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
             alert.tag = indexPath.row;
@@ -924,10 +918,10 @@
     [_dataFilter setValue:picture forKey:API_MANAGE_PRODUCT_PICTURE_STATUS_KEY];
     [_dataFilter setValue:condition forKey:API_MANAGE_PRODUCT_CONDITION_KEY];
     [_dataFilter setObject:department forKey:DATA_DEPARTMENT_KEY];
- 
+    
     [_list removeAllObjects];
     [self.table reloadData];
-
+    
     _requestcount = 0;
     _page = 1;
     
@@ -937,7 +931,7 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-         ManageProductList *list = _list[alertView.tag];
+        ManageProductList *list = _list[alertView.tag];
         [_requestMoveTo requestActionMoveToWarehouse:[@(list.product_id) stringValue]];
     }
 }

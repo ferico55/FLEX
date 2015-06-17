@@ -103,6 +103,8 @@
 
     TKPDPhotoPicker *_photoPicker;
     UIAlertView *_alertProcessing;
+    
+    NSString *_productNameBeforeCopy;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
@@ -1735,6 +1737,7 @@
         BOOL isGoldShop = result.shop_is_gold;
         
         _productNameTextField.text = product.product_name;
+        _productNameBeforeCopy = product.product_name;
         //_productNameTextField.enabled = (type ==TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
         
         NSInteger priceInteger = [price integerValue];
@@ -1826,6 +1829,11 @@
         else
             isValidWeight = NO;
     }
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    if (type == TYPE_ADD_EDIT_PRODUCT_COPY && [productName isEqualToString:_productNameBeforeCopy]) {
+        [_errorMessage addObject:@"Tidak dapat menyalin dengan Nama Produk yang sama."];
+        isValid = NO;
+    }
 
     if ( !productName || [productName isEqualToString:@""]) {
         [_errorMessage addObject:ERRORMESSAGE_NULL_PRODUCT_NAME];
@@ -1865,6 +1873,7 @@
     if (!isValidImage) {
         [_errorMessage addObject:ERRORMESSAGE_NULL_IMAGE];
     }
+    
 
     return (isValidWeight && isValidPrice && isValid && isValidImage);
 }

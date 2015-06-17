@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductFeedViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HistoryProductViewController">
             <connections>
                 <outlet property="act" destination="qNf-Nq-Nc3" id="BfB-20-X4P"/>
                 <outlet property="footer" destination="9xO-g4-X5Q" id="UJd-Od-X0g"/>

@@ -290,10 +290,6 @@ typedef enum TagRequest {
     }
     
     [_messages removeObjectsAtIndexes:discardedItems];
-    if(_messages.count == 0) {
-        _isnodata = YES;
-        _table.tableFooterView = _noresult;
-    }
     
     NSString *joinedArr = [arr componentsJoinedByString:@"and"];
     
@@ -459,6 +455,7 @@ typedef enum TagRequest {
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
         _table.contentInset = UIEdgeInsetsMake(0, 0, _editarchiveview.bounds.size.height, 0);
+
     //show OPTION move to trash forever + back to inbox
     } else if (selected_vc == 3){
         _editarchiveview.hidden = YES;
@@ -469,15 +466,17 @@ typedef enum TagRequest {
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
         _table.contentInset = UIEdgeInsetsMake(0, 0, _inboxtrashforeverview.bounds.size.height, 0);
+
     } else if (selected_vc == 2) {
         _inboxtrashview.hidden = NO;
         _editarchiveview.hidden = YES;
         _inboxtrashforeverview.hidden = YES;
         _iseditmode = YES;
-        
+
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
         _table.contentInset = UIEdgeInsetsMake(0, 0, _inboxtrashview.bounds.size.height, 0);
+
     } else {
         _editarchiveview.hidden = YES;
         _inboxtrashforeverview.hidden = YES;
@@ -487,7 +486,6 @@ typedef enum TagRequest {
         [_table reloadData];
         [self performSelector:@selector(disableEditing) withObject:nil afterDelay:0.05];
         [_messages_selected removeAllObjects];
-        _table.contentInset = UIEdgeInsetsZero;
     }
 }
 

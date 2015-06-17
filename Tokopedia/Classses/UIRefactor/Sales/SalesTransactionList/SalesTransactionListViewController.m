@@ -289,7 +289,7 @@
 
 #pragma mark - Change receipt delegate
 
-- (void)changeReceiptNumber:(NSString *)receiptNumber
+- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history
 {
     [self requestChangeReceiptNumber:receiptNumber];
 }
