@@ -191,6 +191,33 @@ typedef enum TagRequest {
     [navigateController navigateToProductFromViewController:self withProductID:[NSString stringWithFormat:@"%@", product.product_id]];
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    CGSize cellSize = CGSizeMake(0, 0);
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    
+    NSInteger cellCount;
+    float heightRatio;
+    float widhtRatio;
+    float inset;
+    
+    CGFloat screenWidth = screenRect.size.width;
+    
+    cellCount = 2;
+    heightRatio = 41;
+    widhtRatio = 29;
+    inset = 15;
+    
+    CGFloat cellWidth = screenWidth/cellCount-inset;
+    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    return cellSize;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    
+    return UIEdgeInsetsMake(10, 10, 10, 10);
+}
 
 #pragma mark - Memory Management
 -(void)dealloc{

@@ -78,7 +78,7 @@
 #pragma mark - Lifecycle
 - (void)viewDidLayoutSubviews {
     CGRect newFrame = _scrollView.frame;
-    newFrame.size.width = 414;
+    newFrame.size.width = [[UIScreen mainScreen]bounds].size.width;
     _scrollView.frame = newFrame;
 }
 

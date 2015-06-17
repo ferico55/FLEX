@@ -10,6 +10,16 @@
 
 @interface ShopInfoAddressCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *labelname;
+@property (weak, nonatomic) IBOutlet UILabel *labelDistric;
+@property (weak, nonatomic) IBOutlet UILabel *labelcity;
+@property (weak, nonatomic) IBOutlet UILabel *labelpostal;
+@property (weak, nonatomic) IBOutlet UILabel *labelprov;
+
+@property (weak, nonatomic) IBOutlet UILabel *labelemail;
+@property (weak, nonatomic) IBOutlet UILabel *labelphone;
+@property (weak, nonatomic) IBOutlet UILabel *labelfax;
+
 + (id)newcell;
 
 @end

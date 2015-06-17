@@ -231,12 +231,9 @@
 
 #pragma mark - Table View Delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([[UIScreen mainScreen]bounds].size.width > 320) {
-        return 248;
-    } else {
-        return 192;
-    }
-    return 0.0f;
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    return screenWidth*191/310;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

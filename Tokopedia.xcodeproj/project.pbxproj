@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		457E095D1B312178007E8143 /* ShopInfoAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457E095B1B312178007E8143 /* ShopInfoAddressCell.m */; };
+		457E095E1B312178007E8143 /* ShopInfoAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457E095C1B312178007E8143 /* ShopInfoAddressCell.xib */; };
 		45E700001B2FE8C2007D51A0 /* icon_more_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E7FA481B2FE8C1007D51A0 /* icon_more_active@2x.png */; };
 		45E700011B2FE8C2007D51A0 /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E7FA491B2FE8C1007D51A0 /* icon_search.png */; };
 		45E700021B2FE8C2007D51A0 /* icon_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E7FA4A1B2FE8C1007D51A0 /* icon_search@2x.png */; };
@@ -1489,6 +1491,9 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		457E095A1B312178007E8143 /* ShopInfoAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoAddressCell.h; sourceTree = "<group>"; };
+		457E095B1B312178007E8143 /* ShopInfoAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoAddressCell.m; sourceTree = "<group>"; };
+		457E095C1B312178007E8143 /* ShopInfoAddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoAddressCell.xib; sourceTree = "<group>"; };
 		45E7F19E1B2FE8BF007D51A0 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		45E7F19F1B2FE8BF007D51A0 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		45E7F1A01B2FE8BF007D51A0 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -6620,6 +6625,9 @@
 		45E7F7D11B2FE8C0007D51A0 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				457E095A1B312178007E8143 /* ShopInfoAddressCell.h */,
+				457E095B1B312178007E8143 /* ShopInfoAddressCell.m */,
+				457E095C1B312178007E8143 /* ShopInfoAddressCell.xib */,
 				45E7F7D21B2FE8C0007D51A0 /* ShopInfoAddressView.h */,
 				45E7F7D31B2FE8C0007D51A0 /* ShopInfoAddressView.m */,
 				45E7F7D41B2FE8C0007D51A0 /* ShopInfoAddressView.xib */,
@@ -8056,6 +8064,7 @@
 				45E7FE991B2FE8C2007D51A0 /* ProfileFavoriteShopCell.xib in Resources */,
 				45E7006D1B2FE8C2007D51A0 /* Icon_check_grey_bg.png in Resources */,
 				FCFF56EF1AB6D5CD0076000E /* MainViewController.xib in Resources */,
+				457E095E1B312178007E8143 /* ShopInfoAddressCell.xib in Resources */,
 				45E700081B2FE8C2007D51A0 /* icon_signin_active@2x.png in Resources */,
 				45E7FE0E1B2FE8C2007D51A0 /* ShopInfoPaymentCell.xib in Resources */,
 				45E7FF391B2FE8C2007D51A0 /* icon_checkmark_green-01.png in Resources */,
@@ -8928,6 +8937,7 @@
 				45E7FB0F1B2FE8C2007D51A0 /* UserAuthentificationManager.m in Sources */,
 				45E7FC031B2FE8C2007D51A0 /* Track.m in Sources */,
 				45E7FB001B2FE8C2007D51A0 /* NSDictionaryCategory.m in Sources */,
+				457E095D1B312178007E8143 /* ShopInfoAddressCell.m in Sources */,
 				45E7FCF51B2FE8C2007D51A0 /* HomeTabHeaderViewController.m in Sources */,
 				45E7FB461B2FE8C2007D51A0 /* TheOtherProductList.m in Sources */,
 				45E7FD2C1B2FE8C2007D51A0 /* InboxReviewViewController.m in Sources */,
@@ -9593,8 +9603,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -9612,7 +9622,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -9634,8 +9644,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9647,7 +9657,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -9660,8 +9670,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9687,7 +9697,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -9699,8 +9709,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9726,7 +9736,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

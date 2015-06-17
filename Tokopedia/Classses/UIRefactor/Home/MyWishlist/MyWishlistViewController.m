@@ -193,6 +193,33 @@ typedef enum TagRequest {
     [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    CGSize cellSize = CGSizeMake(0, 0);
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    
+    NSInteger cellCount;
+    float heightRatio;
+    float widhtRatio;
+    float inset;
+    
+    CGFloat screenWidth = screenRect.size.width;
+    
+    cellCount = 2;
+    heightRatio = 41;
+    widhtRatio = 29;
+    inset = 15;
+    
+    CGFloat cellWidth = screenWidth/cellCount-inset;
+    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    return cellSize;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    
+    return UIEdgeInsetsMake(10, 10, 10, 10);
+}
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -251,35 +278,34 @@ typedef enum TagRequest {
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     
-    
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[WishListObjectList class]];
     [listMapping addAttributeMappingsFromArray:@[
                                                  KTKPDSHOP_GOLD_STATUS,
-                                                 KTKPDSHOP_ID,
-                                                 KTKPDPRODUCT_RATING_POINT,
-                                                 KTKPDPRODUCT_DEPARTMENT_ID,
-                                                 KTKPDPRODUCT_ETALASE,
-                                                 KTKPDSHOP_FEATURED_SHOP,
-                                                 KTKPDSHOP_URL,
-                                                 KTKPDPRODUCT_STATUS,
+                                                 //KTKPDSHOP_ID,
+                                                 //KTKPDPRODUCT_RATING_POINT,
+                                                 //KTKPDPRODUCT_DEPARTMENT_ID,
+                                                 //KTKPDPRODUCT_ETALASE,
+                                                 //KTKPDSHOP_FEATURED_SHOP,
+                                                 //KTKPDSHOP_URL,
+                                                 //KTKPDPRODUCT_STATUS,
                                                  KTKPDPRODUCT_ID,
-                                                 KTKPDPRODUCT_IMAGE_FULL,
-                                                 KTKPDPRODUCT_CURRENCY_ID,
-                                                 KTKPDPRODUCT_RATING_DESC,
-                                                 KTKPDPRODUCT_CURRENCY,
-                                                 KTKPDPRODUCT_TALK_COUNT,
-                                                 KTKPDPRODUCT_PRICE_NO_IDR,
+                                                 //KTKPDPRODUCT_IMAGE_FULL,
+                                                 //KTKPDPRODUCT_CURRENCY_ID,
+                                                 //KTKPDPRODUCT_RATING_DESC,
+                                                 //KTKPDPRODUCT_CURRENCY,
+                                                 //KTKPDPRODUCT_TALK_COUNT,
+                                                 //KTKPDPRODUCT_PRICE_NO_IDR,
                                                  KTKPDPRODUCT_IMAGE,
                                                  KTKPDPRODUCT_PRICE,
-                                                 KTKPDPRODUCT_SOLD_COUNT,
-                                                 KTKPDPRODUCT_RETURNABLE,
+                                                 //KTKPDPRODUCT_SOLD_COUNT,
+                                                 //KTKPDPRODUCT_RETURNABLE,
                                                  KTKPDSHOP_LOCATION,
-                                                 KTKPDPRODUCT_NORMAL_PRICE,
-                                                 KTKPDPRODUCT_IMAGE_300,
+                                                 //KTKPDPRODUCT_NORMAL_PRICE,
+                                                 //KTKPDPRODUCT_IMAGE_300,
                                                  KTKPDSHOP_NAME,
-                                                 KTKPDPRODUCT_REVIEW_COUNT,
-                                                 KTKPDSHOP_IS_OWNER,
-                                                 KTKPDPRODUCT_URL,
+                                                 //KTKPDPRODUCT_REVIEW_COUNT,
+                                                 //KTKPDSHOP_IS_OWNER,
+                                                 //KTKPDPRODUCT_URL,
                                                  KTKPDPRODUCT_NAME
                                                  ]];
     

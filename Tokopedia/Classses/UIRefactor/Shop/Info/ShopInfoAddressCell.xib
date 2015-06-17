@@ -19,14 +19,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShopInfoAddressCellIdentifier" rowHeight="190" id="KGk-i7-Jjw" customClass="ShopInfoAddressCell">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShopInfoAddressCellIdentifier" rowHeight="190" id="KGk-i7-Jjw" customClass="ShopInfoAddressCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27q-hN-z1e" customClass="ShopInfoAddressView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27q-hN-z1e">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40K-2T-amk">
@@ -117,16 +117,16 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IW8-35-QUq" userLabel="Horizontal Border">
-                                <rect key="frame" x="15" y="187" width="305" height="1"/>
+                                <rect key="frame" x="15" y="189" width="305" height="1"/>
                                 <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="2IX-AB-Ohd"/>
-                                    <constraint firstAttribute="width" constant="305" id="Uax-XL-gQ1"/>
+                                    <constraint firstAttribute="height" constant="1" id="aSx-E5-wmk"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="IW8-35-QUq" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="15" id="6SL-no-5vj"/>
                             <constraint firstItem="K4A-ds-mJb" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="18" id="6bM-gV-gjd"/>
                             <constraint firstItem="d0X-JU-CTL" firstAttribute="leading" secondItem="zjM-ev-n9G" secondAttribute="trailing" constant="9" id="6kG-F0-8F0"/>
                             <constraint firstItem="zjM-ev-n9G" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="18" id="9HC-ye-Y87"/>
@@ -137,30 +137,19 @@
                             <constraint firstItem="Q80-Cv-PRu" firstAttribute="top" secondItem="d0X-JU-CTL" secondAttribute="bottom" constant="4" id="Mq8-XS-Xnc"/>
                             <constraint firstItem="jQH-M4-SNi" firstAttribute="top" secondItem="b3V-Iz-aCD" secondAttribute="bottom" constant="7" id="PN0-fz-Dd0"/>
                             <constraint firstItem="RpE-lW-1yW" firstAttribute="top" secondItem="b3V-Iz-aCD" secondAttribute="bottom" constant="6" id="QgM-Ah-RO3"/>
+                            <constraint firstAttribute="trailing" secondItem="IW8-35-QUq" secondAttribute="trailing" id="TzF-jC-yVV"/>
                             <constraint firstItem="d0X-JU-CTL" firstAttribute="top" secondItem="RpE-lW-1yW" secondAttribute="bottom" constant="4" id="U7W-zk-To0"/>
                             <constraint firstItem="RdN-bP-fPz" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="18" id="U87-cO-y4F"/>
                             <constraint firstItem="jQH-M4-SNi" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="18" id="Zyu-Hw-XuH"/>
                             <constraint firstItem="K4A-ds-mJb" firstAttribute="top" secondItem="RdN-bP-fPz" secondAttribute="bottom" constant="6" id="cxZ-Jq-v4u"/>
                             <constraint firstItem="b3V-Iz-aCD" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="18" id="e2j-ph-MQ3"/>
                             <constraint firstItem="RdN-bP-fPz" firstAttribute="top" secondItem="40K-2T-amk" secondAttribute="bottom" constant="5" id="fql-DP-UwX"/>
+                            <constraint firstAttribute="bottom" secondItem="IW8-35-QUq" secondAttribute="bottom" id="gyZ-9e-VVf"/>
                             <constraint firstItem="40K-2T-amk" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="18" id="hTl-Sv-UYK"/>
-                            <constraint firstItem="IW8-35-QUq" firstAttribute="top" secondItem="Q80-Cv-PRu" secondAttribute="bottom" constant="7" id="iZv-aX-qfY"/>
-                            <constraint firstItem="IW8-35-QUq" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="15" id="s40-B7-vA5"/>
                             <constraint firstItem="b3V-Iz-aCD" firstAttribute="top" secondItem="KNn-ve-qrA" secondAttribute="bottom" constant="5" id="tPb-uP-OfU"/>
                             <constraint firstItem="KNn-ve-qrA" firstAttribute="leading" secondItem="27q-hN-z1e" secondAttribute="leading" constant="18" id="xEc-Vb-vKR"/>
                             <constraint firstItem="zjM-ev-n9G" firstAttribute="top" secondItem="jQH-M4-SNi" secondAttribute="bottom" constant="6" id="yZk-F6-OQk"/>
                         </constraints>
-                        <connections>
-                            <outlet property="horizontalBorder" destination="IW8-35-QUq" id="w8k-nr-R39"/>
-                            <outlet property="labelDistric" destination="RdN-bP-fPz" id="jbD-sS-eLY"/>
-                            <outlet property="labelcity" destination="K4A-ds-mJb" id="ZZy-3t-3kK"/>
-                            <outlet property="labelemail" destination="RpE-lW-1yW" id="4l1-oT-dPz"/>
-                            <outlet property="labelfax" destination="Q80-Cv-PRu" id="vQ9-Jm-1xq"/>
-                            <outlet property="labelname" destination="40K-2T-amk" id="0Ne-m6-05r"/>
-                            <outlet property="labelphone" destination="d0X-JU-CTL" id="kZ0-MY-gGu"/>
-                            <outlet property="labelpostal" destination="b3V-Iz-aCD" id="NBm-re-mTE"/>
-                            <outlet property="labelprov" destination="KNn-ve-qrA" id="Gtz-Dv-QjO"/>
-                        </connections>
                     </view>
                 </subviews>
                 <constraints>
@@ -170,6 +159,16 @@
                     <constraint firstItem="27q-hN-z1e" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="u0X-XZ-NPc"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="labelDistric" destination="K4A-ds-mJb" id="zRv-5S-SMg"/>
+                <outlet property="labelcity" destination="RdN-bP-fPz" id="cV7-Qd-Qc3"/>
+                <outlet property="labelemail" destination="RpE-lW-1yW" id="g2r-O5-uSQ"/>
+                <outlet property="labelfax" destination="Q80-Cv-PRu" id="fMX-PF-w8X"/>
+                <outlet property="labelname" destination="40K-2T-amk" id="Lhx-0c-F5M"/>
+                <outlet property="labelphone" destination="d0X-JU-CTL" id="ehj-Iu-5EH"/>
+                <outlet property="labelpostal" destination="b3V-Iz-aCD" id="Jil-Ft-aAW"/>
+                <outlet property="labelprov" destination="KNn-ve-qrA" id="KVB-d7-taL"/>
+            </connections>
             <point key="canvasLocation" x="202" y="286"/>
         </tableViewCell>
     </objects>
