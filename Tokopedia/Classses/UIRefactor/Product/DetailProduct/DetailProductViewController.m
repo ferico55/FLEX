@@ -90,6 +90,7 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
+LabelMenuDelegate,
 TTTAttributedLabelDelegate,
 GalleryViewControllerDelegate,
 UITableViewDelegate,
@@ -1043,11 +1044,6 @@ UIAlertViewDelegate
         [menu setTargetRect:lblDesc.frame inView:lblDesc.superview];
         [menu setMenuVisible:YES animated:YES];
     }
-}
-
-- (void)copy:(id)sender
-{
-    [UIPasteboard generalPasteboard].string = lblDescription.text;
 }
 
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
@@ -2702,5 +2698,12 @@ UIAlertViewDelegate
         webViewController.strContentHTML = [NSString stringWithFormat:@"<font face='Gotham Book' size='2'>%@</font>", notesDetail.notes_content];
         [self.navigationController pushViewController:webViewController animated:YES];
     }
+}
+
+
+#pragma mark - LabelMenu Delegate
+- (void)duplicate:(int)tag
+{
+    [UIPasteboard generalPasteboard].string = lblDescription.text;
 }
 @end
