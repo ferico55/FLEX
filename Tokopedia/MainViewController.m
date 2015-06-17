@@ -531,6 +531,8 @@ typedef enum TagRequest {
 }
 
 - (void)doApplicationLogout {
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
     _logingOutAlertView = [[UIAlertView alloc] initWithTitle:@"Tunggu sebentar.."
                                                      message:nil

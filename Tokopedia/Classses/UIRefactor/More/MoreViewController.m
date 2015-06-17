@@ -52,6 +52,7 @@
 #import "InboxResolutionCenterTabViewController.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
+
 #import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
@@ -69,6 +70,7 @@
     BOOL _isNoDataDeposit, hasLoadViewWillAppear;
     NotificationManager *_notifManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
+    NSTimer *_requestTimer;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -785,6 +787,8 @@
                                                                                     path:API_DEPOSIT_PATH
                                                                               parameters:[param encrypt]];
     
+    [_requestTimer invalidate];
+    _requestTimer = nil;
     [_depositRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -792,6 +796,24 @@
     }];
     
     [_operationQueue addOperation:_depositRequest];
+    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:16.0 target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
+}
+
+- (void)requestTimeout {
+    [self requestCancel];
+    if(_depositRequestCount < kTKPDREQUESTCOUNTMAX) {
+        [self updateSaldoTokopedia:nil];
+    }
+}
+
+- (void)requestCancel {
+    [_depositRequest cancel];
+    _depositRequest = nil;
+    
+    [_depositObjectManager.operationQueue cancelAllOperations];
+    _depositObjectManager = nil;
+    
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
