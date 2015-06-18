@@ -40,9 +40,10 @@
     NSMutableDictionary *_paging;
     
     /** url to the next page **/
-    NSString *_urinext;
+    NSString *_urinext, *strUserID;
     
     BOOL _isnodata;
+    NSObject *objLoadData;
     
     BOOL _isrefreshview;
     NSMutableArray *_lastStoredArray;
@@ -58,7 +59,6 @@
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
     NoResultView *_noResult;
-    NSString *strUserID;
 }
 
 #pragma mark - Factory Method
@@ -82,8 +82,8 @@
     
     /** create new **/
     _product = [NSMutableArray new];
-    _lastStoredArray = [NSMutableArray new];
-    _refreshedArray = [NSMutableArray new];
+//    _lastStoredArray = [NSMutableArray new];
+//    _refreshedArray = [NSMutableArray new];
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
@@ -123,10 +123,10 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
-    
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [_networkManager doRequest];
+            objLoadData = [NSObject new];
         }
     }
 }
@@ -146,21 +146,32 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     self.screenName = @"Home - History Product";
-    
+   
     
     //Check login with different id
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
+    
+    if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+        _product = [NSMutableArray new];
+        _isnodata = YES;
+        _urinext = nil;
+        _page = 1;
+    }
 
-    strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-    _product = [NSMutableArray new];
-    _lastStoredArray = [NSMutableArray new];
-    _refreshedArray = [NSMutableArray new];
-    _urinext = nil;
-    _page = 1;
-    _isrefreshview = NO;
-    [_networkManager doRequest];
+    
+    
+    if(objLoadData == nil) {
+        _urinext = nil;
+        _page = 1;
+        _isrefreshview = NO;
+        [_networkManager doRequest];
+    }
+    else {
+        objLoadData = nil;
+    }
 }
 
 - (void) setTableInset {

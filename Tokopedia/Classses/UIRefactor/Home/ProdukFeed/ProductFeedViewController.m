@@ -55,10 +55,10 @@ typedef enum TagRequest {
     
     //NSMutableArray *_hotlist;
     NSMutableDictionary *_paging;
-    NSString *strUserID;
+//    NSString *strUserID;
     
     /** url to the next page **/
-    NSString *_urinext;
+    NSString *_urinext, *strUserID;
     
     BOOL _isnodata;
     
@@ -145,11 +145,27 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     self.screenName = @"Home - Product Feed";
+    BOOL loadData = YES;
+    
+    //Check Difference userID
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    
+    if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+        _isnodata = YES;
+        _page = 1;
+        _urinext = nil;
+        _product = [NSMutableArray new];
+    }
+    
+    
     
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+            loadData = NO;
             [_networkManager doRequest];
         }
     }
@@ -159,18 +175,12 @@ typedef enum TagRequest {
                                                                          target:self
                                                                          action:nil];
     
-    //Check Difference userID
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    _auth = [_auth mutableCopy];
-    
-
-    strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-    _page = 1;
-    _product = [NSMutableArray new];
-    _isrefreshview = NO;
-    _urinext = nil;
-    [_networkManager doRequest];
+    if(loadData) {
+        _page = 1;
+        _isrefreshview = NO;
+        _urinext = nil;
+        [_networkManager doRequest];
+    }
     
     self.navigationItem.backBarButtonItem = backBarButtonItem;
 }

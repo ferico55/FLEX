@@ -480,6 +480,8 @@
 		8563A1481B1EEFE600DFF001 /* LabelMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A1471B1EEFE600DFF001 /* LabelMenu.m */; };
 		8563A14B1B1EFBAC00DFF001 /* TextMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A14A1B1EFBAC00DFF001 /* TextMenu.m */; };
 		85A53C971B1C880D00D626B7 /* DetailProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */; };
+		85C21B2D1B32AB0C00A68682 /* HomeTabHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C21B2B1B32AB0C00A68682 /* HomeTabHeaderViewController.m */; };
+		85C21B2E1B32AB0C00A68682 /* HomeTabHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C21B2C1B32AB0C00A68682 /* HomeTabHeaderViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1008,8 +1010,6 @@
 		FC7642741B15E2830034A8F1 /* FavoritedShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763B1F1B15E2790034A8F1 /* FavoritedShopViewController.xib */; };
 		FC7642751B15E2830034A8F1 /* HistoryProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763B221B15E2790034A8F1 /* HistoryProductViewController.m */; };
 		FC7642761B15E2830034A8F1 /* HistoryProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763B231B15E2790034A8F1 /* HistoryProductViewController.xib */; };
-		FC7642771B15E2830034A8F1 /* HomeTabHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763B261B15E2790034A8F1 /* HomeTabHeaderViewController.m */; };
-		FC7642781B15E2830034A8F1 /* HomeTabHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763B271B15E2790034A8F1 /* HomeTabHeaderViewController.xib */; };
 		FC7642791B15E2830034A8F1 /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763B291B15E2790034A8F1 /* HomeTabViewController.m */; };
 		FC76427A1B15E2830034A8F1 /* HomeTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763B2A1B15E2790034A8F1 /* HomeTabViewController.xib */; };
 		FC76427B1B15E2830034A8F1 /* ProductFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763B2D1B15E2790034A8F1 /* ProductFeedViewController.m */; };
@@ -1939,6 +1939,9 @@
 		8563A1491B1EFBAC00DFF001 /* TextMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMenu.h; sourceTree = "<group>"; };
 		8563A14A1B1EFBAC00DFF001 /* TextMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMenu.m; sourceTree = "<group>"; };
 		85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductViewController.xib; sourceTree = "<group>"; };
+		85C21B2A1B32AB0C00A68682 /* HomeTabHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabHeaderViewController.h; sourceTree = "<group>"; };
+		85C21B2B1B32AB0C00A68682 /* HomeTabHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabHeaderViewController.m; sourceTree = "<group>"; };
+		85C21B2C1B32AB0C00A68682 /* HomeTabHeaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTabHeaderViewController.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -2922,9 +2925,6 @@
 		FC763B211B15E2790034A8F1 /* HistoryProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryProductViewController.h; sourceTree = "<group>"; };
 		FC763B221B15E2790034A8F1 /* HistoryProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryProductViewController.m; sourceTree = "<group>"; };
 		FC763B231B15E2790034A8F1 /* HistoryProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryProductViewController.xib; sourceTree = "<group>"; };
-		FC763B251B15E2790034A8F1 /* HomeTabHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabHeaderViewController.h; sourceTree = "<group>"; };
-		FC763B261B15E2790034A8F1 /* HomeTabHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabHeaderViewController.m; sourceTree = "<group>"; };
-		FC763B271B15E2790034A8F1 /* HomeTabHeaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTabHeaderViewController.xib; sourceTree = "<group>"; };
 		FC763B281B15E2790034A8F1 /* HomeTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabViewController.h; sourceTree = "<group>"; };
 		FC763B291B15E2790034A8F1 /* HomeTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabViewController.m; sourceTree = "<group>"; };
 		FC763B2A1B15E2790034A8F1 /* HomeTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTabViewController.xib; sourceTree = "<group>"; };
@@ -6377,12 +6377,12 @@
 		FC763B241B15E2790034A8F1 /* HomeTabController */ = {
 			isa = PBXGroup;
 			children = (
-				FC763B251B15E2790034A8F1 /* HomeTabHeaderViewController.h */,
-				FC763B261B15E2790034A8F1 /* HomeTabHeaderViewController.m */,
-				FC763B271B15E2790034A8F1 /* HomeTabHeaderViewController.xib */,
 				FC763B281B15E2790034A8F1 /* HomeTabViewController.h */,
 				FC763B291B15E2790034A8F1 /* HomeTabViewController.m */,
 				FC763B2A1B15E2790034A8F1 /* HomeTabViewController.xib */,
+				85C21B2A1B32AB0C00A68682 /* HomeTabHeaderViewController.h */,
+				85C21B2B1B32AB0C00A68682 /* HomeTabHeaderViewController.m */,
+				85C21B2C1B32AB0C00A68682 /* HomeTabHeaderViewController.xib */,
 			);
 			path = HomeTabController;
 			sourceTree = "<group>";
@@ -8274,6 +8274,7 @@
 				FC7642871B15E2830034A8F1 /* TKPDTabHomeViewController.xib in Resources */,
 				7A1D2DC01B235E55002F9341 /* icon_6.png in Resources */,
 				7A1D2DFD1B235E55002F9341 /* icon_12@3x.png in Resources */,
+				85C21B2E1B32AB0C00A68682 /* HomeTabHeaderViewController.xib in Resources */,
 				FC7642201B15E2820034A8F1 /* CategoryMenuViewController.xib in Resources */,
 				FC7644201B15E2830034A8F1 /* Lato-Regular.ttf in Resources */,
 				7A1D2EEF1B235E55002F9341 /* launch_image@2x.png in Resources */,
@@ -8449,7 +8450,6 @@
 				7A1D2E591B235E55002F9341 /* icon_love.png in Resources */,
 				7A1D2D9A1B235E55002F9341 /* button_white.png in Resources */,
 				FC76425A1B15E2830034A8F1 /* GeneralList1GestureCell.xib in Resources */,
-				FC7642781B15E2830034A8F1 /* HomeTabHeaderViewController.xib in Resources */,
 				FC7642CC1B15E2830034A8F1 /* MyShopNoteDetailViewController.xib in Resources */,
 				7A1D2E0E1B235E55002F9341 /* icon_8@3x.png in Resources */,
 				7A1D2F351B235E55002F9341 /* icon_category@2x.png in Resources */,
@@ -9315,7 +9315,6 @@
 				FC7640D51B15E2820034A8F1 /* FavoriteShopActionResult.m in Sources */,
 				FC7640D71B15E2820034A8F1 /* GeneralActionResult.m in Sources */,
 				FC7641151B15E2820034A8F1 /* Paging.m in Sources */,
-				FC7642771B15E2830034A8F1 /* HomeTabHeaderViewController.m in Sources */,
 				FC7642CF1B15E2830034A8F1 /* MyShopPaymentCell.m in Sources */,
 				FC76409E1B15E2820034A8F1 /* DepositResult.m in Sources */,
 				FC7642FC1B15E2830034A8F1 /* ProductEditWholesaleViewController.m in Sources */,
@@ -9465,6 +9464,7 @@
 				FC7641FF1B15E2820034A8F1 /* CameraCollectionCell.m in Sources */,
 				FC7642401B15E2830034A8F1 /* RateView.m in Sources */,
 				FC7641851B15E2820034A8F1 /* ShippingInfoShipments.m in Sources */,
+				85C21B2D1B32AB0C00A68682 /* HomeTabHeaderViewController.m in Sources */,
 				FC7641B41B15E2820034A8F1 /* TxOrderConfirmed.m in Sources */,
 				FC7641BC1B15E2820034A8F1 /* MethodList.m in Sources */,
 				FC7641CF1B15E2820034A8F1 /* GenerateHostResult.m in Sources */,

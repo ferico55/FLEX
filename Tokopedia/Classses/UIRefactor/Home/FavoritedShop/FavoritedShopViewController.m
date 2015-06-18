@@ -27,7 +27,7 @@
 {
     BOOL _isnodata;
     BOOL _isrefreshview;
-    NSString *strTempShopID;
+    NSString *strTempShopID, *strUserID;
     
     NSOperationQueue *_operationQueue;
     NSMutableArray *_shop;
@@ -40,11 +40,11 @@
     BOOL is_already_updated;
     
     LoadingView *loadingView;
+    NSObject *objLoadData;
     
     /** url to the next page **/
     NSString *_urinext;
     NSTimer *_timer;
-    NSString *strUserID;
     
     UIRefreshControl *_refreshControl;
     __weak RKObjectManager *_objectmanager;
@@ -111,6 +111,7 @@
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self request];
+            objLoadData = [NSObject new];
         }
     }
     
@@ -120,22 +121,36 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.screenName = @"Home - Favorite Shop";
+
     
-    //Check Difference userID
+    //Check login with different id
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
-    self.screenName = @"Home - Favorite Shop";
+    
+    if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+        _shop = [NSMutableArray new];
+        _goldshop = [NSMutableArray new];
+        _shopdictionary = [NSMutableDictionary new];
+        _isnodata = YES;
+        _urinext = nil;
+        _page = 1;
+    }
+    
     
 
-    strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-    _page = 1;
-    _shop = [NSMutableArray new];
-    _goldshop = [NSMutableArray new];
-    _isrefreshview = NO;
-    _urinext = nil;
-    [self configureRestKit];
-    [self request];
+    if(objLoadData == nil) {
+        _page = 1;
+        _isrefreshview = NO;
+        _urinext = nil;
+        [self configureRestKit];
+        [self request];
+    }
+    else {
+        objLoadData = nil;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

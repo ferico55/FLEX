@@ -293,7 +293,7 @@
             
             if([list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] || [list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
                 if([list.review_message isEqualToString:@"0"]) {
-                    ((GeneralReviewCell *)cell).commentlabel.text = @"produk ini tidak aktif" ;
+                    ((GeneralReviewCell *)cell).commentlabel.text = @"Produk ini tidak aktif" ;
                     ((GeneralReviewCell*)cell).delegate = nil;
                     ((GeneralReviewCell*)cell).delegateReview = self;
                 }
