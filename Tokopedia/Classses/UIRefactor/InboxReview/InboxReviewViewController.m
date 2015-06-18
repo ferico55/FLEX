@@ -222,6 +222,7 @@
         if (cell == nil) {
             cell = [GeneralReviewCell newcell];
             ((GeneralReviewCell*)cell).delegate = self;
+            ((GeneralReviewCell*)cell).delegateReview = self;
         }
         
         if (_reviews.count > indexPath.row) {
@@ -292,11 +293,13 @@
             
             if([list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] || [list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
                 if([list.review_message isEqualToString:@"0"]) {
-                    ((GeneralReviewCell *)cell).commentlabel.text = @"Produk ini tidak dapat diulas" ;
+                    ((GeneralReviewCell *)cell).commentlabel.text = @"";
                     ((GeneralReviewCell*)cell).delegate = nil;
+                    ((GeneralReviewCell*)cell).delegateReview = self;
                 }
             } else {
                 ((GeneralReviewCell*)cell).delegate = self;
+                ((GeneralReviewCell*)cell).delegateReview = self;
             }
             
             if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {

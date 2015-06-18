@@ -74,11 +74,15 @@
 }
 
 #pragma mark - Lifecycle
+- (void)viewDidLayoutSubviews
+{
+    _scrollView.contentSize = CGSizeMake((self.view.frame.size.width/3)*6, self.view.frame.size.height);
+
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNotificationCenter];
-    
-    _scrollView.contentSize = CGSizeMake((self.view.frame.size.width/3)*6, self.view.frame.size.height);
     
     [_scrollView setShowsHorizontalScrollIndicator:NO];
     _scrollView.delegate = self;

@@ -77,7 +77,7 @@
 
                 ReviewFormViewController *vc = [ReviewFormViewController new];
                 
-                UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+                UINavigationController *nav = [_delegateReview navigationController:self withindexpath:indexpath];
                 vc.data = _data;
                 vc.reviewIndex = indexpath.row;
                 [nav.navigationController pushViewController:vc animated:YES];

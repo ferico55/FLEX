@@ -518,7 +518,7 @@
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
     //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
