@@ -101,6 +101,11 @@
 {    
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = _facebookLoginButton.frame;
+    frame.size.width = screenRect.size.width-30;
+    _facebookLoginButton.frame = frame;
+    
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
