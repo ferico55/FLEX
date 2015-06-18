@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		45553EDF1B32C75E0032137C /* HotlistCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45553EDB1B32C75E0032137C /* HotlistCollectionCell.m */; };
+		45553EE01B32C75E0032137C /* HotlistCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45553EDC1B32C75E0032137C /* HotlistCollectionCell.xib */; };
+		45553EE11B32C75E0032137C /* HotlistViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45553EDE1B32C75E0032137C /* HotlistViewModel.m */; };
 		457E095D1B312178007E8143 /* ShopInfoAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457E095B1B312178007E8143 /* ShopInfoAddressCell.m */; };
 		457E095E1B312178007E8143 /* ShopInfoAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457E095C1B312178007E8143 /* ShopInfoAddressCell.xib */; };
 		45E700001B2FE8C2007D51A0 /* icon_more_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E7FA481B2FE8C1007D51A0 /* icon_more_active@2x.png */; };
@@ -1491,6 +1494,11 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		45553EDA1B32C75E0032137C /* HotlistCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistCollectionCell.h; sourceTree = "<group>"; };
+		45553EDB1B32C75E0032137C /* HotlistCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistCollectionCell.m; sourceTree = "<group>"; };
+		45553EDC1B32C75E0032137C /* HotlistCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistCollectionCell.xib; sourceTree = "<group>"; };
+		45553EDD1B32C75E0032137C /* HotlistViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistViewModel.h; sourceTree = "<group>"; };
+		45553EDE1B32C75E0032137C /* HotlistViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistViewModel.m; sourceTree = "<group>"; };
 		457E095A1B312178007E8143 /* ShopInfoAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoAddressCell.h; sourceTree = "<group>"; };
 		457E095B1B312178007E8143 /* ShopInfoAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoAddressCell.m; sourceTree = "<group>"; };
 		457E095C1B312178007E8143 /* ShopInfoAddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoAddressCell.xib; sourceTree = "<group>"; };
@@ -5770,6 +5778,11 @@
 		45E7F5E91B2FE8C0007D51A0 /* Hotlist */ = {
 			isa = PBXGroup;
 			children = (
+				45553EDA1B32C75E0032137C /* HotlistCollectionCell.h */,
+				45553EDB1B32C75E0032137C /* HotlistCollectionCell.m */,
+				45553EDC1B32C75E0032137C /* HotlistCollectionCell.xib */,
+				45553EDD1B32C75E0032137C /* HotlistViewModel.h */,
+				45553EDE1B32C75E0032137C /* HotlistViewModel.m */,
 				45E7F5EA1B2FE8C0007D51A0 /* HotlistCell.h */,
 				45E7F5EB1B2FE8C0007D51A0 /* HotlistCell.m */,
 				45E7F5EC1B2FE8C0007D51A0 /* HotlistCell.xib */,
@@ -8680,6 +8693,7 @@
 				45E7FD0E1B2FE8C2007D51A0 /* InboxMessageDetailCell.xib in Resources */,
 				45E7FED61B2FE8C2007D51A0 /* icon_4.png in Resources */,
 				45E7FE1C1B2FE8C2007D51A0 /* ShopSettingViewController.xib in Resources */,
+				45553EE01B32C75E0032137C /* HotlistCollectionCell.xib in Resources */,
 				45E7FFB51B2FE8C2007D51A0 /* icon_shop_favorite@2x.png in Resources */,
 				45E7FD6B1B2FE8C2007D51A0 /* ProductGalleryViewController.xib in Resources */,
 				45E7FCC61B2FE8C2007D51A0 /* DepositFormViewController.xib in Resources */,
@@ -8926,6 +8940,7 @@
 				45E7FE7C1B2FE8C2007D51A0 /* TxOrderConfirmationViewController.m in Sources */,
 				45E7FE421B2FE8C2007D51A0 /* TokopediaCacheManager.m in Sources */,
 				45E7FB1B1B2FE8C2007D51A0 /* DepositFormBankAccountList.m in Sources */,
+				45553EE11B32C75E0032137C /* HotlistViewModel.m in Sources */,
 				45E7FC2B1B2FE8C2007D51A0 /* TxEMoneyResult.m in Sources */,
 				45E7FC351B2FE8C2007D51A0 /* TxOrderConfirmedDetailPayment.m in Sources */,
 				45E7FB491B2FE8C2007D51A0 /* Favorited.m in Sources */,
@@ -9320,6 +9335,7 @@
 				45E7FDF01B2FE8C2007D51A0 /* SettingPrivacyViewController.m in Sources */,
 				45E7FB561B2FE8C2007D51A0 /* DepartmentChild.m in Sources */,
 				45E7FBB41B2FE8C2007D51A0 /* PrivacyFormPrivacy.m in Sources */,
+				45553EDF1B32C75E0032137C /* HotlistCollectionCell.m in Sources */,
 				45E7FD8C1B2FE8C2007D51A0 /* ReputationDetailViewController.m in Sources */,
 				45E7FB0B1B2FE8C2007D51A0 /* UITextView+UITextView_Placeholder.m in Sources */,
 				45E7FCA31B2FE8C2007D51A0 /* TKPDTabInboxMessageNavigationController.m in Sources */,

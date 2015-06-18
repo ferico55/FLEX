@@ -14,4 +14,9 @@
     // Initialization code
 }
 
+
+- (IBAction)tapRetryButton:(id)sender {
+    [_delegate pressRetryButton];
+}
+
 @end
