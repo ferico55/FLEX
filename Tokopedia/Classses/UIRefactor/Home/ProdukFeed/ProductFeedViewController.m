@@ -167,7 +167,6 @@ typedef enum TagRequest {
 
     strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
     _page = 1;
-    _isnodata = YES;
     _product = [NSMutableArray new];
     _isrefreshview = NO;
     _urinext = nil;

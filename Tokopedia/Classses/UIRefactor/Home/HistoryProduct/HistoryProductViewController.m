@@ -159,7 +159,6 @@
     _refreshedArray = [NSMutableArray new];
     _urinext = nil;
     _page = 1;
-    _isnodata = YES;
     _isrefreshview = NO;
     [_networkManager doRequest];
 }

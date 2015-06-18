@@ -130,7 +130,6 @@
 
     strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
     _page = 1;
-    _isnodata = YES;
     _shop = [NSMutableArray new];
     _goldshop = [NSMutableArray new];
     _isrefreshview = NO;
