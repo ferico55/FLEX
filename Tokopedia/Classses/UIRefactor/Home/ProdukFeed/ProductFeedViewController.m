@@ -61,6 +61,7 @@ typedef enum TagRequest {
     /** url to the next page **/
     NSString *_urinext;
     
+    
     BOOL _isnodata;
     
     BOOL _isrefreshview;
