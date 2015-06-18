@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "InboxTicketList.h"
+#import "InboxTicketDetail.h"
 
 @protocol InboxTicketReplyDelegate <NSObject>
 
-- (void)successReplyInboxTicket;
+- (void)successReplyInboxTicket:(InboxTicketDetail *)reply;
 
 @end
 

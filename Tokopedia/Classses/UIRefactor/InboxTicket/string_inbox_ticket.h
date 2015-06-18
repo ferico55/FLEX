@@ -11,6 +11,7 @@
 
 #define API_PATH                    @"inbox-ticket.pl"
 #define API_PATH_ACTION             @"action/ticket.pl"
+#define API_PATH_ACTION_UPLOAD_IMAGE    @"action/upload-image-helper.pl"
 #define API_ACTION_KEY              @"action"
 #define API_GET_INBOX_TICKET        @"get_inbox_ticket"
 #define API_GET_INBOX_TICKET_DETAIL @"get_inbox_ticket_detail"
@@ -96,5 +97,8 @@
 #define API_TICKET_REPLY_IS_SUCCESS_KEY         @"is_success"
 #define API_TICKET_REPLY_POST_KEY               @"post_key"
 #define API_TICKET_REPLY_FILE_UPLOADED_KEY      @"file_uploaded"
+
+#define API_UPLOAD_CONTACT_IMAGE_KEY            @"upload_contact_image"
+#define API_FILE_TO_UPLOAD_KEY  @"fileToUpload"
 
 #endif

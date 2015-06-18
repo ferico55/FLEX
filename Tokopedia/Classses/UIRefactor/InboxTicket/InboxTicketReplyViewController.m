@@ -30,7 +30,8 @@
     TokopediaNetworkManagerDelegate,
     CameraAlbumListDelegate,
     CameraCollectionViewControllerDelegate,
-    GenerateHostDelegate
+    GenerateHostDelegate,
+    RequestUploadImageDelegate
 >
 {
     TokopediaNetworkManager *_firstStepNetworkManager;
@@ -38,15 +39,14 @@
     TokopediaNetworkManager *_thirdStepNetworkManager;
     GenerateHost *_generateHost;
 
-    NSString *_attachmentString;
     NSString *_serverID;
     NSString *_postKey;
     NSString *_fileUploaded;
     
-    BOOL _isRequestingValidation;
     BOOL _isRequestingUpload;
-    
-    NSMutableArray *_photos;
+
+    NSMutableArray *_uploadedPhotos;
+    NSMutableArray *_uploadedPhotosURL;
     
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
@@ -100,7 +100,8 @@
     _thirdStepNetworkManager.tagRequest = 3;
     _thirdStepNetworkManager.delegate = self;
     
-    _photos = [NSMutableArray new];
+    _uploadedPhotos = [NSMutableArray new];
+    _uploadedPhotosURL = [NSMutableArray new];
     
     [self.scrollView addSubview:_scrollViewContentView];
     self.scrollView.contentSize = CGSizeMake(self.scrollViewContentView.frame.size.width,
@@ -160,8 +161,9 @@
     
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.textView resignFirstResponder];
 }
 
 #pragma mark - Actions
@@ -243,12 +245,13 @@
 
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *dictionary;
+    NSString *attachmentString = [_uploadedPhotosURL componentsJoinedByString:@"~"];
     if (tag == 1) {
         dictionary = @{
                        API_ACTION_KEY                   : API_TICKET_REPLY_VALIDATION,
                        API_TICKET_REPLY_TICKET_ID_KEY   : self.inboxTicket.ticket_id,
                        API_TICKET_REPLY_MESSAGE_KEY     : self.textView.text,
-                       API_TICKET_REPLY_ATTACHMENT_STRING_KEY   : _attachmentString?:@"",
+                       API_TICKET_REPLY_ATTACHMENT_STRING_KEY   : attachmentString,
                        API_TICKET_REPLY_NEW_TICKET_STATUS_KEY   : @"1",
                        API_TICKET_REPLY_RATE_KEY        : @"",
                        API_TICKET_REPLY_SERVER_ID_KEY   : _serverID,
@@ -258,7 +261,7 @@
                        API_ACTION_KEY                   : API_TICKET_REPLY_PICTURE,
                        API_TICKET_REPLY_TICKET_ID_KEY   : self.inboxTicket.ticket_id,
                        API_TICKET_REPLY_MESSAGE_KEY     : self.textView.text?:@"",
-                       API_TICKET_REPLY_ATTACHMENT_STRING_KEY   : _attachmentString,
+                       API_TICKET_REPLY_ATTACHMENT_STRING_KEY   : attachmentString,
                        API_TICKET_REPLY_NEW_TICKET_STATUS_KEY   : @"1",
                        API_TICKET_REPLY_RATE_KEY        : @"",
                        API_TICKET_REPLY_SERVER_ID_KEY   : _serverID,
@@ -275,8 +278,11 @@
 }
 
 - (NSString *)getPath:(int)tag {
-    NSString *path = API_PATH_ACTION;
-    return path;
+    if (tag == 2) {
+        return API_PATH_ACTION_UPLOAD_IMAGE;
+    } else {
+        return API_PATH;
+    }
 }
 
 - (id)getObjectManager:(int)tag {
@@ -317,51 +323,53 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    if (tag == 1) {
-        _isRequestingValidation = YES;
-    } else if (tag == 2) {
-        _isRequestingUpload = YES;
-    }
+
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    ReplyInboxTicket *response = [mappingResult.dictionary objectForKey:@""];
+    ReplyInboxTicket *response = (ReplyInboxTicket *)[mappingResult.dictionary objectForKey:@""];
     if (response.message_error) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:response.message_error delegate:self];
         [alert show];
     } else {
+
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        NSDictionary *userData = [auth getUserLoginData];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd MM yyyy, HH:mm"];
+        
+        InboxTicketDetail *ticket = [InboxTicketDetail new];
+        ticket.ticket_detail_create_time_fmt = [dateFormatter stringFromDate:[NSDate new]];
+        ticket.ticket_detail_user_name = [userData objectForKey:@"full_name"];
+        ticket.ticket_detail_user_image = [userData objectForKey:@"user_image"];
+        ticket.ticket_detail_is_cs = @"0";
+        ticket.ticket_detail_message = self.textView.text;
+        
         if (tag == 1) {
-            _postKey = response.result.post_key;
-            _isRequestingValidation = NO;
-            
-            if (!_fileUploaded && _selectedImagesCameraController.count > 0 && !_isRequestingUpload) {
+            if (response.result.post_key) {
+
                 [_secondStepNetworkManager doRequest];
-            } else if (_postKey) {
-                [_thirdStepNetworkManager doRequest];
+                
+            } else {
+                if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
+                    [self.delegate successReplyInboxTicket:ticket];
+                }
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
-            
         } else if (tag == 2) {
-            _fileUploaded = response.result.file_uploaded;
-            _isRequestingUpload = NO;
-            
-            if (!_postKey && !_isRequestingValidation) {
-                [_firstStepNetworkManager doRequest];
-            } else if (_postKey && _fileUploaded) {
+            if (response.result.file_uploaded) {
+                _fileUploaded = response.result.file_uploaded;
                 [_thirdStepNetworkManager doRequest];
+            } else {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Error"] delegate:self];
+                [alert show];
             }
-            
         } else if (tag == 3) {
             if ([response.result.is_success boolValue]) {
-                if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket)]) {
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    [self.delegate successReplyInboxTicket];
-                } else {
-                    if (response.message_error) {
-                        StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:response.message_error
-                                                                                           delegate:self];
-                        [alertView show];
-                    }
-                }
+                if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
+                    [self.delegate successReplyInboxTicket:ticket];
+                }   
             }
         }
     }
@@ -385,6 +393,9 @@
     _selectedImagesCameraController = [selectedImages mutableCopy];
     _selectedIndexPathCameraController = [selectedIndexPaths mutableCopy];
     
+    [_uploadedPhotos removeAllObjects];
+    [_uploadedPhotosURL removeAllObjects];
+    
     NSInteger maxIndex = selectedImages.count;
     for (int i = 0; i < self.scrollViewContentView.subviews.count; i++) {
         UIImageView *imageView = (UIImageView *)[self.scrollViewContentView viewWithTag:i+1];
@@ -392,10 +403,46 @@
             NSDictionary *photo = [[selectedImages objectAtIndex:i] objectForKey:@"photo"];
             UIImage *image = [photo objectForKey:@"photo"];
             imageView.image = image;
+            imageView.alpha = 0.5;
+            
+            [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : [selectedImages objectAtIndex:i]}];
         } else {
             imageView.image = nil;
         }
     }
+}
+
+- (void)requestUploadImage:(NSDictionary *)object {
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    uploadImage.imageObject = object;
+    uploadImage.delegate = self;
+    uploadImage.generateHost = _generateHost;
+    uploadImage.action = API_UPLOAD_CONTACT_IMAGE_KEY;
+    uploadImage.fieldName = API_FILE_TO_UPLOAD_KEY;
+    [uploadImage configureRestkitUploadPhoto];
+    [uploadImage requestActionUploadPhoto];
+}
+
+#pragma mark - Request upload photo delegate
+
+-(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
+    NSDictionary *data = [object objectForKey:DATA_SELECTED_PHOTO_KEY];
+    NSDictionary *photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIImage *image = [photo objectForKey:@"photo"];
+    if (![_uploadedPhotos containsObject:image]) {
+        [_uploadedPhotos addObject:image];
+        [_uploadedPhotosURL addObject:uploadImage.result.file_path];
+    }
+    
+    for (UIImageView *imageView in self.scrollViewContentView.subviews) {
+        if ([imageView.image isEqual:image]) {
+            imageView.alpha = 1;
+        }
+    }
+}
+
+-(void)failedUploadObject:(id)object {
+    
 }
 
 #pragma mark Request Generate Host

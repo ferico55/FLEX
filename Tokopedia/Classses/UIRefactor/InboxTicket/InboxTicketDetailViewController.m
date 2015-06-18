@@ -22,7 +22,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    InboxTicketReplyDelegate,
+    ResolutionCenterDetailCellDelegate
 >
 {
     NSString *_nextPageUri;
@@ -30,7 +32,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     NoResultView *_noResult;
     
     TokopediaNetworkManager *_networkManager;
-    NSArray *_messages;
+    NSMutableArray *_messages;
     
     RKObjectManager *_objectManager;
 }
@@ -72,13 +74,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:emptyView];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
-    _messages = @[];
+    _messages = [NSMutableArray new];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     [_networkManager doRequest];
     
-    self.tableView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(5, 0, 5, 0);
     
     self.replyButton.layer.cornerRadius = 2;
 }
@@ -263,6 +265,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     InboxTicketReplyViewController *controller = [InboxTicketReplyViewController new];
     controller.inboxTicket = self.inboxTicket;
+    controller.delegate = self;
     
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     navigation.navigationBar.translucent = NO;
@@ -270,6 +273,35 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     [self.navigationController presentViewController:navigation
                                             animated:YES
                                           completion:nil];
+}
+
+#pragma mark - Ticket Reply delegate
+
+- (void)successReplyInboxTicket:(InboxTicketDetail *)reply {
+    NSMutableArray *messages = [NSMutableArray arrayWithArray:_messages];
+    [messages addObject:reply];
+    _messages = messages;
+    [self.tableView reloadData];
+    
+    NSInteger row = _messages.count - 1;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionBottom
+                                  animated:YES];
+}
+
+#pragma mark - Cell delegate
+
+- (void)goToImageViewerIndex:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (void)tapCellButton:(UIButton *)sender atIndexPath:(NSIndexPath *)indexPath {
+    
 }
 
 @end
