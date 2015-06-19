@@ -596,13 +596,14 @@
     }
     
     
-    NSInteger productPriceCurrencyID = [[wholesale objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
+    NSInteger productPriceCurrencyID = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
     
     if (!(wholesalePrice > 0)) {
         errorMessage = @"Harga harus diisi";
         isValidPrice = NO;
     }
-    else if (productPriceCurrencyID == PRICE_CURRENCY_ID_RUPIAH && (wholesalePrice<MINIMUM_PRICE_RUPIAH || wholesalePrice>MAXIMUM_PRICE_RUPIAH)) {
+    else if (productPriceCurrencyID == PRICE_CURRENCY_ID_RUPIAH &&
+             (wholesalePrice<MINIMUM_PRICE_RUPIAH || wholesalePrice>MAXIMUM_PRICE_RUPIAH)) {
         errorMessage = ERRORMESSAGE_INVALID_PRICE_RUPIAH;
         isValidPrice = NO;
     }
