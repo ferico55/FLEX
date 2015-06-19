@@ -1774,7 +1774,9 @@
             product.product_etalase_id = product.product_etalase_id?:@(0);
             product.product_description = product.product_short_desc?:@"";
             product.product_returnable = _product.result.info.product_returnable?:@"";
+            product.product_min_order = _product.result.product.product_min_order?:@"1";
         }
+        _minimumOrderTextField.text = product.product_min_order;
         [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
         [_dataInput setObject:product.product_currency_id forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
         
