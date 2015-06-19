@@ -757,6 +757,7 @@
     CGPoint contentOffset = _table.contentOffset;
     contentOffset.y = (contentOffset.y != 0)?:-_refreshControl.frame.size.height-45;
     [_table setContentOffset:contentOffset animated:YES];
+    [_act stopAnimating];
     [_networkManager doRequest];
 }
 
