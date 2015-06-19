@@ -406,6 +406,13 @@
             [_act startAnimating];
         }
     }
+    else
+    {
+        [_refreshControl beginRefreshing];
+        CGPoint contentOffset = _table.contentOffset;
+        contentOffset.y = (contentOffset.y != 0)?:-_refreshControl.frame.size.height-45;
+        [_table setContentOffset:contentOffset animated:YES];
+    }
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
@@ -571,11 +578,6 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                
-                if (_list.count<=4) {
-                    [_act stopAnimating];
-                    _table.tableFooterView = _footer;
-                }
                 
             } else {
                 CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
@@ -752,7 +754,9 @@
     _requestcount = 0;
     _page = 1;
     [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height+44) animated:YES];
+    CGPoint contentOffset = _table.contentOffset;
+    contentOffset.y = (contentOffset.y != 0)?:-_refreshControl.frame.size.height-45;
+    [_table setContentOffset:contentOffset animated:YES];
     [_networkManager doRequest];
 }
 
