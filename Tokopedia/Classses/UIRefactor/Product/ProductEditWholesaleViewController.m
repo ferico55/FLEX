@@ -595,7 +595,6 @@
         wholesalePrice = [[wholesale objectForKey:wholesalePriceKey]floatValue];
     }
     
-    
     NSInteger productPriceCurrencyID = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
     
     if (!(wholesalePrice > 0)) {
