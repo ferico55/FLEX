@@ -608,6 +608,7 @@
     is_already_updated = NO;
     
 //    [_table reloadData];
+    _table.tableFooterView = nil;
     /** request data **/
     [self configureRestKit];
     [self request];

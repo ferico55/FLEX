@@ -336,6 +336,7 @@ typedef enum TagRequest {
     
 //    [_table reloadData];
     /** request data **/
+    _table.tableFooterView = nil;
     [_networkManager doRequest];
 }
 

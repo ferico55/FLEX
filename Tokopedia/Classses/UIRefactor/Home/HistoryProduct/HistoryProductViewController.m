@@ -498,6 +498,7 @@
     /** request data **/
 //    [self configureRestKit];
 //    [self loadData];
+    _table.tableFooterView = nil;
     [_networkManager doRequest];
 }
 

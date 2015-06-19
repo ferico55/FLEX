@@ -430,6 +430,7 @@
     
 //    [tblWishList reloadData];
     /** request data **/
+    tblWishList.tableFooterView = nil;
     [self configureRestKit];
     [self loadData];
 }

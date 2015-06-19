@@ -433,6 +433,8 @@
     _isrefreshview = YES;
     
     [_table reloadData];
+    _table.tableFooterView = nil;
+    
     /** request data **/
     [self configureRestKit];
     [self request];
