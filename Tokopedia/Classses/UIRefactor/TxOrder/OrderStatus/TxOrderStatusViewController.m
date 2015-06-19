@@ -172,6 +172,7 @@
     _networkManager.delegate = self;
 }
 
+
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
