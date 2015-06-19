@@ -758,7 +758,7 @@ UICollectionViewDelegate
 
 - (void)changeCategory:(NSNotification *)notification
 {
-    [_product removeAllObjects];
+//    [_product removeAllObjects];
     [_params setObject:[notification.userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY] forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [self refreshView:nil];
     [_act startAnimating];

@@ -25,6 +25,7 @@
     __weak RKManagedObjectRequestOperation *_requestResetNotification;
     NSInteger _requestResetNotificationCount;
     NSOperationQueue *_operationresetNotificationQueue;
+    NSTimer *_requestTimer;
     
     Notification *_notification;
     URLCacheController *_cachecontroller;
@@ -168,14 +169,37 @@
                                                                       path:API_NOTIFICATION_PATH
                                                                 parameters:[param encrypt]];
     
+    [_requestTimer invalidate];
+    _requestTimer = nil;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [_requestTimer invalidate];
         [self requestSuccess:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailure:error];
     }];
     
     [_operationQueue addOperation:_request];
+    
+    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:16.0 target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
 }
+
+- (void)requestTimeout {
+    [self requestCancel];
+    if(_requestCount < kTKPDREQUESTCOUNTMAX) {
+        [self loadNotification];
+    }
+}
+
+- (void)requestCancel {
+    [_request cancel];
+    _request = nil;
+    
+    [_objectManager.operationQueue cancelAllOperations];
+    _objectManager = nil;
+    
+}
+
 
 - (void)loadDataFromCache {
     [_cachecontroller getFileModificationDate];
