@@ -909,6 +909,11 @@
             
             ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
             product = ATCForm.result.form.product_detail;
+            _productQuantityStepper.value = [product.product_min_order integerValue]?:1;
+            _productQuantityLabel.text = product.product_min_order?:@"1";
+            _productQuantityStepper.minimumValue = [product.product_min_order integerValue]?:1;
+            [_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
+            
             [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
             
             [self setAddress:address];
@@ -1274,8 +1279,6 @@
 {
     _data = data;
     if (data) {
-        _productQuantityStepper.value = 1;
-        _productQuantityLabel.text = @"1";
         [_dataInput setObject:@(1) forKey:API_QUANTITY_KEY];
         DetailProductResult *result = [_data objectForKey:DATA_DETAIL_PRODUCT_KEY];
         NSString *shopName = result.shop_info.shop_name;
@@ -1294,7 +1297,6 @@
             }];
         }
 
-        
         [_dataInput setObject:result.product forKey:DATA_DETAIL_PRODUCT_KEY];
         NSDictionary *insuranceDefault = [ARRAY_INSURACE lastObject];
         NSInteger insuranceID = [[insuranceDefault objectForKey:DATA_VALUE_KEY]integerValue];

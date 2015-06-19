@@ -454,6 +454,7 @@ typedef enum TagRequest {
 
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+        _table.contentInset = UIEdgeInsetsMake(0, 0, _editarchiveview.bounds.size.height, 0);
 
     //show OPTION move to trash forever + back to inbox
     } else if (selected_vc == 3){
@@ -464,6 +465,7 @@ typedef enum TagRequest {
 
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+        _table.contentInset = UIEdgeInsetsMake(0, 0, _inboxtrashforeverview.bounds.size.height, 0);
 
     } else if (selected_vc == 2) {
         _inboxtrashview.hidden = NO;
@@ -473,6 +475,7 @@ typedef enum TagRequest {
 
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+        _table.contentInset = UIEdgeInsetsMake(0, 0, _inboxtrashview.bounds.size.height, 0);
 
     } else {
         _editarchiveview.hidden = YES;

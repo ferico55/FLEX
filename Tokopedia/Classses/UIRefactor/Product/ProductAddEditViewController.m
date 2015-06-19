@@ -114,6 +114,8 @@
     CatalogList *_selectedCatalog;
     
     BOOL _isCatalog;
+    
+    NSString *_productNameBeforeCopy;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
@@ -1684,8 +1686,7 @@
     [_networkManagerCatalog doRequest];
 }
 
-
-#pragma mark - Product Edit Detail Delegate
+#pragma mark - Product Edit Detail Delegate 
 -(void)ProductEditDetailViewController:(ProductAddEditDetailViewController *)cell withUserInfo:(NSDictionary *)userInfo
 {
     NSDictionary *updatedDataInput = [userInfo objectForKey:DATA_INPUT_KEY];
@@ -1839,6 +1840,7 @@
         BOOL isGoldShop = result.shop_is_gold;
         
         _productNameTextField.text = product.product_name;
+        _productNameBeforeCopy = product.product_name;
         //_productNameTextField.enabled = (type ==TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
         
         NSInteger priceInteger = [price integerValue];
@@ -1929,6 +1931,11 @@
             isValidWeight = YES;
         else
             isValidWeight = NO;
+    }
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    if (type == TYPE_ADD_EDIT_PRODUCT_COPY && [productName isEqualToString:_productNameBeforeCopy]) {
+        [_errorMessage addObject:@"Tidak dapat menyalin dengan Nama Produk yang sama."];
+        isValid = NO;
     }
 
     if ( !productName || [productName isEqualToString:@""]) {

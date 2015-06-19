@@ -26,5 +26,6 @@ typedef enum
 
 #define DATA_NAME_KEY @"name"
 #define DATA_VALUE_KEY @"value"
+#define CStringMatchChangePass @"Kata sandi baru tidak sesuai dengan konfirmasi"
 
 #endif

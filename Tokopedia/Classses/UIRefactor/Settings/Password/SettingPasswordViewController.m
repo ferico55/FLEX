@@ -122,7 +122,14 @@
                 NSString *newpass = [_datainput objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY];
                 NSString *confirmpass = [_datainput objectForKey:kTKPDPROFILESETTING_APIPASSCONFIRMKEY];
                 if (pass && newpass && confirmpass) {
-                    [self requestAction:userinfo];
+                    if([newpass isEqualToString:confirmpass]) {
+                        [self requestAction:userinfo];
+                    }
+                    else {
+                        [errorMessages addObject:CStringMatchChangePass];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                        [alert show];
+                    }
                 }
                 else
                 {
