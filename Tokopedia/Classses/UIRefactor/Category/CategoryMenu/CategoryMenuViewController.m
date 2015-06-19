@@ -63,14 +63,14 @@
                                                                   action:@selector(tap:)];
         button.tag = 10;
         self.navigationItem.leftBarButtonItem = button;
-    } else {
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-        self.navigationItem.backBarButtonItem = button;
     }
-    
+
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                               style:UIBarButtonItemStyleBordered
+                                                              target:self
+                                                              action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = button;
+
     /** set max data per page request **/
     _table.delegate = self;
     _table.dataSource = self;

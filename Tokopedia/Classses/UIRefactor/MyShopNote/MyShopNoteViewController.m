@@ -24,7 +24,8 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    MGSwipeTableCellDelegate
+    MGSwipeTableCellDelegate,
+    MyShopNoteDetailDelegate
 >
 {
     NSMutableDictionary *_datainput;
@@ -181,11 +182,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NotesList *list = _list[indexPath.row];
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
+    vc.delegate = self;
+    vc.noteList = list;
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
                 kTKPDNOTES_APINOTEIDKEY:list.note_id,
                 kTKPDNOTES_APINOTETITLEKEY:list.note_title,
                 kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
+                kTKPD_SHOPIDKEY : [_data objectForKey:kTKPD_SHOPIDKEY]?:@"",
                 };
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -216,6 +220,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         } else if ([sender tag] == 11) {
             MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
+            vc.delegate = self;
             vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
                         kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY),
                         };
@@ -351,8 +356,8 @@
             BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                NSArray *list = _notes.result.list;
-                [_list addObjectsFromArray:list];
+
+                _list = [NSMutableArray arrayWithArray:_notes.result.list];
                 
                 if (_list.count>0) {
                     _isnodata = NO;
@@ -592,19 +597,33 @@
         NotesList *list = _list[indexpath.row];
         [_datainput setObject:list.note_id forKey:kTKPDNOTES_APINOTEIDKEY];
         
-        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+        UIColor *colorDelete = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
+        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus"
+                                               backgroundColor:colorDelete
+                                                       padding:padding
+                                                      callback:^BOOL(MGSwipeTableCell *sender) {
             [self deleteListAtIndexPath:indexpath];
             return YES;
         }];
         trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
 
-        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Ubah\nCatatan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+        UIColor *colorEdit = [UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0];
+        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Ubah\nCatatan"
+                                              backgroundColor:colorEdit
+                                                      padding:padding
+                                                     callback:^BOOL(MGSwipeTableCell *sender) {
+
+            NSIndexPath *indexPath = [self.table indexPathForCell:cell];
+                                                         
             //edit
             MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
+            vc.noteList = [_list objectAtIndex:indexPath.row];
+            vc.delegate = self;
             vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
                         kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
                         kTKPDNOTES_APINOTEIDKEY : list.note_id,
                         kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
+                        kTKPD_SHOPIDKEY : [_data objectForKey:kTKPD_SHOPIDKEY]?:@"",
                         };
             
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -620,6 +639,19 @@
     
     return nil;
     
+}
+
+#pragma mark - Note edit delegate
+
+- (void)successEditNote:(NotesList *)noteList {
+    NSInteger index = [_list indexOfObject:noteList];
+    [_list replaceObjectAtIndex:index withObject:noteList];
+    [self.table reloadData];
+}
+
+- (void)successCreateNewNote {
+    [self configureRestKit];
+    [self request];
 }
 
 @end
