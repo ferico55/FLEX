@@ -63,6 +63,17 @@
     _dataInput = [NSMutableDictionary new];
     _wholesaleList = [NSMutableArray new];
     
+    _USDCurrencyFormatter = [[NSNumberFormatter alloc] init];
+    [_USDCurrencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [_USDCurrencyFormatter setCurrencyCode:@"USD"];
+    [_USDCurrencyFormatter setNegativeFormat:@"-¤#,##0.00"];
+    
+    _RPCurrencyFormatter = [[NSNumberFormatter alloc] init];
+    [_RPCurrencyFormatter setGroupingSeparator:@","];
+    [_RPCurrencyFormatter setGroupingSize:3];
+    [_RPCurrencyFormatter setUsesGroupingSeparator:YES];
+    [_RPCurrencyFormatter setSecondaryGroupingSize:3];
+    
     _table.tableHeaderView = _headerView;
     [self setDefaultData:_data];
     
@@ -83,17 +94,6 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
-    
-    _USDCurrencyFormatter = [[NSNumberFormatter alloc] init];
-    [_USDCurrencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    [_USDCurrencyFormatter setCurrencyCode:@"USD"];
-    [_USDCurrencyFormatter setNegativeFormat:@"-¤#,##0.00"];
-    
-    _RPCurrencyFormatter = [[NSNumberFormatter alloc] init];
-    [_RPCurrencyFormatter setGroupingSeparator:@","];
-    [_RPCurrencyFormatter setGroupingSize:3];
-    [_RPCurrencyFormatter setUsesGroupingSeparator:YES];
-    [_RPCurrencyFormatter setSecondaryGroupingSize:3];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -415,7 +415,14 @@
         NSString *priceCurrencyID = product.product_currency_id;
         NSString *productPricePerProduct = product.product_price;
         
-        _productPriceLabel.text = productPricePerProduct;
+        CGFloat priceInteger = [productPricePerProduct floatValue];
+        if ([priceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
+            _productPriceLabel.text = (priceInteger>0)?[_RPCurrencyFormatter stringFromNumber:@(priceInteger)]:@"";
+        }
+        else
+        {
+            _productPriceLabel.text = [_USDCurrencyFormatter stringFromNumber:@(priceInteger)];
+        }
         
         if (wholesales.count<=0) {
             [self addWholesaleListPrice:0 withQuantityMinimum:0 andQuantityMaximum:0];
