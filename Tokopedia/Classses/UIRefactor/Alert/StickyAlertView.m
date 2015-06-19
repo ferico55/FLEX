@@ -139,7 +139,8 @@
         joinedString = @"";
     }
     
-    _textLabel.attributedText = [[NSAttributedString alloc] initWithString:joinedString attributes:attributes];
+    joinedString = [NSString convertHTML:joinedString];
+    _textLabel.attributedText = [[NSAttributedString alloc] initWithString:joinedString  attributes:attributes];
     _textLabel.numberOfLines = 0;
     [_textLabel sizeToFit];
     
