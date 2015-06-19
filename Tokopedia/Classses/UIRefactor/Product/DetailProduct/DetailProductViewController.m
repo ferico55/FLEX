@@ -475,8 +475,16 @@ UIAlertViewDelegate
             case 23:
             {
                 // Move To warehouse
-                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
-                [alert show];
+                if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                    [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
+                    [alert show];
+                }
+                else
+                {
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    [alert show];
+                }
                 break;
             }
         }
@@ -665,8 +673,16 @@ UIAlertViewDelegate
             }
             case UIGestureRecognizerStateEnded: {
                 // Move To warehouse
-                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
-                [alert show];
+                if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                    [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
+                    [alert show];
+                }
+                else
+                {
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    [alert show];
+                }
                 break;
             }
                 
