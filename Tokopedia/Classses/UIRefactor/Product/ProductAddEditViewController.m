@@ -1768,6 +1768,9 @@
             if ([product.product_currency isEqualToString:@"idr"]) {
                 product.product_currency = [ARRAY_PRICE_CURRENCY[0]objectForKey:DATA_NAME_KEY];
             }
+            if ([product.product_currency isEqualToString:@"usd"]) {
+                product.product_currency = [ARRAY_PRICE_CURRENCY[1]objectForKey:DATA_NAME_KEY];
+            }
             NSInteger indexMoveTo = ([product.product_etalase_id integerValue]>0)?1:0;
             NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[indexMoveTo] objectForKey:DATA_VALUE_KEY];
             product.product_move_to = value;
@@ -1845,7 +1848,7 @@
         _productNameBeforeCopy = product.product_name;
         //_productNameTextField.enabled = (type ==TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
         
-        NSInteger priceInteger = [price integerValue];
+        CGFloat priceInteger = [price floatValue];
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         if ([priceCurencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
             [formatter setGroupingSeparator:@"."];
@@ -1918,8 +1921,8 @@
         if (isPriceCurrencyRupiah && [productPrice integerValue]>=MINIMUM_PRICE_RUPIAH &&
             [productPrice integerValue]<=MAXIMUM_PRICE_RUPIAH)
             isValidPrice = YES;
-        else if (isPriceCurrencyUSD && [productPrice integerValue]>=MINIMUM_PRICE_USD &&
-                 [productPrice integerValue]<=MAXIMUM_PRICE_USD)
+        else if (isPriceCurrencyUSD && [productPrice floatValue]>=MINIMUM_PRICE_USD &&
+                 [productPrice floatValue]<=MAXIMUM_PRICE_USD)
             isValidPrice = YES;
         else
             isValidPrice = NO;
@@ -1956,7 +1959,7 @@
             isValid = NO;
         }
         else if ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD &&
-                 ([productPrice integerValue]<MINIMUM_PRICE_USD || [productPrice integerValue]>MAXIMUM_PRICE_USD)) {
+                 ([productPrice floatValue]<MINIMUM_PRICE_USD || [productPrice floatValue]>MAXIMUM_PRICE_USD)) {
             [_errorMessage addObject:ERRORMESSAGE_INVALID_PRICE_USD];
             isValid = NO;
         }

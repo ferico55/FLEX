@@ -1018,8 +1018,21 @@
     NSString *productPhoto = [_dataInput objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSString *productPhotoDesc = [_dataInput objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
     NSString *photoDefault = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
-    NSString *serverID = _generateHost.result.generated_host.server_id?:@"";
     
+    NSString *productImage = [_dataInput objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
+    
+    NSString *myString = productImage;
+    NSArray *productImages = [myString componentsSeparatedByCharactersInSet:
+                              [NSCharacterSet characterSetWithCharactersInString:@"~"]
+                              ];
+    for (int i = 0; i<productImages.count; i++) {
+        if ([productImages[i] isEqualToString:photoDefault]) {
+            photoDefault = [NSString stringWithFormat:@"%d",i];
+        }
+    }
+    
+    NSString *serverID = _generateHost.result.generated_host.server_id?:@"";
+
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
@@ -1110,7 +1123,7 @@
     
     NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
     NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
-    
+
     NSInteger randomNumber = arc4random() % 16;
     NSString *uniqueID = _uniqueID;//[NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
     
@@ -1233,18 +1246,7 @@
     
     NSString *productID = product.product_id?:@"";
     NSString *returnableProduct = product.product_returnable?:@"0";
-    //NSString *returnableProduct = [_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]?:product.product_returnable?:@"";
-    //if ([returnableProduct integerValue] == -1) {
-    //    returnableProduct = @"0"; // Not Set
-    //}
-    //else if([returnableProduct integerValue] == 1)
-    //{
-    //    returnableProduct = @"1"; //returnable
-    //}
-    //else
-    //{
-    //    returnableProduct = @"2"; // not returnable
-    //}
+
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
                                       API_PRODUCT_ID_KEY: productID,
@@ -1541,7 +1543,7 @@
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
         if ((type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) && [[wholesaleList firstObject] isKindOfClass:[WholesalePrice class]]) {
             for (WholesalePrice *wholesale in wholesaleList) {
-                NSInteger price = [wholesale.wholesale_price integerValue];
+                float price = [wholesale.wholesale_price floatValue];
                 NSInteger minimumQuantity = [wholesale.wholesale_min integerValue];
                 NSInteger maximumQuantity = [wholesale.wholesale_max integerValue];
                 [self addWholesaleListPrice:price withQuantityMinimum:minimumQuantity andQuantityMaximum:maximumQuantity];
@@ -1564,7 +1566,7 @@
     }
 }
 
--(void)addWholesaleListPrice:(NSInteger)price withQuantityMinimum:(NSInteger)minimum andQuantityMaximum:(NSInteger)maximum
+-(void)addWholesaleListPrice:(float)price withQuantityMinimum:(NSInteger)minimum andQuantityMaximum:(NSInteger)maximum
 {
     NSInteger wholesaleListIndex = _wholesaleList.count+1;
     NSString *wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];
