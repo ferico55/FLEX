@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamLight.ttf">
@@ -111,18 +111,18 @@
                     </constraints>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wi9-mu-dYF" userLabel="Horizontal Border">
-                    <rect key="frame" x="18" y="187" width="300" height="1"/>
+                    <rect key="frame" x="15" y="187" width="305" height="1"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="3Ng-vC-WEh"/>
-                        <constraint firstAttribute="width" constant="300" id="5Rr-Si-uAO"/>
+                        <constraint firstAttribute="width" constant="305" id="5Rr-Si-uAO"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="CeW-9M-rJA" firstAttribute="leading" secondItem="1i9-QT-hV0" secondAttribute="leading" constant="18" id="3Am-O5-xBw"/>
-                <constraint firstItem="Wi9-mu-dYF" firstAttribute="leading" secondItem="1i9-QT-hV0" secondAttribute="leading" constant="18" id="3yj-rv-GjN"/>
+                <constraint firstItem="Wi9-mu-dYF" firstAttribute="leading" secondItem="1i9-QT-hV0" secondAttribute="leading" constant="15" id="3yj-rv-GjN"/>
                 <constraint firstItem="8Cp-xn-SvI" firstAttribute="top" secondItem="rMG-xh-amb" secondAttribute="bottom" constant="5" id="5Fx-3B-qzE"/>
                 <constraint firstItem="mwJ-LV-tuy" firstAttribute="leading" secondItem="1i9-QT-hV0" secondAttribute="leading" constant="18" id="9Dv-Lk-2lw"/>
                 <constraint firstItem="cUX-Li-D6N" firstAttribute="leading" secondItem="1i9-QT-hV0" secondAttribute="leading" constant="18" id="BzE-he-9YH"/>

@@ -285,7 +285,7 @@ UICollectionViewDelegate
         }
         else
         {
-            ((ProductSingleViewCell*)cell).infoContraint.constant = 30;
+            ((ProductSingleViewCell*)cell).infoContraint.constant = 19;
         }
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
@@ -345,7 +345,7 @@ UICollectionViewDelegate
 
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellCount = 1;
-        heightRatio = 389;
+        heightRatio = 390;
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
             heightRatio = 370;
         }
@@ -369,29 +369,7 @@ UICollectionViewDelegate
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
-    float top;
-    float left;
-    float bottom;
-    float right;
-    
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        top = 5;
-        bottom = 5;
-        right = 5;
-        left = 40;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        top = 10;
-        bottom = 10;
-        left = 10;
-        right = 15;
-    } else {
-        top = 5;
-        bottom = 5;
-        left = 5;
-        bottom = 5;
-    }
-    
+
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 

@@ -43,6 +43,9 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _contentView.frame = screenRect;
+    
     [self setDefaultData:_data];
     
     Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];

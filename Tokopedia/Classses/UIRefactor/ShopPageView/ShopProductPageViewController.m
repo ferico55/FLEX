@@ -36,6 +36,12 @@
 #import "GeneralPhotoProductCell.h"
 #import "DetailProductViewController.h"
 
+#import "ProductCell.h"
+#import "ProductSingleViewCell.h"
+#import "ProductThumbCell.h"
+
+#import "NavigateViewController.h"
+
 #import "NoResult.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -46,8 +52,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 @interface ShopProductPageViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegate,
     UIAlertViewDelegate,
     UISearchBarDelegate,
     LoadingViewDelegate,
@@ -59,10 +65,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     GeneralSingleProductDelegate,
     GeneralPhotoProductDelegate
 >
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
-@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
@@ -136,6 +142,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
 
+    BOOL _isFailRequest;
 }
 
 #pragma mark - Initialization
@@ -191,8 +198,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _refreshControl = [[UIRefreshControl alloc] init];
     
     
-    _table.delegate = self;
-    _table.dataSource = self;
+    _collectionView.delegate = self;
+    _collectionView.dataSource = self;
     
     _shopPageHeader = [ShopPageHeader new];
     _shopPageHeader.delegate = self;
@@ -225,12 +232,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UIView *header = [[UIView alloc] initWithFrame:_header.frame];
     [header setBackgroundColor:[UIColor whiteColor]];
     [header addSubview:_header];
-    _table.tableHeaderView = header;
-    _table.tableFooterView = _footer;
     
     
     [_refreshControl addTarget:self action:@selector(refreshRequest:)forControlEvents:UIControlEventValueChanged];
-    [_table addSubview:_refreshControl];
+    [_collectionView addSubview:_refreshControl];
     
     if (_list.count > 0) {
         _isNoData = NO;
@@ -266,6 +271,24 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshView:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
+    
+    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
+    
+    UINib *singleCellNib = [UINib nibWithNibName:@"ProductSingleViewCell" bundle:nil];
+    [_collectionView registerNib:singleCellNib forCellWithReuseIdentifier:@"ProductSingleViewIdentifier"];
+    UINib *thumbCellNib = [UINib nibWithNibName:@"ProductThumbCell" bundle:nil];
+    [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];
+    
+    
+    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+    
+    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+    
+    UINib *headerNib = [UINib nibWithNibName:@"HeaderCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -294,6 +317,120 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Collection Delegate
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _header.frame.size.height);
+    return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
+}
+
+
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    
+    if(kind == UICollectionElementKindSectionFooter) {
+        if(_isFailRequest) {
+            _isFailRequest = !_isFailRequest;
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+        }
+    }
+    else if(kind == UICollectionElementKindSectionHeader) {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier" forIndexPath:indexPath];
+        [_header removeFromSuperview];
+        [reusableView addSubview:_header];
+    }
+    
+    return reusableView;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _product.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *cellid;
+    UICollectionViewCell *cell = nil;
+    
+    List *list = [_product objectAtIndex:indexPath.row];
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        cellid = @"ProductSingleViewIdentifier";
+        cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+        [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
+        ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        cellid = @"ProductCellIdentifier";
+        cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+        [(ProductCell*)cell setViewModel:list.viewModel];
+    } else {
+        cellid = @"ProductThumbCellIdentifier";
+        cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+        [(ProductThumbCell*)cell setViewModel:list.viewModel];
+    }
+    
+    //next page if already last cell
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            _isFailRequest = NO;
+            [self configureRestKit];
+            [self loadData];
+        }
+    }
+    
+    return cell;
+}
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NavigateViewController *navigateController = [NavigateViewController new];
+    List *product = [_product objectAtIndex:indexPath.row];
+    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    CGSize cellSize = CGSizeMake(0, 0);
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    
+    NSInteger cellCount;
+    float heightRatio;
+    float widhtRatio;
+    float inset;
+    
+    CGFloat screenWidth = screenRect.size.width;
+    
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        cellCount = 1;
+        heightRatio = 390;
+        heightRatio = 370;
+        widhtRatio = 370;
+        inset = 15;
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        cellCount = 2;
+        heightRatio = 41;
+        widhtRatio = 29;
+        inset = 15;
+    } else {
+        cellCount = 3;
+        heightRatio = 1;
+        widhtRatio = 1;
+        inset = 14;
+    }
+    
+    CGFloat cellWidth = screenWidth/cellCount-inset;
+    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    return cellSize;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    
+    return UIEdgeInsetsMake(10, 10, 10, 10);
+}
+
+
 #pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -306,24 +443,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
                 };
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isNoData) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [self configureRestKit];
-            [self loadData];
-        } else {
-            _table.tableFooterView = nil;
-            [_act stopAnimating];
-        }
-    }
 }
 
 #pragma mark - TableView Source
@@ -650,7 +769,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if (_request.isExecuting) return;
     
     loadingView = nil;
-    _table.tableFooterView = _footer;
     [_act startAnimating];
     
     _requestCount ++;
@@ -691,14 +809,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                                                 parameters:[param encrypt]];
     
     if (!_isrefreshview) {
-        _table.tableFooterView = _footer;
         [_act startAnimating];
     }
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
-        [_table reloadData];
         [self endRefreshing];
         [_timer invalidate];
         _timer = nil;
@@ -707,11 +823,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         if(_product==nil || _product.count==0) {
             loadingView = [LoadingView new];
             loadingView.delegate = self;
-            _table.tableFooterView = loadingView.view;
             [self cancel];
         }
         else {
-            _table.tableFooterView = nil;
         }
 
         [_act stopAnimating];
@@ -737,7 +851,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 -(void)endRefreshing
 {
     if (_refreshControl.isRefreshing) {
-        [_table setContentOffset:CGPointZero animated:YES];
+        //[_table setContentOffset:CGPointZero animated:YES];
         [_refreshControl endRefreshing];
     }
 }
@@ -774,7 +888,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 
                 if (_page == 1) {
                     [_product removeAllObjects];
-                    [_table setContentOffset:CGPointZero animated:YES];
+                    //[_table setContentOffset:CGPointZero animated:YES];
                 }
                 
                 [_product addObjectsFromArray: _searchitem.result.list];
@@ -802,10 +916,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                     NSLog(@"next page : %zd",_page);
                     
                     _isNoData = NO;
-                    
+                    [_collectionView reloadData];
                 } else {
                     _isNoData = YES;
-                    _table.tableFooterView = _noResult;
                     _act.hidden = YES;
                }
             }
@@ -815,7 +928,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                    _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit)
                                withObject:nil
@@ -828,7 +940,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = nil;
             }
         }
     }
@@ -846,7 +957,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 {
     _page = 1;
     [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    //[_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     [self refreshView:_refreshControl];
 }
 
@@ -859,7 +970,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _isrefreshview = YES;
     
     [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    //[_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
     /** request data **/
     [self configureRestKit];
@@ -913,7 +1024,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
     
     CGPoint cgpoint = CGPointMake(0, ypos);
-    _table.contentOffset = cgpoint;
+    //_table.contentOffset = cgpoint;
 
 }
 
@@ -938,8 +1049,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
     
     [_product removeAllObjects];
-     _table.tableFooterView = _footer;
-    [_table reloadData];
+    // _table.tableFooterView = _footer;
+    [_collectionView reloadData];
     _page = 1;
     _requestCount = 0;
     _isrefreshview = YES;
@@ -1029,8 +1140,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                     
                 }
                 
-                self.table.contentOffset = CGPointMake(0, 0);
-                [self.table reloadData];
+                //self.table.contentOffset = CGPointMake(0, 0);
+                [_collectionView reloadData];
                 
                 NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
                 [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
@@ -1104,7 +1215,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
     
     CGPoint cgpoint = CGPointMake(0, _keyboardSize.height);
-    _table.contentOffset = cgpoint;
+    //_table.contentOffset = cgpoint;
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {

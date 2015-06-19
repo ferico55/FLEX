@@ -161,6 +161,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    self.view.frame = screenRect;
+    
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _operationSendCommentQueue = [NSOperationQueue new];
@@ -505,7 +508,7 @@
 }
 
 - (void) initTalkInputView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240, 45)];
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectZero];
     //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -518,6 +521,7 @@
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
+    _growingtextview.maxHeight = 150.f;
     _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
     //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
@@ -535,6 +539,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    _growingtextview.frame = CGRectMake(10, 10, self.view.bounds.size.width-(10*2)-_sendButton.bounds.size.width-5, 29);
+    
     if([_userManager isLogin]) {
         [_talkInputView setHidden:NO];
         [_sendButton setEnabled:NO];
@@ -1056,6 +1062,7 @@
     r.size.height -= diff;
     r.origin.y += diff;
     _talkInputView.frame = r;
+    [_talkInputView setTranslatesAutoresizingMaskIntoConstraints:YES];
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{

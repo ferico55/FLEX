@@ -112,6 +112,9 @@
 
     self.title = kTKPDREGISTER_NEW_TITLE;
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _contentView.frame = screenRect;
+    
     _datainput = [NSMutableDictionary new];
     [_datainput setObject:kTKPDREGISTER_APIGENDERKEY forKey:@"1"];
 

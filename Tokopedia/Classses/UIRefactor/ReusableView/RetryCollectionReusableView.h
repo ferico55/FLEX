@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol LoadingViewDelegate <NSObject>
+- (void)pressRetryButton;
+@end
+
 @interface RetryCollectionReusableView : UICollectionReusableView
+
+@property (weak, nonatomic) id<LoadingViewDelegate> delegate;
 
 @end

@@ -103,6 +103,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    self.view.bounds = screenRect;
+    
     _userManager = [UserAuthentificationManager new];
     _operationQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
@@ -142,6 +145,7 @@
     CGRect newFrame = _talkInputView.frame;
     newFrame.size.height = 0;
     _talkInputView.frame = newFrame;
+    
 }
 
 - (void)initReviewData {
@@ -401,7 +405,8 @@
 }
 
 - (void) initTalkInputView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240, 45)];
+    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10;
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
     //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);

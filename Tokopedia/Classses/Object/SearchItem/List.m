@@ -37,13 +37,16 @@
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
         [viewModel setProduct_image:self.product_image?:self.catalog_image_300];
         [viewModel setProduct_image_full:self.product_image_full?:self.catalog_image];
-
         
+        [viewModel setCatalog_price:self.catalog_price];
+        [viewModel setCatalog_name:self.catalog_name];
+        [viewModel setShop_name:self.shop_name];
+        [viewModel setShop_gold_status:self.shop_gold_status];
+        [viewModel setCatalog_image:self.catalog_image];
         
         _viewModel = viewModel;
     }
     
     return _viewModel;
 }
-
 @end

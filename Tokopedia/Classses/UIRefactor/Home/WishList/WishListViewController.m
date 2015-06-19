@@ -20,8 +20,6 @@
 #import "NavigateViewController.h"
 #import "ProductCell.h"
 
-NSInteger const normalWidth = 320;
-NSInteger const normalHeight = 568;
 
 @interface WishListViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
@@ -51,6 +49,9 @@ typedef enum TagRequest {
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
     NoResultView *_noResult;
+    
+    NSInteger normalWidth;
+    NSInteger normalHeight;
 }
 
 #pragma mark - Initialization
@@ -66,6 +67,9 @@ typedef enum TagRequest {
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
+    normalWidth = 320;
+    normalHeight = 568;
     
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
     double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
