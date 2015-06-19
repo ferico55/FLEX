@@ -292,7 +292,8 @@
             }
 
             if(setting.message_error) {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error delegate:self];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error
+                                                                               delegate:self];
                 [alert show];
             }
         } else {
