@@ -325,7 +325,7 @@
             isValid = NO;
             [errorMessages addObject:@"Nama etalase belum diisi"];
         }
-        if ([etalaseID integerValue] == 0) {
+        if (!isNewEtalase && [etalaseID integerValue] == 0) {
             isValid = NO;
             [errorMessages addObject:@"Etalase belum dipilih"];
         }
