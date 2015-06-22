@@ -75,6 +75,8 @@
     
     TxOrderStatusList *_selectedTrackOrder;
     LoadingView *_loadingView;
+    
+    RequestCancelResolution *_requestCancelComplain;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -1060,18 +1062,31 @@
 -(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderStatusList *order = _list[indexPath.row];
-    RequestCancelResolution *request = [RequestCancelResolution new];
+    RequestCancelResolution *request = [self requestCancelComlpain];
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     request.resolutionID = [resolutionID integerValue];
     request.delegate = self;
+    request.resolution = resolution;
     [request doRequest];
+}
+
+-(RequestCancelResolution*)requestCancelComlpain
+{
+    if (!_requestCancelComplain) {
+        _requestCancelComplain = [RequestCancelResolution new];
+        _requestCancelComplain.delegate = self;
+    }
+    
+    return _requestCancelComplain;
 }
 
 -(void)successCancelComplain:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
 {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus delegate:self];
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil membatalkan komplain"] delegate:self];
     [alert show];
+    [_list removeObject:resolution];
+    [_tableView reloadData];
     [self refreshRequest];
 }
 

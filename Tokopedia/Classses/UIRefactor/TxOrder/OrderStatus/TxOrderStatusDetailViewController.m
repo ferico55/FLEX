@@ -23,13 +23,16 @@
 
 #import "ResolutionCenterDetailViewController.h"
 
+#import "RequestCancelResolution.h"
+
 #define TAG_ALERT_REORDER 10
 #define TAG_ALERT_COMPLAIN 11
 #define TAG_ALERT_CONFIRMATION 12
 
-@interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate, ResolutionCenterDetailViewControllerDelegate>
 {
     NavigateViewController *_navigate;
+    RequestCancelResolution *_requestCancelComplain;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *headerTwoButton;
@@ -213,6 +216,8 @@
             NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
             NSString *resolutionID = [queries objectForKey:@"id"];
             vc.resolutionID = resolutionID;
+            vc.indexPath = _indexPath;
+            vc.delegate = self;
             [self.navigationController pushViewController:vc animated:YES];
         }
         else if (button.tag == 13)
@@ -290,6 +295,10 @@
     }
 }
 
+-(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
+{
+    [_delegate shouldCancelComplain:resolution atIndexPath:indexPath];
 
+}
 
 @end
