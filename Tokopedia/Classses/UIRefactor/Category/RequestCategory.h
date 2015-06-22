@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#import "CategoryObj.h"
+
 @interface RequestCategory : NSObject
+
+@property (strong, nonatomic) NSNumber *department_id;
+@property UIViewController *viewController;
+@property NSArray *listDepartment;
 
 @end

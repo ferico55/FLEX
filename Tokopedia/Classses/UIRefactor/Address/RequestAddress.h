@@ -10,4 +10,7 @@
 
 @interface RequestAddress : NSObject
 
+@property (nonatomic, strong) NSNumber *provinceID;
+@property (nonatomic, strong) NSNumber *cityID;
+
 @end

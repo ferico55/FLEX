@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#import "AddressCity.h"
+#import "AddressDistrict.h"
+
 @interface AddressResult : NSObject
+
+@property (nonatomic, strong) NSArray *cities;
+@property (nonatomic, strong) NSArray *districts;
 
 @end

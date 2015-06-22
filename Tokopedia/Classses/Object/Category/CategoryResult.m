@@ -10,4 +10,5 @@
 
 @implementation CategoryResult
 
+
 @end

@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		450168611B37B20500BB08C7 /* RequestCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 450168601B37B20500BB08C7 /* RequestCategory.m */; };
+		450168651B37B87700BB08C7 /* CategoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 450168641B37B87700BB08C7 /* CategoryList.m */; };
+		4501686B1B37B8FA00BB08C7 /* CategoryResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 4501686A1B37B8FA00BB08C7 /* CategoryResult.m */; };
+		4501686E1B37B98600BB08C7 /* CategoryObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 4501686D1B37B98600BB08C7 /* CategoryObj.m */; };
+		450168711B37C48B00BB08C7 /* RequestAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 450168701B37C48B00BB08C7 /* RequestAddress.m */; };
+		450168751B37C9FF00BB08C7 /* AddressObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 450168741B37C9FF00BB08C7 /* AddressObj.m */; };
+		450168781B37CA0A00BB08C7 /* AddressResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 450168771B37CA0A00BB08C7 /* AddressResult.m */; };
+		4501687B1B37CA1A00BB08C7 /* AddressCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4501687A1B37CA1A00BB08C7 /* AddressCity.m */; };
+		4501687E1B37CA2500BB08C7 /* AddressDistrict.m in Sources */ = {isa = PBXBuildFile; fileRef = 4501687D1B37CA2500BB08C7 /* AddressDistrict.m */; };
 		453959BB1B282CC200E5839F /* CatalogResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959BA1B282CC200E5839F /* CatalogResult.m */; };
 		453959BE1B282E8200E5839F /* CatalogList.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959BD1B282E8200E5839F /* CatalogList.m */; };
 		453959C11B282F2000E5839F /* CatalogAddProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959C01B282F2000E5839F /* CatalogAddProduct.m */; };
@@ -1466,6 +1475,24 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		4501685F1B37B20500BB08C7 /* RequestCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCategory.h; sourceTree = "<group>"; };
+		450168601B37B20500BB08C7 /* RequestCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCategory.m; sourceTree = "<group>"; };
+		450168631B37B87700BB08C7 /* CategoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryList.h; sourceTree = "<group>"; };
+		450168641B37B87700BB08C7 /* CategoryList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryList.m; sourceTree = "<group>"; };
+		450168691B37B8FA00BB08C7 /* CategoryResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryResult.h; sourceTree = "<group>"; };
+		4501686A1B37B8FA00BB08C7 /* CategoryResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryResult.m; sourceTree = "<group>"; };
+		4501686C1B37B98600BB08C7 /* CategoryObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryObj.h; sourceTree = "<group>"; };
+		4501686D1B37B98600BB08C7 /* CategoryObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryObj.m; sourceTree = "<group>"; };
+		4501686F1B37C48B00BB08C7 /* RequestAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestAddress.h; sourceTree = "<group>"; };
+		450168701B37C48B00BB08C7 /* RequestAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestAddress.m; sourceTree = "<group>"; };
+		450168731B37C9FF00BB08C7 /* AddressObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressObj.h; sourceTree = "<group>"; };
+		450168741B37C9FF00BB08C7 /* AddressObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressObj.m; sourceTree = "<group>"; };
+		450168761B37CA0A00BB08C7 /* AddressResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressResult.h; sourceTree = "<group>"; };
+		450168771B37CA0A00BB08C7 /* AddressResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressResult.m; sourceTree = "<group>"; };
+		450168791B37CA1A00BB08C7 /* AddressCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCity.h; sourceTree = "<group>"; };
+		4501687A1B37CA1A00BB08C7 /* AddressCity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressCity.m; sourceTree = "<group>"; };
+		4501687C1B37CA2500BB08C7 /* AddressDistrict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressDistrict.h; sourceTree = "<group>"; };
+		4501687D1B37CA2500BB08C7 /* AddressDistrict.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressDistrict.m; sourceTree = "<group>"; };
 		453959B91B282CC200E5839F /* CatalogResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogResult.h; sourceTree = "<group>"; };
 		453959BA1B282CC200E5839F /* CatalogResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogResult.m; sourceTree = "<group>"; };
 		453959BC1B282E8200E5839F /* CatalogList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogList.h; sourceTree = "<group>"; };
@@ -3696,6 +3723,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		450168621B37B83C00BB08C7 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				4501686C1B37B98600BB08C7 /* CategoryObj.h */,
+				4501686D1B37B98600BB08C7 /* CategoryObj.m */,
+				450168691B37B8FA00BB08C7 /* CategoryResult.h */,
+				4501686A1B37B8FA00BB08C7 /* CategoryResult.m */,
+				450168631B37B87700BB08C7 /* CategoryList.h */,
+				450168641B37B87700BB08C7 /* CategoryList.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		450168721B37C9F200BB08C7 /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				450168731B37C9FF00BB08C7 /* AddressObj.h */,
+				450168741B37C9FF00BB08C7 /* AddressObj.m */,
+				450168761B37CA0A00BB08C7 /* AddressResult.h */,
+				450168771B37CA0A00BB08C7 /* AddressResult.m */,
+				450168791B37CA1A00BB08C7 /* AddressCity.h */,
+				4501687A1B37CA1A00BB08C7 /* AddressCity.m */,
+				4501687C1B37CA2500BB08C7 /* AddressDistrict.h */,
+				4501687D1B37CA2500BB08C7 /* AddressDistrict.m */,
+			);
+			path = Address;
+			sourceTree = "<group>";
+		};
 		453959B51B282C6B00E5839F /* Catalog */ = {
 			isa = PBXGroup;
 			children = (
@@ -4533,6 +4588,8 @@
 		FC7637271B15E2720034A8F1 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				450168721B37C9F200BB08C7 /* Address */,
+				450168621B37B83C00BB08C7 /* Category */,
 				453959B51B282C6B00E5839F /* Catalog */,
 				FC7637281B15E2720034A8F1 /* Activation */,
 				FC76373D1B15E2720034A8F1 /* Deposit */,
@@ -6012,6 +6069,8 @@
 				FC763A231B15E2770034A8F1 /* AddressViewController.m */,
 				FC763A241B15E2770034A8F1 /* AddressViewController.xib */,
 				FC763A251B15E2770034A8F1 /* string_address.h */,
+				4501686F1B37C48B00BB08C7 /* RequestAddress.h */,
+				450168701B37C48B00BB08C7 /* RequestAddress.m */,
 			);
 			path = Address;
 			sourceTree = "<group>";
@@ -6142,6 +6201,8 @@
 		FC763A811B15E2780034A8F1 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				4501685F1B37B20500BB08C7 /* RequestCategory.h */,
+				450168601B37B20500BB08C7 /* RequestCategory.m */,
 				FC763A821B15E2780034A8F1 /* Category */,
 				FC763A891B15E2780034A8F1 /* category.h */,
 				FC763A8A1B15E2780034A8F1 /* CategoryMenu */,
@@ -9182,6 +9243,7 @@
 				FC7643DE1B15E2830034A8F1 /* TxOrderStatusCell.m in Sources */,
 				FC7641B31B15E2820034A8F1 /* TxOrderCancelPaymentResult.m in Sources */,
 				FC7640E61B15E2820034A8F1 /* InboxMessageActionResult.m in Sources */,
+				450168611B37B20500BB08C7 /* RequestCategory.m in Sources */,
 				FC7644141B15E2830034A8F1 /* UserContainerViewController.m in Sources */,
 				FC7640EE1B15E2820034A8F1 /* ResolutionActionResult.m in Sources */,
 				FC7640A81B15E2820034A8F1 /* CatalogInfo.m in Sources */,
@@ -9230,6 +9292,7 @@
 				FC7642DC1B15E2830034A8F1 /* DetailProductInfoCell.m in Sources */,
 				FC7642E41B15E2830034A8F1 /* DetailProductWholesaleTableCell.m in Sources */,
 				FC7642F81B15E2830034A8F1 /* ProductEditImageViewController.m in Sources */,
+				450168781B37CA0A00BB08C7 /* AddressResult.m in Sources */,
 				FC7641DF1B15E2820034A8F1 /* AddressCell.m in Sources */,
 				FC7641CB1B15E2820034A8F1 /* TxOrderStatusList.m in Sources */,
 				FC7641801B15E2820034A8F1 /* POSIndonesia.m in Sources */,
@@ -9280,6 +9343,7 @@
 				FC76410F1B15E2820034A8F1 /* Note.m in Sources */,
 				FC7642B71B15E2830034A8F1 /* PurchaseViewController.m in Sources */,
 				FC7644021B15E2830034A8F1 /* TxOrderPaymentConfirmationSuccessViewController.m in Sources */,
+				450168651B37B87700BB08C7 /* CategoryList.m in Sources */,
 				FC7641EB1B15E2820034A8F1 /* AlertListView.m in Sources */,
 				FC76415A1B15E2820034A8F1 /* ShipmentCourierPackage.m in Sources */,
 				FC7642A21B15E2830034A8F1 /* ResolutionCenterDetailViewController.m in Sources */,
@@ -9292,6 +9356,7 @@
 				FC76434C1B15E2830034A8F1 /* SearchResultViewController.m in Sources */,
 				FC7642D11B15E2830034A8F1 /* MyShopPaymentViewController.m in Sources */,
 				FC7641971B15E2820034A8F1 /* TransactionSystemBank.m in Sources */,
+				450168751B37C9FF00BB08C7 /* AddressObj.m in Sources */,
 				FC7643951B15E2830034A8F1 /* ShopTalkViewController.m in Sources */,
 				FC76407F1B15E2820034A8F1 /* URLCacheConnection.m in Sources */,
 				FC7641B81B15E2820034A8F1 /* TxOrderConfirmedDetailInvoice.m in Sources */,
@@ -9331,6 +9396,7 @@
 				FC7641391B15E2820034A8F1 /* PrivacyFormPrivacy.m in Sources */,
 				FC7641CC1B15E2820034A8F1 /* TxOrderStatusResult.m in Sources */,
 				FC7640F21B15E2820034A8F1 /* ResolutionAttachment.m in Sources */,
+				4501686E1B37B98600BB08C7 /* CategoryObj.m in Sources */,
 				FC7642A61B15E2830034A8F1 /* ResolutionCenterSystemCell.m in Sources */,
 				FC7640AA1B15E2820034A8F1 /* CatalogMarketPlace.m in Sources */,
 				FC7643B51B15E2830034A8F1 /* ProductTalkFormViewController.m in Sources */,
@@ -9351,6 +9417,7 @@
 				FC7640D51B15E2820034A8F1 /* FavoriteShopActionResult.m in Sources */,
 				FC7640D71B15E2820034A8F1 /* GeneralActionResult.m in Sources */,
 				FC7641151B15E2820034A8F1 /* Paging.m in Sources */,
+				4501687E1B37CA2500BB08C7 /* AddressDistrict.m in Sources */,
 				FC7642771B15E2830034A8F1 /* HomeTabHeaderViewController.m in Sources */,
 				FC7642CF1B15E2830034A8F1 /* MyShopPaymentCell.m in Sources */,
 				FC76409E1B15E2820034A8F1 /* DepositResult.m in Sources */,
@@ -9475,6 +9542,7 @@
 				FC76427E1B15E2830034A8F1 /* WishListViewController.m in Sources */,
 				FC76408F1B15E2820034A8F1 /* UIKitCategory.m in Sources */,
 				FC76424B1B15E2830034A8F1 /* DepositListBankCell.m in Sources */,
+				4501686B1B37B8FA00BB08C7 /* CategoryResult.m in Sources */,
 				FC7641521B15E2820034A8F1 /* SearchData.m in Sources */,
 				FC76411E1B15E2820034A8F1 /* ChangePhoneNumberResult.m in Sources */,
 				FC7641211B15E2820034A8F1 /* ProfileEditFormResult.m in Sources */,
@@ -9608,6 +9676,7 @@
 				FC76411A1B15E2820034A8F1 /* ProductTalkCommentActionResult.m in Sources */,
 				FC7640D41B15E2820034A8F1 /* FavoriteShopAction.m in Sources */,
 				FC7641301B15E2820034A8F1 /* BankAccountFormList.m in Sources */,
+				450168711B37C48B00BB08C7 /* RequestAddress.m in Sources */,
 				FC7641791B15E2820034A8F1 /* SettingLocationResult.m in Sources */,
 				FC76419B1B15E2820034A8F1 /* TransactionCartGateway.m in Sources */,
 				FC7640C81B15E2820034A8F1 /* TalkList.m in Sources */,
@@ -9620,6 +9689,7 @@
 				FC7641201B15E2820034A8F1 /* ProfileEditForm.m in Sources */,
 				FC7641CE1B15E2820034A8F1 /* GenerateHost.m in Sources */,
 				FC7642221B15E2820034A8F1 /* ContactUsViewController.m in Sources */,
+				4501687B1B37CA1A00BB08C7 /* AddressCity.m in Sources */,
 				FC7642911B15E2830034A8F1 /* InboxMessageViewController.m in Sources */,
 				FC7643AF1B15E2830034A8F1 /* SortCell.m in Sources */,
 				FC36DF9319B0656400AF74C1 /* main.m in Sources */,

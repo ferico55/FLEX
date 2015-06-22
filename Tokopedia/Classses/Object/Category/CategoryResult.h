@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CategoryList.h"
 
 @interface CategoryResult : NSObject
+
+@property (nonatomic, strong) NSArray *list;
+
 
 @end
