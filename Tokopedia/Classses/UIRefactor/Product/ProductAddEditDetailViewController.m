@@ -392,7 +392,7 @@
         case 0:
             cell = _section0TableViewCell[indexPath.row];
             if (indexPath.row == BUTTON_PRODUCT_INSURANCE) {
-                NSString *productMustInsurance =[ARRAY_PRODUCT_INSURACE[([product.product_must_insurance integerValue]-1>0)?[product.product_must_insurance integerValue]-1:0]objectForKey:DATA_NAME_KEY];
+                NSString *productMustInsurance =[ARRAY_PRODUCT_INSURACE[([product.product_must_insurance integerValue]>0)?[product.product_must_insurance integerValue]:0]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productMustInsurance;
             }
             if (indexPath.row == BUTTON_PRODUCT_RETURNABLE) {
