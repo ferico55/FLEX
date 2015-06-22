@@ -282,6 +282,8 @@
         }
     }
 }
+
+
 - (IBAction)gesture:(id)sender {
     [_activetextfield resignFirstResponder];
     [_activetextview resignFirstResponder];
@@ -501,15 +503,15 @@
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_POSTAL_CODE];
     }
-    if (!district) {
+    if (!district || [district isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_SUB_DISTRIC];
     }
-    if (!prov) {
+    if (!prov || [prov isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_PROVINCE];
     }
-    if (!city) {
+    if (!city || [city isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_REGECY];
     }
@@ -517,7 +519,7 @@
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_RECIEPIENT_PHONE];
     }
-    if (phone.length < MINIMUM_PHONE_CHARACTER_COUNT) {
+    else if (phone.length < MINIMUM_PHONE_CHARACTER_COUNT) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
     }
