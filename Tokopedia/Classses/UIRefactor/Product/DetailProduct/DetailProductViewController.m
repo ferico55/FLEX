@@ -2098,6 +2098,16 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (void)setBackgroundPriceAlert:(BOOL)isActive
+{
+    if(isActive) {
+//        btnPriceAlert
+    }
+    else {
+    
+    }
+}
+
 - (void)setRequestingAction:(UIButton *)tempBtn isLoading:(BOOL)isLoading
 {
     if(isLoading) {
