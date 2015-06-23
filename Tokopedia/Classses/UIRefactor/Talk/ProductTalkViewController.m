@@ -123,7 +123,7 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _table.tableHeaderView = _header;
     
