@@ -54,6 +54,7 @@
     __weak RKObjectManager *_objectmanager;
     
     NSString *_persistToken;
+    NSString *_persistBaseUrl;
     
     UIAlertView *_logingOutAlertView;
 }
@@ -521,6 +522,7 @@ typedef enum TagRequest {
 {
     _userManager = [UserAuthentificationManager new];
     _persistToken = [_userManager getMyDeviceToken]; //token device from ios
+
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar ?"
                                                         message:nil
                                                        delegate:self
@@ -556,10 +558,14 @@ typedef enum TagRequest {
 //    [_cacheController clearCache];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTraktBaseURLString;
+    
     [storage resetKeychain];
     [_auth removeAllObjects];
     
     [storage setKeychainWithValue:_persistToken withKey:@"device_token"];
+    [storage setKeychainWithValue:_persistBaseUrl withKey:@"AppBaseUrl"];
+    
     [self removeCacheUser];
     
     [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;

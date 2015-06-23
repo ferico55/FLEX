@@ -137,6 +137,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -146,6 +147,7 @@
             <string>GothamLight</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -996,6 +998,48 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Po4-9A-stq" style="IBUITableViewCellStyleDefault" id="Uo4-SJ-Szu">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uo4-SJ-Szu" id="p1F-LY-yV8">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tHp-Wd-r11">
+                                                    <rect key="frame" x="73" y="7" width="176" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BaseUrl :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Po4-9A-stq">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                                    <color key="textColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6uW-R2-xay">
+                                                    <rect key="frame" x="263" y="7" width="46" height="30"/>
+                                                    <color key="backgroundColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                                    <state key="normal" title="Ganti">
+                                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="actionSetBaseUrl:" destination="zwO-iX-RIY" eventType="touchUpInside" id="w9c-34-CKe"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="tHp-Wd-r11" firstAttribute="leading" secondItem="p1F-LY-yV8" secondAttribute="leadingMargin" constant="65" id="Gr9-Pz-WaY"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="tHp-Wd-r11" secondAttribute="trailing" constant="63" id="b0V-vD-mpG"/>
+                                                <constraint firstItem="6uW-R2-xay" firstAttribute="bottom" secondItem="tHp-Wd-r11" secondAttribute="bottom" id="bGl-NI-ogm"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="6uW-R2-xay" secondAttribute="trailing" constant="-4" id="dfN-oV-yYd"/>
+                                                <constraint firstItem="tHp-Wd-r11" firstAttribute="top" secondItem="p1F-LY-yV8" secondAttribute="topMargin" constant="-1" id="gpq-7x-QD2"/>
+                                                <constraint firstItem="6uW-R2-xay" firstAttribute="leading" secondItem="tHp-Wd-r11" secondAttribute="trailing" constant="14" id="pJx-G6-yDs"/>
+                                                <constraint firstItem="6uW-R2-xay" firstAttribute="top" secondItem="tHp-Wd-r11" secondAttribute="top" id="sMh-Mx-Lji"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -1008,6 +1052,8 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="PLj-mS-IUX"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="baseUrlField" destination="tHp-Wd-r11" id="UOZ-qI-R7g"/>
+                        <outlet property="changeBaseUrlButton" destination="6uW-R2-xay" id="0u3-rs-8D1"/>
                         <outlet property="createShopButton" destination="ojV-HK-y8A" id="aj1-gK-SCD"/>
                         <outlet property="depositLabel" destination="P4a-Ew-kRS" id="b28-bD-Mp9"/>
                         <outlet property="fullNameLabel" destination="zS1-Sd-l5d" id="4rB-zu-sqS"/>

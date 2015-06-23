@@ -86,6 +86,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *createShopButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSaldo;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shopCell;
+@property (weak, nonatomic) IBOutlet UITextField *baseUrlField;
+@property (weak, nonatomic) IBOutlet UIButton *changeBaseUrlButton;
 
 @end
 
@@ -163,6 +165,7 @@
     //Load Deposit
     _depositLabel.hidden = YES;
     _loadingSaldo.hidden = NO;
+    _baseUrlField.text = [_auth objectForKey:@"AppBaseUrl"]?:kTraktBaseURLString;
     
     [self updateSaldoTokopedia:nil];
     [self setShopImage];
@@ -500,7 +503,12 @@
             break;
             
         case 7 :
+#ifdef DEBUG
+            return 2;
+#else
             return 1;
+#endif
+
             break;
             
         default:
@@ -867,9 +875,17 @@
 
 #pragma mark - Action
 - (IBAction)actionSetBaseUrl:(id)sender {
-    if(_) {
-        
+    if([_baseUrlField.text isEqualToString:@""]) {
+        return;
     }
+
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:_baseUrlField.text withKey:@"AppBaseUrl"];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                                                        object:nil
+                                                      userInfo:@{}];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didChangeBaseUrl" object:nil];
 }
 
