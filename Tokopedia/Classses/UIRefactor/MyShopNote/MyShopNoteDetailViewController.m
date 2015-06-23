@@ -13,6 +13,7 @@
 #import "URLCacheController.h"
 #import "TKPDTextView.h"
 #import "UserAuthentificationManager.h"
+#import "DetailShopResult.h"
 
 #pragma mark - MyShopNoteDetailViewController
 
@@ -281,11 +282,13 @@
                 MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
                 vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 vc.delegate = self;
+                vc.noteList = _noteList;
                 vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
                             kTKPDDETAIL_DATANOTEKEY : _note?:@"",
                             kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@(0),
-                            kTKPDNOTES_APINOTESTATUSKEY : [_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY]
+                            kTKPDNOTES_APINOTESTATUSKEY : [_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY],
+                            kTKPD_SHOPIDKEY : [_data objectForKey:kTKPD_SHOPIDKEY]?:@"",
                             };
                 
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -504,6 +507,7 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 
                 NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
+                contentNote = [contentNote stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
                 
                 if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
                     _isNewNoteReturnableProduct = YES;
@@ -753,8 +757,16 @@
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                     [alert show];
                 
-                    if ([_delegate respondsToSelector:@selector(successEditNote:text:)]) {
-                        [_delegate successEditNote:_titleNoteTextField.text text:_contentNoteTextView.text];
+                    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+                        if ([_delegate respondsToSelector:@selector(successCreateNewNote)]) {
+                            [_delegate successCreateNewNote];
+                        }
+                    } else {
+                        if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
+                            _noteList.note_title = _titleNoteTextField.text;
+                            _noteList.note_status = _contentNoteTextView.text;
+                            [_delegate successEditNote:_noteList];
+                        }
                     }
                     
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -857,7 +869,9 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
-                NSData *data = [_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding];
+                NSString *note = _note.result.detail.notes_content;
+                note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+                NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
                                                                                                       options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                                                                                            documentAttributes:nil
@@ -896,7 +910,9 @@
                 style.lineSpacing = 6.0;
                 
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                NSData *data = [_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding];
+                NSString *note = _note.result.detail.notes_content;
+                note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+                NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
                                                                                                       options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                                                                                            documentAttributes:nil
@@ -1003,12 +1019,20 @@
 
 #pragma mark - My shop note delegate
 
-- (void)successEditNote:(NSString *)title text:(NSString *)text
+- (void)successEditNote:(NotesList *)noteList
 {
-    _titleLabel.text = title;
+    _noteList = noteList;
+ 
+    self.title = _noteList.note_title;
+
+    _titleLabel.text = _noteList.note_title;
     [_titleLabel sizeToFit];
     
-    _contentNoteTextView.text = text;
+    _contentNoteTextView.text = _noteList.note_status;
+    
+    if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
+        [_delegate successEditNote:_noteList];
+    }
 }
 
 @end

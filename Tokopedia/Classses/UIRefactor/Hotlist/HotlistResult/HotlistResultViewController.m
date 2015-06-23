@@ -565,9 +565,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton*)sender;
-        // buttons tag >=20 are tags untuk hashtags
         if (button.tag >=20) {
-            //TODO::
             NSArray *hashtagsarray = _hotlistdetail.result.hashtags;
             Hashtags *hashtags = hashtagsarray[button.tag - 20];
             
@@ -584,9 +582,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
                 vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
                 NSArray *viewcontrollers = @[vc,vc1,vc2];
-                
+
+                NSMutableDictionary *data = [NSMutableDictionary dictionaryWithDictionary:@{kTKPDHASHTAG_HOTLIST: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDCATEGORY_DATADEPARTMENTIDKEY : hashtags.department_id}];
                 TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-                [c setData:@{kTKPDHASHTAG_HOTLIST: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)}];
+                [c setData:data];
                 [c setNavigationTitle:hashtags.name];
                 [c setSelectedIndex:0];
                 [c setViewControllers:viewcontrollers];
