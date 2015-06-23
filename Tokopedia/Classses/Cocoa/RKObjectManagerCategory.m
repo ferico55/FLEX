@@ -12,16 +12,19 @@
 // Set this to your Trakt API Key
 NSString * const kTraktAPIKey = @"8b0c367dd3ef0860f5730ec64e3bbdc9";
 NSString * const kTraktBaseURLString = kTkpdBaseURLString;
+static RKObjectManager *_sharedClient = nil;
 
 @implementation RKObjectManager (TkpdCategory)
 
 + (RKObjectManager *)sharedClient {
-    static RKObjectManager *_sharedClient = nil;
     
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLString]];
     });
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
+    
     return _sharedClient;
 }
 
@@ -33,6 +36,15 @@ NSString * const kTraktBaseURLString = kTkpdBaseURLString;
         _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseURLString]];
     });
     return _sharedClient;
+}
+
++ (void)refreshBaseUrl {
+//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    TAGContainer *container = appDelegate.container;
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *data = [secureStorage keychainDictionary];
+
+    _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[data objectForKey:@"AppBaseUrl"]?:kTraktBaseURLString]];
 }
 
 

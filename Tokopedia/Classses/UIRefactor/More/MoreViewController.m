@@ -866,6 +866,13 @@
 
 
 #pragma mark - Action
+- (IBAction)actionSetBaseUrl:(id)sender {
+    if(_) {
+        
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didChangeBaseUrl" object:nil];
+}
+
 - (IBAction)actionCreateShop:(id)sender
 {
     CreateShopViewController *createShopViewController = [CreateShopViewController new];
