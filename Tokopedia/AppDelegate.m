@@ -17,6 +17,10 @@
 #import "AppsFlyerTracker.h"
 
 
+@interface AppDelegate ()<TAGContainerOpenerNotifier>
+
+@end
+
 @implementation AppDelegate
 
 @synthesize viewController = _viewController;
@@ -31,6 +35,15 @@
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
+    
+    _tagManager = [TAGManager instance];
+    [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
+    
+    [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
+                                 tagManager:self.tagManager
+                                   openType:kTAGOpenTypePreferFresh
+                                    timeout:nil
+                                   notifier:self];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         //appsflyer init
@@ -118,6 +131,14 @@
         TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
         [storage resetKeychain];
     }
+}
+
+- (void)containerAvailable:(TAGContainer *)container {
+    // Note that containerAvailable may be called on any thread, so you may need to dispatch back to
+    // your main thread.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.container = container;
+    });
 }
 
 @end

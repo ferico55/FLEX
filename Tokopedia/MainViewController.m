@@ -56,6 +56,7 @@
     NSString *_persistToken;
     
     UIAlertView *_logingOutAlertView;
+    NSTimer *_containerTimer;
 }
 
 @end
@@ -111,6 +112,9 @@ typedef enum TagRequest {
     [center addObserver:self
                selector:@selector(updateTabBarMore:)
                    name:UPDATE_TABBAR object:nil];
+    
+    //refresh timer for GTM Container
+    _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
     
 }
 
@@ -711,5 +715,12 @@ typedef enum TagRequest {
     [self doApplicationLogout];
 }
 
+- (void)didRefreshContainer:(NSTimer*)timer {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
+    [container refresh];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didRefreshGTM" object:nil];
+}
 
 @end

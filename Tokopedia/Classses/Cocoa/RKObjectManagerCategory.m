@@ -11,17 +11,24 @@
 
 // Set this to your Trakt API Key
 NSString * const kTraktAPIKey = @"8b0c367dd3ef0860f5730ec64e3bbdc9";
-NSString * const kTraktBaseURLString = kTkpdBaseURLString;
+//NSString * const kTraktBaseURLString = kTkpdBaseURLString;
+static RKObjectManager *_sharedClient = nil;
 
 @implementation RKObjectManager (TkpdCategory)
 
 + (RKObjectManager *)sharedClient {
-    static RKObjectManager *_sharedClient = nil;
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
+    
+
     
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLString]];
+        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[container stringForKey:@"base_url"]]];
     });
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshClient) name:@"didRefreshGTM" object:nil];
+
     return _sharedClient;
 }
 
@@ -33,6 +40,13 @@ NSString * const kTraktBaseURLString = kTkpdBaseURLString;
         _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseURLString]];
     });
     return _sharedClient;
+}
+
++ (void)refreshClient {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
+
+    _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[container stringForKey:@"base_url"]]];
 }
 
 
