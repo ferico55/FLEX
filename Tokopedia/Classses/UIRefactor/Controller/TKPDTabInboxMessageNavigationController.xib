@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabInboxMessageNavigationController">
@@ -32,8 +32,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KI5-qt-OAg">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Mda-ty-KT2">
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Mda-ty-KT2">
                             <rect key="frame" x="8" y="16" width="304" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="zYA-hu-reD"/>
+                            </constraints>
                             <segments>
                                 <segment title="Inbox"/>
                                 <segment title="Terkirim"/>
@@ -46,6 +49,11 @@
                         </segmentedControl>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="Mda-ty-KT2" secondAttribute="trailing" constant="8" id="StP-kW-OFX"/>
+                        <constraint firstItem="Mda-ty-KT2" firstAttribute="leading" secondItem="KI5-qt-OAg" secondAttribute="leading" constant="8" id="XJo-2o-gSi"/>
+                        <constraint firstItem="Mda-ty-KT2" firstAttribute="top" secondItem="KI5-qt-OAg" secondAttribute="top" constant="16" id="YQn-Dl-qRw"/>
+                    </constraints>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HIc-y5-HzX">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>

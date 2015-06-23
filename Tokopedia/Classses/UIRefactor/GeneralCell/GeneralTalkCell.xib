@@ -20,7 +20,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GeneralTalkCellIdentifier" rowHeight="209" id="KGk-i7-Jjw" customClass="GeneralTalkCell">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GeneralTalkCellIdentifier" rowHeight="224" id="KGk-i7-Jjw" customClass="GeneralTalkCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="224"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -28,7 +28,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hGR-0U-1Pc" userLabel="Sub Content View">
-                        <rect key="frame" x="10" y="10" width="300" height="203.5"/>
+                        <rect key="frame" x="10" y="10" width="300" height="204"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fc-in-38T" userLabel="View Top">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="60"/>
@@ -210,13 +210,10 @@
                                     <action selector="tap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9pH-C1-J32"/>
                                 </connections>
                             </button>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="Oqa-zP-9jh">
-                                <rect key="frame" x="-10" y="-9" width="40" height="40"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="RLW-fv-Vyh" firstAttribute="top" secondItem="hGR-0U-1Pc" secondAttribute="top" constant="164" id="8Nc-5D-bMC"/>
+                            <constraint firstAttribute="bottom" secondItem="RLW-fv-Vyh" secondAttribute="bottom" id="ElY-IR-SeY"/>
                             <constraint firstItem="vha-Ji-1ch" firstAttribute="top" secondItem="hGR-0U-1Pc" secondAttribute="top" constant="70" id="Kb8-0E-1gh"/>
                             <constraint firstAttribute="trailing" secondItem="vha-Ji-1ch" secondAttribute="trailing" id="LW9-Ux-x49"/>
                             <constraint firstAttribute="trailing" secondItem="0fc-in-38T" secondAttribute="trailing" id="Oz5-Yo-hZw"/>
@@ -229,6 +226,13 @@
                             <constraint firstItem="0fc-in-38T" firstAttribute="top" secondItem="hGR-0U-1Pc" secondAttribute="top" id="yeP-Wd-iRf"/>
                         </constraints>
                     </view>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="Oqa-zP-9jh">
+                        <rect key="frame" x="5" y="5" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="dnb-QM-p8E"/>
+                            <constraint firstAttribute="width" constant="20" id="i7x-j9-V9w"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
@@ -236,7 +240,9 @@
                     <constraint firstItem="hGR-0U-1Pc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="4nA-WX-Fia"/>
                     <constraint firstItem="hGR-0U-1Pc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="CgW-JK-APG"/>
                     <constraint firstAttribute="trailing" secondItem="hGR-0U-1Pc" secondAttribute="trailing" constant="10" id="OGe-pX-sY2"/>
+                    <constraint firstItem="Oqa-zP-9jh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="Skk-p5-LSD"/>
                     <constraint firstItem="hGR-0U-1Pc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="XmC-a4-dE7"/>
+                    <constraint firstItem="Oqa-zP-9jh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="a7n-qg-kCy"/>
                     <constraint firstAttribute="bottom" secondItem="hGR-0U-1Pc" secondAttribute="bottom" constant="10" id="oUn-vI-0mI"/>
                 </constraints>
             </tableViewCellContentView>
@@ -246,6 +252,7 @@
                 <outlet property="buttonsView" destination="RLW-fv-Vyh" id="wSd-Jr-hve"/>
                 <outlet property="commentbutton" destination="XgT-YB-IIV" id="aX2-2Y-94T"/>
                 <outlet property="commentlabel" destination="h7v-ML-7J6" id="PEi-30-YfB"/>
+                <outlet property="equalWidthConstraint" destination="ZFN-DN-3bc" id="j1a-Uo-MMp"/>
                 <outlet property="middleView" destination="vha-Ji-1ch" id="IF0-QP-k4I"/>
                 <outlet property="moreActionButton" destination="a6p-Q1-IF0" id="w2J-J7-03Z"/>
                 <outlet property="productButton" destination="JiO-N2-7Yl" id="h7R-ho-dWJ"/>

@@ -24,6 +24,7 @@
 
 @interface GeneralTalkCell () <UIActionSheetDelegate> {
     NavigateViewController *_navigateController;
+    __weak IBOutlet NSLayoutConstraint *equalWidthConstraint;
 }
 
 @end
@@ -261,6 +262,5 @@
     }
 
 }
-
 
 @end
