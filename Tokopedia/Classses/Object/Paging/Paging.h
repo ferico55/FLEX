@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#define CUriNext @"uri_next"
+#define CUriPrevious @"uri_previous"
 
 @interface Paging : NSObject
 

@@ -212,7 +212,7 @@ typedef enum
 #define CStringEtalase @"Etalase"
 #define CStringAllEtalase @"All Etalase"
 #define CStringAllProduct @"All Products"
-#define CStringAllCategory @"All Category"
+#define CStringAllCategory @"Semua Kategori"
 
 #define ERRORMESSAGE_NULL_PRODUCT_NAME @"Nama Produk harus diisi"
 #define ERRORMESSAGE_NULL_PRICE @"Harga harus diisi"

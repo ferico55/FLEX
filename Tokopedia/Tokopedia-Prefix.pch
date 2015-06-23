@@ -5,9 +5,18 @@
 //
 
 #import <Availability.h>
+#ifndef Constant
+#define Constant
+#define degreeToRadian(x) (M_PI*(x) /180)
+
 #define CStringLastCheckVerify @"lastCheckVerify"
 #define CStringMSISDNIsVerify @"msisdnIsVerify"
 #define CStringMSISDN @"msisdn"
+#define CStringFailedInServer @"Mohon maaf, terjadi kendala pada server"
+#define CStringNoConnection @"Tidak ada koneksi internet"
+#define CPriceAlertCell @"PriceAlertCell"
+#define CDetailPriceAlertTableViewCell @"DetailPriceAlertTableViewCell"
+#endif
 
 #ifndef __IPHONE_3_0
 #warning "This project uses features only available in iOS SDK 3.0 and later."

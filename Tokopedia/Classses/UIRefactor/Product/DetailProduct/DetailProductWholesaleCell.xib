@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,7 +13,7 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N7m-sV-I2N" id="ahJ-at-RUl">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Z8E-ix-6ZJ">
+                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Z8E-ix-6ZJ">
                         <rect key="frame" x="10" y="19" width="300" height="176"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
@@ -24,6 +24,12 @@
                         </connections>
                     </tableView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="Z8E-ix-6ZJ" firstAttribute="top" secondItem="ahJ-at-RUl" secondAttribute="top" constant="19" id="6dy-rx-2jf"/>
+                    <constraint firstAttribute="trailing" secondItem="Z8E-ix-6ZJ" secondAttribute="trailing" constant="10" id="khC-aC-gDn"/>
+                    <constraint firstAttribute="bottom" secondItem="Z8E-ix-6ZJ" secondAttribute="bottom" constant="33" id="mtI-q8-skF"/>
+                    <constraint firstItem="Z8E-ix-6ZJ" firstAttribute="leading" secondItem="ahJ-at-RUl" secondAttribute="leading" constant="10" id="wRL-S4-a3b"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="tabel" destination="Z8E-ix-6ZJ" id="Y3w-fu-Mx8"/>

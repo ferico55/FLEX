@@ -5,6 +5,7 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
@@ -290,7 +291,10 @@
         if(profileInfo.result.shop_info!=nil && profileInfo.result.shop_info.shop_avatar!=nil && ![profileInfo.result.shop_info.shop_avatar isEqualToString:@""]) {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             if(secureStorage != nil) {
-                [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                
+                if(profileInfo.result.shop_info.shop_avatar != nil) {
+                    [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                }
                 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:profileInfo.result.shop_info.shop_avatar]
                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                           timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -488,7 +492,7 @@
             break;
             
         case 4:
-            return 4;
+            return 5;
             break;
             
         case 5:
@@ -654,12 +658,10 @@
 //            [self.navigationController pushViewController:controller animated:YES];
             
         } else if (indexPath.row  == 4) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-            
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
         }
-        
     }
     
     else if (indexPath.section == 5) {
