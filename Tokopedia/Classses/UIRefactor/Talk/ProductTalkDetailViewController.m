@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#define CHeightUserLabel 21
 #import "ProductTalkDetailViewController.h"
 #import "TalkComment.h"
 #import "detail.h"
@@ -33,6 +34,7 @@
 #import "InboxTalkViewController.h"
 #import "UserContainerViewController.h"
 
+#import "string_inbox_message.h"
 #import "stringrestkit.h"
 #import "string_more.h"
 #import "string_inbox_talk.h"
@@ -282,6 +284,7 @@
 #endif
 }
 
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TalkCommentList *list = _list[indexPath.row];
@@ -300,6 +303,7 @@
         if (cell == nil) {
             cell = [GeneralTalkCommentCell newcell];
             ((GeneralTalkCommentCell*)cell).delegate = self;
+            [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:15.0f]];
         }
         
         if (_list.count > indexPath.row) {
@@ -325,6 +329,24 @@
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
+            
+            
+            //Set user label
+            if([list.comment_user_label isEqualToString:CPenjual]) {
+                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPenjual];
+            }
+            else if([list.comment_user_label isEqualToString:CPembeli]) {
+                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPembeli];
+            }
+            else if([list.comment_user_label isEqualToString:CAdministrator]) {
+                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagAdministrator];
+            }
+            else if([list.comment_user_label isEqualToString:CPengguna]) {
+                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPengguna];
+            }
+            else {
+                [((GeneralTalkCommentCell*)cell).user_name setColor:-1];//-1 is set to empty string
+            }
             
 
             
@@ -583,7 +605,9 @@
                                                  TKPD_TALK_COMMENT_CREATETIME,
                                                  TKPD_TALK_COMMENT_USERIMG,
                                                  TKPD_TALK_COMMENT_USERNAME,
-                                                 TKPD_TALK_COMMENT_USERID
+                                                 TKPD_TALK_COMMENT_USERID,
+                                                 TKPD_TALK_COMMENT_USER_LABEL,
+                                                 TKPD_TALK_COMMENT_USER_LABEL_ID
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

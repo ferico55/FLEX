@@ -141,9 +141,9 @@
 
 -(IBAction)tap:(id)sender
 {
+    NSIndexPath* indexpath = _indexpath;
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton *)sender;
-        NSIndexPath* indexpath = _indexpath;
         switch (btn.tag) {
             case 10:
             {
@@ -169,17 +169,6 @@
                 [_delegate deleteTalk:self withindexpath:indexpath];
                 break;
             }
-            //click user
-            case 14 :
-            {
-                TalkList *talkList = (TalkList *)_data;
-
-                UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
-                NSString *userId = [NSString stringWithFormat:@"%d", talkList.talk_user_id];
-                [_navigateController navigateToProfileFromViewController:nav withUserID:userId];
-                break;
-            }
-                
             //click product
             case 15 :
             {
@@ -229,6 +218,14 @@
             default:
                 break;
         }
+    }
+    else if([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        //click user
+        TalkList *talkList = (TalkList *)_data;
+        
+        UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+        NSString *userId = [NSString stringWithFormat:@"%d", talkList.talk_user_id];
+        [_navigateController navigateToProfileFromViewController:nav withUserID:userId];
     }
 }
 
