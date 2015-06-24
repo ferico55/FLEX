@@ -267,6 +267,7 @@
                 newFrame.origin.x = 0;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = NO;
+                [((GeneralTalkCell *)cell) setTalkFollowStatus:YES];
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
@@ -275,6 +276,7 @@
                 newFrame.origin.x = 75;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
+                [((GeneralTalkCell *)cell) setTalkFollowStatus:NO];
             }
             
             if([list.talk_read_status isEqualToString:@"1"]) {
@@ -689,6 +691,7 @@
                             kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                             TKPD_TALK_ID:list.talk_id?:@0,
+                            @"shop_id":list.talk_shop_id
                             };
     
     _requestUnfollowCount ++;
