@@ -724,8 +724,6 @@
 		45E7FD2D1B2FE8C2007D51A0 /* InboxReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F63E1B2FE8C0007D51A0 /* InboxReviewViewController.xib */; };
 		45E7FD2E1B2FE8C2007D51A0 /* ReviewFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F6401B2FE8C0007D51A0 /* ReviewFormViewController.m */; };
 		45E7FD2F1B2FE8C2007D51A0 /* ReviewFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F6411B2FE8C0007D51A0 /* ReviewFormViewController.xib */; };
-		45E7FD301B2FE8C2007D51A0 /* InboxTalkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F6451B2FE8C0007D51A0 /* InboxTalkCell.m */; };
-		45E7FD311B2FE8C2007D51A0 /* InboxTalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F6461B2FE8C0007D51A0 /* InboxTalkCell.xib */; };
 		45E7FD321B2FE8C2007D51A0 /* InboxTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F6481B2FE8C0007D51A0 /* InboxTalkViewController.m */; };
 		45E7FD331B2FE8C2007D51A0 /* InboxTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F6491B2FE8C0007D51A0 /* InboxTalkViewController.xib */; };
 		45E7FD341B2FE8C2007D51A0 /* MoreNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F64E1B2FE8C0007D51A0 /* MoreNavigationController.m */; };
@@ -790,7 +788,6 @@
 		45E7FD6F1B2FE8C2007D51A0 /* ProductReviewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F6BE1B2FE8C0007D51A0 /* ProductReviewDetailViewController.xib */; };
 		45E7FD701B2FE8C2007D51A0 /* ProductReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F6C01B2FE8C0007D51A0 /* ProductReviewViewController.m */; };
 		45E7FD711B2FE8C2007D51A0 /* ProductReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F6C11B2FE8C0007D51A0 /* ProductReviewViewController.xib */; };
-		45E7FD721B2FE8C2007D51A0 /* ProductTalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F6C31B2FE8C0007D51A0 /* ProductTalkCell.xib */; };
 		45E7FD731B2FE8C2007D51A0 /* ProductTalkDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F6C41B2FE8C0007D51A0 /* ProductTalkDetailViewController.xib */; };
 		45E7FD741B2FE8C2007D51A0 /* ProductTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F6C51B2FE8C0007D51A0 /* ProductTalkViewController.xib */; };
 		45E7FD751B2FE8C2007D51A0 /* ProductAddEditDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F6C71B2FE8C0007D51A0 /* ProductAddEditDetailViewController.m */; };
@@ -991,7 +988,6 @@
 		45E7FE381B2FE8C2007D51A0 /* SortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F8211B2FE8C0007D51A0 /* SortCell.xib */; };
 		45E7FE391B2FE8C2007D51A0 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F8231B2FE8C0007D51A0 /* SortViewController.m */; };
 		45E7FE3A1B2FE8C2007D51A0 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F8241B2FE8C0007D51A0 /* SortViewController.xib */; };
-		45E7FE3B1B2FE8C2007D51A0 /* ProductTalkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F8281B2FE8C0007D51A0 /* ProductTalkCell.m */; };
 		45E7FE3C1B2FE8C2007D51A0 /* ProductTalkDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F82A1B2FE8C0007D51A0 /* ProductTalkDetailViewController.m */; };
 		45E7FE3D1B2FE8C2007D51A0 /* ProductTalkFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E7F82C1B2FE8C0007D51A0 /* ProductTalkFormViewController.m */; };
 		45E7FE3E1B2FE8C2007D51A0 /* ProductTalkFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45E7F82D1B2FE8C0007D51A0 /* ProductTalkFormViewController.xib */; };
@@ -2556,9 +2552,6 @@
 		45E7F6401B2FE8C0007D51A0 /* ReviewFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewFormViewController.m; sourceTree = "<group>"; };
 		45E7F6411B2FE8C0007D51A0 /* ReviewFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewFormViewController.xib; sourceTree = "<group>"; };
 		45E7F6421B2FE8C0007D51A0 /* string_inbox_review.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_review.h; sourceTree = "<group>"; };
-		45E7F6441B2FE8C0007D51A0 /* InboxTalkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkCell.h; sourceTree = "<group>"; };
-		45E7F6451B2FE8C0007D51A0 /* InboxTalkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalkCell.m; sourceTree = "<group>"; };
-		45E7F6461B2FE8C0007D51A0 /* InboxTalkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTalkCell.xib; sourceTree = "<group>"; };
 		45E7F6471B2FE8C0007D51A0 /* InboxTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkViewController.h; sourceTree = "<group>"; };
 		45E7F6481B2FE8C0007D51A0 /* InboxTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalkViewController.m; sourceTree = "<group>"; };
 		45E7F6491B2FE8C0007D51A0 /* InboxTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTalkViewController.xib; sourceTree = "<group>"; };
@@ -2669,7 +2662,6 @@
 		45E7F6BF1B2FE8C0007D51A0 /* ProductReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductReviewViewController.h; sourceTree = "<group>"; };
 		45E7F6C01B2FE8C0007D51A0 /* ProductReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductReviewViewController.m; sourceTree = "<group>"; };
 		45E7F6C11B2FE8C0007D51A0 /* ProductReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReviewViewController.xib; sourceTree = "<group>"; };
-		45E7F6C31B2FE8C0007D51A0 /* ProductTalkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkCell.xib; sourceTree = "<group>"; };
 		45E7F6C41B2FE8C0007D51A0 /* ProductTalkDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkDetailViewController.xib; sourceTree = "<group>"; };
 		45E7F6C51B2FE8C0007D51A0 /* ProductTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkViewController.xib; sourceTree = "<group>"; };
 		45E7F6C61B2FE8C0007D51A0 /* ProductAddEditDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductAddEditDetailViewController.h; sourceTree = "<group>"; };
@@ -2982,8 +2974,6 @@
 		45E7F8231B2FE8C0007D51A0 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		45E7F8241B2FE8C0007D51A0 /* SortViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortViewController.xib; sourceTree = "<group>"; };
 		45E7F8251B2FE8C0007D51A0 /* sortfiltershare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sortfiltershare.h; sourceTree = "<group>"; };
-		45E7F8271B2FE8C0007D51A0 /* ProductTalkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkCell.h; sourceTree = "<group>"; };
-		45E7F8281B2FE8C0007D51A0 /* ProductTalkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkCell.m; sourceTree = "<group>"; };
 		45E7F8291B2FE8C0007D51A0 /* ProductTalkDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkDetailViewController.h; sourceTree = "<group>"; };
 		45E7F82A1B2FE8C0007D51A0 /* ProductTalkDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkDetailViewController.m; sourceTree = "<group>"; };
 		45E7F82B1B2FE8C0007D51A0 /* ProductTalkFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkFormViewController.h; sourceTree = "<group>"; };
@@ -5935,9 +5925,6 @@
 		45E7F6431B2FE8C0007D51A0 /* InboxTalk */ = {
 			isa = PBXGroup;
 			children = (
-				45E7F6441B2FE8C0007D51A0 /* InboxTalkCell.h */,
-				45E7F6451B2FE8C0007D51A0 /* InboxTalkCell.m */,
-				45E7F6461B2FE8C0007D51A0 /* InboxTalkCell.xib */,
 				45E7F6471B2FE8C0007D51A0 /* InboxTalkViewController.h */,
 				45E7F6481B2FE8C0007D51A0 /* InboxTalkViewController.m */,
 				45E7F6491B2FE8C0007D51A0 /* InboxTalkViewController.xib */,
@@ -6178,7 +6165,6 @@
 		45E7F6C21B2FE8C0007D51A0 /* Talk */ = {
 			isa = PBXGroup;
 			children = (
-				45E7F6C31B2FE8C0007D51A0 /* ProductTalkCell.xib */,
 				45E7F6C41B2FE8C0007D51A0 /* ProductTalkDetailViewController.xib */,
 				45E7F6C51B2FE8C0007D51A0 /* ProductTalkViewController.xib */,
 			);
@@ -6801,8 +6787,6 @@
 		45E7F8261B2FE8C0007D51A0 /* Talk */ = {
 			isa = PBXGroup;
 			children = (
-				45E7F8271B2FE8C0007D51A0 /* ProductTalkCell.h */,
-				45E7F8281B2FE8C0007D51A0 /* ProductTalkCell.m */,
 				45E7F8291B2FE8C0007D51A0 /* ProductTalkDetailViewController.h */,
 				45E7F82A1B2FE8C0007D51A0 /* ProductTalkDetailViewController.m */,
 				45E7F82B1B2FE8C0007D51A0 /* ProductTalkFormViewController.h */,
@@ -8701,11 +8685,9 @@
 				45E7FF491B2FE8C2007D51A0 /* icon_diskusi_report_grey.png in Resources */,
 				45E7004B1B2FE8C2007D51A0 /* icon_cart@2x.png in Resources */,
 				45E700421B2FE8C2007D51A0 /* ic_category.png in Resources */,
-				45E7FD721B2FE8C2007D51A0 /* ProductTalkCell.xib in Resources */,
 				45E7FE6B1B2FE8C2007D51A0 /* TxOrderStatusViewController.xib in Resources */,
 				45E7FD8D1B2FE8C2007D51A0 /* ReputationDetailViewController.xib in Resources */,
 				45E7FFB01B2FE8C2007D51A0 /* icon_shop.png in Resources */,
-				45E7FD311B2FE8C2007D51A0 /* InboxTalkCell.xib in Resources */,
 				45E7FFBE1B2FE8C2007D51A0 /* icon_shop_setting_2x.png in Resources */,
 				45E7FECD1B2FE8C2007D51A0 /* icon_1@2x.png in Resources */,
 				45E7FF151B2FE8C2007D51A0 /* icon_10@3x.png in Resources */,
@@ -9118,7 +9100,6 @@
 				45E7FB9E1B2FE8C2007D51A0 /* ProfileEditResult.m in Sources */,
 				45E7FB731B2FE8C2007D51A0 /* ResolutionConversation.m in Sources */,
 				45E7FDEC1B2FE8C2007D51A0 /* SettingPasswordViewController.m in Sources */,
-				45E7FE3B1B2FE8C2007D51A0 /* ProductTalkCell.m in Sources */,
 				45E7FE911B2FE8C2007D51A0 /* TxOrderTabViewController.m in Sources */,
 				45E7FCF91B2FE8C2007D51A0 /* MyWishlistViewController.m in Sources */,
 				45E7FC941B2FE8C2007D51A0 /* CategoryViewCell.m in Sources */,
@@ -9527,7 +9508,6 @@
 				45E7FDE41B2FE8C2007D51A0 /* SettingBankDetailViewController.m in Sources */,
 				45E7FC551B2FE8C2007D51A0 /* LoginViewController.m in Sources */,
 				45E7FBE91B2FE8C2007D51A0 /* Payment.m in Sources */,
-				45E7FD301B2FE8C2007D51A0 /* InboxTalkCell.m in Sources */,
 				45E7FBFB1B2FE8C2007D51A0 /* POSIndonesia.m in Sources */,
 				45E7FBDD1B2FE8C2007D51A0 /* EtalaseList.m in Sources */,
 				45E7FDEA1B2FE8C2007D51A0 /* SettingNotificationViewController.m in Sources */,
@@ -9619,8 +9599,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -9638,7 +9618,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -9660,8 +9640,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9673,7 +9653,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -9686,8 +9666,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9713,7 +9693,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -9725,8 +9705,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9752,7 +9732,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
