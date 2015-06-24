@@ -11,6 +11,7 @@
 #import "ProductTalkDetailViewController.h"
 #import "GeneralTalkCell.h"
 
+#import "ReportViewController.h"
 #import "Talk.h"
 #import "GeneralAction.h"
 #import "InboxTalk.h"
@@ -31,7 +32,8 @@
     UITableViewDelegate,
     TKPDTabInboxTalkNavigationControllerDelegate,
     GeneralTalkCellDelegate,
-    UIAlertViewDelegate
+    UIAlertViewDelegate,
+    ReportViewControllerDelegate
 >
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -270,7 +272,6 @@
                 [((GeneralTalkCell *)cell) setTalkFollowStatus:YES];
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
                 newFrame.origin.x = 75;
@@ -296,11 +297,13 @@
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
 
-//            if([list.talk_product_status isEqualToString:@"0"]) {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
-//            } else {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
-//            }
+            ((GeneralTalkCell*)cell).reportButton.hidden = YES;
+            if(! [list.talk_own isEqualToString:@"1"]) {
+                if([list.talk_product_status isEqualToString:@"0"]) {
+                    ((GeneralTalkCell*)cell).reportButton.hidden = NO;
+                    ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
+                }
+            }
             
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
@@ -698,8 +701,27 @@
     _requestUnfollow = [_objectUnfollowmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:TKPD_MESSAGE_TALK_ACTION parameters:[param encrypt]];
     
     [_requestUnfollow setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_talkList removeObjectAtIndex:indexpath.row];
-        [_table reloadData];
+        GeneralAction *generalAction = [mappingResult.dictionary objectForKey:@""];
+        if(generalAction.message_error!=nil && generalAction.message_error.count>0) {
+            StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithErrorMessages:generalAction.message_error delegate:self];
+            [stickyAlert show];
+            
+            [_table beginUpdates];
+            [_table reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+            [_table endUpdates];
+        }
+        else {
+            if([self.parentViewController isMemberOfClass:[TKPDTabInboxTalkNavigationController class]]) {
+                TKPDTabInboxTalkNavigationController *inboxTalkNavigationController = (TKPDTabInboxTalkNavigationController *)self.parentViewController;
+                
+                if(inboxTalkNavigationController.viewControllers.count == 3) {
+                    InboxTalkViewController *tempInboxTalkViewController = (inboxTalkNavigationController.selectedIndex==0)? [inboxTalkNavigationController.viewControllers lastObject]:[inboxTalkNavigationController.viewControllers firstObject];
+                    [tempInboxTalkViewController removeData:((TalkList *) [_talkList objectAtIndex:indexpath.row]).talk_id];
+                }
+            }
+            [_talkList removeObjectAtIndex:indexpath.row];
+            [_table reloadData];
+        }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self followAnimateZoomOut:buttonUnfollow];
     }];
@@ -765,6 +787,42 @@
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     return self;
+}
+
+#pragma mark - ReportViewController Delegate
+#pragma mark - Report Delegate
+- (NSDictionary *)getParameter {
+    return @{
+             @"action" : @"report_product_talk",
+             @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0)
+             };
+}
+
+
+- (NSString *)getPath {
+    return @"action/talk.pl";
+}
+
+#pragma mark - Method
+- (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    ReportViewController *_reportController = [ReportViewController new];
+    _reportController.delegate = self;
+    
+    TalkList *talkList = _talkList[indexpath.row];
+    _reportController.strProductID = talkList.talk_product_id;
+    _reportController.strCommentTalkID = talkList.talk_id;
+    [self.navigationController pushViewController:_reportController animated:YES];
+}
+
+- (void)removeData:(NSString *)inboxID
+{
+    for(TalkList *tempTalkList in _talkList) {
+        if([tempTalkList.talk_id isEqual:inboxID]) {
+            [_talkList removeObject:tempTalkList];
+            [_table reloadData];
+            break;
+        }
+    }
 }
 
 #pragma mark - Refresh View 

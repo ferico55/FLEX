@@ -49,6 +49,7 @@
 @property (strong, nonatomic) IBOutlet UIView *buttonsView;
 
 @property (weak, nonatomic) IBOutlet UIButton *unfollowButton;
+@property (weak, nonatomic) IBOutlet UIButton *reportButton;
 @property (weak, nonatomic) IBOutlet UIButton *userButton;
 @property (weak, nonatomic) IBOutlet UIButton *productButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreActionButton;
