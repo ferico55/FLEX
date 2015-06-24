@@ -237,13 +237,13 @@
             [cell.viewLabelUser setColor:CTagPenjual];
         }
         else if([message.user_label isEqualToString:CPembeli]) {
-            [cell.viewLabelUser setColor:CTagPenjual];
+            [cell.viewLabelUser setColor:CTagPembeli];
         }
         else if([message.user_label isEqualToString:CAdministrator]) {
-            [cell.viewLabelUser setColor:CTagPenjual];
+            [cell.viewLabelUser setColor:CTagAdministrator];
         }
         else if([message.user_label isEqualToString:CPengguna]) {
-            [cell.viewLabelUser setColor:CTagPenjual];
+            [cell.viewLabelUser setColor:CTagPengguna];
         }
 
         if([message.message_action isEqualToString:@"1"]) {
