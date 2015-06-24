@@ -306,7 +306,8 @@
                             <exclude reference="mqP-8g-Qyj"/>
                         </mask>
                     </variation>
-                    <variation key="heightClass=regular-widthClass=regular">
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="103.5" y="133" width="113" height="24"/>
                         <mask key="constraints">
                             <exclude reference="izA-1z-5EH"/>
                             <exclude reference="mqP-8g-Qyj"/>
@@ -540,7 +541,7 @@
             <connections>
                 <outletCollection property="gestureRecognizers" destination="MgA-86-nNw" appends="YES" id="HJr-tV-zMC"/>
             </connections>
-            <point key="canvasLocation" x="251" y="189"/>
+            <point key="canvasLocation" x="16" y="-13"/>
         </view>
     </objects>
     <resources>
