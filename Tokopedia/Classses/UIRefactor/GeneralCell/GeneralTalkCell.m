@@ -24,6 +24,7 @@
 
 @interface GeneralTalkCell () <UIActionSheetDelegate> {
     NavigateViewController *_navigateController;
+    __weak IBOutlet NSLayoutConstraint *constraintwidth;
     __weak IBOutlet NSLayoutConstraint *equalWidthConstraint;
 }
 
@@ -65,6 +66,7 @@
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [self.thumb addGestureRecognizer:userGesture];
     [self.thumb setUserInteractionEnabled:YES];
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -260,7 +262,7 @@
     else if (buttonIndex != cancelButtonIndex) {
          [_delegate reportTalk:self withindexpath:_indexpath];
     }
-
 }
+
 
 @end

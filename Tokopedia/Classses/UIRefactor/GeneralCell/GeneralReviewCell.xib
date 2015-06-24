@@ -500,7 +500,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="daO-xV-Sgt" firstAttribute="leading" secondItem="Adz-MB-5mC" secondAttribute="leading" constant="10" id="YKC-oZ-MLv"/>
                     <constraint firstAttribute="trailing" secondItem="daO-xV-Sgt" secondAttribute="trailing" constant="10" id="pUR-1z-ZbL"/>
@@ -508,7 +508,7 @@
                     <constraint firstAttribute="bottom" secondItem="daO-xV-Sgt" secondAttribute="bottom" constant="18.5" id="vdd-gN-i3L"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="accuracyrate" destination="jDO-jl-R7o" id="DSd-z8-cHq"/>
                 <outlet property="commentView" destination="gpj-lX-Gb8" id="hHm-ZA-FAL"/>
