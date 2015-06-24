@@ -238,11 +238,24 @@
         if (_etalaseList.count > indexPath.row) {
             EtalaseList *list =_etalaseList[indexPath.row];
 
-            if ([list.etalase_name isEqualToString:_selectedEtalase.etalase_name]) {
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+            if(!_selectedEtalase) {
+                if ([list.etalase_name isEqualToString:[_data objectForKey:@"product_etalase_name"]]) {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                } else {
+                    if([[_data objectForKey:@"product_etalase_name"] isEqualToString:@""] && [list.etalase_name isEqualToString:@"Semua Etalase"]) {
+                        ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                    } else {
+                        ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                    }
+                }
             } else {
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                if([_selectedEtalase.etalase_name isEqualToString:list.etalase_name]) {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                } else {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                }
             }
+            
             
             ((MyShopEtalaseFilterCell*)cell).label.text = list.etalase_name;
             ((MyShopEtalaseFilterCell*)cell).indexpath = indexPath;
@@ -392,13 +405,14 @@
             [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
             
             EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
-            if (!selectedEtalase) {
-                _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
-            }
-            else
-            {
-                _selectedEtalase = selectedEtalase;
-            }
+            _selectedEtalase = selectedEtalase;
+//            if (!selectedEtalase) {
+//                _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
+//            }
+//            else
+//            {
+//                _selectedEtalase = selectedEtalase;
+//            }
             
             [_table reloadData];
         }

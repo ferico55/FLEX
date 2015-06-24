@@ -672,8 +672,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     else{
         etalaseid = etalase.etalase_id?:@"";
     }
-    
-    if([_data objectForKey:@"product_etalase_id"]) {
+
+
+    if([_detailfilter objectForKey:DATA_ETALASE_KEY]) {
+        EtalaseList *list = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+        etalaseid = list.etalase_id;
+    } else if([_data objectForKey:@"product_etalase_id"]) {
         etalaseid = [_data objectForKey:@"product_etalase_id"];
     }
     
@@ -985,8 +989,17 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
                 //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
+                NSString *etalaseName;
+                if([_detailfilter objectForKey:DATA_ETALASE_KEY]) {
+                    EtalaseList *list = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+                    etalaseName = list.etalase_name;
+                } else {
+                    etalaseName = [_data objectForKey:@"product_etalase_name"];
+                }
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath,
+                            @"product_etalase_name" : etalaseName?:@""
+                            };
                 vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 self.navigationController.navigationBar.alpha = 0;
@@ -1074,6 +1087,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     [_detailfilter setObject:[userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:@""
                       forKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
+    
     [self refreshView:nil];
 }
 

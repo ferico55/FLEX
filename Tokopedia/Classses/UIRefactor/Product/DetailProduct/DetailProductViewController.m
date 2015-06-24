@@ -2014,6 +2014,7 @@ UIAlertViewDelegate
                 
                 container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
                                    kTKPD_AUTHKEY:_auth?:[NSNull null],
+                                   @"product_etalase_name" : _product.result.product.product_etalase,
                                    @"product_etalase_id" : _product.result.product.product_etalase_id};
                 [self.navigationController pushViewController:container animated:YES];
             }
