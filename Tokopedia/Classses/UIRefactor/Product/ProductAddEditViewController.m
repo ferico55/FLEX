@@ -1978,6 +1978,12 @@
         [_errorMessage addObject:ERRORMESSAGE_INVALID_WEIGHT_KILOGRAM];
         isValid = NO;
     }
+    
+    if ([product.product_min_order integerValue]>=1000) {
+        isValid = NO;
+        [_errorMessage addObject:@"Maksimal untuk minimal pembelian 1 produk adalah 999"];
+    }
+    
     if (!isValidImage) {
         [_errorMessage addObject:ERRORMESSAGE_NULL_IMAGE];
     }
