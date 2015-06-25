@@ -20,6 +20,7 @@
 		453959BB1B282CC200E5839F /* CatalogResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959BA1B282CC200E5839F /* CatalogResult.m */; };
 		453959BE1B282E8200E5839F /* CatalogList.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959BD1B282E8200E5839F /* CatalogList.m */; };
 		453959C11B282F2000E5839F /* CatalogAddProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959C01B282F2000E5839F /* CatalogAddProduct.m */; };
+		45F8D0311B3BA57800A0E69D /* AddressProvince.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D0301B3BA57800A0E69D /* AddressProvince.m */; };
 		7A1D2D981B235E55002F9341 /* balloon_read_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2BB61B235E54002F9341 /* balloon_read_left.png */; };
 		7A1D2D991B235E55002F9341 /* balloon_read_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2BB71B235E54002F9341 /* balloon_read_right.png */; };
 		7A1D2D9A1B235E55002F9341 /* button_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2BB81B235E54002F9341 /* button_white.png */; };
@@ -1499,6 +1500,8 @@
 		453959BD1B282E8200E5839F /* CatalogList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogList.m; sourceTree = "<group>"; };
 		453959BF1B282F2000E5839F /* CatalogAddProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogAddProduct.h; sourceTree = "<group>"; };
 		453959C01B282F2000E5839F /* CatalogAddProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogAddProduct.m; sourceTree = "<group>"; };
+		45F8D02F1B3BA57800A0E69D /* AddressProvince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressProvince.h; sourceTree = "<group>"; };
+		45F8D0301B3BA57800A0E69D /* AddressProvince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressProvince.m; sourceTree = "<group>"; };
 		7A1D2BB61B235E54002F9341 /* balloon_read_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = balloon_read_left.png; sourceTree = "<group>"; };
 		7A1D2BB71B235E54002F9341 /* balloon_read_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = balloon_read_right.png; sourceTree = "<group>"; };
 		7A1D2BB81B235E54002F9341 /* button_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_white.png; sourceTree = "<group>"; };
@@ -3747,6 +3750,8 @@
 				4501687A1B37CA1A00BB08C7 /* AddressCity.m */,
 				4501687C1B37CA2500BB08C7 /* AddressDistrict.h */,
 				4501687D1B37CA2500BB08C7 /* AddressDistrict.m */,
+				45F8D02F1B3BA57800A0E69D /* AddressProvince.h */,
+				45F8D0301B3BA57800A0E69D /* AddressProvince.m */,
 			);
 			path = Address;
 			sourceTree = "<group>";
@@ -9651,6 +9656,7 @@
 				FC7642551B15E2830034A8F1 /* GeneralAlertCell.m in Sources */,
 				FC76438F1B15E2830034A8F1 /* ShopReviewViewController.m in Sources */,
 				FC7642281B15E2830034A8F1 /* TKPDTabInboxMessageNavigationController.m in Sources */,
+				45F8D0311B3BA57800A0E69D /* AddressProvince.m in Sources */,
 				FC76426E1B15E2830034A8F1 /* GeneralTableViewController.m in Sources */,
 				FC76418C1B15E2820034A8F1 /* TrackOrderResult.m in Sources */,
 				FC7641C21B15E2820034A8F1 /* TxOrderPaymentEdit.m in Sources */,
@@ -9755,8 +9761,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -9796,8 +9802,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9823,8 +9829,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9861,8 +9867,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

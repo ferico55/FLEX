@@ -10,10 +10,12 @@
 
 #import "AddressCity.h"
 #import "AddressDistrict.h"
+#import "AddressProvince.h"
 
 @interface AddressResult : NSObject
 
 @property (nonatomic, strong) NSArray *cities;
 @property (nonatomic, strong) NSArray *districts;
+@property (nonatomic, strong) NSArray *provinces;
 
 @end

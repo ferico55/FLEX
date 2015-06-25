@@ -10,4 +10,7 @@
 
 @interface AddressDistrict : NSObject
 
+@property (nonatomic, strong) NSString *district_id;
+@property (nonatomic, strong) NSString *district_name;
+
 @end
