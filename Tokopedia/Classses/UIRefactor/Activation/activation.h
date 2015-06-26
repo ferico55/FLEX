@@ -61,6 +61,7 @@
 #define kTKPDLOGIN_API_ID_KEY       @"id"
 #define kTKPDLOGIN_API_BIRTHDAY_KEY @"birthday"
 #define kTKPDLOGIN_API_GENDER_KEY   @"gender"
+#define kTKPDLOGIN_API_FB_TOKEN_KEY @"fb_token"
 
 #define kTKPDREGISTER_APIACTIONKEY @"action"
 #define kTKPDREGISTER_APIDOLOGINKEY @"do_login"
