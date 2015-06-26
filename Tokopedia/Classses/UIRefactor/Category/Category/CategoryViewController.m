@@ -81,8 +81,30 @@
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
-    CGFloat cellWidth = screenWidth/3-0.75;
-    return CGSizeMake(cellWidth, cellWidth*64/53);
+    
+    CGSize cellSize = CGSizeMake(0, 0);
+    
+    NSInteger cellCount;
+    float heightRatio;
+    float widhtRatio;
+    float inset;
+    
+    cellCount = 3;
+    heightRatio = 128;
+    widhtRatio = 106;
+    inset = 1;
+    
+    CGFloat cellWidth;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        screenWidth = screenRect.size.width/2;
+        cellWidth = screenWidth/cellCount-inset;
+    } else {
+        screenWidth = screenRect.size.width;
+        cellWidth = screenWidth/cellCount-inset;
+    }
+    
+    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    return cellSize;
 }
 
 - (void)viewWillAppear:(BOOL)animated
