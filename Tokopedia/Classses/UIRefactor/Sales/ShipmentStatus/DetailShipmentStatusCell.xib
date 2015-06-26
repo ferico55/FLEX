@@ -65,7 +65,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.78000000000000003" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="e2D-tP-K1n" secondAttribute="trailing" constant="8" id="10A-I0-Pnm"/>
                     <constraint firstItem="qAN-Ed-Ppu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="2CD-q7-Wh8"/>
@@ -83,7 +83,7 @@
                     <constraint firstItem="BtH-Ez-WMr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="wXb-uC-Hqb"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="circle" destination="y9v-bP-fTZ" id="6bk-ha-Pmc"/>
                 <outlet property="dateLabel" destination="e2D-tP-K1n" id="x9Z-Fv-RZ8"/>

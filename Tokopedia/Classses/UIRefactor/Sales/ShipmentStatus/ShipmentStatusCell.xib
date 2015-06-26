@@ -236,14 +236,14 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.78000000000000003" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="dbs-k1-CjR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="9ec-0l-Ix9"/>
                     <constraint firstItem="dbs-k1-CjR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="CRv-Th-nYm"/>
                     <constraint firstAttribute="trailing" secondItem="dbs-k1-CjR" secondAttribute="trailing" constant="10" id="OqO-uJ-115"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="buyerNameLabel" destination="WpT-5U-BVh" id="jKZ-mW-Ody"/>
                 <outlet property="buyerProfileImageView" destination="wX1-bF-tN8" id="FFE-Hu-tob"/>
