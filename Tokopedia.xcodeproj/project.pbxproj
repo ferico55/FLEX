@@ -21,6 +21,8 @@
 		453959BE1B282E8200E5839F /* CatalogList.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959BD1B282E8200E5839F /* CatalogList.m */; };
 		453959C11B282F2000E5839F /* CatalogAddProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959C01B282F2000E5839F /* CatalogAddProduct.m */; };
 		45F8D0311B3BA57800A0E69D /* AddressProvince.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D0301B3BA57800A0E69D /* AddressProvince.m */; };
+		45F8D03F1B3BEE9300A0E69D /* TransactionObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D03E1B3BEE9300A0E69D /* TransactionObjectManager.m */; };
+		45F8D0421B3BF91700A0E69D /* RequestCart.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D0411B3BF91700A0E69D /* RequestCart.m */; };
 		7A1D2D981B235E55002F9341 /* balloon_read_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2BB61B235E54002F9341 /* balloon_read_left.png */; };
 		7A1D2D991B235E55002F9341 /* balloon_read_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2BB71B235E54002F9341 /* balloon_read_right.png */; };
 		7A1D2D9A1B235E55002F9341 /* button_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1D2BB81B235E54002F9341 /* button_white.png */; };
@@ -1502,6 +1504,10 @@
 		453959C01B282F2000E5839F /* CatalogAddProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogAddProduct.m; sourceTree = "<group>"; };
 		45F8D02F1B3BA57800A0E69D /* AddressProvince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressProvince.h; sourceTree = "<group>"; };
 		45F8D0301B3BA57800A0E69D /* AddressProvince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressProvince.m; sourceTree = "<group>"; };
+		45F8D03D1B3BEE9300A0E69D /* TransactionObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionObjectManager.h; sourceTree = "<group>"; };
+		45F8D03E1B3BEE9300A0E69D /* TransactionObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionObjectManager.m; sourceTree = "<group>"; };
+		45F8D0401B3BF91700A0E69D /* RequestCart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCart.h; sourceTree = "<group>"; };
+		45F8D0411B3BF91700A0E69D /* RequestCart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCart.m; sourceTree = "<group>"; };
 		7A1D2BB61B235E54002F9341 /* balloon_read_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = balloon_read_left.png; sourceTree = "<group>"; };
 		7A1D2BB71B235E54002F9341 /* balloon_read_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = balloon_read_right.png; sourceTree = "<group>"; };
 		7A1D2BB81B235E54002F9341 /* button_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_white.png; sourceTree = "<group>"; };
@@ -7563,6 +7569,8 @@
 				FC763DB21B15E27D0034A8F1 /* string_transaction.h */,
 				FC763DB31B15E27D0034A8F1 /* TransactionObjectMapping.h */,
 				FC763DB41B15E27D0034A8F1 /* TransactionObjectMapping.m */,
+				45F8D03D1B3BEE9300A0E69D /* TransactionObjectManager.h */,
+				45F8D03E1B3BEE9300A0E69D /* TransactionObjectManager.m */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -7580,6 +7588,8 @@
 		FC763D851B15E27D0034A8F1 /* Cart */ = {
 			isa = PBXGroup;
 			children = (
+				45F8D0401B3BF91700A0E69D /* RequestCart.h */,
+				45F8D0411B3BF91700A0E69D /* RequestCart.m */,
 				FC763D861B15E27D0034A8F1 /* CartDetail */,
 				FC763DA11B15E27D0034A8F1 /* CartResult */,
 				FC763DAB1B15E27D0034A8F1 /* TransactionCartRootViewController.h */,
@@ -9183,6 +9193,7 @@
 				FC7643211B15E2830034A8F1 /* SalesNewOrderViewController.m in Sources */,
 				FC7640A31B15E2820034A8F1 /* DepositSummaryDetail.m in Sources */,
 				FC76421F1B15E2820034A8F1 /* CategoryMenuViewController.m in Sources */,
+				45F8D03F1B3BEE9300A0E69D /* TransactionObjectManager.m in Sources */,
 				FC7642BD1B15E2830034A8F1 /* MyShopAddressEditViewController.m in Sources */,
 				FC7643AD1B15E2830034A8F1 /* FilterViewController.m in Sources */,
 				FC7641F31B15E2820034A8F1 /* StickyAlert.m in Sources */,
@@ -9448,6 +9459,7 @@
 				FC7641311B15E2820034A8F1 /* BankAccountFormResult.m in Sources */,
 				FC7641561B15E2820034A8F1 /* SearchResult.m in Sources */,
 				FC7643331B15E2830034A8F1 /* RequestShipmentCourier.m in Sources */,
+				45F8D0421B3BF91700A0E69D /* RequestCart.m in Sources */,
 				FC36DF9719B0656400AF74C1 /* AppDelegate.m in Sources */,
 				FC76424F1B15E2830034A8F1 /* DepositSummaryCell.m in Sources */,
 				FC7641CD1B15E2820034A8F1 /* GeneratedHost.m in Sources */,
@@ -9761,8 +9773,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -9802,8 +9814,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9829,8 +9841,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9867,8 +9879,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

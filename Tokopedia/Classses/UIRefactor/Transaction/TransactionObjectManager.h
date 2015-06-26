@@ -7,7 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TransactionCart.h"
+#import "TxEmoney.h"
 
 @interface TransactionObjectManager : NSObject
+
+@property NSInteger gatewayID;
+
+-(RKObjectManager *)objectManagerCart;
+-(RKObjectManager *)objectManagerCancelCart;
+-(RKObjectManager*)objectManagerCheckout;
+-(RKObjectManager *)objectManagerBuy;
+-(RKObjectManager*)objectManagerVoucher;
+-(RKObjectManager*)objectMangerEditProduct;
+-(RKObjectManager *)objectManagerEMoney;
+-(RKObjectManager*)objectManagerBCAClickPay;
 
 @end

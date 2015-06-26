@@ -19,12 +19,34 @@
 
 @protocol RequestCartDelegate <NSObject>
 @required
-- (void)successRequestList:(NSArray*)list;
+-(void)requestSuccessCart:(id)successResult withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestSuccessActionCancelCart:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessActionCheckout:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessActionVoucher:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
+
+-(void)actionBeforeRequest:(int)tag;
+-(void)actionAfterFailRequestMaxTries:(int)tag;
+
 - (void)requestError:(NSArray*)errorMessages;
 
 @end
 
-
 @interface RequestCart : NSObject
+
+@property (nonatomic, weak) IBOutlet id<RequestCartDelegate> delegate;
+@property (nonatomic, strong) NSDictionary *param;
+
+-(void)doRequestCart;
+-(void)doRequestCancelCart;
+-(void)doRequestCheckout;
+-(void)dorequestBuy;
+-(void)doRequestVoucher;
+-(void)doRequestEditProduct;
+-(void)doRequestEMoney;
+-(void)doRequestBCAClickPay;
 
 @end
