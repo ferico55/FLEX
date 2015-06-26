@@ -44,14 +44,13 @@
     lblUser = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
     lblText = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 21)];
     
-    lblUser.layer.cornerRadius = 5.0f;
+    lblUser.layer.cornerRadius = 2.0f;
     lblUser.layer.masksToBounds = YES;
-    lblUser.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
-    lblUser.layer.cornerRadius = 5;
+    lblUser.font = [UIFont fontWithName:@"Gotham Medium" size:10.0f];
     lblUser.layer.masksToBounds = YES;
     lblUser.textAlignment = NSTextAlignmentCenter;
     
-    lblText.font = [UIFont fontWithName:@"Gotham Book" size:14.0f];
+    lblText.font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
     lblText.textColor = [UIColor blackColor];
     
     [self addSubview:lblUser];
@@ -147,7 +146,7 @@
             break;
     }
     
-    lblUser.frame = CGRectMake(0, 0, (lblUser.text.length==0? 0 : [self calculateWidth:lblUser.text withFont:lblUser.font]+5), 21);
+    lblUser.frame = CGRectMake(0, 0, (lblUser.text.length==0? 0 : [self calculateWidth:lblUser.text withFont:lblUser.font]+10), 21);
     lblText.frame = CGRectMake(lblUser.frame.origin.x+(lblUser.text.length==0? 0:3)+lblUser.bounds.size.width, lblUser.frame.origin.y, self.bounds.size.width-(lblUser.frame.origin.x+3+lblUser.bounds.size.width), lblUser.bounds.size.height);
 }
 
