@@ -4,9 +4,16 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SubmitShipmentConfirmationViewController">
             <connections>
+                <outlet property="footerLabel" destination="pZL-Sh-sQy" id="q1X-sx-XXC"/>
+                <outlet property="footerView" destination="xmF-Mu-2Ux" id="ojg-YH-GXO"/>
                 <outlet property="tableView" destination="Z73-tH-K9q" id="NT8-oo-Az3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -33,6 +40,29 @@
                 <constraint firstAttribute="bottom" secondItem="Z73-tH-K9q" secondAttribute="bottom" id="JuS-RA-Ui5"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="xmF-Mu-2Ux">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biaya pergantian kurir ditanggung sepenuhnya oleh penjual" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pZL-Sh-sQy">
+                    <rect key="frame" x="15" y="10" width="290" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="XCv-1b-e8A"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="pZL-Sh-sQy" firstAttribute="top" secondItem="xmF-Mu-2Ux" secondAttribute="top" constant="10" id="gtN-aM-d01"/>
+                <constraint firstAttribute="trailing" secondItem="pZL-Sh-sQy" secondAttribute="trailing" constant="15" id="nhH-gN-0h7"/>
+                <constraint firstItem="pZL-Sh-sQy" firstAttribute="leading" secondItem="xmF-Mu-2Ux" secondAttribute="leading" constant="15" id="wEb-zv-ZkV"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-81" y="154"/>
         </view>
     </objects>
 </document>

@@ -302,8 +302,14 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
-    CGFloat cellWidth = screenWidth-20;
+    CGFloat cellWidth;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        CGFloat screenWidth = screenRect.size.width/2;
+        cellWidth = screenWidth-15;
+    } else {
+        CGFloat screenWidth = screenRect.size.width;
+        cellWidth = screenWidth-20;
+    }
     return CGSizeMake(cellWidth, cellWidth*173/300);
 }
 

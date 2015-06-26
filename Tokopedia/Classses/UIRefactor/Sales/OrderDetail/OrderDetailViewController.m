@@ -171,8 +171,8 @@
     
     _phoneNumberLabel.text = _transaction.order_destination.receiver_phone;
     _courierAgentLabel.text = [NSString stringWithFormat:@"%@ - %@",
-                               _transaction.order_shipment.shipment_product,
-                               _transaction.order_shipment.shipment_name];
+                               _transaction.order_shipment.shipment_name,
+                               _transaction.order_shipment.shipment_product];
     
     _paymentMethodLabel.text = _transaction.order_payment.payment_gateway_name;
     

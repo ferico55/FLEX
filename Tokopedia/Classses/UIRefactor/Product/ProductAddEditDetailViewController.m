@@ -27,16 +27,17 @@
 #import "MyShopNoteDetailViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "GAIDictionaryBuilder.h"
+#import "UserAuthentificationManager.h"
 
 @interface ProductAddEditDetailViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
-    UITextViewDelegate,
-    TKPDAlertViewDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
-    ProductEditWholesaleViewControllerDelegate,
-    TokopediaNetworkManagerDelegate
+UITableViewDataSource,
+UITableViewDelegate,
+UITextViewDelegate,
+TKPDAlertViewDelegate,
+MyShopEtalaseFilterViewControllerDelegate,
+ProductEditWholesaleViewControllerDelegate,
+TokopediaNetworkManagerDelegate
 >
 {
     CGPoint _keyboardPosition;
@@ -78,10 +79,13 @@
     TokopediaNetworkManager *_moveToWarehouseNetworkManager;
     
     UIBarButtonItem *_saveBarButtonItem;
+    UserAuthentificationManager *_userManager;
     
     BOOL _isNodata;
     BOOL _isBeingPresented;
     EtalaseList *_selectedEtalase;
+    
+    NSString *_uniqueID;
 }
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1TableViewCell;
@@ -133,6 +137,7 @@
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _userManager = [UserAuthentificationManager new];
     
     _processingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading..." delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -145,12 +150,12 @@
              object:nil];
     
     _isBeingPresented = self.navigationController.isBeingPresented;
-
-
+    
+    
     [nc addObserver:self
-       selector:@selector(didUpdateShopHasTerms:)
-           name:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME
-         object:nil];
+           selector:@selector(didUpdateShopHasTerms:)
+               name:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME
+             object:nil];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
@@ -267,14 +272,16 @@
             {
                 NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
                 if (type == TYPE_ADD_EDIT_PRODUCT_ADD|| type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-                    NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
-                    if ([postKey isEqualToString:@""]|| postKey == nil) {
-                        [_validationNetworkManager doRequest];
-                    }
-                    else
-                    {
-                        [_processingAlert show];
-                        [_addPictureNetworkManager doRequest];
+                    if ([self isValidInput]) {
+                        NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
+                        if ([postKey isEqualToString:@""]|| postKey == nil) {
+                            [_validationNetworkManager doRequest];
+                        }
+                        else
+                        {
+                            [_processingAlert show];
+                            [_addPictureNetworkManager doRequest];
+                        }
                     }
                 } else {
                     [_editNetworkManager doRequest];
@@ -289,12 +296,45 @@
         MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
         vc.data = @{kTKPDDETAIL_DATATYPEKEY : @(NOTES_RETURNABLE_PRODUCT)
                     };
-
+        
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         nav.navigationBar.translucent = NO;
         
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
+}
+
+-(BOOL)isValidInput
+{
+    BOOL isValid = YES;
+    NSMutableArray *errorMessages = [NSMutableArray new];
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    
+    NSString *moveToWarehouse = product.product_move_to?:@"";
+    
+    NSNumber *etalaseUserInfoID = product.product_etalase_id?:@(0);
+    BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
+    NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
+    
+    NSString *etalaseName = product.product_etalase?:@"";
+    
+    if ([moveToWarehouse integerValue] == 1)
+    {
+        if (isNewEtalase && (etalaseName == nil || [etalaseName isEqualToString:@""])) {
+            isValid = NO;
+            [errorMessages addObject:@"Nama etalase belum diisi"];
+        }
+        if ([etalaseID integerValue] == 0) {
+            isValid = NO;
+            [errorMessages addObject:@"Etalase belum dipilih"];
+        }
+    }
+    
+    if (!isValid) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
+    }
+    return isValid;
 }
 
 - (IBAction)gesture:(id)sender {
@@ -339,13 +379,13 @@
         default:
             break;
     }
-
+    
     return rowCount;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-
+    
     UITableViewCell *cell = nil;
     switch (indexPath.section) {
         case 0:
@@ -493,8 +533,9 @@
                         newEtalase.etalase_id = [product.product_etalase_id stringValue];
                         NSIndexPath *indexpath = [_dataInput objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                         MyShopEtalaseFilterViewController *etalaseViewController = [MyShopEtalaseFilterViewController new];
-                        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-                        etalaseViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+//                        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+                        
+                        etalaseViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:[_userManager getShopId],
                                                        kTKPDFILTER_DATAINDEXPATHKEY: indexpath,
                                                        DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT),
                                                        ETALASE_OBJECT_SELECTED_KEY : newEtalase
@@ -652,12 +693,12 @@
     if (tag == TAG_REQUEST_PICTURE) {
         [self requestSuccessActionAddProductPicture:successResult
                                       withOperation:operation];
-
+        
     }
     if (tag == TAG_REQUEST_SUBMIT) {
         [self requestSuccessActionAddProductSubmit:successResult
                                      withOperation:operation];
-
+        
     }
     if (tag == TAG_REQUEST_EDIT) {
         [self requestSuccessActionEditProduct:successResult
@@ -668,17 +709,32 @@
     if (tag == TAG_REQUEST_MOVE_TO) {
         [self requestSuccessActionMoveToWarehouse:successResult
                                     withOperation:operation];
-
+        
     }
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
     NSError *error = (NSError*)errorResult;
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[[error localizedDescription]] delegate:self];
-    [alert show];
     
-    [self performSelector:@selector(dismissViewController) withObject:self afterDelay:3.0];
+    NSArray *errorMessage;
+    if (error.code == -999) {
+    }
+    else
+    {
+        if(error.code == -1011) {
+            errorMessage = @[@"Mohon maaf, terjadi kendala pada server"];
+        } else if (error.code==-1009) {
+            errorMessage = @[@"Tidak ada koneksi internet"];
+        }  else {
+            errorMessage = @[[error localizedDescription]];
+        }
+        
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
+        
+        [self performSelector:@selector(dismissViewController) withObject:self afterDelay:3.0];
+    }
 
 }
 
@@ -818,7 +874,7 @@
     
     NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date]
                                                           dateStyle:NSDateFormatterShortStyle
-                                                          timeStyle:NSDateFormatterShortStyle];
+                                                          timeStyle:NSDateFormatterFullStyle];
     //NSString *uniqueID = [NSString stringWithFormat:@"%zd2365364365645644564564",userID];
     NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSString *uniqueID = [NSString stringWithFormat:@"%zd%@%@",userID,udid,dateString];
@@ -826,7 +882,7 @@
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
-    
+    _uniqueID = uniqueID;
     [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
     
     NSString *myString = productImage;
@@ -1022,7 +1078,7 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddProductSubmitResult class]];
-
+    
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY,
                                                         API_PRODUCT_ID_KEY:API_PRODUCT_ID_KEY,
                                                         API_PRODUCT_PRIMARY_PHOTO_KEY:API_PRODUCT_PRIMARY_PHOTO_KEY,
@@ -1051,7 +1107,7 @@
     NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
     
     NSInteger randomNumber = arc4random() % 16;
-    NSString *uniqueID = [NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
+    NSString *uniqueID = _uniqueID;//[NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
@@ -1096,7 +1152,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
             [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];                }
     }
-
+    
 }
 
 #pragma mark -Request Edit Product
@@ -1168,7 +1224,7 @@
     NSString *productImage = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
-
+    
     
     NSString *productID = product.product_id?:@"";
     NSString *returnableProduct = product.product_returnable?:@"0";
@@ -1250,7 +1306,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
         }
     }
-
+    
 }
 
 #pragma mark Request Action MoveToWarehouse
@@ -1319,7 +1375,7 @@
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     [textView resignFirstResponder];
     _activeTextView = textView;
-
+    
     return YES;
 }
 
@@ -1399,6 +1455,7 @@
             product.product_move_to = value;//([value integerValue]==1)?@"0":value;
             if (index == 0) {
                 product.product_etalase_id = @(0);
+                product.product_etalase = nil;
             }
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
@@ -1451,14 +1508,14 @@
             _isShopHasTerm = YES;
         }
     }
-
+    
 }
 
 -(void)setDefaultData:(NSDictionary*)data
 {
     _data = data;
     if (data) {
-                
+        
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
         ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
@@ -1489,7 +1546,7 @@
         
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSString *shopHasTerm = [auth getShopHasTerm];
-
+        
         if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
             _isShopHasTerm = NO;
         }
@@ -1559,7 +1616,7 @@
 -(void)didUpdateShopHasTerms:(NSNotification*)notification
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *shopHasTerm = [auth getShopHasTerm];  
+    NSString *shopHasTerm = [auth getShopHasTerm];
     
     if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
         _isShopHasTerm = NO;
