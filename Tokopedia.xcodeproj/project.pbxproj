@@ -878,8 +878,8 @@
 		FC7641EE1B15E2820034A8F1 /* AlertListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763A381B15E2780034A8F1 /* AlertListViewCell.xib */; };
 		FC7641EF1B15E2820034A8F1 /* AlertPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763A3A1B15E2780034A8F1 /* AlertPickerView.m */; };
 		FC7641F01B15E2820034A8F1 /* AlertPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763A3B1B15E2780034A8F1 /* AlertPickerView.xib */; };
-		FC7641F11B15E2820034A8F1 /* AlertReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763A3D1B15E2780034A8F1 /* AlertReputation.m */; };
-		FC7641F21B15E2820034A8F1 /* AlertReputation.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763A3E1B15E2780034A8F1 /* AlertReputation.xib */; };
+		FC7641F11B15E2820034A8F1 /* AlertBaseUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763A3D1B15E2780034A8F1 /* AlertBaseUrl.m */; };
+		FC7641F21B15E2820034A8F1 /* AlertBaseUrl.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763A3E1B15E2780034A8F1 /* AlertBaseUrl.xib */; };
 		FC7641F31B15E2820034A8F1 /* StickyAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763A401B15E2780034A8F1 /* StickyAlert.m */; };
 		FC7641F41B15E2820034A8F1 /* StickyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC763A421B15E2780034A8F1 /* StickyAlertView.m */; };
 		FC7641F51B15E2820034A8F1 /* StickyAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC763A431B15E2780034A8F1 /* StickyAlertView.xib */; };
@@ -2718,9 +2718,9 @@
 		FC763A391B15E2780034A8F1 /* AlertPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertPickerView.h; sourceTree = "<group>"; };
 		FC763A3A1B15E2780034A8F1 /* AlertPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertPickerView.m; sourceTree = "<group>"; };
 		FC763A3B1B15E2780034A8F1 /* AlertPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertPickerView.xib; sourceTree = "<group>"; };
-		FC763A3C1B15E2780034A8F1 /* AlertReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertReputation.h; sourceTree = "<group>"; };
-		FC763A3D1B15E2780034A8F1 /* AlertReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertReputation.m; sourceTree = "<group>"; };
-		FC763A3E1B15E2780034A8F1 /* AlertReputation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertReputation.xib; sourceTree = "<group>"; };
+		FC763A3C1B15E2780034A8F1 /* AlertBaseUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertBaseUrl.h; sourceTree = "<group>"; };
+		FC763A3D1B15E2780034A8F1 /* AlertBaseUrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertBaseUrl.m; sourceTree = "<group>"; };
+		FC763A3E1B15E2780034A8F1 /* AlertBaseUrl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertBaseUrl.xib; sourceTree = "<group>"; };
 		FC763A3F1B15E2780034A8F1 /* StickyAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyAlert.h; sourceTree = "<group>"; };
 		FC763A401B15E2780034A8F1 /* StickyAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyAlert.m; sourceTree = "<group>"; };
 		FC763A411B15E2780034A8F1 /* StickyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyAlertView.h; sourceTree = "<group>"; };
@@ -6019,9 +6019,9 @@
 				FC763A391B15E2780034A8F1 /* AlertPickerView.h */,
 				FC763A3A1B15E2780034A8F1 /* AlertPickerView.m */,
 				FC763A3B1B15E2780034A8F1 /* AlertPickerView.xib */,
-				FC763A3C1B15E2780034A8F1 /* AlertReputation.h */,
-				FC763A3D1B15E2780034A8F1 /* AlertReputation.m */,
-				FC763A3E1B15E2780034A8F1 /* AlertReputation.xib */,
+				FC763A3C1B15E2780034A8F1 /* AlertBaseUrl.h */,
+				FC763A3D1B15E2780034A8F1 /* AlertBaseUrl.m */,
+				FC763A3E1B15E2780034A8F1 /* AlertBaseUrl.xib */,
 				FC763A3F1B15E2780034A8F1 /* StickyAlert.h */,
 				FC763A401B15E2780034A8F1 /* StickyAlert.m */,
 				FC763A411B15E2780034A8F1 /* StickyAlertView.h */,
@@ -8195,7 +8195,7 @@
 				FC76427C1B15E2830034A8F1 /* ProductFeedViewController.xib in Resources */,
 				FC7642941B15E2830034A8F1 /* FilterComplainViewController.xib in Resources */,
 				7A1D2ED61B235E55002F9341 /* icon_cart.png in Resources */,
-				FC7641F21B15E2820034A8F1 /* AlertReputation.xib in Resources */,
+				FC7641F21B15E2820034A8F1 /* AlertBaseUrl.xib in Resources */,
 				7A1D2EA21B235E55002F9341 /* icon_shop_setting.png in Resources */,
 				7A1D2E331B235E55002F9341 /* icon_edit_grey.png in Resources */,
 				7A1D2F381B235E55002F9341 /* icon_category_active@2x.png in Resources */,
@@ -9247,7 +9247,7 @@
 				FCAAEA4619F7534B00904AFB /* MainViewController.m in Sources */,
 				FC7643B41B15E2830034A8F1 /* ProductTalkDetailViewController.m in Sources */,
 				FC76440B1B15E2830034A8F1 /* ProfileBiodataCell.m in Sources */,
-				FC7641F11B15E2820034A8F1 /* AlertReputation.m in Sources */,
+				FC7641F11B15E2820034A8F1 /* AlertBaseUrl.m in Sources */,
 				FC7640C51B15E2820034A8F1 /* TalkComment.m in Sources */,
 				FC7643A91B15E2830034A8F1 /* FilterLocationViewCell.m in Sources */,
 				FC7641231B15E2820034A8F1 /* ProfileEditResult.m in Sources */,

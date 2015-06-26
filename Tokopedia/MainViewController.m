@@ -34,6 +34,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
+#import "AlertReputation.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -150,6 +151,10 @@ typedef enum TagRequest {
 	_auth = [auth mutableCopy];
     	
     _data = nil;
+#if DEBUG
+    AlertReputation *alert = [AlertReputation newview];
+    [alert show];
+#endif
     [self presentcontrollers];
 }
 
@@ -563,8 +568,8 @@ typedef enum TagRequest {
     [storage resetKeychain];
     [_auth removeAllObjects];
     
-    [storage setKeychainWithValue:_persistToken withKey:@"device_token"];
-    [storage setKeychainWithValue:_persistBaseUrl withKey:@"AppBaseUrl"];
+    [storage setKeychainWithValue:_persistToken?:@"" withKey:@"device_token"];
+    [storage setKeychainWithValue:_persistBaseUrl?:@"" withKey:@"AppBaseUrl"];
     
     [self removeCacheUser];
     

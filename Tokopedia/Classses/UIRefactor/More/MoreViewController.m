@@ -503,11 +503,7 @@
             break;
             
         case 7 :
-#ifdef DEBUG
-            return 2;
-#else
             return 1;
-#endif
 
             break;
             
