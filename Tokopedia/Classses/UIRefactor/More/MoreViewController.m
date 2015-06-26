@@ -86,8 +86,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *createShopButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSaldo;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shopCell;
-@property (weak, nonatomic) IBOutlet UITextField *baseUrlField;
-@property (weak, nonatomic) IBOutlet UIButton *changeBaseUrlButton;
 
 @end
 
@@ -165,7 +163,6 @@
     //Load Deposit
     _depositLabel.hidden = YES;
     _loadingSaldo.hidden = NO;
-    _baseUrlField.text = [_auth objectForKey:@"AppBaseUrl"]?:kTraktBaseURLString;
     
     [self updateSaldoTokopedia:nil];
     [self setShopImage];
@@ -177,9 +174,9 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-
-    [self updateSaldoTokopedia:nil];    
-
+    
+    [self updateSaldoTokopedia:nil];
+    
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker setAllowIDFACollection:YES];
@@ -349,7 +346,7 @@
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];
     NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];
     [_profilePictureImageView setImageWithURLRequest:request
                                     placeholderImage:nil
                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -504,7 +501,6 @@
             
         case 7 :
             return 1;
-
             break;
             
         default:
@@ -653,9 +649,9 @@
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
-//            controller.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:controller animated:YES];
+            //            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
+            //            controller.hidesBottomBarWhenPushed = YES;
+            //            [self.navigationController pushViewController:controller animated:YES];
             
         } else if (indexPath.row  == 4) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
@@ -673,9 +669,9 @@
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-//            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+            //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            //            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
             
             if([MFMailComposeViewController canSendMail]) {
                 MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
@@ -688,7 +684,7 @@
                 [emailController setMessageBody:messageBody isHTML:YES];
                 [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
                 [emailController.navigationBar setTintColor:[UIColor whiteColor]];
-                 
+                
                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
                 [self presentViewController:emailController animated:YES completion:nil];
             } else {
@@ -727,7 +723,7 @@
                                                                 object:nil
                                                               userInfo:@{}];
         }
-
+        
     }
     
     self.hidesBottomBarWhenPushed = NO;
@@ -870,21 +866,6 @@
 
 
 #pragma mark - Action
-- (IBAction)actionSetBaseUrl:(id)sender {
-    if([_baseUrlField.text isEqualToString:@""]) {
-        return;
-    }
-
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    [secureStorage setKeychainWithValue:_baseUrlField.text withKey:@"AppBaseUrl"];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
-                                                        object:nil
-                                                      userInfo:@{}];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didChangeBaseUrl" object:nil];
-}
-
 - (IBAction)actionCreateShop:(id)sender
 {
     CreateShopViewController *createShopViewController = [CreateShopViewController new];
