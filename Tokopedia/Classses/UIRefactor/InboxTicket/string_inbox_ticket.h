@@ -16,6 +16,8 @@
 #define API_GET_INBOX_TICKET        @"get_inbox_ticket"
 #define API_GET_INBOX_TICKET_DETAIL @"get_inbox_ticket_detail"
 #define API_GET_INBOX_TICKET_VIEW_MORE  @"get_inbox_ticket_view_more"
+#define API_ACTION_GIVE_RATING      @"give_rating"
+#define API_RATE_KEY                @"rate"
 
 #define API_STATUS_KEY              @"status"
 #define API_CONFIG_KEY              @"config"
@@ -32,6 +34,7 @@
 
 #define API_LIST_KEY                @"list"
 
+#define API_LIST_TICKET_CREATE_TIME_KEY         @"ticket_create_time"
 #define API_LIST_TICKET_CREATE_TIME_FMT_KEY     @"ticket_create_time_fmt"
 #define API_LIST_TICKET_CREATE_TIME_FMT2_KEY    @"ticket_create_time_fmt2"
 #define API_LIST_TICKET_UPDATE_TIME_FMT_KEY     @"ticket_update_time_fmt"
@@ -67,6 +70,7 @@
 #define API_TICKET_REPLY_DATA_KEY               @"ticket_reply_data"
 
 #define API_TICKET_DETAIL_ID_KEY                @"ticket_detail_id"
+#define API_TICKET_DETAIL_CREATE_TIME_KEY       @"ticket_detail_create_time"
 #define API_TICKET_DETAIL_CREATE_TIME_FMT_KEY   @"ticket_detail_create_time_fmt"
 #define API_TICKET_DETAIL_USER_NAME_KEY         @"ticket_detail_user_name"
 #define API_TICKET_DETAIL_NEW_RATING_KEY        @"ticket_detail_new_rating"
@@ -78,6 +82,10 @@
 #define API_TICKET_DETAIL_USER_ID_KEY           @"ticket_detail_user_id"
 #define API_TICKET_DETAIL_NEW_STATUS_KEY        @"ticket_detail_new_status"
 #define API_TICKET_DETAIL_MESSAGE_KEY           @"ticket_detail_message"
+#define API_TICKET_DETAIL_ATTACHMENT_KEY        @"ticket_detail_attachment"
+
+#define API_TICKET_DETAIL_IMG_SRC_KEY           @"img_src"
+#define API_TICKET_DETAIL_IMG_LINK_KEY          @"img_link"
 
 #define API_TICKET_REPLY_TOTAL_DATA_KEY         @"ticket_reply_total_data"
 #define API_TICKET_REPLY_TOTAL_PAGE_KEY         @"ticket_reply_total_page"

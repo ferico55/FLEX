@@ -11,6 +11,7 @@
 @interface InboxTicketTicket : NSObject
 
 @property (strong, nonatomic) NSString *ticket_first_message_name;
+@property (strong, nonatomic) NSString *ticket_create_time;
 @property (strong, nonatomic) NSString *ticket_create_time_fmt;
 @property (strong, nonatomic) NSString *ticket_update_time_fmt;
 @property (strong, nonatomic) NSString *ticket_first_message;

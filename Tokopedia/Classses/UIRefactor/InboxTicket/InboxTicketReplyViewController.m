@@ -2,10 +2,9 @@
 //  InboxTicketReplyViewController.m
 //  Tokopedia
 //
-//  Created by Feizal Badri Asmoro on 6/11/15.
+//  Created by Feizal Badri Asmoro on 6/22/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
 
 #import "string_inbox_ticket.h"
 
@@ -25,26 +24,32 @@
 #import "UploadImageParams.h"
 #import "RequestUploadImage.h"
 
+#import "InboxTicketDetailAttachment.h"
+
 @interface InboxTicketReplyViewController ()
 <
     TokopediaNetworkManagerDelegate,
     CameraAlbumListDelegate,
     CameraCollectionViewControllerDelegate,
     GenerateHostDelegate,
-    RequestUploadImageDelegate
+    RequestUploadImageDelegate,
+    UITextViewDelegate,
+    UIScrollViewDelegate,
+    UIGestureRecognizerDelegate,
+    UIAlertViewDelegate
 >
 {
     TokopediaNetworkManager *_firstStepNetworkManager;
     TokopediaNetworkManager *_secondStepNetworkManager;
     TokopediaNetworkManager *_thirdStepNetworkManager;
     GenerateHost *_generateHost;
-
+    
     NSString *_serverID;
     NSString *_postKey;
     NSString *_fileUploaded;
     
     BOOL _isRequestingUpload;
-
+    
     NSMutableArray *_uploadedPhotos;
     NSMutableArray *_uploadedPhotosURL;
     
@@ -56,13 +61,23 @@
     BOOL _cameraButtonClicked;
     
     RKObjectManager *_objectManager;
+    
+    UIBarButtonItem *_doneButton;
+    
+    RequestGenerateHost *_requestHost;
 }
 
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *imageTapRecognizer;
 @property (weak, nonatomic) IBOutlet TKPDTextView *textView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet UIScrollView *pageScrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *photoScrollView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachmentButtonBottomConstraint;
 @property (strong, nonatomic) IBOutlet UIView *scrollViewContentView;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *scrollViewInputContent;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scrollViewBottomConstraint;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photosImageView;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *removePhotoButton;
 
 @end
 
@@ -71,7 +86,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Balas Pesan";
+    if (self.isCloseTicketForm) {
+        self.title = @"Tutup Kasus";
+    } else {
+        self.title = @"Balas Pesan";
+    }
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                      style:UIBarButtonItemStyleBordered
@@ -79,14 +98,17 @@
                                                                     action:@selector(didTouchUpCancelButton:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim"
-                                                                   style:UIBarButtonItemStyleDone
-                                                                  target:self
-                                                                  action:@selector(didTouchUpDoneButton:)];
-    self.navigationItem.rightBarButtonItem = doneButton;
-    
+    _doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim"
+                                                   style:UIBarButtonItemStyleDone
+                                                  target:self
+                                                  action:@selector(didTouchUpDoneButton:)];
+    self.navigationItem.rightBarButtonItem = _doneButton;
+    _doneButton.enabled = NO;
+    _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+
     self.textView.placeholder = @"Isi pesan disini ...";
-    self.textView.contentInset = UIEdgeInsetsMake(7, 0, 0, 0);
+    self.textView.delegate = self;
+    self.textView.scrollEnabled = NO;
     
     _firstStepNetworkManager = [TokopediaNetworkManager new];
     _firstStepNetworkManager.tagRequest = 1;
@@ -95,6 +117,8 @@
     _secondStepNetworkManager = [TokopediaNetworkManager new];
     _secondStepNetworkManager.tagRequest = 2;
     _secondStepNetworkManager.delegate = self;
+    _secondStepNetworkManager.isParameterNotEncrypted = YES;
+    _secondStepNetworkManager.timeInterval = 30;
     
     _thirdStepNetworkManager = [TokopediaNetworkManager new];
     _thirdStepNetworkManager.tagRequest = 3;
@@ -103,23 +127,33 @@
     _uploadedPhotos = [NSMutableArray new];
     _uploadedPhotosURL = [NSMutableArray new];
     
-    [self.scrollView addSubview:_scrollViewContentView];
-    self.scrollView.contentSize = CGSizeMake(self.scrollViewContentView.frame.size.width,
-                                             self.scrollViewContentView.frame.size.height);
+    self.photoScrollView.delegate = self;
+    [self.photoScrollView addSubview:_scrollViewContentView];
     
     CGRect frame = _scrollViewContentView.frame;
     frame.origin = CGPointZero;
     _scrollViewContentView.frame = frame;
+
+    self.pageScrollView.delegate = self;
+    [self.pageScrollView addSubview:_scrollViewInputContent];
+    self.pageScrollView.contentSize = CGSizeMake(self.scrollViewInputContent.frame.size.width,
+                                                 self.scrollViewInputContent.frame.size.height);
     
+    CGRect pageFrame = _scrollViewInputContent.frame;
+    pageFrame.origin = CGPointZero;
+    _scrollViewInputContent.frame = pageFrame;
+
     _cameraButtonClicked = NO;
     
     _generateHost = [GenerateHost new];
     
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
+    _requestHost = [RequestGenerateHost new];
+    _requestHost.delegate = self;
+    [_requestHost configureRestkitGenerateHost];
+    [_requestHost requestGenerateHost];
     
+    self.photosImageView = [NSArray sortViewsWithTagInArray:_photosImageView];
+    self.removePhotoButton = [NSArray sortViewsWithTagInArray:_removePhotoButton];    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -130,12 +164,12 @@
     [super viewWillAppear:animated];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidShow:)
                                                  name:UIKeyboardDidShowNotification
@@ -144,21 +178,16 @@
     [self.textView becomeFirstResponder];
     
     if (_keyboardFrameBeginRect.size.height) {
-        self.textViewBottomConstraint.constant = _keyboardFrameBeginRect.size.height + 45;
         self.attachmentButtonBottomConstraint.constant = _keyboardFrameBeginRect.size.height;
     }
     
-    self.scrollView.contentOffset = CGPointZero;
-
+    self.photoScrollView.contentOffset = CGPointZero;
+    
     if (_selectedImagesCameraController.count > 0) {
         NSInteger maxWidth = _selectedImagesCameraController.count * 90;
         maxWidth += 10; // add right margin
-        self.scrollView.contentSize = CGSizeMake(maxWidth, self.scrollView.frame.size.height);
-        self.scrollView.hidden = NO;
-    } else {
-        self.scrollView.hidden = YES;
+        self.photoScrollView.contentSize = CGSizeMake(maxWidth, self.photoScrollView.frame.size.height);
     }
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -173,15 +202,46 @@
 }
 
 - (void)didTouchUpDoneButton:(UIBarButtonItem *)button {
-    [_firstStepNetworkManager doRequest];
+    if (self.isCloseTicketForm) {
+        NSString *title = @"Tutup Kasus";
+        NSString *message = @"Apakah Anda ingin menutup Tiket Bantuan ini ?";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Batal"
+                                              otherButtonTitles:@"Ya", nil];
+        alert.delegate = self;
+        [alert show];
+    } else {
+        if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+            UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            [indicatorView startAnimating];
+            UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
+            self.navigationItem.rightBarButtonItem = indicatorBarButton;
+                        [_firstStepNetworkManager doRequest];
+        } else {
+            NSString *errorMessage = @"Anda belum selesai mengunggah gambar";
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
+            [alert show];
+        }
+    }
 }
 
 - (IBAction)didTouchUpCameraButton:(UIButton *)sender {
-    
-    _cameraButtonClicked = YES;
+    [self openPhotoGallery];
+}
 
+- (IBAction)didTapPhotoImageView:(UITapGestureRecognizer *)sender {
+    UIImageView *imageView = (UIImageView *)sender.view;
+    if (imageView.isUserInteractionEnabled) {
+        [self openPhotoGallery];
+    }
+}
+
+- (void)openPhotoGallery {
+    _cameraButtonClicked = YES;
+    
     [self.textView resignFirstResponder];
-    self.textViewBottomConstraint.constant = 0;
     self.attachmentButtonBottomConstraint.constant = 0;
     
     CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
@@ -190,7 +250,6 @@
     CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
     photoVC.title = @"All Picture";
     photoVC.delegate = self;
-    photoVC.tag = sender.tag;
     NSMutableArray *selectedImage = [NSMutableArray new];
     for (NSIndexPath *selected in _selectedImagesCameraController) {
         if (![selected isEqual:@""]) {
@@ -214,10 +273,42 @@
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
+- (IBAction)didTapRemovePhotoButton:(UIButton *)button {
+    NSInteger index = button.tag - 1;
+    [_uploadedPhotos removeObjectAtIndex:index];
+    [_uploadedPhotosURL removeObjectAtIndex:index];
+    [_selectedImagesCameraController removeObjectAtIndex:index];
+    [_selectedIndexPathCameraController removeObjectAtIndex:index];
+    
+    NSInteger maxIndex = _selectedImagesCameraController.count;
+    for (int i = 0; i < self.photosImageView.count; i++) {
+        UIImageView *imageView = [self.photosImageView objectAtIndex:i];
+        UIButton *button = [self.removePhotoButton objectAtIndex:i];
+        if (i < maxIndex) {
+            NSDictionary *photo = [[_selectedImagesCameraController objectAtIndex:i] objectForKey:@"photo"];
+            UIImage *image = [photo objectForKey:@"photo"];
+            imageView.image = image;
+            button.hidden = NO;
+        } else {
+            imageView.image = nil;
+            button.hidden = YES;
+        }
+    }
+    
+    if (_selectedImagesCameraController.count > 0) {
+        NSInteger maxWidth = _selectedImagesCameraController.count * 90;
+        maxWidth += 10; // add right margin
+        self.photoScrollView.contentSize = CGSizeMake(maxWidth, self.photoScrollView.frame.size.height);
+        self.photoScrollView.hidden = NO;
+    } else {
+        self.photoScrollView.hidden = YES;
+    }
+}
+
 #pragma mark - Keyboard notification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-
+    
     if (_cameraButtonClicked == NO) {
         [UIView setAnimationsEnabled:YES];
     } else {
@@ -227,18 +318,35 @@
     NSDictionary *keyboardInfo = [notification userInfo];
     NSValue *keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
     _keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    
-    if (_selectedImagesCameraController.count > 0) {
-        self.textViewBottomConstraint.constant = _keyboardFrameBeginRect.size.height + 145;
-        self.attachmentButtonBottomConstraint.constant = _keyboardFrameBeginRect.size.height;
-    } else {
-        self.textViewBottomConstraint.constant = _keyboardFrameBeginRect.size.height + 45;
-        self.attachmentButtonBottomConstraint.constant = _keyboardFrameBeginRect.size.height;
-    }
+    CGFloat height = _keyboardFrameBeginRect.size.height;
+    self.attachmentButtonBottomConstraint.constant = height;
+    self.scrollViewBottomConstraint.constant = height + 45;
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification {
     [UIView setAnimationsEnabled:YES];
+}
+
+#pragma mark - Textview delegate
+
+- (void)textViewDidChange:(UITextView *)textView {
+    CGFloat fixedWidth = textView.frame.size.width;
+    CGSize newSize = [textView sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
+    self.textViewHeightConstraint.constant = newSize.height;
+    
+    CGRect frame = self.scrollViewInputContent.frame;
+    frame.size.height = newSize.height + self.scrollViewContentView.frame.size.height;
+    self.scrollViewInputContent.frame = frame;
+    
+    self.pageScrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.scrollViewInputContent.frame.size.height);
+    
+    if (textView.text.length > 9 && _serverID && _generateHost) {
+        _doneButton.enabled = YES;
+        _doneButton.tintColor = [UIColor whiteColor];
+    } else {
+        _doneButton.enabled = NO;
+        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+    }
 }
 
 #pragma mark - Network manager delegate
@@ -246,25 +354,28 @@
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *dictionary;
     NSString *attachmentString = [_uploadedPhotosURL componentsJoinedByString:@"~"];
+    NSString *newTicketStatus = self.isCloseTicketForm?@"2":@"1";
     if (tag == 1) {
         dictionary = @{
                        API_ACTION_KEY                   : API_TICKET_REPLY_VALIDATION,
                        API_TICKET_REPLY_TICKET_ID_KEY   : self.inboxTicket.ticket_id,
                        API_TICKET_REPLY_MESSAGE_KEY     : self.textView.text,
-                       API_TICKET_REPLY_ATTACHMENT_STRING_KEY   : attachmentString,
-                       API_TICKET_REPLY_NEW_TICKET_STATUS_KEY   : @"1",
-                       API_TICKET_REPLY_RATE_KEY        : @"",
+                       API_TICKET_REPLY_ATTACHMENT_STRING_KEY   : attachmentString?:@"",
+                       API_TICKET_REPLY_NEW_TICKET_STATUS_KEY   : newTicketStatus,
+                       API_TICKET_REPLY_RATE_KEY        : self.rating?:@"",
                        API_TICKET_REPLY_SERVER_ID_KEY   : _serverID,
                        };
     } else if (tag == 2) {
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
         dictionary = @{
                        API_ACTION_KEY                   : API_TICKET_REPLY_PICTURE,
                        API_TICKET_REPLY_TICKET_ID_KEY   : self.inboxTicket.ticket_id,
                        API_TICKET_REPLY_MESSAGE_KEY     : self.textView.text?:@"",
-                       API_TICKET_REPLY_ATTACHMENT_STRING_KEY   : attachmentString,
-                       API_TICKET_REPLY_NEW_TICKET_STATUS_KEY   : @"1",
-                       API_TICKET_REPLY_RATE_KEY        : @"",
+                       API_TICKET_REPLY_ATTACHMENT_STRING_KEY   : attachmentString?:@"",
+                       API_TICKET_REPLY_NEW_TICKET_STATUS_KEY   : newTicketStatus,
+                       API_TICKET_REPLY_RATE_KEY        : self.rating?:@"",
                        API_TICKET_REPLY_SERVER_ID_KEY   : _serverID,
+                       kTKPD_USERIDKEY                  : [auth getUserId],
                        };
     } else if (tag == 3) {
         dictionary = @{
@@ -281,13 +392,20 @@
     if (tag == 2) {
         return API_PATH_ACTION_UPLOAD_IMAGE;
     } else {
-        return API_PATH;
+        return API_PATH_ACTION;
     }
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager sharedClient];
-
+    
+    if (tag == 2) {
+        NSString *path = [NSString stringWithFormat:@"http://%@/ws", _generateHost.result.generated_host.upload_host];
+        _objectManager = [RKObjectManager sharedClientUploadImage:path];
+    } else {
+        _objectManager = [RKObjectManager sharedClient];
+    }
+    
+    
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ReplyInboxTicket class]];
     [statusMapping addAttributeMappingsFromArray:@[
                                                    kTKPD_APISTATUSMESSAGEKEY,
@@ -305,10 +423,17 @@
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
     
+    NSString *pathPattern;
+    if (tag == 2) {
+        pathPattern = API_PATH_ACTION_UPLOAD_IMAGE;
+    } else {
+        pathPattern = API_PATH_ACTION;
+    }
+    
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION
+                                                                                       pathPattern:pathPattern
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -323,7 +448,7 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
-
+    
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
@@ -331,30 +456,76 @@
     if (response.message_error) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:response.message_error delegate:self];
         [alert show];
-    } else {
 
+        self.navigationItem.rightBarButtonItem = _doneButton;
+
+        if (self.textView.text.length > 9 && _serverID && _generateHost) {
+            _doneButton.enabled = YES;
+            _doneButton.tintColor = [UIColor whiteColor];
+        } else {
+            _doneButton.enabled = NO;
+            _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+        }
+
+    } else {
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *userData = [auth getUserLoginData];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"dd MM yyyy, HH:mm"];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm'Z'"];
+        
+        NSMutableArray *attachments = [NSMutableArray new];
+        for (UIImageView *imageView in self.photosImageView) {
+            InboxTicketDetailAttachment *attachment = [InboxTicketDetailAttachment new];
+            attachment.img = imageView.image;
+            if (!imageView.isUserInteractionEnabled) {
+                [attachments addObject:attachment];                
+            }
+        }
         
         InboxTicketDetail *ticket = [InboxTicketDetail new];
-        ticket.ticket_detail_create_time_fmt = [dateFormatter stringFromDate:[NSDate new]];
+        ticket.ticket_detail_create_time = [dateFormatter stringFromDate:[NSDate new]];
         ticket.ticket_detail_user_name = [userData objectForKey:@"full_name"];
         ticket.ticket_detail_user_image = [userData objectForKey:@"user_image"];
         ticket.ticket_detail_is_cs = @"0";
         ticket.ticket_detail_message = self.textView.text;
+        ticket.ticket_detail_attachment = attachments;
         
         if (tag == 1) {
             if (response.result.post_key) {
-
+                _postKey = response .result.post_key;
                 [_secondStepNetworkManager doRequest];
-                
             } else {
-                if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
-                    [self.delegate successReplyInboxTicket:ticket];
+                if (self.isCloseTicketForm) {
+                    if (self.rating) {
+                        if ([self.delegate respondsToSelector:@selector(successCloseInboxTicket:withRating:)]) {
+                            [self.delegate successCloseInboxTicket:ticket withRating:_rating];
+                        }
+                    } else {
+                        if ([self.delegate respondsToSelector:@selector(successCloseInboxTicket:)]) {
+                            [self.delegate successCloseInboxTicket:ticket];
+                        }
+                    }
+                } else {
+                    if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
+                        [self.delegate successReplyInboxTicket:ticket];
+                    }
                 }
+                
+                NSString *message;
+                if (self.isCloseTicketForm) {
+                    if (self.rating) {
+                        message = @"Anda telah berhasil menutup layanan pengguna ini.";
+                    } else {
+                        message = @"Anda telah berhasil menutup tiket bantuan.";
+                    }
+                } else {
+                    message = @"Anda telah berhasil mengirim pesan.";
+                }
+                
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
+                [alert show];
+                
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
         } else if (tag == 2) {
@@ -367,9 +538,37 @@
             }
         } else if (tag == 3) {
             if ([response.result.is_success boolValue]) {
-                if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
-                    [self.delegate successReplyInboxTicket:ticket];
-                }   
+                if (self.isCloseTicketForm) {
+                    if (self.rating) {
+                        if ([self.delegate respondsToSelector:@selector(successCloseInboxTicket:withRating:)]) {
+                            [self.delegate successCloseInboxTicket:ticket withRating:_rating];
+                        }
+                    } else {
+                        if ([self.delegate respondsToSelector:@selector(successCloseInboxTicket:)]) {
+                            [self.delegate successCloseInboxTicket:ticket];
+                        }
+                    }
+                } else {
+                    if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
+                        [self.delegate successReplyInboxTicket:ticket];
+                    }
+                }
+                
+                NSString *message;
+                if (self.isCloseTicketForm) {
+                    if (self.rating) {
+                        message = @"Anda telah berhasil menutup kasus ini.";
+                    } else {
+                        message = @"Anda telah berhasil menutup tiket bantuan.";
+                    }
+                } else {
+                    message = @"Anda telah berhasil mengirim pesan.";
+                }
+                
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
+                [alert show];
+                
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
         }
     }
@@ -389,7 +588,7 @@
 {
     NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
     NSArray *selectedIndexPaths = [userinfo objectForKey:@"selected_indexpath"];
-
+    
     _selectedImagesCameraController = [selectedImages mutableCopy];
     _selectedIndexPathCameraController = [selectedIndexPaths mutableCopy];
     
@@ -397,19 +596,50 @@
     [_uploadedPhotosURL removeAllObjects];
     
     NSInteger maxIndex = selectedImages.count;
-    for (int i = 0; i < self.scrollViewContentView.subviews.count; i++) {
-        UIImageView *imageView = (UIImageView *)[self.scrollViewContentView viewWithTag:i+1];
+    for (int i = 0; i < self.photosImageView.count; i++) {
+        UIImageView *imageView = [self.photosImageView objectAtIndex:i];
+        imageView.userInteractionEnabled = NO;
         if (i < maxIndex) {
             NSDictionary *photo = [[selectedImages objectAtIndex:i] objectForKey:@"photo"];
             UIImage *image = [photo objectForKey:@"photo"];
             imageView.image = image;
-            imageView.alpha = 0.5;
-            
-            [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : [selectedImages objectAtIndex:i]}];
+            imageView.hidden = NO;
+            imageView.alpha = 0.7;
         } else {
-            imageView.image = nil;
+            imageView.hidden = YES;
         }
+        UIButton *button = [self.removePhotoButton objectAtIndex:i];
+        button.hidden = YES;
     }
+    
+    if (selectedImages.count < 5) {
+        UIImageView *imageView = [self.photosImageView objectAtIndex:maxIndex];
+        imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
+        imageView.userInteractionEnabled = YES;
+        imageView.hidden = NO;
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapPhotoImageView:)];
+        [imageView addGestureRecognizer:tap];
+    
+        CGFloat width = (90 * maxIndex) + 90;
+        self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
+    } else {
+        CGFloat width = 90 * maxIndex;
+        self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
+    }
+    
+    if (_generateHost) {
+        for (NSDictionary *photo in _selectedImagesCameraController) {
+            [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : photo}];
+        }
+    } else {
+        [_requestHost requestGenerateHost];
+    }
+
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [indicatorView startAnimating];
+    UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
+    self.navigationItem.rightBarButtonItem = indicatorBarButton;
 }
 
 - (void)requestUploadImage:(NSDictionary *)object {
@@ -425,7 +655,7 @@
 
 #pragma mark - Request upload photo delegate
 
--(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
+- (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
     NSDictionary *data = [object objectForKey:DATA_SELECTED_PHOTO_KEY];
     NSDictionary *photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     UIImage *image = [photo objectForKey:@"photo"];
@@ -434,23 +664,82 @@
         [_uploadedPhotosURL addObject:uploadImage.result.file_path];
     }
     
-    for (UIImageView *imageView in self.scrollViewContentView.subviews) {
+    for (UIImageView *imageView in self.photosImageView) {
         if ([imageView.image isEqual:image]) {
             imageView.alpha = 1;
+            imageView.hidden = NO;
+            UIButton *button = [self.removePhotoButton objectAtIndex:imageView.tag-1];
+            button.hidden = NO;
         }
+    }
+    
+    if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+        _doneButton.enabled = YES;
+        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:1];
+        self.navigationItem.rightBarButtonItem = _doneButton;
+    }
+    
+    if (_uploadedPhotos.count < 5) {
+        CGFloat width = (90 * _uploadedPhotos.count) + 90;
+        self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
+    } else {
+        CGFloat width = 90 * _uploadedPhotos.count;
+        self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     }
 }
 
--(void)failedUploadObject:(id)object {
+- (void)failedUploadObject:(id)object {
+    NSDictionary *data = [object objectForKey:DATA_SELECTED_PHOTO_KEY];
+    NSDictionary *photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIImage *image = [photo objectForKey:@"photo"];
+    NSInteger index = [_uploadedPhotos indexOfObject:image];
+
+    if (index < _uploadedPhotos.count && _uploadedPhotos.count > 0) {
+        [_uploadedPhotos removeObject:image];
+    }
     
+    if (index < _uploadedPhotosURL.count && _uploadedPhotosURL.count > 0) {
+        [_uploadedPhotosURL removeObjectAtIndex:index];
+    }
+    
+    if (index < _selectedImagesCameraController.count && _selectedImagesCameraController.count > 0) {
+        [_selectedImagesCameraController removeObjectAtIndex:index];
+    }
+    
+    if (index < _selectedIndexPathCameraController.count && _selectedIndexPathCameraController.count > 0) {
+        [_selectedIndexPathCameraController removeObjectAtIndex:index];
+    }
+    
+    NSInteger maxIndex = _selectedImagesCameraController.count;
+    for (int i = 0; i < self.photosImageView.count; i++) {
+        UIImageView *imageView = [self.photosImageView objectAtIndex:i];
+        UIButton *button = [self.removePhotoButton objectAtIndex:i];
+        if (i < maxIndex) {
+            NSDictionary *photo = [[_selectedImagesCameraController objectAtIndex:i] objectForKey:@"photo"];
+            UIImage *image = [photo objectForKey:@"photo"];
+            imageView.image = image;
+            imageView.alpha = 1;
+            imageView.hidden = NO;
+            button.hidden = NO;
+        } else {
+            imageView.hidden = YES;
+            button.hidden = YES;
+        }
+    }
+    
+    self.photoScrollView.contentSize = CGSizeMake(90 * _uploadedPhotos.count, self.photoScrollView.frame.size.height);
 }
 
 #pragma mark Request Generate Host
 
--(void)successGenerateHost:(GenerateHost *)generateHost
+- (void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generateHost = generateHost;
     _serverID = _generateHost.result.generated_host.server_id;
+    
+    for (NSDictionary *photo in _selectedImagesCameraController) {
+        [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : photo}];
+    }
 }
 
 - (void)failedGenerateHost:(NSArray *)errorMessages {
@@ -459,4 +748,22 @@
     [alert show];
 }
 
-@end
+#pragma mark - Alert delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+            UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            [indicatorView startAnimating];
+            UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
+            self.navigationItem.rightBarButtonItem = indicatorBarButton;
+            [_firstStepNetworkManager doRequest];
+        } else {
+            NSString *errorMessage = @"Anda belum selesai mengunggah gambar";
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
+            [alert show];
+        }
+    }
+}
+
+@end;

@@ -10,7 +10,7 @@
 
 @interface InboxTicketReply : NSObject
 
-@property (strong, nonatomic) NSArray *ticket_reply_data;
+@property (strong, nonatomic) NSMutableArray *ticket_reply_data;
 @property (strong, nonatomic) NSString *ticket_reply_total_data;
 @property (strong, nonatomic) NSString *ticket_reply_total_page;
 

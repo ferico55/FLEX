@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "InboxTicketList.h"
 
+@protocol InboxTicketDetailDelegate <NSObject>
+
+- (void)updateInboxTicket:(InboxTicketList *)inboxTicket;
+
+@end
+
 @interface InboxTicketDetailViewController : UIViewController
 
 @property (strong, nonatomic) InboxTicketList *inboxTicket;
+@property (weak, nonatomic) id<InboxTicketDetailDelegate> delegate;
 
 @end

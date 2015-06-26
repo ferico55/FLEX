@@ -17,12 +17,21 @@
 #import "TKPDTabViewController.h"
 #import "InboxTicketDetailViewController.h"
 
-@interface InboxTicketViewController () <TokopediaNetworkManagerDelegate, TKPDTabViewDelegate> {
+@interface InboxTicketViewController ()
+<
+    TokopediaNetworkManagerDelegate,
+    TKPDTabViewDelegate,
+    InboxTicketDetailDelegate
+>
+{
     TokopediaNetworkManager *_networkManager;
     NSMutableArray *_tickets;
     NSString *_uriNext;
     NSInteger _page;
     NSString *_filter;
+    UIRefreshControl *_refreshControl;
+    NSIndexPath *_selectedIndexPath;
+    NSInteger _currentTabIndex;
 }
 
 @end
@@ -39,11 +48,23 @@
     _tickets = [NSMutableArray new];
     _uriNext = @"";
     _page = 1;
+    _currentTabIndex = 0;
     _filter = @"all";
 
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     [_networkManager doRequest];
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:_refreshControl];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadDataSource:)
+                                                 name:kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION
+                                               object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -123,6 +144,9 @@
     
     InboxTicketDetailViewController *controller = [InboxTicketDetailViewController new];
     controller.inboxTicket = ticket;
+    controller.delegate = self;
+    
+    _selectedIndexPath = indexPath;
     
     if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
         [self.delegate pushViewController:controller];
@@ -248,11 +272,18 @@
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
     InboxTicket *inboxTicket = [mappingResult.dictionary objectForKey:@""];
+    
+    if (_page == 1) {
+        [_tickets removeAllObjects];
+    }
+    
     [_tickets addObjectsFromArray: inboxTicket.result.list];
     
     if (_tickets.count > 0) {
         _uriNext =  inboxTicket.result.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_uriNext] integerValue];
+        if (![_uriNext isEqualToString:@"0"]) {
+            _page = [[_networkManager splitUriToPage:_uriNext] integerValue];
+        }
         self.tableView.tableFooterView = nil;
     } else {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
@@ -261,6 +292,8 @@
     }
     
     [self.tableView reloadData];
+    
+    [_refreshControl endRefreshing];
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
@@ -269,22 +302,34 @@
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
 }
 
-#pragma mark - TKPDTabView delegate
+#pragma mark - Inbox detail delegate
 
-- (void)tabViewController:(id)controller didTapButtonAtIndex:(NSInteger)index
-{
-    if (index == 1) {
-        _filter = @"unread";
-    } else {
-        _filter = @"all";
-    }
-
-    _page = 1;
-
-    [_tickets removeAllObjects];
+- (void)updateInboxTicket:(InboxTicketList *)inboxTicket {
+    [_tickets replaceObjectAtIndex:_selectedIndexPath.row withObject:inboxTicket];
     [self.tableView reloadData];
+}
 
+#pragma mark - Methods
+
+- (void)refreshView {
     [_networkManager doRequest];
+}
+
+- (void)reloadDataSource:(NSNotification *)notification {
+    NSInteger index = [[notification object] integerValue];
+    if (index != _currentTabIndex) {
+        if (index == 1) {
+            _filter = @"unread";
+        } else {
+            _filter = @"all";
+        }
+        _page = 1;
+        _currentTabIndex = index;
+        [_tickets removeAllObjects];
+        [self.tableView reloadData];
+        [_networkManager requestCancel];
+        [_networkManager doRequest];
+    }
 }
 
 @end

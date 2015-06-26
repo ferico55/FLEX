@@ -21,6 +21,8 @@
         viewModel.userProfilePicture = _ticket_detail_user_image;
         viewModel.conversationMessage = _ticket_detail_message;
         viewModel.conversationDate = _ticket_detail_create_time_fmt;
+        viewModel.conversationPhotos = _ticket_detail_attachment;
+        viewModel.conversationDate = _ticket_detail_create_time;
         if ([_ticket_detail_is_cs boolValue]) {
             viewModel.conversationOwner = @"Administrator";
         } else {

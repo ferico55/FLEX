@@ -16,5 +16,6 @@
 @property (strong, nonatomic) NSString *conversationMessage;
 @property (strong, nonatomic) NSArray *conversationPhotos;
 @property (strong, nonatomic) NSString *conversationDate;
+@property (strong, nonatomic) NSIndexPath *indexPath;
 
 @end

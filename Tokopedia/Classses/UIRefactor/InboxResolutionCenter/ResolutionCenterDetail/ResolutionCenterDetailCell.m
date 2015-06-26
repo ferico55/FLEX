@@ -7,6 +7,7 @@
 //
 
 #import "ResolutionCenterDetailCell.h"
+#import "InboxTicketDetailAttachment.h"
 
 @implementation ResolutionCenterDetailCell
 
@@ -22,69 +23,12 @@
     return nil;
 }
 
--(void)setIsMark:(BOOL)isMark
-{
-//    _isMark = isMark;
-//    if (!_isMark) {
-//        CGRect frame = _markView.frame;
-//        frame.size.height = 0;
-//        _markView.frame = frame;
-//        
-//        frame = _atachmentView.frame;
-//        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-//        _atachmentView.frame = frame;
-//        [_containerView addSubview:_atachmentView];
-//        
-//        frame = _oneButtonView.frame;
-//        frame.origin.y = 104;
-//        _oneButtonView.frame = frame;
-//        [_atachmentView addSubview:_oneButtonView];
-//    }
+-(void)setIsMark:(BOOL)isMark {
 }
-
-//-(void)setIsShowAttachment:(BOOL)isShowAttachment
-//{
-//    _isShowAttachment = isShowAttachment;
-//    if (isShowAttachment) {
-//        CGRect frame = _oneButtonView.frame;
-//        frame.origin.y = 104;
-//        _oneButtonView.frame = frame;
-//        [_atachmentView addSubview:_oneButtonView];
-//        
-//        frame = _twoButtonView.frame;
-//        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-//        _twoButtonView.frame = frame;
-//        [_atachmentView addSubview:_twoButtonView];
-//    }
-//    else
-//    {
-//        CGRect frame = _oneButtonView.frame;
-//        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-//        _oneButtonView.frame = frame;
-//        [_containerView addSubview:_oneButtonView];
-//        
-//        frame = _twoButtonView.frame;
-//        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-//        _twoButtonView.frame = frame;
-//        [_containerView addSubview:_twoButtonView];
-//        
-//    }
-//}
 
 - (void)awakeFromNib {
-    
-//    CGRect frame = _atachmentView.frame;
-//    frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-//    _atachmentView.frame = frame;
-//    [_containerView addSubview:_atachmentView];
-//    
-//    frame = _atachmentView.frame;
-//    frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-//    _atachmentView.frame = frame;
-//    [_containerView addSubview:_atachmentView];
-//    
-
 }
+
 - (IBAction)tap:(id)sender {
     if ([self.delegate respondsToSelector:@selector(tapCellButton:atIndexPath:)]) {
         [_delegate tapCellButton:(UIButton*)sender atIndexPath:_indexPath];
@@ -125,10 +69,38 @@
 }
 
 - (void)setViewModel:(ConversationViewModel *)viewModel {
+    [self hideAllViews];
+    self.topMarginConstraint.constant = 5;
+    self.twobuttonConstraintHeight.constant = 0;
+    self.oneButtonConstraintHeight.constant = 0;
+
+    if (viewModel.conversationPhotos.count > 0) {
+        self.imageConstraintHeight.constant = 74;
+        for (InboxTicketDetailAttachment *attachment in viewModel.conversationPhotos) {
+            NSInteger index = [viewModel.conversationPhotos indexOfObject:attachment];
+            UIImageView *imageView = [self.attachmentImages objectAtIndex:index];
+            if (attachment.img) {
+                imageView.image = attachment.img;
+            } else {
+                NSURL *url = [NSURL URLWithString:attachment.img_src];
+                NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+                [imageView setImageWithURLRequest:request
+                                 placeholderImage:nil
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                              imageView.image = image;
+                                          } failure:nil];
+            }
+        }
+    } else {
+        self.imageConstraintHeight.constant = 0;
+    }
+    
     self.buyerNameLabel.text = viewModel.userName;
 
     NSURL *url = [NSURL URLWithString:viewModel.userProfilePicture];
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -151,7 +123,7 @@
                                  NSForegroundColorAttributeName : [UIColor blackColor],
                                  };
     
-    self.markLabel.attributedText = [[NSAttributedString alloc] initWithString:viewModel.conversationMessage
+    self.markLabel.attributedText = [[NSAttributedString alloc] initWithString:viewModel.conversationMessage?:@""
                                                                     attributes:attributes];
     
     self.buyerSellerLabel.text = viewModel.conversationOwner;
@@ -169,13 +141,12 @@
                                                                 alpha:1];
     }
     
-//    NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
-//    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-//    [formatter setLocale:[NSLocale systemLocale]];
-//    [formatter setDateFormat:@"dd MM yyyy, HH:mm"];
-//    NSDate *createDate = [formatter dateFromString:viewModel.conversationDate];
-//    NSString *sinceDateString = [NSString timeLeftSinceDate:createDate];
-//    self.timeRemainingLabel.text =  sinceDateString;
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm'Z'"];
+    NSDate *date = [dateFormatter dateFromString:viewModel.conversationDate];
+    NSString *sinceDateString = [NSString timeLeftSinceDate:date];
+    self.timeRemainingLabel.text =  sinceDateString;
     
 }
 

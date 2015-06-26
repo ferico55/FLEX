@@ -80,8 +80,10 @@
     controller.view.frame = _containerView.bounds;
     [_containerView addSubview:controller.view];
     [controller didMoveToParentViewController:self];
-    
     self.delegate = controller;    
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION
+                                                        object:[NSNumber numberWithInteger:_selectedMenuIndex]];
 }
 
 - (IBAction)touchUpMenuButton:(UIButton *)sender {
@@ -99,6 +101,9 @@
     if ([self.delegate respondsToSelector:@selector(tabViewController:didTapButtonAtIndex:)]) {
         [self.delegate tabViewController:self didTapButtonAtIndex:_selectedMenuIndex];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION
+                                                        object:[NSNumber numberWithInteger:_selectedMenuIndex]];
     
 }
 

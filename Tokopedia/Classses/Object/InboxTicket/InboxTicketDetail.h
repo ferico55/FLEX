@@ -12,6 +12,7 @@
 @interface InboxTicketDetail : NSObject
 
 @property (strong, nonatomic) NSString *ticket_detail_id;
+@property (strong, nonatomic) NSString *ticket_detail_create_time;
 @property (strong, nonatomic) NSString *ticket_detail_create_time_fmt;
 @property (strong, nonatomic) NSString *ticket_detail_user_name;
 @property (strong, nonatomic) NSString *ticket_detail_new_rating;
@@ -25,6 +26,8 @@
 @property (strong, nonatomic) NSString *ticket_detail_message;
 @property BOOL *is_just_sent;
 @property (strong, nonatomic) NSString *ticket_detail_action;
+@property (strong, nonatomic) NSArray *ticket_detail_attachment;
+
 @property (strong, nonatomic) ConversationViewModel *viewModel;
 
 @end

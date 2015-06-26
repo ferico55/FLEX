@@ -13,6 +13,8 @@
 @protocol InboxTicketReplyDelegate <NSObject>
 
 - (void)successReplyInboxTicket:(InboxTicketDetail *)reply;
+- (void)successCloseInboxTicket:(InboxTicketDetail *)reply;
+- (void)successCloseInboxTicket:(InboxTicketDetail *)reply withRating:(NSString *)rating;
 
 @end
 
@@ -20,5 +22,7 @@
 
 @property (strong, nonatomic) InboxTicketList *inboxTicket;
 @property (weak, nonatomic) id<InboxTicketReplyDelegate> delegate;
+@property BOOL isCloseTicketForm;
+@property (strong, nonatomic) NSString *rating;
 
 @end
