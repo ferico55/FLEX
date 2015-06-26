@@ -16,6 +16,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopProductPageViewController">
             <connections>
                 <outlet property="act" destination="wLh-HR-YVh" id="jME-QP-jm2"/>
+                <outlet property="changeGridButton" destination="XQ1-7n-awT" id="ahx-mh-YgO"/>
                 <outlet property="collectionView" destination="5EI-FS-xn5" id="DA3-bh-aLB"/>
                 <outlet property="fakeStickyTab" destination="MRz-8B-iSx" id="yxf-Or-Mcx"/>
                 <outlet property="footer" destination="6N7-Wf-YM3" id="NGF-gE-l5z"/>

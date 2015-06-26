@@ -80,7 +80,7 @@
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID
 {
     DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{@"product_id" : productID};
+    vc.data = @{@"product_id" : productID?:@""};
     vc.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:vc animated:YES];
