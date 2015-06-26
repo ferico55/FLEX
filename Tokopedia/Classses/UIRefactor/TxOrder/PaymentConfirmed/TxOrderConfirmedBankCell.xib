@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -63,17 +63,22 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h0N-WF-6Bn" userLabel="Horizontal Border">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h0N-WF-6Bn" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="112" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="5nd-Lt-oDl"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="sdy-Ur-jLk" secondAttribute="trailing" constant="10" id="2SJ-Ib-EUy"/>
                             <constraint firstAttribute="trailing" secondItem="Rpz-KL-d9U" secondAttribute="trailing" constant="10" id="8Uo-MC-Lm4"/>
+                            <constraint firstItem="h0N-WF-6Bn" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" id="8qD-ur-sqw"/>
                             <constraint firstItem="Rpz-KL-d9U" firstAttribute="top" secondItem="6h6-Uh-4Yt" secondAttribute="bottom" constant="5" id="Dfz-AF-1g3"/>
                             <constraint firstItem="Rpz-KL-d9U" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="Djx-hc-p22"/>
+                            <constraint firstAttribute="trailing" secondItem="h0N-WF-6Bn" secondAttribute="trailing" id="FzQ-K3-KdC"/>
                             <constraint firstAttribute="trailing" secondItem="7DC-S1-XdR" secondAttribute="trailing" constant="10" id="NWW-ls-7u9"/>
                             <constraint firstItem="6h6-Uh-4Yt" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="Qzu-CQ-0qb"/>
                             <constraint firstItem="sdy-Ur-jLk" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="THO-Me-ycE"/>
@@ -82,6 +87,7 @@
                             <constraint firstItem="7DC-S1-XdR" firstAttribute="top" secondItem="sdy-Ur-jLk" secondAttribute="bottom" constant="8" id="d9I-1H-euG"/>
                             <constraint firstItem="7DC-S1-XdR" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="myo-oW-HMI"/>
                             <constraint firstAttribute="height" constant="113" id="v8i-rg-vAy"/>
+                            <constraint firstAttribute="bottom" secondItem="h0N-WF-6Bn" secondAttribute="bottom" id="vwS-Se-rE2"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p8c-zx-IV4" userLabel="User View">
@@ -105,9 +111,12 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5nq-Wz-Ym5" userLabel="Horizontal Border">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5nq-Wz-Ym5" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="69" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="fKe-na-jmj"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -116,9 +125,12 @@
                             <constraint firstItem="DVI-wH-ue5" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" constant="10" id="58a-Fz-3rI"/>
                             <constraint firstAttribute="height" constant="70" id="Gbl-3Z-Cg4"/>
                             <constraint firstItem="hR1-af-dFo" firstAttribute="top" secondItem="DVI-wH-ue5" secondAttribute="bottom" constant="4" id="HWV-ML-Nk9"/>
+                            <constraint firstAttribute="trailing" secondItem="5nq-Wz-Ym5" secondAttribute="trailing" id="OPr-O3-QyZ"/>
                             <constraint firstAttribute="trailing" secondItem="hR1-af-dFo" secondAttribute="trailing" constant="10" id="lbO-Tz-7dr"/>
                             <constraint firstAttribute="trailing" secondItem="DVI-wH-ue5" secondAttribute="trailing" constant="10" id="rcx-jv-3dm"/>
+                            <constraint firstItem="5nq-Wz-Ym5" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" id="xgM-wD-pY4"/>
                             <constraint firstItem="DVI-wH-ue5" firstAttribute="top" secondItem="p8c-zx-IV4" secondAttribute="top" constant="12" id="yG9-a9-B8q"/>
+                            <constraint firstAttribute="bottom" secondItem="5nq-Wz-Ym5" secondAttribute="bottom" id="yiy-2B-D0r"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -141,4 +153,9 @@
             <point key="canvasLocation" x="256" y="355"/>
         </tableViewCell>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>
