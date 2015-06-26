@@ -416,17 +416,17 @@
         else
             title2 = @"Lacak";
     }
-    if ([self isShowButtonConfirmOrder:order]) {
-        if ([title1 isEqualToString:@""])
-            title1 = @"Sudah Terima";
-        else
-            title2 = @"Sudah Terima";
-    }
     if ([self isShowButtonComplainOrder:order]) {
         if ([title1 isEqualToString:@""])
             title1 = @"Komplain";
         else
             title2 = @"Komplain";
+    }
+    if ([self isShowButtonConfirmOrder:order]) {
+        if ([title1 isEqualToString:@""])
+            title1 = @"Sudah Terima";
+        else
+            title2 = @"Sudah Terima";
     }
     
     UIButton *button1 = (UIButton*)cell.twoButtons[0];
@@ -449,7 +449,7 @@
         imageName = @"icon_order_check-01.png";
     }
     if ([button.titleLabel.text isEqualToString:@"Komplain"]) {
-        imageName = @"icon_cancel_grey.png";
+        imageName = @"icon_komplain.png";
     }
     return imageName;
 }
