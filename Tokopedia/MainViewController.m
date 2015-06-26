@@ -34,7 +34,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
-#import "AlertReputation.h"
+#import "AlertBaseUrl.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -152,7 +152,7 @@ typedef enum TagRequest {
     	
     _data = nil;
 #if DEBUG
-    AlertReputation *alert = [AlertReputation newview];
+    AlertBaseUrl *alert = [AlertBaseUrl newview];
     [alert show];
 #endif
     [self presentcontrollers];
