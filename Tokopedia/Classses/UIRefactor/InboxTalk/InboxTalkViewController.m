@@ -297,10 +297,12 @@
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
 
-            ((GeneralTalkCell*)cell).reportButton.hidden = YES;
             if(! [list.talk_own isEqualToString:@"1"]) {
                 if([list.talk_product_status isEqualToString:@"0"]) {
-                    ((GeneralTalkCell*)cell).reportButton.hidden = NO;
+                    CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                    newFrame.origin.x = 75;
+                    ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+                    ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                     ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 }
             }
@@ -811,6 +813,7 @@
     TalkList *talkList = _talkList[indexpath.row];
     _reportController.strProductID = talkList.talk_product_id;
     _reportController.strCommentTalkID = talkList.talk_id;
+    _reportController.strShopID = talkList.talk_shop_id;
     [self.navigationController pushViewController:_reportController animated:YES];
 }
 

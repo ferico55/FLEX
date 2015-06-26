@@ -152,7 +152,8 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param addEntriesFromDictionary:(_strCommentTalkID==nil? [_delegate getParameter] :
                                      @{@"action" : @"report_product_talk",
-                                       @"talk_id" : _strCommentTalkID?:@(0)
+                                       @"talk_id" : _strCommentTalkID?:@(0),
+                                       @"shop_id" : _strShopID? :@(0)
                                        })];
     [param setObject:_messageTextView.text forKey:@"text_message"];
     
