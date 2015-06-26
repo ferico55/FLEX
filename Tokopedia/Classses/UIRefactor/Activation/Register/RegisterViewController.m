@@ -113,7 +113,7 @@
     self.title = kTKPDREGISTER_NEW_TITLE;
     
     _datainput = [NSMutableDictionary new];
-    [_datainput setObject:kTKPDREGISTER_APIGENDERKEY forKey:@"1"];
+    [_datainput setObject:@"1" forKey:kTKPDREGISTER_APIGENDERKEY];
 
     _operationQueue =[NSOperationQueue new];
     
@@ -326,7 +326,7 @@
     }
 }
 
-- (IBAction)tapsegment:(UISegmentedControl*)sender {
+- (IBAction)tapsegment:(UISegmentedControl *)sender {
     [_activetextfield resignFirstResponder];
     [_datainput setObject:@(sender.selectedSegmentIndex+1) forKey:kTKPDREGISTER_APIGENDERKEY];
 }
