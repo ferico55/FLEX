@@ -242,7 +242,7 @@
                     <constraint firstAttribute="trailing" secondItem="dbs-k1-CjR" secondAttribute="trailing" constant="10" id="OqO-uJ-115"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="buyerNameLabel" destination="WpT-5U-BVh" id="jKZ-mW-Ody"/>
                 <outlet property="buyerProfileImageView" destination="wX1-bF-tN8" id="FFE-Hu-tob"/>
