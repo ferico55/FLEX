@@ -1197,7 +1197,8 @@
        orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
        orderStatus == ORDER_DELIVERED ||
        orderStatus == ORDER_DELIVERY_FAILURE||
-        orderStatus == ORDER_SHIPPING_WAITING)
+       orderStatus == ORDER_SHIPPING_WAITING||
+       orderStatus == ORDER_DELIVERED_DUE_LIMIT)
     {
         
         if((orderStatus == ORDER_SHIPPING ||
