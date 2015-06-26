@@ -474,6 +474,7 @@
 		7A84DE9F1B1E9F3400741F0D /* libAppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AD8F77E1B37F89F00144DAD /* GTM-NCTWRP.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AD8F77D1B37F89F00144DAD /* GTM-NCTWRP.json */; };
 		85046EA21B20395E00FF657B /* BarCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85046EA11B20395E00FF657B /* BarCodeViewController.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
@@ -1934,6 +1935,12 @@
 		7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AD8F7721B37C7F300144DAD /* TAGContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TAGContainer.h; path = GoogleTM/TAGContainer.h; sourceTree = "<group>"; };
+		7AD8F7731B37C7F300144DAD /* TAGContainerOpener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TAGContainerOpener.h; path = GoogleTM/TAGContainerOpener.h; sourceTree = "<group>"; };
+		7AD8F7741B37C7F300144DAD /* TAGDataLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TAGDataLayer.h; path = GoogleTM/TAGDataLayer.h; sourceTree = "<group>"; };
+		7AD8F7751B37C7F300144DAD /* TAGLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TAGLogger.h; path = GoogleTM/TAGLogger.h; sourceTree = "<group>"; };
+		7AD8F7761B37C7F300144DAD /* TAGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TAGManager.h; path = GoogleTM/TAGManager.h; sourceTree = "<group>"; };
+		7AD8F77D1B37F89F00144DAD /* GTM-NCTWRP.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "GTM-NCTWRP.json"; sourceTree = SOURCE_ROOT; };
 		85046EA01B20395E00FF657B /* BarCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarCodeViewController.h; sourceTree = "<group>"; };
 		85046EA11B20395E00FF657B /* BarCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarCodeViewController.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -4324,6 +4331,18 @@
 			path = Appsflyer;
 			sourceTree = "<group>";
 		};
+		7AD8F7711B37C7E000144DAD /* GoogleTM */ = {
+			isa = PBXGroup;
+			children = (
+				7AD8F7721B37C7F300144DAD /* TAGContainer.h */,
+				7AD8F7731B37C7F300144DAD /* TAGContainerOpener.h */,
+				7AD8F7741B37C7F300144DAD /* TAGDataLayer.h */,
+				7AD8F7751B37C7F300144DAD /* TAGLogger.h */,
+				7AD8F7761B37C7F300144DAD /* TAGManager.h */,
+			);
+			name = GoogleTM;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -4402,6 +4421,7 @@
 		FC36DF8D19B0656400AF74C1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7AD8F77D1B37F89F00144DAD /* GTM-NCTWRP.json */,
 				FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */,
 				FC36DF8E19B0656400AF74C1 /* Tokopedia-Info.plist */,
 				FC36DF8F19B0656400AF74C1 /* InfoPlist.strings */,
@@ -7746,6 +7766,7 @@
 		FC763FEE1B15E2810034A8F1 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7AD8F7711B37C7E000144DAD /* GoogleTM */,
 				7A84DE9C1B1E9F3400741F0D /* Appsflyer */,
 				FC763FEF1B15E2810034A8F1 /* GoogleAnalytics */,
 				FC7640341B15E2820034A8F1 /* HPGrowingTextView.h */,
@@ -8576,6 +8597,7 @@
 				7A1D2E111B235E55002F9341 /* icon_category_active (deleted 2a2c3c744ec6a8adea187c9c7af18cc0).png in Resources */,
 				7A1D2F191B235E55002F9341 /* icon_category@3x.png in Resources */,
 				FC7643A01B15E2830034A8F1 /* ShopReviewPageViewController.xib in Resources */,
+				7AD8F77E1B37F89F00144DAD /* GTM-NCTWRP.json in Resources */,
 				7A1D2E071B235E55002F9341 /* icon_21@3x.png in Resources */,
 				FC76434B1B15E2830034A8F1 /* SearchResultShopViewController.xib in Resources */,
 				7A1D2F1F1B235E55002F9341 /* icon_more_active@3x.png in Resources */,

@@ -17,14 +17,17 @@ static RKObjectManager *_sharedClient = nil;
 @implementation RKObjectManager (TkpdCategory)
 
 + (RKObjectManager *)sharedClient {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
     
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLString]];
+        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[container stringForKey:@"base_url"]]];
     });
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshClient) name:@"didRefreshGTM" object:nil];
+
     return _sharedClient;
 }
 
@@ -45,6 +48,13 @@ static RKObjectManager *_sharedClient = nil;
     NSDictionary *data = [secureStorage keychainDictionary];
 
     _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[data objectForKey:@"AppBaseUrl"]?:kTraktBaseURLString]];
+}
+
++ (void)refreshClient {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
+
+    _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[container stringForKey:@"base_url"]]];
 }
 
 

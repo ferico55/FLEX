@@ -19,4 +19,6 @@ extern NSString * const kTraktBaseURLString;
 + (RKObjectManager *)sharedClientUploadImage:(NSString*)baseURLString;
 + (void)refreshBaseUrl;
 
++ (void)refreshClient;
+
 @end
