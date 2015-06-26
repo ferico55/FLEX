@@ -55,7 +55,9 @@
     RKObjectMapping *resolutionByMapping = [RKObjectMapping mappingForClass:[ResolutionBy class]];
     [resolutionByMapping addAttributeMappingsFromArray:@[
                                                         API_BY_CUSTOMER_KEY,
-                                                        API_BY_SELLER_KEY
+                                                        API_BY_SELLER_KEY,
+                                                        API_BY_USER_LABEL,
+                                                        API_BY_USER_LABEL_ID
                                                         ]];
     return resolutionByMapping;
 }

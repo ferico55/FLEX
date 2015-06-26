@@ -23,7 +23,7 @@ typedef enum
 #define TKPD_FORGETPASS_ACTION @"reset_password"
 #define TKPD_FORGETPASS_PATH @"action/general-usage.pl"
 
-#define TKPD_FORGETPASS_TITLE @"Lupa Password"
+#define TKPD_FORGETPASS_TITLE @"Lupa Kata Sandi"
 
 
 #endif
