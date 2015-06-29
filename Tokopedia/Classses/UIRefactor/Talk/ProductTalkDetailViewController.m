@@ -518,7 +518,7 @@
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
     //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
@@ -1017,10 +1017,14 @@
     if(status) {
         //if success
         if([commentaction.result.is_success isEqualToString:@"0"]) {
-            TalkCommentList *commentlist = _list[_list.count-1];
-            commentlist.is_not_delivered = @"1";
-            commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
             _growingtextview.text = _savedComment;
+            
+            TalkCommentList *commentlist = _list[_list.count-1];
+            [_list removeObject:commentlist];
+            [_table beginUpdates];
+            [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            [_table endUpdates];
+
             
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:commentaction.message_error
                                                                            delegate:self];

@@ -321,6 +321,17 @@
         _selectedIndex = selectedIndex;
         _selectedViewController = _viewControllers[selectedIndex];
         
+        for(UIViewController *tempViewController in _viewControllers) {
+            if(tempViewController == _selectedViewController) {
+                [[NSNotificationCenter defaultCenter] addObserver:_selectedViewController selector:@selector(updateAfterWriteReview:) name:@"updateAfterWriteReview" object:nil];
+            }
+            else {
+                [[NSNotificationCenter defaultCenter] removeObserver:tempViewController name:@"updateAfterWriteReview" object:nil];
+            }
+        }
+        
+        
+        
         [self setSelectedIndexTitle];
         
         
