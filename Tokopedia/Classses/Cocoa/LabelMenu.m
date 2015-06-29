@@ -35,6 +35,6 @@
 
 - (void)copy:(id)sender
 {
-    [_delegate copy:sender];
+    [_delegate duplicate:(int)self.tag];
 }
 @end

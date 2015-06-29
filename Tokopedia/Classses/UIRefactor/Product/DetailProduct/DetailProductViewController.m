@@ -90,6 +90,7 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
+LabelMenuDelegate,
 TTTAttributedLabelDelegate,
 GalleryViewControllerDelegate,
 UITableViewDelegate,
@@ -180,7 +181,6 @@ UIAlertViewDelegate
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
-@property (weak, nonatomic) IBOutlet UILabel *productnamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
 @property (weak, nonatomic) IBOutlet UIButton *reviewbutton;
 @property (weak, nonatomic) IBOutlet UIButton *talkaboutbutton;
@@ -246,6 +246,7 @@ UIAlertViewDelegate
 {
     [super viewDidLoad];
     
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.title = @"Detail Produk";
     fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
@@ -906,7 +907,7 @@ UIAlertViewDelegate
         if (indexPath.section == 0) {
             return _informationHeight+50;
         } else if (indexPath.section == 1 && _product.result.wholesale_price.count > 0) {
-            return 230;
+            return (44*2) + (_product.result.wholesale_price.count*44);//44 is standart height of uitableviewcell
         } else {
             return _descriptionHeight+50;
         }
@@ -990,6 +991,9 @@ UIAlertViewDelegate
             cell = (DetailProductWholesaleCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {
                 cell = [DetailProductWholesaleCell newcell];
+                CGRect tempContentView = cell.contentView.frame;
+                tempContentView.size.height = (_product.result.wholesale_price.count*4)+(44*2); //44 is height that currently is used(standard height uitableviewcell)
+                cell.contentView.frame = tempContentView;
             }
             ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY : _product.result.wholesale_price};
             
@@ -1041,11 +1045,6 @@ UIAlertViewDelegate
         [menu setTargetRect:lblDesc.frame inView:lblDesc.superview];
         [menu setMenuVisible:YES animated:YES];
     }
-}
-
-- (void)copy:(id)sender
-{
-    [UIPasteboard generalPasteboard].string = lblDescription.text;
 }
 
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
@@ -1775,6 +1774,7 @@ UIAlertViewDelegate
             [viewContentWarehouse addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)]];
             viewContentWarehouse.hidden = YES;
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+            _table.tableHeaderView = _header;
         }
         else if([_product.result.product.product_status intValue] == PRODUCT_STATE_PENDING) {
             lblTitleWarehouse.text = CStringTitleBanned;
@@ -1782,6 +1782,7 @@ UIAlertViewDelegate
             
             float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 8 + tempHeight);
+            _table.tableHeaderView = _header;
         }
         
         _table.tableHeaderView = _header;
@@ -2142,10 +2143,6 @@ UIAlertViewDelegate
 }
 
 -(void)setHeaderviewData{
-    
-    CGFloat currentLabelHeight = _productnamelabel.frame.size.height;
-    _productnamelabel.text = _formattedProductTitle?:@"";
-    
     NSString *productName = _formattedProductTitle?:@"";
     
     
@@ -2174,30 +2171,7 @@ UIAlertViewDelegate
     self.navigationItem.titleView = productLabel;
     
     
-    UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    
-    NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:productName
-                                                                                    attributes:attributes];
-    
-    _productnamelabel.attributedText = productNameAttributedText;
-    _productnamelabel.numberOfLines = 0;
-    [_productnamelabel sizeToFit];
-    
     //Update header view
-    CGFloat newLabelHeight = _productnamelabel.frame.size.height;
-    CGFloat additionalHeightForHeader = newLabelHeight - currentLabelHeight;
-    CGRect newHeaderFrame = _header.frame;
-    newHeaderFrame.size.height = newHeaderFrame.size.height + additionalHeightForHeader;
-    _header.frame = newHeaderFrame;
-    
     _pricelabel.text = _product.result.product.product_price;
     _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count];
     _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count];
@@ -2726,5 +2700,12 @@ UIAlertViewDelegate
         webViewController.strContentHTML = [NSString stringWithFormat:@"<font face='Gotham Book' size='2'>%@</font>", notesDetail.notes_content];
         [self.navigationController pushViewController:webViewController animated:YES];
     }
+}
+
+
+#pragma mark - LabelMenu Delegate
+- (void)duplicate:(int)tag
+{
+    [UIPasteboard generalPasteboard].string = lblDescription.text;
 }
 @end

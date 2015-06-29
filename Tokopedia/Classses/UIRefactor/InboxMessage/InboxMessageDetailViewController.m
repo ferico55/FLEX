@@ -149,12 +149,13 @@
     _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _growingtextview.layer.cornerRadius = 5;
     _growingtextview.layer.masksToBounds = YES;
+    
 
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
@@ -627,7 +628,10 @@
     // get a rect for the textView frame
     CGRect containerFrame = self.view.frame;
     
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+//    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+    containerFrame.size.height = self.view.bounds.size.height - keyboardBounds.size.height;
+    _table.contentInset = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
+    [_table scrollRectToVisible:CGRectMake(0, _table.contentSize.height, _table.bounds.size.width, 1) animated:YES];
     // animations settings
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
@@ -651,7 +655,9 @@
     self.view.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1.0];
     CGRect containerFrame = self.view.frame;
     
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
+//    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
+    containerFrame.size.height = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.bounds.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
     // animations settings
     [UIView beginAnimations:nil context:NULL];

@@ -56,6 +56,7 @@
     _menu = [NSMutableArray new];
 
     _isBeingPresented = self.navigationController.isBeingPresented;
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     if (_isBeingPresented) {
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                    style:UIBarButtonItemStyleBordered

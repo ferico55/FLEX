@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     BOOL _isrefreshview;
     BOOL _iseditmode;
     
-    NSInteger _page;
+    NSInteger _page, tempPage;
     NSInteger _limit;
     NSInteger _viewposition;
     
@@ -90,7 +90,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSMutableDictionary *_detailfilter;
     NSMutableArray *_departmenttree;
     
-    NSString *_uriNext;
+    NSString *_uriNext, *tempUriNext;
     NSString *_talkNavigationFlag;
     
     UIRefreshControl *_refreshControl;
@@ -103,6 +103,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSString *_keyword;
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
+    NSArray *tempArrProductList;
     SearchItem *_searchitem;
     
     BOOL _isrefreshnav;
@@ -936,6 +937,18 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
 //    _scrollOffset = self.table.contentOffset.y;
+    if(tempArrProductList == nil) {
+        if(_product == nil) {
+            tempArrProductList = [NSArray new];
+            tempUriNext = @"0";
+            tempPage = 0;
+        }
+        else {
+            tempArrProductList = [NSArray arrayWithArray:_product];
+            tempUriNext = [_uriNext mutableCopy];
+            tempPage = _page;
+        }
+    }
     
     [searchBar resignFirstResponder];
     [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
@@ -952,8 +965,25 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    searchBar.text = @"";
+    [_detailfilter removeObjectForKey:kTKPDDETAIL_DATAQUERYKEY];
     [searchBar resignFirstResponder];
     searchBar.showsCancelButton = NO;
+    
+    if(tempArrProductList != nil) {
+        _isNoData = NO;
+        _product = [NSMutableArray arrayWithArray:tempArrProductList];
+        _uriNext = [tempUriNext mutableCopy];
+        _page = tempPage;
+        tempArrProductList = nil;
+        tempUriNext = nil;
+        tempPage = 0;
+        
+        if(_product!=nil && _product.count>0) {
+            _table.tableFooterView = nil;
+        }
+        [_table reloadData];
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
