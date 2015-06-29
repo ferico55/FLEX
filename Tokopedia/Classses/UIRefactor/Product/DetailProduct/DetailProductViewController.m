@@ -5,7 +5,6 @@
 //  Created by IT Tkpd on 9/8/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
 #define CTagPromote 1
 #define CTagTokopediaNetworkManager 2
 #define CTagOtherProduct 3
@@ -14,6 +13,7 @@
 #define CTagUnWishList 6
 #define CTagNoteCanReture 7
 
+#import "CMPopTipView.h"
 #import "LabelMenu.h"
 #import "Notes.h"
 #import "NoteDetails.h"
@@ -100,9 +100,11 @@ LoginViewDelegate,
 TokopediaNetworkManagerDelegate,
 MyShopEtalaseFilterViewControllerDelegate,
 RequestMoveToDelegate,
-UIAlertViewDelegate
+UIAlertViewDelegate,
+CMPopTipViewDelegate
 >
 {
+    CMPopTipView *cmPopTitpView;
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
     NSMutableArray *_otherProductObj;
@@ -2068,14 +2070,47 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.has3DStyle = NO;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
 - (IBAction)actionReputasi:(id)sender
 {
-    
+    NSString *strText = @"2,000,100 Poin";
+    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
 }
 
 - (IBAction)actionKecepatan:(id)sender
 {
-
+    NSString *strText = @"1,000,100 Acct";
+    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
 }
 
 - (void)hiddenButtonBuyAndPromo
@@ -2758,5 +2793,20 @@ UIAlertViewDelegate
         webViewController.strContentHTML = [NSString stringWithFormat:@"<font face='Gotham Book' size='2'>%@</font>", notesDetail.notes_content];
         [self.navigationController pushViewController:webViewController animated:YES];
     }
+}
+
+
+#pragma mark - PopUp 
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
 }
 @end

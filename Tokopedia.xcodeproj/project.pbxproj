@@ -480,6 +480,7 @@
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
+		853BD89B1B41140400211196 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 853BD89A1B41140400211196 /* CMPopTipView.m */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		8563A1481B1EEFE600DFF001 /* LabelMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A1471B1EEFE600DFF001 /* LabelMenu.m */; };
 		8563A14B1B1EFBAC00DFF001 /* TextMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A14A1B1EFBAC00DFF001 /* TextMenu.m */; };
@@ -1941,6 +1942,8 @@
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		853BD8991B41140400211196 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
+		853BD89A1B41140400211196 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8563A1461B1EEFE600DFF001 /* LabelMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelMenu.h; sourceTree = "<group>"; };
 		8563A1471B1EEFE600DFF001 /* LabelMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelMenu.m; sourceTree = "<group>"; };
@@ -4456,6 +4459,8 @@
 		FC7636FE1B15E2710034A8F1 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				853BD8991B41140400211196 /* CMPopTipView.h */,
+				853BD89A1B41140400211196 /* CMPopTipView.m */,
 				FC7636FF1B15E2710034A8F1 /* DBManager.h */,
 				FC7637001B15E2710034A8F1 /* DBManager.m */,
 				FC7637011B15E2710034A8F1 /* ExpiringCache.h */,
@@ -9159,6 +9164,7 @@
 				FC76416A1B15E2820034A8F1 /* Address.m in Sources */,
 				FC7642E61B15E2830034A8F1 /* GalleryPhoto.m in Sources */,
 				FC7641841B15E2820034A8F1 /* ShippingInfoShipmentPackage.m in Sources */,
+				853BD89B1B41140400211196 /* CMPopTipView.m in Sources */,
 				FC7643DE1B15E2830034A8F1 /* TxOrderStatusCell.m in Sources */,
 				FC7641B31B15E2820034A8F1 /* TxOrderCancelPaymentResult.m in Sources */,
 				FC7640E61B15E2820034A8F1 /* InboxMessageActionResult.m in Sources */,
