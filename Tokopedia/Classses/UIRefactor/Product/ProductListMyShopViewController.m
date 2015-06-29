@@ -313,12 +313,12 @@ RequestMoveToDelegate
             }
             case BUTTON_FILTER_TYPE_FILTER:
             {
-                NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+                UserAuthentificationManager *auth = [UserAuthentificationManager new];
                 
                 ProductListMyShopFilterViewController *controller = [ProductListMyShopFilterViewController new];
                 controller.delegate = self;
                 controller.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
-                controller.shopID = [auth objectForKey:kTKPD_SHOPIDKEY];
+                controller.shopID = [auth getShopId];
                 
                 UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
                 navigation.navigationBar.translucent = NO;
