@@ -168,7 +168,7 @@ UIAlertViewDelegate
     
     BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
-    UIActivityIndicatorView *activityIndicator;
+    UIActivityIndicatorView *activityIndicator, *actFav;
     UIFont *fontDesc;
     
     RequestMoveTo *_requestMoveTo;
@@ -194,9 +194,6 @@ UIAlertViewDelegate
 @property (weak, nonatomic) IBOutlet StarsRateView *accuracyrateview;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 
-@property (weak, nonatomic) IBOutlet StarsRateView *ratespeedshop;
-@property (weak, nonatomic) IBOutlet StarsRateView *rateaccuracyshop;
-@property (weak, nonatomic) IBOutlet StarsRateView *rateserviceshop;
 @property (weak, nonatomic) IBOutlet UILabel *countsoldlabel;
 @property (weak, nonatomic) IBOutlet UILabel *countviewlabel;
 
@@ -344,6 +341,21 @@ UIAlertViewDelegate
     
     //Add observer
     [self initNotification];
+    
+    //Set image and title for reputasi
+    int spacing = 6;
+    CGSize imageSize = btnReputasi.imageView.bounds.size;
+    CGSize titleSize = btnReputasi.titleLabel.bounds.size;
+    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
+    btnReputasi.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
+    btnReputasi.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
+    
+    //Set image and title kecepatan
+    imageSize = btnKecepatan.imageView.bounds.size;
+    titleSize = btnKecepatan.titleLabel.bounds.size;
+    totalHeight = (imageSize.height + titleSize.height + spacing);
+    btnKecepatan.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
+    btnKecepatan.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
 }
 
 - (void)initNotification {
@@ -361,24 +373,24 @@ UIAlertViewDelegate
     
     if(_favButton.tag == 17) {//Favorite is 17
         _favButton.tag = 18;
-        [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
+//        [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
         [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_active.png"] forState:UIControlStateNormal];
         [_favButton.layer setBorderWidth:0];
         _favButton.tintColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.3 animations:^(void) {
             [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
-            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }];
     }
     else {
         _favButton.tag = 17;
-        [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
+//        [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
         [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_nonactive.png"] forState:UIControlStateNormal];
         [_favButton.layer setBorderWidth:1];
         _favButton.tintColor = [UIColor lightGrayColor];
         [UIView animateWithDuration:0.3 animations:^(void) {
             [_favButton setBackgroundColor:[UIColor whiteColor]];
-            [_favButton setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
+//            [_favButton setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
         }];
     }
 }
@@ -1086,7 +1098,6 @@ UIAlertViewDelegate
     else if(tag == CTagFavorite)
     {
         NSString *strShopID = [[NSString alloc] initWithString:tempShopID];
-        tempShopID = nil;
         return @{kTKPDDETAIL_ACTIONKEY:@"fav_shop", @"shop_id":strShopID};
     }
     else if(tag == CTagUnWishList)
@@ -1427,6 +1438,7 @@ UIAlertViewDelegate
     }
     else if(tag == CTagFavorite)
     {
+        tempShopID = nil;
         FavoriteShopAction *favoriteShopAction = stat;
         return favoriteShopAction.status;
     }
@@ -1509,6 +1521,12 @@ UIAlertViewDelegate
         [stickyAlertView show];
         [self requestFavoriteResult:successResult withOperation:operation];
         [self setButtonFav];
+
+        //Change this block to method (Any in branch f_bug_fixing)
+        [actFav stopAnimating];
+        [actFav removeFromSuperview];
+        actFav = nil;
+        _favButton.hidden = NO;
     }
     else if(tag == CTagUnWishList)
     {
@@ -1669,9 +1687,16 @@ UIAlertViewDelegate
         
     }
     else if(tag == CTagOtherProduct)
-    {}
+    {
+    }
     else if(tag == CTagFavorite)
-    {}
+    {
+        //Change this block to method (Any in branch f_bug_fixing)
+        [actFav stopAnimating];
+        [actFav removeFromSuperview];
+        actFav = nil;
+        _favButton.hidden = NO;
+    }
     else if(tag == CTagUnWishList)
     {}
     else if(tag == CTagWishList)
@@ -2043,6 +2068,16 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (IBAction)actionReputasi:(id)sender
+{
+    
+}
+
+- (IBAction)actionKecepatan:(id)sender
+{
+
+}
+
 - (void)hiddenButtonBuyAndPromo
 {
     _dinkButton.hidden = YES;
@@ -2292,10 +2327,6 @@ UIAlertViewDelegate
     } else {
         _goldShop.hidden = YES;
     }
-    
-    _ratespeedshop.starscount = _product.result.shop_info.shop_stats.shop_speed_rate;
-    _rateserviceshop.starscount = _product.result.shop_info.shop_stats.shop_service_rate;
-    _rateaccuracyshop.starscount = _product.result.shop_info.shop_stats.shop_accuracy_rate;
     
     UIImageView *thumb = _shopthumb;
     
@@ -2556,9 +2587,17 @@ UIAlertViewDelegate
     }
 }
 
-
 -(void)favoriteShop:(NSString*)shop_id
 {
+    //Change this block to method (Any in branch f_bug_fixing)
+    if(actFav == nil) {
+        actFav = [[UIActivityIndicatorView alloc] init];
+        actFav.color = [UIColor lightGrayColor];
+    }
+    actFav.frame = _favButton.frame;
+    [actFav startAnimating];
+    [_favButton.superview addSubview:actFav];
+    _favButton.hidden = YES;
     
     tempShopID = shop_id;
     [tokopediaNetworkManagerFavorite doRequest];

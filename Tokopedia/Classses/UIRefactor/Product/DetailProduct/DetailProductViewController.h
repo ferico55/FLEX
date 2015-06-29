@@ -11,7 +11,7 @@
 @interface DetailProductViewController : GAITrackedViewController
 {
     IBOutlet UIView *viewTableContentHeader, *viewContentWishList, *viewContentUlasanAndDiskusi, *viewContentWarehouse;
-    IBOutlet UIButton *btnWishList, *btnShare;
+    IBOutlet UIButton *btnWishList, *btnShare, *btnReputasi, *btnKecepatan;
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;
     IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle, *lblTitleWarehouse, *lblDescWarehouse;
@@ -23,4 +23,6 @@
 - (void)setBackgroundPriceAlert:(BOOL)isActive;
 - (IBAction)actionShare:(id)sender;
 - (IBAction)actionWishList:(id)sender;
+- (IBAction)actionReputasi:(id)sender;
+- (IBAction)actionKecepatan:(id)sender;
 @end
