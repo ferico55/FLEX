@@ -31,6 +31,8 @@
 
 #import "RedirectHandler.h"
 
+#import "InboxRootViewController.h"
+
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
                                     RedirectHandlerDelegate,
@@ -163,6 +165,12 @@
     greenArrowImageView.frame = frame;
 //    [self.navigationController.navigationBar addSubview:greenArrowImageView];
     [self.view addSubview:greenArrowImageView];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 - (void)setHeaderBar {
@@ -330,24 +338,30 @@
 }
 
 - (void)goToInboxMessage {
-    InboxMessageViewController *vc = [InboxMessageViewController new];
-    vc.data=@{@"nav":@"inbox-message"};
-    
-    InboxMessageViewController *vc1 = [InboxMessageViewController new];
-    vc1.data=@{@"nav":@"inbox-message-sent"};
-    
-    InboxMessageViewController *vc2 = [InboxMessageViewController new];
-    vc2.data=@{@"nav":@"inbox-message-archive"};
-    
-    InboxMessageViewController *vc3 = [InboxMessageViewController new];
-    vc3.data=@{@"nav":@"inbox-message-trash"};
-    NSArray *vcs = @[vc,vc1, vc2, vc3];
-    
-    TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-    [inboxController setSelectedIndex:2];
-    [inboxController setViewControllers:vcs];
-    
-    [self.navigationController pushViewController:inboxController animated:YES];
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxRootViewController *inboxController = [InboxRootViewController new];
+        [self.navigationController pushViewController:inboxController animated:YES];
+
+    } else {
+        InboxMessageViewController *vc = [InboxMessageViewController new];
+        vc.data=@{@"nav":@"inbox-message"};
+        
+        InboxMessageViewController *vc1 = [InboxMessageViewController new];
+        vc1.data=@{@"nav":@"inbox-message-sent"};
+        
+        InboxMessageViewController *vc2 = [InboxMessageViewController new];
+        vc2.data=@{@"nav":@"inbox-message-archive"};
+        
+        InboxMessageViewController *vc3 = [InboxMessageViewController new];
+        vc3.data=@{@"nav":@"inbox-message-trash"};
+        NSArray *vcs = @[vc,vc1, vc2, vc3];
+        
+        TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
+        [inboxController setSelectedIndex:2];
+        [inboxController setViewControllers:vcs];
+        
+        [self.navigationController pushViewController:inboxController animated:YES];
+    }
 }
 
 - (void)goToInboxTalk {
