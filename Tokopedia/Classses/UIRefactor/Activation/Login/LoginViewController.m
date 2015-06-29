@@ -25,7 +25,6 @@
 #import "GAIDictionaryBuilder.h"
 #import "AppsFlyerTracker.h"
 
-
 @interface LoginViewController () <FBLoginViewDelegate, LoginViewDelegate, CreatePasswordDelegate> {
     
     UITextField *_activetextfield;
@@ -146,7 +145,6 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Login Page";
-    [FBSession.activeSession closeAndClearTokenInformation];
     
     _loginButton.layer.cornerRadius = 2;
     
@@ -157,6 +155,10 @@
     _passwordTextField.isBottomRoundCorner = YES;
     
     _loginView.delegate = self;
+    
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -286,6 +288,10 @@
     _facebookLoginButton.hidden = NO;
     
     [_activityIndicator stopAnimating];
+    
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
 }
 
 - (void)setLoggingInState {
@@ -429,6 +435,9 @@
     
     _requestcount++;
     
+    FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
+    NSString *accessToken = [token accessToken]?:@"";
+    
     NSDictionary *param = @{
                             kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
                             kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
@@ -437,6 +446,7 @@
                             kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
                             kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
                             kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
+                            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
                             };
     
     NSLog(@"\n\n\n%@\n\n\n", param);
@@ -486,18 +496,11 @@
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            
-            if(_login.result.user_image != nil) {
-                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            }
-            
+            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            
-            if(_login.result.shop_avatar != nil) {
-                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            }
-            
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
@@ -522,29 +525,6 @@
                                                                 object:nil
                                                               userInfo:nil];
         } else if ([_login.result.status isEqualToString:@"1"]) {
-            
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            
-            
-            if(_login.result.user_image != nil) {
-                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            }
-            
-            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            
-            if(_login.result.shop_avatar != nil) {
-                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            }
-            
-            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-            [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
-            
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
@@ -584,19 +564,11 @@
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            
-            
-            if(_login.result.user_image != nil) {
-                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            }
-            
+            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            
-            if(_login.result.shop_avatar != nil) {
-                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            }
-            
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
