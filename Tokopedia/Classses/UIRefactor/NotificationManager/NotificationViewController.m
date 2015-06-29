@@ -76,7 +76,7 @@
         _reviewCountLabel.text = _notification.result.inbox.inbox_review;
         [self updateLabelAppearance:_reviewCountLabel];
     }
-
+    
     if ([_notification.result.resolution integerValue] > 0) {
         _resolutionCenterCountLabel.text = [_notification.result.resolution stringValue];
         [self updateLabelAppearance:_resolutionCenterCountLabel];
@@ -104,7 +104,7 @@
     } else {
         _shippingStatus.hidden = YES;
     }
-
+    
     // Purchase section
     if([_notification.result.purchase.purchase_reorder integerValue] > 0) {
         _orderCancelledLabel.text = _notification.result.purchase.purchase_reorder;
@@ -135,7 +135,6 @@
     } else {
         _receiveConfirmation.hidden = YES;
     }
-
     
 }
 
@@ -178,6 +177,20 @@
             break;
     }
     return numberOfRows;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    // Background color
+    view.tintColor = [UIColor clearColor];
+    
+    // Text Color
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    //    [header.textLabel setTextColor:[UIColor whiteColor]];
+    
+    // Another way to set the background color
+    // Note: does not preserve gradient effect of original header
+    // header.contentView.backgroundColor = [UIColor blackColor];
 }
 
 
@@ -232,17 +245,17 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 4, self.view.frame.size.width, 30)];
-    titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:15];
     titleLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1];
     if (section == 0) titleLabel.text = @"Kotak Masuk";
     else if (section == 1) titleLabel.text = @"Penjualan";
     else if (section == 2) titleLabel.text = @"Pembelian";
-
+    
     UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 33, self.view.frame.size.width, 1)];
     borderView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:0.5f];
-
+    
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34)];
-    headerView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+    headerView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:0.7];
     [headerView addSubview:titleLabel];
     [headerView addSubview:borderView];
     
@@ -256,7 +269,7 @@
     CGRect messageFrame = label.frame;
     messageFrame.origin.x -= 18;
     label.frame = messageFrame;
-
+    
     UIView *redCircle = [[UIView alloc] initWithFrame:CGRectMake(40, 17, 8, 8)];
     redCircle.backgroundColor = [UIColor colorWithRed:229.0/255.0 green:28.0/255.0 blue:35.0/255.0 alpha:1];
     redCircle.layer.cornerRadius = 4;
@@ -289,7 +302,7 @@
                 [controller setViewControllers:vcs];
                 controller.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:controller];
-
+                
                 break;
             }
             case 1 : {
@@ -308,9 +321,9 @@
                 [controller setSelectedIndex:2];
                 [controller setViewControllers:vcs];
                 controller.hidesBottomBarWhenPushed = YES;
-
+                
                 [self.delegate pushViewController:controller];
-
+                
                 break;
             }
                 
