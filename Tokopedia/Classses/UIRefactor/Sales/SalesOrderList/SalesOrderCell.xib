@@ -172,7 +172,7 @@
                                             <constraint firstAttribute="height" constant="21" id="BPe-uG-dyM"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Batas Respon : 13 Oktober 2014" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uib-Qu-YYN">
@@ -295,6 +295,7 @@
                         </constraints>
                     </view>
                 </subviews>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.78000000000000003" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="dbs-k1-CjR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Dlv-du-0ax"/>
                     <constraint firstItem="dbs-k1-CjR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Ixw-Iz-jr2"/>

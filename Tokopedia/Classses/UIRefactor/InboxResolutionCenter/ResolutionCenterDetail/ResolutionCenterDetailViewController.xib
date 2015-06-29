@@ -204,7 +204,7 @@
                     </connections>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="dU4-qr-U1K" secondAttribute="trailing" id="4nL-Bs-acA"/>
                 <constraint firstItem="4Gk-vx-1N6" firstAttribute="top" secondItem="s8o-KD-9LU" secondAttribute="top" id="8jt-bX-c0m"/>
@@ -258,6 +258,7 @@
                         </connections>
                     </button>
                 </subviews>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="Cti-C9-twK" firstAttribute="top" secondItem="9az-Qc-hMA" secondAttribute="top" constant="10" id="AVR-Eo-cbd"/>
                     <constraint firstAttribute="trailing" secondItem="Cti-C9-twK" secondAttribute="trailing" constant="10" id="ICf-wE-YSd"/>
@@ -265,8 +266,8 @@
                     <constraint firstAttribute="bottom" secondItem="Cti-C9-twK" secondAttribute="bottom" constant="10" id="ZcR-4E-gTx"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <point key="canvasLocation" x="507" y="146"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <point key="canvasLocation" x="551" y="149.5"/>
         </tableViewCell>
         <tapGestureRecognizer id="zD8-oc-nhU">
             <connections>

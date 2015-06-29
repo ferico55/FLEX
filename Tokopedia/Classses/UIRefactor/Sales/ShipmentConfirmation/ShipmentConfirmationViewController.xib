@@ -51,7 +51,7 @@
                     <rect key="frame" x="15" y="0.0" width="290" height="56"/>
                     <string key="text">Order Anda akan otomatis kami batalkan apabila Anda melewati batas waktu respon 5 hari kerja (Senin - Jumat) setelah order diverifikasi.</string>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

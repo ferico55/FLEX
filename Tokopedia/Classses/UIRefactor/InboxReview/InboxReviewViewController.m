@@ -160,7 +160,8 @@
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
     _reviews = [NSMutableArray new];
     _reviewPage = 1;

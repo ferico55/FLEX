@@ -269,10 +269,8 @@
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = NO;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 75;
+                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
             }

@@ -34,7 +34,7 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="198" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tF2-SW-y74">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="523"/>
-                    <color key="backgroundColor" red="0.88235294119999996" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="aMx-hB-Oij"/>
                         <outlet property="delegate" destination="-1" id="bF9-6w-J4c"/>
@@ -60,15 +60,15 @@
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_urutkan_alt.png" translatesAutoresizingMaskIntoConstraints="NO" id="2RM-HE-e1c">
                             <rect key="frame" x="69" y="12" width="22" height="22"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="22" id="Jfk-0E-BBf"/>
-                                <constraint firstAttribute="width" constant="22" id="zHW-oa-wlR"/>
+                                <constraint firstAttribute="width" constant="22" id="Pwf-KZ-nxq"/>
+                                <constraint firstAttribute="height" constant="22" id="RWz-2J-iz8"/>
                             </constraints>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_filter.png" translatesAutoresizingMaskIntoConstraints="NO" id="IKA-yQ-ihc">
                             <rect key="frame" x="229" y="12" width="22" height="22"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="22" id="8GH-F2-Sj1"/>
-                                <constraint firstAttribute="width" constant="22" id="e6M-YP-0la"/>
+                                <constraint firstAttribute="height" constant="22" id="JiP-iW-qhy"/>
+                                <constraint firstAttribute="width" constant="22" id="YxK-mA-Bfx"/>
                             </constraints>
                         </imageView>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5o3-Cx-O8o">
@@ -104,17 +104,17 @@
                     <constraints>
                         <constraint firstItem="zks-KN-jsr" firstAttribute="top" secondItem="RN8-1f-srC" secondAttribute="top" id="1Wd-it-ZTn"/>
                         <constraint firstItem="9Mi-X5-0OA" firstAttribute="top" secondItem="RN8-1f-srC" secondAttribute="top" id="1ud-p7-j0i"/>
+                        <constraint firstItem="IKA-yQ-ihc" firstAttribute="centerX" secondItem="9Mi-X5-0OA" secondAttribute="centerX" id="4wp-ei-vmL"/>
                         <constraint firstAttribute="bottom" secondItem="9Mi-X5-0OA" secondAttribute="bottom" id="67m-Z9-Z4e"/>
                         <constraint firstItem="9Mi-X5-0OA" firstAttribute="width" secondItem="5o3-Cx-O8o" secondAttribute="width" id="A7A-m9-QGI"/>
-                        <constraint firstAttribute="centerY" secondItem="IKA-yQ-ihc" secondAttribute="centerY" id="Cko-RP-tZ9"/>
-                        <constraint firstAttribute="centerY" secondItem="2RM-HE-e1c" secondAttribute="centerY" id="FB0-gH-w5d"/>
+                        <constraint firstItem="IKA-yQ-ihc" firstAttribute="centerY" secondItem="9Mi-X5-0OA" secondAttribute="centerY" id="FFj-jV-BgE"/>
                         <constraint firstItem="zks-KN-jsr" firstAttribute="leading" secondItem="5o3-Cx-O8o" secondAttribute="trailing" id="GaS-SH-A10"/>
                         <constraint firstItem="MjV-S6-ge3" firstAttribute="top" secondItem="RN8-1f-srC" secondAttribute="top" id="K22-t6-E5l"/>
-                        <constraint firstAttribute="centerX" secondItem="2RM-HE-e1c" secondAttribute="centerX" constant="80" id="OXZ-ha-J6Q"/>
+                        <constraint firstItem="5o3-Cx-O8o" firstAttribute="centerY" secondItem="2RM-HE-e1c" secondAttribute="centerY" id="OAM-j1-tuD"/>
                         <constraint firstItem="5o3-Cx-O8o" firstAttribute="top" secondItem="RN8-1f-srC" secondAttribute="top" id="QdW-Td-oWJ"/>
                         <constraint firstAttribute="trailing" secondItem="9Mi-X5-0OA" secondAttribute="trailing" id="Qhm-oq-0OO"/>
+                        <constraint firstItem="5o3-Cx-O8o" firstAttribute="centerX" secondItem="2RM-HE-e1c" secondAttribute="centerX" id="QxF-fv-ZmU"/>
                         <constraint firstItem="MjV-S6-ge3" firstAttribute="leading" secondItem="RN8-1f-srC" secondAttribute="leading" id="Rrz-f7-Ogd"/>
-                        <constraint firstAttribute="centerX" secondItem="IKA-yQ-ihc" secondAttribute="centerX" constant="-80" id="Tt4-vG-SCT"/>
                         <constraint firstAttribute="bottom" secondItem="zks-KN-jsr" secondAttribute="bottom" id="XyC-rz-0oF"/>
                         <constraint firstAttribute="bottom" secondItem="5o3-Cx-O8o" secondAttribute="bottom" id="cZE-bg-utS"/>
                         <constraint firstItem="9Mi-X5-0OA" firstAttribute="leading" secondItem="5o3-Cx-O8o" secondAttribute="trailing" id="ibJ-LL-WuJ"/>
@@ -124,7 +124,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="RN8-1f-srC" secondAttribute="bottom" id="9Df-nN-Pky"/>
                 <constraint firstItem="tF2-SW-y74" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="LHR-S4-JBa"/>

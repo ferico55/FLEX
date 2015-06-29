@@ -34,7 +34,6 @@
 {
     Shop *_shop;
     BOOL _isnodata;
-    BOOL _isaddressexpanded;
     NavigateViewController *_navigateController;
     
     BOOL _isHideAddress;
@@ -84,7 +83,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
-        _isaddressexpanded = NO;
     }
     return self;
 }
@@ -165,13 +163,15 @@
                 //expand location
                 if (_isHideAddress) {
                     _isHideAddress = NO;
-                    _arrowImage.image =[UIImage imageNamed:@"icon_arrow_down"];
+                    _arrowImage.image =[UIImage imageNamed:@"icon_arrow_up"];
                 } else {
                     _isHideAddress = YES;
-                    _arrowImage.image =[UIImage imageNamed:@"icon_arrow_up"];
+                    _arrowImage.image =[UIImage imageNamed:@"icon_arrow_down"];
 
                 }
-                [_tableView reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
                 break;
             }
             case 11:
@@ -230,6 +230,7 @@
     }
     
 }
+
 
 #pragma mark - Table View Data Source
 
@@ -294,12 +295,17 @@
         if (_isHideAddress) {
             return 0;
         }
+        else
+        {
+            return 190;
+        }
         NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
         cell = [self addressCellIndexPath:newIndexPath];
     }
     else if (indexPath.row == _shop.result.address.count+1)
     {
         cell = _statisticCell;
+
     }
     else if (indexPath.row<=_shipments.count+_shop.result.address.count+1)
     {

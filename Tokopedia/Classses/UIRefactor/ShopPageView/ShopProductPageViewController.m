@@ -420,7 +420,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         inset = 14;
     }
     
-    CGFloat cellWidth = screenWidth/cellCount-inset;
+    CGFloat cellWidth;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        screenWidth = screenRect.size.width/2;
+        cellWidth = screenWidth/cellCount-inset;
+    } else {
+        screenWidth = screenRect.size.width;
+        cellWidth = screenWidth/cellCount-inset;
+    }
+    
     cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
     return cellSize;
 }

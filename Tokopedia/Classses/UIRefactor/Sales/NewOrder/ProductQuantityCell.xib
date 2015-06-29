@@ -99,7 +99,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yang Dikirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y2l-MD-cxP">
                                         <rect key="frame" x="15" y="0.0" width="90" height="44"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -161,7 +161,7 @@
                     <constraint firstItem="Sa2-WF-yW6" firstAttribute="top" secondItem="zXM-eT-uVP" secondAttribute="bottom" id="yAy-5m-2Y2"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="productImageView" destination="R1n-n8-Msq" id="7Ja-Fr-8Ke"/>
                 <outlet property="productNameLabel" destination="tn9-8l-a0H" id="bF3-ll-Sf3"/>
