@@ -111,7 +111,7 @@
     
     UIGraphicsBeginImageContext([UIScreen mainScreen].bounds.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    UIView *view = _attachedViewController.view.subviews[0];
+    UIView *view = _attachedViewController.view;
     [view.layer renderInContext:context];
     UIImage *screenShot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
