@@ -296,7 +296,13 @@ typedef enum TagRequest {
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
     [_messages_selected removeAllObjects];
+    if(_messages==nil || _messages.count==0) {
+        _isnodata = YES;
+        _table.tableFooterView = _noresult;
+    }
     [_table endUpdates];
+    
+
     
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
