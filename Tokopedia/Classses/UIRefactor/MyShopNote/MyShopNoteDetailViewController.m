@@ -984,8 +984,8 @@
  
     self.title = _noteList.note_title;
 
-    _titleLabel.text = _noteList.note_title;
-    [_titleLabel sizeToFit];
+    _titleNoteTextField.text = _noteList.note_title;
+    [_titleNoteTextField sizeToFit];
     
     _contentNoteTextView.text = _noteList.note_status;
     
