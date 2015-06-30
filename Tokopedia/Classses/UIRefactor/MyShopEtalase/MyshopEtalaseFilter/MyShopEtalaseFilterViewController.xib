@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyShopEtalaseViewController">
@@ -30,11 +30,27 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="GdX-Jc-Qjs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="1UQ-NU-bOe"/>
+                <constraint firstItem="GdX-Jc-Qjs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="70" id="QTd-0l-ALS"/>
                 <constraint firstAttribute="bottom" secondItem="GdX-Jc-Qjs" secondAttribute="bottom" id="SFp-sO-LLy"/>
                 <constraint firstItem="GdX-Jc-Qjs" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="THn-D4-pyA"/>
+                <constraint firstAttribute="trailing" secondItem="GdX-Jc-Qjs" secondAttribute="trailing" constant="70" id="UMI-QB-cIY"/>
                 <constraint firstAttribute="trailing" secondItem="GdX-Jc-Qjs" secondAttribute="trailing" id="qSq-v0-OKO"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="QTd-0l-ALS"/>
+                    <exclude reference="UMI-QB-cIY"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="1UQ-NU-bOe"/>
+                    <include reference="QTd-0l-ALS"/>
+                    <include reference="UMI-QB-cIY"/>
+                    <exclude reference="qSq-v0-OKO"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="215" y="248"/>
         </view>
         <view contentMode="scaleToFill" id="XuX-tx-aMd" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
@@ -51,9 +67,4 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
