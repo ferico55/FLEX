@@ -8,6 +8,14 @@
 #define CStringLastCheckVerify @"lastCheckVerify"
 #define CStringMSISDNIsVerify @"msisdnIsVerify"
 #define CStringMSISDN @"msisdn"
+#define CWidthItemPopUp 50
+#define CHeightItemPopUp 50
+enum emoticonTag
+{
+    CTagMerah = 1,
+    CTagKuning = 2,
+    CTagHijau = 3
+};
 
 #ifndef __IPHONE_3_0
 #warning "This project uses features only available in iOS SDK 3.0 and later."

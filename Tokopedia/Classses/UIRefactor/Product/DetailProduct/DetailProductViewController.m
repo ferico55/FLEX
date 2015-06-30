@@ -13,6 +13,7 @@
 #define CTagUnWishList 6
 #define CTagNoteCanReture 7
 
+#import "ProductReputationViewController.h"
 #import "CMPopTipView.h"
 #import "LabelMenu.h"
 #import "Notes.h"
@@ -500,6 +501,13 @@ CMPopTipViewDelegate
         switch (btn.tag) {
             case 12:
             {
+                ProductReputationViewController *productReputationViewController = [ProductReputationViewController new];
+                [self.navigationController pushViewController:productReputationViewController animated:YES];
+                return;
+                
+                
+                
+                return;
                 // go to review page
                 ProductReviewViewController *vc = [ProductReviewViewController new];
                 NSArray *images = _product.result.product_images;

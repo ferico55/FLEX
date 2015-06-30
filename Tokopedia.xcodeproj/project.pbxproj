@@ -481,10 +481,19 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		853BD89B1B41140400211196 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 853BD89A1B41140400211196 /* CMPopTipView.m */; };
+		853BD8A01B41299800211196 /* ProductReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 853BD89E1B41299800211196 /* ProductReputationViewController.m */; };
+		853BD8A11B41299800211196 /* ProductReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853BD89F1B41299800211196 /* ProductReputationViewController.xib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		8563A1481B1EEFE600DFF001 /* LabelMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A1471B1EEFE600DFF001 /* LabelMenu.m */; };
 		8563A14B1B1EFBAC00DFF001 /* TextMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A14A1B1EFBAC00DFF001 /* TextMenu.m */; };
+		856F3FB31B41400B0077F0ED /* ProductReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 856F3FB11B41400B0077F0ED /* ProductReputationCell.m */; };
+		856F3FB41B41400B0077F0ED /* ProductReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 856F3FB21B41400B0077F0ED /* ProductReputationCell.xib */; };
+		856F3FB71B41420F0077F0ED /* ViewLabelUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 856F3FB61B41420F0077F0ED /* ViewLabelUser.m */; };
 		85A53C971B1C880D00D626B7 /* DetailProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */; };
+		85B2BFF61B424C9500112DB8 /* ProductDetailReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B2BFF41B424C9500112DB8 /* ProductDetailReputationViewController.m */; };
+		85B2BFF71B424C9500112DB8 /* ProductDetailReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85B2BFF51B424C9500112DB8 /* ProductDetailReputationViewController.xib */; };
+		85B2BFFB1B42582D00112DB8 /* ProductDetailReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B2BFF91B42582D00112DB8 /* ProductDetailReputationCell.m */; };
+		85B2BFFC1B42582D00112DB8 /* ProductDetailReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85B2BFFA1B42582D00112DB8 /* ProductDetailReputationCell.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1944,12 +1953,27 @@
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		853BD8991B41140400211196 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		853BD89A1B41140400211196 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
+		853BD89D1B41299800211196 /* ProductReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductReputationViewController.h; sourceTree = "<group>"; };
+		853BD89E1B41299800211196 /* ProductReputationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductReputationViewController.m; sourceTree = "<group>"; };
+		853BD89F1B41299800211196 /* ProductReputationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReputationViewController.xib; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8563A1461B1EEFE600DFF001 /* LabelMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelMenu.h; sourceTree = "<group>"; };
 		8563A1471B1EEFE600DFF001 /* LabelMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelMenu.m; sourceTree = "<group>"; };
 		8563A1491B1EFBAC00DFF001 /* TextMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMenu.h; sourceTree = "<group>"; };
 		8563A14A1B1EFBAC00DFF001 /* TextMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMenu.m; sourceTree = "<group>"; };
+		856F3FB01B41400B0077F0ED /* ProductReputationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductReputationCell.h; sourceTree = "<group>"; };
+		856F3FB11B41400B0077F0ED /* ProductReputationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductReputationCell.m; sourceTree = "<group>"; };
+		856F3FB21B41400B0077F0ED /* ProductReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReputationCell.xib; sourceTree = "<group>"; };
+		856F3FB51B41420F0077F0ED /* ViewLabelUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewLabelUser.h; sourceTree = "<group>"; };
+		856F3FB61B41420F0077F0ED /* ViewLabelUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewLabelUser.m; sourceTree = "<group>"; };
 		85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductViewController.xib; sourceTree = "<group>"; };
+		85B2BFF21B424A0D00112DB8 /* String_Reputation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = String_Reputation.h; sourceTree = "<group>"; };
+		85B2BFF31B424C9500112DB8 /* ProductDetailReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductDetailReputationViewController.h; sourceTree = "<group>"; };
+		85B2BFF41B424C9500112DB8 /* ProductDetailReputationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductDetailReputationViewController.m; sourceTree = "<group>"; };
+		85B2BFF51B424C9500112DB8 /* ProductDetailReputationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductDetailReputationViewController.xib; sourceTree = "<group>"; };
+		85B2BFF81B42582D00112DB8 /* ProductDetailReputationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductDetailReputationCell.h; sourceTree = "<group>"; };
+		85B2BFF91B42582D00112DB8 /* ProductDetailReputationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductDetailReputationCell.m; sourceTree = "<group>"; };
+		85B2BFFA1B42582D00112DB8 /* ProductDetailReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductDetailReputationCell.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -4327,6 +4351,26 @@
 			path = Appsflyer;
 			sourceTree = "<group>";
 		};
+		853BD89C1B41291B00211196 /* Reputation */ = {
+			isa = PBXGroup;
+			children = (
+				853BD89D1B41299800211196 /* ProductReputationViewController.h */,
+				853BD89E1B41299800211196 /* ProductReputationViewController.m */,
+				853BD89F1B41299800211196 /* ProductReputationViewController.xib */,
+				856F3FB01B41400B0077F0ED /* ProductReputationCell.h */,
+				856F3FB11B41400B0077F0ED /* ProductReputationCell.m */,
+				856F3FB21B41400B0077F0ED /* ProductReputationCell.xib */,
+				85B2BFF21B424A0D00112DB8 /* String_Reputation.h */,
+				85B2BFF31B424C9500112DB8 /* ProductDetailReputationViewController.h */,
+				85B2BFF41B424C9500112DB8 /* ProductDetailReputationViewController.m */,
+				85B2BFF51B424C9500112DB8 /* ProductDetailReputationViewController.xib */,
+				85B2BFF81B42582D00112DB8 /* ProductDetailReputationCell.h */,
+				85B2BFF91B42582D00112DB8 /* ProductDetailReputationCell.m */,
+				85B2BFFA1B42582D00112DB8 /* ProductDetailReputationCell.xib */,
+			);
+			path = Reputation;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -4497,6 +4541,8 @@
 				8563A1471B1EEFE600DFF001 /* LabelMenu.m */,
 				8563A1491B1EFBAC00DFF001 /* TextMenu.h */,
 				8563A14A1B1EFBAC00DFF001 /* TextMenu.m */,
+				856F3FB51B41420F0077F0ED /* ViewLabelUser.h */,
+				856F3FB61B41420F0077F0ED /* ViewLabelUser.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -6731,6 +6777,7 @@
 		FC763BE51B15E27A0034A8F1 /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				853BD89C1B41291B00211196 /* Reputation */,
 				FC763BE61B15E27A0034A8F1 /* DetailProduct */,
 				FC763C121B15E27B0034A8F1 /* ProductAddEditDetailViewController.h */,
 				FC763C131B15E27B0034A8F1 /* ProductAddEditDetailViewController.m */,
@@ -8504,6 +8551,7 @@
 				7A1D2E5E1B235E55002F9341 /* icon_love_white@2x.png in Resources */,
 				7A1D2E2B1B235E55002F9341 /* icon_default_shop.jpg in Resources */,
 				7A1D2DCD1B235E55002F9341 /* default-girl.png in Resources */,
+				853BD8A11B41299800211196 /* ProductReputationViewController.xib in Resources */,
 				7A1D2E911B235E55002F9341 /* icon_search_active@2x.png in Resources */,
 				7A1D2E681B235E55002F9341 /* icon_move_etalase.png in Resources */,
 				7A1D2F0C1B235E55002F9341 /* person2.png in Resources */,
@@ -8552,6 +8600,7 @@
 				7A1D2EBE1B235E55002F9341 /* icon_toped_loading_grey-02@2x.png in Resources */,
 				7A1D2E751B235E55002F9341 /* Icon_no_photo_transparan@2x.png in Resources */,
 				7A1D2E761B235E55002F9341 /* icon_order_cancel-01.png in Resources */,
+				856F3FB41B41400B0077F0ED /* ProductReputationCell.xib in Resources */,
 				7A1D2DA61B235E55002F9341 /* icon_13@2x.png in Resources */,
 				7A1D2ECA1B235E55002F9341 /* icon_upload_image@2x.png in Resources */,
 				7A1D2E4F1B235E55002F9341 /* icon_info_grey.png in Resources */,
@@ -8596,6 +8645,7 @@
 				FC7643DA1B15E2830034A8F1 /* TransactionCartRootViewController.xib in Resources */,
 				7A1D2E2D1B235E55002F9341 /* icon_diskusi_comment_grey.png in Resources */,
 				7A1D2E611B235E55002F9341 /* icon_maintenance_grey_2x.png in Resources */,
+				85B2BFFC1B42582D00112DB8 /* ProductDetailReputationCell.xib in Resources */,
 				7A1D2F031B235E55002F9341 /* logo@2x.png in Resources */,
 				FC7643081B15E2830034A8F1 /* ReputationCell.xib in Resources */,
 				7A1D2E0B1B235E55002F9341 /* icon_5@3x.png in Resources */,
@@ -8631,6 +8681,7 @@
 				FC7642851B15E2830034A8F1 /* HotlistResultViewController.xib in Resources */,
 				FC7642351B15E2830034A8F1 /* TKPDTabViewController.xib in Resources */,
 				FC7642AB1B15E2830034A8F1 /* DetailReviewViewController.xib in Resources */,
+				85B2BFF71B424C9500112DB8 /* ProductDetailReputationViewController.xib in Resources */,
 				7A1D2E5A1B235E55002F9341 /* icon_love@2x.png in Resources */,
 				7A1D2DFF1B235E55002F9341 /* icon_14@3x.png in Resources */,
 				FC7644171B15E2830034A8F1 /* UserPageHeader.xib in Resources */,
@@ -9050,6 +9101,7 @@
 				FC7641AF1B15E2820034A8F1 /* TxEMoneyData.m in Sources */,
 				FC76433A1B15E2830034A8F1 /* DetailShipmentStatusCell.m in Sources */,
 				FC7642B51B15E2830034A8F1 /* MoreNavigationViewController.m in Sources */,
+				856F3FB31B41400B0077F0ED /* ProductReputationCell.m in Sources */,
 				FC7644181B15E2830034A8F1 /* UserProfileBiodataViewController.m in Sources */,
 				FC7641DD1B15E2820034A8F1 /* RegisterViewController.m in Sources */,
 				FC7641A71B15E2820034A8F1 /* TransactionSummary.m in Sources */,
@@ -9188,6 +9240,7 @@
 				FC7641291B15E2820034A8F1 /* UserInfo.m in Sources */,
 				FC7640931B15E2820034A8F1 /* RSA.m in Sources */,
 				FC76427D1B15E2830034A8F1 /* ProductInfoTableViewController.m in Sources */,
+				853BD8A01B41299800211196 /* ProductReputationViewController.m in Sources */,
 				FC7641321B15E2820034A8F1 /* BankAccountGetDefaultForm.m in Sources */,
 				FC76420B1B15E2820034A8F1 /* CatalogSectionHeaderView.m in Sources */,
 				FC7641A61B15E2820034A8F1 /* TxOrderConfirmationResult.m in Sources */,
@@ -9452,7 +9505,9 @@
 				FC7641E31B15E2820034A8F1 /* AlertCameraView.m in Sources */,
 				FC7641D51B15E2820034A8F1 /* WishListObject.m in Sources */,
 				FC7641141B15E2820034A8F1 /* NotificationSales.m in Sources */,
+				856F3FB71B41420F0077F0ED /* ViewLabelUser.m in Sources */,
 				FC7641771B15E2820034A8F1 /* AddProductValidationResult.m in Sources */,
+				85B2BFF61B424C9500112DB8 /* ProductDetailReputationViewController.m in Sources */,
 				FC7640C71B15E2820034A8F1 /* TalkCommentResult.m in Sources */,
 				FC7641F91B15E2820034A8F1 /* CameraController.m in Sources */,
 				FC7640E81B15E2820034A8F1 /* InboxMessageDetailBetween.m in Sources */,
@@ -9487,6 +9542,7 @@
 				FC7641FF1B15E2820034A8F1 /* CameraCollectionCell.m in Sources */,
 				FC7642401B15E2830034A8F1 /* RateView.m in Sources */,
 				FC7641851B15E2820034A8F1 /* ShippingInfoShipments.m in Sources */,
+				85B2BFFB1B42582D00112DB8 /* ProductDetailReputationCell.m in Sources */,
 				FC7641B41B15E2820034A8F1 /* TxOrderConfirmed.m in Sources */,
 				FC7641BC1B15E2820034A8F1 /* MethodList.m in Sources */,
 				FC7641CF1B15E2820034A8F1 /* GenerateHostResult.m in Sources */,
