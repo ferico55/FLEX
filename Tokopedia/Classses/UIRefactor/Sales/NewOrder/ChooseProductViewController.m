@@ -152,7 +152,13 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
             if (_numberOfSelectedProduct > 0) {
-                [self.delegate didSelectProducts:_selectedProducts];
+                NSMutableArray *products = [NSMutableArray new];
+                for (id product in _selectedProducts) {
+                    if (![product isKindOfClass:[NSNull class]]) {
+                        [products addObject:product];
+                    }
+                }
+                [self.delegate didSelectProducts:products];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
         }
