@@ -121,7 +121,12 @@
         cell.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
     }
     
-    NSInteger totalMessages = [ticket.ticket_total_message integerValue] + 1;
+    NSInteger totalMessages;
+    if (ticket.ticket_user_involve.count > 0) {
+        totalMessages = [ticket.ticket_total_message integerValue] + 1;
+    } else {
+        totalMessages = [ticket.ticket_total_message integerValue];
+    }
     NSString *totalMessageString = [NSString stringWithFormat:@"%d", totalMessages];
     [cell.ticketTotalMessageButton setTitle:totalMessageString forState:UIControlStateNormal];
     
@@ -145,7 +150,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
-    if ([ticket.ticket_total_message integerValue] > 3) {
+    if ([ticket.ticket_total_message integerValue] > 2) {
         ticket.ticket_show_more_messages = YES;
     }
     
@@ -319,6 +324,8 @@
 #pragma mark - Methods
 
 - (void)refreshView {
+    _page = 1;
+    [_networkManager requestCancel];
     [_networkManager doRequest];
 }
 

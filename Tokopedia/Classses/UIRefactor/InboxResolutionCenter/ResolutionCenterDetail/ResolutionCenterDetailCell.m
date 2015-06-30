@@ -46,9 +46,7 @@
 - (IBAction)gesture:(UITapGestureRecognizer*)sender {
     if (sender.view.tag == 15) {
         [_delegate goToShopOrProfileIndexPath:_indexPath];
-    }
-    else
-    {
+    } else {
         [_delegate goToImageViewerIndex:sender.view.tag-10 atIndexPath:_indexPath];
     }
 }

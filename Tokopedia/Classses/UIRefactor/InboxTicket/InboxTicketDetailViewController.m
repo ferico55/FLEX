@@ -17,6 +17,8 @@
 #import "InboxTicketReplyViewController.h"
 #import "RatingResponse.h"
 #import "InboxTicketDetailAttachment.h"
+#import "GalleryViewController.h"
+#import "UserContainerViewController.h"
 
 NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
@@ -26,7 +28,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     UITableViewDelegate,
     TokopediaNetworkManagerDelegate,
     InboxTicketReplyDelegate,
-    ResolutionCenterDetailCellDelegate
+    ResolutionCenterDetailCellDelegate,
+    GalleryViewControllerDelegate
 >
 {
     NSString *_nextPageUri;
@@ -46,6 +49,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     InboxTicketDetail *_ticketDetail;
 
     BOOL _isLoadingMore;
+    
+    NSIndexPath *_selectedIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -254,7 +259,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
 
     [cell setViewModel:ticket.viewModel];
-    
+
+    cell.indexPath = indexPath;
+
     return cell;
 }
 
@@ -681,7 +688,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if ([self.delegate respondsToSelector:@selector(updateInboxTicket:)]) {
         NSInteger total = [self.inboxTicket.ticket_total_message integerValue] + 1;
         self.inboxTicket.ticket_total_message = [NSString stringWithFormat:@"%d", total];
-        self.inboxTicket.ticket_status = @"2";
+        self.inboxTicket.ticket_status = @"1";
         self.inboxTicket.ticket_read_status = @"2";
         [self.delegate updateInboxTicket:_inboxTicket];
     }
@@ -760,7 +767,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if ([self.delegate respondsToSelector:@selector(updateInboxTicket:)]) {
         NSInteger total = [self.inboxTicket.ticket_total_message integerValue] + 1;
         self.inboxTicket.ticket_total_message = [NSString stringWithFormat:@"%d", total];
-        self.inboxTicket.ticket_status = @"2";
+        self.inboxTicket.ticket_status = @"1";
         self.inboxTicket.ticket_read_status = @"2";
         [self.delegate updateInboxTicket:_inboxTicket];
     }
@@ -916,15 +923,17 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 #pragma mark - Cell delegate
 
 - (void)goToImageViewerIndex:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath {
+    _selectedIndexPath = indexPath;
     
+    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:index usingNetwork:YES];
+    gallery.canDownload = YES;
+    [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
 - (void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath {
-    
 }
 
 - (void)tapCellButton:(UIButton *)sender atIndexPath:(NSIndexPath *)indexPath {
-    
 }
 
 #pragma mark - Actions
@@ -1000,6 +1009,29 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     [self.navigationController presentViewController:navigation
                                             animated:YES
                                           completion:nil];
+}
+
+#pragma mark - GalleryPhoto Delegate
+
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery {
+    InboxTicketDetail *ticket;
+    if (self.inboxTicket.ticket_show_more_messages) {
+        ticket = [[_messages objectAtIndex:_selectedIndexPath.section] objectAtIndex:_selectedIndexPath.row];
+    } else {
+        ticket = _messages[_selectedIndexPath.row];
+    }
+    return ticket.ticket_detail_attachment.count;
+}
+
+- (NSString *)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
+    InboxTicketDetail *ticket;
+    if (self.inboxTicket.ticket_show_more_messages) {
+        ticket = [[_messages objectAtIndex:_selectedIndexPath.section] objectAtIndex:_selectedIndexPath.row];
+    } else {
+        ticket = _messages[_selectedIndexPath.row];
+    }
+    InboxTicketDetailAttachment *attachment = [ticket.ticket_detail_attachment objectAtIndex:index];
+    return attachment.img_link;
 }
 
 #pragma mark - Methods

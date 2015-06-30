@@ -511,8 +511,10 @@
                         if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:withRating:)]) {
                             [self.delegate successReplyInboxTicket:ticket withRating:_rating];
                         }
-                    } else if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
-                        [self.delegate successReplyInboxTicket:ticket];
+                    } else {
+                        if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
+                            [self.delegate successReplyInboxTicket:ticket];
+                        }                        
                     }
                 }
                 
@@ -557,8 +559,10 @@
                         if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:withRating:)]) {
                             [self.delegate successCloseInboxTicket:ticket withRating:_rating];
                         }
-                    } else if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
-                        [self.delegate successReplyInboxTicket:ticket];
+                    } else {
+                        if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
+                            [self.delegate successReplyInboxTicket:ticket];
+                        }
                     }
                 }
                 

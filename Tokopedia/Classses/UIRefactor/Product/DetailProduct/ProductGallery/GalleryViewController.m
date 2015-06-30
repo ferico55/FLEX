@@ -55,7 +55,9 @@
 
 
 
-@implementation GalleryViewController
+@implementation GalleryViewController {
+    BOOL useNetwork;
+}
 @synthesize currentIndex = _currentIndex;
 @synthesize thumbsView = _thumbsView;
 @synthesize useThumbnailView = _useThumbnailView;
@@ -80,6 +82,10 @@
 	return self;
 }
 
+- (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex usingNetwork:(BOOL)usingNetwork {
+    useNetwork = usingNetwork;
+    return [self initWithPhotoSource:photoSrc withStartingIndex:startIndex];
+}
 
 - (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex
 {
@@ -706,8 +712,14 @@
 	GalleryPhoto *photo;
 	UIImage *thumbImage;
     UIImage *fullImage;
-    thumbImage = fullImage = [_photoSource photoGallery:index];
-    photo = [[GalleryPhoto alloc] initWithThumbnail:thumbImage fullImage:fullImage delegate:self];
+    
+    if(useNetwork) {
+        photo = [[GalleryPhoto alloc] initWithThumbnailUrl:[_photoSource photoGallery:self urlForPhotoSize:FGalleryPhotoSizeFullsize atIndex:index] fullsizeUrl:[_photoSource photoGallery:self urlForPhotoSize:FGalleryPhotoSizeFullsize atIndex:index] delegate:self];
+    }
+    else {
+        thumbImage = fullImage = [_photoSource photoGallery:index];
+        photo = [[GalleryPhoto alloc] initWithThumbnail:thumbImage fullImage:fullImage delegate:self];
+    }
 	photo.tag = index;
 	[_photoLoaders setObject:photo forKey: [NSString stringWithFormat:@"%i", (int)index]];
 	
