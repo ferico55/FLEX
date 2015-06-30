@@ -13,6 +13,7 @@
 @protocol InboxTicketReplyDelegate <NSObject>
 
 - (void)successReplyInboxTicket:(InboxTicketDetail *)reply;
+- (void)successReplyInboxTicket:(InboxTicketDetail *)reply withRating:(NSString *)rating;
 - (void)successCloseInboxTicket:(InboxTicketDetail *)reply;
 - (void)successCloseInboxTicket:(InboxTicketDetail *)reply withRating:(NSString *)rating;
 

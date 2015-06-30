@@ -507,7 +507,11 @@
                         }
                     }
                 } else {
-                    if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
+                    if (self.rating) {
+                        if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:withRating:)]) {
+                            [self.delegate successReplyInboxTicket:ticket withRating:_rating];
+                        }
+                    } else if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
                         [self.delegate successReplyInboxTicket:ticket];
                     }
                 }
@@ -549,7 +553,11 @@
                         }
                     }
                 } else {
-                    if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
+                    if (self.rating) {
+                        if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:withRating:)]) {
+                            [self.delegate successCloseInboxTicket:ticket withRating:_rating];
+                        }
+                    } else if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
                         [self.delegate successReplyInboxTicket:ticket];
                     }
                 }
@@ -725,6 +733,12 @@
             imageView.hidden = YES;
             button.hidden = YES;
         }
+    }
+    
+    if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+        _doneButton.enabled = YES;
+        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:1];
+        self.navigationItem.rightBarButtonItem = _doneButton;
     }
     
     self.photoScrollView.contentSize = CGSizeMake(90 * _uploadedPhotos.count, self.photoScrollView.frame.size.height);

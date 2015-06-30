@@ -121,9 +121,13 @@
         cell.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
     }
     
-    [cell.ticketTotalMessageButton setTitle:ticket.ticket_total_message forState:UIControlStateNormal];
+    NSInteger totalMessages = [ticket.ticket_total_message integerValue] + 1;
+    NSString *totalMessageString = [NSString stringWithFormat:@"%d", totalMessages];
+    [cell.ticketTotalMessageButton setTitle:totalMessageString forState:UIControlStateNormal];
     
-    cell.userInvolvedNameLabel.text = [[ticket.ticket_user_involve valueForKey:@"description"] componentsJoinedByString:@", "];
+    NSMutableArray *users = [NSMutableArray arrayWithArray:@[ticket.ticket_first_message_name]];
+    [users addObjectsFromArray:ticket.ticket_user_involve];
+    cell.userInvolvedNameLabel.text = [[users valueForKey:@"description"] componentsJoinedByString:@", "];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -141,6 +145,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
+    if ([ticket.ticket_total_message integerValue] > 3) {
+        ticket.ticket_show_more_messages = YES;
+    }
     
     InboxTicketDetailViewController *controller = [InboxTicketDetailViewController new];
     controller.inboxTicket = ticket;
