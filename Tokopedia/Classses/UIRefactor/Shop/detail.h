@@ -179,6 +179,7 @@ typedef enum
 #define kTKPDDETAIL_APIDELETEPRODUCTKEY @"delete_product"
 #define ACTION_UPLOAD_PRODUCT_IMAGE @"upload_product_image"
 #define ACTION_DELETE_IMAGE @"delete_product_pic"
+#define ACTION_GET_CATALOG @"get_catalog"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APITOTALPAGEKEY @"total_page"

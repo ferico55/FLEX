@@ -285,9 +285,10 @@ typedef enum
 #define ERRORMESSAGE_NILL_BANK_ACCOUNT_NAME @"Masukan Nama Pemilik Bank"
 #define ERRORMESSAGE_NILL_BANK_ACCOUNT_NUMBER @"Masukkan Nomor Rekening"
 #define ERRORMESSAGE_NILL_PASSWORD_TOKOPEDIA @"Masukkan Password Tokopedia"
-#define ERRORMESSAGE_NILL_SYSTEM_BANK @"Pilih Bank Tujuan"
-#define ERRORMESSAGE_NILL_BANK_ACCOUNT @"Pilih Akun Bank"
+#define ERRORMESSAGE_NILL_SYSTEM_BANK @"Bank tujuan belum dipilih"
+#define ERRORMESSAGE_NILL_BANK_ACCOUNT @"Akun bank belum dipilih"
 #define ERRORMESSAGE_INVALID_PAYMENT_AMOUNT @"Jumlah pembayaran yang diinput tidak mencukupi. Total Pembayaran sebesar Rp %zd,-"
+#define ERRORMESSAGE_NILL_DEPOSITOR @"Nama penyetor belum diisi"
 
 #pragma mark - Order Form
 #define API_ORDER_FORM_KEY @"order"

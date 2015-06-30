@@ -26,6 +26,7 @@
 @property NSInteger resolutionID;
 @property UIViewController *viewController;
 
+
 -(void)doRequest;
 
 @end
