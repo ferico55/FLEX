@@ -640,8 +640,8 @@
             if(! hasSetImgGambar)
             {
                 tempImage = [UIImageView new];
-                tempImage.frame = CGRectMake((diameterImage-40)/2.0f, (diameterImage-40)/2.0f, 40, 40);
-                tempImage.image = [UIImage imageNamed:@"icon_toped_loading_grey@2x.png"];
+                tempImage.frame = CGRectMake((diameterImage-60)/2.0f, (diameterImage-60)/2.0f, 60, 60);
+                tempImage.image = [UIImage imageNamed:@"icon_default_shop@2x.jpg"];
                 [imgGambar addSubview:tempImage];
             }
             
