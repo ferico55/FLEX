@@ -62,9 +62,12 @@
     self.view.frame = [UIScreen mainScreen].bounds;
     
     self.splitViewController = [[UISplitViewController alloc] init];
-//    self.splitViewController.delegate = leftViewController;
+    self.splitViewController.delegate = leftViewController;
     self.splitViewController.viewControllers = [NSArray arrayWithObjects:rightNav, leftNav, nil];
-    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+    
+    if ([self.splitViewController respondsToSelector:@selector(setPreferredDisplayMode:)]) {
+        [self.splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModeAllVisible];
+    }
 
     [self.view addSubview:self.splitViewController.view];
 }

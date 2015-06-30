@@ -121,9 +121,23 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="kVd-M4-5br" secondAttribute="centerY" id="47D-TR-YeP"/>
+                <constraint firstAttribute="centerX" secondItem="6hY-Rz-ceo" secondAttribute="centerX" id="CXB-8O-Kgu"/>
                 <constraint firstAttribute="centerX" secondItem="kVd-M4-5br" secondAttribute="centerX" id="Fpf-tE-2Lp"/>
+                <constraint firstAttribute="centerY" secondItem="6hY-Rz-ceo" secondAttribute="centerY" id="H3V-fn-CZ6"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="CXB-8O-Kgu"/>
+                    <exclude reference="H3V-fn-CZ6"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="CXB-8O-Kgu"/>
+                    <include reference="H3V-fn-CZ6"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="642" y="-796.5"/>
         </view>
     </objects>

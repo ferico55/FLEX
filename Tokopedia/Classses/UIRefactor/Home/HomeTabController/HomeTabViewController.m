@@ -32,6 +32,7 @@
 #import "RedirectHandler.h"
 
 #import "InboxRootViewController.h"
+#import "NavigateViewController.h"
 
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
@@ -42,6 +43,8 @@
     BOOL _isAbleToSwipe;
     UserAuthentificationManager *_userManager;
     RedirectHandler *_redirectHandler;
+    NavigateViewController *_navigate;
+    
 }
 
 @property (strong, nonatomic) HotlistViewController *hotlistController;
@@ -93,6 +96,8 @@
 
     _redirectHandler = [RedirectHandler new];
     _redirectHandler.delegate = self;
+    
+    _navigate = [NavigateViewController new];
     
     
     [self initNotificationCenter];
@@ -338,30 +343,7 @@
 }
 
 - (void)goToInboxMessage {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        InboxRootViewController *inboxController = [InboxRootViewController new];
-        [self.navigationController pushViewController:inboxController animated:YES];
-
-    } else {
-        InboxMessageViewController *vc = [InboxMessageViewController new];
-        vc.data=@{@"nav":@"inbox-message"};
-        
-        InboxMessageViewController *vc1 = [InboxMessageViewController new];
-        vc1.data=@{@"nav":@"inbox-message-sent"};
-        
-        InboxMessageViewController *vc2 = [InboxMessageViewController new];
-        vc2.data=@{@"nav":@"inbox-message-archive"};
-        
-        InboxMessageViewController *vc3 = [InboxMessageViewController new];
-        vc3.data=@{@"nav":@"inbox-message-trash"};
-        NSArray *vcs = @[vc,vc1, vc2, vc3];
-        
-        TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-        [inboxController setSelectedIndex:2];
-        [inboxController setViewControllers:vcs];
-        
-        [self.navigationController pushViewController:inboxController animated:YES];
-    }
+    [_navigate navigateToInboxMessageFromViewController:self];
 }
 
 - (void)goToInboxTalk {

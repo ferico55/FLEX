@@ -25,6 +25,7 @@
 
 #import "InboxRootViewController.h"
 
+
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *messageCountLabel;
