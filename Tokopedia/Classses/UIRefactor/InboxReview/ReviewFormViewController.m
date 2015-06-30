@@ -296,6 +296,16 @@
         if([generalaction.result.is_success isEqualToString:@"1"]) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:_isEditForm?@[CStringBerhasilMemperbaharuiUlasan]:@[CStringBerhasilMenambahUlasan] delegate:self];
             [stickyAlertView show];
+            
+            NSDictionary *userinfo;
+            _editedParam = [self getEditedParam];
+            userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex)};
+            if(_isEditForm) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterWriteReview" object:nil userInfo:userinfo];
+            }
+            
             [self.navigationController popViewControllerAnimated:YES];
         } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:generalaction.message_error delegate:self];
@@ -354,14 +364,14 @@
                 if([self validateReviewValue]) {
 //                    [self.navigationController popViewControllerAnimated:YES];
                     
-                    NSDictionary *userinfo;
-                    _editedParam = [self getEditedParam];
-                    userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex)};
-                    if(_isEditForm) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
-                    } else {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterWriteReview" object:nil userInfo:userinfo];
-                    }
+//                    NSDictionary *userinfo;
+//                    _editedParam = [self getEditedParam];
+//                    userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex)};
+//                    if(_isEditForm) {
+//                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
+//                    } else {
+//                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterWriteReview" object:nil userInfo:userinfo];
+//                    }
                     
                     
                     [self doSendReview];

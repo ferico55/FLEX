@@ -35,7 +35,7 @@
     self.navigationItem.leftBarButtonItem = cancelButton;
 
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(tap:)];
     doneButton.tag = 2;

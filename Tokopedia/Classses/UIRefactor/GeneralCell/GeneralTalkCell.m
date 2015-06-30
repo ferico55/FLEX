@@ -225,7 +225,12 @@
                                                                 otherButtonTitles:otherButtonTitles, nil];
                 [actionSheet showInView:self.contentView];
             }
-                
+                break;
+            case 20:
+            {
+                [_delegate reportTalk:self withindexpath:indexpath];
+            }
+                break;
             default:
                 break;
         }

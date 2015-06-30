@@ -209,7 +209,7 @@ typedef enum
 #define CStringGambar @"Gambar"
 #define CStringKondisi @"Kondisi"
 #define CStringPending @"Pending"
-#define CStringUnderReview @"Under Review"
+#define CStringUnderReview @"Pengawasan"
 #define CStringWareHouse @"Warehouse"
 #define CStringEtalase @"Etalase"
 #define CStringAllEtalase @"All Etalase"

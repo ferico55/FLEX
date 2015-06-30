@@ -121,9 +121,14 @@
         case 6:
         {
             //Notes
+            DetailShopResult *shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
+
             MyShopNoteViewController *vc = [MyShopNoteViewController new];
-            vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+            vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                        kTKPD_SHOPIDKEY : shop.info.shop_id};
+            
             [self.navigationController pushViewController:vc animated:YES];
+            
             break;
         }
         default:

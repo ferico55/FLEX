@@ -23,7 +23,7 @@
 {
     NSMutableArray *product;
     int page, limit, requestCount;
-    BOOL isNoData, isRefreshView, hasInitData;
+    BOOL isNoData, isRefreshView;
     NSString *uriNext, *strUserID;
     __weak RKObjectManager *objectManager;
     __weak RKManagedObjectRequestOperation *request;
@@ -100,10 +100,27 @@
 {
     [super viewWillAppear:animated];
     
+    BOOL isLoadData = YES;
+    //Check Difference userID
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    
+    if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
+        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
+        product = [NSMutableArray new];
+        isNoData = YES;
+        uriNext = nil;
+        page = 1;
+    }
+    
+    
+    
     if (! isRefreshView) {
         [self configureRestKit];
         if (isNoData || (uriNext != NULL && ![uriNext isEqualToString:@"0"] && uriNext != 0)) {
             [self loadData];
+            isLoadData = NO;
         }
     }
     
@@ -113,22 +130,8 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     self.screenName = @"Home - Wishlist";
- 
-    //Check Difference userID
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    _auth = [_auth mutableCopy];
-    
-    if(hasInitData)
-    {
-        hasInitData = !hasInitData;
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-    }
-    else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-        product = [NSMutableArray new];
+    if(isLoadData) {
         page = 1;
-        isNoData = YES;
         isRefreshView = NO;
         uriNext = nil;
         [tokoPediaNetworkManager doRequest];
@@ -427,6 +430,7 @@
     
 //    [tblWishList reloadData];
     /** request data **/
+    tblWishList.tableFooterView = nil;
     [self configureRestKit];
     [self loadData];
 }
