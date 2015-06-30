@@ -684,7 +684,7 @@ UIAlertViewDelegate>
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (305 - _fakeStickyTab.frame.size.height);
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;
