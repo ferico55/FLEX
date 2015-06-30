@@ -27,17 +27,18 @@
 #import "MyShopNoteDetailViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "GAIDictionaryBuilder.h"
+#import "CatalogAddProduct.h"
 #import "UserAuthentificationManager.h"
 
 @interface ProductAddEditDetailViewController ()
 <
-UITableViewDataSource,
-UITableViewDelegate,
-UITextViewDelegate,
-TKPDAlertViewDelegate,
-MyShopEtalaseFilterViewControllerDelegate,
-ProductEditWholesaleViewControllerDelegate,
-TokopediaNetworkManagerDelegate
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UITextViewDelegate,
+    TKPDAlertViewDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    ProductEditWholesaleViewControllerDelegate,
+    TokopediaNetworkManagerDelegate
 >
 {
     CGPoint _keyboardPosition;
@@ -150,8 +151,8 @@ TokopediaNetworkManagerDelegate
              object:nil];
     
     _isBeingPresented = self.navigationController.isBeingPresented;
-    
-    
+
+
     [nc addObserver:self
            selector:@selector(didUpdateShopHasTerms:)
                name:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME
@@ -324,7 +325,7 @@ TokopediaNetworkManagerDelegate
             isValid = NO;
             [errorMessages addObject:@"Nama etalase belum diisi"];
         }
-        if ([etalaseID integerValue] == 0) {
+        if (!isNewEtalase && [etalaseID integerValue] == 0) {
             isValid = NO;
             [errorMessages addObject:@"Etalase belum dipilih"];
         }
@@ -391,7 +392,7 @@ TokopediaNetworkManagerDelegate
         case 0:
             cell = _section0TableViewCell[indexPath.row];
             if (indexPath.row == BUTTON_PRODUCT_INSURANCE) {
-                NSString *productMustInsurance =[ARRAY_PRODUCT_INSURACE[([product.product_must_insurance integerValue]-1>0)?[product.product_must_insurance integerValue]-1:0]objectForKey:DATA_NAME_KEY];
+                NSString *productMustInsurance =[ARRAY_PRODUCT_INSURACE[([product.product_must_insurance integerValue]>0)?[product.product_must_insurance integerValue]:0]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productMustInsurance;
             }
             if (indexPath.row == BUTTON_PRODUCT_RETURNABLE) {
@@ -831,6 +832,7 @@ TokopediaNetworkManagerDelegate
     
     Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    CatalogList *catalog = [_dataInput objectForKey:DATA_CATALOG_KEY];
     
     NSString *action = ACTION_ADD_PRODUCT_VALIDATION;
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
@@ -871,6 +873,8 @@ TokopediaNetworkManagerDelegate
     //    returnableProduct = 2; // not returnable
     //}
     
+    NSString *catalogID = catalog.catalog_id?:@"";
+    
     NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
     
     NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date]
@@ -903,6 +907,7 @@ TokopediaNetworkManagerDelegate
                                       API_PRODUCT_NAME_KEY: productName,
                                       API_PRODUCT_PRICE_KEY: productPrice,
                                       API_PRODUCT_PRICE_CURRENCY_ID_KEY: productPriceCurrencyID,
+                                      @"product_catalog_id":catalogID,
                                       API_PRODUCT_WEIGHT_KEY: productWeight,
                                       API_PRODUCT_WEIGHT_UNIT_KEY: productWeightUnitID,
                                       API_PRODUCT_DEPARTMENT_ID_KEY: departmentID,
@@ -1016,7 +1021,7 @@ TokopediaNetworkManagerDelegate
     NSString *photoDefault = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
     NSString *photoDefaultIndex = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_INDEX]?:@"0";
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"";
-    
+
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
@@ -1107,7 +1112,7 @@ TokopediaNetworkManagerDelegate
     
     NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
     NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
-    
+
     NSInteger randomNumber = arc4random() % 16;
     NSString *uniqueID = _uniqueID;//[NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
     
@@ -1230,18 +1235,7 @@ TokopediaNetworkManagerDelegate
     
     NSString *productID = product.product_id?:@"";
     NSString *returnableProduct = product.product_returnable?:@"0";
-    //NSString *returnableProduct = [_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]?:product.product_returnable?:@"";
-    //if ([returnableProduct integerValue] == -1) {
-    //    returnableProduct = @"0"; // Not Set
-    //}
-    //else if([returnableProduct integerValue] == 1)
-    //{
-    //    returnableProduct = @"1"; //returnable
-    //}
-    //else
-    //{
-    //    returnableProduct = @"2"; // not returnable
-    //}
+
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
                                       API_PRODUCT_ID_KEY: productID,
@@ -1538,7 +1532,7 @@ TokopediaNetworkManagerDelegate
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
         if ((type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) && [[wholesaleList firstObject] isKindOfClass:[WholesalePrice class]]) {
             for (WholesalePrice *wholesale in wholesaleList) {
-                NSInteger price = [wholesale.wholesale_price integerValue];
+                float price = [wholesale.wholesale_price floatValue];
                 NSInteger minimumQuantity = [wholesale.wholesale_min integerValue];
                 NSInteger maximumQuantity = [wholesale.wholesale_max integerValue];
                 [self addWholesaleListPrice:price withQuantityMinimum:minimumQuantity andQuantityMaximum:maximumQuantity];
@@ -1561,7 +1555,7 @@ TokopediaNetworkManagerDelegate
     }
 }
 
--(void)addWholesaleListPrice:(NSInteger)price withQuantityMinimum:(NSInteger)minimum andQuantityMaximum:(NSInteger)maximum
+-(void)addWholesaleListPrice:(float)price withQuantityMinimum:(NSInteger)minimum andQuantityMaximum:(NSInteger)maximum
 {
     NSInteger wholesaleListIndex = _wholesaleList.count+1;
     NSString *wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];

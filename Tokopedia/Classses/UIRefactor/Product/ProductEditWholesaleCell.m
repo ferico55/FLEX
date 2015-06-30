@@ -64,7 +64,67 @@
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    [_delegate ProductEditWholesaleCell:self textField:textField shouldChangeCharactersInRange:range replacementString:string];
+    NSInteger priceCurencyID = [_product.product_currency_id integerValue]?:1;
+    BOOL isIDRCurrency = (priceCurencyID == PRICE_CURRENCY_ID_RUPIAH);
+    if (textField == _productPriceTextField) {
+        if (isIDRCurrency) {
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            if([string length]==0)
+            {
+                [formatter setGroupingSeparator:@","];
+                [formatter setGroupingSize:4];
+                [formatter setUsesGroupingSeparator:YES];
+                [formatter setSecondaryGroupingSize:3];
+                NSString *num = textField.text ;
+                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
+                textField.text = str;
+            }
+            else {
+                [formatter setGroupingSeparator:@","];
+                [formatter setGroupingSize:2];
+                [formatter setUsesGroupingSeparator:YES];
+                [formatter setSecondaryGroupingSize:3];
+                NSString *num = textField.text ;
+                if(![num isEqualToString:@""])
+                {
+                    num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
+                    textField.text = str;
+                }
+            }
+            return YES;
+        }
+        else
+        {
+            NSString *cleanCentString = [[textField.text
+                                          componentsSeparatedByCharactersInSet:
+                                          [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
+                                         componentsJoinedByString:@""];
+            // Parse final integer value
+            NSInteger centAmount = cleanCentString.integerValue;
+            // Check the user input
+            if (string.length > 0)
+            {
+                // Digit added
+                centAmount = centAmount * 10 + string.integerValue;
+            }
+            else
+            {
+                // Digit deleted
+                centAmount = centAmount / 10;
+            }
+            // Update call amount value
+            NSNumber *amount = [[NSNumber alloc] initWithFloat:(float)centAmount / 100.0f];
+            // Write amount with currency symbols to the textfield
+            NSNumberFormatter *currencyFormatter = [[NSNumberFormatter alloc] init];
+            [currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+            [currencyFormatter setCurrencyCode:@"USD"];
+            [currencyFormatter setNegativeFormat:@"-¤#,##0.00"];
+            textField.text = [currencyFormatter stringFromNumber:amount];
+            return NO;
+        }
+    }
     return YES;
 }
 

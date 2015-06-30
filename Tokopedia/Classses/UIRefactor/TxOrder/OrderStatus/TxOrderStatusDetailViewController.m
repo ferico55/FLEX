@@ -23,13 +23,16 @@
 
 #import "ResolutionCenterDetailViewController.h"
 
+#import "RequestCancelResolution.h"
+
 #define TAG_ALERT_REORDER 10
 #define TAG_ALERT_COMPLAIN 11
 #define TAG_ALERT_CONFIRMATION 12
 
-@interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate, ResolutionCenterDetailViewControllerDelegate>
 {
     NavigateViewController *_navigate;
+    RequestCancelResolution *_requestCancelComplain;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *headerTwoButton;
@@ -107,21 +110,21 @@
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
         status = history.history_buyer_status;
     } else {
-        if (indexPath.row ==0) {
-            status = [NSString stringWithFormat:@"%@\n%@",history.history_seller_status, [self statusString]];
+        NSRange range = [history.history_seller_status rangeOfString:@"Pesanan telah dikirim"];
+        if(range.location != NSNotFound){
+            status = [NSString stringWithFormat:@"%@\n\n%@",history.history_seller_status, [self AWBString]];
         }
         else
             status = history.history_seller_status;
-
     }
     if (![history.history_comments isEqualToString:@"0"]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@%@", history.history_comments,[self statusString]]];
+        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@%@", history.history_comments,[self AWBString]]];
     }
     CGSize messageSize = [DetailShipmentStatusCell messageSize:status];
     return messageSize.height;
 }
 
--(NSString*)statusString
+-(NSString*)AWBString
 {
     NSString *shipRef = _order.order_detail.detail_ship_ref_num?:@"";
     NSLog(@"shipping resi :%@",shipRef);
@@ -163,12 +166,13 @@
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
         status = history.history_buyer_status;
     } else {
-        if (indexPath.row ==0) {
-            status = [NSString stringWithFormat:@"%@\n%@",history.history_seller_status, [self statusString]];
+        NSRange range = [history.history_seller_status rangeOfString:@"Pesanan telah dikirim"];
+        if(range.location != NSNotFound){
+            status = [NSString stringWithFormat:@"%@\n\n%@",history.history_seller_status, [self AWBString]];
         }
         else
             status = history.history_seller_status;
-
+        
     }
     if (![history.history_comments isEqualToString:@"0"]) {
         status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
@@ -212,6 +216,8 @@
             NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
             NSString *resolutionID = [queries objectForKey:@"id"];
             vc.resolutionID = resolutionID;
+            vc.indexPath = _indexPath;
+            vc.delegate = self;
             [self.navigationController pushViewController:vc animated:YES];
         }
         else if (button.tag == 13)
@@ -256,7 +262,7 @@
         InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
         vc.controllerTitle = @"Buka Komplain";
         if (buttonIndex == 0) {
-            //Tidak Terima Barang 
+            //Tidak Terima Barang
             vc.isGotTheOrder = NO;
         }
         else if (buttonIndex ==1)
@@ -289,6 +295,10 @@
     }
 }
 
+-(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
+{
+    [_delegate shouldCancelComplain:resolution atIndexPath:indexPath];
 
+}
 
 @end

@@ -29,18 +29,21 @@
 
 #import "TokopediaNetworkManager.h"
 
+#import "LoadingView.h"
+
 @interface ProductListMyShopViewController ()
 <
-UITableViewDataSource,
-UITableViewDelegate,
-UISearchBarDelegate,
-MGSwipeTableCellDelegate,
-SortViewControllerDelegate,
-MyShopEtalaseFilterViewControllerDelegate,
-ProductListMyShopFilterDelegate,
-MyShopEtalaseFilterViewControllerDelegate,
-TokopediaNetworkManagerDelegate,
-RequestMoveToDelegate
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UISearchBarDelegate,
+    MGSwipeTableCellDelegate,
+    SortViewControllerDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    ProductListMyShopFilterDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    TokopediaNetworkManagerDelegate,
+    RequestMoveToDelegate,
+    LoadingViewDelegate
 >
 {
     NSInteger _page;
@@ -78,6 +81,8 @@ RequestMoveToDelegate
     RequestMoveTo *_requestMoveTo;
     
     TokopediaNetworkManager *_networkManager;
+    
+    LoadingView *_loadingView;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -120,6 +125,9 @@ RequestMoveToDelegate
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.tagRequest = TAG_LIST_REQUEST;
     _networkManager.delegate = self;
+    
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
     
     _page = 1;
     _limit = 8;
@@ -394,10 +402,16 @@ RequestMoveToDelegate
 {
     if (tag == TAG_LIST_REQUEST) {
         if (![_refreshControl isRefreshing]) {
-            _table.tableFooterView = nil;
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
+    }
+    else
+    {
+        [_refreshControl beginRefreshing];
+        CGPoint contentOffset = _table.contentOffset;
+        contentOffset.y = (contentOffset.y != 0)?:-_refreshControl.frame.size.height-45;
+        [_table setContentOffset:contentOffset animated:YES];
     }
 }
 
@@ -411,19 +425,18 @@ RequestMoveToDelegate
     }
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    
-}
-
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_refreshControl endRefreshing];
     [_act stopAnimating];
-    _table.tableFooterView = nil;
+    _table.tableFooterView = _loadingView.view;
 }
 
+-(void)pressRetryButton
+{
+    _table.tableFooterView = _footer;
+    [_networkManager doRequest];
+}
 
 -(NSDictionary*)parameterRequestList
 {
@@ -565,11 +578,6 @@ RequestMoveToDelegate
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                
-                if (_list.count<=4) {
-                    [_act stopAnimating];
-                    _table.tableFooterView = _footer;
-                }
                 
             } else {
                 CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
@@ -746,7 +754,10 @@ RequestMoveToDelegate
     _requestcount = 0;
     _page = 1;
     [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height+44) animated:YES];
+    CGPoint contentOffset = _table.contentOffset;
+    contentOffset.y = (contentOffset.y != 0)?:-_refreshControl.frame.size.height-45;
+    [_table setContentOffset:contentOffset animated:YES];
+    [_act stopAnimating];
     [_networkManager doRequest];
 }
 
@@ -857,9 +868,16 @@ RequestMoveToDelegate
         }];
         
         MGSwipeButton * warehouse = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_WAREHOUSE backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-            UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
-            alert.tag = indexPath.row;
-            [alert show];
+            if ([list.product_status integerValue] == PRODUCT_STATE_BANNED || [list.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
+                [alert show];
+            }
+            else
+            {
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                alert.tag = indexPath.row;
+                [alert show];
+            }
             return YES;
         }];
         

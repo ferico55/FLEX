@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingAddressLocationViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddressViewController">
             <connections>
+                <outlet property="act" destination="ebz-ts-5Vk" id="6CC-T0-qlx"/>
+                <outlet property="footer" destination="UVY-zS-Y4t" id="6yf-AT-EZZ"/>
                 <outlet property="table" destination="4VK-Pr-MF5" id="DYD-zI-CCD"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Mar-NE-RHr"/>
             </connections>
@@ -32,6 +34,22 @@
                 <constraint firstAttribute="trailing" secondItem="4VK-Pr-MF5" secondAttribute="trailing" id="iFK-yR-rN4"/>
                 <constraint firstItem="4VK-Pr-MF5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yNq-0k-YTy"/>
             </constraints>
+        </view>
+        <view contentMode="scaleToFill" id="UVY-zS-Y4t" userLabel="FooterView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ebz-ts-5Vk">
+                    <rect key="frame" x="150" y="14" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="ebz-ts-5Vk" secondAttribute="centerX" id="9D4-GM-MT7"/>
+                <constraint firstAttribute="centerY" secondItem="ebz-ts-5Vk" secondAttribute="centerY" id="j8J-fE-inu"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

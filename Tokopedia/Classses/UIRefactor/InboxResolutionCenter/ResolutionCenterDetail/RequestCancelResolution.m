@@ -18,13 +18,25 @@
 @end
 
 @implementation RequestCancelResolution
+{
+    TokopediaNetworkManager *_network;
+}
 
 #pragma mark - Request
 -(void)doRequest
 {
-    TokopediaNetworkManager *network = [TokopediaNetworkManager new];
-    network.delegate = self;
-    [network doRequest];
+    _network = [self network];
+    [_network doRequest];
+}
+
+-(TokopediaNetworkManager *)network
+{
+    if (!_network) {
+        _network = [TokopediaNetworkManager new];
+        _network.delegate = self;
+    }
+    
+    return _network;
 }
 
 -(id)getObjectManager:(int)tag
@@ -78,7 +90,7 @@
 
         }
         if (resolution.result.is_success == 1) {
-            [_delegate successCancelComplain:_resolution successStatus:resolution.message_status?:@[@"Anda telah berhasil membatalkan komplain."]];
+            [_delegate successCancelComplain:_resolution successStatus:@[@"Anda telah berhasil membatalkan komplain."]];
         }
         else
         {
