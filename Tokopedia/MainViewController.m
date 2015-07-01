@@ -723,6 +723,7 @@ typedef enum TagRequest {
 
 #pragma mark - Notification Observer Method
 - (void)forceLogout {
+    _persistToken = [_userManager getMyDeviceToken]; //token device from ios
     [self doApplicationLogout];
 }
 
