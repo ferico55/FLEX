@@ -105,13 +105,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Product/Reputation/ProductDetailReputationViewController.m"
-            timestampString = "457434463.859082"
+            filePath = "Tokopedia/Classses/UIRefactor/Catalog/CatalogProductViewController.m"
+            timestampString = "457436792.855219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "-initTable"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -121,29 +121,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/ShopPageView/ShopReviewPageViewController.m"
-            timestampString = "457434525.345193"
+            filePath = "Tokopedia/Classses/UIRefactor/Catalog/CatalogShopViewController.m"
+            timestampString = "457436828.912303"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "915"
-            endingLineNumber = "915"
-            landmarkName = "-actionRate:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/ShopPageView/ShopReviewPageViewController.m"
-            timestampString = "457434678.750327"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
-            landmarkName = "-setPropertyLabelDesc:"
+            startingLineNumber = "441"
+            endingLineNumber = "441"
+            landmarkName = "-tableViewCell:didSelectShopAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

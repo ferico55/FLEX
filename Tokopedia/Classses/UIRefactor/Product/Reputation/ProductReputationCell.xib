@@ -138,7 +138,9 @@
                                 <rect key="frame" x="8" y="127" width="50" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                <state key="normal" title="0" image="icon_home.png">
+                                <inset key="titleEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="0" image="icon_like.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -149,7 +151,9 @@
                                 <rect key="frame" x="74" y="127" width="49" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                <state key="normal" title="0" image="icon_home.png">
+                                <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="0.0"/>
+                                <inset key="titleEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="0" image="icon_dislike.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -160,7 +164,7 @@
                                 <rect key="frame" x="206" y="127" width="52" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                <state key="normal" title="0" image="icon_home.png">
+                                <state key="normal" title="0" image="icon_diskusi_comment_grey.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -222,8 +226,11 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="icon_diskusi_comment_grey.png" width="14" height="14"/>
+        <image name="icon_dislike.png" width="30" height="30"/>
         <image name="icon_home.png" width="30" height="30"/>
         <image name="icon_house.png" width="30" height="30"/>
+        <image name="icon_like.png" width="30" height="30"/>
         <image name="icon_star.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

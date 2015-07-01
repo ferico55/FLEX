@@ -624,7 +624,7 @@
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="Positif" image="icon_home.png">
+                                            <state key="normal" title="Positif" image="icon_smile.png">
                                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -662,7 +662,7 @@
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="Netral" image="icon_home.png">
+                                            <state key="normal" title="Netral" image="icon_netral.png">
                                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -697,7 +697,7 @@
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="Negatif" image="icon_home.png">
+                                            <state key="normal" title="Negatif" image="icon_sad.png">
                                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -827,10 +827,11 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w6V-zN-LSi">
                                             <rect key="frame" x="8" y="53" width="90" height="153"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_home.png" translatesAutoresizingMaskIntoConstraints="NO" id="OuE-1h-gyV">
-                                                    <rect key="frame" x="0.0" y="0.0" width="90" height="100"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_speed_fast.png" translatesAutoresizingMaskIntoConstraints="NO" id="OuE-1h-gyV">
+                                                    <rect key="frame" x="20" y="37" width="50" height="50"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="100" id="03g-uM-LeI"/>
+                                                        <constraint firstAttribute="height" constant="50" id="03g-uM-LeI"/>
+                                                        <constraint firstAttribute="width" constant="50" id="WJ5-K2-cqV"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yfw-PN-wmB">
@@ -855,16 +856,17 @@
                                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstItem="QAD-Uk-Wvd" firstAttribute="top" secondItem="yfw-PN-wmB" secondAttribute="bottom" id="76M-SQ-Iaq"/>
-                                                <constraint firstItem="OuE-1h-gyV" firstAttribute="leading" secondItem="w6V-zN-LSi" secondAttribute="leading" id="BL1-wG-m0Z"/>
-                                                <constraint firstAttribute="trailing" secondItem="OuE-1h-gyV" secondAttribute="trailing" id="CWu-gj-cR8"/>
-                                                <constraint firstItem="OuE-1h-gyV" firstAttribute="top" secondItem="w6V-zN-LSi" secondAttribute="top" id="D8e-jP-Rkb"/>
+                                                <constraint firstItem="OuE-1h-gyV" firstAttribute="top" secondItem="w6V-zN-LSi" secondAttribute="top" constant="37" id="BWu-Te-zQr"/>
                                                 <constraint firstItem="QAD-Uk-Wvd" firstAttribute="leading" secondItem="w6V-zN-LSi" secondAttribute="leading" id="E7r-FF-kgb"/>
-                                                <constraint firstItem="yfw-PN-wmB" firstAttribute="top" secondItem="OuE-1h-gyV" secondAttribute="bottom" constant="3" id="Te6-13-GPD"/>
+                                                <constraint firstItem="QAD-Uk-Wvd" firstAttribute="top" secondItem="OuE-1h-gyV" secondAttribute="bottom" constant="37" id="Ogc-AM-xhi"/>
+                                                <constraint firstItem="QAD-Uk-Wvd" firstAttribute="top" secondItem="yfw-PN-wmB" secondAttribute="bottom" id="TkE-4N-w1W"/>
+                                                <constraint firstItem="OuE-1h-gyV" firstAttribute="leading" secondItem="w6V-zN-LSi" secondAttribute="leading" constant="20" id="Vc1-ql-3CC"/>
                                                 <constraint firstAttribute="height" constant="153" id="Zpk-qq-fam"/>
                                                 <constraint firstAttribute="width" constant="90" id="ize-1q-jIr"/>
                                                 <constraint firstAttribute="trailing" secondItem="QAD-Uk-Wvd" secondAttribute="trailing" id="oPL-I4-ZON"/>
                                                 <constraint firstItem="yfw-PN-wmB" firstAttribute="leading" secondItem="w6V-zN-LSi" secondAttribute="leading" id="qFT-5n-4ts"/>
                                                 <constraint firstAttribute="trailing" secondItem="yfw-PN-wmB" secondAttribute="trailing" id="vSm-Ts-ekM"/>
+                                                <constraint firstAttribute="trailing" secondItem="OuE-1h-gyV" secondAttribute="trailing" constant="20" id="zQI-iN-YDB"/>
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XqF-PR-FvC">
@@ -1066,10 +1068,11 @@
                         </view>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="UvD-NM-Mdf" secondAttribute="trailing" id="Cde-Ah-Epd"/>
-                        <constraint firstItem="UvD-NM-Mdf" firstAttribute="leading" secondItem="37t-Te-Zzb" secondAttribute="leading" id="KiE-FC-vRN"/>
+                        <constraint firstAttribute="bottom" secondItem="UvD-NM-Mdf" secondAttribute="bottom" constant="-137" placeholder="YES" id="Gsn-5O-AQs"/>
                         <constraint firstAttribute="centerX" secondItem="UvD-NM-Mdf" secondAttribute="centerX" id="Llu-h3-qPj"/>
                         <constraint firstItem="UvD-NM-Mdf" firstAttribute="top" secondItem="37t-Te-Zzb" secondAttribute="top" id="NFB-OQ-Tvj"/>
+                        <constraint firstItem="UvD-NM-Mdf" firstAttribute="leading" secondItem="37t-Te-Zzb" secondAttribute="leading" id="QL2-bv-zHa"/>
+                        <constraint firstAttribute="trailing" secondItem="UvD-NM-Mdf" secondAttribute="trailing" id="jOt-T0-L4F"/>
                     </constraints>
                 </scrollView>
             </subviews>
@@ -1085,6 +1088,10 @@
     </objects>
     <resources>
         <image name="icon_home.png" width="30" height="30"/>
+        <image name="icon_netral.png" width="30" height="30"/>
+        <image name="icon_sad.png" width="30" height="30"/>
+        <image name="icon_smile.png" width="30" height="30"/>
+        <image name="icon_speed_fast.png" width="30" height="30"/>
         <image name="icon_star.png" width="20" height="20"/>
         <image name="icon_star_active.png" width="20" height="20"/>
     </resources>

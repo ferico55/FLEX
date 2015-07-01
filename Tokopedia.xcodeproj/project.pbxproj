@@ -473,6 +473,24 @@
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		850065A01B43D2F400F556BA /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500659F1B43D2F400F556BA /* XYPieChart.m */; };
+		850065A21B43F5E300F556BA /* icon_speed_fast@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065A11B43F5E300F556BA /* icon_speed_fast@3x.png */; };
+		850065A41B43F5F600F556BA /* icon_speed_fast@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065A31B43F5F600F556BA /* icon_speed_fast@2x.png */; };
+		850065A61B43F60100F556BA /* icon_speed_fast.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065A51B43F60100F556BA /* icon_speed_fast.png */; };
+		850065C21B43F88100F556BA /* icon_smile@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065C11B43F88000F556BA /* icon_smile@3x.png */; };
+		850065C41B43F89000F556BA /* icon_smile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065C31B43F89000F556BA /* icon_smile@2x.png */; };
+		850065C61B43F8A600F556BA /* icon_smile.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065C51B43F8A600F556BA /* icon_smile.png */; };
+		850065C81B43F8DD00F556BA /* icon_netral.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065C71B43F8DC00F556BA /* icon_netral.png */; };
+		850065CA1B43F8E900F556BA /* icon_netral@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065C91B43F8E900F556BA /* icon_netral@2x.png */; };
+		850065CC1B43F8F500F556BA /* icon_netral@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065CB1B43F8F500F556BA /* icon_netral@3x.png */; };
+		850065CE1B43F90300F556BA /* icon_sad@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065CD1B43F90300F556BA /* icon_sad@3x.png */; };
+		850065D01B43F90F00F556BA /* icon_sad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065CF1B43F90F00F556BA /* icon_sad@2x.png */; };
+		850065D21B43F91B00F556BA /* icon_sad.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065D11B43F91A00F556BA /* icon_sad.png */; };
+		850065D41B43F96800F556BA /* icon_like.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065D31B43F96800F556BA /* icon_like.png */; };
+		850065D61B43F97000F556BA /* icon_like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065D51B43F97000F556BA /* icon_like@2x.png */; };
+		850065D81B43F97600F556BA /* icon_like@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065D71B43F97600F556BA /* icon_like@3x.png */; };
+		850065DA1B43F9AF00F556BA /* icon_dislike.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065D91B43F9AF00F556BA /* icon_dislike.png */; };
+		850065DC1B43F9B500F556BA /* icon_dislike@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065DB1B43F9B500F556BA /* icon_dislike@2x.png */; };
+		850065DE1B43F9BD00F556BA /* icon_dislike@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 850065DD1B43F9BD00F556BA /* icon_dislike@3x.png */; };
 		85046EA21B20395E00FF657B /* BarCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85046EA11B20395E00FF657B /* BarCodeViewController.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
@@ -1943,6 +1961,24 @@
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		8500659E1B43D2F400F556BA /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		8500659F1B43D2F400F556BA /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		850065A11B43F5E300F556BA /* icon_speed_fast@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_speed_fast@3x.png"; sourceTree = "<group>"; };
+		850065A31B43F5F600F556BA /* icon_speed_fast@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_speed_fast@2x.png"; sourceTree = "<group>"; };
+		850065A51B43F60100F556BA /* icon_speed_fast.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_speed_fast.png; sourceTree = "<group>"; };
+		850065C11B43F88000F556BA /* icon_smile@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_smile@3x.png"; sourceTree = "<group>"; };
+		850065C31B43F89000F556BA /* icon_smile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_smile@2x.png"; sourceTree = "<group>"; };
+		850065C51B43F8A600F556BA /* icon_smile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_smile.png; sourceTree = "<group>"; };
+		850065C71B43F8DC00F556BA /* icon_netral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_netral.png; sourceTree = "<group>"; };
+		850065C91B43F8E900F556BA /* icon_netral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_netral@2x.png"; sourceTree = "<group>"; };
+		850065CB1B43F8F500F556BA /* icon_netral@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_netral@3x.png"; sourceTree = "<group>"; };
+		850065CD1B43F90300F556BA /* icon_sad@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_sad@3x.png"; sourceTree = "<group>"; };
+		850065CF1B43F90F00F556BA /* icon_sad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_sad@2x.png"; sourceTree = "<group>"; };
+		850065D11B43F91A00F556BA /* icon_sad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sad.png; sourceTree = "<group>"; };
+		850065D31B43F96800F556BA /* icon_like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_like.png; sourceTree = "<group>"; };
+		850065D51B43F97000F556BA /* icon_like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_like@2x.png"; sourceTree = "<group>"; };
+		850065D71B43F97600F556BA /* icon_like@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_like@3x.png"; sourceTree = "<group>"; };
+		850065D91B43F9AF00F556BA /* icon_dislike.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_dislike.png; sourceTree = "<group>"; };
+		850065DB1B43F9B500F556BA /* icon_dislike@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_dislike@2x.png"; sourceTree = "<group>"; };
+		850065DD1B43F9BD00F556BA /* icon_dislike@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_dislike@3x.png"; sourceTree = "<group>"; };
 		85046EA01B20395E00FF657B /* BarCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarCodeViewController.h; sourceTree = "<group>"; };
 		85046EA11B20395E00FF657B /* BarCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarCodeViewController.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -3940,6 +3976,24 @@
 				7A1D2CCF1B235E55002F9341 /* icon_signin_active.png */,
 				7A1D2CD01B235E55002F9341 /* icon_signin_active@2x (deleted 72c12ce0152edc6f9a4c51032a7c1386).png */,
 				7A1D2CD11B235E55002F9341 /* icon_signin_active@2x.png */,
+				850065D91B43F9AF00F556BA /* icon_dislike.png */,
+				850065DB1B43F9B500F556BA /* icon_dislike@2x.png */,
+				850065DD1B43F9BD00F556BA /* icon_dislike@3x.png */,
+				850065D31B43F96800F556BA /* icon_like.png */,
+				850065D51B43F97000F556BA /* icon_like@2x.png */,
+				850065D71B43F97600F556BA /* icon_like@3x.png */,
+				850065D11B43F91A00F556BA /* icon_sad.png */,
+				850065CF1B43F90F00F556BA /* icon_sad@2x.png */,
+				850065CD1B43F90300F556BA /* icon_sad@3x.png */,
+				850065C71B43F8DC00F556BA /* icon_netral.png */,
+				850065C91B43F8E900F556BA /* icon_netral@2x.png */,
+				850065CB1B43F8F500F556BA /* icon_netral@3x.png */,
+				850065C51B43F8A600F556BA /* icon_smile.png */,
+				850065C31B43F89000F556BA /* icon_smile@2x.png */,
+				850065C11B43F88000F556BA /* icon_smile@3x.png */,
+				850065A51B43F60100F556BA /* icon_speed_fast.png */,
+				850065A31B43F5F600F556BA /* icon_speed_fast@2x.png */,
+				850065A11B43F5E300F556BA /* icon_speed_fast@3x.png */,
 				7A1D2CD21B235E55002F9341 /* icon_sold.png */,
 				7A1D2CD31B235E55002F9341 /* icon_sold@2x.png */,
 				7A1D2CD41B235E55002F9341 /* icon_sold@3x.png */,
@@ -8202,9 +8256,11 @@
 				7A1D2E3A1B235E55002F9341 /* icon_filter@2x.png in Resources */,
 				FC7643FB1B15E2830034A8F1 /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
 				FC76441C1B15E2830034A8F1 /* GothamBook.ttf in Resources */,
+				850065DC1B43F9B500F556BA /* icon_dislike@2x.png in Resources */,
 				7A1D2F101B235E55002F9341 /* icon_filter@3x.png in Resources */,
 				7A1D2ED41B235E55002F9341 /* icon_wishlist_unactive.png in Resources */,
 				FC7642EE1B15E2830034A8F1 /* ProductReviewDetailViewController.xib in Resources */,
+				850065D21B43F91B00F556BA /* icon_sad.png in Resources */,
 				FC76441E1B15E2830034A8F1 /* GothamMedium.ttf in Resources */,
 				7A1D2E2F1B235E55002F9341 /* icon_diskusi_report_grey.png in Resources */,
 				7A1D2E3F1B235E55002F9341 /* icon_grid_dua@2x.png in Resources */,
@@ -8231,6 +8287,7 @@
 				FC7643161B15E2830034A8F1 /* ChooseProductCell.xib in Resources */,
 				FC7643631B15E2830034A8F1 /* SettingNotificationViewController.xib in Resources */,
 				FC76438E1B15E2830034A8F1 /* ShopNotesViewController.xib in Resources */,
+				850065A21B43F5E300F556BA /* icon_speed_fast@3x.png in Resources */,
 				7A1D2EB61B235E55002F9341 /* icon_star_unactive.png in Resources */,
 				7A1D2E661B235E55002F9341 /* icon_more_active.png in Resources */,
 				FC7644111B15E2830034A8F1 /* ProfileFavoriteShopCell.xib in Resources */,
@@ -8332,6 +8389,7 @@
 				FC7646021B15E2830034A8F1 /* MGSwipeTableCell.podspec in Resources */,
 				FC7643031B15E2830034A8F1 /* ProductListMyShopViewController.xib in Resources */,
 				7A1D2DFB1B235E55002F9341 /* icon_10@3x.png in Resources */,
+				850065D41B43F96800F556BA /* icon_like.png in Resources */,
 				7A1D2F241B235E55002F9341 /* active_tab.png in Resources */,
 				7A1D2EA91B235E55002F9341 /* icon_signin@2x (deleted 3215a80c68a23ca7d6e4274438f3c292).png in Resources */,
 				7A1D2E931B235E55002F9341 /* icon_share@2x.png in Resources */,
@@ -8344,6 +8402,7 @@
 				7A1D2DC01B235E55002F9341 /* icon_6.png in Resources */,
 				7A1D2DFD1B235E55002F9341 /* icon_12@3x.png in Resources */,
 				FC7642201B15E2820034A8F1 /* CategoryMenuViewController.xib in Resources */,
+				850065C21B43F88100F556BA /* icon_smile@3x.png in Resources */,
 				FC7644201B15E2830034A8F1 /* Lato-Regular.ttf in Resources */,
 				7A1D2EEF1B235E55002F9341 /* launch_image@2x.png in Resources */,
 				7A1D2E051B235E55002F9341 /* icon_1@3x.png in Resources */,
@@ -8376,6 +8435,7 @@
 				7A1D2DE61B235E55002F9341 /* icon_button_wishlist_nonactive@2x.png in Resources */,
 				FC7642C01B15E2830034A8F1 /* MyShopAddressViewController.xib in Resources */,
 				7A1D2E801B235E55002F9341 /* icon_plus_blue.png in Resources */,
+				850065A61B43F60100F556BA /* icon_speed_fast.png in Resources */,
 				7A1D2DD51B235E55002F9341 /* icon_arrow_up.png in Resources */,
 				FC7643771B15E2830034A8F1 /* ShopEditStatusViewController.xib in Resources */,
 				FC7643DC1B15E2830034A8F1 /* TransactionShipmentViewController.xib in Resources */,
@@ -8414,6 +8474,7 @@
 				7A1D2F5E1B235E55002F9341 /* icon_komplain@2x.png in Resources */,
 				7A1D2F461B235E55002F9341 /* icon_signin@2x.png in Resources */,
 				FC76426B1B15E2830034A8F1 /* GeneralTalkCommentCell.xib in Resources */,
+				850065CA1B43F8E900F556BA /* icon_netral@2x.png in Resources */,
 				7A1D2EA71B235E55002F9341 /* icon_signin (deleted d03046960c89ed997896bfce8a5f1167).png in Resources */,
 				7A1D2E0C1B235E55002F9341 /* icon_6@3x.png in Resources */,
 				FC7643691B15E2830034A8F1 /* SettingPrivacyViewController.xib in Resources */,
@@ -8437,6 +8498,7 @@
 				7A1D2DB31B235E55002F9341 /* icon_1@2x.png in Resources */,
 				7A1D2E541B235E55002F9341 /* icon_lock_grey@2x.png in Resources */,
 				7A1D2E721B235E55002F9341 /* icon_no_data_grey.png in Resources */,
+				850065D81B43F97600F556BA /* icon_like@3x.png in Resources */,
 				7A1D2E691B235E55002F9341 /* icon_move_etalase@2x.png in Resources */,
 				7A1D2DFA1B235E55002F9341 /* icon_0@3x.png in Resources */,
 				7A1D2DA31B235E55002F9341 /* icon_12.png in Resources */,
@@ -8505,6 +8567,7 @@
 				FC7643711B15E2830034A8F1 /* BerhasilBukaTokoViewController.xib in Resources */,
 				7A1D2F1A1B235E55002F9341 /* icon_category_active@3x.png in Resources */,
 				FC7643B61B15E2830034A8F1 /* ProductTalkFormViewController.xib in Resources */,
+				850065A41B43F5F600F556BA /* icon_speed_fast@2x.png in Resources */,
 				7A1D2EE61B235E55002F9341 /* icon_more_active@2x.png in Resources */,
 				7A1D2F431B235E55002F9341 /* icon_search_active.png in Resources */,
 				7A1D2F361B235E55002F9341 /* icon_category_actibe@2x.png in Resources */,
@@ -8635,6 +8698,7 @@
 				FC7643A01B15E2830034A8F1 /* ShopReviewPageViewController.xib in Resources */,
 				7A1D2E071B235E55002F9341 /* icon_21@3x.png in Resources */,
 				FC76434B1B15E2830034A8F1 /* SearchResultShopViewController.xib in Resources */,
+				850065DE1B43F9BD00F556BA /* icon_dislike@3x.png in Resources */,
 				7A1D2F1F1B235E55002F9341 /* icon_more_active@3x.png in Resources */,
 				FC7643901B15E2830034A8F1 /* ShopReviewViewController.xib in Resources */,
 				FC7643221B15E2830034A8F1 /* SalesNewOrderViewController.xib in Resources */,
@@ -8642,6 +8706,7 @@
 				FC76439A1B15E2830034A8F1 /* ShopNotesPageViewController.xib in Resources */,
 				85A53C971B1C880D00D626B7 /* DetailProductViewController.xib in Resources */,
 				FC76432A1B15E2830034A8F1 /* SalesOrderCell.xib in Resources */,
+				850065CC1B43F8F500F556BA /* icon_netral@3x.png in Resources */,
 				7A1D2E091B235E55002F9341 /* icon_3@3x.png in Resources */,
 				7A1D2E961B235E55002F9341 /* icon_shop.png in Resources */,
 				FC7642F71B15E2830034A8F1 /* ProductAddEditViewController.xib in Resources */,
@@ -8667,6 +8732,7 @@
 				7A1D2EFB1B235E55002F9341 /* icon_location_28px.png in Resources */,
 				7A1D2E411B235E55002F9341 /* icon_grid_satu@2x.png in Resources */,
 				7A1D2F291B235E55002F9341 /* ic_category@2x.png in Resources */,
+				850065C61B43F8A600F556BA /* icon_smile.png in Resources */,
 				FC7642E51B15E2830034A8F1 /* DetailProductWholesaleTableCell.xib in Resources */,
 				7A1D2F481B235E55002F9341 /* icon_signin_active@2x.png in Resources */,
 				7A1D2EDF1B235E55002F9341 /* icon_home.png in Resources */,
@@ -8682,6 +8748,7 @@
 				7A1D2F3C1B235E55002F9341 /* icon_home_active@2x.png in Resources */,
 				7A1D2E8D1B235E55002F9341 /* icon_search@2x.png in Resources */,
 				FC7642851B15E2830034A8F1 /* HotlistResultViewController.xib in Resources */,
+				850065D61B43F97000F556BA /* icon_like@2x.png in Resources */,
 				FC7642351B15E2830034A8F1 /* TKPDTabViewController.xib in Resources */,
 				FC7642AB1B15E2830034A8F1 /* DetailReviewViewController.xib in Resources */,
 				85B2BFF71B424C9500112DB8 /* ProductDetailReputationViewController.xib in Resources */,
@@ -8734,6 +8801,7 @@
 				7A1D2E381B235E55002F9341 /* icon_facebook@2x.png in Resources */,
 				7A1D2EF21B235E55002F9341 /* login.png in Resources */,
 				7A1D2E7F1B235E55002F9341 /* icon_people_grey@2x.png in Resources */,
+				850065D01B43F90F00F556BA /* icon_sad@2x.png in Resources */,
 				FC7643671B15E2830034A8F1 /* SettingPrivacyCell.xib in Resources */,
 				FC7641D91B15E2820034A8F1 /* CreatePasswordViewController.xib in Resources */,
 				7A1D2DDC1B235E55002F9341 /* icon_button_favorite_nonactive.png in Resources */,
@@ -8783,6 +8851,7 @@
 				FC76422F1B15E2830034A8F1 /* TKPDTabNavigationController.xib in Resources */,
 				FC7643E91B15E2830034A8F1 /* TxOrderConfirmationCostCell.xib in Resources */,
 				7A1D2ED81B235E55002F9341 /* icon_cart_active.png in Resources */,
+				850065C41B43F89000F556BA /* icon_smile@2x.png in Resources */,
 				FC7642631B15E2830034A8F1 /* GeneralReviewCell.xib in Resources */,
 				FC7642021B15E2820034A8F1 /* CameraCollectionViewController.xib in Resources */,
 				7A1D2D9C1B235E55002F9341 /* icon_0.png in Resources */,
@@ -8829,6 +8898,7 @@
 				7A1D2F2B1B235E55002F9341 /* ic_home@2x.png in Resources */,
 				FC7643CF1B15E2830034A8F1 /* TransactionCartViewController.xib in Resources */,
 				FC76436F1B15E2830034A8F1 /* SettingUserProfileViewController.xib in Resources */,
+				850065DA1B43F9AF00F556BA /* icon_dislike.png in Resources */,
 				7A1D2F0D1B235E55002F9341 /* hotlist.png in Resources */,
 				7A1D2F551B235E55002F9341 /* Icon_close_white.png in Resources */,
 				7A1D2E1A1B235E55002F9341 /* icon_check_orange@2x.png in Resources */,
@@ -8860,6 +8930,7 @@
 				7A1D2F081B235E55002F9341 /* top_bg.png in Resources */,
 				FC76423F1B15E2830034A8F1 /* ProgressBarView.xib in Resources */,
 				FC7642391B15E2830034A8F1 /* LoadingView.xib in Resources */,
+				850065C81B43F8DD00F556BA /* icon_netral.png in Resources */,
 				FC7643C31B15E2830034A8F1 /* TransactionCartCell.xib in Resources */,
 				7A1D2DC11B235E55002F9341 /* icon_6@2x.png in Resources */,
 				7A1D2F531B235E55002F9341 /* Icon_check_grey_bg.png in Resources */,
@@ -8876,6 +8947,7 @@
 				FC76430A1B15E2830034A8F1 /* ReputationDetailFormViewController.xib in Resources */,
 				FC7641F71B15E2820034A8F1 /* TKPDAlert.xib in Resources */,
 				FC7641DE1B15E2820034A8F1 /* RegisterViewController.xib in Resources */,
+				850065CE1B43F90300F556BA /* icon_sad@3x.png in Resources */,
 				7A1D2E9B1B235E55002F9341 /* icon_shop_favorite@2x.png in Resources */,
 				FC7642101B15E2820034A8F1 /* CatalogShopViewController.xib in Resources */,
 				FC7643921B15E2830034A8F1 /* SendMessageViewController.xib in Resources */,
