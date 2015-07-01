@@ -13,6 +13,8 @@
 		45553EE11B32C75E0032137C /* HotlistViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45553EDE1B32C75E0032137C /* HotlistViewModel.m */; };
 		457E095D1B312178007E8143 /* ShopInfoAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 457E095B1B312178007E8143 /* ShopInfoAddressCell.m */; };
 		457E095E1B312178007E8143 /* ShopInfoAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457E095C1B312178007E8143 /* ShopInfoAddressCell.xib */; };
+		45AFA30C1B3D7280001D0F40 /* InboxRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AFA30A1B3D7280001D0F40 /* InboxRootViewController.m */; };
+		45AFA30D1B3D7280001D0F40 /* InboxRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AFA30B1B3D7280001D0F40 /* InboxRootViewController.xib */; };
 		45E700001B2FE8C2007D51A0 /* icon_more_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E7FA481B2FE8C1007D51A0 /* icon_more_active@2x.png */; };
 		45E700011B2FE8C2007D51A0 /* icon_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E7FA491B2FE8C1007D51A0 /* icon_search.png */; };
 		45E700021B2FE8C2007D51A0 /* icon_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E7FA4A1B2FE8C1007D51A0 /* icon_search@2x.png */; };
@@ -1498,6 +1500,9 @@
 		457E095A1B312178007E8143 /* ShopInfoAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoAddressCell.h; sourceTree = "<group>"; };
 		457E095B1B312178007E8143 /* ShopInfoAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoAddressCell.m; sourceTree = "<group>"; };
 		457E095C1B312178007E8143 /* ShopInfoAddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoAddressCell.xib; sourceTree = "<group>"; };
+		45AFA3091B3D7280001D0F40 /* InboxRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxRootViewController.h; sourceTree = "<group>"; };
+		45AFA30A1B3D7280001D0F40 /* InboxRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxRootViewController.m; sourceTree = "<group>"; };
+		45AFA30B1B3D7280001D0F40 /* InboxRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxRootViewController.xib; sourceTree = "<group>"; };
 		45E7F19E1B2FE8BF007D51A0 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		45E7F19F1B2FE8BF007D51A0 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		45E7F1A01B2FE8BF007D51A0 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -5833,6 +5838,9 @@
 				45E7F60C1B2FE8C0007D51A0 /* InboxMessageViewController.m */,
 				45E7F60D1B2FE8C0007D51A0 /* InboxMessageViewController.xib */,
 				45E7F60E1B2FE8C0007D51A0 /* string_inbox_message.h */,
+				45AFA3091B3D7280001D0F40 /* InboxRootViewController.h */,
+				45AFA30A1B3D7280001D0F40 /* InboxRootViewController.m */,
+				45AFA30B1B3D7280001D0F40 /* InboxRootViewController.xib */,
 			);
 			path = InboxMessage;
 			sourceTree = "<group>";
@@ -8528,6 +8536,7 @@
 				45E7FC751B2FE8C2007D51A0 /* CameraController.xib in Resources */,
 				45E7FDD91B2FE8C2007D51A0 /* SettingAddressEditViewController.xib in Resources */,
 				45E700021B2FE8C2007D51A0 /* icon_search@2x.png in Resources */,
+				45AFA30D1B3D7280001D0F40 /* InboxRootViewController.xib in Resources */,
 				45E7FEE91B2FE8C2007D51A0 /* icon_arrow_down.png in Resources */,
 				45E7FD2F1B2FE8C2007D51A0 /* ReviewFormViewController.xib in Resources */,
 				45E7FE411B2FE8C2007D51A0 /* MaintenanceViewController.xib in Resources */,
@@ -9219,6 +9228,7 @@
 				45E7FBE31B2FE8C2007D51A0 /* NotesList.m in Sources */,
 				45E7FB4C1B2FE8C2007D51A0 /* FavoritedShop.m in Sources */,
 				45E7FE931B2FE8C2007D51A0 /* ProfileBiodataCell.m in Sources */,
+				45AFA30C1B3D7280001D0F40 /* InboxRootViewController.m in Sources */,
 				45E7FBAE1B2FE8C2007D51A0 /* BankAccountGetDefaultFormDefaultBank.m in Sources */,
 				45E7FD751B2FE8C2007D51A0 /* ProductAddEditDetailViewController.m in Sources */,
 				45E7FD3B1B2FE8C2007D51A0 /* MyShopAddressDetailViewController.m in Sources */,

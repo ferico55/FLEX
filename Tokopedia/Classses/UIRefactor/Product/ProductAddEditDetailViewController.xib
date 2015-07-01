@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -53,25 +53,34 @@
             </connections>
         </tapGestureRecognizer>
         <view contentMode="scaleToFill" id="Vfj-Cb-1f4">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="in6-xe-FSb">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="d25-El-JC0"/>
                         <outlet property="delegate" destination="-1" id="APf-tB-pbv"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="in6-xe-FSb" firstAttribute="top" secondItem="Vfj-Cb-1f4" secondAttribute="top" id="DF1-Fw-F5W"/>
-                <constraint firstItem="in6-xe-FSb" firstAttribute="leading" secondItem="Vfj-Cb-1f4" secondAttribute="leading" id="aL7-VQ-ptD"/>
-                <constraint firstAttribute="trailing" secondItem="in6-xe-FSb" secondAttribute="trailing" id="g1S-CQ-aMo"/>
-                <constraint firstAttribute="bottom" secondItem="in6-xe-FSb" secondAttribute="bottom" id="jix-3p-3Iq"/>
+                <constraint firstItem="in6-xe-FSb" firstAttribute="top" secondItem="Vfj-Cb-1f4" secondAttribute="top" id="DF1-Fw-F5W">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="in6-xe-FSb" firstAttribute="leading" secondItem="Vfj-Cb-1f4" secondAttribute="leading" id="aL7-VQ-ptD">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="in6-xe-FSb" secondAttribute="trailing" id="g1S-CQ-aMo">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="bottom" secondItem="in6-xe-FSb" secondAttribute="bottom" id="jix-3p-3Iq">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
             </constraints>
+            <point key="canvasLocation" x="215" y="248"/>
         </view>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Lka-ue-gPb" detailTextLabel="rk8-0l-75a" style="IBUITableViewCellStyleValue1" id="Gek-dQ-I9Y">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -251,7 +260,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Edg-1c-OCo" firstAttribute="leading" secondItem="BZp-DP-v2U" secondAttribute="leading" constant="20" id="2sN-oM-def"/>
                 <constraint firstItem="bwI-Gp-XHN" firstAttribute="leading" secondItem="BZp-DP-v2U" secondAttribute="leading" constant="15" id="8ie-Oz-HzL"/>
@@ -276,14 +285,9 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="348" y="1338"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class InboxMessageDetailViewController;
 @class TKPDTabInboxMessageNavigationController;
 
 #pragma mark -
@@ -40,6 +41,9 @@
 @property (nonatomic, weak, setter = setSelectedViewController:) UIViewController *selectedViewController;
 @property (nonatomic, setter = setSelectedIndex:) NSInteger selectedIndex;
 @property (nonatomic, weak) id<TKPDTabInboxMessageNavigationControllerDelegate> delegate;
+
+@property (strong, nonatomic) UIViewController *splitVC;
+
 
 @property (nonatomic, readonly, assign) UIEdgeInsets contentInsetForChildController;
 

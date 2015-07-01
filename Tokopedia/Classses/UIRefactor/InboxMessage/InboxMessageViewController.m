@@ -101,6 +101,8 @@ typedef enum TagRequest {
     EncodeDecoderManager *_encodeDecodeManager;
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
+    
+    NSIndexPath *_selectedIndexPath;
 }
 
 
@@ -406,15 +408,28 @@ typedef enum TagRequest {
         
         NSInteger index = indexPath.row;
         InboxMessageList *list = _messages[index];
-        InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-        list.message_read_status = @"1";
-        vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id,
-                    KTKPDMESSAGE_TITLEKEY : list.message_title,
-                    KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"],
-                    MESSAGE_INDEX_PATH : indexPath
-                    };
-        [_table reloadData];
-        [self.navigationController pushViewController:vc animated:YES];
+
+        NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                               KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                               KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                               MESSAGE_INDEX_PATH : indexPath?:[NSIndexPath indexPathForRow:0 inSection:0]
+                               };
+
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            if (![data isEqualToDictionary:_detailViewController.data]) {
+                [_detailViewController replaceDataSelected:data];
+                [_table selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                _selectedIndexPath = indexPath;
+            }
+        }
+        else
+        {
+            InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+            list.message_read_status = @"1";
+            vc.data = data;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 
@@ -879,7 +894,7 @@ typedef enum TagRequest {
                                 kTKPDHOME_APIPAGEKEY:@(_page),
                                 KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
                                 KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
+                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
                                 };
         return param;
     }
@@ -1000,6 +1015,22 @@ typedef enum TagRequest {
                 [_table selectRowAtIndexPath:indexpath animated:YES scrollPosition:UITableViewScrollPositionTop];
             }
             
+        }
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            NSIndexPath *indexpath = _selectedIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+            InboxMessageList *list = _messages[indexpath.row];
+            
+            NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                                   KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                                   KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                                   MESSAGE_INDEX_PATH : indexpath
+                                   };
+            if (![data isEqualToDictionary:_detailViewController.data]) {
+                [_detailViewController replaceDataSelected:data];
+            }
+            [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
 }

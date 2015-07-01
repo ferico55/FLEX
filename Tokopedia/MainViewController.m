@@ -35,6 +35,8 @@
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
 
+#import "InboxRootViewController.h"
+
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()

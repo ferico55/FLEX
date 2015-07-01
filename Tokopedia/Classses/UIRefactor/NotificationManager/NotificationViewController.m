@@ -23,6 +23,8 @@
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusViewController.h"
 
+#import "InboxRootViewController.h"
+
 
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
 
@@ -271,24 +273,30 @@
     if([indexPath section] == 0) {
         switch ([indexPath row]) {
             case 0:{
-                InboxMessageViewController *vc = [InboxMessageViewController new];
-                vc.data=@{@"nav":@"inbox-message"};
-                
-                InboxMessageViewController *vc1 = [InboxMessageViewController new];
-                vc1.data=@{@"nav":@"inbox-message-sent"};
-                
-                InboxMessageViewController *vc2 = [InboxMessageViewController new];
-                vc2.data=@{@"nav":@"inbox-message-archive"};
-                
-                InboxMessageViewController *vc3 = [InboxMessageViewController new];
-                vc3.data=@{@"nav":@"inbox-message-trash"};
-                NSArray *vcs = @[vc,vc1, vc2, vc3];
-                
-                TKPDTabInboxMessageNavigationController *controller = [TKPDTabInboxMessageNavigationController new];
-                [controller setSelectedIndex:2];
-                [controller setViewControllers:vcs];
-                controller.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:controller];
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxRootViewController *controller = [InboxRootViewController new];
+                    [self.delegate pushViewController:controller];
+                    
+                } else {
+                    InboxMessageViewController *vc = [InboxMessageViewController new];
+                    vc.data=@{@"nav":@"inbox-message"};
+                    
+                    InboxMessageViewController *vc1 = [InboxMessageViewController new];
+                    vc1.data=@{@"nav":@"inbox-message-sent"};
+                    
+                    InboxMessageViewController *vc2 = [InboxMessageViewController new];
+                    vc2.data=@{@"nav":@"inbox-message-archive"};
+                    
+                    InboxMessageViewController *vc3 = [InboxMessageViewController new];
+                    vc3.data=@{@"nav":@"inbox-message-trash"};
+                    NSArray *vcs = @[vc,vc1, vc2, vc3];
+                    
+                    TKPDTabInboxMessageNavigationController *controller = [TKPDTabInboxMessageNavigationController new];
+                    [controller setSelectedIndex:2];
+                    [controller setViewControllers:vcs];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:controller];
+                }
 
                 break;
             }

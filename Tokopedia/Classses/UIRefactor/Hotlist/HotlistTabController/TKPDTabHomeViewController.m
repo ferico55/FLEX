@@ -25,6 +25,8 @@
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
 
+#import "NavigateViewController.h"
+
 @interface TKPDTabHomeViewController ()
 <   UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
@@ -47,6 +49,7 @@
     NotificationManager *_notifManager;
     UserAuthentificationManager *_userManager;
 
+    NavigateViewController *_navigate;
 }
 
 @property (strong, nonatomic) UIPageViewController *pageController;
@@ -69,6 +72,8 @@
 {
     
     [super viewDidLoad];
+    
+    _navigate = [NavigateViewController new];
     
     _userManager = [UserAuthentificationManager new];
 
@@ -537,24 +542,7 @@
 }
 
 - (void)goToInboxMessage {
-    InboxMessageViewController *vc = [InboxMessageViewController new];
-    vc.data=@{@"nav":@"inbox-message"};
-    
-    InboxMessageViewController *vc1 = [InboxMessageViewController new];
-    vc1.data=@{@"nav":@"inbox-message-sent"};
-    
-    InboxMessageViewController *vc2 = [InboxMessageViewController new];
-    vc2.data=@{@"nav":@"inbox-message-archive"};
-    
-    InboxMessageViewController *vc3 = [InboxMessageViewController new];
-    vc3.data=@{@"nav":@"inbox-message-trash"};
-    NSArray *vcs = @[vc,vc1, vc2, vc3];
-    
-    TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-    [inboxController setSelectedIndex:2];
-    [inboxController setViewControllers:vcs];
-    
-    [self.navigationController pushViewController:inboxController animated:YES];
+    [_navigate navigateToInboxMessageFromViewController:self];
 }
 
 - (void)goToInboxTalk {

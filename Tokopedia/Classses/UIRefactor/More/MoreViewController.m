@@ -53,6 +53,8 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 
+#import "NavigateViewController.h"
+
 #import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
@@ -71,6 +73,8 @@
     NotificationManager *_notifManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSTimer *_requestTimer;
+    
+    NavigateViewController *_navigate;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -132,6 +136,8 @@
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
+    
+    _navigate = [NavigateViewController new];
     
     _isNoDataDeposit  = YES;
     _depositRequestCount = 0;
@@ -592,24 +598,7 @@
     
     else if (indexPath.section == 4) {
         if(indexPath.row == 0) {
-            InboxMessageViewController *vc = [InboxMessageViewController new];
-            vc.data=@{@"nav":@"inbox-message"};
-            
-            InboxMessageViewController *vc1 = [InboxMessageViewController new];
-            vc1.data=@{@"nav":@"inbox-message-sent"};
-            
-            InboxMessageViewController *vc2 = [InboxMessageViewController new];
-            vc2.data=@{@"nav":@"inbox-message-archive"};
-            
-            InboxMessageViewController *vc3 = [InboxMessageViewController new];
-            vc3.data=@{@"nav":@"inbox-message-trash"};
-            NSArray *vcs = @[vc,vc1, vc2, vc3];
-            
-            TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-            [inboxController setSelectedIndex:2];
-            [inboxController setViewControllers:vcs];
-            inboxController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:inboxController animated:YES];
+            [_navigate navigateToInboxMessageFromViewController:self];
         } else if(indexPath.row == 1) {
             InboxTalkViewController *vc = [InboxTalkViewController new];
             vc.data=@{@"nav":@"inbox-talk"};

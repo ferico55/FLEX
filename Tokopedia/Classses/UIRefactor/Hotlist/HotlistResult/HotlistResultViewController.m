@@ -1235,7 +1235,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         inset = 14;
     }
     
-    CGFloat cellWidth = screenWidth/cellCount-inset;
+    CGFloat cellWidth;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        screenWidth = screenRect.size.width/2;
+        cellWidth = screenWidth/cellCount-inset;
+    } else {
+        screenWidth = screenRect.size.width;
+        cellWidth = screenWidth/cellCount-inset;
+    }
+    
     cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
     return cellSize;
 }
@@ -1260,21 +1268,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         [(ProductThumbCell *)cell setViewModel:list.viewModel];
     }
     
-    return cell;
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    
-    
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
@@ -1289,7 +1282,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             [flowLayout setFooterReferenceSize:CGSizeZero];
         }
     }
+    
+    return cell;
 }
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {

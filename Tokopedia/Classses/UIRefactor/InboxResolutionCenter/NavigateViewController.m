@@ -20,6 +20,10 @@
 #import "DetailProductViewController.h"
 #import "ProductGalleryViewController.h"
 
+#import "InboxRootViewController.h"
+#import "InboxMessageViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
+
 #import "ProductImages.h"
 
 @implementation NavigateViewController
@@ -84,6 +88,35 @@
     vc.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxRootViewController *inboxController = [InboxRootViewController new];
+        [viewController.navigationController pushViewController:inboxController animated:YES];
+        
+    } else {
+        InboxMessageViewController *vc = [InboxMessageViewController new];
+        vc.data=@{@"nav":@"inbox-message"};
+        
+        InboxMessageViewController *vc1 = [InboxMessageViewController new];
+        vc1.data=@{@"nav":@"inbox-message-sent"};
+        
+        InboxMessageViewController *vc2 = [InboxMessageViewController new];
+        vc2.data=@{@"nav":@"inbox-message-archive"};
+        
+        InboxMessageViewController *vc3 = [InboxMessageViewController new];
+        vc3.data=@{@"nav":@"inbox-message-trash"};
+        NSArray *vcs = @[vc,vc1, vc2, vc3];
+        
+        TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
+        [inboxController setSelectedIndex:2];
+        [inboxController setViewControllers:vcs];
+        
+        [viewController.navigationController pushViewController:inboxController animated:YES];
+    }
+
 }
 
 @end
