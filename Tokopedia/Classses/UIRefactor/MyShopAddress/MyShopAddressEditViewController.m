@@ -215,79 +215,9 @@
             }
             case 11:
             {
-                //submit
-                Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
-                
-                NSMutableArray *messages = [NSMutableArray new];
-                
-                NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
-                NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
-                NSInteger postcode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
-                NSString *district = _selectedDistrict[DATA_ID_KEY]?:list.location_district_id;
-                NSString *city = _selectedCity[DATA_ID_KEY]?:list.location_city_id;
-                NSString *prov = _selectedProvince[DATA_ID_KEY]?:list.location_province_id;
-                NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
-                NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
-                //NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax;
-                
-                NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-                
-                if (addressname && ![addressname isEqualToString:@""] &&
-                    address && ![address isEqualToString:@""] &&
-                    postcode &&
-                    district &&
-                    city  &&
-                    prov  &&
-                    phone && ![phone isEqualToString:@""] && phoneCharCount>=6 &&
-                    email && [email isEmail]
-                    ) {
-                        [self configureRestKitActionAddAddress];
-                        [self requestActionAddAddress:_datainput];
-                }
-                else
-                {
-                    if (!addressname || [addressname isEqualToString:@""]) {
-                        [messages addObject:@"Nama Alamat harus diisi."];
-                    }
-                    if (!address || [address isEqualToString:@""]) {
-                        [messages addObject:@"Alamat harus diisi."];
-                    }
-                    if (!postcode) {
-                        [messages addObject:@"Kode Pos harus diisi."];
-                    }
-                    if (!prov) {
-                        [messages addObject:@"Provinsi harus diisi."];
-                    }
-                    if (!city) {
-                        [messages addObject:@"Kota harus diisi."];
-                    }
-                    if (!district) {
-                        [messages addObject:@"Kecamatan harus diisi."];
-                    }
-                    if (!phone || [phone isEqualToString:@""]) {
-                        [messages addObject:@"Telepon harus diisi."];
-                    }
-                    else
-                    {
-                        if (phoneCharCount<6) {
-                            [messages addObject:@"Phone minimum 6 Character"];
-                        }
-                    }
-                    if (!email) {
-                        [messages addObject:@"Email harus diisi."];
-                    }
-                    else{
-                        if (![email isEmail]) {
-                            [messages addObject:@"Format email harus benar."];
-                        }
-                    }
-                }
-                
-                NSLog(@"%@",messages);
-                
-                if (messages.count>0) {
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-                    [alert show];
+                if ([self isValidInput]) {
+                    [self configureRestKitActionAddAddress];
+                    [self requestActionAddAddress:_datainput];
                 }
                 break;
             }
@@ -295,6 +225,81 @@
                 break;
         }
     }
+}
+
+-(BOOL)isValidInput
+{
+    BOOL isValid = YES;
+    
+    Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    
+    NSMutableArray *messages = [NSMutableArray new];
+    
+    NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
+    NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
+    NSInteger postcode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
+    NSString *district = _selectedDistrict[DATA_ID_KEY]?:list.location_district_id;
+    NSString *city = _selectedCity[DATA_ID_KEY]?:list.location_city_id;
+    NSString *prov = _selectedProvince[DATA_ID_KEY]?:list.location_province_id;
+    NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
+    NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
+    //NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax;
+    
+    NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
+    
+    if (!addressname || [addressname isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Nama Alamat harus diisi."];
+    }
+    if (!address || [address isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Alamat harus diisi."];
+    }
+    if (!postcode||postcode ==0 ) {
+        isValid = NO;
+        [messages addObject:@"Kode Pos harus diisi."];
+    }
+    if (!prov||[prov isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Provinsi harus diisi."];
+    }
+    if (!city||[city isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Kota harus diisi."];
+    }
+    if (!district||[district isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Kecamatan harus diisi."];
+    }
+    if (!phone || [phone isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Telepon harus diisi."];
+    }
+    else
+    {
+        if (phoneCharCount<6) {
+            isValid = NO;
+            [messages addObject:@"Phone minimum 6 Character"];
+        }
+    }
+    if (!email) {
+        isValid = NO;
+        [messages addObject:@"Email harus diisi."];
+    }
+    else{
+        if (![email isEmail]) {
+            isValid = NO;
+            [messages addObject:@"Format email harus benar."];
+        }
+    }
+    
+    if (!isValid) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        [alert show];
+    }
+
+    
+    return  isValid;
 }
 
 #pragma mark - Request Action AddAddress

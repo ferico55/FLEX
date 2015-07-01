@@ -74,9 +74,9 @@
         [viewRetur addSubview:lblMessageRetur];
     }
     
-    
-    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText];
-    lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5, CPaddingTopDescToko, viewRetur.bounds.size.width-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15, height);
+    float xLblMessageRetur = imgRetur.frame.origin.x+imgRetur.bounds.size.width+5;
+    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(viewRetur.bounds.size.width-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15, 9999) withText:strText withColor:lblMessageRetur.textColor withFont:lblMessageRetur.font withAlignment:NSTextAlignmentCenter];
+    lblMessageRetur.frame = CGRectMake(xLblMessageRetur, CPaddingTopDescToko, viewRetur.bounds.size.width-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15, height);
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
 }
 

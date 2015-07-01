@@ -5,12 +5,13 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "string_inbox_message.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
 #import "GeneralTalkCell.h"
 
+#import "ReportViewController.h"
 #import "Talk.h"
 #import "GeneralAction.h"
 #import "InboxTalk.h"
@@ -31,7 +32,8 @@
     UITableViewDelegate,
     TKPDTabInboxTalkNavigationControllerDelegate,
     GeneralTalkCellDelegate,
-    UIAlertViewDelegate
+    UIAlertViewDelegate,
+    ReportViewControllerDelegate
 >
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -248,6 +250,9 @@
         if (cell == nil) {
             cell = [GeneralTalkCell newcell];
             ((GeneralTalkCell*)cell).delegate = self;
+            [((GeneralTalkCell*)cell).userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
+            ((GeneralTalkCell*)cell).userButton.userInteractionEnabled = YES;
+            [((GeneralTalkCell*)cell).userButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(tap:)]];
         }
         
         if (_talkList.count > indexPath.row) {
@@ -255,10 +260,30 @@
             
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             ((GeneralTalkCell *)cell).data = list;
-            [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal];
+            ((GeneralTalkCell*)cell).userButton.text = list.talk_user_name;
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
+            
+            
+            //Set user label
+//            if([list.talk_user_label isEqualToString:CPenjual]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPenjual];
+//            }
+//            else if([list.talk_user_label isEqualToString:CPembeli]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPembeli];
+//            }
+//            else if([list.talk_user_label isEqualToString:CAdministrator]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagAdministrator];
+//            }
+//            else if([list.talk_user_label isEqualToString:CPengguna]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPengguna];
+//            }
+//            else {
+//                [((GeneralTalkCell*)cell).userButton setColor:-1];//-1 is set to empty string
+//            }
+//            
+            [((GeneralTalkCell*)cell).userButton setLabelBackground:list.talk_user_label];
             
             if(list.talk_follow_status == 1 && ![list.talk_own isEqualToString:@"1"]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
@@ -267,14 +292,15 @@
                 newFrame.origin.x = 0;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = NO;
+                [((GeneralTalkCell *)cell) setTalkFollowStatus:YES];
             } else {
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
                 newFrame.origin.x = 75;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
+                [((GeneralTalkCell *)cell) setTalkFollowStatus:NO];
             }
             
             if([list.talk_read_status isEqualToString:@"1"]) {
@@ -294,11 +320,15 @@
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
 
-//            if([list.talk_product_status isEqualToString:@"0"]) {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
-//            } else {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
-//            }
+            if(! [list.talk_own isEqualToString:@"1"]) {
+                if([list.talk_product_status isEqualToString:@"0"]) {
+                    CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                    newFrame.origin.x = 75;
+                    ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+                    ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
+                    ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
+                }
+            }
             
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
@@ -370,6 +400,8 @@
                                                  TKPD_TALK_PRODUCT_IMAGE,
                                                  TKPD_TALK_OWN,
                                                  TKPD_TALK_USER_ID,
+                                                 TKPD_TALK_USER_LABEL,
+                                                 TKPD_TALK_USER_LABEL_ID
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -461,7 +493,7 @@
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         _isNeedToInsertCache = YES;
-        
+       
         [self requestsuccess:mappingResult withOperation:operation];
         [_table reloadData];
         _isrefreshview = NO;
@@ -689,16 +721,36 @@
                             kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                             TKPD_TALK_ID:list.talk_id?:@0,
+                            @"shop_id":list.talk_shop_id
                             };
     
     _requestUnfollowCount ++;
     _requestUnfollow = [_objectUnfollowmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:TKPD_MESSAGE_TALK_ACTION parameters:[param encrypt]];
     
     [_requestUnfollow setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
-        
+        GeneralAction *generalAction = [mappingResult.dictionary objectForKey:@""];
+        if(generalAction.message_error!=nil && generalAction.message_error.count>0) {
+            StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithErrorMessages:generalAction.message_error delegate:self];
+            [stickyAlert show];
+            
+            [_table beginUpdates];
+            [_table reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+            [_table endUpdates];
+        }
+        else {
+            if([self.parentViewController isMemberOfClass:[TKPDTabInboxTalkNavigationController class]]) {
+                TKPDTabInboxTalkNavigationController *inboxTalkNavigationController = (TKPDTabInboxTalkNavigationController *)self.parentViewController;
+                
+                if(inboxTalkNavigationController.viewControllers.count == 3) {
+                    InboxTalkViewController *tempInboxTalkViewController = (inboxTalkNavigationController.selectedIndex==0)? [inboxTalkNavigationController.viewControllers lastObject]:[inboxTalkNavigationController.viewControllers firstObject];
+                    [tempInboxTalkViewController removeData:((TalkList *) [_talkList objectAtIndex:indexpath.row]).talk_id];
+                }
+            }
+            [_talkList removeObjectAtIndex:indexpath.row];
+            [_table reloadData];
+        }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        
+        [self followAnimateZoomOut:buttonUnfollow];
     }];
     
     [_operationUnfollowQueue addOperation:_requestUnfollow];
@@ -762,6 +814,43 @@
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     return self;
+}
+
+#pragma mark - ReportViewController Delegate
+#pragma mark - Report Delegate
+- (NSDictionary *)getParameter {
+    return @{
+             @"action" : @"report_product_talk",
+             @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0)
+             };
+}
+
+
+- (NSString *)getPath {
+    return @"action/talk.pl";
+}
+
+#pragma mark - Method
+- (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    ReportViewController *_reportController = [ReportViewController new];
+    _reportController.delegate = self;
+    
+    TalkList *talkList = _talkList[indexpath.row];
+    _reportController.strProductID = talkList.talk_product_id;
+    _reportController.strCommentTalkID = talkList.talk_id;
+    _reportController.strShopID = talkList.talk_shop_id;
+    [self.navigationController pushViewController:_reportController animated:YES];
+}
+
+- (void)removeData:(NSString *)inboxID
+{
+    for(TalkList *tempTalkList in _talkList) {
+        if([tempTalkList.talk_id isEqual:inboxID]) {
+            [_talkList removeObject:tempTalkList];
+            [_table reloadData];
+            break;
+        }
+    }
 }
 
 #pragma mark - Refresh View 

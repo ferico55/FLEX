@@ -222,6 +222,7 @@
         if (cell == nil) {
             cell = [GeneralReviewCell newcell];
             ((GeneralReviewCell*)cell).delegate = self;
+            ((GeneralReviewCell*)cell).delegateReview = self;
         }
         
         if (_reviews.count > indexPath.row) {
@@ -229,6 +230,9 @@
             InboxReviewList *list = _reviews[indexPath.row];
             ((GeneralReviewCell*)cell).indexpath = indexPath;
             ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
+            [((GeneralReviewCell*)cell).userNamelabel setLabelBackground:list.review_user_label];
+            [((GeneralReviewCell*)cell).userNamelabel setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
+            
             ((GeneralReviewCell*)cell).timelabel.text = [list.review_create_time isEqualToString:@"0"] ? @"" : list.review_create_time;
             ((GeneralReviewCell*)cell).data = list;
             
@@ -292,11 +296,13 @@
             
             if([list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] || [list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
                 if([list.review_message isEqualToString:@"0"]) {
-                    ((GeneralReviewCell *)cell).commentlabel.text = @"Produk ini tidak dapat diulas" ;
+                    ((GeneralReviewCell *)cell).commentlabel.text = @"Produk ini tidak aktif" ;
                     ((GeneralReviewCell*)cell).delegate = nil;
+                    ((GeneralReviewCell*)cell).delegateReview = self;
                 }
             } else {
                 ((GeneralReviewCell*)cell).delegate = self;
+                ((GeneralReviewCell*)cell).delegateReview = self;
             }
             
             if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
@@ -411,7 +417,8 @@
                                                  REVIEW_USER_IMAGE,
                                                  REVIEW_PRODUCT_STATUS,
                                                  REVIEW_IS_ALLOW_EDIT,
-                                                 REVIEW_IS_SKIPABLE
+                                                 REVIEW_IS_SKIPABLE,
+                                                 REVIEW_USER_LABEL
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -821,6 +828,8 @@
     list.review_create_time = @"Just Now";
     list.review_id = @"1";
     list.review_read_status = @"2";
+    list.review_response.response_message = @"0";
+    list.review_is_allow_edit = @"1";
 //    list.review_user_id = [_userManager getUserId];
     
     [_reviewTable reloadData];

@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#define CHeightUserLabel 21
 #import "ProductTalkDetailViewController.h"
 #import "TalkComment.h"
 #import "detail.h"
@@ -33,6 +34,7 @@
 #import "InboxTalkViewController.h"
 #import "UserContainerViewController.h"
 
+#import "string_inbox_message.h"
 #import "stringrestkit.h"
 #import "string_more.h"
 #import "string_inbox_talk.h"
@@ -282,6 +284,7 @@
 #endif
 }
 
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TalkCommentList *list = _list[indexPath.row];
@@ -300,6 +303,7 @@
         if (cell == nil) {
             cell = [GeneralTalkCommentCell newcell];
             ((GeneralTalkCommentCell*)cell).delegate = self;
+            [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:15.0f]];
         }
         
         if (_list.count > indexPath.row) {
@@ -326,6 +330,24 @@
             
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
             
+            
+            //Set user label
+//            if([list.comment_user_label isEqualToString:CPenjual]) {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPenjual];
+//            }
+//            else if([list.comment_user_label isEqualToString:CPembeli]) {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPembeli];
+//            }
+//            else if([list.comment_user_label isEqualToString:CAdministrator]) {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagAdministrator];
+//            }
+//            else if([list.comment_user_label isEqualToString:CPengguna]) {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPengguna];
+//            }
+//            else {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:-1];//-1 is set to empty string
+//            }
+            [((GeneralTalkCommentCell*)cell).user_name setLabelBackground:list.comment_user_label];
 
             
             if(list.is_not_delivered) {
@@ -518,7 +540,7 @@
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
     //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
@@ -583,7 +605,9 @@
                                                  TKPD_TALK_COMMENT_CREATETIME,
                                                  TKPD_TALK_COMMENT_USERIMG,
                                                  TKPD_TALK_COMMENT_USERNAME,
-                                                 TKPD_TALK_COMMENT_USERID
+                                                 TKPD_TALK_COMMENT_USERID,
+                                                 TKPD_TALK_COMMENT_USER_LABEL,
+                                                 TKPD_TALK_COMMENT_USER_LABEL_ID
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -1017,10 +1041,14 @@
     if(status) {
         //if success
         if([commentaction.result.is_success isEqualToString:@"0"]) {
-            TalkCommentList *commentlist = _list[_list.count-1];
-            commentlist.is_not_delivered = @"1";
-            commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
             _growingtextview.text = _savedComment;
+            
+            TalkCommentList *commentlist = _list[_list.count-1];
+            [_list removeObject:commentlist];
+            [_table beginUpdates];
+            [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            [_table endUpdates];
+
             
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:commentaction.message_error
                                                                            delegate:self];
