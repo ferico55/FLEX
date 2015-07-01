@@ -59,6 +59,7 @@
 #define CStringSelesai @"Selesai"
 #define CStringPriceAlert @"Price Alert"
 #define CStringBatal @"Batal"
+#define CStringBack @"Back"
 #define CStringUbah @"Ubah"
 #define CStringNotificationHarga @"Notifikasi Harga"
 #define CStringSuccessEditPriceAlert @"Berhasil mengubah notifikasi harga produk"

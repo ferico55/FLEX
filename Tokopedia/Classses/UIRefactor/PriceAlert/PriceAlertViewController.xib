@@ -4,6 +4,12 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PriceAlertViewController">
             <connections>
@@ -16,13 +22,13 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harga Maksimum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5w-u7-gpL">
-                    <rect key="frame" x="25" y="22" width="135" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Harga Maksimum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5w-u7-gpL">
+                    <rect key="frame" x="25" y="22" width="174" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="4OP-3L-R46"/>
                         <constraint firstAttribute="width" constant="135" id="J84-cO-hSe"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -41,7 +47,7 @@
                         <constraint firstAttribute="width" constant="271" id="T34-0f-K8M"/>
                         <constraint firstAttribute="height" constant="35" id="n5o-XX-cYN"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -54,7 +60,6 @@
                 <constraint firstItem="E5w-u7-gpL" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="22" id="Xfx-L9-3rG"/>
                 <constraint firstItem="dSl-HS-eba" firstAttribute="top" secondItem="E5w-u7-gpL" secondAttribute="bottom" constant="8" id="czR-yA-BiS"/>
                 <constraint firstItem="8xU-y0-U0y" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="25" id="hLA-HL-Mf2"/>
-                <constraint firstAttribute="trailing" secondItem="E5w-u7-gpL" secondAttribute="trailing" constant="160" id="jyG-Mi-OX2"/>
                 <constraint firstItem="dSl-HS-eba" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="25" id="oMV-8C-dME"/>
                 <constraint firstItem="8xU-y0-U0y" firstAttribute="top" secondItem="dSl-HS-eba" secondAttribute="bottom" constant="8" id="yGp-aj-4xA"/>
             </constraints>

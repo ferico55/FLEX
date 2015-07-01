@@ -60,15 +60,8 @@
     
     tblPriceAlert.tableFooterView = [self getActivityIndicator];
     [[self getNetworkManager:CTagGetPriceAlert] doRequest];
-    
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
-    }
-    else
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CstringFilter style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
+    tblPriceAlert.allowsSelection = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -159,6 +152,7 @@
         NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
         cell = [arrPriceAlert objectAtIndex:0];
         cell.viewController = self;
+        cell.getBtnProductName.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     }
     
     DetailPriceAlert *detailPriceAlert = [arrList objectAtIndex:indexPath.row];
@@ -185,6 +179,7 @@
     if(arrList!=nil && arrDepartment!=nil && arrDepartment.count>0) {
         DepartmentTableViewController *departmentViewController = [DepartmentTableViewController new];
         departmentViewController.del = self;
+        departmentViewController.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0);
         departmentViewController.navigationItem.title = CStringCategory;
         departmentViewController.arrList = arrDepartment;
         departmentViewController.selectedIndex = nSelectedDepartment;
@@ -220,7 +215,7 @@
 - (void)actionCloseCell:(id)sender
 {
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
     }
     else {
@@ -239,7 +234,7 @@
 {
     [refreshControl endRefreshing];
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
     }
     else {
@@ -592,7 +587,7 @@
 - (void)pressRetryButton
 {
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
     }
     else {

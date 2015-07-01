@@ -77,6 +77,8 @@
     priceAlertCell = [arrPriceAlert objectAtIndex:0];
     [self.view addSubview:priceAlertCell.getViewContent];
     
+    priceAlertCell.getBtnProductName.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    priceAlertCell.getBtnProductName.titleLabel.numberOfLines = 2;
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintTrailling];
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintBottom];
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintX];
@@ -104,7 +106,7 @@
         constraintWidthUrutkan.constant = 0;
         constraintWidthFilter.constant = self.view.bounds.size.width;
         constraintWidthSeparatorButton.constant = 0;
-        [btnFilter setTitle:CstringFilter forState:UIControlStateNormal];
+//        [btnFilter setTitle:CstringFilter forState:UIControlStateNormal];
         btnFilter.titleLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
         [btnFilter setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }

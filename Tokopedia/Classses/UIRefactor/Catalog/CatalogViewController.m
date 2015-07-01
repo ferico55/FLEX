@@ -98,7 +98,7 @@
     UIImageView *imgPriceAlertView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [imgPriceAlertView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionAddNotificationPriceCatalog:)]];
     UIBarButtonItem *priceAlertItem = [[UIBarButtonItem alloc] initWithCustomView:imgPriceAlertView];
-    self.navigationItem.rightBarButtonItems = @[priceAlertItem, actionButton];
+    self.navigationItem.rightBarButtonItems = @[actionButton, priceAlertItem];
     [self setBackgroundPriceAlert:NO];
     
 
@@ -533,17 +533,17 @@
             UIGraphicsEndImageContext();
         }
         
-        ((UIImageView *) ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView).image = imgPriceAlert;
+        ((UIImageView *) ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems lastObject]).customView).image = imgPriceAlert;
     }
     else {
         if(! imgPriceAlertNonActive) {
             UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
-            [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_pricealert_nonactive" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
+            [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_pricealert_active" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
             imgPriceAlertNonActive = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
         }
         
-        ((UIImageView *) ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView).image = imgPriceAlertNonActive;
+        ((UIImageView *) ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems lastObject]).customView).image = imgPriceAlertNonActive;
     }
 }
 
