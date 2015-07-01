@@ -82,6 +82,8 @@
     ReportViewController *_reportController;
     NSString *_reportedReviewId;
     NoResultView *_noResult;
+    
+    NSIndexPath *_selectedDetailIndexPath;
 }
 
 #pragma mark - Initialization
@@ -469,7 +471,7 @@
     //TODO::change this param later
     NSDictionary* param = @{
                             ACTION_API_KEY:GET_INBOX_REVIEW,
-                            NAV_API_KEY : [_data objectForKey:@"nav"],
+                            NAV_API_KEY : [_data objectForKey:@"nav"]?:@"",
                             LIMIT_API_KEY:INBOX_REVIEW_LIMIT_VALUE,
                             PAGE_API_KEY:@(_reviewPage),
                             FILTER_API_KEY:_readStatus?_readStatus:@"",
@@ -605,6 +607,11 @@
             _isNoData = YES;
             _reviewTable.tableFooterView = _noResult;
         }
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            NSInteger row = _selectedDetailIndexPath.row?:0;
+            InboxReviewList *list = _reviews[row];
+            [_detailViewController replaceDataSelected:list];
+        }
     }
 }
 
@@ -682,21 +689,29 @@
 }
 
 -(void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    DetailReviewViewController *vc = [DetailReviewViewController new];
-    NSInteger row = indexpath.row;
+    _selectedDetailIndexPath = indexpath;
     
+    NSInteger row = indexpath.row;
     InboxReviewList *list = _reviews[row];
     list.review_read_status = @"2";
-    [_reviewTable reloadData];
     
-    vc.data = list;
-    vc.is_owner = list.review_is_owner;
-    vc.indexPath = indexpath;
-    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
-    
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [_detailViewController replaceDataSelected:list];
+    }
+    else
+    {
+        DetailReviewViewController *vc = [DetailReviewViewController new];
+        
+        [_reviewTable reloadData];
+        
+        vc.data = list;
+        vc.is_owner = list.review_is_owner;
+        vc.indexPath = indexpath;
+        vc.index = [NSString stringWithFormat:@"%ld",(long)row];
+        
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
 }
 

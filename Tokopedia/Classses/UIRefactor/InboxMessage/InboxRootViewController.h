@@ -10,6 +10,5 @@
 
 @interface InboxRootViewController : UIViewController
 
-@property (strong, nonatomic) UISplitViewController *splitViewController;
 
 @end

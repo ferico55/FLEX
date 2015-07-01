@@ -600,40 +600,9 @@
         if(indexPath.row == 0) {
             [_navigate navigateToInboxMessageFromViewController:self];
         } else if(indexPath.row == 1) {
-            InboxTalkViewController *vc = [InboxTalkViewController new];
-            vc.data=@{@"nav":@"inbox-talk"};
-            
-            InboxTalkViewController *vc1 = [InboxTalkViewController new];
-            vc1.data=@{@"nav":@"inbox-talk-my-product"};
-            
-            InboxTalkViewController *vc2 = [InboxTalkViewController new];
-            vc2.data=@{@"nav":@"inbox-talk-following"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            nc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:nc animated:YES];
+            [_navigate navigateToInboxTalkFromViewController:self];
         } else if (indexPath.row == 2) {
-            InboxReviewViewController *vc = [InboxReviewViewController new];
-            vc.data=@{@"nav":@"inbox-review"};
-            
-            InboxReviewViewController *vc1 = [InboxReviewViewController new];
-            vc1.data=@{@"nav":@"inbox-review-my-product"};
-            
-            InboxReviewViewController *vc2 = [InboxReviewViewController new];
-            vc2.data=@{@"nav":@"inbox-review-my-review"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            nc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:nc animated:YES];
-            
+            [_navigate navigateToInboxReviewFromViewController:self];
         } else if (indexPath.row == 3) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;

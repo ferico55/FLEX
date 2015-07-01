@@ -15,7 +15,7 @@
 
 #import "TokopediaNetworkManager.h"
 
-@interface DetailReviewViewController () <HPGrowingTextViewDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
+@interface DetailReviewViewController () <HPGrowingTextViewDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate, UISplitViewControllerDelegate>
 {
     HPGrowingTextView *_growingtextview;
     UserAuthentificationManager *_userManager;
@@ -205,7 +205,7 @@
                                  };
     
     NSString *reviewMessage = [_review.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    _commentlabel.attributedText = [[NSAttributedString alloc] initWithString:reviewMessage
+    _commentlabel.attributedText = [[NSAttributedString alloc] initWithString:reviewMessage?:@""
                                                                        attributes:attributes];
     
     
@@ -678,7 +678,7 @@
 
 - (NSDictionary *)getParameter:(int)tag {
     return @{
-        @"review_id" : _review.review_id,
+             @"review_id" : _review.review_id?:@(0),
         @"action" : @"set_read_review"
     };
 }
@@ -695,6 +695,21 @@
 //    if([action.result.is_success isEqualToString:@"1"]) {
 //
 //    }
+}
+
+-(void)replaceDataSelected:(NSDictionary *)data
+{
+    _data = data;
+    
+    if (data) {
+        [self initReviewData];
+    }
+}
+
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 
 @end

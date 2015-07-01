@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ProductTalkDetailViewController;
 
 @interface InboxTalkViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 
+@property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
 
 @end

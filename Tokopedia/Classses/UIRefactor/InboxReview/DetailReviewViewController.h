@@ -11,6 +11,8 @@
 #import "HPGrowingTextView.h"
 #import "Shop.h"
 
+@class TKPDTabInboxReviewNavigationController;
+
 @interface DetailReviewViewController : UIViewController
 {
     IBOutlet UIScrollView *scrollContent;
@@ -21,7 +23,8 @@
 @property (nonatomic) NSString *index;
 @property (nonatomic) NSIndexPath *indexPath;
 
+@property (strong, nonatomic) TKPDTabInboxReviewNavigationController *masterViewController;
 
-
+-(void)replaceDataSelected:(NSDictionary *)data;
 
 @end

@@ -32,6 +32,8 @@
 
 @interface TKPDTabInboxTalkNavigationController : UIViewController
 
+@property (strong, nonatomic) UIViewController *splitVC;
+
 @property (nonatomic, copy, setter = setViewControllers:) NSArray *viewControllers;
 @property (nonatomic, weak, setter = setSelectedViewController:) UIViewController *selectedViewController;
 @property (nonatomic, setter = setSelectedIndex:) NSInteger selectedIndex;

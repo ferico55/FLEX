@@ -16,6 +16,7 @@
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings indexImage:(NSInteger)index;
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString*)productID;
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
-
+-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;
+-(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController;
 
 @end

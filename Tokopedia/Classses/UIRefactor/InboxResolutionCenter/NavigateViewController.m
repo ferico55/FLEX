@@ -24,6 +24,14 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 
+#import "InboxTalkSplitViewController.h"
+#import "InboxTalkViewController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
+
+#import "InboxReviewSplitViewController.h"
+#import "InboxReviewViewController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
+
 #import "ProductImages.h"
 
 @implementation NavigateViewController
@@ -116,7 +124,61 @@
         
         [viewController.navigationController pushViewController:inboxController animated:YES];
     }
-
 }
+
+-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxTalkSplitViewController *controller = [InboxTalkSplitViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+        
+    } else {
+        InboxTalkViewController *vc = [InboxTalkViewController new];
+        vc.data=@{@"nav":@"inbox-talk"};
+        
+        InboxTalkViewController *vc1 = [InboxTalkViewController new];
+        vc1.data=@{@"nav":@"inbox-talk-my-product"};
+        
+        InboxTalkViewController *vc2 = [InboxTalkViewController new];
+        vc2.data=@{@"nav":@"inbox-talk-following"};
+        
+        NSArray *vcs = @[vc,vc1, vc2];
+        
+        TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
+        [controller setSelectedIndex:2];
+        [controller setViewControllers:vcs];
+        controller.hidesBottomBarWhenPushed = YES;
+        
+        [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
+
+-(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+        
+    } else {
+        InboxReviewViewController *vc = [InboxReviewViewController new];
+        vc.data=@{@"nav":@"inbox-talk"};
+        
+        InboxReviewViewController *vc1 = [InboxReviewViewController new];
+        vc1.data=@{@"nav":@"inbox-talk-my-product"};
+        
+        InboxReviewViewController *vc2 = [InboxReviewViewController new];
+        vc2.data=@{@"nav":@"inbox-talk-following"};
+        
+        NSArray *vcs = @[vc,vc1, vc2];
+        
+        TKPDTabInboxReviewNavigationController *controller = [TKPDTabInboxReviewNavigationController new];
+        [controller setSelectedIndex:2];
+        [controller setViewControllers:vcs];
+        controller.hidesBottomBarWhenPushed = YES;
+        
+        [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
+
 
 @end
