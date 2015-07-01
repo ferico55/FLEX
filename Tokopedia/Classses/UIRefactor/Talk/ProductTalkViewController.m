@@ -24,6 +24,7 @@
 #import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
 #import "string_inbox_talk.h"
+#import "string_inbox_message.h"
 #import "stringrestkit.h"
 #import "inbox.h"
 
@@ -225,14 +226,35 @@
 		if (cell == nil) {
 			cell = [GeneralTalkCell newcell];
 			((GeneralTalkCell*)cell).delegate = self;
+            [((GeneralTalkCell*)cell).userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
+            ((GeneralTalkCell*)cell).userButton.userInteractionEnabled = YES;
+            [((GeneralTalkCell*)cell).userButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(tap:)]];
 		}
         
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
-            [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal] ;
+            ((GeneralTalkCell*)cell).userButton.text = list.talk_user_name;
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             ((GeneralTalkCell*)cell).data = list;
+            
+            //Set user label
+            if([list.talk_user_label isEqualToString:CPenjual]) {
+                [((GeneralTalkCell*)cell).userButton setColor:CTagPenjual];
+            }
+            else if([list.talk_user_label isEqualToString:CPembeli]) {
+                [((GeneralTalkCell*)cell).userButton setColor:CTagPembeli];
+            }
+            else if([list.talk_user_label isEqualToString:CAdministrator]) {
+                [((GeneralTalkCell*)cell).userButton setColor:CTagAdministrator];
+            }
+            else if([list.talk_user_label isEqualToString:CPengguna]) {
+                [((GeneralTalkCell*)cell).userButton setColor:CTagPengguna];
+            }
+            else {
+                [((GeneralTalkCell*)cell).userButton setColor:-1];//-1 is set to empty string
+            }
+            
             
             NSString *followStatus;
             if(!list.talk_follow_status) {
@@ -517,7 +539,9 @@
                                                  TKPD_TALK_FOLLOW_STATUS,
                                                  TKPD_TALK_SHOP_ID,
                                                  TKPD_TALK_USER_ID,
-                                                 TKPD_TALK_PRODUCT_STATUS
+                                                 TKPD_TALK_PRODUCT_STATUS,
+                                                 TKPD_TALK_USER_LABEL_ID,
+                                                 TKPD_TALK_USER_LABEL
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

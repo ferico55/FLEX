@@ -40,4 +40,9 @@
 @property (nonatomic, strong) NSString *review_product_id;
 @property (nonatomic, strong) NSString *review_product_image;
 
+
+//User Label
+@property (nonatomic, strong) NSString *review_user_label;
+@property (nonatomic, strong) NSString *review_user_label_id;
+
 @end

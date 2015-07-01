@@ -20,5 +20,7 @@
 @property (nonatomic, strong) NSString *message_inbox_id;
 @property (nonatomic, strong) NSString *user_image;
 @property (nonatomic, strong) NSString *json_data_info;
+@property (nonatomic, strong) NSString *user_label;
+@property (nonatomic, strong) NSString *user_label_id;
 
 @end

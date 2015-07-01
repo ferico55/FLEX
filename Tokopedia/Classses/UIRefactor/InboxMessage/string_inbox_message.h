@@ -24,5 +24,22 @@
 
 #define NO_DATA_MESSAGE
 
+#define CPenjual @"Penjual"
+#define CPembeli @"Pembeli"
+#define CPengguna @"Pengguna"
+#define CAdministrator @"Administrator"
+#define CBuyer @"Buyer"
+#define CSeller @"Seller"
+#define CTokopedia @"Tokopedia"
+#define CSystemTracker @"System-Tracker"
+
+#define CTagPenjual 0
+#define CTagPembeli 1
+#define CTagPengguna 2
+#define CTagAdministrator 3
+#define CTagBuyer 4
+#define CTagSeller 5
+#define CTagTokopedia 6
+#define CTagSystemTracker 7
 
 #endif

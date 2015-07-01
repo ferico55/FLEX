@@ -11,6 +11,7 @@
 #import "InboxMessageDetail.h"
 #import "InboxMessageAction.h"
 #import "inbox.h"
+#import "string_inbox_message.h"
 #import "string_home.h"
 #import "HPGrowingTextView.h"
 #import "inbox.h"
@@ -230,6 +231,21 @@
         [cell.avatarImageView addGestureRecognizer:tapUser];
         [cell.avatarImageView setUserInteractionEnabled:YES];
         cell.avatarImageView.tag = [message.user_id integerValue];
+        cell.viewLabelUser.text = message.user_name;
+        
+        //Set user label
+        if([message.user_label isEqualToString:CPenjual]) {
+            [cell.viewLabelUser setColor:CTagPenjual];
+        }
+        else if([message.user_label isEqualToString:CPembeli]) {
+            [cell.viewLabelUser setColor:CTagPembeli];
+        }
+        else if([message.user_label isEqualToString:CAdministrator]) {
+            [cell.viewLabelUser setColor:CTagAdministrator];
+        }
+        else if([message.user_label isEqualToString:CPengguna]) {
+            [cell.viewLabelUser setColor:CTagPengguna];
+        }
 
         if([message.message_action isEqualToString:@"1"]) {
             if(message.is_just_sent) {
@@ -265,7 +281,10 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxMessageDetailList *messagedetaillist = _messages[indexPath.row];
     CGSize messageSize = [InboxMessageDetailCell messageSize:messagedetaillist.message_reply];
-
+    if(! [messagedetaillist.message_action isEqualToString:@"1"]) {
+        messageSize.height += CHeightUserLabel;
+    }
+    
     return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
 }
 
@@ -302,7 +321,9 @@
                                                  KTKPDMESSAGE_ISMODKEY,
                                                  KTKPDMESSAGE_USERIDKEY,
                                                  KTKPDMESSAGE_USERNAMEKEY,
-                                                 KTKPDMESSAGE_USERIMAGEKEY
+                                                 KTKPDMESSAGE_USERIMAGEKEY,
+                                                 KTKPDMESSAGE_USER_LABEL,
+                                                 KTKPDMESSAGE_USER_LABEL_ID
                                                  ]];
     
     RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailBetween class]];
