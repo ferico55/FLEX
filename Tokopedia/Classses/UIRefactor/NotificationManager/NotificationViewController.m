@@ -5,7 +5,7 @@
 //  Created by Tokopedia PT on 12/15/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "AlertPriceNotificationViewController.h"
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
@@ -81,6 +81,12 @@
         _resolutionCenterCountLabel.text = [_notification.result.resolution stringValue];
         [self updateLabelAppearance:_resolutionCenterCountLabel];
     }
+    
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
+    
     
     
     // Payment section
@@ -163,7 +169,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 4;
+            numberOfRows = 5;
             break;
             
         case 1:
@@ -340,6 +346,13 @@
                 [self.delegate pushViewController:vc];
                 break;
             }
+            case 4:
+            {
+                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+                [self.delegate pushViewController:alertPriceNotificationViewController];
+            }
+                break;
             default:
                 break;
         }

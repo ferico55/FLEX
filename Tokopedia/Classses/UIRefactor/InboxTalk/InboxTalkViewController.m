@@ -695,10 +695,10 @@
     _requestUnfollow = [_objectUnfollowmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:TKPD_MESSAGE_TALK_ACTION parameters:[param encrypt]];
     
     [_requestUnfollow setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
-        
+        [_talkList removeObjectAtIndex:indexpath.row];
+        [_table reloadData];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        
+        [self followAnimateZoomOut:buttonUnfollow];
     }];
     
     [_operationUnfollowQueue addOperation:_requestUnfollow];

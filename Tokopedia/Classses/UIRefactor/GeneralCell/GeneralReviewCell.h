@@ -28,6 +28,7 @@
 
 
 @property (nonatomic, weak) IBOutlet id<GeneralReviewCellDelegate> delegate;
+@property (nonatomic, weak) id<GeneralReviewCellDelegate> delegateReview;
 
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;

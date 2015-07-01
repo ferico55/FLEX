@@ -56,6 +56,7 @@
     _menu = [NSMutableArray new];
 
     _isBeingPresented = self.navigationController.isBeingPresented;
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     if (_isBeingPresented) {
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                    style:UIBarButtonItemStyleBordered
@@ -63,14 +64,14 @@
                                                                   action:@selector(tap:)];
         button.tag = 10;
         self.navigationItem.leftBarButtonItem = button;
-    } else {
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-        self.navigationItem.backBarButtonItem = button;
     }
-    
+
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                               style:UIBarButtonItemStyleBordered
+                                                              target:self
+                                                              action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = button;
+
     /** set max data per page request **/
     _table.delegate = self;
     _table.dataSource = self;

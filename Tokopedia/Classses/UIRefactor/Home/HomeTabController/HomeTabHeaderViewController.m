@@ -1,8 +1,8 @@
 //
-//  HomeTabHeaderViewController.m
+//  testViewController.m
 //  Tokopedia
 //
-//  Created by Tonito Acen on 3/31/15.
+//  Created by Tokopedia on 6/18/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
@@ -15,8 +15,6 @@
     BOOL _isAbleToSwipe;
     BOOL _loggedIn;
 }
-
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -77,7 +75,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNotificationCenter];
-    
     _scrollView.contentSize = CGSizeMake((self.view.frame.size.width/3)*6, self.view.frame.size.height);
     
     [_scrollView setShowsHorizontalScrollIndicator:NO];
@@ -173,7 +170,7 @@
             _viewControllerIndex = 4;
             break;
         }
-    
+            
         case 5 : {
             _totalOffset = (self.view.frame.size.width/3)*4;
             [self tapButtonAnimate:_totalOffset];
@@ -213,7 +210,5 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_scrollView setDelegate:nil];
 }
-
-
 
 @end

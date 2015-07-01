@@ -212,7 +212,7 @@ typedef enum
 #define CStringEtalase @"Etalase"
 #define CStringAllEtalase @"All Etalase"
 #define CStringAllProduct @"All Products"
-#define CStringAllCategory @"All Category"
+#define CStringAllCategory @"Semua Kategori"
 
 #define ERRORMESSAGE_NULL_PRODUCT_NAME @"Nama Produk harus diisi"
 #define ERRORMESSAGE_NULL_PRICE @"Harga harus diisi"
@@ -264,5 +264,5 @@ typedef enum
 #define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
 #define CStringSyaratDanKetentuan @"Syarat & Ketentuan"
 #define CStringTitleBanned @"Produk ini berada dalam pengawasan."
-#define CStringDescBanned @"Saat ini produk tidak dapat dipesan. Produk dapat kembali dipesan setelah pengawasan."
+#define CStringDescBanned @"Saat ini produk tidak dapat dipesan. Produk dapat dipesan kembali setelah pengawasan selesai."
 #endif

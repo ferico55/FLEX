@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#define CDepartmentID @"department_id"
+#define CDepartmentName @"department_name"
 
 @interface Breadcrumb : NSObject
 
