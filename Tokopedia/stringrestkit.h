@@ -62,6 +62,7 @@
 #define INBOX_REVIEW_API_PATH @"inbox-review.pl"
 #define REVIEW_PRODUCT_IMG @"review_product_image"
 #define REVIEW_USER_NAME @"review_user_name"
+#define REVIEW_USER_LABEL @"review_user_label"
 #define REVIEW_RATE_ACCURACY @"review_rate_accuracy"
 #define REVIEW_MESSAGE @"review_message"
 #define REVIEW_PRODUCT_ID @"review_product_id"

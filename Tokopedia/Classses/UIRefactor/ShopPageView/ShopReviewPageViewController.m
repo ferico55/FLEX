@@ -277,6 +277,8 @@ UIAlertViewDelegate>
             ReviewList *list = _list[indexPath.row];
             
             ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
+            [((GeneralReviewCell*)cell).userNamelabel setLabelBackground:list.review_user_label];
+            [((GeneralReviewCell*)cell).userNamelabel setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
             ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time?:@"";
             ((GeneralReviewCell*)cell).indexpath = indexPath;
             ((GeneralReviewCell*)cell).data = list;
@@ -409,7 +411,8 @@ UIAlertViewDelegate>
                                                  kTKPDREVIEW_APIPRODUCTIDKEY,
                                                  kTKPDREVIEW_APIPRODUCTIMAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWISOWNERKEY,
-                                                 kTKPDREVIEW_APIPRODUCTSTATUSKEY
+                                                 kTKPDREVIEW_APIPRODUCTSTATUSKEY,
+                                                 KTKPDREVIEW_APIREVIEWUSERLABELKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
