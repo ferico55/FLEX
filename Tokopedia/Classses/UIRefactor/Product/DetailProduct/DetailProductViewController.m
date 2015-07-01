@@ -507,7 +507,6 @@ CMPopTipViewDelegate
                 
                 
                 
-                return;
                 // go to review page
                 ProductReviewViewController *vc = [ProductReviewViewController new];
                 NSArray *images = _product.result.product_images;

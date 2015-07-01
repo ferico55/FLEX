@@ -5,7 +5,7 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
-
+#import "ShopContainerViewController.h"
 #import "ShopPageHeader.h"
 #import "ShopDescriptionView.h"
 #import "ShopStatView.h"
@@ -141,6 +141,13 @@
     [self.scrollView addSubview:_descriptionView];
     
     _statView = [ShopStatView newView];
+    id pageController = ((UIViewController *) _delegate).parentViewController;
+    if([pageController isMemberOfClass:[UIPageViewController class]]) {
+        if([((UIPageViewController *) pageController).delegate isMemberOfClass:[ShopContainerViewController class]]) {
+            [_statView.imgStatistic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPopUp:)]];
+        }
+    }
+    
     [self.scrollView addSubview:_statView];
     
  
@@ -155,6 +162,11 @@
     
     [self.scrollView setContentSize:CGSizeMake(640, 77)];
     
+}
+
+- (void)showPopUp:(id)sender {
+    id pageController = ((UIViewController *) _delegate).parentViewController;
+    [((ShopContainerViewController *) ((UIPageViewController *) pageController).delegate) showPopUp:@"1.000 poin" withSender:((UITapGestureRecognizer *) sender).view];
 }
 
 - (void)didReceiveMemoryWarning

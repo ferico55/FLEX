@@ -15,5 +15,7 @@
 @property (strong, nonatomic) NSDictionary *data;
 @property CGPoint contentOffset;
 @property (strong, nonatomic) Shop *shop;
+
+- (void)showPopUp:(NSString *)strText withSender:(id)sender;
 @end
 

@@ -5,7 +5,7 @@
 ////  Created by IT Tkpd on 10/6/14.
 ////  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 ////
-
+#import "DetailStatisticViewController.h"
 #import "detail.h"
 #import "Shop.h"
 #import "Payment.h"
@@ -94,6 +94,11 @@
 
 
 #pragma mark - Life Cycle
+- (void)viewDidAppear:(BOOL)animated
+{
+    DetailStatisticViewController *detailStatisticViewController = [DetailStatisticViewController new];
+    [self.navigationController pushViewController:detailStatisticViewController animated:YES];
+}
 
 - (void)viewDidLoad
 {

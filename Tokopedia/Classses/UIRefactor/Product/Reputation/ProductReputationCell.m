@@ -10,7 +10,12 @@
 #import "ViewLabelUser.h"
 
 
-@implementation ProductReputationCell
+@implementation ProductReputationCell {
+    UIImageView *imageProduct;
+    UILabel *labelProductName;
+    UIView *viewSeparatorProduct;
+}
+
 - (void)awakeFromNib {
     self.contentView.backgroundColor = [UIColor clearColor];
     self.backgroundColor = [UIColor clearColor];
@@ -27,6 +32,14 @@
 
 - (void)layoutSubviews
 {
+    if(isProductCell) {
+        viewSeparatorProduct.frame = CGRectMake(CPaddingTopBottom, imageProfile.frame.origin.y+imageProfile.bounds.size.height+CPaddingTopBottom, lineSeparatorDesc.bounds.size.width, 1);
+        imageProduct.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + viewSeparatorProduct.frame.origin.y+viewSeparatorProduct.bounds.size.height, CheightImage, CheightImage);
+        labelProductName.frame = CGRectMake(viewLabelUser.frame.origin.x, imageProduct.frame.origin.y, viewLabelUser.bounds.size.width, imageProduct.bounds.size.height);
+        lblDesc.frame = CGRectMake(lblDesc.frame.origin.x, CPaddingTopBottom + imageProduct.frame.origin.y+imageProduct.bounds.size.height, lblDesc.bounds.size.width, lblDesc.bounds.size.height);
+    }
+    
+    
     lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
     lineSeparatorDesc.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, viewContent.bounds.size.width-(imageProfile.frame.origin.x*2), lineSeparatorDesc.bounds.size.height);
     
@@ -44,6 +57,32 @@
     btnChat.frame = CGRectMake(btnMore.frame.origin.x-3-btnChat.bounds.size.width, btnMore.frame.origin.y, btnChat.bounds.size.width, btnChat.bounds.size.height);
     viewContent.frame = CGRectMake(viewContent.frame.origin.x, viewContent.frame.origin.y, self.contentView.bounds.size.width-(viewContent.frame.origin.x*2), btnChat.frame.origin.y+btnChat.bounds.size.height+CPaddingTopBottom);
     self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
+}
+
+
+#pragma mark - Method
+- (void)initProductCell {
+    isProductCell = YES;
+    viewSeparatorProduct = [[UIView alloc] initWithFrame:CGRectZero];
+    imageProduct = [[UIImageView alloc] initWithFrame:CGRectZero];
+    labelProductName = [[UILabel alloc] initWithFrame:CGRectZero];
+    labelProductName.font = [UIFont fontWithName:@"GothamBook" size:15.0f];
+    labelProductName.numberOfLines = 3;
+    [viewContent addSubview:viewSeparatorProduct];
+    [viewContent addSubview:imageProduct];
+    [viewContent addSubview:labelProductName];
+}
+
+- (void)setImageKualitas:(int)total {
+    for(int i=0;i<arrImageKualitas.count;i++) {
+        ((UIImageView *) [arrImageKualitas objectAtIndex:i]).image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<total)? @"icon_star_active":@"icon_star" ofType:@"png"]];
+    }
+}
+
+- (void)setImageAkurasi:(int)total {
+    for(int i=0;i<arrImageKualitas.count;i++) {
+        ((UIImageView *) [arrImageAkurasi objectAtIndex:i]).image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<total)? @"icon_star_active":@"icon_star" ofType:@"png"]];
+    }
 }
 
 
@@ -70,6 +109,14 @@
 
 
 #pragma mark - Setter and Getter
+- (UIImageView *)getProductImage {
+    return imageProduct;
+}
+
+- (void)setLabelProductName:(NSString *)strProductName {
+    labelProductName.text = strProductName;
+}
+
 - (UIView *)getViewContent {
     return viewContent;
 }
@@ -123,7 +170,7 @@
 - (void)setDescription:(NSString *)strDescription
 {
     [_delegate initLabelDesc:lblDesc withText:strDescription];
-    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+imageProfile.frame.origin.y+imageProfile.bounds.size.height, viewContent.bounds.size.width-(imageProfile.frame.origin.x*2), 0);
+    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + (isProductCell? imageProduct.frame.origin.y+imageProduct.bounds.size.height : imageProfile.frame.origin.y+imageProfile.bounds.size.height), viewContent.bounds.size.width-(imageProfile.frame.origin.x*2), 0);
     CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
     CGRect tempLblRect = lblDesc.frame;
     tempLblRect.size.height = tempSizeDesc.height;

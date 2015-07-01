@@ -5,6 +5,7 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
+#import "CMPopTipView.h"
 #import "LoginViewController.h"
 #import "ShopPageHeader.h"
 #import "ShopContainerViewController.h"
@@ -15,6 +16,7 @@
 #import "ShopInfoViewController.h"
 #import "SendMessageViewController.h"
 #import "ShopSettingViewController.h"
+#import "TTTAttributedLabel.h"
 #import "ProductAddEditViewController.h"
 
 #import "URLCacheController.h"
@@ -27,7 +29,7 @@
 #import "UserAuthentificationManager.h"
 
 
-@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate> {
+@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
     BOOL _isRefreshView;
     
@@ -50,6 +52,7 @@
     URLCacheConnection *_cacheConnection;
     NSTimeInterval _timeInterval;
     
+    CMPopTipView *cmPopTitpView;
     NSDictionary *_auth;
     UIBarButtonItem *_favoriteBarButton;
     UIBarButtonItem *_unfavoriteBarButton;
@@ -663,8 +666,65 @@
     
 }
 
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
 
 #pragma mark - Method
+- (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
+    lblDesc.backgroundColor = [UIColor clearColor];
+    lblDesc.textAlignment = NSTextAlignmentLeft;
+    lblDesc.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    lblDesc.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
+    lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
+    lblDesc.numberOfLines = 0;
+}
+
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.has3DStyle = NO;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+
+- (void)showPopUp:(NSString *)strText withSender:(id)sender {
+    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
+}
+
 - (void)setFavoriteRightButtonItem
 {
     StickyAlertView *stickyAlertView;

@@ -144,7 +144,7 @@
     NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductReputationCell" owner:nil options:0];
     productReputationCell = [tempArr objectAtIndex:0];
     productReputationCell.delegate = self;
-    [((ProductReputationViewController *) [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2]) setPropertyLabelDesc:productReputationCell.getLabelDesc];
+    [([self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2]) setPropertyLabelDesc:productReputationCell.getLabelDesc];
     
     productReputationCell.contentView.backgroundColor = productReputationCell.getViewContent.backgroundColor;
     productReputationCell.getBtnMore.frame = CGRectZero;

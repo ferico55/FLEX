@@ -35,10 +35,17 @@
     IBOutlet UIButton *btnRateEmoji, *btnLike, *btnDislike, *btnChat, *btnMore;
     IBOutlet UILabel *lblPercentageRage, *lblDateDesc, *lblKualitas, *lblAkurasi;
     TTTAttributedLabel *lblDesc;
+    BOOL isProductCell;
+    IBOutletCollection(UIImageView) NSArray *arrImageKualitas, *arrImageAkurasi;
 }
 
 @property (nonatomic, unsafe_unretained) id<productReputationDelegate> delegate;
 
+- (void)setImageKualitas:(int)total;
+- (void)setImageAkurasi:(int)total;
+- (void)initProductCell;
+- (UIImageView *)getProductImage;
+- (void)setLabelProductName:(NSString *)strProductName;
 - (TTTAttributedLabel *)getLabelDesc;
 - (UIImageView *)getImageProfile;
 - (UIButton *)getBtnRateEmoji;

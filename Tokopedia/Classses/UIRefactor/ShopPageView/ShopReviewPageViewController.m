@@ -5,11 +5,14 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "CMPopTipView.h"
+#import "ProductDetailReputationViewController.h"
+#import "ProductReputationCell.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "ShopReviewPageViewController.h"
 #import "DetailReviewViewController.h"
-#import "GeneralReviewCell.h"
+#import "TTTAttributedLabel.h"
+//#import "GeneralReviewCell.h"
 
 #import "Review.h"
 #import "GeneralAction.h"
@@ -30,7 +33,10 @@
 UITableViewDataSource,
 UITableViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
-GeneralReviewCellDelegate,
+TTTAttributedLabelDelegate,
+CMPopTipViewDelegate,
+//GeneralReviewCellDelegate,
+productReputationDelegate,
 ShopPageHeaderDelegate,
 UIScrollViewDelegate,
 UIAlertViewDelegate>
@@ -77,7 +83,7 @@ UIAlertViewDelegate>
     BOOL _isNeedToInsertCache;
     BOOL _isLoadFromCache;
     
-    
+    NSMutableParagraphStyle *style;
     __weak RKObjectManager *_objectManager;
     __weak RKObjectManager *_objectUnfollowmanager;
     __weak RKObjectManager *_objectDeletemanager;
@@ -89,7 +95,7 @@ UIAlertViewDelegate>
     NSOperationQueue *_operationQueue;
     NSOperationQueue *_operationUnfollowQueue;
     NSOperationQueue *_operationDeleteQueue;
-    
+    CMPopTipView *popTipView;
     
     NSString *_cachePath;
     URLCacheController *_cacheController;
@@ -141,6 +147,9 @@ UIAlertViewDelegate>
     [super viewDidLoad];
     
     [self addBottomInsetWhen14inch];
+    
+    style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
@@ -216,7 +225,49 @@ UIAlertViewDelegate>
 }
 
 
+#pragma mark - Method View
+- (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
+{
+    int spacing = 3;
+    
+    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    tempBtn.frame = rectFrame;
+    [tempBtn setImage:image forState:UIControlStateNormal];
+    [tempBtn setTitle:strTitle forState:UIControlStateNormal];
+    [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
+    
+    CGSize imageSize = tempBtn.imageView.bounds.size;
+    CGSize titleSize = tempBtn.titleLabel.bounds.size;
+    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
+    
+    tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
+    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
+    
+    return (id)tempBtn;
+}
+
+
+
 #pragma mark - Method
+- (void)actionVote:(id)sender {
+    [self dismissAllPopTipViews];
+}
+
+- (void)dismissAllPopTipViews
+{
+    [popTipView dismissAnimated:YES];
+    popTipView = nil;
+}
+
+- (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
+    lblDesc.backgroundColor = [UIColor clearColor];
+    lblDesc.textAlignment = NSTextAlignmentLeft;
+    lblDesc.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    lblDesc.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
+    lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
+    lblDesc.numberOfLines = 0;
+}
+
 - (NSString *)convertHTML:(NSString *)html
 {
     NSScanner *myScanner;
@@ -258,92 +309,159 @@ UIAlertViewDelegate>
     return _isNoData ? 0 : _list.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ReviewList *list = _list[indexPath.row];
+    TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+    [self setPropertyLabelDesc:tempLabel];
+    [self initLabelDesc:tempLabel withText:[self convertHTML:list.review_message?:@""]];
+    
+    CGSize tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width-(CPaddingTopBottom*4), 9999)];//4 padding left and right of label description
+    return tempSizeDesc.height + (CPaddingTopBottom*9) + 2 + CPaddingTopBottom + CHeightDate + CHeightViewStar + CHeightButton + (CheightImage*2); //9 is total padding of each row component
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
     if (!_isNoData) {
         
-        NSString *cellid = kTKPDGENERALREVIEWCELLIDENTIFIER;
+        NSString *cellid = @"cell";
+//
+//        cell = (GeneralReviewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+//        if (cell == nil) {
+//            cell = [GeneralReviewCell newcell];
+//            ((GeneralReviewCell*)cell).delegate = self;
+//        }
+//        
+//        if (_list.count > indexPath.row) {
+//            
+//            ReviewList *list = _list[indexPath.row];
+//            
+//            ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
+//            ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time?:@"";
+//            ((GeneralReviewCell*)cell).indexpath = indexPath;
+//            ((GeneralReviewCell*)cell).data = list;
+//            
+//            ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
+//            
+//            if([list.review_response.response_message isEqualToString:@"0"]) {
+//                [((GeneralReviewCell*)cell).commentbutton setTitle:@"0 Komentar" forState:UIControlStateNormal];
+//            } else {
+//                [((GeneralReviewCell*)cell).commentbutton setTitle:@"1 Komentar" forState:UIControlStateNormal];
+//            }
+//            
+//            if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
+//                ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
+//            } else {
+//                ((GeneralReviewCell*)cell).editReviewButton.hidden = YES;
+//            }
+//            
+//            if ([list.review_message length] > 50) {
+//                NSRange stringRange = {0, MIN([list.review_message length], 50)};
+//                stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
+//                ((GeneralReviewCell *)cell).commentlabel.text = [self convertHTML:[NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]]];
+//            } else {
+//                ((GeneralReviewCell *)cell).commentlabel.text = [self convertHTML:list.review_message?:@""];
+//            }
+//            
+//            if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
+//                ((GeneralReviewCell *)cell).ratingView.hidden = YES;
+//                ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
+//                ((GeneralReviewCell *)cell).commentView.hidden = YES;
+//            } else {
+//                ((GeneralReviewCell *)cell).ratingView.hidden = NO;
+//                ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
+//                ((GeneralReviewCell *)cell).commentView.hidden = NO;
+//            }
+//            
+//            ((GeneralReviewCell*)cell).qualityrate.starscount = [list.review_rate_quality integerValue];
+//            ((GeneralReviewCell*)cell).speedrate.starscount = [list.review_rate_speed integerValue];
+//            ((GeneralReviewCell*)cell).servicerate.starscount = [list.review_rate_service integerValue];
+//            ((GeneralReviewCell*)cell).accuracyrate.starscount = [list.review_rate_accuracy integerValue];
+//            
+//            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+//            UIImageView *userImageView = ((GeneralReviewCell *)cell).userImageView;
+//            userImageView.image = nil;
+//            [userImageView setImageWithURLRequest:userImageRequest
+//                                 placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+//                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Warc-retain-cycles"
+//                                              [userImageView setImage:image];
+//#pragma clang diagnostic pop
+//                                          } failure:nil];
+//            
+//            NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image]
+//                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+//                                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+//            UIImageView *productImageView = ((GeneralReviewCell*)cell).productImageView;
+//            productImageView.image = nil;
+//            [productImageView setImageWithURLRequest:productImageRequest
+//                                    placeholderImage:nil
+//                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Warc-retain-cycles"
+//                                                 [productImageView setImage:image];
+//#pragma clang diagnostic pop
+//                                             } failure:nil];
+//        }
+//        
+//        return cell;
         
-        cell = (GeneralReviewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [GeneralReviewCell newcell];
-            ((GeneralReviewCell*)cell).delegate = self;
+        ProductReputationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid];
+        if(cell == nil) {
+            NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductReputationCell" owner:nil options:0];
+            cell = [tempArr objectAtIndex:0];
+            cell.delegate = self;
+            [cell initProductCell];
+            [self setPropertyLabelDesc:cell.getLabelDesc];
         }
         
-        if (_list.count > indexPath.row) {
-            
-            ReviewList *list = _list[indexPath.row];
-            
-            ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
-            ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time?:@"";
-            ((GeneralReviewCell*)cell).indexpath = indexPath;
-            ((GeneralReviewCell*)cell).data = list;
-            
-            ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
-            
-            if([list.review_response.response_message isEqualToString:@"0"]) {
-                [((GeneralReviewCell*)cell).commentbutton setTitle:@"0 Komentar" forState:UIControlStateNormal];
-            } else {
-                [((GeneralReviewCell*)cell).commentbutton setTitle:@"1 Komentar" forState:UIControlStateNormal];
-            }
-            
-            if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
-                ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
-            } else {
-                ((GeneralReviewCell*)cell).editReviewButton.hidden = YES;
-            }
-            
-            if ([list.review_message length] > 50) {
-                NSRange stringRange = {0, MIN([list.review_message length], 50)};
-                stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                ((GeneralReviewCell *)cell).commentlabel.text = [self convertHTML:[NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]]];
-            } else {
-                ((GeneralReviewCell *)cell).commentlabel.text = [self convertHTML:list.review_message?:@""];
-            }
-            
-            if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
-                ((GeneralReviewCell *)cell).ratingView.hidden = YES;
-                ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
-                ((GeneralReviewCell *)cell).commentView.hidden = YES;
-            } else {
-                ((GeneralReviewCell *)cell).ratingView.hidden = NO;
-                ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
-                ((GeneralReviewCell *)cell).commentView.hidden = NO;
-            }
-            
-            ((GeneralReviewCell*)cell).qualityrate.starscount = [list.review_rate_quality integerValue];
-            ((GeneralReviewCell*)cell).speedrate.starscount = [list.review_rate_speed integerValue];
-            ((GeneralReviewCell*)cell).servicerate.starscount = [list.review_rate_service integerValue];
-            ((GeneralReviewCell*)cell).accuracyrate.starscount = [list.review_rate_accuracy integerValue];
-            
-            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *userImageView = ((GeneralReviewCell *)cell).userImageView;
-            userImageView.image = nil;
-            [userImageView setImageWithURLRequest:userImageRequest
-                                 placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                              [userImageView setImage:image];
-#pragma clang diagnostic pop
-                                          } failure:nil];
-            
-            NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image]
-                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *productImageView = ((GeneralReviewCell*)cell).productImageView;
-            productImageView.image = nil;
-            [productImageView setImageWithURLRequest:productImageRequest
-                                    placeholderImage:nil
-                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                                 [productImageView setImage:image];
-#pragma clang diagnostic pop
-                                             } failure:nil];
+        ReviewList *list = _list[indexPath.row];
+        [cell setLabelUser:list.review_user_name withTag:0];
+        [cell setLabelDate:list.review_create_time?:@""];
+        [cell setLabelProductName:list.review_product_name];
+        
+        if([list.review_response.response_message isEqualToString:@"0"]) {
+            [cell.getBtnChat setTitle:list.review_response.response_message forState:UIControlStateNormal];
         }
+        else {
+            [cell.getBtnChat setTitle:@"1" forState:UIControlStateNormal];
+        }
+        
+
+        if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
+            cell.getBtnMore.hidden = NO;
+        } else {
+            cell.getBtnMore.hidden = YES;
+        }
+
+        [cell setDescription:[self convertHTML:list.review_message?:@""]];
+        [cell setImageKualitas:[list.review_rate_quality intValue]];
+        [cell setImageAkurasi:[list.review_rate_accuracy intValue]];
+        
+        
+        //Set profile image
+        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        UIImageView *userImageView = cell.getImageProfile;
+        userImageView.image = nil;
+        [userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                #pragma clang diagnostic push
+                #pragma clang diagnostic ignored "-Warc-retain-cycles"
+                [userImageView setImage:image];
+                #pragma clang diagnostic pop
+            } failure:nil];
+        
+        //Set product image
+        NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        UIImageView *productImageView = cell.getProductImage;
+        productImageView.image = nil;
+        [productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Warc-retain-cycles"
+            [productImageView setImage:image];
+            #pragma clang diagnostic pop
+        } failure:nil];
         
         return cell;
     } else {
@@ -765,4 +883,98 @@ UIAlertViewDelegate>
  }
  */
 
+#pragma mark - Product Reputation Delegate
+- (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription {
+    NSString *strLihatSelengkapnya = @"Lihat Selengkapnya";
+    if(strDescription.length > 100) {
+        strDescription = [NSString stringWithFormat:@"%@... %@", [strDescription substringToIndex:100], strLihatSelengkapnya];
+        
+        NSRange range = [strDescription rangeOfString:strLihatSelengkapnya];
+        lblDesc.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+        lblDesc.delegate = self;
+        lblDesc.activeLinkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor lightGrayColor], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+        lblDesc.linkAttributes = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+        [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
+        
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
+        [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
+        lblDesc.attributedText = str;
+    }
+    else {
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
+        [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
+        lblDesc.attributedText = str;
+        lblDesc.delegate = nil;
+        [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
+    }
+}
+
+- (void)actionRate:(id)sender {
+    int paddingRightLeftContent = 10;
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent+paddingRightLeftContent, CHeightItemPopUp)];
+    viewContentPopUp.backgroundColor = [UIColor clearColor];
+    
+    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:@"35" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_home" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor redColor]];
+    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:@"36" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_home" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor yellowColor]];
+    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:@"37" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_home" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor greenColor]];
+    
+    btnMerah.tag = CTagMerah;
+    btnKuning.tag = CTagKuning;
+    btnHijau.tag = CTagHijau;
+    
+    [btnMerah addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
+    [btnKuning addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
+    [btnHijau addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [viewContentPopUp addSubview:btnMerah];
+    [viewContentPopUp addSubview:btnKuning];
+    [viewContentPopUp addSubview:btnHijau];
+    
+    
+    //Init pop up
+    popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+    popTipView.delegate = self;
+    popTipView.backgroundColor = [UIColor whiteColor];
+    popTipView.animation = CMPopTipAnimationSlide;
+    popTipView.has3DStyle = YES;
+    popTipView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [popTipView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+- (void)actionLike:(id)sender {
+}
+
+- (void)actionDisLike:(id)sender {
+}
+
+- (void)actionChat:(id)sender {
+    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
+    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+}
+
+- (void)actionMore:(id)sender {
+
+}
+
+#pragma mark - TTTAttributeLabel Delegate
+- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
+{
+    
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    NSLog(@"asdf");
+}
+
+
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
 @end
