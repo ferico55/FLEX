@@ -31,6 +31,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductAddEditViewController">
             <connections>
+                <outlet property="actCatalog" destination="vV3-Qq-iaN" id="0dZ-WI-6Qz"/>
+                <outlet property="catalogLabel" destination="LDu-kv-eNI" id="X6f-na-V1m"/>
                 <outlet property="minimumOrderTextField" destination="k4w-qB-h49" id="ihG-Ao-Fvj"/>
                 <outlet property="productImageScrollView" destination="2Iz-Da-6TE" id="e2j-bj-Tro"/>
                 <outlet property="productImagesContentView" destination="Hbe-YU-xfc" id="huW-KI-BtS"/>
@@ -220,26 +222,29 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="344" y="649"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" tag="11" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="4RT-3r-WIL" detailTextLabel="fn4-Wo-Ge8" style="IBUITableViewCellStyleValue1" id="Xyb-PY-NHB">
+        <tableViewCell clipsSubviews="YES" tag="11" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Xyb-PY-NHB">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xyb-PY-NHB" id="T2n-f4-fbU">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Katalog" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4RT-3r-WIL">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih Katalog" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fn4-Wo-Ge8">
-                        <autoresizingMask key="autoresizingMask"/>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="Pilih Katalog" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LDu-kv-eNI">
+                        <rect key="frame" x="100" y="16" width="183.5" height="12"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="Katalog" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4v-qG-h7d">
+                        <rect key="frame" x="15" y="16" width="56" height="12"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="vV3-Qq-iaN">
+                        <rect key="frame" x="229" y="12" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="342" y="730"/>
+            <point key="canvasLocation" x="344" y="729"/>
         </tableViewCell>
         <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="lFj-Q9-vIH">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
