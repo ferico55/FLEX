@@ -88,6 +88,8 @@ typedef enum TagRequest {
     NSString *_navthatwillrefresh;
     NSString *_messageNavigationFlag;
     
+    TAGContainer *_gtmContainer;
+    
     BOOL _isrefreshnav;    
     
     __weak RKObjectManager *_objectmanager;
@@ -195,6 +197,10 @@ typedef enum TagRequest {
     _table.tableHeaderView = _searchView;
     _table.allowsSelectionDuringEditing = YES;
     _table.allowsMultipleSelectionDuringEditing = YES;
+    
+    // GTM
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
     
     [_networkManager doRequest];
 }
@@ -913,7 +919,7 @@ typedef enum TagRequest {
 
 - (NSString *)getPath:(int)tag {
     if(tag == messageListTag) {
-        return KTKPDMESSAGE_PATHURL;
+        return [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
     }
     
     return nil;
@@ -933,7 +939,7 @@ typedef enum TagRequest {
 
 - (id)getObjectManager:(int)tag {
     if(tag == messageListTag) {
-        _objectmanager =  [RKObjectManager sharedClient];
+        _objectmanager =  [RKObjectManager sharedClient:[_gtmContainer stringForKey:GTMKeyInboxMessageBase]];
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
@@ -973,7 +979,7 @@ typedef enum TagRequest {
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:KTKPDMESSAGE_PATHURL
+                                                                                                 pathPattern:[_gtmContainer stringForKey:GTMKeyInboxMessagePost]
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         

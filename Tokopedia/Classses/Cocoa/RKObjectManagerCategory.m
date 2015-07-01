@@ -32,6 +32,21 @@ RKObjectManager *_sharedClient = nil;
     return _sharedClient;
 }
 
++ (RKObjectManager *)sharedClient:(NSString*)baseUrl{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
+    
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseUrl?:([container stringForKey:@"base_url"]?:kTraktBaseURLString)]];
+    });
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshClient) name:@"didRefreshGTM" object:nil];
+    
+    return _sharedClient;
+}
+
 + (RKObjectManager *)sharedClientUploadImage:(NSString*)baseURLString {
     static RKObjectManager *_sharedClient = nil;
     
