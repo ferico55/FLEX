@@ -113,7 +113,7 @@
     self.title = kTKPDREGISTER_NEW_TITLE;
     
     _datainput = [NSMutableDictionary new];
-    [_datainput setObject:kTKPDREGISTER_APIGENDERKEY forKey:@"1"];
+    [_datainput setObject:@"1" forKey:kTKPDREGISTER_APIGENDERKEY];
 
     _operationQueue =[NSOperationQueue new];
     
@@ -172,7 +172,9 @@
     
     _loginView.delegate = self;
     
-    [FBSession.activeSession closeAndClearTokenInformation];
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -326,7 +328,7 @@
     }
 }
 
-- (IBAction)tapsegment:(UISegmentedControl*)sender {
+- (IBAction)tapsegment:(UISegmentedControl *)sender {
     [_activetextfield resignFirstResponder];
     [_datainput setObject:@(sender.selectedSegmentIndex+1) forKey:kTKPDREGISTER_APIGENDERKEY];
 }
@@ -783,6 +785,9 @@
     
     _requestcount++;
     
+    FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
+    NSString *accessToken = [token accessToken]?:@"";
+    
     NSDictionary *param = @{
                             kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
                             kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
@@ -791,6 +796,7 @@
                             kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
                             kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
                             kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
+                            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
                             };
     
     NSLog(@"\n\n\n%@\n\n\n", param);
@@ -865,27 +871,6 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else if ([_login.result.status isEqualToString:@"1"]) {
-            
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            
-            
-            if(_login.result.user_image != nil) {
-                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            }
-            
-            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-
-            if(_login.result.shop_avatar != nil) {
-                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            }
-            
-            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
             
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;

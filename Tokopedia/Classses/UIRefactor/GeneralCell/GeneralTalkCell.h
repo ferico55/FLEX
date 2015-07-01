@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "string_home.h"
+#import "ViewLabelUser.h"
 
 #define kTKPDGENERALTALKCELL_IDENTIFIER @"GeneralTalkCellIdentifier"
 
@@ -49,7 +50,7 @@
 @property (strong, nonatomic) IBOutlet UIView *buttonsView;
 
 @property (weak, nonatomic) IBOutlet UIButton *unfollowButton;
-@property (weak, nonatomic) IBOutlet UIButton *userButton;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *userButton;
 @property (weak, nonatomic) IBOutlet UIButton *productButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreActionButton;
 
@@ -62,6 +63,6 @@
 @property (weak, nonatomic) IBOutlet UIView *buttonsDividers;
 
 + (id)newcell;
-
+-(IBAction)tap:(id)sender;
 
 @end

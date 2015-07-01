@@ -133,6 +133,10 @@
         catalogName = _list.catalog_name;
         catalogPrice = _list.catalog_price;
     }
+    
+    if ([catalogPrice isEqualToString:@"0"]) {
+        catalogPrice = @"-";
+    }
 
     self.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:catalogName
                                                                            attributes:attributes];

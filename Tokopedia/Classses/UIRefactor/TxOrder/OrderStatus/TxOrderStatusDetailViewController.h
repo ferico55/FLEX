@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TxOrderStatusList.h"
+#import "InboxResolutionCenterList.h"
 
 #pragma mark - Transaction Status Detail Delegate
 @protocol TxOrderStatusDetailViewControllerDelegate <NSObject>
@@ -15,6 +16,8 @@
 -(void)confirmDelivery:(TxOrderStatusList *)order atIndexPath:(NSIndexPath*)indexPath;
 -(void)reOrder:(TxOrderStatusList *)order atIndexPath:(NSIndexPath *)indexPath;
 -(void)complainOrder:(TxOrderStatusList *)order;
+- (void)shouldCancelComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
+
 @end
 
 @interface TxOrderStatusDetailViewController : UIViewController

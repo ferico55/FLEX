@@ -340,6 +340,24 @@ typedef enum TagRequest {
             ((InboxMessageCell*)cell).indexpath = indexPath;
             
             
+            //Set user label
+//            if([list.user_label isEqualToString:CPenjual]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPenjual];
+//            }
+//            else if([list.user_label isEqualToString:CPembeli]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPembeli];
+//            }
+//            else if([list.user_label isEqualToString:CAdministrator]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagAdministrator];
+//            }
+//            else if([list.user_label isEqualToString:CPengguna]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPengguna];
+//            }
+//            else {
+//                [((InboxMessageCell*)cell).message_title setColor:-1];//-1 is set to empty string
+//            }
+            [((InboxMessageCell*)cell).message_title setLabelBackground:list.user_label];
+            
             if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
                 if([list.message_read_status isEqualToString:@"1"]) {
                     ((InboxMessageCell*)cell).is_unread.hidden = YES;
@@ -938,7 +956,9 @@ typedef enum TagRequest {
                                                      KTKPDMESSAGE_MESSAGEREPLYKEY,
                                                      KTKPDMESSAGE_INBOXIDKEY,
                                                      KTKPDMESSAGE_USERIMAGEKEY,
-                                                     KTKPDMESSAGE_JSONDATAKEY
+                                                     KTKPDMESSAGE_JSONDATAKEY,
+                                                     KTKPDMESSAGE_USER_LABEL,
+                                                     KTKPDMESSAGE_USER_LABEL_ID
                                                      ]];
         
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
