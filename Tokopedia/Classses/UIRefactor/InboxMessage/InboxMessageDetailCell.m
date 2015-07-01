@@ -76,7 +76,7 @@ static CGFloat messageTextSize = 17.0;
         
         /*Now the basic view-lements are initialized...*/
         _viewLabelUser = [[ViewLabelUser alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width-CXTimeLabel, CHeightUserLabel)];
-        [_viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
+        [_viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:12.0f]];
         messageView = [[UIView alloc] initWithFrame:CGRectZero];
         messageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         
