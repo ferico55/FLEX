@@ -16,6 +16,8 @@
 #define CTagPriceAlert 8
 
 #import "LabelMenu.h"
+#import "AlertPriceNotificationViewController.h"
+#import "PriceAlertViewController.h"
 #import "Notes.h"
 #import "NoteDetails.h"
 #import "NotesResult.h"
@@ -343,10 +345,8 @@ UIAlertViewDelegate
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
     btnShare.layer.borderWidth = 1;
-    btnShare.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
     btnShare.layer.masksToBounds = YES;
-    btnShare.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-    btnShare.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
     
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
@@ -989,7 +989,7 @@ UIAlertViewDelegate
         else {
             [productInfoCell hiddenViewRetur];
         }
-        
+
         _informationHeight = productInfoCell.productInformationView.frame.size.height+[productInfoCell getHeightReturView];
         cell = productInfoCell;
         return cell;
@@ -1917,11 +1917,12 @@ UIAlertViewDelegate
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
                 [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
                 btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
-                btnWishList.layer.cornerRadius = 5;
-                btnWishList.layer.masksToBounds = YES;
-                btnWishList.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-                btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-                btnWishList.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
+                btnWishList.layer.cornerRadius = btnPriceAlert.layer.cornerRadius = 5;
+                btnWishList.layer.masksToBounds = btnPriceAlert.layer.masksToBounds = YES;
+                btnWishList.layer.borderColor = btnPriceAlert.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+                btnWishList.layer.borderWidth = btnPriceAlert.layer.borderWidth = 1.0f;
+                btnWishList.imageEdgeInsets = btnPriceAlert.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+                btnWishList.titleEdgeInsets = btnPriceAlert.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
                 //Set background wishlist
                 if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
@@ -2101,12 +2102,17 @@ UIAlertViewDelegate
 - (void)setBackgroundPriceAlert:(BOOL)isActive
 {
     if(isActive) {
-//        btnPriceAlert
+        [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_active.png"] forState:UIControlStateNormal];
+        btnPriceAlert.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
+        [btnPriceAlert setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
     else {
-    
+        [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_nonactive.png"] forState:UIControlStateNormal];
+        btnPriceAlert.backgroundColor = [UIColor whiteColor];
+        [btnPriceAlert setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
 }
+
 
 - (void)setRequestingAction:(UIButton *)tempBtn isLoading:(BOOL)isLoading
 {
@@ -2212,6 +2218,35 @@ UIAlertViewDelegate
         [self setUnWishList];
 }
 
+- (IBAction)actionPriceAlert:(id)sender
+{
+    if(_auth) {
+        if(btnPriceAlert.backgroundColor == [UIColor whiteColor]) { //Not price alert yet
+            PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+            priceAlertViewController.productDetail = _product.result.product;
+            [self.navigationController pushViewController:priceAlertViewController animated:YES];
+        }
+        else {
+            [self setRequestingAction:btnPriceAlert isLoading:YES];
+            [tokopediaNetworkManagerPriceAlert doRequest];
+        }
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        isNeedLogin = YES;
+        redirectToPriceAlert = YES;
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
+}
 
 - (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action
 {

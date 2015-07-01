@@ -12,10 +12,10 @@
 #define CStringLastCheckVerify @"lastCheckVerify"
 #define CStringMSISDNIsVerify @"msisdnIsVerify"
 #define CStringMSISDN @"msisdn"
-#define CStringFailedInServer @"Mohon maaf, terjadi kendala pada server"
-#define CStringNoConnection @"Tidak ada koneksi internet"
 #define CPriceAlertCell @"PriceAlertCell"
 #define CDetailPriceAlertTableViewCell @"DetailPriceAlertTableViewCell"
+#define CStringFailedInServer @"Server error"
+#define CStringNoConnection @"Tidak ada koneksi internet"
 #endif
 
 #ifndef __IPHONE_3_0
