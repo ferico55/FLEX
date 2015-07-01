@@ -341,21 +341,22 @@ typedef enum TagRequest {
             
             
             //Set user label
-            if([list.user_label isEqualToString:CPenjual]) {
-                [((InboxMessageCell*)cell).message_title setColor:CTagPenjual];
-            }
-            else if([list.user_label isEqualToString:CPembeli]) {
-                [((InboxMessageCell*)cell).message_title setColor:CTagPembeli];
-            }
-            else if([list.user_label isEqualToString:CAdministrator]) {
-                [((InboxMessageCell*)cell).message_title setColor:CTagAdministrator];
-            }
-            else if([list.user_label isEqualToString:CPengguna]) {
-                [((InboxMessageCell*)cell).message_title setColor:CTagPengguna];
-            }
-            else {
-                [((InboxMessageCell*)cell).message_title setColor:-1];//-1 is set to empty string
-            }
+//            if([list.user_label isEqualToString:CPenjual]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPenjual];
+//            }
+//            else if([list.user_label isEqualToString:CPembeli]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPembeli];
+//            }
+//            else if([list.user_label isEqualToString:CAdministrator]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagAdministrator];
+//            }
+//            else if([list.user_label isEqualToString:CPengguna]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPengguna];
+//            }
+//            else {
+//                [((InboxMessageCell*)cell).message_title setColor:-1];//-1 is set to empty string
+//            }
+            [((InboxMessageCell*)cell).message_title setLabelBackground:list.user_label];
             
             if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
                 if([list.message_read_status isEqualToString:@"1"]) {

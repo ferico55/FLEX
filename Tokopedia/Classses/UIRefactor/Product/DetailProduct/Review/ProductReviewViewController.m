@@ -212,23 +212,23 @@
             ((GeneralProductReviewCell *)cell).timelabel.text = list.review_create_time;
             
             //Set user label
-            if([list.review_user_label isEqualToString:CPenjual]) {
-                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPenjual];
-            }
-            else if([list.review_user_label isEqualToString:CPembeli]) {
-                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPembeli];
-            }
-            else if([list.review_user_label isEqualToString:CAdministrator]) {
-                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagAdministrator];
-            }
-            else if([list.review_user_label isEqualToString:CPengguna]) {
-                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPengguna];
-            }
-            else {
-                [((GeneralProductReviewCell*)cell).namelabel setColor:-1];//-1 is set to empty string
-            }
-            
-            
+//            if([list.review_user_label isEqualToString:CPenjual]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPenjual];
+//            }
+//            else if([list.review_user_label isEqualToString:CPembeli]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPembeli];
+//            }
+//            else if([list.review_user_label isEqualToString:CAdministrator]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagAdministrator];
+//            }
+//            else if([list.review_user_label isEqualToString:CPengguna]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPengguna];
+//            }
+//            else {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:-1];//-1 is set to empty string
+//            }
+//            
+            [((GeneralProductReviewCell*)cell).namelabel setLabelBackground:list.review_user_label];
             
             if([list.review_response.response_message isEqualToString:@"0"]) {
                 [((GeneralProductReviewCell*)cell).commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];

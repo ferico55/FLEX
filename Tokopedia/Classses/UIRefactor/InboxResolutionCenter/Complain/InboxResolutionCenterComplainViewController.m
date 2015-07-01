@@ -245,21 +245,22 @@
     cell.viewLabelUser.text = _isMyComplain?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
     
     //Set user label
-    if([resolution.resolution_by.user_label isEqualToString:CPenjual]) {
-        [cell.viewLabelUser setColor:CTagPenjual];
-    }
-    else if([resolution.resolution_by.user_label isEqualToString:CPembeli]) {
-        [cell.viewLabelUser setColor:CTagPembeli];
-    }
-    else if([resolution.resolution_by.user_label isEqualToString:CAdministrator]) {
-        [cell.viewLabelUser setColor:CTagAdministrator];
-    }
-    else if([resolution.resolution_by.user_label isEqualToString:CPengguna]) {
-        [cell.viewLabelUser setColor:CTagPengguna];
-    }
-    else {
-        [cell.viewLabelUser setColor:-1];//-1 is set to empty string
-    }
+//    if([resolution.resolution_by.user_label isEqualToString:CPenjual]) {
+//        [cell.viewLabelUser setColor:CTagPenjual];
+//    }
+//    else if([resolution.resolution_by.user_label isEqualToString:CPembeli]) {
+//        [cell.viewLabelUser setColor:CTagPembeli];
+//    }
+//    else if([resolution.resolution_by.user_label isEqualToString:CAdministrator]) {
+//        [cell.viewLabelUser setColor:CTagAdministrator];
+//    }
+//    else if([resolution.resolution_by.user_label isEqualToString:CPengguna]) {
+//        [cell.viewLabelUser setColor:CTagPengguna];
+//    }
+//    else {
+//        [cell.viewLabelUser setColor:-1];//-1 is set to empty string
+//    }
+    [cell.viewLabelUser setLabelBackground:resolution.resolution_by.user_label];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_isMyComplain?resolution.resolution_shop.shop_image:resolution.resolution_customer.customer_image]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy

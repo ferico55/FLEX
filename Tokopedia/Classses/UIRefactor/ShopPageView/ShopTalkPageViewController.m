@@ -272,21 +272,22 @@ UIAlertViewDelegate>
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
             
             //Set user label
-            if([list.talk_user_label isEqualToString:CPenjual]) {
-                [((GeneralTalkCell*)cell).userButton setColor:CTagPenjual];
-            }
-            else if([list.talk_user_label isEqualToString:CPembeli]) {
-                [((GeneralTalkCell*)cell).userButton setColor:CTagPembeli];
-            }
-            else if([list.talk_user_label isEqualToString:CAdministrator]) {
-                [((GeneralTalkCell*)cell).userButton setColor:CTagAdministrator];
-            }
-            else if([list.talk_user_label isEqualToString:CPengguna]) {
-                [((GeneralTalkCell*)cell).userButton setColor:CTagPengguna];
-            }
-            else {
-                [((GeneralTalkCell*)cell).userButton setColor:-1];//-1 is set to empty string
-            }
+//            if([list.talk_user_label isEqualToString:CPenjual]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPenjual];
+//            }
+//            else if([list.talk_user_label isEqualToString:CPembeli]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPembeli];
+//            }
+//            else if([list.talk_user_label isEqualToString:CAdministrator]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagAdministrator];
+//            }
+//            else if([list.talk_user_label isEqualToString:CPengguna]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPengguna];
+//            }
+//            else {
+//                [((GeneralTalkCell*)cell).userButton setColor:-1];//-1 is set to empty string
+//            }
+            [((GeneralTalkCell*)cell).userButton setLabelBackground:list.talk_user_label];
             
             NSString *followStatus;
             if(!list.talk_follow_status) {

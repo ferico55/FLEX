@@ -80,6 +80,38 @@
     return lblUser.text;
 }
 
+- (void)setLabelBackground:(NSString *)type {
+        UILabel * (^addLabel)(UIColor *, NSString *) = ^UILabel * (UIColor *bgColor, NSString *text) {
+            [lblUser setBackgroundColor:bgColor];
+            [lblUser setTextColor:[UIColor whiteColor]];
+            [lblUser setText:text];
+            return lblUser;
+        };
+    
+
+        if([type isEqualToString:CPenjual]) {
+            addLabel([UIColor colorWithRed:185/255.0f green:74/255.0f blue:72/255.0f alpha:1.0f],CPenjual);
+        } else if([type isEqualToString:CPembeli]) {
+            addLabel([UIColor colorWithRed:42/255.0f green:180/255.0f blue:194/255.0f alpha:1.0f], CPembeli);
+        } else if([type isEqualToString:CAdministrator]) {
+            addLabel([UIColor colorWithRed:248/255.0f green:148/255.0f blue:6/255.0f alpha:1.0f], CAdministrator);
+        } else if([type isEqualToString:CPengguna]) {
+            addLabel([UIColor colorWithRed:70/255.0f green:136/255.0f blue:71/255.0f alpha:1.0f], CPengguna);
+        } else if([type isEqualToString:CBuyer]) {
+            addLabel([UIColor colorWithRed:248/255.0f green:148/255.0f blue:6/255.0f alpha:1.0f], CBuyer);
+        } else if([type isEqualToString:CSeller]) {
+            addLabel([UIColor colorWithRed:70/255.0f green:136/255.0f blue:71/255.0f alpha:1.0f], CSeller);
+        } else if([type isEqualToString:CSystemTracker]) {
+            addLabel([UIColor colorWithRed:153/255.0f green:153/255.0f blue:153/255.0f alpha:1.0f], CSystemTracker);
+        } else if([type isEqualToString:CTokopedia]) {
+            addLabel([UIColor colorWithRed:153/255.0f green:153/255.0f blue:153/255.0f alpha:1.0f], CTokopedia);
+        }
+    
+        lblUser.frame = CGRectMake(0, 0, (lblUser.text.length==0? 0 : [self calculateWidth:lblUser.text withFont:lblUser.font]+10), 21);
+        lblText.frame = CGRectMake(lblUser.frame.origin.x+(lblUser.text.length==0? 0:3)+lblUser.bounds.size.width, lblUser.frame.origin.y, self.bounds.size.width-(lblUser.frame.origin.x+3+lblUser.bounds.size.width), lblUser.bounds.size.height);
+
+}
+
 - (void)setColor:(int)tagCase
 {
     switch (tagCase) {

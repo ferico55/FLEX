@@ -234,18 +234,19 @@
         cell.viewLabelUser.text = message.user_name;
         
         //Set user label
-        if([message.user_label isEqualToString:CPenjual]) {
-            [cell.viewLabelUser setColor:CTagPenjual];
-        }
-        else if([message.user_label isEqualToString:CPembeli]) {
-            [cell.viewLabelUser setColor:CTagPembeli];
-        }
-        else if([message.user_label isEqualToString:CAdministrator]) {
-            [cell.viewLabelUser setColor:CTagAdministrator];
-        }
-        else if([message.user_label isEqualToString:CPengguna]) {
-            [cell.viewLabelUser setColor:CTagPengguna];
-        }
+//        if([message.user_label isEqualToString:CPenjual]) {
+//            [cell.viewLabelUser setColor:CTagPenjual];
+//        }
+//        else if([message.user_label isEqualToString:CPembeli]) {
+//            [cell.viewLabelUser setColor:CTagPembeli];
+//        }
+//        else if([message.user_label isEqualToString:CAdministrator]) {
+//            [cell.viewLabelUser setColor:CTagAdministrator];
+//        }
+//        else if([message.user_label isEqualToString:CPengguna]) {
+//            [cell.viewLabelUser setColor:CTagPengguna];
+//        }
+        [cell.viewLabelUser setLabelBackground:message.user_label];
 
         if([message.message_action isEqualToString:@"1"]) {
             if(message.is_just_sent) {

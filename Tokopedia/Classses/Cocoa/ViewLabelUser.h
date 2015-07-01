@@ -15,6 +15,7 @@
 
 - (UILabel *)getLblText;
 - (void)setColor:(int)tagCase;
+- (void)setLabelBackground:(NSString*)type;
 - (NSString *)getText;
 - (void)setText:(NSString *)strText;
 - (void)setText:(UIColor *)color withFont:(UIFont *)font;

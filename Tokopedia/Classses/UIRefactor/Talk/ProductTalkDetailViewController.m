@@ -332,22 +332,22 @@
             
             
             //Set user label
-            if([list.comment_user_label isEqualToString:CPenjual]) {
-                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPenjual];
-            }
-            else if([list.comment_user_label isEqualToString:CPembeli]) {
-                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPembeli];
-            }
-            else if([list.comment_user_label isEqualToString:CAdministrator]) {
-                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagAdministrator];
-            }
-            else if([list.comment_user_label isEqualToString:CPengguna]) {
-                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPengguna];
-            }
-            else {
-                [((GeneralTalkCommentCell*)cell).user_name setColor:-1];//-1 is set to empty string
-            }
-            
+//            if([list.comment_user_label isEqualToString:CPenjual]) {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPenjual];
+//            }
+//            else if([list.comment_user_label isEqualToString:CPembeli]) {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPembeli];
+//            }
+//            else if([list.comment_user_label isEqualToString:CAdministrator]) {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagAdministrator];
+//            }
+//            else if([list.comment_user_label isEqualToString:CPengguna]) {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPengguna];
+//            }
+//            else {
+//                [((GeneralTalkCommentCell*)cell).user_name setColor:-1];//-1 is set to empty string
+//            }
+            [((GeneralTalkCommentCell*)cell).user_name setLabelBackground:list.comment_user_label];
 
             
             if(list.is_not_delivered) {
