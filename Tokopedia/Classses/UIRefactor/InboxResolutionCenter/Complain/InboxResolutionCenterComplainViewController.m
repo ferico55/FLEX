@@ -349,7 +349,9 @@
     InboxResolutionCenterList *resolution = _list[indexPath.row];
     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+        if (![resolution isEqual:_detailViewController.resolution]) {
+            [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+        }
     }
     else
     {
@@ -569,7 +571,9 @@
                     NSIndexPath *indexPath = _selectedDetailIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
                     InboxResolutionCenterList *resolution = _list[indexPath.row];
                     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
-                    [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+                    if (![resolution isEqual:_detailViewController.resolution]) {
+                        [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+                    }
                 }
             }
             else

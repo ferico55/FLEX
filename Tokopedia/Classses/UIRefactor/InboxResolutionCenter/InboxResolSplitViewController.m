@@ -51,7 +51,6 @@
     if ([self.splitViewController respondsToSelector:@selector(setPreferredDisplayMode:)]) {
         [self.splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModeAllVisible];
     }
-    [self.splitViewController setValue:[NSNumber numberWithFloat:350.0] forKey:@"_masterColumnWidth"];
     
     [self.view addSubview:self.splitViewController.view];
     
