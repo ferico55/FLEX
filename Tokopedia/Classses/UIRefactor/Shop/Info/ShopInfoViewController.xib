@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -21,8 +21,11 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
+            <string>GothamLight</string>
             <string>GothamLight</string>
             <string>GothamLight</string>
             <string>GothamLight</string>
@@ -45,8 +48,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopInfoViewController">
             <connections>
-                <outlet property="accuracyrate" destination="S2d-VZ-Pcd" id="urS-ri-XaY"/>
                 <outlet property="addressoffview" destination="Yyz-rC-cuj" id="946-Y2-X3D"/>
+                <outlet property="btnLihatDetailStat" destination="yyb-Zo-VFO" id="Ehv-M8-8lC"/>
                 <outlet property="buttonfav" destination="Twr-cV-LWn" id="pS7-sO-sZY"/>
                 <outlet property="buttonitemsold" destination="8uq-Zo-ZDV" id="dSH-B6-jrU"/>
                 <outlet property="buttonofflocation" destination="NXr-90-gzo" id="EWR-Mm-kDF"/>
@@ -61,14 +64,14 @@
                 <outlet property="labelsold" destination="ygU-xD-eMA" id="o47-PE-2gR"/>
                 <outlet property="labelsuccessfulltransaction" destination="ll6-uN-c85" id="dwu-YH-Ncq"/>
                 <outlet property="labeltotalproduct" destination="EGr-EL-EE7" id="quC-gf-mL8"/>
+                <outlet property="lblKecepatan" destination="gEg-Cg-Enx" id="R54-YE-eAB"/>
+                <outlet property="lblReputasi" destination="tsO-YA-oKy" id="czo-4u-aau"/>
                 <outlet property="nameowner" destination="WCf-qe-SxT" id="Kob-X3-lIX"/>
                 <outlet property="ownerview" destination="bRy-VV-ib4" id="NaD-0G-HUJ"/>
                 <outlet property="paymentview" destination="gj0-7v-eQs" id="pca-BS-flj"/>
                 <outlet property="scrollview" destination="vuZ-Gn-rAL" id="XiF-Ko-6ea"/>
-                <outlet property="servicerate" destination="V6D-GS-Ql4" id="8oN-Yt-iu0"/>
                 <outlet property="shipmentview" destination="f9V-q9-aGh" id="yxb-tj-ssW"/>
                 <outlet property="shopdetailview" destination="M8M-ob-9hd" id="3fn-Vb-j98"/>
-                <outlet property="speedrate" destination="gYq-KI-Fst" id="cHq-Tc-kJZ"/>
                 <outlet property="tablepayment" destination="NrB-zQ-arg" id="2Uo-kV-Gfn"/>
                 <outlet property="tableshipment" destination="hc8-NA-vsK" id="pEk-Sm-eqI"/>
                 <outlet property="thumb" destination="2jX-38-4zq" id="X7H-01-wwc"/>
@@ -91,7 +94,7 @@
             <nil key="simulatedStatusBarMetrics"/>
         </view>
         <view autoresizesSubviews="NO" contentMode="scaleToFill" id="SPN-F6-FwN">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="1102"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="1220"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" id="5HU-Fa-P1B" userLabel="Top View">
@@ -134,7 +137,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" id="M8M-ob-9hd" userLabel="Shop Information">
-                    <rect key="frame" x="0.0" y="149" width="320" height="313"/>
+                    <rect key="frame" x="0.0" y="149" width="320" height="433"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" id="kGv-mh-h7r" userLabel="Horizontal Border">
@@ -187,208 +190,100 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kecepatan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BLp-gx-buT">
-                            <rect key="frame" x="10" y="87" width="100" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <view contentMode="scaleToFill" id="gYq-KI-Fst" customClass="StarsRateView">
-                            <rect key="frame" x="20" y="112" width="86" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="vEt-oT-hOW">
-                                    <rect key="frame" x="34" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="350-pR-Ud5">
-                                    <rect key="frame" x="68" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="W1y-0f-uQf">
-                                    <rect key="frame" x="51" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="l8U-68-bkf">
-                                    <rect key="frame" x="17" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Qdv-le-Ufu">
-                                    <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
-                                </imageView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            <connections>
-                                <outletCollection property="starimages" destination="Qdv-le-Ufu" id="TWg-es-1dY"/>
-                                <outletCollection property="starimages" destination="l8U-68-bkf" id="Nqg-Mn-SIM"/>
-                                <outletCollection property="starimages" destination="vEt-oT-hOW" id="nQB-gH-7bN"/>
-                                <outletCollection property="starimages" destination="W1y-0f-uQf" id="KcH-nD-ypm"/>
-                                <outletCollection property="starimages" destination="350-pR-Ud5" id="cce-iQ-uHk"/>
-                            </connections>
-                        </view>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akurasi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5EL-am-xXy">
-                            <rect key="frame" x="110" y="87" width="100" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <view contentMode="scaleToFill" id="S2d-VZ-Pcd" customClass="StarsRateView">
-                            <rect key="frame" x="117" y="112" width="86" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="PSn-Fv-jBi">
-                                    <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="WnX-PP-ecg">
-                                    <rect key="frame" x="17" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="efB-ub-ONl">
-                                    <rect key="frame" x="34" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="TKz-20-tmH">
-                                    <rect key="frame" x="51" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="UqG-OL-VsK">
-                                    <rect key="frame" x="68" y="0.0" width="15" height="15"/>
-                                </imageView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            <connections>
-                                <outletCollection property="starimages" destination="UqG-OL-VsK" id="TF2-7t-r4K"/>
-                                <outletCollection property="starimages" destination="TKz-20-tmH" id="MVY-Rg-fgX"/>
-                                <outletCollection property="starimages" destination="PSn-Fv-jBi" id="x6I-R0-5nB"/>
-                                <outletCollection property="starimages" destination="efB-ub-ONl" id="7IU-TD-gS0"/>
-                                <outletCollection property="starimages" destination="WnX-PP-ecg" id="hSZ-Gh-TGC"/>
-                            </connections>
-                        </view>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pelayanan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SRj-Mh-gob">
-                            <rect key="frame" x="210" y="87" width="100" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <view contentMode="scaleToFill" id="V6D-GS-Ql4" customClass="StarsRateView">
-                            <rect key="frame" x="217" y="112" width="86" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="h9x-gL-p7m">
-                                    <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="9XV-Dt-sMd">
-                                    <rect key="frame" x="17" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="6Kz-Gh-S5W">
-                                    <rect key="frame" x="34" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qyi-nY-h4R">
-                                    <rect key="frame" x="51" y="0.0" width="15" height="15"/>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="GCV-vs-fD6">
-                                    <rect key="frame" x="68" y="0.0" width="15" height="15"/>
-                                </imageView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            <connections>
-                                <outletCollection property="starimages" destination="h9x-gL-p7m" id="BRJ-aw-fff"/>
-                                <outletCollection property="starimages" destination="9XV-Dt-sMd" id="IMU-Cr-9fj"/>
-                                <outletCollection property="starimages" destination="6Kz-Gh-S5W" id="Mmk-Xb-m9v"/>
-                                <outletCollection property="starimages" destination="qyi-nY-h4R" id="Adm-a5-l1r"/>
-                                <outletCollection property="starimages" destination="GCV-vs-fD6" id="Bvl-IU-qYP"/>
-                            </connections>
-                        </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lokasi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5cf-2d-9qS">
-                            <rect key="frame" x="33" y="142" width="120" height="44"/>
+                            <rect key="frame" x="33" y="262" width="120" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" id="pcT-N2-27K">
-                            <rect key="frame" x="0.0" y="140" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="260" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terakhir online" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0G8-y2-pRF">
-                            <rect key="frame" x="33" y="184" width="120" height="44"/>
+                            <rect key="frame" x="33" y="304" width="120" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buka sejak" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="s6F-qi-aDJ">
-                            <rect key="frame" x="33" y="227" width="120" height="44"/>
+                            <rect key="frame" x="33" y="347" width="120" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Toko fisik" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0yG-xL-vRZ">
-                            <rect key="frame" x="33" y="270" width="120" height="44"/>
+                            <rect key="frame" x="33" y="390" width="120" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="elH-5F-6s9">
-                            <rect key="frame" x="210" y="140" width="102" height="44"/>
+                            <rect key="frame" x="210" y="260" width="102" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aIz-fv-w5w">
-                            <rect key="frame" x="210" y="183" width="102" height="44"/>
+                            <rect key="frame" x="210" y="303" width="102" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oVt-Rr-DLk">
-                            <rect key="frame" x="208" y="226" width="102" height="44"/>
+                            <rect key="frame" x="208" y="346" width="102" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" id="AcM-77-vZw">
-                            <rect key="frame" x="0.0" y="226" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="346" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" id="SVh-Ta-4kn">
-                            <rect key="frame" x="0.0" y="183" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="303" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" id="7ig-kr-7Vs">
-                            <rect key="frame" x="0.0" y="269" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="389" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" id="cV9-Hi-JAq">
-                            <rect key="frame" x="0.0" y="312" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="432" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_shop.png" id="ZpI-LL-J6J">
-                            <rect key="frame" x="10" y="154" width="15" height="15"/>
+                            <rect key="frame" x="10" y="274" width="15" height="15"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_clock.png" id="i1t-xG-SYR">
-                            <rect key="frame" x="10" y="197" width="15" height="15"/>
+                            <rect key="frame" x="10" y="317" width="15" height="15"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_location_grey" id="Y0M-XQ-rEc">
-                            <rect key="frame" x="6" y="279" width="23" height="23"/>
+                            <rect key="frame" x="6" y="399" width="23" height="23"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_calendar.png" id="kKE-qy-jKO">
-                            <rect key="frame" x="10" y="240" width="15" height="15"/>
+                            <rect key="frame" x="10" y="360" width="15" height="15"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <view contentMode="scaleToFill" id="Yyz-rC-cuj" userLabel="Address View">
-                            <rect key="frame" x="30" y="313" width="282" height="1"/>
+                            <rect key="frame" x="30" y="433" width="282" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NXr-90-gzo">
-                            <rect key="frame" x="161" y="280" width="158" height="22"/>
+                            <rect key="frame" x="161" y="400" width="158" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="45" maxY="0.0"/>
@@ -401,10 +296,84 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yvr-yh-tl6"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" id="ryX-of-5D8">
+                            <rect key="frame" x="0.0" y="80" width="320" height="183"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INFO TOKO" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eL6-AU-d0b" userLabel="TRANSACTION STATISTIC">
+                                    <rect key="frame" x="10" y="144" width="301" height="39"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <view contentMode="scaleToFill" id="Gv4-Ov-iXf">
+                                    <rect key="frame" x="10" y="18" width="300" height="126"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reputasi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vxk-BI-vVb">
+                                            <rect key="frame" x="0.0" y="8" width="150" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kecepatan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y2A-dk-mFZ">
+                                            <rect key="frame" x="150" y="8" width="150" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" id="7uP-f4-bBl">
+                                            <rect key="frame" x="0.0" y="80" width="300" height="1"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                        </view>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_diamond.png" id="quH-OI-aEy">
+                                            <rect key="frame" x="0.0" y="30" width="150" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_speed_fast.png" id="aN1-CY-Ug6">
+                                            <rect key="frame" x="150" y="30" width="150" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tsO-YA-oKy">
+                                            <rect key="frame" x="0.0" y="54" width="150" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gEg-Cg-Enx">
+                                            <rect key="frame" x="150" y="54" width="150" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yyb-Zo-VFO">
+                                            <rect key="frame" x="0.0" y="84" width="300" height="42"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                            <inset key="imageEdgeInsets" minX="280" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Lihat Detil Statistik" image="icon_arrow_right_gray.png">
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="actionLihatDetailStatistik:" destination="-1" eventType="touchUpInside" id="kjS-YV-YIP"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
                     </subviews>
                 </view>
                 <view contentMode="scaleToFill" id="70s-EG-QPn" userLabel="Transaction ">
-                    <rect key="frame" x="0.0" y="462" width="320" height="212"/>
+                    <rect key="frame" x="0.0" y="582" width="320" height="212"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" id="wBu-Ce-dYr" userLabel="Header">
@@ -496,7 +465,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" id="f9V-q9-aGh" userLabel="Shipment">
-                    <rect key="frame" x="0.0" y="674" width="320" height="84"/>
+                    <rect key="frame" x="0.0" y="794" width="320" height="84"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" id="xNK-0o-con" userLabel="Header">
@@ -527,7 +496,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" id="gj0-7v-eQs" userLabel="Payment">
-                    <rect key="frame" x="0.0" y="757" width="320" height="83"/>
+                    <rect key="frame" x="0.0" y="877" width="320" height="83"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" id="0Vq-Nf-y88" userLabel="Header">
@@ -558,7 +527,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" id="bRy-VV-ib4" userLabel="Shop Owner">
-                    <rect key="frame" x="0.0" y="840" width="320" height="262"/>
+                    <rect key="frame" x="0.0" y="960" width="320" height="262"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" id="5Qm-Qa-xSn" userLabel="Header">
@@ -607,6 +576,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="472" y="374"/>
         </view>
         <tapGestureRecognizer id="wbn-ab-5NJ">
             <connections>
@@ -617,10 +587,13 @@
     <resources>
         <image name="ic_arrow_right.png" width="1024" height="1024"/>
         <image name="icon_arrow_down" width="14" height="14"/>
+        <image name="icon_arrow_right_gray.png" width="20" height="20"/>
         <image name="icon_calendar.png" width="14" height="14"/>
         <image name="icon_clock.png" width="14" height="14"/>
         <image name="icon_location_grey" width="14" height="14"/>
+        <image name="icon_medal_diamond.png" width="60" height="20"/>
         <image name="icon_shop.png" width="14" height="14"/>
+        <image name="icon_speed_fast.png" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

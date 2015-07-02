@@ -26,7 +26,7 @@
                         <constraint firstAttribute="height" constant="21" id="Mtu-JT-dv6"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="keP-TI-Hke">
@@ -35,16 +35,16 @@
                         <constraint firstAttribute="height" constant="21" id="NIx-c7-dNu"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TdE-Q9-Yqa">
                     <rect key="frame" x="10" y="100" width="300" height="21"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_home.png" translatesAutoresizingMaskIntoConstraints="NO" id="CI8-Xj-cWM">
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_diamond.png" translatesAutoresizingMaskIntoConstraints="NO" id="CI8-Xj-cWM">
                     <rect key="frame" x="120" y="53" width="80" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="ppE-Il-VqM"/>
@@ -78,6 +78,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_home.png" width="30" height="30"/>
+        <image name="icon_medal_diamond.png" width="20" height="20"/>
     </resources>
 </document>

@@ -37,23 +37,23 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vm7-Hd-qNV">
                         <rect key="frame" x="75" y="48" width="100" height="20"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="abW-oK-e71">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_silver.png" translatesAutoresizingMaskIntoConstraints="NO" id="abW-oK-e71">
                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="FZS-M5-b5j"/>
                                     <constraint firstAttribute="height" constant="20" id="dif-NL-2aa"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="mTY-dd-UJz">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_silver.png" translatesAutoresizingMaskIntoConstraints="NO" id="mTY-dd-UJz">
                                 <rect key="frame" x="20" y="0.0" width="20" height="20"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="fkX-kC-fV1">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_silver.png" translatesAutoresizingMaskIntoConstraints="NO" id="fkX-kC-fV1">
                                 <rect key="frame" x="40" y="0.0" width="20" height="20"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Uun-hd-Cdr">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_silver.png" translatesAutoresizingMaskIntoConstraints="NO" id="Uun-hd-Cdr">
                                 <rect key="frame" x="60" y="0.0" width="20" height="20"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="IPY-Xw-xKr">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_silver.png" translatesAutoresizingMaskIntoConstraints="NO" id="IPY-Xw-xKr">
                                 <rect key="frame" x="80" y="0.0" width="20" height="20"/>
                             </imageView>
                         </subviews>
@@ -135,7 +135,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon_star.png" width="20" height="20"/>
+        <image name="icon_medal_silver.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

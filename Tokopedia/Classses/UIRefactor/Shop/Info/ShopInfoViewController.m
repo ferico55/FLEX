@@ -46,9 +46,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelshopdescription;
 @property (weak, nonatomic) IBOutlet UIButton *buttonfav;
 @property (weak, nonatomic) IBOutlet UIButton *buttonitemsold;
-@property (weak, nonatomic) IBOutlet StarsRateView *speedrate;
-@property (weak, nonatomic) IBOutlet StarsRateView *accuracyrate;
-@property (weak, nonatomic) IBOutlet StarsRateView *servicerate;
 @property (weak, nonatomic) IBOutlet UILabel *labellocation;
 @property (weak, nonatomic) IBOutlet UILabel *labellastlogin;
 @property (weak, nonatomic) IBOutlet UILabel *labelopensince;
@@ -94,12 +91,6 @@
 
 
 #pragma mark - Life Cycle
-- (void)viewDidAppear:(BOOL)animated
-{
-    DetailStatisticViewController *detailStatisticViewController = [DetailStatisticViewController new];
-    [self.navigationController pushViewController:detailStatisticViewController animated:YES];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -130,6 +121,10 @@
                                              selector:@selector(updateShopPicture:)
                                                  name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                object:nil];
+    
+    //Set Position Btn Lihat Detail Statistic
+    btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width-btnLihatDetailStat.imageView.bounds.size.width, 0, 0);
+    btnLihatDetailStat.titleEdgeInsets = UIEdgeInsetsMake(0, -btnLihatDetailStat.imageView.bounds.size.width, 0, 0);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -427,9 +422,9 @@
     _labelshopdescription.text = _shop.result.info.shop_description;
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
     [_buttonitemsold setTitle:_shop.result.stats.shop_item_sold forState:UIControlStateNormal];
-    _speedrate.starscount = _shop.result.stats.shop_service_rate;
-    _accuracyrate.starscount = _shop.result.stats.shop_accuracy_rate;
-    _servicerate.starscount = _shop.result.stats.shop_service_rate;
+//    _speedrate.starscount = _shop.result.stats.shop_service_rate;
+//    _accuracyrate.starscount = _shop.result.stats.shop_accuracy_rate;
+//    _servicerate.starscount = _shop.result.stats.shop_service_rate;
     _labellocation.text = _shop.result.info.shop_location;
     _labellastlogin.text = _shop.result.info.shop_owner_last_login;
     _labelopensince.text = _shop.result.info.shop_open_since;
@@ -623,4 +618,10 @@
     }
 }
 
+
+
+#pragma mark - Method
+- (IBAction)actionLihatDetailStatistik:(id)sender {
+
+}
 @end
