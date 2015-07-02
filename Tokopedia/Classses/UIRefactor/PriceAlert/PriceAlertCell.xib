@@ -151,6 +151,7 @@
                             <constraint firstAttribute="trailing" secondItem="2sS-Lu-9RC" secondAttribute="trailing" constant="10" id="eNz-uM-4qF"/>
                             <constraint firstItem="7zX-ET-Ulp" firstAttribute="leading" secondItem="UMT-fF-dgJ" secondAttribute="trailing" constant="28" id="fVF-r6-EGU"/>
                             <constraint firstItem="UMT-fF-dgJ" firstAttribute="top" secondItem="ATD-ui-C6U" secondAttribute="top" constant="8" id="gLk-uF-cmZ"/>
+                            <constraint firstItem="7zX-ET-Ulp" firstAttribute="top" secondItem="jQY-mg-Je5" secondAttribute="bottom" id="gND-DR-FlK"/>
                             <constraint firstAttribute="trailing" secondItem="X0k-dJ-Bm0" secondAttribute="trailing" id="hzm-fl-4Sn"/>
                             <constraint firstItem="zht-YF-QzX" firstAttribute="leading" secondItem="ATD-ui-C6U" secondAttribute="leading" constant="8" id="kXQ-jD-wqp"/>
                             <constraint firstAttribute="trailing" secondItem="UZx-WC-b8V" secondAttribute="trailing" constant="8" id="rQ3-rg-iWi"/>
@@ -174,14 +175,16 @@
             <connections>
                 <outlet property="btnClose" destination="X0k-dJ-Bm0" id="fo6-h5-see"/>
                 <outlet property="btnProductName" destination="jQY-mg-Je5" id="oeO-Tz-gsQ"/>
+                <outlet property="constraingTrailingProductNameAndX" destination="VNG-Qp-ERR" id="psR-X7-mQr"/>
                 <outlet property="constraintBottomViewContent" destination="pq3-vT-tzn" id="Ucv-eC-c4a"/>
+                <outlet property="constraintHeightProductName" destination="YF6-EC-D6R" id="ZJP-oc-is2"/>
                 <outlet property="constraintTraillingViewContent" destination="glM-vR-FAt" id="74w-0k-c1C"/>
                 <outlet property="constraintXViewContent" destination="7OH-Ty-HJt" id="ikJ-WV-dBZ"/>
                 <outlet property="constraintYViewContent" destination="K5M-fM-SwY" id="E9j-JF-rQy"/>
                 <outlet property="imgProductView" destination="UMT-fF-dgJ" id="BtD-d3-Itn"/>
-                <outlet property="lblDateProduct" destination="7zX-ET-Ulp" id="hiw-YD-kCb"/>
                 <outlet property="lblLowPrice" destination="UZx-WC-b8V" id="2PG-EX-29m"/>
                 <outlet property="lblPriceNotification" destination="d61-BF-Ajv" id="KD5-j9-Prv"/>
+                <outlet property="lblProductDate" destination="7zX-ET-Ulp" id="g0F-JR-jTa"/>
                 <outlet property="viewContent" destination="ATD-ui-C6U" id="vW1-LJ-8oB"/>
                 <outlet property="viewUnread" destination="2sS-Lu-9RC" id="SVc-Dh-0Gi"/>
             </connections>

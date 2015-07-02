@@ -85,7 +85,7 @@
     self.navigationItem.backBarButtonItem = backButton;
 
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
-    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_share" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
+    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_share_white" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     

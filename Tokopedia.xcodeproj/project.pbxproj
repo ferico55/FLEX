@@ -1433,6 +1433,10 @@
 		850065961B439C8200F556BA /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 850060071B439C8100F556BA /* README.md */; };
 		850065981B439DFA00F556BA /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850065971B439DFA00F556BA /* iAd.framework */; };
 		8500659A1B439E1200F556BA /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850065991B439E1200F556BA /* AdSupport.framework */; };
+		8518D50E1B44F26A00029F7F /* icon_share_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518D50B1B44F26A00029F7F /* icon_share_white.png */; };
+		8518D50F1B44F26A00029F7F /* icon_share_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518D50C1B44F26A00029F7F /* icon_share_white@2x.png */; };
+		8518D5101B44F26A00029F7F /* icon_share_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518D50D1B44F26A00029F7F /* icon_share_white@3x.png */; };
+		8518D5121B451CEB00029F7F /* badges_gold_merchant.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518D5111B451CEB00029F7F /* badges_gold_merchant.png */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3632,6 +3636,10 @@
 		850060071B439C8100F556BA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		850065971B439DFA00F556BA /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		850065991B439E1200F556BA /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		8518D50B1B44F26A00029F7F /* icon_share_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_share_white.png; sourceTree = "<group>"; };
+		8518D50C1B44F26A00029F7F /* icon_share_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_share_white@2x.png"; sourceTree = "<group>"; };
+		8518D50D1B44F26A00029F7F /* icon_share_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_share_white@3x.png"; sourceTree = "<group>"; };
+		8518D5111B451CEB00029F7F /* badges_gold_merchant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = badges_gold_merchant.png; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -7093,6 +7101,7 @@
 		85005E071B439C7F00F556BA /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8518D5111B451CEB00029F7F /* badges_gold_merchant.png */,
 				85005E081B439C7F00F556BA /* balloon_read_left.png */,
 				85005E091B439C7F00F556BA /* balloon_read_right.png */,
 				85005E0A1B439C7F00F556BA /* button_white.png */,
@@ -7274,6 +7283,9 @@
 				85005F021B439C8000F556BA /* icon_retur.png */,
 				85005F031B439C8000F556BA /* icon_retur@2x.png */,
 				85005F041B439C8000F556BA /* icon_retur@3x.png */,
+				8518D50B1B44F26A00029F7F /* icon_share_white.png */,
+				8518D50C1B44F26A00029F7F /* icon_share_white@2x.png */,
+				8518D50D1B44F26A00029F7F /* icon_share_white@3x.png */,
 				85005F051B439C8000F556BA /* icon_search (deleted 1f85ced2a89be38343ca7c6249b002c7).png */,
 				85005F061B439C8000F556BA /* icon_search.png */,
 				85005F071B439C8000F556BA /* icon_search@2x (deleted 2852b6750d45e6cc078691c1fdbc73df).png */,
@@ -8092,6 +8104,7 @@
 				850064731B439C8200F556BA /* icon_home@2x.png in Resources */,
 				850065361B439C8200F556BA /* icon_grid_satu@3x.png in Resources */,
 				850064551B439C8200F556BA /* icon_comment_bubble@3x.png in Resources */,
+				8518D50E1B44F26A00029F7F /* icon_share_white.png in Resources */,
 				850065321B439C8200F556BA /* thumb_product.png in Resources */,
 				850064E51B439C8200F556BA /* icon_toped_loading_grey-02.png in Resources */,
 				8500621D1B439C8200F556BA /* InboxMessageCell.xib in Resources */,
@@ -8257,6 +8270,7 @@
 				850063E51B439C8200F556BA /* icon_5@2x.png in Resources */,
 				850065871B439C8200F556BA /* icon_pesan_ulang.png in Resources */,
 				850062E61B439C8200F556BA /* SearchResultShopCell.xib in Resources */,
+				8518D50F1B44F26A00029F7F /* icon_share_white@2x.png in Resources */,
 				850062E31B439C8200F556BA /* SearchViewController.xib in Resources */,
 				850065151B439C8200F556BA /* login.jpg in Resources */,
 				8500642B1B439C8200F556BA /* icon_14@3x.png in Resources */,
@@ -8339,6 +8353,7 @@
 				850062EE1B439C8200F556BA /* SettingAddressEditViewController.xib in Resources */,
 				850062EA1B439C8200F556BA /* SearchResultViewController.xib in Resources */,
 				8500651A1B439C8200F556BA /* icon_arrow_white.png in Resources */,
+				8518D5121B451CEB00029F7F /* badges_gold_merchant.png in Resources */,
 				850064C91B439C8200F556BA /* icon_shop_grey@2x.png in Resources */,
 				8500650D1B439C8200F556BA /* icon_search_active.png in Resources */,
 				8500656D1B439C8200F556BA /* tabnav_bg.png in Resources */,
@@ -8612,6 +8627,7 @@
 				8500656F1B439C8200F556BA /* icon_arrow_down_grey.png in Resources */,
 				850064A11B439C8200F556BA /* Icon_no_photo_transparan@2x.png in Resources */,
 				850063531B439C8200F556BA /* ProductTalkFormViewController.xib in Resources */,
+				8518D5101B44F26A00029F7F /* icon_share_white@3x.png in Resources */,
 				850064B01B439C8200F556BA /* icon_quote@2x.png in Resources */,
 				8500601E1B439C8100F556BA /* public_key.der in Resources */,
 				850062A61B439C8200F556BA /* ReputationDetailFormViewController.xib in Resources */,
@@ -9631,7 +9647,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0a78102e-6ed7-4374-9578-49cf7c2413ce";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -9670,7 +9686,7 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0a78102e-6ed7-4374-9578-49cf7c2413ce";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

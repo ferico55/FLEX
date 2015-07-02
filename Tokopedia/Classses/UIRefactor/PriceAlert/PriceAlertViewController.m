@@ -58,6 +58,24 @@
         NSString *tempStr = [_detailPriceAlert.pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
         txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
     }
+    
+    
+    //Set line space
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+    [attributes setObject:lblDesc.font forKey:NSFontAttributeName];
+
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:lblDesc.text attributes:attributes];
+    lblDesc.attributedText = attributedString;
+    
+    
+    //Add padding left
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, txtPrice.bounds.size.height)];
+    paddingView.backgroundColor = [UIColor clearColor];
+    [txtPrice setLeftViewMode:UITextFieldViewModeAlways];
+    [txtPrice setLeftView:paddingView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,7 +96,7 @@
 #pragma mark - Setup View
 - (void)initNavigation
 {
-    self.navigationItem.title = CStringPriceAlert;
+    self.navigationItem.title = CStringNotificationHarga;
     rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSave style:UIBarButtonItemStylePlain target:self action:@selector(actionTambah:)];;
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];

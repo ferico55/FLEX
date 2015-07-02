@@ -29,6 +29,9 @@
 #define CGothamBook @"Gotham Book"
 
 
+#define CStringKecepatan @"Kecepatan"
+#define CStringAKurasi @"Akurasi"
+#define CStringPelayanan @"Pelayanan"
 #define CStringAllPrice @"Semua Harga"
 #define CStringSort @"Urutkan"
 #define CstringFilter @"Filter"
@@ -58,6 +61,7 @@
 #define CStringDepartment @"Department"
 #define CStringSelesai @"Selesai"
 #define CStringPriceAlert @"Price Alert"
+#define CStringNotifikasiAlert @"Notifikasi Alert"
 #define CStringBatal @"Batal"
 #define CStringBack @"Back"
 #define CStringUbah @"Ubah"

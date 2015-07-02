@@ -71,9 +71,9 @@
     return btnProductName;
 }
 
-- (void)setLblDateProduct:(NSDate *)date
+- (void)setLblDateProduct:(NSString *)date
 {
-    lblDateProduct.text = [dateFormat stringFromDate:date];
+    lblProductDate.text = date;
 }
 
 - (void)setLowPrice:(NSString *)strPrice
@@ -110,6 +110,10 @@
 - (UIButton *)getBtnClose
 {
     return btnClose;
+}
+
+- (NSLayoutConstraint *)getConstraintHeigthProductName {
+    return constraintHeightProductName;
 }
 
 - (NSLayoutConstraint *)getConstraintY

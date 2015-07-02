@@ -61,7 +61,6 @@
     tblPriceAlert.tableFooterView = [self getActivityIndicator];
     [[self getNetworkManager:CTagGetPriceAlert] doRequest];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CstringFilter style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
-    tblPriceAlert.allowsSelection = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -126,6 +125,8 @@
     if(! [tempPriceAlert.pricealert_total_unread isEqualToString:@"0"]) {
         tempUnreadIndexPath = indexPath;
     }
+    
+    tempPriceAlert.pricealert_product_name = [NSString convertHTML:tempPriceAlert.pricealert_product_name];
     DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
     detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
     detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
@@ -153,6 +154,7 @@
         cell = [arrPriceAlert objectAtIndex:0];
         cell.viewController = self;
         cell.getBtnProductName.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     DetailPriceAlert *detailPriceAlert = [arrList objectAtIndex:indexPath.row];
@@ -165,8 +167,8 @@
     
     cell.getViewUnread.hidden = ([detailPriceAlert.pricealert_total_unread isEqualToString:@"0"]);
     [cell setTagBtnClose:(int)indexPath.row];
-    [cell setLblDateProduct:[NSDate date]];
-    [cell setProductName:detailPriceAlert.pricealert_product_name];
+    [cell setLblDateProduct:detailPriceAlert.pricealert_time];
+    [cell setProductName:[NSString convertHTML:detailPriceAlert.pricealert_product_name]];
     [cell setPriceNotification:[self getPrice:detailPriceAlert.pricealert_price]];
     [cell setLowPrice:detailPriceAlert.pricealert_price_min];
     
@@ -179,13 +181,13 @@
     if(arrList!=nil && arrDepartment!=nil && arrDepartment.count>0) {
         DepartmentTableViewController *departmentViewController = [DepartmentTableViewController new];
         departmentViewController.del = self;
-        departmentViewController.tableView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0);
         departmentViewController.navigationItem.title = CStringCategory;
         departmentViewController.arrList = arrDepartment;
         departmentViewController.selectedIndex = nSelectedDepartment;
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
-        navController.navigationBar.translucent = NO;
-        [self presentViewController:navController animated:YES completion:nil];
+//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
+//        navController.navigationBar.translucent = NO;
+//        [self presentViewController:navController animated:YES completion:nil];
+        [self.navigationController pushViewController:departmentViewController animated:YES];
     }
     
 //    if(viewCategory.tag == 0) {//Show View Category
@@ -365,7 +367,8 @@
                                                           CPriceAlertPrice,
                                                           CPriceAlertProductImage,
                                                           CPriceAlertID,
-                                                          CPriceAlertProductID
+                                                          CPriceAlertProductID,
+                                                            CPriceAlertTime
                                                           ]];
         
         
@@ -578,8 +581,8 @@
         page = 1;
         [[self getNetworkManager:CTagGetPriceAlert] doRequest];
     }
-    
-    [self didCancel];
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
