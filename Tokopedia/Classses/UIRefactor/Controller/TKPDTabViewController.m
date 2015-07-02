@@ -16,7 +16,8 @@
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *menuButtonView;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *menuButtonCheckmark;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *menuTopConstraint;
-@property NSInteger selectedMenuIndex;
+@property NSInteger selectedNavigationMenuIndex;
+@property NSInteger selectedTabMenuIndex;
 @property (strong, nonatomic) UIImage *arrowImage;
 
 @end
@@ -63,12 +64,14 @@
     self.menuView.userInteractionEnabled = YES;
     [self.menuView addGestureRecognizer:backgroundTap];
     
-    self.selectedMenuIndex = 0;
-    [self touchUpMenuButton:[self.menuButton objectAtIndex:_selectedMenuIndex]];
+    self.selectedNavigationMenuIndex = 0;
+    self.selectedTabMenuIndex = 0;
+    [self touchUpMenuButton:[self.menuButton objectAtIndex:_selectedNavigationMenuIndex]];
     
     [self setTitleViewAtIndex];
     
     [self configureMenu];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,8 +85,14 @@
     [controller didMoveToParentViewController:self];
     self.delegate = controller;    
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION
-                                                        object:[NSNumber numberWithInteger:_selectedMenuIndex]];
+    _selectedTabMenuIndex = sender.selectedSegmentIndex;
+    
+    NSDictionary *object = @{
+                             TKPDTabViewNavigationMenuIndex : [NSNumber numberWithInteger:_selectedNavigationMenuIndex],
+                             TKPDTabViewSegmentedIndex      : [NSNumber numberWithInteger:_selectedTabMenuIndex],
+                             };
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDTabNotification object:object];
 }
 
 - (IBAction)touchUpMenuButton:(UIButton *)sender {
@@ -94,22 +103,26 @@
             iconCheckmark.hidden = YES;
         }
     }
-    _selectedMenuIndex = sender.tag?:0;
+    _selectedNavigationMenuIndex = sender.tag?:0;
     [self setTitleViewAtIndex];
     [self hideMenu];
         
     if ([self.delegate respondsToSelector:@selector(tabViewController:didTapButtonAtIndex:)]) {
-        [self.delegate tabViewController:self didTapButtonAtIndex:_selectedMenuIndex];
+        [self.delegate tabViewController:self didTapButtonAtIndex:_selectedNavigationMenuIndex];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION
-                                                        object:[NSNumber numberWithInteger:_selectedMenuIndex]];
+    NSDictionary *object = @{
+                             TKPDTabViewNavigationMenuIndex : [NSNumber numberWithInteger:_selectedNavigationMenuIndex],
+                             TKPDTabViewSegmentedIndex      : [NSNumber numberWithInteger:_selectedTabMenuIndex],
+                             };
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDTabNotification object:object];
     
 }
 
 - (void)setTitleViewAtIndex
 {
-    NSString *title = [self.menuTitles objectAtIndex:_selectedMenuIndex];
+    NSString *title = [self.menuTitles objectAtIndex:_selectedNavigationMenuIndex];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     [button setTitle:title forState:UIControlStateNormal];

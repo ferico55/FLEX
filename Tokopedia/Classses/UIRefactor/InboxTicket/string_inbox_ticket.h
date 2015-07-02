@@ -18,6 +18,7 @@
 #define API_GET_INBOX_TICKET_VIEW_MORE  @"get_inbox_ticket_view_more"
 #define API_ACTION_GIVE_RATING      @"give_rating"
 #define API_RATE_KEY                @"rate"
+#define API_NEW_TICKET_STATUS_KEY   @"new_ticket_status"
 
 #define API_STATUS_KEY              @"status"
 #define API_CONFIG_KEY              @"config"

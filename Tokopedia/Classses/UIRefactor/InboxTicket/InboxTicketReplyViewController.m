@@ -153,7 +153,12 @@
     [_requestHost requestGenerateHost];
     
     self.photosImageView = [NSArray sortViewsWithTagInArray:_photosImageView];
-    self.removePhotoButton = [NSArray sortViewsWithTagInArray:_removePhotoButton];    
+    self.removePhotoButton = [NSArray sortViewsWithTagInArray:_removePhotoButton];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dismissViewController)
+                                                 name:TKPDInboxTicketReceiveData
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -354,7 +359,8 @@
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *dictionary;
     NSString *attachmentString = [_uploadedPhotosURL componentsJoinedByString:@"~"];
-    NSString *newTicketStatus = self.isCloseTicketForm?@"2":@"1";
+    NSString *newTicketStatus = self.isCloseTicketForm?@"2":@"";
+    
     if (tag == 1) {
         dictionary = @{
                        API_ACTION_KEY                   : API_TICKET_REPLY_VALIDATION,
@@ -496,43 +502,7 @@
                 _postKey = response .result.post_key;
                 [_secondStepNetworkManager doRequest];
             } else {
-                if (self.isCloseTicketForm) {
-                    if (self.rating) {
-                        if ([self.delegate respondsToSelector:@selector(successCloseInboxTicket:withRating:)]) {
-                            [self.delegate successCloseInboxTicket:ticket withRating:_rating];
-                        }
-                    } else {
-                        if ([self.delegate respondsToSelector:@selector(successCloseInboxTicket:)]) {
-                            [self.delegate successCloseInboxTicket:ticket];
-                        }
-                    }
-                } else {
-                    if (self.rating) {
-                        if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:withRating:)]) {
-                            [self.delegate successReplyInboxTicket:ticket withRating:_rating];
-                        }
-                    } else {
-                        if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
-                            [self.delegate successReplyInboxTicket:ticket];
-                        }                        
-                    }
-                }
-                
-                NSString *message;
-                if (self.isCloseTicketForm) {
-                    if (self.rating) {
-                        message = @"Anda telah berhasil menutup layanan pengguna ini.";
-                    } else {
-                        message = @"Anda telah berhasil menutup tiket bantuan.";
-                    }
-                } else {
-                    message = @"Anda telah berhasil mengirim pesan.";
-                }
-                
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
-                [alert show];
-                
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketLoadData object:nil];
             }
         } else if (tag == 2) {
             if (response.result.file_uploaded) {
@@ -544,43 +514,7 @@
             }
         } else if (tag == 3) {
             if ([response.result.is_success boolValue]) {
-                if (self.isCloseTicketForm) {
-                    if (self.rating) {
-                        if ([self.delegate respondsToSelector:@selector(successCloseInboxTicket:withRating:)]) {
-                            [self.delegate successCloseInboxTicket:ticket withRating:_rating];
-                        }
-                    } else {
-                        if ([self.delegate respondsToSelector:@selector(successCloseInboxTicket:)]) {
-                            [self.delegate successCloseInboxTicket:ticket];
-                        }
-                    }
-                } else {
-                    if (self.rating) {
-                        if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:withRating:)]) {
-                            [self.delegate successCloseInboxTicket:ticket withRating:_rating];
-                        }
-                    } else {
-                        if ([self.delegate respondsToSelector:@selector(successReplyInboxTicket:)]) {
-                            [self.delegate successReplyInboxTicket:ticket];
-                        }
-                    }
-                }
-                
-                NSString *message;
-                if (self.isCloseTicketForm) {
-                    if (self.rating) {
-                        message = @"Anda telah berhasil menutup kasus ini.";
-                    } else {
-                        message = @"Anda telah berhasil menutup tiket bantuan.";
-                    }
-                } else {
-                    message = @"Anda telah berhasil mengirim pesan.";
-                }
-                
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
-                [alert show];
-                
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketLoadData object:nil];
             }
         }
     }
@@ -782,6 +716,24 @@
             [alert show];
         }
     }
+}
+
+- (void)dismissViewController {
+    NSString *message;
+    if (self.isCloseTicketForm) {
+        if (self.rating) {
+            message = @"Anda telah berhasil menutup kasus ini.";
+        } else {
+            message = @"Anda telah berhasil menutup tiket bantuan.";
+        }
+    } else {
+        message = @"Anda telah berhasil mengirim pesan.";
+    }
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
+    [alert show];
+    
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end;

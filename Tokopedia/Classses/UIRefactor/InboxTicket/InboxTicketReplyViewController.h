@@ -10,19 +10,12 @@
 #import "InboxTicketList.h"
 #import "InboxTicketDetail.h"
 
-@protocol InboxTicketReplyDelegate <NSObject>
-
-- (void)successReplyInboxTicket:(InboxTicketDetail *)reply;
-- (void)successReplyInboxTicket:(InboxTicketDetail *)reply withRating:(NSString *)rating;
-- (void)successCloseInboxTicket:(InboxTicketDetail *)reply;
-- (void)successCloseInboxTicket:(InboxTicketDetail *)reply withRating:(NSString *)rating;
-
-@end
+static NSString *TKPDInboxTicketLoadData = @"TKPDInboxTicketLoadData";
+static NSString *TKPDInboxTicketReceiveData = @"TKPDInboxTicketReceiveData";
 
 @interface InboxTicketReplyViewController : UIViewController
 
 @property (strong, nonatomic) InboxTicketList *inboxTicket;
-@property (weak, nonatomic) id<InboxTicketReplyDelegate> delegate;
 @property BOOL isCloseTicketForm;
 @property (strong, nonatomic) NSString *rating;
 

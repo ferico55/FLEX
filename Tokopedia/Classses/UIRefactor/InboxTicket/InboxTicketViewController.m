@@ -31,7 +31,8 @@
     NSString *_filter;
     UIRefreshControl *_refreshControl;
     NSIndexPath *_selectedIndexPath;
-    NSInteger _currentTabIndex;
+    NSInteger _currentTabMenuIndex;
+    NSInteger _currentTabSegmentIndex;
 }
 
 @end
@@ -48,7 +49,8 @@
     _tickets = [NSMutableArray new];
     _uriNext = @"";
     _page = 1;
-    _currentTabIndex = 0;
+    _currentTabMenuIndex = 0;
+    _currentTabSegmentIndex = 0;
     _filter = @"all";
 
     _networkManager = [TokopediaNetworkManager new];
@@ -62,7 +64,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadDataSource:)
-                                                 name:kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION
+                                                 name:TKPDTabNotification
                                                object:nil];
     
 }
@@ -317,7 +319,11 @@
 #pragma mark - Inbox detail delegate
 
 - (void)updateInboxTicket:(InboxTicketList *)inboxTicket {
-    [_tickets replaceObjectAtIndex:_selectedIndexPath.row withObject:inboxTicket];
+    if (_currentTabSegmentIndex == 1 && [inboxTicket.ticket_status isEqualToString:@"2"]) {
+        [_tickets removeObjectAtIndex:_selectedIndexPath.row];
+    } else {
+        [_tickets replaceObjectAtIndex:_selectedIndexPath.row withObject:inboxTicket];
+    }
     [self.tableView reloadData];
 }
 
@@ -330,15 +336,18 @@
 }
 
 - (void)reloadDataSource:(NSNotification *)notification {
-    NSInteger index = [[notification object] integerValue];
-    if (index != _currentTabIndex) {
-        if (index == 1) {
+    NSInteger currentSegmentedIndex = [[[notification object] objectForKey:TKPDTabViewSegmentedIndex] integerValue];
+    _currentTabSegmentIndex = currentSegmentedIndex;
+
+    NSInteger currentMenuIndex = [[[notification object] objectForKey:TKPDTabViewNavigationMenuIndex] integerValue];
+    if (_currentTabMenuIndex != currentMenuIndex) {
+        _currentTabMenuIndex = currentMenuIndex;
+        if (_currentTabMenuIndex == 1) {
             _filter = @"unread";
         } else {
             _filter = @"all";
         }
         _page = 1;
-        _currentTabIndex = index;
         [_tickets removeAllObjects];
         [self.tableView reloadData];
         [_networkManager requestCancel];

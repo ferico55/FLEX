@@ -9,7 +9,7 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 #define kTKPD_AUTHKEY @"auth"
 #define kTKPD_ISLOGINKEY @"is_login"

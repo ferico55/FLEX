@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *TKPDTabViewSegmentedIndex = @"TKPDTabViewSegmentedIndex";
+static NSString *TKPDTabViewNavigationMenuIndex = @"TKPDTabViewNavigationMenuIndex";
+static NSString *TKPDTabNotification = @"TKPDTabNotification";
+
 @protocol TKPDTabViewDelegate <NSObject>
 
 @optional;
