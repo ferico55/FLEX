@@ -15,8 +15,11 @@
 -(void)navigateToInvoiceFromViewController:(UIViewController*)viewController withInvoiceURL:(NSString *)invoiceURL;
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings indexImage:(NSInteger)index;
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString*)productID;
+
+#pragma mark - Inbox
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
 -(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;
 -(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController;
+-(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController;
 
 @end

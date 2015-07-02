@@ -1,44 +1,28 @@
 //
-//  InboxReviewSplitViewController.m
+//  InboxResolSplitViewController.m
 //  Tokopedia
 //
-//  Created by Renny Runiawati on 7/1/15.
+//  Created by Renny Runiawati on 7/2/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "InboxReviewSplitViewController.h"
+#import "InboxResolSplitViewController.h"
 
-#import "InboxReviewViewController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
-#import "DetailReviewViewController.h"
-#import "ReviewFormViewController.h"
+#import "InboxResolutionCenterTabViewController.h"
+#import "ResolutionCenterDetailViewController.h"
 
-@interface InboxReviewSplitViewController ()
+@interface InboxResolSplitViewController ()
 
 @property (strong, nonatomic) UISplitViewController *splitViewController;
 
 @end
 
-@implementation InboxReviewSplitViewController
+@implementation InboxResolSplitViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    InboxReviewViewController *vc = [InboxReviewViewController new];
-    vc.data=@{@"nav":@"inbox-review"};
-    
-    InboxReviewViewController *vc1 = [InboxReviewViewController new];
-    vc1.data=@{@"nav":@"inbox-review-my-product"};
-    
-    InboxReviewViewController *vc2 = [InboxReviewViewController new];
-    vc2.data=@{@"nav":@"inbox-review-my-review"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxReviewNavigationController *masterVC = [TKPDTabInboxReviewNavigationController new];
-    [masterVC setSelectedIndex:2];
-    [masterVC setViewControllers:vcs];
-    
+    InboxResolutionCenterTabViewController *masterVC = [InboxResolutionCenterTabViewController new];
     masterVC.splitVC = self;
     
     UINavigationController *masterNav = [[UINavigationController alloc]initWithRootViewController:masterVC];
@@ -48,17 +32,15 @@
     
     
     //Grab a reference to the LeftViewController and get the first monster in the list.
-    DetailReviewViewController *detailVC = [DetailReviewViewController new];
+    ResolutionCenterDetailViewController *detailVC = [ResolutionCenterDetailViewController new];
     detailVC.masterViewController = masterVC;
-        
+    
     UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
     detailNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     detailNav.navigationBar.translucent = NO;
     detailNav.navigationBar.tintColor = [UIColor whiteColor];
     
-    vc.detailViewController = detailVC;
-    vc1.detailViewController = detailVC;
-    vc2.detailViewController = detailVC;
+    masterVC.detailViewController = detailVC;
     
     self.view.frame = [UIScreen mainScreen].bounds;
     
@@ -72,7 +54,7 @@
     [self.splitViewController setValue:[NSNumber numberWithFloat:350.0] forKey:@"_masterColumnWidth"];
     
     [self.view addSubview:self.splitViewController.view];
-
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -94,6 +76,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 @end

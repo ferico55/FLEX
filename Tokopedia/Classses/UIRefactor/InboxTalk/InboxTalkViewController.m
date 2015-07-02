@@ -527,7 +527,7 @@
                     _talkListPage = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
                 }
                 
-                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _talkListPage<=1) {
                     NSInteger selectedIndex = _selectedDetailIndexPath.row?:0;
                     TalkList *list = _talkList[selectedIndex];
                     NSDictionary *data = @{

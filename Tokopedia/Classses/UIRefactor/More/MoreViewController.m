@@ -604,18 +604,13 @@
         } else if (indexPath.row == 2) {
             [_navigate navigateToInboxReviewFromViewController:self];
         } else if (indexPath.row == 3) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+            [_navigate navigateToInboxResolutionFromViewController:self];
 //            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
 //            controller.hidesBottomBarWhenPushed = YES;
 //            [self.navigationController pushViewController:controller animated:YES];
             
         } else if (indexPath.row  == 4) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-            
+            [_navigate navigateToInboxResolutionFromViewController:self];
         }
         
     }

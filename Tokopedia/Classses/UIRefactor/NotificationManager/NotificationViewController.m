@@ -26,6 +26,7 @@
 #import "InboxRootViewController.h"
 #import "InboxTalkSplitViewController.h"
 #import "InboxReviewSplitViewController.h"
+#import "InboxResolSplitViewController.h"
 
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
 
@@ -356,9 +357,16 @@
             }
             case 3:
             {
-                InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:vc];
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:controller];
+                    
+                } else {
+                    InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:controller];
+                }
                 break;
             }
             default:

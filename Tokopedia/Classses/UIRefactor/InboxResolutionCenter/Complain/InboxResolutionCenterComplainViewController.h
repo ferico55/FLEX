@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ResolutionCenterDetailViewController;
 
 @interface InboxResolutionCenterComplainViewController : UIViewController
 ;
 @property BOOL isMyComplain;
 @property (nonatomic) NSInteger filterReadIndex;
+
+@property (strong, nonatomic)ResolutionCenterDetailViewController *detailViewController;
+
 
 @end

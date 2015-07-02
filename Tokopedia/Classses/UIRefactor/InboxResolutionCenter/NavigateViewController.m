@@ -32,6 +32,9 @@
 #import "InboxReviewViewController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
 
+#import "InboxResolutionCenterTabViewController.h"
+#import "InboxResolSplitViewController.h"
+
 #import "ProductImages.h"
 
 @implementation NavigateViewController
@@ -180,5 +183,16 @@
     }
 }
 
+-(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+        
+    } else {
+        InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
 
 @end

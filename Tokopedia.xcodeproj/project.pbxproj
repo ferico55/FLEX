@@ -17,6 +17,8 @@
 		458C1C491B43930600996351 /* InboxTalkSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458C1C471B43930600996351 /* InboxTalkSplitViewController.xib */; };
 		458C1C4D1B43C5F500996351 /* InboxReviewSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458C1C4B1B43C5F500996351 /* InboxReviewSplitViewController.m */; };
 		458C1C4E1B43C5F500996351 /* InboxReviewSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458C1C4C1B43C5F500996351 /* InboxReviewSplitViewController.xib */; };
+		45AF5E9B1B44E79900C43D89 /* InboxResolSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AF5E991B44E79900C43D89 /* InboxResolSplitViewController.m */; };
+		45AF5E9C1B44E79900C43D89 /* InboxResolSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AF5E9A1B44E79900C43D89 /* InboxResolSplitViewController.xib */; };
 		45AFA30C1B3D7280001D0F40 /* InboxRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AFA30A1B3D7280001D0F40 /* InboxRootViewController.m */; };
 		45AFA30D1B3D7280001D0F40 /* InboxRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AFA30B1B3D7280001D0F40 /* InboxRootViewController.xib */; };
 		45E700001B2FE8C2007D51A0 /* icon_more_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45E7FA481B2FE8C1007D51A0 /* icon_more_active@2x.png */; };
@@ -1510,6 +1512,9 @@
 		458C1C4A1B43C5F500996351 /* InboxReviewSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewSplitViewController.h; sourceTree = "<group>"; };
 		458C1C4B1B43C5F500996351 /* InboxReviewSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewSplitViewController.m; sourceTree = "<group>"; };
 		458C1C4C1B43C5F500996351 /* InboxReviewSplitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewSplitViewController.xib; sourceTree = "<group>"; };
+		45AF5E981B44E79900C43D89 /* InboxResolSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolSplitViewController.h; sourceTree = "<group>"; };
+		45AF5E991B44E79900C43D89 /* InboxResolSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolSplitViewController.m; sourceTree = "<group>"; };
+		45AF5E9A1B44E79900C43D89 /* InboxResolSplitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolSplitViewController.xib; sourceTree = "<group>"; };
 		45AFA3091B3D7280001D0F40 /* InboxRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxRootViewController.h; sourceTree = "<group>"; };
 		45AFA30A1B3D7280001D0F40 /* InboxRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxRootViewController.m; sourceTree = "<group>"; };
 		45AFA30B1B3D7280001D0F40 /* InboxRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxRootViewController.xib; sourceTree = "<group>"; };
@@ -5858,6 +5863,9 @@
 		45E7F60F1B2FE8C0007D51A0 /* InboxResolutionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				45AF5E981B44E79900C43D89 /* InboxResolSplitViewController.h */,
+				45AF5E991B44E79900C43D89 /* InboxResolSplitViewController.m */,
+				45AF5E9A1B44E79900C43D89 /* InboxResolSplitViewController.xib */,
 				45E7F6101B2FE8C0007D51A0 /* Complain */,
 				45E7F61A1B2FE8C0007D51A0 /* InboxResolutionCenterObjectMapping.h */,
 				45E7F61B1B2FE8C0007D51A0 /* InboxResolutionCenterObjectMapping.m */,
@@ -8088,6 +8096,7 @@
 				FCFF56EF1AB6D5CD0076000E /* MainViewController.xib in Resources */,
 				457E095E1B312178007E8143 /* ShopInfoAddressCell.xib in Resources */,
 				45E700081B2FE8C2007D51A0 /* icon_signin_active@2x.png in Resources */,
+				45AF5E9C1B44E79900C43D89 /* InboxResolSplitViewController.xib in Resources */,
 				45E7FE0E1B2FE8C2007D51A0 /* ShopInfoPaymentCell.xib in Resources */,
 				45E7FF391B2FE8C2007D51A0 /* icon_checkmark_green-01.png in Resources */,
 				45E7FE101B2FE8C2007D51A0 /* ShopInfoShipmentCell.xib in Resources */,
@@ -9291,6 +9300,7 @@
 				45E7FBA61B2FE8C2007D51A0 /* ProfileSettingsResult.m in Sources */,
 				45E7FBC21B2FE8C2007D51A0 /* OrderDetail.m in Sources */,
 				45E7FC731B2FE8C2007D51A0 /* TKPDAlertView.m in Sources */,
+				45AF5E9B1B44E79900C43D89 /* InboxResolSplitViewController.m in Sources */,
 				45E7FC601B2FE8C2007D51A0 /* AlertDatePickerView.m in Sources */,
 				45E7FDAC1B2FE8C2007D51A0 /* OrderDetailProductInformationCell.m in Sources */,
 				45E7FCC11B2FE8C2007D51A0 /* TextField.m in Sources */,

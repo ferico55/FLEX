@@ -207,7 +207,6 @@
             [self loadData];
         }
     }
-   
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -234,6 +233,7 @@
             ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
             ((GeneralReviewCell*)cell).timelabel.text = [list.review_create_time isEqualToString:@"0"] ? @"" : list.review_create_time;
             ((GeneralReviewCell*)cell).data = list;
+            ((GeneralReviewCell*)cell).detailVC = _detailViewController;
             
 //            ((GeneralReviewCell*)cell).contentReview.layer.borderColor = [UIColor lightGrayColor].CGColor;
 //            ((GeneralReviewCell*)cell).contentReview.layer.borderWidth = 1.0f;
@@ -607,7 +607,7 @@
             _isNoData = YES;
             _reviewTable.tableFooterView = _noResult;
         }
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _reviewPage<=1) {
             NSInteger row = _selectedDetailIndexPath.row?:0;
             InboxReviewList *list = _reviews[row];
             [_detailViewController replaceDataSelected:list];
@@ -707,7 +707,7 @@
         vc.data = list;
         vc.is_owner = list.review_is_owner;
         vc.indexPath = indexpath;
-        vc.index = [NSString stringWithFormat:@"%ld",(long)row];
+        vc.index = [NSString stringWithFormat:@"%zd",row];
         
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
@@ -729,6 +729,17 @@
     _reportedReviewId = review.review_id;
     _reportController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:_reportController animated:YES];
+}
+
+-(void)tapAtIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedDetailIndexPath = indexPath;
+    NSInteger row = indexPath.row;
+    InboxReviewList *list = _reviews[row];
+    list.review_read_status = @"2";
+    
+    [_detailViewController replaceDataSelected:list];
+    [_reviewTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 #pragma mark - Report Delegate
@@ -890,5 +901,6 @@
 - (void)cancel {
     
 }
+
 
 @end

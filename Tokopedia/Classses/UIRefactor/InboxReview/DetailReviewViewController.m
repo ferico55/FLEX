@@ -13,6 +13,7 @@
 #import "string_inbox_review.h"
 #import "NavigateViewController.h"
 
+#import "ReviewFormViewController.h"
 #import "TokopediaNetworkManager.h"
 
 @interface DetailReviewViewController () <HPGrowingTextViewDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate, UISplitViewControllerDelegate>
@@ -47,7 +48,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIView *userView;
 @property (weak, nonatomic) IBOutlet UIView *productView;
-
 
 @end
 
@@ -115,6 +115,8 @@
     _networkManager.delegate = self;
     _networkManager.tagRequest = 1;
     
+    scrollContent.hidden = YES;
+    
     [self initNavigationBar];
     [self initReviewData];
     
@@ -151,6 +153,22 @@
 - (void)initReviewData {
     _review = _data;
     
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        
+        if([_review.review_id isEqualToString:@"0"] || !_review.review_id) {
+            scrollContent.hidden = YES;
+
+        }
+        else
+        {
+            scrollContent.hidden = NO;
+        }
+    }
+    else
+    {
+        scrollContent.hidden = NO;
+    }
+    
     [_userNamelabel setText:_review.review_user_name];
     [_timelabel setText:_review.review_create_time];
     
@@ -160,7 +178,10 @@
         if([[_userManager getUserId] isEqualToString:@"0"] || ![_userManager isMyShopWithShopId:_review.review_shop_id]) {
             [self hideInputView];
         }
-
+        else
+        {
+            _talkInputView.hidden = NO;
+        }
         _respondView.hidden = YES;
         
     } else {
@@ -170,7 +191,7 @@
         [self hideInputView];
         _reviewCreateTimeLabel.text = _review.review_response.response_create_time;
         
-        NSString *reviewMessage = _review.review_response.response_message;
+        NSString *reviewMessage = _review.review_response.response_message?:@"Belum ada review";
         NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 3.0;
@@ -191,6 +212,7 @@
     {
         [self hideInputView];
     }
+
     
     
     _productNamelabel.text = _review.review_product_name;
@@ -215,6 +237,16 @@
     
     CGRect newFrame = CGRectMake(10, 75, 300, _commentlabel.frame.size.height);
     _commentlabel.frame = newFrame;
+   
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        newFrame.size.width = [[UIScreen mainScreen] bounds].size.width - [(UIViewController*)_masterViewController view].frame.size.width - 20;
+        _commentlabel.frame = newFrame;
+    }
+    
+    CGRect frame = _productView.frame;
+    frame.size.height = _commentlabel.frame.size.height+120;
+    _productView.frame = frame;
+    
 
     if(_commentlabel.frame.size.height > 50) {
         CGFloat diff = _commentlabel.frame.size.height - 50;
@@ -315,7 +347,7 @@
             case 10:
             {
                 _commentReview = _growingtextview.text;
-                _reviewRespondLabel.text = _commentReview;
+                _reviewRespondLabel.text = _commentReview?:@"Belum ada review";
                 _reviewCreateTimeLabel.text = @"Just now";
                 _growingtextview.text = nil;
                 [_growingtextview resignFirstResponder];
@@ -405,7 +437,7 @@
 }
 
 - (void) initTalkInputView {
-    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10;
+    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10 - ((UIViewController*)_masterViewController).view.frame.size.width;
     _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
     //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
@@ -710,6 +742,26 @@
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
 {
     return NO;
+}
+
+-(BOOL)isNeedToPush
+{
+    for (id vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[ReviewFormViewController class]]) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+-(void)dissmissReviewFormBefore
+{
+//    for (id vc in self.navigationController.viewControllers) {
+//        if ([vc isKindOfClass:[ReviewFormViewController class]]) {
+//            [((UIViewController*)vc).navigationController popViewControllerAnimated:NO];
+//            break;
+//        }
+//    }
 }
 
 @end
