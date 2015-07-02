@@ -173,6 +173,7 @@ UIAlertViewDelegate
     UIFont *fontDesc;
     
     RequestMoveTo *_requestMoveTo;
+    UIImage *_tempFirstThumb;
     
 }
 
@@ -249,6 +250,10 @@ UIAlertViewDelegate
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.title = @"Detail Produk";
     fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    
+    if(_loadedData) {
+        
+    }
     
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
@@ -417,6 +422,8 @@ UIAlertViewDelegate
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
         }
         [self.table reloadData];
+    } else {
+        
     }
 }
 
@@ -518,8 +525,8 @@ UIAlertViewDelegate
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
-                [_datatalk setObject:_product.result.statistic.product_sold_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
-                [_datatalk setObject:_product.result.statistic.product_view_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
+                [_datatalk setObject:_product.result.statistic.product_sold_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
+                [_datatalk setObject:_product.result.statistic.product_view_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
                 [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
                 [_datatalk setObject:_product.result.product.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
                 
@@ -614,6 +621,9 @@ UIAlertViewDelegate
             }
             case 20 : {
                 NSString *shopid = _product.result.shop_info.shop_id;
+                if(!shopid) {
+                    return;
+                }
                 if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] isEqualToString:shopid]) {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
@@ -1066,7 +1076,7 @@ UIAlertViewDelegate
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
 {
     ((DetailProductInfoCell*)cell).minorderlabel.text = _product.result.product.product_min_order;
-    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.result.product.product_weight, _product.result.product.product_weight_unit];
+    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.result.product.product_weight?:@"0", _product.result.product.product_weight_unit?:@"gr"];
     ((DetailProductInfoCell*)cell).insurancelabel.text = _product.result.product.product_insurance;
     ((DetailProductInfoCell*)cell).conditionlabel.text = _product.result.product.product_condition;
     [((DetailProductInfoCell*)cell).etalasebutton setTitle:_product.result.product.product_etalase forState:UIControlStateNormal];
@@ -1639,7 +1649,30 @@ UIAlertViewDelegate
     }
     else if(tag == CTagTokopediaNetworkManager)
     {
+        _act.hidden = YES;
+        [_act stopAnimating];
+        [self unsetWarehouse];
         
+        ProductDetail *detailProduct = [ProductDetail new];
+        detailProduct.product_id = [_loadedData objectForKey:@"product_id"];
+        detailProduct.product_name = [_loadedData objectForKey:@"product_name"];
+        detailProduct.product_price = [_loadedData objectForKey:@"product_price"];
+        
+        ShopInfo *shopInfo = [ShopInfo new];
+        shopInfo.shop_name = [_loadedData objectForKey:@"shop_name"];
+        
+        DetailProductResult *result = [DetailProductResult new];
+        result.product = detailProduct;
+        result.shop_info = shopInfo;
+        
+        ProductImages *image = [ProductImages new];
+        image.image_src = [_loadedData objectForKey:@"product_image"];
+        result.product_images = [NSArray arrayWithObject:image];
+        
+        Product *product = [Product new];
+        product.result = result;
+        product.status = @"OK";
+        [self requestprocess:product];
     }
     else if(tag == CTagOtherProduct)
     {
@@ -1749,7 +1782,7 @@ UIAlertViewDelegate
     [_cachecontroller getFileModificationDate];
     _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        [_act startAnimating];
+//        [_act startAnimating];
         _buyButton.enabled = NO;
         [tokopediaNetworkManager doRequest];
     }
@@ -1769,14 +1802,14 @@ UIAlertViewDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(_product.result == nil) {
-            NoResultView *temp = [NoResultView new];
-            [self.view addSubview:temp.view];
-            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
-            _act.hidden = YES;
-            [_act stopAnimating];
-            return;
-        }
+//        if(_product.result == nil) {
+//            NoResultView *temp = [NoResultView new];
+//            [self.view addSubview:temp.view];
+//            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
+//            _act.hidden = YES;
+//            [_act stopAnimating];
+//            return;
+//        }
         
         
         //Set toko tutup
@@ -1787,11 +1820,7 @@ UIAlertViewDelegate
         
         //Set shop in warehouse
         if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE && [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
-            [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
-            [viewContentWarehouse addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)]];
-            viewContentWarehouse.hidden = YES;
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
-            _table.tableHeaderView = _header;
+            [self unsetWarehouse];
         }
         else if([_product.result.product.product_status intValue] == PRODUCT_STATE_PENDING) {
             lblTitleWarehouse.text = CStringTitleBanned;
@@ -1812,6 +1841,15 @@ UIAlertViewDelegate
     }
 }
 
+- (void)unsetWarehouse {
+    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
+    [viewContentWarehouse addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)]];
+    viewContentWarehouse.hidden = YES;
+    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+    _table.tableHeaderView = _header;
+
+}
+
 - (void)requestfailure:(id)object {
     
 }
@@ -1819,9 +1857,14 @@ UIAlertViewDelegate
 -(void)requestprocess:(id)object
 {
     if (object) {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stats = [result objectForKey:@""];
-        _product = stats;
+        if([object isKindOfClass:[Product class]]) {
+            _product = object;
+        } else {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stats = [result objectForKey:@""];
+            _product = stats;
+        }
+
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
         _formattedProductTitle = _product.result.product.product_name;
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
@@ -2125,7 +2168,7 @@ UIAlertViewDelegate
 
 - (IBAction)actionShare:(id)sender
 {
-    if (_product) {
+    if (_product.result.product.product_url) {
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
                            _formattedProductTitle,
                            _product.result.shop_info.shop_name];
@@ -2190,14 +2233,14 @@ UIAlertViewDelegate
     
     //Update header view
     _pricelabel.text = _product.result.product.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count];
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count?:@"0"];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count?:@"0"];
     
-    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count] forState:UIControlStateNormal];
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count?:@"0"] forState:UIControlStateNormal];
     [_reviewbutton.layer setBorderWidth:1];
     [_reviewbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk_count] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk_count?:@"0"] forState:UIControlStateNormal];
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
@@ -2214,8 +2257,9 @@ UIAlertViewDelegate
     [[_imagescrollview subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_headerimages removeAllObjects];
     
-    for(int i = 0; i< images.count; i++)
-    {
+
+    
+    for(int i = 0; i< images.count; i++) {
         CGFloat y = i * self.view.frame.size.width;
         
         ProductImages *image = images[i];
@@ -2227,11 +2271,17 @@ UIAlertViewDelegate
         
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
+        if(i == 0) {
+            thumb.image = _tempFirstThumb;
+        }
         
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
+//            if([[request.URL absoluteString] isEqualToString:[_loadedData objectForKey:@"product_image"]]) {
+                _tempFirstThumb = image;
+//            }
             [thumb setImage:image];
             
 #pragma clang diagnostic pop
@@ -2279,7 +2329,7 @@ UIAlertViewDelegate
     NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
     
     NSMutableAttributedString *myString= [[NSMutableAttributedString alloc]initWithAttributedString:attachmentString ];
-    NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.result.shop_info.shop_location attributes:nil];
+    NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.result.shop_info.shop_location?:@"" attributes:nil];
     [myString appendAttributedString:newAttString];
     
     _shoplocation.attributedText = myString;
@@ -2607,7 +2657,9 @@ UIAlertViewDelegate
 
 - (void)tapShop {
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    
+    if(!_product.result.shop_info.shop_id) {
+        return;
+    }
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
                        kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
                        kTKPD_AUTHKEY:_auth?:[NSNull null]};

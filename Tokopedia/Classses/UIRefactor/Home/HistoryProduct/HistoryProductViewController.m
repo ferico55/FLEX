@@ -17,6 +17,7 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "NoResultView.h"
+#import "NavigateViewController.h"
 
 @interface HistoryProductViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
@@ -476,10 +477,14 @@
     NSInteger index = indexPath.section+2*(indexPath.row);
     HistoryProductList *list = _product[index];
 
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
-    
-    [self.delegate pushViewController:vc];
+//    DetailProductViewController *vc = [DetailProductViewController new];
+//    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
+//    
+//    [self.delegate pushViewController:vc];
+    NavigateViewController *navigateController = [NavigateViewController new];
+
+    //    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+    [navigateController navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:[NSString stringWithFormat:@"%@", list.product_id] withImageurl:list.product_image withShopName:list.shop_name];
 }
 
 

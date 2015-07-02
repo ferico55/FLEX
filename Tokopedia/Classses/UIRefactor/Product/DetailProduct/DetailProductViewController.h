@@ -18,6 +18,7 @@
     IBOutlet NSLayoutConstraint *constraintHeightWarehouse;
 }
 @property (strong,nonatomic) NSDictionary *data;
+@property (strong,nonatomic) NSDictionary *loadedData;
 
 - (void)setButtonFav;
 - (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment;
