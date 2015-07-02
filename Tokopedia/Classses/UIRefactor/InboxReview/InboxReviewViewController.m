@@ -82,6 +82,7 @@
     ReportViewController *_reportController;
     NSString *_reportedReviewId;
     NoResultView *_noResult;
+    TAGContainer *_gtmContainer;
 }
 
 #pragma mark - Initialization
@@ -159,6 +160,10 @@
     _userManager = [UserAuthentificationManager new];
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
+    
+    // GTM
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
     
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
@@ -389,7 +394,8 @@
 
 #pragma mark - Request + Restkit Init
 - (void)configureRestkit {
-    _objectManager = [RKObjectManager sharedClient];
+//    _objectManager = [RKObjectManager sharedClient];
+    _objectManager =  [RKObjectManager sharedClient:[_gtmContainer stringForKey:GTMKeyInboxReviewBase]];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxReview class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
@@ -461,7 +467,7 @@
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:INBOX_REVIEW_API_PATH
+                                                                                             pathPattern:[_gtmContainer stringForKey:GTMKeyInboxReviewPost]
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
@@ -485,7 +491,7 @@
     _requestCount++;
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:INBOX_REVIEW_API_PATH
+                                                                      path:[_gtmContainer stringForKey:GTMKeyInboxReviewPost]
                                                                 parameters:[param encrypt]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
