@@ -40,6 +40,8 @@
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
 @property (weak, nonatomic) IBOutlet UILabel *warningLabel;
+@property (weak, nonatomic) IBOutlet UIView *unreadBorderView;
+@property (weak, nonatomic) IBOutlet UIImageView *unreadIconImageView;
 
 +(id)newCell;
 
