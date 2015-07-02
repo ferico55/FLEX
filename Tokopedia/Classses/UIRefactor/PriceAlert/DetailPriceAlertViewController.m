@@ -534,7 +534,7 @@
 
 
     UILabel *lblLocation = (UILabel *)[tempViewContent viewWithTag:CTagLocation];
-    lblLocation.text = @"Jakarta";
+    lblLocation.text = catalogShop.shop_location;
     
     //Akurasi
     UIView *viewAkurasi = (UIView *)[tempViewContent viewWithTag:CTagAkurasi];

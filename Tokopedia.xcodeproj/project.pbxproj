@@ -162,9 +162,6 @@
 		8500609F1B439C8100F556BA /* NotificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500580C1B439C7A00F556BA /* NotificationResult.m */; };
 		850060A01B439C8100F556BA /* NotificationSales.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500580E1B439C7A00F556BA /* NotificationSales.m */; };
 		850060A11B439C8100F556BA /* Paging.m in Sources */ = {isa = PBXBuildFile; fileRef = 850058121B439C7A00F556BA /* Paging.m */; };
-		850060A21B439C8100F556BA /* DetailPriceAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 850058151B439C7A00F556BA /* DetailPriceAlert.m */; };
-		850060A31B439C8100F556BA /* PriceAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 850058171B439C7A00F556BA /* PriceAlert.m */; };
-		850060A41B439C8100F556BA /* PriceAlertResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 850058191B439C7A00F556BA /* PriceAlertResult.m */; };
 		850060A51B439C8100F556BA /* ProductFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500581C1B439C7A00F556BA /* ProductFeed.m */; };
 		850060A61B439C8100F556BA /* ProductFeedList.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500581E1B439C7A00F556BA /* ProductFeedList.m */; };
 		850060A71B439C8100F556BA /* ProductFeedResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 850058201B439C7A00F556BA /* ProductFeedResult.m */; };
@@ -619,17 +616,6 @@
 		850062681B439C8200F556BA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BAE1B439C7D00F556BA /* NotificationManager.m */; };
 		850062691B439C8200F556BA /* NotificationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BB01B439C7D00F556BA /* NotificationRequest.m */; };
 		8500626A1B439C8200F556BA /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BB31B439C7D00F556BA /* NotificationViewController.m */; };
-		8500626B1B439C8200F556BA /* AlertPriceNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BB61B439C7D00F556BA /* AlertPriceNotificationViewController.m */; };
-		8500626C1B439C8200F556BA /* AlertPriceNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85005BB71B439C7D00F556BA /* AlertPriceNotificationViewController.xib */; };
-		8500626D1B439C8200F556BA /* DepartmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BB91B439C7D00F556BA /* DepartmentTableViewController.m */; };
-		8500626E1B439C8200F556BA /* DetailPriceAlertTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BBB1B439C7D00F556BA /* DetailPriceAlertTableViewCell.m */; };
-		8500626F1B439C8200F556BA /* DetailPriceAlertTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85005BBC1B439C7D00F556BA /* DetailPriceAlertTableViewCell.xib */; };
-		850062701B439C8200F556BA /* DetailPriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BBE1B439C7D00F556BA /* DetailPriceAlertViewController.m */; };
-		850062711B439C8200F556BA /* DetailPriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85005BBF1B439C7D00F556BA /* DetailPriceAlertViewController.xib */; };
-		850062721B439C8200F556BA /* PriceAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BC11B439C7D00F556BA /* PriceAlertCell.m */; };
-		850062731B439C8200F556BA /* PriceAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85005BC21B439C7D00F556BA /* PriceAlertCell.xib */; };
-		850062741B439C8200F556BA /* PriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BC41B439C7D00F556BA /* PriceAlertViewController.m */; };
-		850062751B439C8200F556BA /* PriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85005BC51B439C7D00F556BA /* PriceAlertViewController.xib */; };
 		850062761B439C8200F556BA /* DetailProductDescriptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BCA1B439C7D00F556BA /* DetailProductDescriptionCell.m */; };
 		850062771B439C8200F556BA /* DetailProductDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85005BCB1B439C7D00F556BA /* DetailProductDescriptionCell.xib */; };
 		850062781B439C8200F556BA /* DetailProductInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85005BCD1B439C7D00F556BA /* DetailProductInfoCell.m */; };
@@ -1448,6 +1434,20 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		85C947E91B453E1200B713FB /* AlertPriceNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947D81B453E1200B713FB /* AlertPriceNotificationViewController.m */; };
+		85C947EA1B453E1200B713FB /* AlertPriceNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C947D91B453E1200B713FB /* AlertPriceNotificationViewController.xib */; };
+		85C947EB1B453E1200B713FB /* DepartmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947DB1B453E1200B713FB /* DepartmentTableViewController.m */; };
+		85C947EC1B453E1200B713FB /* DetailPriceAlertTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947DD1B453E1200B713FB /* DetailPriceAlertTableViewCell.m */; };
+		85C947ED1B453E1200B713FB /* DetailPriceAlertTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C947DE1B453E1200B713FB /* DetailPriceAlertTableViewCell.xib */; };
+		85C947EE1B453E1200B713FB /* DetailPriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947E01B453E1200B713FB /* DetailPriceAlertViewController.m */; };
+		85C947EF1B453E1200B713FB /* DetailPriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C947E11B453E1200B713FB /* DetailPriceAlertViewController.xib */; };
+		85C947F01B453E1200B713FB /* PriceAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947E31B453E1200B713FB /* PriceAlertCell.m */; };
+		85C947F11B453E1200B713FB /* PriceAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C947E41B453E1200B713FB /* PriceAlertCell.xib */; };
+		85C947F21B453E1200B713FB /* PriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947E61B453E1200B713FB /* PriceAlertViewController.m */; };
+		85C947F31B453E1200B713FB /* PriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C947E71B453E1200B713FB /* PriceAlertViewController.xib */; };
+		85C947FA1B453E2500B713FB /* DetailPriceAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947F51B453E2500B713FB /* DetailPriceAlert.m */; };
+		85C947FB1B453E2500B713FB /* PriceAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947F71B453E2500B713FB /* PriceAlert.m */; };
+		85C947FC1B453E2500B713FB /* PriceAlertResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C947F91B453E2500B713FB /* PriceAlertResult.m */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -1794,12 +1794,6 @@
 		8500580F1B439C7A00F556BA /* string_notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_notification.h; sourceTree = "<group>"; };
 		850058111B439C7A00F556BA /* Paging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paging.h; sourceTree = "<group>"; };
 		850058121B439C7A00F556BA /* Paging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paging.m; sourceTree = "<group>"; };
-		850058141B439C7A00F556BA /* DetailPriceAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlert.h; sourceTree = "<group>"; };
-		850058151B439C7A00F556BA /* DetailPriceAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlert.m; sourceTree = "<group>"; };
-		850058161B439C7A00F556BA /* PriceAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlert.h; sourceTree = "<group>"; };
-		850058171B439C7A00F556BA /* PriceAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlert.m; sourceTree = "<group>"; };
-		850058181B439C7A00F556BA /* PriceAlertResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertResult.h; sourceTree = "<group>"; };
-		850058191B439C7A00F556BA /* PriceAlertResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertResult.m; sourceTree = "<group>"; };
 		8500581B1B439C7A00F556BA /* ProductFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductFeed.h; sourceTree = "<group>"; };
 		8500581C1B439C7A00F556BA /* ProductFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductFeed.m; sourceTree = "<group>"; };
 		8500581D1B439C7A00F556BA /* ProductFeedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductFeedList.h; sourceTree = "<group>"; };
@@ -2616,24 +2610,6 @@
 		85005BB11B439C7D00F556BA /* NotificationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationState.h; sourceTree = "<group>"; };
 		85005BB21B439C7D00F556BA /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
 		85005BB31B439C7D00F556BA /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
-		85005BB51B439C7D00F556BA /* AlertPriceNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertPriceNotificationViewController.h; sourceTree = "<group>"; };
-		85005BB61B439C7D00F556BA /* AlertPriceNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertPriceNotificationViewController.m; sourceTree = "<group>"; };
-		85005BB71B439C7D00F556BA /* AlertPriceNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertPriceNotificationViewController.xib; sourceTree = "<group>"; };
-		85005BB81B439C7D00F556BA /* DepartmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentTableViewController.h; sourceTree = "<group>"; };
-		85005BB91B439C7D00F556BA /* DepartmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentTableViewController.m; sourceTree = "<group>"; };
-		85005BBA1B439C7D00F556BA /* DetailPriceAlertTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertTableViewCell.h; sourceTree = "<group>"; };
-		85005BBB1B439C7D00F556BA /* DetailPriceAlertTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertTableViewCell.m; sourceTree = "<group>"; };
-		85005BBC1B439C7D00F556BA /* DetailPriceAlertTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertTableViewCell.xib; sourceTree = "<group>"; };
-		85005BBD1B439C7D00F556BA /* DetailPriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertViewController.h; sourceTree = "<group>"; };
-		85005BBE1B439C7D00F556BA /* DetailPriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertViewController.m; sourceTree = "<group>"; };
-		85005BBF1B439C7D00F556BA /* DetailPriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertViewController.xib; sourceTree = "<group>"; };
-		85005BC01B439C7D00F556BA /* PriceAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertCell.h; sourceTree = "<group>"; };
-		85005BC11B439C7D00F556BA /* PriceAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertCell.m; sourceTree = "<group>"; };
-		85005BC21B439C7D00F556BA /* PriceAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertCell.xib; sourceTree = "<group>"; };
-		85005BC31B439C7D00F556BA /* PriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertViewController.h; sourceTree = "<group>"; };
-		85005BC41B439C7D00F556BA /* PriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertViewController.m; sourceTree = "<group>"; };
-		85005BC51B439C7D00F556BA /* PriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertViewController.xib; sourceTree = "<group>"; };
-		85005BC61B439C7D00F556BA /* string_price_alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_price_alert.h; sourceTree = "<group>"; };
 		85005BC91B439C7D00F556BA /* DetailProductDescriptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailProductDescriptionCell.h; sourceTree = "<group>"; };
 		85005BCA1B439C7D00F556BA /* DetailProductDescriptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailProductDescriptionCell.m; sourceTree = "<group>"; };
 		85005BCB1B439C7D00F556BA /* DetailProductDescriptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductDescriptionCell.xib; sourceTree = "<group>"; };
@@ -3651,6 +3627,30 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		85C947D71B453E1200B713FB /* AlertPriceNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertPriceNotificationViewController.h; sourceTree = "<group>"; };
+		85C947D81B453E1200B713FB /* AlertPriceNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertPriceNotificationViewController.m; sourceTree = "<group>"; };
+		85C947D91B453E1200B713FB /* AlertPriceNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertPriceNotificationViewController.xib; sourceTree = "<group>"; };
+		85C947DA1B453E1200B713FB /* DepartmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentTableViewController.h; sourceTree = "<group>"; };
+		85C947DB1B453E1200B713FB /* DepartmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentTableViewController.m; sourceTree = "<group>"; };
+		85C947DC1B453E1200B713FB /* DetailPriceAlertTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertTableViewCell.h; sourceTree = "<group>"; };
+		85C947DD1B453E1200B713FB /* DetailPriceAlertTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertTableViewCell.m; sourceTree = "<group>"; };
+		85C947DE1B453E1200B713FB /* DetailPriceAlertTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertTableViewCell.xib; sourceTree = "<group>"; };
+		85C947DF1B453E1200B713FB /* DetailPriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertViewController.h; sourceTree = "<group>"; };
+		85C947E01B453E1200B713FB /* DetailPriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertViewController.m; sourceTree = "<group>"; };
+		85C947E11B453E1200B713FB /* DetailPriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertViewController.xib; sourceTree = "<group>"; };
+		85C947E21B453E1200B713FB /* PriceAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertCell.h; sourceTree = "<group>"; };
+		85C947E31B453E1200B713FB /* PriceAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertCell.m; sourceTree = "<group>"; };
+		85C947E41B453E1200B713FB /* PriceAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertCell.xib; sourceTree = "<group>"; };
+		85C947E51B453E1200B713FB /* PriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertViewController.h; sourceTree = "<group>"; };
+		85C947E61B453E1200B713FB /* PriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertViewController.m; sourceTree = "<group>"; };
+		85C947E71B453E1200B713FB /* PriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertViewController.xib; sourceTree = "<group>"; };
+		85C947E81B453E1200B713FB /* string_price_alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_price_alert.h; sourceTree = "<group>"; };
+		85C947F41B453E2500B713FB /* DetailPriceAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlert.h; sourceTree = "<group>"; };
+		85C947F51B453E2500B713FB /* DetailPriceAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlert.m; sourceTree = "<group>"; };
+		85C947F61B453E2500B713FB /* PriceAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlert.h; sourceTree = "<group>"; };
+		85C947F71B453E2500B713FB /* PriceAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlert.m; sourceTree = "<group>"; };
+		85C947F81B453E2500B713FB /* PriceAlertResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertResult.h; sourceTree = "<group>"; };
+		85C947F91B453E2500B713FB /* PriceAlertResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertResult.m; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -4390,12 +4390,12 @@
 		850058131B439C7A00F556BA /* PriceAlert */ = {
 			isa = PBXGroup;
 			children = (
-				850058141B439C7A00F556BA /* DetailPriceAlert.h */,
-				850058151B439C7A00F556BA /* DetailPriceAlert.m */,
-				850058161B439C7A00F556BA /* PriceAlert.h */,
-				850058171B439C7A00F556BA /* PriceAlert.m */,
-				850058181B439C7A00F556BA /* PriceAlertResult.h */,
-				850058191B439C7A00F556BA /* PriceAlertResult.m */,
+				85C947F41B453E2500B713FB /* DetailPriceAlert.h */,
+				85C947F51B453E2500B713FB /* DetailPriceAlert.m */,
+				85C947F61B453E2500B713FB /* PriceAlert.h */,
+				85C947F71B453E2500B713FB /* PriceAlert.m */,
+				85C947F81B453E2500B713FB /* PriceAlertResult.h */,
+				85C947F91B453E2500B713FB /* PriceAlertResult.m */,
 			);
 			path = PriceAlert;
 			sourceTree = "<group>";
@@ -6059,24 +6059,24 @@
 		85005BB41B439C7D00F556BA /* PriceAlert */ = {
 			isa = PBXGroup;
 			children = (
-				85005BB51B439C7D00F556BA /* AlertPriceNotificationViewController.h */,
-				85005BB61B439C7D00F556BA /* AlertPriceNotificationViewController.m */,
-				85005BB71B439C7D00F556BA /* AlertPriceNotificationViewController.xib */,
-				85005BB81B439C7D00F556BA /* DepartmentTableViewController.h */,
-				85005BB91B439C7D00F556BA /* DepartmentTableViewController.m */,
-				85005BBA1B439C7D00F556BA /* DetailPriceAlertTableViewCell.h */,
-				85005BBB1B439C7D00F556BA /* DetailPriceAlertTableViewCell.m */,
-				85005BBC1B439C7D00F556BA /* DetailPriceAlertTableViewCell.xib */,
-				85005BBD1B439C7D00F556BA /* DetailPriceAlertViewController.h */,
-				85005BBE1B439C7D00F556BA /* DetailPriceAlertViewController.m */,
-				85005BBF1B439C7D00F556BA /* DetailPriceAlertViewController.xib */,
-				85005BC01B439C7D00F556BA /* PriceAlertCell.h */,
-				85005BC11B439C7D00F556BA /* PriceAlertCell.m */,
-				85005BC21B439C7D00F556BA /* PriceAlertCell.xib */,
-				85005BC31B439C7D00F556BA /* PriceAlertViewController.h */,
-				85005BC41B439C7D00F556BA /* PriceAlertViewController.m */,
-				85005BC51B439C7D00F556BA /* PriceAlertViewController.xib */,
-				85005BC61B439C7D00F556BA /* string_price_alert.h */,
+				85C947D71B453E1200B713FB /* AlertPriceNotificationViewController.h */,
+				85C947D81B453E1200B713FB /* AlertPriceNotificationViewController.m */,
+				85C947D91B453E1200B713FB /* AlertPriceNotificationViewController.xib */,
+				85C947DA1B453E1200B713FB /* DepartmentTableViewController.h */,
+				85C947DB1B453E1200B713FB /* DepartmentTableViewController.m */,
+				85C947DC1B453E1200B713FB /* DetailPriceAlertTableViewCell.h */,
+				85C947DD1B453E1200B713FB /* DetailPriceAlertTableViewCell.m */,
+				85C947DE1B453E1200B713FB /* DetailPriceAlertTableViewCell.xib */,
+				85C947DF1B453E1200B713FB /* DetailPriceAlertViewController.h */,
+				85C947E01B453E1200B713FB /* DetailPriceAlertViewController.m */,
+				85C947E11B453E1200B713FB /* DetailPriceAlertViewController.xib */,
+				85C947E21B453E1200B713FB /* PriceAlertCell.h */,
+				85C947E31B453E1200B713FB /* PriceAlertCell.m */,
+				85C947E41B453E1200B713FB /* PriceAlertCell.xib */,
+				85C947E51B453E1200B713FB /* PriceAlertViewController.h */,
+				85C947E61B453E1200B713FB /* PriceAlertViewController.m */,
+				85C947E71B453E1200B713FB /* PriceAlertViewController.xib */,
+				85C947E81B453E1200B713FB /* string_price_alert.h */,
 			);
 			path = PriceAlert;
 			sourceTree = "<group>";
@@ -7989,7 +7989,6 @@
 				850063BE1B439C8200F556BA /* balloon_read_left.png in Resources */,
 				850065021B439C8200F556BA /* icon_category_active@2x.png in Resources */,
 				8500633D1B439C8200F556BA /* ShopReviewPageViewController.xib in Resources */,
-				850062711B439C8200F556BA /* DetailPriceAlertViewController.xib in Resources */,
 				8500647A1B439C8200F556BA /* icon_info@2x.png in Resources */,
 				8500628D1B439C8200F556BA /* ProductTalkCell.xib in Resources */,
 				850065641B439C8200F556BA /* icon_more_active@2x.png in Resources */,
@@ -8012,7 +8011,6 @@
 				850063D31B439C8200F556BA /* icon_17.png in Resources */,
 				8500644C1B439C8200F556BA /* icon_checkmark_green@2x-01.png in Resources */,
 				850062A21B439C8200F556BA /* ProfileContactViewController.xib in Resources */,
-				8500626C1B439C8200F556BA /* AlertPriceNotificationViewController.xib in Resources */,
 				850064831B439C8200F556BA /* icon_login_active.png in Resources */,
 				850064B41B439C8200F556BA /* icon_retur@2x.png in Resources */,
 				8500627F1B439C8200F556BA /* DetailProductWholesaleCell.xib in Resources */,
@@ -8034,6 +8032,7 @@
 				850063D51B439C8200F556BA /* icon_18.png in Resources */,
 				850062001B439C8200F556BA /* GeneralTableViewController.xib in Resources */,
 				850064691B439C8200F556BA /* icon_green.png in Resources */,
+				85C947ED1B453E1200B713FB /* DetailPriceAlertTableViewCell.xib in Resources */,
 				8500618F1B439C8200F556BA /* CameraAlbumListViewController.xib in Resources */,
 				850063EC1B439C8200F556BA /* icon_9.png in Resources */,
 				850064D21B439C8200F556BA /* icon_shop_unfavorite@2x.png in Resources */,
@@ -8112,7 +8111,6 @@
 				850062421B439C8200F556BA /* InboxTalkCell.xib in Resources */,
 				850064E61B439C8200F556BA /* icon_toped_loading_grey-02@2x.png in Resources */,
 				850065811B439C8200F556BA /* icon_komplain.png in Resources */,
-				8500626F1B439C8200F556BA /* DetailPriceAlertTableViewCell.xib in Resources */,
 				850064EA1B439C8200F556BA /* icon_track_grey@2x.png in Resources */,
 				850062D61B439C8200F556BA /* ChangeReceiptNumberViewController.xib in Resources */,
 				850064151B439C8200F556BA /* icon_calendar@2x.png in Resources */,
@@ -8137,7 +8135,6 @@
 				850063561B439C8200F556BA /* MaintenanceViewController.xib in Resources */,
 				850064D01B439C8200F556BA /* icon_shop_setting_2x.png in Resources */,
 				FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */,
-				850062731B439C8200F556BA /* PriceAlertCell.xib in Resources */,
 				850064471B439C8200F556BA /* icon_checkmark.png in Resources */,
 				850064591B439C8200F556BA /* icon_diskusi_comment_grey.png in Resources */,
 				850065681B439C8200F556BA /* icon_search_active@2x.png in Resources */,
@@ -8228,6 +8225,7 @@
 				850061FC1B439C8200F556BA /* GeneralTalkCommentCell.xib in Resources */,
 				8500635A1B439C8200F556BA /* TrackOrderHistoryCell.xib in Resources */,
 				850061A71B439C8200F556BA /* CatalogSellerCell.xib in Resources */,
+				85C947EF1B453E1200B713FB /* DetailPriceAlertViewController.xib in Resources */,
 				850063F11B439C8200F556BA /* tab_btm_shadow@2x.png in Resources */,
 				850064321B439C8200F556BA /* icon_20@3x.png in Resources */,
 				850062231B439C8200F556BA /* InboxMessageViewController.xib in Resources */,
@@ -8332,7 +8330,9 @@
 				8500647F1B439C8200F556BA /* icon_lock_grey.png in Resources */,
 				850064C21B439C8200F556BA /* icon_shop.png in Resources */,
 				8500645A1B439C8200F556BA /* icon_diskusi_comment_grey@2x.png in Resources */,
+				85C947F11B453E1200B713FB /* PriceAlertCell.xib in Resources */,
 				8500654A1B439C8200F556BA /* ic_cart.png in Resources */,
+				85C947EA1B453E1200B713FB /* AlertPriceNotificationViewController.xib in Resources */,
 				8500646C1B439C8200F556BA /* icon_grid_satu.png in Resources */,
 				8500628F1B439C8200F556BA /* ProductTalkViewController.xib in Resources */,
 				850063EA1B439C8200F556BA /* icon_8.png in Resources */,
@@ -8571,7 +8571,6 @@
 				850065591B439C8200F556BA /* icon_category@2x.png in Resources */,
 				850064561B439C8200F556BA /* icon_correct@2x.png in Resources */,
 				8500654D1B439C8200F556BA /* ic_category@2x.png in Resources */,
-				850062751B439C8200F556BA /* PriceAlertViewController.xib in Resources */,
 				850064D91B439C8200F556BA /* icon_sold@3x.png in Resources */,
 				850064D51B439C8200F556BA /* icon_signin_active.png in Resources */,
 				850063371B439C8200F556BA /* ShopNotesPageViewController.xib in Resources */,
@@ -8619,6 +8618,7 @@
 				850061F21B439C8200F556BA /* GeneralProductReviewCell.xib in Resources */,
 				850064F81B439C8200F556BA /* icon_view@2x.png in Resources */,
 				850061AD1B439C8200F556BA /* CategoryViewController.xib in Resources */,
+				85C947F31B453E1200B713FB /* PriceAlertViewController.xib in Resources */,
 				850064761B439C8200F556BA /* icon_home_active@2x (deleted c926c3cec83acdad76005f4c6bce9d3c).png in Resources */,
 				850063A91B439C8200F556BA /* ProfileBiodataCell.xib in Resources */,
 				850064361B439C8200F556BA /* icon_4@3x.png in Resources */,
@@ -8867,7 +8867,6 @@
 				850061651B439C8200F556BA /* UploadImageResult.m in Sources */,
 				8500636D1B439C8200F556BA /* TransactionCartWebViewViewController.m in Sources */,
 				850060BC1B439C8200F556BA /* AddressFormList.m in Sources */,
-				850060A41B439C8100F556BA /* PriceAlertResult.m in Sources */,
 				8500600B1B439C8100F556BA /* DBManager.m in Sources */,
 				850061021B439C8200F556BA /* Shop.m in Sources */,
 				850060961B439C8100F556BA /* InboxTicketResult.m in Sources */,
@@ -8913,7 +8912,6 @@
 				850060801B439C8100F556BA /* ResolutionBy.m in Sources */,
 				850061071B439C8200F556BA /* AddProductValidation.m in Sources */,
 				8500602C1B439C8100F556BA /* DepositFormBankAccountList.m in Sources */,
-				850062741B439C8200F556BA /* PriceAlertViewController.m in Sources */,
 				8500605A1B439C8100F556BA /* Favorited.m in Sources */,
 				850061231B439C8200F556BA /* TransactionATCForm.m in Sources */,
 				8500609F1B439C8100F556BA /* NotificationResult.m in Sources */,
@@ -8956,7 +8954,6 @@
 				850061671B439C8200F556BA /* WishListObjectList.m in Sources */,
 				8500625C1B439C8200F556BA /* MyShopNoteDetailViewController.m in Sources */,
 				8500613E1B439C8200F556BA /* TransactionVoucherResult.m in Sources */,
-				850060A31B439C8100F556BA /* PriceAlert.m in Sources */,
 				850061FD1B439C8200F556BA /* ReportViewController.m in Sources */,
 				850060711B439C8100F556BA /* InboxMessageAction.m in Sources */,
 				850060701B439C8100F556BA /* InboxMessage.m in Sources */,
@@ -8978,7 +8975,9 @@
 				850060D61B439C8200F556BA /* OrderDetail.m in Sources */,
 				8500623F1B439C8200F556BA /* ReviewFormViewController.m in Sources */,
 				850060E71B439C8200F556BA /* SearchResult.m in Sources */,
+				85C947EB1B453E1200B713FB /* DepartmentTableViewController.m in Sources */,
 				850062541B439C8200F556BA /* MyShopEtalaseEditViewController.m in Sources */,
+				85C947F21B453E1200B713FB /* PriceAlertViewController.m in Sources */,
 				8500635D1B439C8200F556BA /* TransactionATCViewController.m in Sources */,
 				850061AC1B439C8200F556BA /* CategoryViewController.m in Sources */,
 				850061011B439C8200F556BA /* ShipmentPackage.m in Sources */,
@@ -9129,7 +9128,6 @@
 				850060741B439C8100F556BA /* InboxMessageDetailBetween.m in Sources */,
 				850063511B439C8200F556BA /* ProductTalkDetailViewController.m in Sources */,
 				8500634A1B439C8200F556BA /* FilterViewController.m in Sources */,
-				8500626B1B439C8200F556BA /* AlertPriceNotificationViewController.m in Sources */,
 				850060C41B439C8200F556BA /* NotificationForm.m in Sources */,
 				850063091B439C8200F556BA /* SettingUserPhoneViewController.m in Sources */,
 				850060BB1B439C8200F556BA /* AddressForm.m in Sources */,
@@ -9226,6 +9224,7 @@
 				850060AA1B439C8100F556BA /* ProductTalkForm.m in Sources */,
 				850063991B439C8200F556BA /* TxOrderConfirmedButtonCell.m in Sources */,
 				850061471B439C8200F556BA /* TxOrderConfirmedResult.m in Sources */,
+				85C947EE1B453E1200B713FB /* DetailPriceAlertViewController.m in Sources */,
 				850061BD1B439C8200F556BA /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				850061601B439C8200F556BA /* GenerateHostResult.m in Sources */,
 				8500629C1B439C8200F556BA /* ProductListMyShopFilterViewController.m in Sources */,
@@ -9237,7 +9236,6 @@
 				850060F51B439C8200F556BA /* NoteDetail.m in Sources */,
 				850061CD1B439C8200F556BA /* NoResultView.m in Sources */,
 				850060BD1B439C8200F556BA /* AddressFormResult.m in Sources */,
-				850062701B439C8200F556BA /* DetailPriceAlertViewController.m in Sources */,
 				850061381B439C8200F556BA /* TransactionSummary.m in Sources */,
 				850061301B439C8200F556BA /* TransactionEditAddressFormResult.m in Sources */,
 				850060091B439C8100F556BA /* URLCacheConnection.m in Sources */,
@@ -9245,6 +9243,7 @@
 				850060791B439C8100F556BA /* ResolutionAction.m in Sources */,
 				850062311B439C8200F556BA /* ResolutionCenterDetailCell.m in Sources */,
 				850063261B439C8200F556BA /* ShopInfoViewController.m in Sources */,
+				85C947EC1B453E1200B713FB /* DetailPriceAlertTableViewCell.m in Sources */,
 				850062111B439C8200F556BA /* HotlistCell.m in Sources */,
 				850060331B439C8100F556BA /* CatalogImages.m in Sources */,
 				8500609D1B439C8100F556BA /* NotificationInbox.m in Sources */,
@@ -9254,7 +9253,6 @@
 				850062E71B439C8200F556BA /* SearchResultShopViewController.m in Sources */,
 				8500624A1B439C8200F556BA /* WebViewController.m in Sources */,
 				850061681B439C8200F556BA /* WishListObjectResult.m in Sources */,
-				8500626E1B439C8200F556BA /* DetailPriceAlertTableViewCell.m in Sources */,
 				850060F11B439C8200F556BA /* OpenShopPictureResult.m in Sources */,
 				850061D61B439C8200F556BA /* TextField.m in Sources */,
 				850060ED1B439C8200F556BA /* ShipmentResult.m in Sources */,
@@ -9268,7 +9266,6 @@
 				850060191B439C8100F556BA /* TKPDSecureStorage.m in Sources */,
 				850062AF1B439C8200F556BA /* ReputationPageViewController.m in Sources */,
 				850062AB1B439C8200F556BA /* ReputationMyProductViewController.m in Sources */,
-				850062721B439C8200F556BA /* PriceAlertCell.m in Sources */,
 				850063481B439C8200F556BA /* FilterLocationViewController.m in Sources */,
 				8500635F1B439C8200F556BA /* TransactionCartCell.m in Sources */,
 				850060341B439C8100F556BA /* CatalogInfo.m in Sources */,
@@ -9285,9 +9282,10 @@
 				850061211B439C8200F556BA /* TransactionAddressShippingForm.m in Sources */,
 				8500627A1B439C8200F556BA /* DetailProductOtherView.m in Sources */,
 				850060221B439C8100F556BA /* CreatePasswordResult.m in Sources */,
+				85C947FA1B453E2500B713FB /* DetailPriceAlert.m in Sources */,
+				85C947FB1B453E2500B713FB /* PriceAlert.m in Sources */,
 				850061191B439C8200F556BA /* Track.m in Sources */,
 				850063421B439C8200F556BA /* FilterConditionViewController.m in Sources */,
-				850060A21B439C8100F556BA /* DetailPriceAlert.m in Sources */,
 				850061E61B439C8200F556BA /* GeneralAlertCell.m in Sources */,
 				8500629E1B439C8200F556BA /* ProductListMyShopViewController.m in Sources */,
 				8500603E1B439C8100F556BA /* Breadcrumb.m in Sources */,
@@ -9317,6 +9315,7 @@
 				8500614C1B439C8200F556BA /* TxOrderConfirmedDetailResult.m in Sources */,
 				850060671B439C8100F556BA /* DepartmentChild.m in Sources */,
 				8500631B1B439C8200F556BA /* ShopDescriptionView.m in Sources */,
+				85C947E91B453E1200B713FB /* AlertPriceNotificationViewController.m in Sources */,
 				8500601C1B439C8100F556BA /* UITextView+UITextView_Placeholder.m in Sources */,
 				850060781B439C8100F556BA /* InboxMessageResult.m in Sources */,
 				850060C31B439C8200F556BA /* BankAccountGetDefaultFormResult.m in Sources */,
@@ -9367,7 +9366,6 @@
 				850060B51B439C8200F556BA /* ListFavoriteShop.m in Sources */,
 				850062011B439C8200F556BA /* RedirectHandler.m in Sources */,
 				850060081B439C8100F556BA /* URLCacheAlert.m in Sources */,
-				8500626D1B439C8200F556BA /* DepartmentTableViewController.m in Sources */,
 				8500638F1B439C8200F556BA /* TxOrderConfirmationShipmentCell.m in Sources */,
 				850062601B439C8200F556BA /* MyShopPaymentCell.m in Sources */,
 				850061981B439C8200F556BA /* CatalogProductCell.m in Sources */,
@@ -9483,6 +9481,7 @@
 				850060461B439C8100F556BA /* AdvanceReview.m in Sources */,
 				850060651B439C8100F556BA /* HistoryProductList.m in Sources */,
 				850062681B439C8200F556BA /* NotificationManager.m in Sources */,
+				85C947FC1B453E2500B713FB /* PriceAlertResult.m in Sources */,
 				8500616B1B439C8200F556BA /* LoginViewController.m in Sources */,
 				8500610B1B439C8200F556BA /* SettingPayment.m in Sources */,
 				8500609C1B439C8100F556BA /* Notification.m in Sources */,
@@ -9496,6 +9495,7 @@
 				850061D71B439C8200F556BA /* TKPDTextView.m in Sources */,
 				850061841B439C8200F556BA /* StickyAlert.m in Sources */,
 				850060121B439C8100F556BA /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
+				85C947F01B453E1200B713FB /* PriceAlertCell.m in Sources */,
 				850060691B439C8100F556BA /* DepartmentTree.m in Sources */,
 				850062D31B439C8200F556BA /* SubmitShipmentConfirmationViewController.m in Sources */,
 			);
