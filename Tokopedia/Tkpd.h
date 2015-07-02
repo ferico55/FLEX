@@ -222,6 +222,9 @@ typedef enum {
 #define GTMKeyInboxReviewPost @"inboxreview_post_url"
 #define GTMKeyInboxReviewFull @"inboxreview_full_url"
 
+#define GTMKeyProductBase @"product_base_url"
+#define GTMKeyProductPost @"product_post_url"
+#define GTMKeyProductFull @"product_full_url"
 
 
 #endif

@@ -173,6 +173,7 @@ UIAlertViewDelegate
     UIFont *fontDesc;
     
     RequestMoveTo *_requestMoveTo;
+    TAGContainer *_gtmContainer;
     
 }
 
@@ -262,6 +263,10 @@ UIAlertViewDelegate
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+    // GTM
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
@@ -1124,7 +1129,7 @@ UIAlertViewDelegate
     if(tag == CTagPromote)
         return @"action/product.pl";
     else if(tag == CTagTokopediaNetworkManager)
-        return kTKPDDETAILPRODUCT_APIPATH;
+        return [_gtmContainer stringForKey:GTMKeyProductPost];
     else if(tag == CTagOtherProduct)
         return kTKPDDETAILPRODUCT_APIPATH;
     else if(tag == CTagFavorite)
@@ -1175,7 +1180,8 @@ UIAlertViewDelegate
     else if(tag == CTagTokopediaNetworkManager)
     {
         // initialize RestKit
-        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  [RKObjectManager sharedClient];
+        _objectmanager =  [RKObjectManager sharedClient:[_gtmContainer stringForKey:GTMKeyProductBase]];
         
         // setup object mappings
         RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
