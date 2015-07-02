@@ -214,5 +214,14 @@ typedef enum {
 #define GTMKeyInboxMessagePost @"inboxmessage_post_url"
 #define GTMKeyInboxMessageFull @"inboxmessage_full_url"
 
+#define GTMKeyInboxTalkBase @"inboxtalk_base_url"
+#define GTMKeyInboxTalkPost @"inboxtalk_post_url"
+#define GTMKeyInboxTalkFull @"inboxtalk_full_url"
+
+#define GTMKeyInboxReviewBase @"inboxreview_base_url"
+#define GTMKeyInboxReviewPost @"inboxreview_post_url"
+#define GTMKeyInboxReviewFull @"inboxreview_full_url"
+
+
 
 #endif

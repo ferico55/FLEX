@@ -26,6 +26,7 @@
 #import "NoResultView.h"
 #import "DetailProductViewController.h"
 
+
 @interface InboxTalkViewController ()
 <
     UITableViewDataSource,
@@ -94,7 +95,7 @@
     
     NSIndexPath *_selectedIndexPath;
     NoResultView *_noResultView;
-    
+    TAGContainer *_gtmContainer;
 }
 
 #pragma mark - Initialization
@@ -166,7 +167,9 @@
     if (_talkList.count > 0) {
         _isnodata = NO;
     }
-    
+    // GTM
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
 
     [self initCache];
     [self configureRestKit];
@@ -375,7 +378,8 @@
 #pragma mark - Request + Mapping
 - (void)configureRestKit
 {
-    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  [RKObjectManager sharedClient];
+    _objectmanager =  [RKObjectManager sharedClient:[_gtmContainer stringForKey:GTMKeyInboxTalkBase]];
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
@@ -425,7 +429,7 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDINBOX_TALK_APIPATH
+                                                                                             pathPattern:[_gtmContainer stringForKey:GTMKeyInboxTalkPost]
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -485,7 +489,7 @@
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:KTKPDMESSAGE_TALK
+                                                                      path:[_gtmContainer stringForKey:GTMKeyInboxTalkPost]
                                                                 parameters:[param encrypt]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
