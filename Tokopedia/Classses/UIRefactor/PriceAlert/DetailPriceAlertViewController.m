@@ -419,8 +419,8 @@
     UITableViewHeaderFooterView *view = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
     if(view == nil) {
         view = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 98)];
-        view.backgroundColor = [UIColor clearColor];
-        view.contentView.backgroundColor = [UIColor clearColor];
+        view.backgroundColor = tableView.backgroundColor;
+        view.contentView.backgroundColor = tableView.backgroundColor;
         
         UIView *viewContent = [[UIView alloc] initWithFrame:CGRectMake(8, 8, tableView.bounds.size.width-(8*2), 90)];
         viewContent.backgroundColor = [UIColor whiteColor];

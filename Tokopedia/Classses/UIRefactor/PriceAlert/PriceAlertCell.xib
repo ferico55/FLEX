@@ -53,7 +53,7 @@
                                     <constraint firstAttribute="width" constant="181" id="NsL-Pv-BsF"/>
                                     <constraint firstAttribute="height" constant="15" id="Zju-qQ-hym"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="8"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>

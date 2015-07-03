@@ -50,14 +50,16 @@
     if(cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CCellIdentifier];
         cell.textLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
+        cell.accessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.height-25, cell.bounds.size.height-25)];
+        ((UIImageView *) cell.accessoryView).image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_check_orange" ofType:@"png"]];
     }
     
     
     if(indexPath.row == _selectedIndex) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.accessoryView.hidden = NO;
     }
     else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryView.hidden = YES;
     }
     
     
@@ -80,10 +82,10 @@
     }
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    cell.accessoryView.hidden = NO;
     
     cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:0]];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView.hidden = YES;
     _selectedIndex = (int)indexPath.row;
 }
 

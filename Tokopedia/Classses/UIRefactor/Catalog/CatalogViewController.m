@@ -371,6 +371,7 @@
                                                                 parameters:[parameters encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [_timer invalidate];
         [_activityIndicatorView stopAnimating];
         [_tableView setTableFooterView:nil];
@@ -559,7 +560,7 @@
 {
     UIView *view = ((UITapGestureRecognizer *) sender).view;
     
-    if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems lastObject]).customView) {
+    if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {
         if (_catalog) {
             NSString *title = _catalog.result.catalog_info.catalog_name;
             NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
