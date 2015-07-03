@@ -32,4 +32,8 @@
 @property (nonatomic, strong) NSString *talk_shop_id;
 @property (nonatomic) BOOL disable_comment;
 
+
+//user label
+@property (nonatomic, strong) NSString *talk_user_label;
+@property (nonatomic, strong) NSString *talk_user_label_id;
 @end

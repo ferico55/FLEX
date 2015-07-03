@@ -1,91 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductFeedViewController">
             <connections>
-                <outlet property="act" destination="qNf-Nq-Nc3" id="BfB-20-X4P"/>
-                <outlet property="footer" destination="9xO-g4-X5Q" id="UJd-Od-X0g"/>
-                <outlet property="table" destination="wPs-Pc-J9T" id="NUf-Nl-ha7"/>
+                <outlet property="collectionView" destination="tRQ-6E-Haa" id="SJg-f4-a6c"/>
+                <outlet property="flowLayout" destination="0dN-xL-EyT" id="UJR-d6-1CW"/>
                 <outlet property="view" destination="iN0-l3-epB" id="HQd-wJ-JsY"/>
-                <outlet property="viewNoData" destination="aZP-eC-Q4U" id="sNR-jV-2Zw"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="le4-eR-ivp">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="215" sectionHeaderHeight="22" sectionFooterHeight="22" id="wPs-Pc-J9T" customClass="TableViewScrollAndSwipe">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.95294117647058818" green="0.95294117647058818" blue="0.95294117647058818" alpha="1" colorSpace="deviceRGB"/>
-                            <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="48"/>
-                            <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        </tableView>
-                    </subviews>
-                </scrollView>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="tRQ-6E-Haa" customClass="CollectionScrollAndSwipe">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.95294117647058818" green="0.95294117647058818" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0dN-xL-EyT">
+                        <size key="itemSize" width="145" height="205"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="POO-yc-nHa"/>
+                        <outlet property="delegate" destination="-1" id="fTI-RM-um2"/>
+                    </connections>
+                </collectionView>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.95294117647058818" green="0.95294117647058818" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="tRQ-6E-Haa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="1DP-Z0-HbY"/>
+                <constraint firstAttribute="trailing" secondItem="tRQ-6E-Haa" secondAttribute="trailing" id="P3L-zm-dYH"/>
+                <constraint firstAttribute="bottom" secondItem="tRQ-6E-Haa" secondAttribute="bottom" id="QTa-Td-T28"/>
+                <constraint firstItem="tRQ-6E-Haa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="lQq-G2-2sr"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-        </view>
-        <view contentMode="scaleToFill" id="9xO-g4-X5Q" userLabel="FooterView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="qNf-Nq-Nc3">
-                    <rect key="frame" x="150" y="14" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </activityIndicatorView>
-            </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-        </view>
-        <view contentMode="scaleToFill" id="aZP-eC-Q4U">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <subviews>
-                <view contentMode="scaleToFill" id="HuM-R0-ZxU">
-                    <rect key="frame" x="4" y="114" width="312" height="252"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tidak ada data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YrL-ga-a5Z">
-                            <rect key="frame" x="92" y="119" width="129" height="13"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_no_data_grey.png" id="ffm-L0-nSQ">
-                            <rect key="frame" x="121" y="40" width="70" height="70"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-            </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="582" y="48"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon_no_data_grey.png" width="90" height="90"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

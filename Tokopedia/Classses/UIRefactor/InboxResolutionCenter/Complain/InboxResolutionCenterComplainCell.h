@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewLabelUser.h"
 #pragma mark - Delegate
 @protocol InboxResolutionCenterComplainCellDelegate <NSObject>
 @required
@@ -30,7 +31,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *invoiceDateLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *buyerProfileImageView;
-@property (weak, nonatomic) IBOutlet UILabel *buyerNameLabel;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *viewLabelUser;
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lastStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *buyerOrSellerLabel;

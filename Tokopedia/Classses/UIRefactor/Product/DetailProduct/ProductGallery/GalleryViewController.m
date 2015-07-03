@@ -123,7 +123,7 @@
             btnDownload.layer.shadowOffset = CGSizeMake(0, 0);
             btnDownload.layer.masksToBounds = YES;
             btnDownload.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth;
-            [btnDownload setTitle:@"Save Photo" forState:UIControlStateNormal];
+            [btnDownload setTitle:@"Download" forState:UIControlStateNormal];
             [btnDownload setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             
             
@@ -387,7 +387,7 @@
         if([_photoSource respondsToSelector:@selector(photoGallery:captionForPhotoAtIndex:)])
         {
             lblTitle.text = [_photoSource photoGallery:self captionForPhotoAtIndex:_currentIndex];
-            lblTitle.text = @"Testong aj";
+//            lblTitle.text = @"Testong aj";
             if(lblTitle.text.length>0 && lblTitle.layer.shadowOpacity != 0.5) {
                 lblTitle.layer.shadowColor = [UIColor blackColor].CGColor;
                 lblTitle.layer.shadowOffset = CGSizeMake(0, 0);

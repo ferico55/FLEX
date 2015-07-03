@@ -21,6 +21,7 @@
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
 #import "StickyAlert.h"
+#import "string_inbox_message.h"
 #import "NoResultView.h"
 
 #import "URLCacheController.h"
@@ -200,6 +201,7 @@
 		if (cell == nil) {
 			cell = [GeneralProductReviewCell newcell];
 			((GeneralProductReviewCell *)cell).delegate = self;
+            [((GeneralProductReviewCell*)cell).namelabel setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
 		}
 
         if (_list.count > indexPath.row) {
@@ -208,6 +210,25 @@
             ((GeneralProductReviewCell *)cell).data = list;
             ((GeneralProductReviewCell *)cell).namelabel.text = list.review_user_name;
             ((GeneralProductReviewCell *)cell).timelabel.text = list.review_create_time;
+            
+            //Set user label
+//            if([list.review_user_label isEqualToString:CPenjual]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPenjual];
+//            }
+//            else if([list.review_user_label isEqualToString:CPembeli]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPembeli];
+//            }
+//            else if([list.review_user_label isEqualToString:CAdministrator]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagAdministrator];
+//            }
+//            else if([list.review_user_label isEqualToString:CPengguna]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPengguna];
+//            }
+//            else {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:-1];//-1 is set to empty string
+//            }
+//            
+            [((GeneralProductReviewCell*)cell).namelabel setLabelBackground:list.review_user_label];
             
             if([list.review_response.response_message isEqualToString:@"0"]) {
                 [((GeneralProductReviewCell*)cell).commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
@@ -410,7 +431,9 @@
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
 //                                                 kTKPDREVIEW_APIREVIEWRESPONSEKEY
-                                                 kTKPDREVIEW_APIREVIEWPRODUCTRATEKEY
+                                                 kTKPDREVIEW_APIREVIEWPRODUCTRATEKEY,
+                                                 KTKPDREVIEW_APIREVIEWUSERLABELIDKEY,
+                                                 KTKPDREVIEW_APIREVIEWUSERLABELKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

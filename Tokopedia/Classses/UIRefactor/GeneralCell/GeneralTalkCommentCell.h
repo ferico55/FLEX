@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "string_home.h"
+#import "ViewLabelUser.h"
 #import "MGSwipeTableCell.h"
 
 #define kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER @"GeneralTalkCommentCellIdentifier"
@@ -28,7 +29,7 @@
 
 @property (nonatomic, weak) IBOutlet id<GeneralTalkCommentCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
-@property (weak, nonatomic) IBOutlet UILabel *user_name;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *user_name;
 @property (weak, nonatomic) IBOutlet UILabel *create_time;
 @property (weak, nonatomic) IBOutlet UIImageView *user_image;
 @property (weak, nonatomic) IBOutlet UIImageView *commentfailimage;
