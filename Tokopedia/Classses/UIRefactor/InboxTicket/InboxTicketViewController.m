@@ -322,7 +322,9 @@
     if (_currentTabSegmentIndex == 1 && [inboxTicket.ticket_status isEqualToString:@"2"]) {
         [_tickets removeObjectAtIndex:_selectedIndexPath.row];
     } else {
-        [_tickets replaceObjectAtIndex:_selectedIndexPath.row withObject:inboxTicket];
+        if (_selectedIndexPath.row < _tickets.count) {
+            [_tickets replaceObjectAtIndex:_selectedIndexPath.row withObject:inboxTicket];
+        }
     }
     [self.tableView reloadData];
 }

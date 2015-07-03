@@ -359,7 +359,12 @@
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *dictionary;
     NSString *attachmentString = [_uploadedPhotosURL componentsJoinedByString:@"~"];
-    NSString *newTicketStatus = self.isCloseTicketForm?@"2":@"";
+    NSString *newTicketStatus;
+    if ([self.inboxTicket.ticket_status isEqualToString:@"1"]) {
+        newTicketStatus = self.isCloseTicketForm?@"2":@"";
+    } else {
+        newTicketStatus = self.isCloseTicketForm?@"2":@"1";
+    }
     
     if (tag == 1) {
         dictionary = @{

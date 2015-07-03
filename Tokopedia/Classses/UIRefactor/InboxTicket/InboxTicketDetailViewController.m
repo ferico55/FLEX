@@ -698,6 +698,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     self.ratingView.hidden = YES;
     self.ticketClosedView.hidden = YES;
     self.reopenTicketView.hidden = YES;
+    self.reopenTicketAfterReplyView.hidden = YES;
     self.ratingResultView.hidden = NO;
 
     CGFloat ratingResultViewHeight = 105;
@@ -788,9 +789,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     InboxTicketReplyViewController *controller = [InboxTicketReplyViewController new];
     controller.inboxTicket = self.inboxTicket;
     controller.rating = @"2";
-    if ([self.inboxTicket.ticket_status isEqualToString:@"2"]) {
-        controller.isCloseTicketForm = YES;
-    }
     
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     navigation.navigationBar.translucent = NO;
