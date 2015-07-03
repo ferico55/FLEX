@@ -491,6 +491,8 @@
 		8524BE861B462D910000B401 /* icon_speed_bad@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524BE851B462D910000B401 /* icon_speed_bad@3x.png */; };
 		8524BE881B462DA00000B401 /* icon_speed_bad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524BE871B462DA00000B401 /* icon_speed_bad@2x.png */; };
 		8524BE8A1B462DB10000B401 /* icon_speed_bad.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524BE891B462DB10000B401 /* icon_speed_bad.png */; };
+		8524BE911B467CFE0000B401 /* PenilaianUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8524BE8F1B467CFE0000B401 /* PenilaianUserCell.m */; };
+		8524BE921B467CFE0000B401 /* PenilaianUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8524BE901B467CFE0000B401 /* PenilaianUserCell.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1994,6 +1996,9 @@
 		8524BE851B462D910000B401 /* icon_speed_bad@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_speed_bad@3x.png"; sourceTree = "<group>"; };
 		8524BE871B462DA00000B401 /* icon_speed_bad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_speed_bad@2x.png"; sourceTree = "<group>"; };
 		8524BE891B462DB10000B401 /* icon_speed_bad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_speed_bad.png; sourceTree = "<group>"; };
+		8524BE8E1B467CFE0000B401 /* PenilaianUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PenilaianUserCell.h; sourceTree = "<group>"; };
+		8524BE8F1B467CFE0000B401 /* PenilaianUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PenilaianUserCell.m; sourceTree = "<group>"; };
+		8524BE901B467CFE0000B401 /* PenilaianUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PenilaianUserCell.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -4443,6 +4448,16 @@
 				7A84DE9E1B1E9F3400741F0D /* libAppsFlyerLib.a */,
 			);
 			path = Appsflyer;
+			sourceTree = "<group>";
+		};
+		8524BE8D1B467CD40000B401 /* PenilaianUser */ = {
+			isa = PBXGroup;
+			children = (
+				8524BE8E1B467CFE0000B401 /* PenilaianUserCell.h */,
+				8524BE8F1B467CFE0000B401 /* PenilaianUserCell.m */,
+				8524BE901B467CFE0000B401 /* PenilaianUserCell.xib */,
+			);
+			path = PenilaianUser;
 			sourceTree = "<group>";
 		};
 		853BD89C1B41291B00211196 /* Reputation */ = {
@@ -7829,6 +7844,7 @@
 		FC763DFE1B15E27E0034A8F1 /* UserPageView */ = {
 			isa = PBXGroup;
 			children = (
+				8524BE8D1B467CD40000B401 /* PenilaianUser */,
 				FC763DFF1B15E27E0034A8F1 /* Biodata */,
 				FC763E061B15E27E0034A8F1 /* FavoriteShop */,
 				FC763E0F1B15E27E0034A8F1 /* profile.h */,
@@ -8706,6 +8722,7 @@
 				7A1D2DCC1B235E55002F9341 /* default-boy.png in Resources */,
 				7A1D2EE31B235E55002F9341 /* icon_more.png in Resources */,
 				FC7643411B15E2830034A8F1 /* ShipmentStatusCell.xib in Resources */,
+				8524BE921B467CFE0000B401 /* PenilaianUserCell.xib in Resources */,
 				FC76440E1B15E2830034A8F1 /* ProfileBiodataShopCell.xib in Resources */,
 				7A1D2E201B235E55002F9341 /* icon_checkmark_green@2x-01.png in Resources */,
 				7A1D2E871B235E55002F9341 /* icon_retur.png in Resources */,
@@ -9334,6 +9351,7 @@
 				FC76409C1B15E2820034A8F1 /* RegisterResult.m in Sources */,
 				FC76410A1B15E2820034A8F1 /* InboxTicketResult.m in Sources */,
 				FC76421D1B15E2820034A8F1 /* CategoryMenuViewCell.m in Sources */,
+				8524BE911B467CFE0000B401 /* PenilaianUserCell.m in Sources */,
 				FC7640EC1B15E2820034A8F1 /* InboxMessageResult.m in Sources */,
 				FC7643DD1B15E2830034A8F1 /* TransactionObjectMapping.m in Sources */,
 				FC7642F41B15E2830034A8F1 /* ProductAddEditDetailViewController.m in Sources */,

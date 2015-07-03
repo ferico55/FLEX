@@ -15,7 +15,7 @@
     IBOutlet UIButton *btnSend;
     IBOutlet UITableView *tableReputation;
     IBOutlet HPGrowingTextView *growTextView;
-    IBOutlet NSLayoutConstraint *constraintHeightViewMessage;
+    IBOutlet NSLayoutConstraint *constraintHeightViewMessage, *constHeightViewContent;
 }
 
 - (IBAction)actionSend:(id)sender;

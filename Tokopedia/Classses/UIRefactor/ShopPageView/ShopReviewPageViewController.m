@@ -602,6 +602,7 @@ UIAlertViewDelegate>
                                                                       path:@"shop.pl"
                                                                 parameters:[param encrypt]];
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [_timer invalidate];
         _timer = nil;
         [_act stopAnimating];

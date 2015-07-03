@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -57,8 +57,43 @@
                                         <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="pfg-i9-2S3">
+                                        <rect key="frame" x="124" y="36" width="14" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="14" id="IgE-H7-cNf"/>
+                                            <constraint firstAttribute="height" constant="14" id="rS4-iz-3TJ"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="6sa-dE-sj3">
+                                        <rect key="frame" x="110" y="36" width="14" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="14" id="X6c-dt-wBm"/>
+                                            <constraint firstAttribute="width" constant="14" id="aVM-vn-63N"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="GTL-oM-8yj">
+                                        <rect key="frame" x="96" y="36" width="14" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="14" id="5tb-cZ-ab1"/>
+                                            <constraint firstAttribute="width" constant="14" id="n8a-p4-lhq"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Hc6-yH-FB0">
+                                        <rect key="frame" x="82" y="36" width="14" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="14" id="3hz-au-DV2"/>
+                                            <constraint firstAttribute="height" constant="14" id="a6R-Va-B40"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dyr-lx-HEF">
+                                        <rect key="frame" x="68" y="36" width="14" height="14"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="14" id="kUv-PS-TZw"/>
+                                            <constraint firstAttribute="height" constant="14" id="pou-El-Fr6"/>
+                                        </constraints>
+                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81H-Uk-YsE">
-                                        <rect key="frame" x="85" y="37" width="100" height="12"/>
+                                        <rect key="frame" x="200" y="37" width="100" height="12"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="12" id="ZTt-Os-bCE"/>
                                             <constraint firstAttribute="width" constant="100" id="iIJ-zp-6dx"/>
@@ -68,70 +103,35 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_location_grey" translatesAutoresizingMaskIntoConstraints="NO" id="bu6-bZ-ndD">
-                                        <rect key="frame" x="68" y="36" width="14" height="14"/>
+                                        <rect key="frame" x="183" y="36" width="14" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="QmV-gg-AWM"/>
                                             <constraint firstAttribute="width" constant="14" id="pIZ-zE-xP9"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="pfg-i9-2S3">
-                                        <rect key="frame" x="273" y="36" width="14" height="14"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="14" id="IgE-H7-cNf"/>
-                                            <constraint firstAttribute="height" constant="14" id="rS4-iz-3TJ"/>
-                                        </constraints>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="6sa-dE-sj3">
-                                        <rect key="frame" x="259" y="36" width="14" height="14"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="14" id="X6c-dt-wBm"/>
-                                            <constraint firstAttribute="width" constant="14" id="aVM-vn-63N"/>
-                                        </constraints>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="GTL-oM-8yj">
-                                        <rect key="frame" x="245" y="36" width="14" height="14"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="14" id="5tb-cZ-ab1"/>
-                                            <constraint firstAttribute="width" constant="14" id="n8a-p4-lhq"/>
-                                        </constraints>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Hc6-yH-FB0">
-                                        <rect key="frame" x="231" y="36" width="14" height="14"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="14" id="3hz-au-DV2"/>
-                                            <constraint firstAttribute="height" constant="14" id="a6R-Va-B40"/>
-                                        </constraints>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dyr-lx-HEF">
-                                        <rect key="frame" x="217" y="36" width="14" height="14"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="14" id="kUv-PS-TZw"/>
-                                            <constraint firstAttribute="height" constant="14" id="pou-El-Fr6"/>
-                                        </constraints>
-                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="81H-Uk-YsE" firstAttribute="leading" secondItem="bu6-bZ-ndD" secondAttribute="trailing" constant="3" id="1js-y0-AaR"/>
                                     <constraint firstAttribute="bottom" secondItem="XZa-rX-g75" secondAttribute="bottom" id="2sL-J5-KrL"/>
-                                    <constraint firstItem="pfg-i9-2S3" firstAttribute="leading" secondItem="6sa-dE-sj3" secondAttribute="trailing" id="61n-nz-5dW"/>
                                     <constraint firstAttribute="trailing" secondItem="XZa-rX-g75" secondAttribute="trailing" constant="10" id="6Rr-es-l6m"/>
-                                    <constraint firstItem="81H-Uk-YsE" firstAttribute="leading" secondItem="bu6-bZ-ndD" secondAttribute="trailing" constant="3" id="7xa-ve-DmH"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="bu6-bZ-ndD" secondAttribute="bottom" constant="19" id="8Q5-FT-XHU"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="gtP-EX-b5j" secondAttribute="bottom" constant="9" id="8nd-Ht-BOW"/>
                                     <constraint firstItem="81H-Uk-YsE" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" constant="1" id="8uV-q6-tfl"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="Dyr-lx-HEF" secondAttribute="bottom" constant="19" id="FbU-Yr-pcR"/>
+                                    <constraint firstItem="Dyr-lx-HEF" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="GQe-jW-B3o"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="GTL-oM-8yj" secondAttribute="bottom" constant="19" id="JUI-0r-yZu"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="KoK-Sg-dzi"/>
                                     <constraint firstAttribute="height" constant="70" id="LKR-zX-qiE"/>
+                                    <constraint firstItem="pfg-i9-2S3" firstAttribute="leading" secondItem="6sa-dE-sj3" secondAttribute="trailing" id="NNb-GY-SpC"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="pfg-i9-2S3" secondAttribute="bottom" constant="19" id="Qja-dt-T2R"/>
                                     <constraint firstItem="6sa-dE-sj3" firstAttribute="leading" secondItem="GTL-oM-8yj" secondAttribute="trailing" id="QmA-KS-fg2"/>
-                                    <constraint firstAttribute="trailing" secondItem="pfg-i9-2S3" secondAttribute="trailing" constant="13" id="Rh1-Jo-ZaD"/>
+                                    <constraint firstAttribute="trailing" secondItem="YPx-vr-edZ" secondAttribute="trailing" constant="20" id="RSO-ie-m83"/>
                                     <constraint firstItem="gtP-EX-b5j" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="10" id="S7q-Fa-pco"/>
                                     <constraint firstItem="gtP-EX-b5j" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="SdP-UN-Zvl"/>
                                     <constraint firstItem="YPx-vr-edZ" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="U2p-se-lS2"/>
-                                    <constraint firstItem="bu6-bZ-ndD" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="bLt-Fe-5RJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="81H-Uk-YsE" secondAttribute="trailing" id="agd-4n-Lmm"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="Hc6-yH-FB0" secondAttribute="bottom" constant="19" id="dAf-V2-2GM"/>
-                                    <constraint firstAttribute="trailing" secondItem="YPx-vr-edZ" secondAttribute="trailing" constant="20" id="fWs-FC-QgI"/>
                                     <constraint firstItem="Hc6-yH-FB0" firstAttribute="leading" secondItem="Dyr-lx-HEF" secondAttribute="trailing" id="hDK-Cw-03w"/>
                                     <constraint firstItem="bu6-bZ-ndD" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" id="qEj-y9-BYF"/>
                                     <constraint firstItem="GTL-oM-8yj" firstAttribute="leading" secondItem="Hc6-yH-FB0" secondAttribute="trailing" id="yka-Ob-LIO"/>

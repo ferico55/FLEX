@@ -31,7 +31,6 @@
     [super viewDidLoad];
     [self initTable];
     [self initNavigation];
-    
     btnSend.layer.cornerRadius = 5.0f;
     btnSend.layer.masksToBounds = YES;
     
@@ -57,6 +56,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     heightScreenView = self.view.bounds.size.height;
+    constHeightViewContent.constant = heightScreenView;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
@@ -320,13 +320,7 @@
     NSValue *value = info[UIKeyboardFrameEndUserInfoKey];
     CGRect rawFrame = [value CGRectValue];
     CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
-    NSArray * arrConstarint = self.view.constraints;
-    for (NSLayoutConstraint * constraint in arrConstarint) {
-        if (constraint.firstAttribute == NSLayoutAttributeHeight) {
-            constraint.constant = heightScreenView-keyboardFrame.size.height;
-            break;
-        }
-    }
+    constHeightViewContent.constant = heightScreenView-keyboardFrame.size.height;
 }
 
 - (void)keyboardWillHide:(NSNotification *)note {
@@ -338,15 +332,7 @@
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
-    
-    NSArray * arrConstarint = self.view.constraints;
-    for (NSLayoutConstraint * constraint in arrConstarint) {
-        if (constraint.firstAttribute == NSLayoutAttributeHeight) {
-            constraint.constant = heightScreenView;
-            break;
-        }
-    }
-
+    constHeightViewContent.constant = heightScreenView;
     [UIView commitAnimations];
 }
 

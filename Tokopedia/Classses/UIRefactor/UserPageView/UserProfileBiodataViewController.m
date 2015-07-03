@@ -8,11 +8,13 @@
 
 #import "UserProfileBiodataViewController.h"
 #import "UserPageHeader.h"
+#import "PenilaianUserCell.h"
 #import "ProfileInfo.h"
 #import "ProfileBiodataShopCell.h"
 #import "ProfileBiodataCell.h"
 
 #import "detail.h"
+#define CStringPenilaianUser @"Data Penilaian User"
 
 @interface UserProfileBiodataViewController () <UserPageHeaderDelegate, ProfileBiodataShopCellDelegate, UIScrollViewDelegate, UITableViewDelegate>
 
@@ -37,6 +39,21 @@
     _userHeader = [UserPageHeader new];
     _userHeader.delegate = self;
     _userHeader.data = _data;
+    
+    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+    NSDictionary *tempDict = [authManager getUserLoginData];
+    if(tempDict == nil) {
+        isNotMyBiodata = YES;
+    }
+    else {
+        NSString *strUserID = [tempDict objectForKey:@"user_id"];
+        if(strUserID==nil || strUserID.length==0 || _data==nil || _data.count==0) {
+            isNotMyBiodata = YES;
+        }
+        else if(! [strUserID isEqualToString:[_data objectForKey:@"user_id"]]) {
+            isNotMyBiodata = YES;
+        }
+    }
 
     
     _header = _userHeader.view;
@@ -99,7 +116,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (!_isnodatashop) {
-        if (indexPath.section == 0) {
+        if(indexPath.section == 0) {
+            //height penilaian user
+            return 200;
+        }
+        else if (indexPath.section == 1) {
             //height shop
             return 130;
         }
@@ -116,9 +137,9 @@
 {
     if (!_isnodatashop) {
         if(isNotMyBiodata)
-            return 1;
-        else
             return 2;
+        else
+            return 3;
     }
     else return 0;
 }
@@ -129,7 +150,12 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width, 40)];
     titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
-    if(section == 0 ) {
+    if(section == 0) {
+        titleLabel.text = CStringPenilaianUser;
+        [headerView addSubview:titleLabel];
+        return headerView;
+    }
+    else if(section == 1 ) {
         if(_profile.result.shop_info) {
             titleLabel.text = kTKPDTITLE_SHOP_INFO;
             [headerView addSubview:titleLabel];
@@ -138,7 +164,7 @@
             return nil;
         }
 
-    } else if (section == 1) {
+    } else if (section == 2) {
         titleLabel.text = KTKPDTITLE_BIODATA;
         [headerView addSubview:titleLabel];
         return headerView;
@@ -165,7 +191,17 @@
     
     // Configure the cell...
     if (!_isnodatashop) {
-        if (indexPath.section == 0) {
+        if(indexPath.section == 0) {
+            NSString *strCellIdentifier = @"cellPenilaianUser";
+            PenilaianUserCell *cell = [tableView dequeueReusableCellWithIdentifier:strCellIdentifier];
+            if(cell == nil) {
+                NSArray *arrCell = [[NSBundle mainBundle] loadNibNamed:@"PenilaianUserCell" owner:nil options:0];
+                cell = [arrCell objectAtIndex:0];
+            }
+            
+            
+        }
+        else if (indexPath.section == 1) {
             NSString *cellid = kTKPDPROFILEBIODATACELLIDENTIFIER;
             cell = (ProfileBiodataShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {
@@ -210,7 +246,7 @@
             
             return cell;
         }
-        if (indexPath.section == 1) {
+        else if (indexPath.section == 2) {
             NSString *cellid = kTKPDPROFILEBIODATASHOPCELLIDENTIFIER;
             cell = (ProfileBiodataCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {

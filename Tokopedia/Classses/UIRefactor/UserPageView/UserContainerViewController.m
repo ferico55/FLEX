@@ -454,6 +454,12 @@
                                                           kTKPDPROFILE_APIUSERNAMEKEY:kTKPDPROFILE_APIUSERNAMEKEY
                                                           }];
     
+    RKObjectMapping *userReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [userReputationMapping addAttributeMappingsFromDictionary:@{CPositivePercentage:CPositivePercentage,
+                                                                CNegative:CNegative,
+                                                                CPositif:CPositif,
+                                                                CNeutral:CNeutral}];
+    
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
     [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
@@ -479,6 +485,8 @@
                                                            }];
     
     // Relationship Mapping
+    [userinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:userReputationMapping]];
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
