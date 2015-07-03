@@ -506,27 +506,8 @@
             }
             
             
-            if (_talkList.count >0) {
-                _isnodata = NO;
-                _urinext =  inboxtalk.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
-                    
-                    [queries setObject:value forKey:key];
-                }
-
-                if(!_isLoadFromCache) {
-                    _talkListPage = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
-                }
-                
+            if (_talkList.count >0)
+            {
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _talkListPage<=1) {
                     NSInteger selectedIndex = _selectedDetailIndexPath.row?:0;
                     TalkList *list = _talkList[selectedIndex];
@@ -548,6 +529,26 @@
                     [_detailViewController replaceDataSelected:data];
                 }
 
+                
+                _isnodata = NO;
+                _urinext =  inboxtalk.result.paging.uri_next;
+                NSURL *url = [NSURL URLWithString:_urinext];
+                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                
+                NSMutableDictionary *queries = [NSMutableDictionary new];
+                [queries removeAllObjects];
+                for (NSString *keyValuePair in querry)
+                {
+                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                    NSString *key = [pairComponents objectAtIndex:0];
+                    NSString *value = [pairComponents objectAtIndex:1];
+                    
+                    [queries setObject:value forKey:key];
+                }
+
+                if(!_isLoadFromCache) {
+                    _talkListPage = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+                }
                 
             } else {
                 _isnodata = YES;

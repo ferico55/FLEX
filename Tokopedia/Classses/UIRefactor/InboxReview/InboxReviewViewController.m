@@ -582,6 +582,12 @@
         }
         
         if(_reviews.count > 0) {
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _reviewPage<=1) {
+                NSInteger row = _selectedDetailIndexPath.row?:0;
+                InboxReviewList *list = _reviews[row];
+                [_detailViewController replaceDataSelected:list];
+            }
+            
             _isNoData = NO;
             _uriNextPage =  reviewObject.result.paging.uri_next;
             NSURL *url = [NSURL URLWithString:_uriNextPage];
@@ -607,11 +613,7 @@
             _isNoData = YES;
             _reviewTable.tableFooterView = _noResult;
         }
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _reviewPage<=1) {
-            NSInteger row = _selectedDetailIndexPath.row?:0;
-            InboxReviewList *list = _reviews[row];
-            [_detailViewController replaceDataSelected:list];
-        }
+
     }
 }
 
