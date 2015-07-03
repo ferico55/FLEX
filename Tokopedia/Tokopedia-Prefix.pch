@@ -8,6 +8,10 @@
 #define CStringLastCheckVerify @"lastCheckVerify"
 #define CStringMSISDNIsVerify @"msisdnIsVerify"
 #define CStringMSISDN @"msisdn"
+#define CBadgeSpeedGood @"badge-speed-good"
+#define CBadgeSpeedBad @"badge-speed-bad"
+#define CBadgeSpeedNeutral @"badge-speed-neutral"
+#define CStringPoin @"Poin"
 #define CWidthItemPopUp 50
 #define CHeightItemPopUp 50
 enum emoticonTag

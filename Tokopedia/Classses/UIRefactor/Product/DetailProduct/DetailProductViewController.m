@@ -357,7 +357,7 @@ CMPopTipViewDelegate
     imageSize = btnKecepatan.imageView.bounds.size;
     titleSize = btnKecepatan.titleLabel.bounds.size;
     totalHeight = (imageSize.height + titleSize.height + spacing);
-    btnKecepatan.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
+    btnKecepatan.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height)+4, 30.0, 0.0, -titleSize.width);
     btnKecepatan.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
 }
 
@@ -1255,6 +1255,8 @@ CMPopTipViewDelegate
         
         RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
         [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
+                                                               CShopReputationScore:CShopReputationScore,
+                                                               CShopSpeedDesc:CShopSpeedDesc,
                                                                kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
                                                                kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
                                                                kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
@@ -1274,7 +1276,18 @@ CMPopTipViewDelegate
         RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
         [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
         
+        
+        RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+        [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+                                                                   CTwoDay:CTwoDay,
+                                                                   CThreeDay:CThreeDay,
+                                                                   CSpeedLevel:CSpeedLevel,
+                                                                   CBadge:CBadge,
+                                                                   CCountTotal:CCountTotal}];
+        
         // Relationship Mapping
+        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseFast toKeyPath:CResponseFast withMapping:responseSpeedMapping]];
+        
         [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
         
         [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:API_PRODUCT_INFO_KEY withMapping:infoMapping]];
@@ -1797,6 +1810,17 @@ CMPopTipViewDelegate
             return;
         }
         
+        //Set icon speed
+        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
+        if([_product.result.shop_info.respond_speed.badge isEqualToString:CBadgeSpeedGood]) {
+            [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_fast" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+        else if([_product.result.shop_info.respond_speed.badge isEqualToString:CBadgeSpeedBad]) {
+            [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_bad" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+        else if([_product.result.shop_info.respond_speed.badge isEqualToString:CBadgeSpeedNeutral]) {
+            [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_neutral" ofType:@"png"]] forState:UIControlStateNormal];
+        }
         
         //Set toko tutup
         if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
@@ -2110,14 +2134,13 @@ CMPopTipViewDelegate
 
 - (IBAction)actionReputasi:(id)sender
 {
-    NSString *strText = @"2,000,100 Poin";
-    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
+    NSString *strText = [NSString stringWithFormat:@"%@ %@", _product.result.shop_info.shop_stats.shop_reputation_score, CStringPoin];
+    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
 }
 
 - (IBAction)actionKecepatan:(id)sender
 {
-    NSString *strText = @"1,000,100 Acct";
-    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
+    [self initPopUp:_product.result.shop_info.shop_stats.shop_speed_description withSender:sender withRangeDesc:NSMakeRange(0, 0)];
 }
 
 - (void)hiddenButtonBuyAndPromo

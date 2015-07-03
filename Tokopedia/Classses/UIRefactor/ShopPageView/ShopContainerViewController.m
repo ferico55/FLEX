@@ -16,6 +16,8 @@
 #import "ShopInfoViewController.h"
 #import "SendMessageViewController.h"
 #import "ShopSettingViewController.h"
+#import "ResponseSpeed.h"
+#import "Rating.h"
 #import "TTTAttributedLabel.h"
 #import "ProductAddEditViewController.h"
 
@@ -366,8 +368,31 @@
                                                            kTKPDSHOP_APISHOPTOTALTRANSACTIONKEY:kTKPDSHOP_APISHOPTOTALTRANSACTIONKEY,
                                                            kTKPDSHOP_APISHOPTOTALETALASEKEY:kTKPDSHOP_APISHOPTOTALETALASEKEY,
                                                            kTKPDSHOP_APISHOPTOTALPRODUCTKEY:kTKPDSHOP_APISHOPTOTALPRODUCTKEY,
-                                                           kTKPDSHOP_APISHOPTOTALSOLDKEY:kTKPDSHOP_APISHOPTOTALSOLDKEY
+                                                           kTKPDSHOP_APISHOPTOTALSOLDKEY:kTKPDSHOP_APISHOPTOTALSOLDKEY,
+                                                           CTxCount:CTxCount,
+                                                           CRateFailure:CRateFailure,
+                                                           CShopTotalTransactionCancel:CShopTotalTransactionCancel,
+                                                           CShopReputationScore:CShopReputationScore,
+                                                           CRateSuccess:CRateSuccess
                                                            }];
+    
+    
+    RKObjectMapping *countScoreMapping = [RKObjectMapping mappingForClass:[CountRatingResult class]];
+    [countScoreMapping addAttributeMappingsFromDictionary:@{CCountScoreBad:CCountScoreBad,
+                                                            CCountScoreGood:CCountScoreGood,
+                                                            CCountScoreNeutral:CCountScoreNeutral}];
+    
+    RKObjectMapping *ratingMapping = [RKObjectMapping mappingForClass:[Rating class]];
+    RKObjectMapping *qualityMapping = [RKObjectMapping mappingForClass:[Quality class]];
+    [qualityMapping addAttributeMappingsFromDictionary:@{CRatingStar:CRatingStar,
+                                                         CAverage:CAverage,
+                                                         COneStarRank:COneStarRank,
+                                                         CCountTotal:CCountTotal,
+                                                         CFourStarRank:CFourStarRank,
+                                                         CFiveStarRank:CFiveStarRank,
+                                                         CTwoStarRank:CTwoStarRank,
+                                                         CThreeStarRank:CThreeStarRank}];
+    
     
     RKObjectMapping *shipmentMapping = [RKObjectMapping mappingForClass:[Shipment class]];
     [shipmentMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APISHIPMENTIDKEY:kTKPDDETAILSHOP_APISHIPMENTIDKEY,
@@ -400,9 +425,25 @@
                                                     kTKPDSHOP_APIDISTRICTNAMEKEY,
                                                     kTKPDSHOP_APIADDRESSKEY
                                                     ]];
+    
+    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+                                                                     CTwoDay:CTwoDay,
+                                                                     CThreeDay:CThreeDay,
+                                                                     CSpeedLevel:CSpeedLevel,
+                                                                     CBadge:CBadge,
+                                                                     CCountTotal:CCountTotal}];
+    
     // Relationship Mapping
+    [ratingMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CQuality toKeyPath:CQuality withMapping:qualityMapping]];
+    [ratingMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CAccuracy toKeyPath:CAccuracy withMapping:qualityMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastOneMonth toKeyPath:CShopLastOneMonth withMapping:countScoreMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastSixMonth toKeyPath:CShopLastSixMonth withMapping:countScoreMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastTwelveMonth toKeyPath:CShopLastTwelveMonth withMapping:countScoreMapping]];
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APICLOSEDINFOKEY
                                                                                   toKeyPath:kTKPDDETAILSHOP_APICLOSEDINFOKEY
                                                                                 withMapping:closedinfoMapping]];
@@ -415,6 +456,8 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                   toKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                 withMapping:shopstatsMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CRatings toKeyPath:CRatings withMapping:ratingMapping]];
     
     RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY
                                                                                      toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY
@@ -466,6 +509,7 @@
                                                                     parameters:[param encrypt]];
         
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
             app.networkActivityIndicatorVisible = NO;
             [self requestSuccess:mappingResult withOperation:operation];
             [_timer invalidate];

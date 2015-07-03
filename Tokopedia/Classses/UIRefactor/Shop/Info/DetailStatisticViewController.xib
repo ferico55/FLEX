@@ -49,6 +49,9 @@
                 <outlet property="btnNegatif" destination="9Jg-Qb-qaX" id="ClE-r8-vyW"/>
                 <outlet property="btnNetral" destination="OKZ-7e-E5B" id="w4v-Vp-ICY"/>
                 <outlet property="btnPositif" destination="lJI-O5-aJc" id="u3M-Fn-RlI"/>
+                <outlet property="constWidthFooterLbl1" destination="g2x-qH-1Ok" id="3Yh-Go-jxw"/>
+                <outlet property="constWidthFooterLbl2" destination="J5j-sZ-Gew" id="Awy-aB-tzI"/>
+                <outlet property="constWidthFooterLbl3" destination="TYP-Il-bb0" id="nPM-8M-1ek"/>
                 <outlet property="constWidthLblRate1" destination="dnC-qI-F9z" id="fxK-T7-0Hw"/>
                 <outlet property="constWidthLblRate2" destination="x7s-tg-dpR" id="cec-ZA-ueD"/>
                 <outlet property="constWidthLblRate3" destination="k3p-SK-WWp" id="yKs-r0-Iat"/>
@@ -56,6 +59,7 @@
                 <outlet property="constWidthLblRate5" destination="uNg-35-nRi" id="B7F-K9-DDA"/>
                 <outlet property="imgDescTrGagal" destination="ltb-lC-3V0" id="dsl-PH-02f"/>
                 <outlet property="imgDescTrSukses" destination="S1k-hS-9Pw" id="otE-i1-7K8"/>
+                <outlet property="imgSpeed" destination="OuE-1h-gyV" id="aA9-9A-uYg"/>
                 <outlet property="lblNegatif1" destination="54i-99-lVN" id="3WA-wE-FpM"/>
                 <outlet property="lblNegatif12" destination="jMr-gf-cVt" id="iDb-GD-OXV"/>
                 <outlet property="lblNegatif6" destination="gLh-MQ-ZeQ" id="aea-bu-Q34"/>
@@ -75,6 +79,7 @@
                 <outlet property="lblRespon2Hari" destination="oGH-Ky-O86" id="gow-aO-Rb9"/>
                 <outlet property="lblRespon3Hari" destination="ewR-5y-L3I" id="cej-KM-YeZ"/>
                 <outlet property="lblTotalRateHeader" destination="bq7-WS-wci" id="5Lg-TZ-ymx"/>
+                <outlet property="lblTransaksiCepat" destination="QAD-Uk-Wvd" id="jFM-MY-dOl"/>
                 <outlet property="lblTransaksiGagal" destination="XD2-3U-TtX" id="Ykr-su-pHB"/>
                 <outlet property="lblTransaksiSukses" destination="l84-Ni-8CO" id="LyN-S3-lJA"/>
                 <outlet property="pieChart" destination="PsQ-IT-uiC" id="LHi-lu-pTh"/>
@@ -83,6 +88,9 @@
                 <outlet property="progress3" destination="4dO-T0-Sr6" id="JLs-iP-yJc"/>
                 <outlet property="progress4" destination="MQP-Hx-Vow" id="3dj-Pu-ghe"/>
                 <outlet property="progress5" destination="TGt-7G-mvk" id="Vf0-eT-szm"/>
+                <outlet property="progressFooter1" destination="2P2-2l-PuI" id="7a0-fR-4RN"/>
+                <outlet property="progressFooter2" destination="eUh-nS-lEY" id="ow1-fw-pOj"/>
+                <outlet property="progressFooter3" destination="oOq-7j-4rT" id="aNK-yW-4zG"/>
                 <outlet property="scrollContent" destination="37t-Te-Zzb" id="MoY-MF-yuQ"/>
                 <outlet property="segmentedFooter" destination="FsQ-ax-DlM" id="QHS-p1-rGJ"/>
                 <outlet property="segmentedHeader" destination="phH-3w-tab" id="PpF-KS-g80"/>
@@ -878,7 +886,7 @@
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                             <inset key="titleEdgeInsets" minX="-40" minY="0.0" maxX="0.0" maxY="-20"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="-3" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="1 Hari" image="icon_home.png">
+                                            <state key="normal" title="1 Hari" image="icon_speed_fast.png">
                                                 <color key="titleColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -889,6 +897,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9h-Ky-l8N">
                                             <rect key="frame" x="270" y="57" width="24" height="21"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" constant="24" id="g2x-qH-1Ok"/>
                                                 <constraint firstAttribute="height" constant="21" id="j79-Jz-cCI"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
@@ -900,7 +909,7 @@
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                             <inset key="titleEdgeInsets" minX="-40" minY="0.0" maxX="0.0" maxY="-20"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="-3" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="2 Hari" image="icon_home.png">
+                                            <state key="normal" title="2 Hari" image="icon_speed_neutral.png">
                                                 <color key="titleColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -910,6 +919,9 @@
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oGH-Ky-O86">
                                             <rect key="frame" x="270" y="108" width="24" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="24" id="J5j-sZ-Gew"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -919,7 +931,7 @@
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                             <inset key="titleEdgeInsets" minX="-40" minY="0.0" maxX="0.0" maxY="-20"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="-3" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="3 Hari" image="icon_home.png">
+                                            <state key="normal" title="3 Hari" image="icon_speed_bad.png">
                                                 <color key="titleColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -929,6 +941,9 @@
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewR-5y-L3I">
                                             <rect key="frame" x="270" y="159" width="24" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="24" id="TYP-Il-bb0"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -957,53 +972,53 @@
                                                     </constraints>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S1k-hS-9Pw">
-                                                    <rect key="frame" x="136" y="51" width="20" height="20"/>
+                                                    <rect key="frame" x="136" y="60" width="10" height="10"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="LBB-hy-rMI"/>
-                                                        <constraint firstAttribute="width" constant="20" id="O1s-f5-DWE"/>
+                                                        <constraint firstAttribute="height" constant="10" id="5FP-eP-D6Z"/>
+                                                        <constraint firstAttribute="width" constant="10" id="h9y-88-AiH"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Sukses" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l84-Ni-8CO">
-                                                    <rect key="frame" x="164" y="41" width="130" height="40"/>
+                                                    <rect key="frame" x="154" y="55" width="130" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="N1T-dA-ess"/>
+                                                        <constraint firstAttribute="height" constant="20" id="XmL-m4-lrG"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ltb-lC-3V0">
-                                                    <rect key="frame" x="136" y="99" width="20" height="20"/>
+                                                    <rect key="frame" x="136" y="90" width="10" height="10"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="20" id="eF1-t0-hbx"/>
-                                                        <constraint firstAttribute="height" constant="20" id="pMs-lm-t2g"/>
+                                                        <constraint firstAttribute="width" constant="10" id="eF1-t0-hbx"/>
+                                                        <constraint firstAttribute="height" constant="10" id="pMs-lm-t2g"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Gagal" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XD2-3U-TtX">
-                                                    <rect key="frame" x="164" y="89" width="130" height="40"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Gagal / Ditolak" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XD2-3U-TtX">
+                                                    <rect key="frame" x="154" y="75" width="130" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="dOH-cb-sIw"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="XD2-3U-TtX" firstAttribute="top" secondItem="l84-Ni-8CO" secondAttribute="bottom" constant="8" id="0xn-ah-oTh"/>
-                                                <constraint firstAttribute="trailing" secondItem="l84-Ni-8CO" secondAttribute="trailing" constant="6" id="1Xb-gB-LTI"/>
-                                                <constraint firstItem="S1k-hS-9Pw" firstAttribute="leading" secondItem="PsQ-IT-uiC" secondAttribute="trailing" constant="8" id="4F9-E4-uTq"/>
-                                                <constraint firstItem="ltb-lC-3V0" firstAttribute="top" secondItem="S1k-hS-9Pw" secondAttribute="bottom" constant="28" id="9li-2g-UeM"/>
+                                                <constraint firstItem="S1k-hS-9Pw" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="60" id="GDR-zA-3HX"/>
+                                                <constraint firstItem="l84-Ni-8CO" firstAttribute="leading" secondItem="S1k-hS-9Pw" secondAttribute="trailing" constant="8" id="I9Q-ug-v3n"/>
+                                                <constraint firstAttribute="trailing" secondItem="XD2-3U-TtX" secondAttribute="trailing" constant="16" id="MGa-ws-ZdM"/>
+                                                <constraint firstItem="XD2-3U-TtX" firstAttribute="top" secondItem="l84-Ni-8CO" secondAttribute="bottom" id="MOW-Zb-Cv4"/>
                                                 <constraint firstItem="XD2-3U-TtX" firstAttribute="leading" secondItem="ltb-lC-3V0" secondAttribute="trailing" constant="8" id="O4H-GM-nn2"/>
                                                 <constraint firstItem="PsQ-IT-uiC" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="25" id="RMT-2k-eaU"/>
-                                                <constraint firstItem="S1k-hS-9Pw" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="51" id="UcL-4j-rHY"/>
+                                                <constraint firstItem="l84-Ni-8CO" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="55" id="UvH-dA-SeV"/>
+                                                <constraint firstItem="S1k-hS-9Pw" firstAttribute="leading" secondItem="PsQ-IT-uiC" secondAttribute="trailing" constant="8" id="WNn-oW-mnk"/>
+                                                <constraint firstAttribute="trailing" secondItem="l84-Ni-8CO" secondAttribute="trailing" constant="16" id="bGQ-2t-dFd"/>
                                                 <constraint firstItem="PsQ-IT-uiC" firstAttribute="leading" secondItem="i9T-PC-lwx" secondAttribute="leading" constant="8" id="e4h-Cm-jPK"/>
-                                                <constraint firstItem="l84-Ni-8CO" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="41" id="e9Y-yE-mht"/>
-                                                <constraint firstItem="l84-Ni-8CO" firstAttribute="leading" secondItem="S1k-hS-9Pw" secondAttribute="trailing" constant="8" id="exq-Cq-SZY"/>
                                                 <constraint firstItem="ltb-lC-3V0" firstAttribute="leading" secondItem="PsQ-IT-uiC" secondAttribute="trailing" constant="8" id="hhm-nY-6OP"/>
+                                                <constraint firstItem="ltb-lC-3V0" firstAttribute="top" secondItem="S1k-hS-9Pw" secondAttribute="bottom" constant="20" id="i4b-p5-o6v"/>
                                                 <constraint firstAttribute="bottom" secondItem="PsQ-IT-uiC" secondAttribute="bottom" constant="25" id="sbF-gd-Vvn"/>
-                                                <constraint firstAttribute="trailing" secondItem="XD2-3U-TtX" secondAttribute="trailing" constant="6" id="yUM-JD-L6w"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -1083,15 +1098,16 @@
                 <constraint firstAttribute="trailing" secondItem="37t-Te-Zzb" secondAttribute="trailing" id="sUp-vv-CZn"/>
                 <constraint firstAttribute="bottom" secondItem="37t-Te-Zzb" secondAttribute="bottom" id="xOK-Gw-e8t"/>
             </constraints>
-            <point key="canvasLocation" x="372" y="248"/>
+            <point key="canvasLocation" x="372" y="337"/>
         </view>
     </objects>
     <resources>
-        <image name="icon_home.png" width="30" height="30"/>
         <image name="icon_netral.png" width="30" height="30"/>
         <image name="icon_sad.png" width="30" height="30"/>
         <image name="icon_smile.png" width="30" height="30"/>
+        <image name="icon_speed_bad.png" width="30" height="30"/>
         <image name="icon_speed_fast.png" width="30" height="30"/>
+        <image name="icon_speed_neutral.png" width="30" height="30"/>
         <image name="icon_star.png" width="20" height="20"/>
         <image name="icon_star_active.png" width="20" height="20"/>
     </resources>

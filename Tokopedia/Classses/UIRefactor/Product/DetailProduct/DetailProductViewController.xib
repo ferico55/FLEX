@@ -613,7 +613,7 @@
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-25"/>
-                            <inset key="imageEdgeInsets" minX="55" minY="-12" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="Kecepatan" image="icon_speed_fast.png">
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -721,10 +721,10 @@
                 <constraint firstAttribute="bottom" secondItem="sPl-HV-1Ei" secondAttribute="bottom" constant="35" id="DRV-EP-F9v"/>
                 <constraint firstItem="fWw-Ck-UQr" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" constant="10" id="HNB-Gv-nt1"/>
                 <constraint firstItem="eSi-IX-aJW" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" id="Wkw-RD-Slo"/>
+                <constraint firstItem="And-LZ-Qxq" firstAttribute="top" secondItem="S8c-C2-gKh" secondAttribute="top" constant="159" id="aEN-fZ-kPh"/>
                 <constraint firstItem="sPl-HV-1Ei" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" id="eiA-mm-YgI"/>
                 <constraint firstItem="eSi-IX-aJW" firstAttribute="top" secondItem="sPl-HV-1Ei" secondAttribute="bottom" constant="-2" id="giT-m0-Gim"/>
                 <constraint firstItem="And-LZ-Qxq" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" constant="10" id="iwM-Zf-3zO"/>
-                <constraint firstItem="And-LZ-Qxq" firstAttribute="top" secondItem="fWw-Ck-UQr" secondAttribute="bottom" constant="15" id="kZD-Go-5s8"/>
                 <constraint firstAttribute="bottom" secondItem="eSi-IX-aJW" secondAttribute="bottom" id="owD-Vc-kth"/>
                 <constraint firstItem="sPl-HV-1Ei" firstAttribute="top" secondItem="And-LZ-Qxq" secondAttribute="bottom" constant="5" id="qKE-oq-ncD"/>
                 <constraint firstAttribute="trailing" secondItem="sPl-HV-1Ei" secondAttribute="trailing" id="r5Y-bP-wkn"/>
@@ -783,7 +783,7 @@
         <image name="Badges_gold_merchant" width="40" height="40"/>
         <image name="icon_button_share.png" width="20" height="20"/>
         <image name="icon_button_wishlist_nonactive.png" width="20" height="20"/>
-        <image name="icon_medal_diamond.png" width="20" height="20"/>
+        <image name="icon_medal_diamond.png" width="60" height="20"/>
         <image name="icon_sold.png" width="14" height="14"/>
         <image name="icon_speed_fast.png" width="30" height="30"/>
         <image name="icon_star.png" width="20" height="20"/>

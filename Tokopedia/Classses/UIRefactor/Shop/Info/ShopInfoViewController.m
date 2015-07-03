@@ -124,7 +124,18 @@
     
     //Set Position Btn Lihat Detail Statistic
     btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width-btnLihatDetailStat.imageView.bounds.size.width, 0, 0);
-    btnLihatDetailStat.titleEdgeInsets = UIEdgeInsetsMake(0, -btnLihatDetailStat.imageView.bounds.size.width, 0, 0);
+    btnLihatDetailStat.titleEdgeInsets = UIEdgeInsetsMake(0, -btnLihatDetailStat.imageView.bounds.size.width+15, 0, 0);
+    
+    //set reputasi and akurasi
+    UILabel *lblShow = [[UILabel alloc] init];
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:lblReputasi.font.pointSize+1];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblShow.textColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblShow.font, NSFontAttributeName, lblShow.textColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", _shop.result.stats.shop_reputation_score, CStringPoin] attributes:attrs];
+    [attributedText setAttributes:subAttrs range:NSMakeRange(attributedText.string.length-CStringPoin.length, CStringPoin.length)];
+    [lblReputasi setAttributedText:attributedText];
+    lblKecepatan.text = _shop.result.respond_speed.speed_level;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -622,6 +633,8 @@
 
 #pragma mark - Method
 - (IBAction)actionLihatDetailStatistik:(id)sender {
-
+    DetailStatisticViewController *detailStatisticViewController = [DetailStatisticViewController new];
+    detailStatisticViewController.detailShopResult = _shop.result;
+    [self.navigationController pushViewController:detailStatisticViewController animated:YES];
 }
 @end

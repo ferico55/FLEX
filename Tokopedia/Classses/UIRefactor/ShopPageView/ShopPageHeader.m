@@ -166,7 +166,7 @@
 
 - (void)showPopUp:(id)sender {
     id pageController = ((UIViewController *) _delegate).parentViewController;
-    [((ShopContainerViewController *) ((UIPageViewController *) pageController).delegate) showPopUp:@"1.000 poin" withSender:((UITapGestureRecognizer *) sender).view];
+    [((ShopContainerViewController *) ((UIPageViewController *) pageController).delegate) showPopUp:[NSString stringWithFormat:@"%@ %@", _shop.result.stats.shop_reputation_score, CStringPoin] withSender:((UITapGestureRecognizer *) sender).view];
 }
 
 - (void)didReceiveMemoryWarning
