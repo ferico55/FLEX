@@ -206,6 +206,7 @@
     _mapping = [TransactionObjectMapping new];
     _navigate = [NavigateViewController new];
     _requestCart = [RequestCart new];
+    _requestCart.viewController = self;
     _requestCart.delegate = self;
     
     _tableView.delegate = self;
@@ -2347,9 +2348,9 @@
     }
     
     if (tag == TAG_REQUEST_CHECKOUT) {
-        _buyButton.enabled = YES;
-        _buyButton.layer.opacity = 1;
-        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
+        _checkoutButton.enabled = YES;
+        _checkoutButton.layer.opacity = 1;
+        [_checkoutButton setTitle:@"BAYAR" forState:UIControlStateNormal];
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }
     if (tag == TAG_REQUEST_BUY) {
@@ -2359,16 +2360,18 @@
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }
     if (tag == TAG_REQUEST_VOUCHER) {
-        
+        [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
     }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         
     }
     if (tag == TAG_REQUEST_EMONEY) {
+        [_delegate shouldBackToFirstPage];
         [_act stopAnimating];
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        [_delegate shouldBackToFirstPage];
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
         [_act stopAnimating];
     }
@@ -2386,31 +2389,19 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
     TransactionCart *cart = stat;
-    BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+    [_list removeAllObjects];
     
-    if (status) {
-        if(cart.message_error)
-        {
-            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-            [alert show];
-        }
-        else{
-            
-            [_list removeAllObjects];
-            
-            NSArray *list = cart.result.list;
-            [_list addObjectsFromArray:list];
-            
-            _cart = cart.result;
-            [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL];
-            
-            [self adjustAfterUpdateList];
-            
-            NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
-            [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
-        }
-    }
+    NSArray *list = cart.result.list;
+    [_list addObjectsFromArray:list];
+    
+    _cart = cart.result;
+    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL];
+    
+    [self adjustAfterUpdateList];
+    
+    NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
+    [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
 }
 
 
@@ -2542,53 +2533,29 @@
 
 -(void)requestSuccessActionCancelCart:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *action = stat;
-    BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
+    TransactionCartList *list = _list[indexPathCancelProduct.section];
     
-    if (status) {
-        if(action.message_error)
-        {
-            NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-            [alert show];
-        }
-        else{
-            if (action.result.is_success == 1) {
-                
-                NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                [alert show];
-                
-                NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
-                TransactionCartList *list = _list[indexPathCancelProduct.section];
-                
-                NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
-                NSMutableArray *products = [NSMutableArray new];
-                [products addObjectsFromArray:list.cart_products];
-                ProductDetail *product = products[indexPathCancelProduct.row];
-                
-                if (type == TYPE_CANCEL_CART_PRODUCT ) {
-                    [products removeObject:product];
-                    ((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
-                    if (((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
-                        [_list removeObject:_list[indexPathCancelProduct.section]];
-                    }
-                }
-                else
-                {
-                    [_list removeObject:list];
-                }
-                
-                
-                [self adjustAfterUpdateList];
-                
-                [self refreshView:nil];
-                
-            }
+    NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
+    NSMutableArray *products = [NSMutableArray new];
+    [products addObjectsFromArray:list.cart_products];
+    ProductDetail *product = products[indexPathCancelProduct.row];
+    
+    if (type == TYPE_CANCEL_CART_PRODUCT ) {
+        [products removeObject:product];
+        ((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
+        if (((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
+            [_list removeObject:_list[indexPathCancelProduct.section]];
         }
     }
+    else
+    {
+        [_list removeObject:list];
+    }
+    
+    //
+    [self adjustAfterUpdateList];
+    [self refreshView:nil];
     [self endRefreshing];
 }
 
@@ -2600,34 +2567,18 @@
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stat = [result objectForKey:@""];
     TransactionSummary *cart = stat;
-    BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
-    if (status) {
-        if(cart.message_error)
-        {
-            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-            [alert show];
-        }
-        else{
-            TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-            NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
-                                       DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
-                                       DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
-                                       DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
-                                       DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
-                                       DATA_CART_GATEWAY_KEY :selectedGateway
-                                       };
-            [_delegate didFinishRequestCheckoutData:userInfo];
-        }
-        if(cart.message_status)
-        {
-            NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-            [alert show];
-        }
-    }
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
+                               DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
+                               DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
+                               DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
+                               DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
+                               DATA_CART_GATEWAY_KEY :selectedGateway
+                               };
+    [_delegate didFinishRequestCheckoutData:userInfo];
     
+    //
     _checkoutButton.enabled = YES;
     _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
     [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
@@ -2639,72 +2590,39 @@
 
 -(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
-    if ([object isKindOfClass:[RKMappingResult class]]) {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionBuy *cart = stat;
-        BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        
-        if (status) {
-            if(cart.message_error)
-            {
-                
-                NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                [alert show];
-                
-                switch ([_cartSummary.gateway integerValue]) {
-                    case TYPE_GATEWAY_TRANSFER_BANK:
-                        break;
-                    case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
-                    {
-                        //NSDictionary *data = @{DATA_KEY:_dataInput,
-                        //                      DATA_CART_SUMMARY_KEY: _cartSummary
-                        //                       };
-                        //[_delegate pushVC:self toMandiriClickPayVCwithData:data];
-                    }
-                        break;
-                    default:
-                        break;
-                }
-            }
-            if(cart.message_status)
-            {
-                NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                [alert show];
-            }
-            if (cart.result.is_success == 1) {
-                _cartBuy = cart.result;
-                switch ([_cartSummary.gateway integerValue]) {
-                    case TYPE_GATEWAY_MANDIRI_E_CASH:
-                    {
-                        TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-                        vc.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
-                        vc.token = _cartSummary.token;
-                        vc.URLStringMandiri = cart.result.link_mandiri?:@"";
-                        vc.cartDetail = _cartSummary;
-                        vc.emoney_code = cart.result.transaction.emoney_code;
-                        vc.delegate = self;
-                        UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                        navigationController.navigationBar.translucent = NO;
-                        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-                        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                    }
-                        break;
-                    default:
-                    {
-                        NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
-                        [_delegate didFinishRequestBuyData:userInfo];
-                        [_dataInput removeAllObjects];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-                    }
-                        break;
-                }
-            }
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    TransactionBuy *cart = stat;
+    
+    _cartBuy = cart.result;
+    switch ([_cartSummary.gateway integerValue]) {
+        case TYPE_GATEWAY_MANDIRI_E_CASH:
+        {
+            TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+            vc.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
+            vc.token = _cartSummary.token;
+            vc.URLStringMandiri = cart.result.link_mandiri?:@"";
+            vc.cartDetail = _cartSummary;
+            vc.emoney_code = cart.result.transaction.emoney_code;
+            vc.delegate = self;
+            UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+            navigationController.navigationBar.translucent = NO;
+            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         }
+        break;
+        default:
+        {
+            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
+            [_delegate didFinishRequestBuyData:userInfo];
+            [_dataInput removeAllObjects];
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+        }
+        break;
     }
+    
+    //
     _buyButton.enabled = YES;
     _buyButton.layer.opacity = 1;
     [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
@@ -2718,132 +2636,65 @@
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stat = [result objectForKey:@""];
     TransactionVoucher *dataVoucher = stat;
-    BOOL status = [dataVoucher.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+
+    _voucherCodeButton.hidden = YES;
+    _voucherAmountLabel.hidden = NO;
     
-    if (status) {
-        if(dataVoucher.message_error)
-        {
-            [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
-            NSArray *errorMessages = dataVoucher.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-            [alert show];
-        }
-        else{
-            _voucherCodeButton.hidden = YES;
-            _voucherAmountLabel.hidden = NO;
-            
-            NSInteger voucher = [dataVoucher.result.data_voucher.voucher_amount integerValue];
-            NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
-            voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
-            _voucherAmountLabel.text = voucherString;
-            _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-            
-            _buttonVoucherInfo.hidden = YES;
-            _buttonCancelVoucher.hidden = NO;
-            
-            NSString *grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
-            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"-" withString:@""];
-            grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
-            NSInteger totalInteger = [grandTotal integerValue];
-            
-            if (totalInteger<=voucher) {
-                [_dataInput setObject:@(totalInteger) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
-            }
-            else
-            {
-                [_dataInput setObject:@(voucher) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
-            }
-            
-            
-            totalInteger -= voucher;
-            if (totalInteger <0) {
-                totalInteger = 0;
-            }
-            _cart.grand_total = [NSString stringWithFormat:@"%zd",totalInteger];
-            _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
-            [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
-            [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-            [_tableView reloadData];
-        }
+    NSInteger voucher = [dataVoucher.result.data_voucher.voucher_amount integerValue];
+    NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
+    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
+    _voucherAmountLabel.text = voucherString;
+    _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+    
+    _buttonVoucherInfo.hidden = YES;
+    _buttonCancelVoucher.hidden = NO;
+    
+    NSString *grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
+    grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
+    NSInteger totalInteger = [grandTotal integerValue];
+    
+    if (totalInteger<=voucher) {
+        [_dataInput setObject:@(totalInteger) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+    }
+    else
+    {
+        [_dataInput setObject:@(voucher) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
     }
     
+    
+    totalInteger -= voucher;
+    if (totalInteger <0) {
+        totalInteger = 0;
+    }
+    _cart.grand_total = [NSString stringWithFormat:@"%zd",totalInteger];
+    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
+    [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
+    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    [_tableView reloadData];
 }
-
 
 #pragma mark - Request Edit Product
 -(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *action = stat;
-    BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if(action.message_error)
-        {
-            NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-            [alert show];
-        }
-        else{
-            if (action.result.is_success == 1) {
-                NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                [alert show];
-                if (_indexPage == 0) {
-                    _requestCart.param = @{};
-                    [_requestCart doRequestCart];
-                    
-                    _refreshFromShipment = YES;
-                }
-                [_tableView reloadData];
-            }
-        }
+    if (_indexPage == 0) {
+        _requestCart.param = @{};
+        [_requestCart doRequestCart];
+        
+        _refreshFromShipment = YES;
     }
+    [_tableView reloadData];
 }
 
 #pragma mark - Request E-Money
 -(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TxEmoney *emoney = stat;
-    BOOL status = [emoney.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
+    [_delegate didFinishRequestBuyData:userInfo];
     
-    if (status) {
-        //if (isWSNew) {
-        if (emoney.result.is_success == 1) {
-            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
-            [_delegate didFinishRequestBuyData:userInfo];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        }
-        else
-        {
-            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:self];
-            [failedAlert show];
-            [_delegate shouldBackToFirstPage];
-        }
-        //}
-        //else
-        //{
-        //    if (emoney.result.is_success == 1) {
-        //        if ([emoney.result.data.status rangeOfString:@"FAILED"].location != NSNotFound) {
-        //            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"FAILED" message:@"Pembayaran gagal. Silahkan coba lagi." delegate:self cancelButtonTitle:@"Tutup" otherButtonTitles:nil];
-        //            [alert show];
-        //        }
-        //        else if([emoney.result.data.status rangeOfString:@"SUCCESS"].location != NSNotFound)
-        //        {
-        //            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy};
-        //            [_delegate didFinishRequestBuyData:userInfo];
-        //
-        //            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        //        }
-        //    }
-        //}
-        
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+//
     [_act stopAnimating];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
@@ -2855,23 +2706,13 @@
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stat = [result objectForKey:@""];
     TransactionBuy *BCAClickPay = stat;
-    BOOL status = [BCAClickPay.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+
+    NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BCAClickPay.result?:[TransactionBuyResult new]};
+    [_delegate didFinishRequestBuyData:userInfo?:@{}];
     
-    if (status) {
-        if (BCAClickPay.result.is_success == 1) {
-            
-            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BCAClickPay.result?:[TransactionBuyResult new]};
-            [_delegate didFinishRequestBuyData:userInfo?:@{}];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        }
-        else
-        {
-            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:self];
-            [failedAlert show];
-            [_delegate shouldBackToFirstPage];
-        }
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+
+    //
     [_act stopAnimating];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }

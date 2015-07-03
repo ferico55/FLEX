@@ -186,6 +186,12 @@
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         return [[self objectManager] objectMangerEditProduct];
     }
+    if (tag == TAG_REQUEST_EMONEY) {
+        return [[self objectManager] objectManagerEMoney];
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        return [[self objectManager] objectManagerBCAClickPay];
+    }
 
     return nil;
 }
@@ -250,7 +256,6 @@
         TransactionBuy *cart = stat;
         return cart.status;
     }
-    
     if (tag == TAG_REQUEST_VOUCHER) {
         TransactionVoucher *dataVoucher = stat;
         return dataVoucher.status;
@@ -272,30 +277,147 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    id stat = [result objectForKey:@""];
+    
     if (tag == TAG_REQUEST_CART) {
-        [_delegate requestSuccessCart:successResult withOperation:operation];
+        TransactionCart *cart = stat;
+        if(cart.message_error)
+        {
+            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:_viewController];
+            [alert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
+        else
+        {
+            [_delegate requestSuccessCart:successResult withOperation:operation];
+        }
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
-        [_delegate requestSuccessActionCancelCart:successResult withOperation:operation];
+        TransactionAction *action = stat;
+        if (action.result.is_success == 1) {
+            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:_viewController];
+            [alert show];
+            [_delegate requestSuccessActionCancelCart:successResult withOperation:operation];
+        }
+        else
+        {
+            NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:_viewController];
+            [alert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
     }
     if (tag == TAG_REQUEST_CHECKOUT) {
-        [_delegate requestSuccessActionCheckout:successResult withOperation:operation];
+        TransactionSummary *cart = stat;
+        if(cart.message_error)
+        {
+            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:_viewController];
+            [alert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
+        else{
+            NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:_viewController];
+            [alert show];
+            [_delegate requestSuccessActionCheckout:successResult withOperation:operation];
+        }
     }
     if (tag == TAG_REQUEST_BUY) {
-        [_delegate requestSuccessActionBuy:successResult withOperation:operation];
+        TransactionBuy *cart = stat;
+        if (cart.result.is_success == 1) {
+            NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:_viewController];
+            [alert show];
+            
+            [_delegate requestSuccessActionBuy:successResult withOperation:operation];
+        }
+        else
+        {
+            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:_viewController];
+            [alert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
     }
     if (tag == TAG_REQUEST_VOUCHER) {
-        [_delegate requestSuccessActionVoucher:successResult withOperation:operation];
+        TransactionVoucher *dataVoucher = stat;
+
+        if(dataVoucher.message_error)
+        {
+            NSArray *errorMessages = dataVoucher.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:_viewController];
+            [alert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
+        else{
+            [_delegate requestSuccessActionVoucher:successResult withOperation:operation];
+        }
     }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
-        [_delegate requestSuccessActionEditProductCart:successResult withOperation:operation];
+        TransactionAction *action = stat;
+        
+        if (action.result.is_success == 1) {
+            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:_viewController];
+            [alert show];
+            
+            [_delegate requestSuccessActionEditProductCart:successResult withOperation:operation];
+        }
+        else
+        {
+            NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:_viewController];
+            [alert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
     }
     if (tag == TAG_REQUEST_EMONEY) {
-        [_delegate requestSuccessEMoney:successResult withOperation:operation];
+        TxEmoney *emoney = stat;
+        
+        if (emoney.result.is_success == 1) {
+            [_delegate requestSuccessEMoney:successResult withOperation:operation];
+        }
+        else
+        {
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:_viewController];
+            [failedAlert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
     }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
-        [_delegate requestSuccessBCAClickPay:successResult withOperation:operation];
+        TransactionBuy *BCAClickPay = stat;
+        
+        if (BCAClickPay.result.is_success == 1) {
+            [_delegate requestSuccessBCAClickPay:successResult withOperation:operation];
+        }
+        else
+        {
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:_viewController];
+            [failedAlert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
     }
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    NSError *error = errorResult;
+    NSArray *errors;
+    if(error.code == -1011) {
+        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    } else if (error.code==-1009 || error.code==-999) {
+        errors = @[@"Tidak ada koneksi internet"];
+    } else {
+        errors = @[error.localizedDescription];
+    }
+    
+    StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_viewController];
+    [failedAlert show];
+    [_delegate actionAfterFailRequestMaxTries:tag];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
@@ -307,11 +429,11 @@
 -(void)setParam:(NSDictionary *)param
 {
     _param = param;
-    NSNumber *gatewayID  = [_param objectForKey:@"gateway"];
-    if([gatewayID integerValue] == TYPE_GATEWAY_CLICK_BCA){
-        _objectManager = nil;
-        _objectManager = [self objectManager];
-    }
+//    NSNumber *gatewayID  = [_param objectForKey:@"gateway"];
+//    if([gatewayID integerValue] == TYPE_GATEWAY_CLICK_BCA){
+//        _objectManager = nil;
+//        _objectManager = [self objectManager];
+//    }
 
 }
 

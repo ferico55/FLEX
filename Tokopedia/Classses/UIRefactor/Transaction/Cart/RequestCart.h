@@ -40,6 +40,8 @@
 @property (nonatomic, weak) IBOutlet id<RequestCartDelegate> delegate;
 @property (nonatomic, strong) NSDictionary *param;
 
+@property (nonatomic, strong) UIViewController *viewController;
+
 -(void)doRequestCart;
 -(void)doRequestCancelCart;
 -(void)doRequestCheckout;

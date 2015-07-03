@@ -123,15 +123,15 @@
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionSummaryResult class]];
     
-    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
-    RKObjectMapping *listMapping        = [_mapping transactionCartListMapping];
-    RKObjectMapping *productMapping     = [_mapping productMapping];
-    RKObjectMapping *addressMapping     = [_mapping addressMapping];
-    RKObjectMapping *shipmentsMapping   = [_mapping shipmentsMapping];
-    RKObjectMapping *shopinfoMapping    = [_mapping shopInfoMapping];
+    RKObjectMapping *transactionMapping = [[self mapping] transactionDetailSummaryMapping];
+    RKObjectMapping *listMapping        = [[self mapping] transactionCartListMapping];
+    RKObjectMapping *productMapping     = [[self mapping] productMapping];
+    RKObjectMapping *addressMapping     = [[self mapping] addressMapping];
+    RKObjectMapping *shipmentsMapping   = [[self mapping] shipmentsMapping];
+    RKObjectMapping *shopinfoMapping    = [[self mapping] shopInfoMapping];
     
     if(_gatewayID == TYPE_GATEWAY_CLICK_BCA){
-        RKObjectMapping *BCAParamMapping = [_mapping BCAParamMapping];
+        RKObjectMapping *BCAParamMapping = [[self mapping] BCAParamMapping];
         RKRelationshipMapping *bcaParamRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_BCA_PARAM_KEY
                                                                                          toKeyPath:API_BCA_PARAM_KEY
                                                                                        withMapping:BCAParamMapping];
@@ -201,13 +201,13 @@
     [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY,
                                                    API_LINK_MANDIRI_KEY]];
     
-    RKObjectMapping *systemBankMapping = [_mapping systemBankMapping];
-    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
-    RKObjectMapping *listMapping = [_mapping transactionCartListMapping];
-    RKObjectMapping *productMapping = [_mapping productMapping];
-    RKObjectMapping *addressMapping = [_mapping addressMapping];
-    RKObjectMapping *shipmentsMapping = [_mapping shipmentsMapping];
-    RKObjectMapping *shopinfoMapping = [_mapping shopInfoMapping];
+    RKObjectMapping *systemBankMapping = [[self mapping] systemBankMapping];
+    RKObjectMapping *transactionMapping = [[self mapping] transactionDetailSummaryMapping];
+    RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
+    RKObjectMapping *productMapping = [[self mapping] productMapping];
+    RKObjectMapping *addressMapping = [[self mapping] addressMapping];
+    RKObjectMapping *shipmentsMapping = [[self mapping] shipmentsMapping];
+    RKObjectMapping *shopinfoMapping = [[self mapping] shopInfoMapping];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -347,13 +347,13 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionBuyResult class]];
     [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
     
-    RKObjectMapping *systemBankMapping = [_mapping systemBankMapping];
-    RKObjectMapping *transactionMapping = [_mapping transactionDetailSummaryMapping];
-    RKObjectMapping *listMapping = [_mapping transactionCartListMapping];
-    RKObjectMapping *productMapping = [_mapping productMapping];
-    RKObjectMapping *addressMapping = [_mapping addressMapping];
-    RKObjectMapping *shipmentsMapping = [_mapping shipmentsMapping];
-    RKObjectMapping *shopinfoMapping = [_mapping shopInfoMapping];
+    RKObjectMapping *systemBankMapping = [[self mapping] systemBankMapping];
+    RKObjectMapping *transactionMapping = [[self mapping] transactionDetailSummaryMapping];
+    RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
+    RKObjectMapping *productMapping = [[self mapping] productMapping];
+    RKObjectMapping *addressMapping = [[self mapping] addressMapping];
+    RKObjectMapping *shipmentsMapping = [[self mapping] shipmentsMapping];
+    RKObjectMapping *shopinfoMapping = [[self mapping] shopInfoMapping];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
