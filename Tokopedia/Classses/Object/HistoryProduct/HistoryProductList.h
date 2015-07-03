@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class ProductModelView;
 
 @interface HistoryProductList : NSObject
 
@@ -17,5 +18,6 @@
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *product_image;
 @property (nonatomic, strong) NSString *product_name;
+@property (nonatomic, strong) ProductModelView *viewModel;
 
 @end
