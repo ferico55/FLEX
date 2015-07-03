@@ -12,5 +12,6 @@
 
 @property (strong,nonatomic) NSDictionary *data;
 
-
+- (void)removeData:(NSString *)inboxID;
+- (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 @end

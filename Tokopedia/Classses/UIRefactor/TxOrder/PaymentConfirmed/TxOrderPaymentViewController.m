@@ -1059,6 +1059,7 @@
     SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     NSString *password = [_dataInput objectForKey:DATA_PASSWORD_KEY];
+    NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY];
     
     if ([self isPaymentTypeBank] && _isNewRekening) {
         if (!bank.bank_account_name) {
@@ -1096,9 +1097,8 @@
         }
     }
     else if ([self isPaymentTypeTransfer]) {
-        NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
-        if (depositor == nil || [depositor isEqualToString:@""]) {
-            [errorMessage addObject:@"Nama penyetor harus diisi"];
+        if (!depositor || [depositor isEqualToString:@""]) {
+            [errorMessage addObject:ERRORMESSAGE_NILL_DEPOSITOR];
             isValid = NO;
         }
         if (!systemBank.sysbank_id) {

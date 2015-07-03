@@ -140,6 +140,12 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = barButtonItem;
 }
 
 #pragma mark - Memory Management
@@ -311,6 +317,14 @@
 {
     [_act stopAnimating];
     _table.tableFooterView = nil;
+    
+    NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];
+    if (presentedEtalaseType == PRESENTED_ETALASE_ADD_PRODUCT && _etalaseList.count==0) {
+        EtalaseList *etalase = [EtalaseList new];
+        etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+        etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
+        [_etalaseList addObject:etalase];
+    }
 }
 
 - (RKObjectManager*)objectManagerEtalase

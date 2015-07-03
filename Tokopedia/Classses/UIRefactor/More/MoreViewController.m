@@ -290,7 +290,10 @@
         if(profileInfo.result.shop_info!=nil && profileInfo.result.shop_info.shop_avatar!=nil && ![profileInfo.result.shop_info.shop_avatar isEqualToString:@""]) {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             if(secureStorage != nil) {
-                [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                
+                if(profileInfo.result.shop_info.shop_avatar != nil) {
+                    [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                }
                 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:profileInfo.result.shop_info.shop_avatar]
                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                           timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];

@@ -592,7 +592,7 @@
     view.labelprov.text = (address.location_province_name ==0) ? @"-" : address.location_province_name;
     view.labelpostal.text = (address.location_postal_code ==0) ? @"-" : address.location_postal_code;
     view.labelemail.text = (address.location_email ==0) ? @"-" : address.location_email;
-    view.labelfax.text = (address.location_fax ==0) ? @"-" : address.location_fax;
+    view.labelfax.text = ([address.location_fax isEqualToString:@"0"]) ? @"-" : address.location_fax;
     view.labelphone.text = (address.location_phone ==0) ? @"-" : address.location_phone;
 }
 

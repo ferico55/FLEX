@@ -330,15 +330,16 @@
 
 -(void)showImageAtIndexPath:(NSIndexPath *)indexPath
 {
-    InboxResolutionCenterList *resolution = _list[indexPath.row];
-
-    NSString *imageURLString = @"";
-    if (_isMyComplain)
-        imageURLString = resolution.resolution_detail.resolution_shop.shop_image;
-    else
-        imageURLString = resolution.resolution_detail.resolution_customer.customer_image;
-
-    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:@[imageURLString] indexImage:0];
+    [self goToShopOrProfileAtIndexPath:indexPath];
+//    InboxResolutionCenterList *resolution = _list[indexPath.row];
+//
+//    NSString *imageURLString = @"";
+//    if (_isMyComplain)
+//        imageURLString = resolution.resolution_detail.resolution_shop.shop_image;
+//    else
+//        imageURLString = resolution.resolution_detail.resolution_customer.customer_image;
+//
+//    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:@[imageURLString] indexImage:0];
 }
 
 -(void)goToResolutionDetailAtIndexPath:(NSIndexPath *)indexPath
