@@ -330,7 +330,17 @@
 
 -(void)requestProcessActionAddAddress:(id)object
 {
-    if (object) {
+    if ([object isKindOfClass:[NSError class]]) {
+        
+        if ([[object userInfo] objectForKey:NSLocalizedDescriptionKey]) {
+            NSString *errorMessage = [[object userInfo] objectForKey:NSLocalizedDescriptionKey];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
+            [alert show];
+            
+            self.navigationItem.rightBarButtonItem = _barbuttonsave;
+        }
+        
+    } else {
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         id stat = [result objectForKey:@""];
         ProfileSettings *setting = stat;
@@ -789,4 +799,5 @@
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
 }
+
 @end
