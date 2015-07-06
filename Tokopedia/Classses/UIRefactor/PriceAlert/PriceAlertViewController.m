@@ -58,7 +58,7 @@
         txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
         [self initNavigation:NO];
     }
-    else if(_catalogInfo!=nil && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"Rp 0"]) {
+    else if(_catalogInfo!=nil && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"Rp 0"] && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"0"]) {
         NSString *tempStr = [_catalogInfo.catalog_pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
         txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
         [self initNavigation:NO];
