@@ -439,15 +439,24 @@
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
     if (section < _list.count) return 44;
-    else if (section == _list.count+1 && _indexPage==0)
+    else if (section == _list.count+1)
     {
-        if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
-            [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
-            ([self depositAmountUser] == 0) )
-            return 0.1f;
-        else
-            return 10;
+        if (_indexPage == 0) {
+            if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
+                [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
+                ([self depositAmountUser] == 0) )
+                return 0.1f;
+            else
+                return 10;
+        }
+        if (_indexPage==1)
+        {
+            if ([_cartSummary.deposit_amount integerValue]<=0 ||
+                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA)
+                return 0.1f;
+        }
     }
+
     return 0;
 }
 
@@ -462,10 +471,13 @@
     
     if (section < listCount)
         return HEIGHT_VIEW_SUBTOTAL;
-    else if(section == listCount)
+    else if(section == listCount+1)
     {
-        if (_indexPage==1 && [_cartSummary.deposit_amount integerValue]>0) {
-            return 0;
+        if (_indexPage==1)
+        {
+            if ([_cartSummary.deposit_amount integerValue]<=0 ||
+                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA)
+                return 0.1f;
         }
     }
 

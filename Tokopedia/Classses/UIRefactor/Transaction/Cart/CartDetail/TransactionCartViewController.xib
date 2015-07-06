@@ -612,6 +612,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="209" y="116.5"/>
         </view>
         <view contentMode="scaleToFill" id="KDl-FM-LK1" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="78"/>

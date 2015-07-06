@@ -110,6 +110,7 @@
     if (_indexPage == 0) {
         [_networkManagerCalculate doRequest];
         _isFinishCalculate = NO;
+        [_tableView reloadData];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editInsurance:) name:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil];
@@ -292,6 +293,7 @@
     if (tag == TAG_REQUEST_CALCULATE) {
         [self requestSuccessActionCalculate:successResult withOperation:operation];
         _isFinishCalculate = YES;
+        [_tableView reloadData];
     }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
         [self requestSuccessActionEditAddress:successResult withOperation:operation];
@@ -310,6 +312,7 @@
 {
     if (tag == TAG_REQUEST_CALCULATE) {
         _isFinishCalculate = YES;
+        [_tableView reloadData];
     }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
         
@@ -756,6 +759,7 @@
         cell = [self cellCartDetailAtIndexPage:indexPath];
     else
         cell = [self cellCartSummaryAtIndexPage:indexPath];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -1041,12 +1045,34 @@
             }
                 break;
             case 2:
+            {
                 cell.detailTextLabel.text = shipment.shipment_name;
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                }
+            }
                 break;
             case 3:
             {
                 NSString *shipmentPackageName = shipmentPackage.name?:cart.cart_shipments.shipment_package_name;
                 cell.detailTextLabel.text = shipmentPackageName;
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                }
                 break;
             }
             case 4:
