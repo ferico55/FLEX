@@ -29,6 +29,7 @@
     RKObjectManager *rkObjectManager;
     
     UIBarButtonItem *rightBarButtonItem;
+    BOOL isEditCatalog;
 }
 @end
 
@@ -59,6 +60,7 @@
         [self initNavigation:NO];
     }
     else if(_catalogInfo!=nil && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"Rp 0"] && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"0"]) {
+        isEditCatalog = YES;
         NSString *tempStr = [_catalogInfo.catalog_pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
         txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
         [self initNavigation:NO];
@@ -227,7 +229,7 @@
     GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
     if(tag == CTagAddCatalogPriceAlert) {
         if([generalAction.result.is_success isEqualToString:@"1"]) {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessAddPriceCatalog] delegate:self];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[(isEditCatalog? CStringSuccessEditPriceAlert:CStringSuccessAddPriceCatalog)] delegate:self];
             [stickyAlertView show];
             
             

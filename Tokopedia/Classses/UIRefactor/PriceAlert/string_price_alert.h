@@ -66,7 +66,8 @@
 #define CStringBack @"Back"
 #define CStringUbah @"Ubah"
 #define CStringNotificationHarga @"Notifikasi Harga"
-#define CStringSuccessEditPriceAlert @"Berhasil mengubah notifikasi harga produk"
-#define CStringSuccessAddPrice @"Berhasil menambah notifikasi harga produk"
-#define CStringSuccessAddPriceCatalog @"Berhasil menambah notifikasi harga katalog"
+#define CStringSuccessEditPriceAlert @"Anda telah berhasil memperbaharui notifikasi harga produk"
+#define CStringSuccessAddPrice @"Anda telah berhasil menambah notifikasi harga produk"
+#define CStringSuccessEditPriceCatalog @"Anda telah berhasil memperbaharui notifikasi katalog"
+#define CStringSuccessAddPriceCatalog @"Anda telah berhasil menambah notifikasi katalog"
 #endif

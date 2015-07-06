@@ -1429,17 +1429,17 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
-		859BF3341B4A4628001AB889 /* AlertPriceNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3231B4A4628001AB889 /* AlertPriceNotificationViewController.m */; };
-		859BF3351B4A4628001AB889 /* AlertPriceNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF3241B4A4628001AB889 /* AlertPriceNotificationViewController.xib */; };
-		859BF3361B4A4628001AB889 /* DepartmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3261B4A4628001AB889 /* DepartmentTableViewController.m */; };
-		859BF3371B4A4628001AB889 /* DetailPriceAlertTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3281B4A4628001AB889 /* DetailPriceAlertTableViewCell.m */; };
-		859BF3381B4A4628001AB889 /* DetailPriceAlertTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF3291B4A4628001AB889 /* DetailPriceAlertTableViewCell.xib */; };
-		859BF3391B4A4628001AB889 /* DetailPriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF32B1B4A4628001AB889 /* DetailPriceAlertViewController.m */; };
-		859BF33A1B4A4628001AB889 /* DetailPriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF32C1B4A4628001AB889 /* DetailPriceAlertViewController.xib */; };
-		859BF33B1B4A4628001AB889 /* PriceAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF32E1B4A4628001AB889 /* PriceAlertCell.m */; };
-		859BF33C1B4A4628001AB889 /* PriceAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF32F1B4A4628001AB889 /* PriceAlertCell.xib */; };
-		859BF33D1B4A4628001AB889 /* PriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3311B4A4628001AB889 /* PriceAlertViewController.m */; };
-		859BF33E1B4A4628001AB889 /* PriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF3321B4A4628001AB889 /* PriceAlertViewController.xib */; };
+		859BF3521B4A55F0001AB889 /* AlertPriceNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3411B4A55F0001AB889 /* AlertPriceNotificationViewController.m */; };
+		859BF3531B4A55F0001AB889 /* AlertPriceNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF3421B4A55F0001AB889 /* AlertPriceNotificationViewController.xib */; };
+		859BF3541B4A55F0001AB889 /* DepartmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3441B4A55F0001AB889 /* DepartmentTableViewController.m */; };
+		859BF3551B4A55F0001AB889 /* DetailPriceAlertTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3461B4A55F0001AB889 /* DetailPriceAlertTableViewCell.m */; };
+		859BF3561B4A55F0001AB889 /* DetailPriceAlertTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF3471B4A55F0001AB889 /* DetailPriceAlertTableViewCell.xib */; };
+		859BF3571B4A55F0001AB889 /* DetailPriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3491B4A55F0001AB889 /* DetailPriceAlertViewController.m */; };
+		859BF3581B4A55F0001AB889 /* DetailPriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF34A1B4A55F0001AB889 /* DetailPriceAlertViewController.xib */; };
+		859BF3591B4A55F0001AB889 /* PriceAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF34C1B4A55F0001AB889 /* PriceAlertCell.m */; };
+		859BF35A1B4A55F0001AB889 /* PriceAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF34D1B4A55F0001AB889 /* PriceAlertCell.xib */; };
+		859BF35B1B4A55F0001AB889 /* PriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF34F1B4A55F0001AB889 /* PriceAlertViewController.m */; };
+		859BF35C1B4A55F0001AB889 /* PriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859BF3501B4A55F0001AB889 /* PriceAlertViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -3622,24 +3622,24 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		859BF3221B4A4628001AB889 /* AlertPriceNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertPriceNotificationViewController.h; sourceTree = "<group>"; };
-		859BF3231B4A4628001AB889 /* AlertPriceNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertPriceNotificationViewController.m; sourceTree = "<group>"; };
-		859BF3241B4A4628001AB889 /* AlertPriceNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertPriceNotificationViewController.xib; sourceTree = "<group>"; };
-		859BF3251B4A4628001AB889 /* DepartmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentTableViewController.h; sourceTree = "<group>"; };
-		859BF3261B4A4628001AB889 /* DepartmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentTableViewController.m; sourceTree = "<group>"; };
-		859BF3271B4A4628001AB889 /* DetailPriceAlertTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertTableViewCell.h; sourceTree = "<group>"; };
-		859BF3281B4A4628001AB889 /* DetailPriceAlertTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertTableViewCell.m; sourceTree = "<group>"; };
-		859BF3291B4A4628001AB889 /* DetailPriceAlertTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertTableViewCell.xib; sourceTree = "<group>"; };
-		859BF32A1B4A4628001AB889 /* DetailPriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertViewController.h; sourceTree = "<group>"; };
-		859BF32B1B4A4628001AB889 /* DetailPriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertViewController.m; sourceTree = "<group>"; };
-		859BF32C1B4A4628001AB889 /* DetailPriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertViewController.xib; sourceTree = "<group>"; };
-		859BF32D1B4A4628001AB889 /* PriceAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertCell.h; sourceTree = "<group>"; };
-		859BF32E1B4A4628001AB889 /* PriceAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertCell.m; sourceTree = "<group>"; };
-		859BF32F1B4A4628001AB889 /* PriceAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertCell.xib; sourceTree = "<group>"; };
-		859BF3301B4A4628001AB889 /* PriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertViewController.h; sourceTree = "<group>"; };
-		859BF3311B4A4628001AB889 /* PriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertViewController.m; sourceTree = "<group>"; };
-		859BF3321B4A4628001AB889 /* PriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertViewController.xib; sourceTree = "<group>"; };
-		859BF3331B4A4628001AB889 /* string_price_alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_price_alert.h; sourceTree = "<group>"; };
+		859BF3401B4A55F0001AB889 /* AlertPriceNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertPriceNotificationViewController.h; sourceTree = "<group>"; };
+		859BF3411B4A55F0001AB889 /* AlertPriceNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertPriceNotificationViewController.m; sourceTree = "<group>"; };
+		859BF3421B4A55F0001AB889 /* AlertPriceNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertPriceNotificationViewController.xib; sourceTree = "<group>"; };
+		859BF3431B4A55F0001AB889 /* DepartmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentTableViewController.h; sourceTree = "<group>"; };
+		859BF3441B4A55F0001AB889 /* DepartmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentTableViewController.m; sourceTree = "<group>"; };
+		859BF3451B4A55F0001AB889 /* DetailPriceAlertTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertTableViewCell.h; sourceTree = "<group>"; };
+		859BF3461B4A55F0001AB889 /* DetailPriceAlertTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertTableViewCell.m; sourceTree = "<group>"; };
+		859BF3471B4A55F0001AB889 /* DetailPriceAlertTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertTableViewCell.xib; sourceTree = "<group>"; };
+		859BF3481B4A55F0001AB889 /* DetailPriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertViewController.h; sourceTree = "<group>"; };
+		859BF3491B4A55F0001AB889 /* DetailPriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertViewController.m; sourceTree = "<group>"; };
+		859BF34A1B4A55F0001AB889 /* DetailPriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertViewController.xib; sourceTree = "<group>"; };
+		859BF34B1B4A55F0001AB889 /* PriceAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertCell.h; sourceTree = "<group>"; };
+		859BF34C1B4A55F0001AB889 /* PriceAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertCell.m; sourceTree = "<group>"; };
+		859BF34D1B4A55F0001AB889 /* PriceAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertCell.xib; sourceTree = "<group>"; };
+		859BF34E1B4A55F0001AB889 /* PriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertViewController.h; sourceTree = "<group>"; };
+		859BF34F1B4A55F0001AB889 /* PriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertViewController.m; sourceTree = "<group>"; };
+		859BF3501B4A55F0001AB889 /* PriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertViewController.xib; sourceTree = "<group>"; };
+		859BF3511B4A55F0001AB889 /* string_price_alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_price_alert.h; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -5213,7 +5213,7 @@
 		850059DA1B439C7B00F556BA /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
-				859BF3211B4A4628001AB889 /* PriceAlert */,
+				859BF33F1B4A55F0001AB889 /* PriceAlert */,
 				850059DB1B439C7B00F556BA /* Activation */,
 				850059ED1B439C7B00F556BA /* Address */,
 				850059F51B439C7B00F556BA /* Alert */,
@@ -7756,27 +7756,27 @@
 			path = MGSwipeTableCell;
 			sourceTree = "<group>";
 		};
-		859BF3211B4A4628001AB889 /* PriceAlert */ = {
+		859BF33F1B4A55F0001AB889 /* PriceAlert */ = {
 			isa = PBXGroup;
 			children = (
-				859BF3221B4A4628001AB889 /* AlertPriceNotificationViewController.h */,
-				859BF3231B4A4628001AB889 /* AlertPriceNotificationViewController.m */,
-				859BF3241B4A4628001AB889 /* AlertPriceNotificationViewController.xib */,
-				859BF3251B4A4628001AB889 /* DepartmentTableViewController.h */,
-				859BF3261B4A4628001AB889 /* DepartmentTableViewController.m */,
-				859BF3271B4A4628001AB889 /* DetailPriceAlertTableViewCell.h */,
-				859BF3281B4A4628001AB889 /* DetailPriceAlertTableViewCell.m */,
-				859BF3291B4A4628001AB889 /* DetailPriceAlertTableViewCell.xib */,
-				859BF32A1B4A4628001AB889 /* DetailPriceAlertViewController.h */,
-				859BF32B1B4A4628001AB889 /* DetailPriceAlertViewController.m */,
-				859BF32C1B4A4628001AB889 /* DetailPriceAlertViewController.xib */,
-				859BF32D1B4A4628001AB889 /* PriceAlertCell.h */,
-				859BF32E1B4A4628001AB889 /* PriceAlertCell.m */,
-				859BF32F1B4A4628001AB889 /* PriceAlertCell.xib */,
-				859BF3301B4A4628001AB889 /* PriceAlertViewController.h */,
-				859BF3311B4A4628001AB889 /* PriceAlertViewController.m */,
-				859BF3321B4A4628001AB889 /* PriceAlertViewController.xib */,
-				859BF3331B4A4628001AB889 /* string_price_alert.h */,
+				859BF3401B4A55F0001AB889 /* AlertPriceNotificationViewController.h */,
+				859BF3411B4A55F0001AB889 /* AlertPriceNotificationViewController.m */,
+				859BF3421B4A55F0001AB889 /* AlertPriceNotificationViewController.xib */,
+				859BF3431B4A55F0001AB889 /* DepartmentTableViewController.h */,
+				859BF3441B4A55F0001AB889 /* DepartmentTableViewController.m */,
+				859BF3451B4A55F0001AB889 /* DetailPriceAlertTableViewCell.h */,
+				859BF3461B4A55F0001AB889 /* DetailPriceAlertTableViewCell.m */,
+				859BF3471B4A55F0001AB889 /* DetailPriceAlertTableViewCell.xib */,
+				859BF3481B4A55F0001AB889 /* DetailPriceAlertViewController.h */,
+				859BF3491B4A55F0001AB889 /* DetailPriceAlertViewController.m */,
+				859BF34A1B4A55F0001AB889 /* DetailPriceAlertViewController.xib */,
+				859BF34B1B4A55F0001AB889 /* PriceAlertCell.h */,
+				859BF34C1B4A55F0001AB889 /* PriceAlertCell.m */,
+				859BF34D1B4A55F0001AB889 /* PriceAlertCell.xib */,
+				859BF34E1B4A55F0001AB889 /* PriceAlertViewController.h */,
+				859BF34F1B4A55F0001AB889 /* PriceAlertViewController.m */,
+				859BF3501B4A55F0001AB889 /* PriceAlertViewController.xib */,
+				859BF3511B4A55F0001AB889 /* string_price_alert.h */,
 			);
 			path = PriceAlert;
 			sourceTree = "<group>";
@@ -8030,7 +8030,7 @@
 				850062C61B439C8200F556BA /* SalesOrderCell.xib in Resources */,
 				850061CC1B439C8200F556BA /* NoResult.xib in Resources */,
 				850063D51B439C8200F556BA /* icon_18.png in Resources */,
-				859BF33E1B4A4628001AB889 /* PriceAlertViewController.xib in Resources */,
+				859BF35C1B4A55F0001AB889 /* PriceAlertViewController.xib in Resources */,
 				850062001B439C8200F556BA /* GeneralTableViewController.xib in Resources */,
 				850064691B439C8200F556BA /* icon_green.png in Resources */,
 				8500618F1B439C8200F556BA /* CameraAlbumListViewController.xib in Resources */,
@@ -8289,7 +8289,7 @@
 				8500636E1B439C8200F556BA /* TransactionCartWebViewViewController.xib in Resources */,
 				8500653E1B439C8200F556BA /* icon_category_active@3x.png in Resources */,
 				850064A21B439C8200F556BA /* icon_order_cancel-01.png in Resources */,
-				859BF33C1B4A4628001AB889 /* PriceAlertCell.xib in Resources */,
+				859BF35A1B4A55F0001AB889 /* PriceAlertCell.xib in Resources */,
 				850065651B439C8200F556BA /* icon_search.png in Resources */,
 				850063AE1B439C8200F556BA /* ProfileFavoriteShopCell.xib in Resources */,
 				850064AA1B439C8200F556BA /* icon_people_grey.png in Resources */,
@@ -8670,7 +8670,7 @@
 				850064D81B439C8200F556BA /* icon_sold@2x.png in Resources */,
 				850062B01B439C8200F556BA /* ReputationPageViewController.xib in Resources */,
 				850063771B439C8200F556BA /* TransactionCartRootViewController.xib in Resources */,
-				859BF3351B4A4628001AB889 /* AlertPriceNotificationViewController.xib in Resources */,
+				859BF3531B4A55F0001AB889 /* AlertPriceNotificationViewController.xib in Resources */,
 				850065301B439C8200F556BA /* person2.png in Resources */,
 				850062FA1B439C8200F556BA /* SettingBankDetailViewController.xib in Resources */,
 				850065441B439C8200F556BA /* icon_search@3x.png in Resources */,
@@ -8687,7 +8687,7 @@
 				850065291B439C8200F556BA /* navigation-button-bg-pt@2x.png in Resources */,
 				850064C61B439C8200F556BA /* icon_shop_favorite.png in Resources */,
 				850061861B439C8200F556BA /* StickyAlertView.xib in Resources */,
-				859BF3381B4A4628001AB889 /* DetailPriceAlertTableViewCell.xib in Resources */,
+				859BF3561B4A55F0001AB889 /* DetailPriceAlertTableViewCell.xib in Resources */,
 				8500650B1B439C8200F556BA /* icon_search.png in Resources */,
 				8500653D1B439C8200F556BA /* icon_category@3x.png in Resources */,
 				8500653C1B439C8200F556BA /* icon_cart_active@3x.png in Resources */,
@@ -8696,7 +8696,7 @@
 				850064201B439C8200F556BA /* icon_cart_active@2x (deleted 23861aca8f6e2f6ddf563538915cc090).png in Resources */,
 				850062DA1B439C8200F556BA /* DetailShipmentStatusViewController.xib in Resources */,
 				850062B21B439C8200F556BA /* ChooseProductCell.xib in Resources */,
-				859BF33A1B4A4628001AB889 /* DetailPriceAlertViewController.xib in Resources */,
+				859BF3581B4A55F0001AB889 /* DetailPriceAlertViewController.xib in Resources */,
 				8500655C1B439C8200F556BA /* icon_category_active@2x.png in Resources */,
 				850061CA1B439C8200F556BA /* LoadingView.xib in Resources */,
 				8500655F1B439C8200F556BA /* icon_home_active.png in Resources */,
@@ -8888,7 +8888,7 @@
 				850061E81B439C8200F556BA /* GeneralCheckmarkCell.m in Sources */,
 				850061B71B439C8200F556BA /* TKPDTabInboxCustomerServiceNavigationController.m in Sources */,
 				850063401B439C8200F556BA /* FilterConditionCell.m in Sources */,
-				859BF3391B4A4628001AB889 /* DetailPriceAlertViewController.m in Sources */,
+				859BF3571B4A55F0001AB889 /* DetailPriceAlertViewController.m in Sources */,
 				850062A31B439C8200F556BA /* ReputationCell.m in Sources */,
 				850063631B439C8200F556BA /* TransactionCartEditViewController.m in Sources */,
 				850060DC1B439C8200F556BA /* OrderResult.m in Sources */,
@@ -9006,7 +9006,7 @@
 				850062841B439C8200F556BA /* GalleryViewController.m in Sources */,
 				850061361B439C8200F556BA /* TxOrderConfirmationListOrder.m in Sources */,
 				850062EF1B439C8200F556BA /* SettingAddressExpandedCell.m in Sources */,
-				859BF33B1B4A4628001AB889 /* PriceAlertCell.m in Sources */,
+				859BF3591B4A55F0001AB889 /* PriceAlertCell.m in Sources */,
 				850061701B439C8200F556BA /* AddressCell.m in Sources */,
 				850061FB1B439C8200F556BA /* GeneralTalkCommentCell.m in Sources */,
 				850060861B439C8100F556BA /* ResolutionDetail.m in Sources */,
@@ -9021,7 +9021,7 @@
 				850063A11B439C8200F556BA /* TxOrderPaymentViewController.m in Sources */,
 				850062461B439C8200F556BA /* MoreNavigationViewController.m in Sources */,
 				8500618A1B439C8200F556BA /* CameraController.m in Sources */,
-				859BF3361B4A4628001AB889 /* DepartmentTableViewController.m in Sources */,
+				859BF3541B4A55F0001AB889 /* DepartmentTableViewController.m in Sources */,
 				8500620F1B439C8200F556BA /* WishListViewController.m in Sources */,
 				850060DF1B439C8200F556BA /* WarehouseResponse.m in Sources */,
 				850060AC1B439C8200F556BA /* ChangePhoneNumber.m in Sources */,
@@ -9149,7 +9149,7 @@
 				850061DE1B439C8200F556BA /* DepositListBankViewController.m in Sources */,
 				850062A01B439C8200F556BA /* RequestMoveTo.m in Sources */,
 				850060CB1B439C8200F556BA /* PromoteResult.m in Sources */,
-				859BF33D1B4A4628001AB889 /* PriceAlertViewController.m in Sources */,
+				859BF35B1B4A55F0001AB889 /* PriceAlertViewController.m in Sources */,
 				8500609A1B439C8100F556BA /* ManageProductResult.m in Sources */,
 				850062351B439C8200F556BA /* ResolutionCenterInputViewController.m in Sources */,
 				850061F51B439C8200F556BA /* GeneralSingleProductCell.m in Sources */,
@@ -9287,7 +9287,7 @@
 				850061191B439C8200F556BA /* Track.m in Sources */,
 				850063421B439C8200F556BA /* FilterConditionViewController.m in Sources */,
 				850061E61B439C8200F556BA /* GeneralAlertCell.m in Sources */,
-				859BF3371B4A4628001AB889 /* DetailPriceAlertTableViewCell.m in Sources */,
+				859BF3551B4A55F0001AB889 /* DetailPriceAlertTableViewCell.m in Sources */,
 				8500629E1B439C8200F556BA /* ProductListMyShopViewController.m in Sources */,
 				8500603E1B439C8100F556BA /* Breadcrumb.m in Sources */,
 				850060181B439C8100F556BA /* TextMenu.m in Sources */,
@@ -9308,7 +9308,7 @@
 				8500637A1B439C8200F556BA /* TransactionObjectMapping.m in Sources */,
 				850063911B439C8200F556BA /* TxOrderConfirmationViewController.m in Sources */,
 				850060F41B439C8200F556BA /* EtalaseResult.m in Sources */,
-				859BF3341B4A4628001AB889 /* AlertPriceNotificationViewController.m in Sources */,
+				859BF3521B4A55F0001AB889 /* AlertPriceNotificationViewController.m in Sources */,
 				850060501B439C8100F556BA /* Talk.m in Sources */,
 				8500617A1B439C8200F556BA /* AlertInfoView.m in Sources */,
 				8500611F1B439C8200F556BA /* TransactionActionResult.m in Sources */,
