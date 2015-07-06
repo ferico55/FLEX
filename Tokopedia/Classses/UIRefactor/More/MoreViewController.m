@@ -35,8 +35,8 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
-//#import "TKPDTabViewController.h"
-//#import "InboxCustomerServiceViewController.h"
+#import "TKPDTabViewController.h"
+#import "InboxTicketViewController.h"
 
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
@@ -462,7 +462,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 8;
+    return 7;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -491,7 +491,7 @@
             break;
             
         case 4:
-            return 4;
+            return 5;
             break;
             
         case 5:
@@ -499,10 +499,6 @@
             break;
             
         case 6:
-            return 1;
-            break;
-            
-        case 7 :
             return 1;
             break;
             
@@ -649,14 +645,30 @@
             [self.navigationController pushViewController:nc animated:YES];
             
         } else if (indexPath.row == 3) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
-//            controller.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:controller animated:YES];
             
-        } else if (indexPath.row  == 4) {
+            TKPDTabViewController *controller = [TKPDTabViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+        
+            InboxTicketViewController *allInbox = [InboxTicketViewController new];
+            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+            allInbox.delegate = controller;
+            
+            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+            unreadInbox.delegate = controller;
+            
+            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+            closedInbox.delegate = controller;
+            
+            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+            controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+
+            [self.navigationController pushViewController:controller animated:YES];
+
+        } else if (indexPath.row == 4) {
+            
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
