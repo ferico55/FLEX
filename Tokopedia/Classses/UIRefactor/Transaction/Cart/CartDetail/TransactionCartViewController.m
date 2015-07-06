@@ -296,11 +296,6 @@
     self.navigationController.title = @"Keranjang";
     
     if (_indexPage == 0) {
-        if (_shouldRefresh) {
-            _tableView.contentOffset = CGPointZero;
-            [_list removeAllObjects];
-            [self refreshRequestCart];
-        }
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
     }
@@ -343,10 +338,6 @@
             _paymentMethodSelectedView.hidden = NO;
         }
     }
-    
-    if (_shouldRefresh) {
-        _shouldRefresh = NO;
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -366,7 +357,7 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger sectionCount = _list.count + 3;
-    return sectionCount;
+    return _isnodata?0:sectionCount;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -443,7 +434,7 @@
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
     if (section < _list.count) return 44;
-    else if (section == _list.count+1)
+    else if (section == _list.count+1 && _indexPage==0)
     {
         if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
             [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
@@ -458,7 +449,6 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     
-    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     NSInteger listCount = _list.count;
     
     if (section < listCount)
@@ -471,21 +461,6 @@
     }
 
     return 0;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-    }
-    
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        [cell setLayoutMargins:UIEdgeInsetsZero];
-    }
 }
 
 #pragma mark - Table View Delegate
@@ -773,7 +748,6 @@
         [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
         
         [self adjustDropshipperListParam];
-        _shouldRefresh = NO;
         _refreshFromShipment = YES;
         _requestCart.param = @{};
         [_requestCart doRequestCart];
@@ -793,7 +767,6 @@
         _requestCart.param = @{};
         [_requestCart doRequestCart];
         
-        _shouldRefresh = NO;
         _refreshFromShipment = YES;
     }
 }
@@ -1543,6 +1516,7 @@
 -(void)doClearAllData
 {
     _isnodata = YES;
+    _indexPage = 0;
     [_dataInput removeAllObjects];
     
     TransactionCartGateway *gateway = [TransactionCartGateway new];
@@ -1559,6 +1533,7 @@
     
     _requestCart.param = @{};
     [_requestCart doRequestCart];
+    [_tableView reloadData];
 }
 
 -(void)popShippingViewController
@@ -1582,7 +1557,6 @@
     
     _isnodata = YES;
     _isLoadingRequest = NO;
-    _shouldRefresh = NO;
     
     TransactionCartGateway *gateway = [TransactionCartGateway new];
     gateway.gateway = @(-1);

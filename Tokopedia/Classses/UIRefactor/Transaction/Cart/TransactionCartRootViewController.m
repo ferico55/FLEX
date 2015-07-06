@@ -120,13 +120,12 @@
             
             if(_isShouldRefreshingCart) {
                 [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-                ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
+                [((TransactionCartViewController*)[self viewControllerAtIndex:0]) doClearAllData];
                 _isShouldRefreshingCart = NO;
             } else {
                 if (_cartViewController == nil) {
                     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
                 }
-                else ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
             }
             
             [_noLoginView setHidden:YES];
@@ -355,19 +354,9 @@
 -(void)shouldBackToFirstPage
 {
     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
     ((TransactionCartViewController*)[self viewControllerAtIndex:0]).indexPage = 0;
     [((TransactionCartViewController*)[self viewControllerAtIndex:0]) doClearAllData];
     _isShouldRefreshingCart = YES;
-    
-}
-
--(void)shouldBackToFirstPageRefresh:(BOOL)isRefresh
-{
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = isRefresh;
-    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).indexPage = 0;
-    _isShouldRefreshingCart = isRefresh;
 }
 
 - (IBAction)tap:(id)sender {
@@ -386,11 +375,10 @@
         else if (_index == 1)
         {
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
         }
         else{
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
+            [((TransactionCartViewController*)[self viewControllerAtIndex:0]) doClearAllData];
         }
         
     }
@@ -423,7 +411,6 @@
     else if (_index == 1)
     {
         [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-        ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
     }
 }
 
