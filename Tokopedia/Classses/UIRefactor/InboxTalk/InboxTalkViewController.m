@@ -378,8 +378,7 @@
 #pragma mark - Request + Mapping
 - (void)configureRestKit
 {
-//    _objectmanager =  [RKObjectManager sharedClient];
-    _objectmanager =  [RKObjectManager sharedClient:[_gtmContainer stringForKey:GTMKeyInboxTalkBase]];
+    _objectmanager =  [RKObjectManager sharedClient];
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
@@ -429,7 +428,7 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:[_gtmContainer stringForKey:GTMKeyInboxTalkPost]
+                                                                                             pathPattern:kTKPDINBOX_TALK_APIPATH
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -489,7 +488,7 @@
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:[_gtmContainer stringForKey:GTMKeyInboxTalkPost]
+                                                                      path:KTKPDMESSAGE_TALK
                                                                 parameters:[param encrypt]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];

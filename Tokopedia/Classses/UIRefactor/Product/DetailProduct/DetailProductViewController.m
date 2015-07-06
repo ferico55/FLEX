@@ -1129,7 +1129,7 @@ UIAlertViewDelegate
     if(tag == CTagPromote)
         return @"action/product.pl";
     else if(tag == CTagTokopediaNetworkManager)
-        return [_gtmContainer stringForKey:GTMKeyProductPost];
+        return kTKPDDETAILPRODUCT_APIPATH;
     else if(tag == CTagOtherProduct)
         return kTKPDDETAILPRODUCT_APIPATH;
     else if(tag == CTagFavorite)
@@ -1180,8 +1180,7 @@ UIAlertViewDelegate
     else if(tag == CTagTokopediaNetworkManager)
     {
         // initialize RestKit
-//        _objectmanager =  [RKObjectManager sharedClient];
-        _objectmanager =  [RKObjectManager sharedClient:[_gtmContainer stringForKey:GTMKeyProductBase]];
+        _objectmanager =  [RKObjectManager sharedClient];
         
         // setup object mappings
         RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];

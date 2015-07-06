@@ -41,24 +41,16 @@
     _tagManager = [TAGManager instance];
     [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
     
+    [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
+                                 tagManager:self.tagManager
+                                   openType:kTAGOpenTypePreferFresh
+                                    timeout:nil
+                                   notifier:self];
     
-//    id<TAGContainerFuture> future = [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
-//                                                                 tagManager:self.tagManager
-//                                                                   openType:kTAGOpenTypePreferFresh
-//                                                                    timeout:nil
-//                                                                   notifier:self];
-    
+//    self.container = [future get];
     
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        //Open container GTM
-        id<TAGContainerFuture> future = [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"    // Placeholder Container ID.
-                                                                     tagManager:[TAGManager instance]
-                                                                       openType:kTAGOpenTypePreferFresh
-                                                                        timeout:nil];
-        
-        self.container = [future get];
-        [self registerFunctionCallTags];
         
         //appsflyer init
         [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
@@ -155,9 +147,5 @@
     });
 }
 
-#pragma mark - Other Method
-- (void)registerFunctionCallTags {
-    [self.container registerFunctionCallTagHandler:[[ChangeMessageUrlTagHandler alloc] init] forTag:@"ChangeMessageUrl"];
-}
 
 @end
