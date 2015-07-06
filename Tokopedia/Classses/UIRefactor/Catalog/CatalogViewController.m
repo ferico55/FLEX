@@ -236,6 +236,7 @@
     [catalogInfoMapping addAttributeMappingsFromArray:@[API_CATALOG_NAME_KEY,
                                                         API_CATALOG_DESCRIPTION_KEY,
                                                         API_CATALOG_KEY_KEY,
+                                                        CCatalogPriceAlertPrice,
                                                         API_CATALOG_DEPARTMENT_ID_KEY,
                                                         API_CATALOG_URL_KEY,
                                                         API_CATALOG_ID_KEY]];
@@ -524,6 +525,11 @@
 }
 
 #pragma mark - Method
+- (void)updatePriceAlert:(NSString *)strPrice
+{
+    _catalog.result.catalog_info.catalog_pricealert_price = strPrice;
+}
+
 - (void)setBackgroundPriceAlert:(BOOL)isActive
 {
     if(isActive) {
@@ -551,9 +557,11 @@
 #pragma mark - Action
 - (void)actionAddNotificationPriceCatalog:(id)sender
 {
-    PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
-    priceAlertViewController.catalogInfo = _catalog.result.catalog_info;
-    [self.navigationController pushViewController:priceAlertViewController animated:YES];
+    if(_catalog!=nil && _catalog.result.catalog_info!=nil) {
+        PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+        priceAlertViewController.catalogInfo = _catalog.result.catalog_info;
+        [self.navigationController pushViewController:priceAlertViewController animated:YES];
+    }
 }
 
 - (IBAction)tap:(id)sender
