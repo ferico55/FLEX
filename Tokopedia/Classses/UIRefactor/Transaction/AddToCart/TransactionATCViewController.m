@@ -793,7 +793,7 @@
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
-    [self actionAfterFailRequestMaxTries:tag];
+    
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag

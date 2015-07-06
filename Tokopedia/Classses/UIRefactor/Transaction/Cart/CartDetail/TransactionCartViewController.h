@@ -35,6 +35,6 @@
 @property (strong,nonatomic,setter=setData:) NSDictionary *data;
 @property NSArray *listSummary;
 
--(void)doClearAllData;
+-(void)refreshRequestCart;
 
 @end

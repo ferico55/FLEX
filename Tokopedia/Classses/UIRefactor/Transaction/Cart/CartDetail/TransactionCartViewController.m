@@ -83,7 +83,6 @@
     NSMutableArray *_senderNameDropshipper;
     NSMutableArray *_senderPhoneDropshipper;
     NSMutableArray *_dropshipStrList;
-    NSMutableArray *_listProductFirstObjectIndexPath;
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
@@ -210,7 +209,6 @@
     _senderPhoneDropshipper = [NSMutableArray new];
     _dropshipStrList = [NSMutableArray new];
     _stockPartialDetail = [NSMutableArray new];
-    _listProductFirstObjectIndexPath =[NSMutableArray new];
     _objectManager = [TransactionObjectManager new];
     _mapping = [TransactionObjectMapping new];
     _navigate = [NavigateViewController new];
@@ -229,14 +227,14 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRequestCart)
                                                  name:SHOULD_REFRESH_CART
                                                object:nil];
 
     if (_indexPage == 0) {
         _refreshControl = [[UIRefreshControl alloc] init];
         _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-        [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+        [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
         [_tableView addSubview:_refreshControl];
         
         _requestCart.param = @{};
@@ -319,7 +317,7 @@
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    if(!_isnodata) _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
+    if(!_isnodata) _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
 
     _tableView.scrollsToTop = YES;
     
@@ -408,6 +406,9 @@
         NSInteger productCount = products.count;
         if (indexPath.section <shopCount && indexPath.row <=productCount && indexPath.row !=0) {
             [lineView removeFromSuperview];
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width,1)];
+            lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
+            [cell.contentView addSubview:lineView];
         }
         
     }
@@ -431,6 +432,10 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (_isnodata) {
+        return 0;
+    }
+    
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
     if (section < _list.count) return 44;
@@ -448,6 +453,10 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    
+    if (_isnodata) {
+        return 0;
+    }
     
     NSInteger listCount = _list.count;
     
@@ -480,7 +489,6 @@
         picker.tag = TAG_ALERT_PARTIAL;
         [picker show];
     }
-    NSInteger listCount = _list.count;
 }
 
 -(void)pushShipmentIndex:(NSInteger)index
@@ -830,11 +838,6 @@
     }
     
     _cartSummary = summaryDetail;
-    NSInteger listCount = _list.count;
-    for (int i = 0; i<listCount; i++) {
-        NSIndexPath *listProductFirstIndexPath = [NSIndexPath indexPathForRow:0 inSection:i];
-        [_listProductFirstObjectIndexPath addObject:listProductFirstIndexPath];
-    }
     
     _isUsingSaldoTokopedia = ([_cartSummary.deposit_amount integerValue]>0);
     
@@ -934,16 +937,6 @@
     }
     
     return  isValid;
-}
-
--(void)refreshView:(UIRefreshControl*)refresh
-{
-    [_refreshControl beginRefreshing];
-    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-   
-     _requestCart.param = @{};
-    [_requestCart doRequestCart];
-   
 }
 
 -(void)adjustDropshipperListParam;
@@ -1457,17 +1450,6 @@
 }
 
 #pragma mark - Methods
--(void)resetAllArray
-{
-    [_isDropshipper removeAllObjects];
-    [_stockPartialStrList removeAllObjects];
-    [_senderNameDropshipper removeAllObjects];
-    [_senderPhoneDropshipper removeAllObjects];
-    [_dropshipStrList removeAllObjects];
-    [_stockPartialDetail removeAllObjects];
-    _isUsingSaldoTokopedia = NO;
-    _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-}
 
 -(void)addArrayObjectTemp
 {
@@ -1493,21 +1475,13 @@
 
 -(void)refreshRequestCart
 {
-    [self resetAllArray];
+    [self doClearAllData];
     
-    _isnodata = YES;
-    [_dataInput removeAllObjects];
-    TransactionCartGateway *gateway = [TransactionCartGateway new];
-    gateway.gateway = @(-1);
-    [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
-    [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:@"Pilih"];
-    
-    _saldoTokopediaAmountTextField.text = @"";
-    
-    _voucherCodeButton.hidden = NO;
-    _voucherAmountLabel.hidden = YES;
-    _buttonVoucherInfo.hidden = NO;
-    _buttonCancelVoucher.hidden = YES;
+    if (![_tableView.tableFooterView isEqual:_footerView]) {
+        _tableView.tableFooterView = _footerView;
+        [_refreshControl beginRefreshing];
+        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    }
     
     _requestCart.param = @{};
     [_requestCart doRequestCart];
@@ -1517,7 +1491,15 @@
 {
     _isnodata = YES;
     _indexPage = 0;
+    [_delegate isNodata:NO];
     [_dataInput removeAllObjects];
+    [_dropshipStrList removeAllObjects];
+    [_senderNameDropshipper removeAllObjects];
+    [_senderPhoneDropshipper removeAllObjects];
+    [_isDropshipper removeAllObjects];
+    [_stockPartialDetail removeAllObjects];
+    _isUsingSaldoTokopedia = NO;
+    _switchUsingSaldo.on = _isUsingSaldoTokopedia;
     
     TransactionCartGateway *gateway = [TransactionCartGateway new];
     gateway.gateway = @(-1);
@@ -1531,8 +1513,9 @@
     _buttonVoucherInfo.hidden = NO;
     _buttonCancelVoucher.hidden = YES;
     
-    _requestCart.param = @{};
-    [_requestCart doRequestCart];
+    _tableView.tableFooterView = nil;
+    _saldoTokopediaAmountTextField.text = @"";
+    
     [_tableView reloadData];
 }
 
@@ -1830,7 +1813,6 @@
     NSInteger indexList = (isSaldoTokopediaTextField)?0:(indexPath.section);
     TransactionCartList *list = _list[indexList];
     NSArray *products = list.cart_products;
-    NSInteger rowCount = products.count+3;
     UITableViewCell *cell;
     
     //if (cell == nil) {
@@ -2296,7 +2278,8 @@
     }
     
     if (tag == TAG_REQUEST_CANCEL_CART) {
-        
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+        [_alertLoading show];
     }
     
     if (tag == TAG_REQUEST_CHECKOUT) {
@@ -2345,6 +2328,7 @@
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
     }
     
     if (tag == TAG_REQUEST_CHECKOUT) {
@@ -2397,6 +2381,9 @@
     
     NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
     [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
+    
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
 }
 
 
@@ -2416,22 +2403,12 @@
     
     
     NSInteger listCount = _list.count;
-    
-    if (!_refreshFromShipment) {
-        [self resetAllArray];
-    }
-    [_listProductFirstObjectIndexPath removeAllObjects];
-    
+
     for (int i = 0; i<listCount; i++) {
         TransactionCartList *list = _list[i];
         
         NSArray *products = list.cart_products;
         NSInteger productCount = products.count;
-        
-        NSIndexPath *firstProductIndexPath = [NSIndexPath indexPathForRow:0 inSection:i];
-        if (![list.cart_error_message_1 isEqualToString:@"0"]||![list.cart_error_message_2 isEqualToString:@"0"])
-            firstProductIndexPath = [NSIndexPath indexPathForRow:1 inSection:i];
-        [_listProductFirstObjectIndexPath addObject:firstProductIndexPath];
         
         if (!_refreshFromShipment) {
             [self addArrayObjectTemp];
@@ -2444,7 +2421,6 @@
             [_senderPhoneDropshipper removeObjectAtIndex:i];
             [_dropshipStrList removeObjectAtIndex:i];
             [_stockPartialDetail removeObjectAtIndex:i];
-            [_listProductFirstObjectIndexPath removeObjectAtIndex:i];
         }
         
     }
@@ -2455,13 +2431,13 @@
             _paymentMethodView.hidden = NO;
             _paymentMethodSelectedView.hidden = YES;
             _checkoutView.hidden = NO;
-            _tableView.tableFooterView = _checkoutView;
+            _tableView.tableFooterView = _isnodata?nil:_checkoutView;
         }
         else if (_indexPage == 1) {
             _paymentMethodView.hidden = YES;
             _paymentMethodSelectedView.hidden = NO;
             _buyView.hidden = NO;
-            _tableView.tableFooterView = _buyView;
+            _tableView.tableFooterView = _isnodata?nil:_buyView;
         }
     }
     
@@ -2548,11 +2524,9 @@
     
     //
     [self adjustAfterUpdateList];
-    [self refreshView:nil];
+    [self refreshRequestCart];
     [self endRefreshing];
     
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
 }
 
 
@@ -2576,8 +2550,7 @@
     
     //
     _checkoutButton.enabled = YES;
-    _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
-    [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
+    _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 

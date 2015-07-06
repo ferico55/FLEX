@@ -411,12 +411,11 @@
 {
     NSError *error = errorResult;
     NSArray *errors;
-    if(error.code == -1011) {
-        errors = @[@"Mohon maaf, terjadi kendala pada server"];
-    } else if (error.code==-1009 || error.code==-999) {
+
+    if (error.code==-1009 || error.code==-999) {
         errors = @[@"Tidak ada koneksi internet"];
     } else {
-        errors = @[error.localizedDescription];
+         errors = @[@"Mohon maaf, terjadi kendala pada server"];
     }
     
     StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_viewController];
@@ -425,7 +424,7 @@
     [self performSelector:@selector(doActionBeforeRequest:) withObject:@(tag) afterDelay:1.0f];
     
 }
--(void)doActionBeforeRequest:(NSInteger)tag
+-(void)doActionBeforeRequest:(int)tag
 {
     [_delegate actionBeforeRequest:tag];
 }
