@@ -46,7 +46,7 @@
     self.navigationItem.rightBarButtonItem = doneBarButtonItem;
     
     _nomorReceiptTextField.text = _conversation.input_resi?:@"";
-    _shipmentLabel.text = _selectedShipment.shipment_name?:@"Pilih Kurir Agent";
+    _shipmentLabel.text = _selectedShipment.shipment_name?:@"Pilih Agen Kurir";
     
     [self configureRestKitShipment];
     [self requestShipment];
@@ -59,8 +59,10 @@
 - (IBAction)tap:(id)sender {
     [_nomorReceiptTextField resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [_delegate receiptNumber:_nomorReceiptTextField.text withShipmentAgent:_selectedShipment withAction:_action conversation:_conversation];
-        [self.navigationController popViewControllerAnimated:YES];
+        if ([self isValidInput]) {
+            [_delegate receiptNumber:_nomorReceiptTextField.text withShipmentAgent:_selectedShipment withAction:_action conversation:_conversation];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
     else
     {
@@ -92,6 +94,29 @@
     ShipmentCourier *selectedShipment = object;
     _selectedShipment = selectedShipment;
     _shipmentLabel.text = selectedShipment.shipment_name;
+}
+
+-(BOOL)isValidInput
+{
+    BOOL isValid = YES;
+    NSMutableArray *errorMessages = [NSMutableArray new];
+    
+    if ([_nomorReceiptTextField.text isEqualToString:@""]) {
+        isValid = NO;
+        [errorMessages addObject:@"Nomor resi belum diisi"];
+    }
+    
+    if ([_selectedShipment.shipment_id integerValue] == 0) {
+        isValid = NO;
+        [errorMessages addObject:@"Agen kurir harus dipilih"];
+    }
+    
+    if (!isValid) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
+    }
+    
+    return isValid;
 }
 
 #pragma mark - Request Shipment
@@ -198,7 +223,7 @@
         }
         else{
             [_list addObjectsFromArray:order.result.shipment];
-            _shipmentLabel.text = _selectedShipment.shipment_name?:@"Pilih Kurir Agent";
+            _shipmentLabel.text = _selectedShipment.shipment_name?:@"Pilih Agen Kurir";
         }
     }
     else

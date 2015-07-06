@@ -13,6 +13,7 @@
 #define CTagFooterCell @"cellFooter"
 #define CTagCell @"cell"
 #define CFont_Gotham_Book @"Gotham Book"
+#define CFont_Gotham_Medium @"Gotham Medium"
 #define kTKPMYSHOP_APIPATH @"myshop.pl"
 #define kTKPDUPLOAD_IMAGE @"upload-image-helper.pl"
 #define kTKPD_OPEN_SHOP_PICTURE @"open_shop_picture"

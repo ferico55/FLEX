@@ -365,6 +365,7 @@
 {
     [_searchbar setText:@""];
     [_searchbar resignFirstResponder];
+    [self searchBar:_searchbar textDidChange:@""];
     self.hidesBottomBarWhenPushed = YES;
     self.navigationController.tabBarController.tabBar.hidden = NO;
 }

@@ -282,6 +282,8 @@
         }
     }
 }
+
+
 - (IBAction)gesture:(id)sender {
     [_activetextfield resignFirstResponder];
     [_activetextview resignFirstResponder];
@@ -330,7 +332,17 @@
 
 -(void)requestProcessActionAddAddress:(id)object
 {
-    if (object) {
+    if ([object isKindOfClass:[NSError class]]) {
+        
+        if ([[object userInfo] objectForKey:NSLocalizedDescriptionKey]) {
+            NSString *errorMessage = [[object userInfo] objectForKey:NSLocalizedDescriptionKey];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
+            [alert show];
+            
+            self.navigationItem.rightBarButtonItem = _barbuttonsave;
+        }
+        
+    } else {
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         id stat = [result objectForKey:@""];
         ProfileSettings *setting = stat;
@@ -501,15 +513,15 @@
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_POSTAL_CODE];
     }
-    if (!district) {
+    if (!district || [district isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_SUB_DISTRIC];
     }
-    if (!prov) {
+    if (!prov || [prov isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_PROVINCE];
     }
-    if (!city) {
+    if (!city || [city isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_REGECY];
     }
@@ -517,7 +529,7 @@
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_RECIEPIENT_PHONE];
     }
-    if (phone.length < MINIMUM_PHONE_CHARACTER_COUNT) {
+    else if (phone.length < MINIMUM_PHONE_CHARACTER_COUNT) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
     }
@@ -789,4 +801,5 @@
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
 }
+
 @end

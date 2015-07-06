@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ProductDetail.h"
 @class ProductEditWholesaleCell;
 
 #pragma mark - Product Edit Wholesale Cell Delegate
@@ -38,6 +39,8 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *activeTextField;
 @property (strong, nonatomic) IBOutlet NSIndexPath *indexPath;
+
+@property (strong, nonatomic) ProductDetail *product;
 
 +(id)newcell;
 

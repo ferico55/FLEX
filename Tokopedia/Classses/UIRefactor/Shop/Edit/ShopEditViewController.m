@@ -688,12 +688,12 @@
         //if gold merchant
         if (!_shop.info.shop_is_gold) {
             _labelmembership.text = @"Regular Merchant";
+            [_labelmembership sizeToFit];
             _badgesMembership.hidden = YES;
-        }
-        else
-        {
-            _badgesMembership.hidden = NO;
+        } else {
             _labelmembership.text = @"Gold Merchant";
+            [_labelmembership sizeToFit];
+            _badgesMembership.hidden = NO;
         }
     }
 }

@@ -1140,7 +1140,7 @@
             else
             {
                 insuranceName = cart.cart_insurance_name?:([cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.accessoryType = UITableViewCellAccessoryNone;
             }
             cell.detailTextLabel.text = insuranceName;
             break;

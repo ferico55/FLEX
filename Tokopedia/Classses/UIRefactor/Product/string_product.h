@@ -22,7 +22,8 @@ typedef enum
     BUTTON_PRODUCT_DEFAULT = 0,
     BUTTON_PRODUCT_PRODUCT_NAME = 0,
     BUTTON_PRODUCT_CATEGORY = 1,
-    BUTTON_PRODUCT_MIN_ORDER = 2,
+    BUTTON_PRODUCT_CATALOG = 2,
+    BUTTON_PRODUCT_MIN_ORDER = 3,
     
     BUTTON_PRODUCT_PRICE_CURRENCY = 0,
     BUTTON_PRODUCT_PRICE = 1,
@@ -111,6 +112,7 @@ typedef enum
 #define DATA_PRODUCT_DETAIL_KEY @"productdetail"
 #define DATA_SHOP_HAS_TERM_KEY @"data_shop_has_term"
 #define DATA_TYPE_ADD_EDIT_PRODUCT_KEY @"type"
+#define DATA_CATALOG_KEY @"data_catalog"
 
 #define API_SERVER_ID_KEY @"server_id"
 #define API_PRODUCT_WEIGHT_UNIT_KEY @"product_weight_unit"
@@ -139,6 +141,7 @@ typedef enum
 #define API_DEPARTMENT_ID_KEY @"department_id"
 #define API_PRODUCT_IMAGE_TOUPLOAD_KEY @"product_photo"
 #define API_PRODUCT_IMAGE_DEFAULT_KEY @"product_photo_default"
+#define API_PRODUCT_IMAGE_DEFAULT_INDEX @"index_default"
 #define API_PRODUCT_IMAGE_DESCRIPTION_KEY @"product_photo_desc"
 #define API_PRODUCT_FORM_DESCRIPTION_KEY @"product_short_desc"
 #define API_PRODUCT_FORM_DEPARTMENT_TREE_KEY @"product_department_tree"
@@ -207,7 +210,7 @@ typedef enum
 #define CStringGambar @"Gambar"
 #define CStringKondisi @"Kondisi"
 #define CStringPending @"Pending"
-#define CStringUnderReview @"Under Review"
+#define CStringUnderReview @"Pengawasan"
 #define CStringWareHouse @"Warehouse"
 #define CStringEtalase @"Etalase"
 #define CStringAllEtalase @"All Etalase"
@@ -243,7 +246,7 @@ typedef enum
 #define ARRAY_PRICE_CURRENCY @[@{DATA_NAME_KEY:@"Rp", DATA_VALUE_KEY:@(PRICE_CURRENCY_ID_RUPIAH)}, @{DATA_NAME_KEY:@"US$", DATA_VALUE_KEY:@(PRICE_CURRENCY_ID_USD)}]
 
 #define ARRAY_WEIGHT_UNIT @[@{DATA_NAME_KEY:@"Gram (g)", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Kilogram (kg)", DATA_VALUE_KEY:@(2)}]
-#define ARRAY_PRODUCT_INSURACE @[@{DATA_NAME_KEY:@"Opsional", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(2)}]
+#define ARRAY_PRODUCT_INSURACE @[@{DATA_NAME_KEY:@"Opsional", DATA_VALUE_KEY:@(0)}, @{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(1)}]
 #define ARRAY_PRODUCT_CONDITION @[@{DATA_NAME_KEY:@"Baru", DATA_VALUE_KEY:@(PRODUCT_CONDITION_NEW_ID)}, @{DATA_NAME_KEY:@"Bekas", DATA_VALUE_KEY:@(PRODUCT_CONDITION_SECOND_ID)}]
 #define ARRAY_PRODUCT_MOVETO_ETALASE @[@{DATA_NAME_KEY:@"Gudang", DATA_VALUE_KEY:@(2)}, @{DATA_NAME_KEY:@"Etalase", DATA_VALUE_KEY:@(1)}]
 
@@ -264,5 +267,5 @@ typedef enum
 #define CStringSuccessUnFavoriteShop @"Anda berhenti memfavoritkan toko ini!"
 #define CStringSyaratDanKetentuan @"Syarat & Ketentuan"
 #define CStringTitleBanned @"Produk ini berada dalam pengawasan."
-#define CStringDescBanned @"Saat ini produk tidak dapat dipesan. Produk dapat kembali dipesan setelah pengawasan."
+#define CStringDescBanned @"Saat ini produk tidak dapat dipesan. Produk dapat dipesan kembali setelah pengawasan selesai."
 #endif

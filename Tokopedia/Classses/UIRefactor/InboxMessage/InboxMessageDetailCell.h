@@ -9,6 +9,8 @@
 
 #define KTKPDMESSAGE_DETAILCELLIDENTIFIER @"InboxMessageDetailCellIdentifier"
 #import <UIKit/UIKit.h>
+#import "ViewLabelUser.h"
+#define CHeightUserLabel 27
 
 @protocol InboxMessageDetailCellDelegate <NSObject>
 @required
@@ -35,6 +37,7 @@
 +(id)newcell;
 
 @property (strong,nonatomic) NSDictionary *data;
+@property (nonatomic, strong) ViewLabelUser *viewLabelUser;
 @property (nonatomic, readonly) UIView * messageView;
 @property (nonatomic, readonly) UILabel * messageLabel;
 @property (nonatomic, readonly) UILabel * timeLabel;

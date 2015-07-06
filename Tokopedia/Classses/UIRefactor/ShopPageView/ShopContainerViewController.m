@@ -5,6 +5,7 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
+#import "DetailProductViewController.h"
 #import "LoginViewController.h"
 #import "ShopPageHeader.h"
 #import "ShopContainerViewController.h"
@@ -889,6 +890,10 @@
         [_timer invalidate];
         _timer = nil;
         [self setFavoriteRightButtonItem];
+        NSArray *tempArr = self.navigationController.viewControllers;
+        if([[tempArr objectAtIndex:tempArr.count-2] isMemberOfClass:[DetailProductViewController class]]) {
+            [((DetailProductViewController *) [tempArr objectAtIndex:tempArr.count-2]) setButtonFav];
+        }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFavoriteError:error];

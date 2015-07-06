@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamMedium.ttf">
@@ -26,8 +26,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Fz9-tI-DuS">
-                    <rect key="frame" x="5" y="0.0" width="310" height="430"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Fz9-tI-DuS">
+                    <rect key="frame" x="5" y="0.0" width="310" height="456"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="tintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
@@ -35,22 +36,17 @@
                         <outlet property="delegate" destination="-1" id="YaR-gE-sin"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b1X-S7-W2F">
+                <view contentMode="scaleToFill" id="b1X-S7-W2F">
                     <rect key="frame" x="0.0" y="430" width="320" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jF6-3R-5KB" userLabel="Border">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                        <view contentMode="scaleToFill" id="jF6-3R-5KB">
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="5CU-kL-2TB"/>
-                            </constraints>
                         </view>
-                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lQ1-OO-0m5">
-                            <rect key="frame" x="260" y="0.0" width="60" height="50"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="60" id="84e-mR-j8P"/>
-                                <constraint firstAttribute="height" constant="50" id="KaH-hN-zvM"/>
-                            </constraints>
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="lQ1-OO-0m5">
+                            <rect key="frame" x="262" y="10" width="50" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                             <state key="normal" title="Kirim">
                                 <color key="titleColor" red="0.25882352939999997" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -62,27 +58,9 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="lQ1-OO-0m5" secondAttribute="trailing" id="7lG-NW-ba9"/>
-                        <constraint firstAttribute="height" constant="50" id="ChW-dS-V7W"/>
-                        <constraint firstAttribute="trailing" secondItem="jF6-3R-5KB" secondAttribute="trailing" id="E3L-OQ-ZUP"/>
-                        <constraint firstAttribute="bottom" secondItem="lQ1-OO-0m5" secondAttribute="bottom" id="QFc-qE-TM7"/>
-                        <constraint firstItem="jF6-3R-5KB" firstAttribute="leading" secondItem="b1X-S7-W2F" secondAttribute="leading" id="eZb-yc-fgE"/>
-                        <constraint firstItem="jF6-3R-5KB" firstAttribute="top" secondItem="b1X-S7-W2F" secondAttribute="top" id="muv-1h-iZk"/>
-                        <constraint firstItem="lQ1-OO-0m5" firstAttribute="top" secondItem="b1X-S7-W2F" secondAttribute="top" id="sEu-OJ-5Cs"/>
-                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstItem="Fz9-tI-DuS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="5" id="1JD-vp-KAR"/>
-                <constraint firstItem="Fz9-tI-DuS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="OTM-5s-Bik"/>
-                <constraint firstAttribute="trailing" secondItem="b1X-S7-W2F" secondAttribute="trailing" id="cUC-1e-eJk"/>
-                <constraint firstItem="b1X-S7-W2F" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ccu-AR-c1U"/>
-                <constraint firstAttribute="trailing" secondItem="Fz9-tI-DuS" secondAttribute="trailing" constant="5" id="g8b-bM-T8P"/>
-                <constraint firstAttribute="bottom" secondItem="b1X-S7-W2F" secondAttribute="bottom" id="kCL-Ix-m0t"/>
-                <constraint firstItem="b1X-S7-W2F" firstAttribute="top" secondItem="Fz9-tI-DuS" secondAttribute="bottom" id="l3z-Pg-9ja"/>
-            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="733" y="440"/>
         </view>
@@ -90,8 +68,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVd-M4-5br">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
+                <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="kVd-M4-5br">
+                    <rect key="frame" x="8" y="15" width="304" height="40"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                     <state key="normal" title="Load More">
                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -101,21 +80,14 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="iUJ-XA-urU"/>
                     </connections>
                 </button>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="6hY-Rz-ceo">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="6hY-Rz-ceo">
                     <rect key="frame" x="150" y="25" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstItem="kVd-M4-5br" firstAttribute="leading" secondItem="Mxn-u0-ISc" secondAttribute="leading" id="2Qe-pY-wpc"/>
-                <constraint firstAttribute="bottom" secondItem="kVd-M4-5br" secondAttribute="bottom" id="BoH-yd-7Pd"/>
-                <constraint firstItem="kVd-M4-5br" firstAttribute="top" secondItem="Mxn-u0-ISc" secondAttribute="top" id="SK5-Kr-XIs"/>
-                <constraint firstAttribute="centerX" secondItem="6hY-Rz-ceo" secondAttribute="centerX" id="UDh-KC-Pe0"/>
-                <constraint firstAttribute="trailing" secondItem="kVd-M4-5br" secondAttribute="trailing" id="aT1-Jb-y2U"/>
-                <constraint firstAttribute="centerY" secondItem="6hY-Rz-ceo" secondAttribute="centerY" id="f4B-ic-HCF"/>
-            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="733" y="78.5"/>
+            <point key="canvasLocation" x="642" y="-796.5"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

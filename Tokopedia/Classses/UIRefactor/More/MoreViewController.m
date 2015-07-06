@@ -290,7 +290,10 @@
         if(profileInfo.result.shop_info!=nil && profileInfo.result.shop_info.shop_avatar!=nil && ![profileInfo.result.shop_info.shop_avatar isEqualToString:@""]) {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             if(secureStorage != nil) {
-                [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                
+                if(profileInfo.result.shop_info.shop_avatar != nil) {
+                    [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                }
                 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:profileInfo.result.shop_info.shop_avatar]
                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                           timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -358,8 +361,9 @@
                                              } failure: nil];
     
     if([_auth objectForKey:@"shop_id"]) {
-        if([_auth objectForKey:@"shop_name"])
+        if([_auth objectForKey:@"shop_name"]) {
             _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
+        }
         
         NSString *strAvatar = [[_auth objectForKey:@"shop_avatar"] isMemberOfClass:[NSString class]]? [_auth objectForKey:@"shop_avatar"] : [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_avatar"]];
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strAvatar]
@@ -379,16 +383,16 @@
         if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
             imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-                                         _shopIsGoldLabel.frame.origin.y,
+                                         _shopIsGoldLabel.frame.origin.y - 3,
                                          22, 22);
             [_shopCell addSubview:imageView];
             _shopIsGoldLabel.text = @"        Gold Merchant";
+                        
         } else {
             _shopIsGoldLabel.text = @"Regular Merchant";
             CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
             shopIsGoldLabelFrame.origin.x = 83;
             _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
-            _shopIsGoldLabel.text = @"";
         }
     }
 }
@@ -437,18 +441,17 @@
                                        } failure: nil];
         
         if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
-            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-                                         _shopIsGoldLabel.frame.origin.y,
-                                         22, 22);
-            [_shopCell addSubview:imageView];
+//            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
+//            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
+//                                         _shopIsGoldLabel.frame.origin.y,
+//                                         22, 22);
+//            [_shopCell addSubview:imageView];
             _shopIsGoldLabel.text = @"        Gold Merchant";
         } else {
             _shopIsGoldLabel.text = @"Regular Merchant";
-            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
-            shopIsGoldLabelFrame.origin.x = 83;
-            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
-            _shopIsGoldLabel.text = @"";
+//            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
+//            shopIsGoldLabelFrame.origin.x = 83;
+//            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
         }
         
         [self.tableView reloadData];

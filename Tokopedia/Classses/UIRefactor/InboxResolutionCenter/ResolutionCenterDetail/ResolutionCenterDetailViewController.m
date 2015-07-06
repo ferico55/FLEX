@@ -22,6 +22,8 @@
 #import "ResolutionAction.h"
 #import "InboxResolutionCenterObjectMapping.h"
 
+#import "TxOrderStatusDetailViewController.h"
+
 #import "TokopediaNetworkManager.h"
 
 #define TAG_ALERT_CANCEL_COMPLAIN 10
@@ -328,7 +330,16 @@
         {
             if (buttonIndex == 1) {
                 [_delegate shouldCancelComplain:_resolution atIndexPath:_indexPath];
-                [self.navigationController popViewControllerAnimated:YES];
+                if ([_delegate isKindOfClass:[TxOrderStatusDetailViewController class]]) {
+                    NSArray *viewControllers = self.navigationController.viewControllers;
+                    UIViewController *destinationVC = viewControllers[viewControllers.count-3];
+                    [self.navigationController popToViewController:destinationVC animated:YES];
+                }
+                else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+
+                }
             }
         }
             break;

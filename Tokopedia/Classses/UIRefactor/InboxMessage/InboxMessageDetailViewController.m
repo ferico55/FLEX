@@ -11,6 +11,7 @@
 #import "InboxMessageDetail.h"
 #import "InboxMessageAction.h"
 #import "inbox.h"
+#import "string_inbox_message.h"
 #import "string_home.h"
 #import "HPGrowingTextView.h"
 #import "inbox.h"
@@ -149,12 +150,13 @@
     _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _growingtextview.layer.cornerRadius = 5;
     _growingtextview.layer.masksToBounds = YES;
+    
 
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
@@ -229,6 +231,22 @@
         [cell.avatarImageView addGestureRecognizer:tapUser];
         [cell.avatarImageView setUserInteractionEnabled:YES];
         cell.avatarImageView.tag = [message.user_id integerValue];
+        cell.viewLabelUser.text = message.user_name;
+        
+        //Set user label
+//        if([message.user_label isEqualToString:CPenjual]) {
+//            [cell.viewLabelUser setColor:CTagPenjual];
+//        }
+//        else if([message.user_label isEqualToString:CPembeli]) {
+//            [cell.viewLabelUser setColor:CTagPembeli];
+//        }
+//        else if([message.user_label isEqualToString:CAdministrator]) {
+//            [cell.viewLabelUser setColor:CTagAdministrator];
+//        }
+//        else if([message.user_label isEqualToString:CPengguna]) {
+//            [cell.viewLabelUser setColor:CTagPengguna];
+//        }
+        [cell.viewLabelUser setLabelBackground:message.user_label];
 
         if([message.message_action isEqualToString:@"1"]) {
             if(message.is_just_sent) {
@@ -264,7 +282,10 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxMessageDetailList *messagedetaillist = _messages[indexPath.row];
     CGSize messageSize = [InboxMessageDetailCell messageSize:messagedetaillist.message_reply];
-
+    if(! [messagedetaillist.message_action isEqualToString:@"1"]) {
+        messageSize.height += CHeightUserLabel;
+    }
+    
     return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
 }
 
@@ -301,7 +322,9 @@
                                                  KTKPDMESSAGE_ISMODKEY,
                                                  KTKPDMESSAGE_USERIDKEY,
                                                  KTKPDMESSAGE_USERNAMEKEY,
-                                                 KTKPDMESSAGE_USERIMAGEKEY
+                                                 KTKPDMESSAGE_USERIMAGEKEY,
+                                                 KTKPDMESSAGE_USER_LABEL,
+                                                 KTKPDMESSAGE_USER_LABEL_ID
                                                  ]];
     
     RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailBetween class]];
@@ -627,7 +650,10 @@
     // get a rect for the textView frame
     CGRect containerFrame = self.view.frame;
     
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+//    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+    containerFrame.size.height = self.view.bounds.size.height - keyboardBounds.size.height;
+    _table.contentInset = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
+    [_table scrollRectToVisible:CGRectMake(0, _table.contentSize.height, _table.bounds.size.width, 1) animated:YES];
     // animations settings
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
@@ -651,7 +677,9 @@
     self.view.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1.0];
     CGRect containerFrame = self.view.frame;
     
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
+//    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
+    containerFrame.size.height = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.bounds.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
     // animations settings
     [UIView beginAnimations:nil context:NULL];
