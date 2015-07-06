@@ -32,6 +32,8 @@
 #import "TransactionObjectManager.h"
 #import "RequestCart.h"
 
+#import "LoadingView.h"
+
 @interface TransactionCartViewController ()
 <
     UITableViewDataSource,
@@ -49,7 +51,7 @@
     TransactionCartEditViewControllerDelegate,
     TransactionCartWebViewViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
-
+    LoadingViewDelegate,
     RequestCartDelegate
 >
 {
@@ -113,6 +115,8 @@
     RequestCart *_requestCart;
     
     UIAlertView *_alertLoading;
+    
+    LoadingView *_loadingView;
     
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
@@ -280,6 +284,8 @@
     
     _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
 }
 
 
@@ -2361,6 +2367,7 @@
         [self endRefreshing];
         [_act stopAnimating];
         _isLoadingRequest = NO;
+        _tableView.tableFooterView = _loadingView.view;
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         [self endRefreshing];
@@ -2369,13 +2376,10 @@
     if (tag == TAG_REQUEST_CHECKOUT) {
         _checkoutButton.enabled = YES;
         _checkoutButton.layer.opacity = 1;
-        [_checkoutButton setTitle:@"BAYAR" forState:UIControlStateNormal];
-        
     }
     if (tag == TAG_REQUEST_BUY) {
         _buyButton.enabled = YES;
         _buyButton.layer.opacity = 1;
-        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
     }
     if (tag == TAG_REQUEST_VOUCHER) {
         [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
@@ -2763,6 +2767,11 @@
 
 - (void)refreshCartAfterCancelPayment {
     
+}
+
+#pragma mark - Delegate LoadingView
+- (void)pressRetryButton {
+    [self refreshRequestCart];
 }
 
 -(TransactionObjectManager*)objectManager

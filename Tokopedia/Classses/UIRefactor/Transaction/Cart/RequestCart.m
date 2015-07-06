@@ -435,7 +435,6 @@
     [_delegate actionAfterFailRequestMaxTries:tag];
 }
 
-
 -(void)setParam:(NSDictionary *)param
 {
     _param = param;
