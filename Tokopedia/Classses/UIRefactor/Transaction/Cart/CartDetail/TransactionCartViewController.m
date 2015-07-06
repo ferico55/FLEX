@@ -243,14 +243,6 @@
         //[_networkManager doRequest];
     }
     
-    if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [_tableView setSeparatorInset:UIEdgeInsetsZero];
-    }
-    
-    if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [_tableView setLayoutMargins:UIEdgeInsetsZero];
-    }
-    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 8.0;
     
@@ -300,7 +292,7 @@
     else
     {
         if (!_popFromShipment) {
-            _tableView.contentOffset = CGPointZero;
+            [_tableView setContentOffset:CGPointMake(0, -40) animated:YES];
         }
         if (_popFromShipment) {
             _popFromShipment = NO;
@@ -1029,27 +1021,25 @@
 
 -(void)GeneralSwitchCell:(GeneralSwitchCell *)cell withIndexPath:(NSIndexPath *)indexPath
 {
-    if (!_isLoadingRequest) {
-        //NSInteger shopID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
-        TransactionCartList *list = _list[indexPath.section];
-        NSInteger shopID = [list.cart_shop.shop_id integerValue];
-        NSInteger addressID =list.cart_destination.address_id;
-        NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
-        NSInteger shipmentPackageID =[list.cart_shipments.shipment_package_id integerValue];
-        
-        [_isDropshipper replaceObjectAtIndex:indexPath.section withObject:@(cell.settingSwitch.on)];
-        
-        if (cell.settingSwitch.on) {
-            NSString *dropshipStringObject = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_KEY,shopID,addressID,shipmentID,shipmentPackageID];
-            [_dropshipStrList replaceObjectAtIndex:indexPath.section withObject:dropshipStringObject];
-        }
-        else
-        {
-            [_dropshipStrList replaceObjectAtIndex:indexPath.section withObject:@""];
-        }
-        
-        [_tableView reloadData];
+    //NSInteger shopID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
+    TransactionCartList *list = _list[indexPath.section];
+    NSInteger shopID = [list.cart_shop.shop_id integerValue];
+    NSInteger addressID =list.cart_destination.address_id;
+    NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
+    NSInteger shipmentPackageID =[list.cart_shipments.shipment_package_id integerValue];
+    
+    [_isDropshipper replaceObjectAtIndex:indexPath.section withObject:@(cell.settingSwitch.on)];
+    
+    if (cell.settingSwitch.on) {
+        NSString *dropshipStringObject = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_KEY,shopID,addressID,shipmentID,shipmentPackageID];
+        [_dropshipStrList replaceObjectAtIndex:indexPath.section withObject:dropshipStringObject];
     }
+    else
+    {
+        [_dropshipStrList replaceObjectAtIndex:indexPath.section withObject:@""];
+    }
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - Header View Delegate
@@ -1492,7 +1482,7 @@
     if (![_tableView.tableFooterView isEqual:_footerView]) {
         _tableView.tableFooterView = _footerView;
         [_refreshControl beginRefreshing];
-        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height-40) animated:YES];
     }
     
     _requestCart.param = @{};
@@ -2326,7 +2316,7 @@
 -(void)endRefreshing
 {
     if (_refreshControl.isRefreshing) {
-        [_tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+        [_tableView setContentOffset:CGPointMake(0, -40) animated:YES];
         [_refreshControl endRefreshing];
     }
 }

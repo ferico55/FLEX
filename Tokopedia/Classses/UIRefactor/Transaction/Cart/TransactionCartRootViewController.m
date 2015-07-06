@@ -396,6 +396,8 @@
     if (self.navigationController.viewControllers.count > 1 && _index!=1) {
         UIViewController *destinationVC;
         if (_index == 0) {
+            TransactionCartRootViewController *vc= [((UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:3]).viewControllers firstObject];
+            [vc shouldBackToFirstPage];
             destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
         }
         else

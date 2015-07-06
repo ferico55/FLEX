@@ -984,7 +984,8 @@
             {
                 NSMutableArray *errors = [order.message_error mutableCopy];
                 for (int i = 0; i<errors.count; i++) {
-                    if ([order.message_error[i] containsString:@"Alamat"]) {
+                    if ([order.message_error[i] rangeOfString:@"Alamat"].location == NSNotFound) {
+                    //if ([order.message_error[i] containsString:@"Alamat"]) {
                         [errors replaceObjectAtIndex:i withObject:@"Pesan ulang tidak dapat dilakukan karena alamat tidak valid."];
                     }
                 }
@@ -998,6 +999,7 @@
         [self requestFailureReOrder:object withError:nil];
     }
 }
+
 
 -(void)requestFailureReOrder:(TxOrderStatusList*)order withError:(NSError*)error
 {
