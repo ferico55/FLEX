@@ -38,6 +38,7 @@
     NSDictionary *_auth;
     
     BOOL _isFinishCalculate;
+    BOOL _isFinishInsurance;
     
     TransactionObjectMapping *_mapping;
     
@@ -281,26 +282,28 @@
         
     }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
-        
+        _isFinishCalculate = NO;
     }
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
-        
     }
+    [_tableView reloadData];
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
     if (tag == TAG_REQUEST_CALCULATE) {
-        [self requestSuccessActionCalculate:successResult withOperation:operation];
         _isFinishCalculate = YES;
-        [_tableView reloadData];
+        [self requestSuccessActionCalculate:successResult withOperation:operation];
     }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
+        _isFinishCalculate = YES;
         [self requestSuccessActionEditAddress:successResult withOperation:operation];
     }
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
         [self requestSuccessActionEditInsurance:successResult withOperation:operation];
     }
+    
+    [_tableView reloadData];
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -311,8 +314,6 @@
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_CALCULATE) {
-        _isFinishCalculate = YES;
-        [_tableView reloadData];
     }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
         
@@ -320,6 +321,8 @@
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
         
     }
+    _isFinishCalculate = YES;
+    [_tableView reloadData];
 }
 
 #pragma mark - Request Action Calculate Price
@@ -1093,6 +1096,15 @@
                      cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                }
                 cell.detailTextLabel.text = insuranceName;
                 break;
             }
@@ -1115,6 +1127,15 @@
                 cell = _tableViewCell[6];
                 NSString *insuranceCost = cart.cart_insurance_price_idr;
                 [cell.detailTextLabel setText:insuranceCost animated:YES];
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                }
                 break;
             }
             default:
@@ -1205,7 +1226,7 @@
     NSDictionary *userInfo = aNotification.userInfo;
     TransactionCartList *cart = [userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY];
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
-    
+    _isFinishCalculate = YES;
     [_tableView reloadData];
 }
 
