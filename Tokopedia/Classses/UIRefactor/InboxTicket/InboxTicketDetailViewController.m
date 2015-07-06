@@ -539,9 +539,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     NSMutableArray *tickets = [NSMutableArray new];
     for (InboxTicketDetail *message in response.result.ticket_reply.ticket_reply_data) {
-        if (![message.ticket_detail_message isEqualToString:@"0"]) {
-            [tickets addObject:message];
-        }
+        [tickets addObject:message];
     }
     
     if (self.inboxTicket.ticket_show_more_messages) {

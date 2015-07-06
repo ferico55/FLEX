@@ -572,14 +572,6 @@
     }
     
     if (selectedImages.count < 5) {
-        UIImageView *imageView = [self.photosImageView objectAtIndex:maxIndex];
-        imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
-        imageView.userInteractionEnabled = YES;
-        imageView.hidden = NO;
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapPhotoImageView:)];
-        [imageView addGestureRecognizer:tap];
-    
         CGFloat width = (90 * maxIndex) + 90;
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     } else {
@@ -632,14 +624,35 @@
         }
     }
     
-    if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+    if (self.textView.text.length > 10) {
         _doneButton.enabled = YES;
         _doneButton.tintColor = [UIColor whiteColor];
         self.navigationItem.rightBarButtonItem = _doneButton;
+    } else {
+        _doneButton.enabled = NO;
+        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+        self.navigationItem.rightBarButtonItem = _doneButton;
+    }
+    
+    if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+        if (_uploadedPhotos.count < 5) {
+            UIImageView *imageView = [self.photosImageView objectAtIndex:_uploadedPhotos.count];
+            imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
+            imageView.userInteractionEnabled = YES;
+            imageView.hidden = NO;
+            
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapPhotoImageView:)];
+            [imageView addGestureRecognizer:tap];
+        }
     }
     
     if (_uploadedPhotos.count < 5) {
-        CGFloat width = (90 * _uploadedPhotos.count) + 90;
+        CGFloat width;
+        if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+            width = (90 * _uploadedPhotos.count) + 90;
+        } else {
+            width = 90 * _uploadedPhotos.count;
+        }
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     } else {
         CGFloat width = 90 * _uploadedPhotos.count;
@@ -653,6 +666,10 @@
 
     [_selectedImagesCameraController removeObjectAtIndex:index];
     [_selectedIndexPathCameraController removeObjectAtIndex:index];
+    
+    for (UIImageView *imageView in self.photosImageView) {
+        imageView.image = nil;
+    }
     
     NSInteger maxIndex = _selectedImagesCameraController.count;
     for (int i = 0; i < self.photosImageView.count; i++) {
@@ -671,13 +688,40 @@
         }
     }
     
-    if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+    if (self.textView.text.length > 10) {
         _doneButton.enabled = YES;
         _doneButton.tintColor = [UIColor whiteColor];
         self.navigationItem.rightBarButtonItem = _doneButton;
+    } else {
+        _doneButton.enabled = NO;
+        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+        self.navigationItem.rightBarButtonItem = _doneButton;
     }
     
-    self.photoScrollView.contentSize = CGSizeMake(90 * _uploadedPhotos.count, self.photoScrollView.frame.size.height);
+    if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+        if (_uploadedPhotos.count < 5) {
+            UIImageView *imageView = [self.photosImageView objectAtIndex:_uploadedPhotos.count];
+            imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
+            imageView.userInteractionEnabled = YES;
+            imageView.hidden = NO;
+            
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapPhotoImageView:)];
+            [imageView addGestureRecognizer:tap];
+        }
+    }
+    
+    if (_uploadedPhotos.count < 5) {
+        CGFloat width;
+        if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
+            width = (90 * _uploadedPhotos.count) + 90;
+        } else {
+            width = 90 * _uploadedPhotos.count;
+        }
+        self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
+    } else {
+        CGFloat width = 90 * _uploadedPhotos.count;
+        self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
+    }
 }
 
 #pragma mark Request Generate Host

@@ -142,8 +142,8 @@
     UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    CGRect frame = CGRectMake(tempButtonRect.origin.x+tempButtonRect.size.width,
-                              (self.navigationController.navigationBar.bounds.size.height-8)/2.0f, 16, 10);
+    CGRect frame = CGRectMake(tempButtonRect.origin.x+tempButtonRect.size.width - 4,
+                              (self.navigationController.navigationBar.bounds.size.height-4)/2.0f, 10, 7);
     UIImageView *img = [[UIImageView alloc] initWithFrame:frame];
     img.image = picture1;
     
@@ -167,7 +167,7 @@
 
 - (void)hideMenu
 {
-    self.arrowImage = [UIImage imageNamed:@"icon_arrow_white_down.png"];
+    self.arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
 
     [UIView animateWithDuration:0.15 animations:^{
         self.menuTopConstraint.constant = 0 - self.menuContainerView.frame.size.height;
@@ -187,7 +187,7 @@
 
 - (void)showMenu
 {
-    self.arrowImage = [UIImage imageNamed:@"icon_arrow_white_up.png"];
+    self.arrowImage = [UIImage imageNamed:@"icon_triangle_up_white.png"];
     
     self.menuView.hidden = NO;
     [UIView animateWithDuration:0.15 animations:^{
