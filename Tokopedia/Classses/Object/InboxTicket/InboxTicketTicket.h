@@ -32,5 +32,6 @@
 @property (strong, nonatomic) NSString *ticket_update_by_id;
 @property (strong, nonatomic) NSString *ticket_id;
 @property (strong, nonatomic) NSString *ticket_update_by_name;
+@property (strong, nonatomic) NSString *ticket_total_message;
 
 @end

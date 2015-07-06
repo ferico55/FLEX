@@ -102,36 +102,15 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSString *ticketID = [NSString stringWithFormat:@"No Tiket : %@", self.inboxTicket.ticket_id];
-    NSString *status;
-    if ([self.inboxTicket.ticket_status isEqualToString:@"1"]) {
-        status = @"Dalam Proses";
-    } else {
-        status = @"Ditutup";
-    }
-    NSString *title = [NSString stringWithFormat:@"%@\n%@ - Status : %@", ticketID, self.inboxTicket.ticket_category, status];
-    
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
-    [attributedText addAttribute:NSFontAttributeName
-                           value:[UIFont boldSystemFontOfSize: 16.0f]
-                           range:NSMakeRange(0, ticketID.length)];
-
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    label.numberOfLines = 2;
-    label.font = [UIFont systemFontOfSize: 11.0f];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor whiteColor];
-    label.attributedText = attributedText;
-    
-    self.navigationItem.titleView = label;
+    [self setTitleView];
     
     UIView *emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 44)];
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:emptyView];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
-    self.tableView.contentInset = UIEdgeInsetsMake(-30, 0, 5, 0);
-    self.tableView.sectionHeaderHeight = 0;
-    self.tableView.sectionFooterHeight = 0;
+    [self configureRefreshControl];
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(-30, 0, 0, 0);
     
     _messages = [NSMutableArray new];
     
@@ -188,13 +167,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     _isLoadingMore = NO;
     
-    _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [_refreshControl addTarget:self action:@selector(refreshView) forControlEvents:UIControlEventValueChanged];
-    [_refreshControl setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin)];
-    [[_refreshControl.subviews objectAtIndex:0] setFrame:CGRectMake(0, 20, 0, 20)];
-    [self.tableView addSubview:_refreshControl];
-
     if ([self.delegate respondsToSelector:@selector(updateInboxTicket:)]) {
         self.inboxTicket.ticket_read_status = @"2";
         [self.delegate updateInboxTicket:_inboxTicket];
@@ -212,6 +184,32 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)setTitleView {
+    NSString *ticketID = [NSString stringWithFormat:@"No Tiket : %@", _ticketInformation.ticket_id?:self.inboxTicket.ticket_id];
+    NSString *status;
+    if ([_ticketInformation.ticket_status?:self.inboxTicket.ticket_status isEqualToString:@"1"]) {
+        status = @"Dalam Proses";
+    } else {
+        status = @"Ditutup";
+    }
+    NSString *ticketCategory = _ticketInformation.ticket_category?:self.inboxTicket.ticket_category;
+    NSString *title = [NSString stringWithFormat:@"%@\n%@ - Status : %@", ticketID, ticketCategory, status];
+    
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
+    [attributedText addAttribute:NSFontAttributeName
+                           value:[UIFont boldSystemFontOfSize: 16.0f]
+                           range:NSMakeRange(0, ticketID.length)];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    label.numberOfLines = 2;
+    label.font = [UIFont systemFontOfSize: 11.0f];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor whiteColor];
+    label.attributedText = attributedText;
+    
+    self.navigationItem.titleView = label;
 }
 
 #pragma mark - Table view data source
@@ -292,7 +290,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (!_isLoadingMore && self.inboxTicket.ticket_show_more_messages && section == 0) {
+    if (self.inboxTicket.ticket_show_more_messages && section == 0 && !_isLoadingMore) {
         return _loadMoreView.frame.size.height;
     } else {
         return 0;
@@ -405,7 +403,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                                        API_LIST_TICKET_URL_DETAIL_KEY,
                                                        API_LIST_TICKET_UPDATE_BY_ID_KEY,
                                                        API_LIST_TICKET_ID_KEY,
-                                                       API_LIST_TICKET_UPDATE_BY_NAME_KEY]];
+                                                       API_LIST_TICKET_UPDATE_BY_NAME_KEY,
+                                                       API_LIST_TICKET_TOTAL_MESSAGE_KEY]];
         
         [statusMapping addRelationshipMappingWithSourceKeyPath:kTKPD_APIRESULTKEY mapping:resultMapping];
         
@@ -469,7 +468,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-
+    
     // action after request ticket detail
     if (tag == 1) {
         [self loadTicketsData:mappingResult];
@@ -518,7 +517,15 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)loadTicketsData:(RKMappingResult *)mappingResult {
     DetailInboxTicket *response = [mappingResult.dictionary objectForKey:@""];
     
-    _ticketInformation = response.result.ticket;
+    if (!_ticketInformation) {
+        _ticketInformation = response.result.ticket;
+    }
+
+    self.tableView.sectionHeaderHeight = 0;
+    
+    if (_isLoadingMore) {
+        self.tableView.sectionFooterHeight = 0;
+    }
     
     if (!_ticketDetail) {
         _ticketDetail = [InboxTicketDetail new];
@@ -675,11 +682,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     [_refreshControl endRefreshing];
     
     if ([self.delegate respondsToSelector:@selector(updateInboxTicket:)]) {
-        NSInteger total = response.result.ticket_reply.ticket_reply_data.count;
+        NSInteger total = [_ticketInformation.ticket_total_message integerValue];
         self.inboxTicket.ticket_total_message = [NSString stringWithFormat:@"%d", total];
         self.inboxTicket.ticket_status = _ticketInformation.ticket_status;
         self.inboxTicket.ticket_read_status = _ticketInformation.ticket_read_status;
-        [self.delegate updateInboxTicket:_inboxTicket];
+        [self.delegate updateInboxTicket:self.inboxTicket];
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketReceiveData object:nil];
@@ -838,7 +845,18 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 #pragma mark - Methods
 
 - (void)refreshView {
+    _isLoadingMore = NO;
+    _ticketInformation = nil;
     [_networkManager doRequest];
+}
+
+- (void)configureRefreshControl {
+    _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView) forControlEvents:UIControlEventValueChanged];
+    [_refreshControl setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin)];
+    [[_refreshControl.subviews objectAtIndex:0] setFrame:CGRectMake(0, 20, 0, 20)];
+    [self.tableView addSubview:_refreshControl];
 }
 
 @end

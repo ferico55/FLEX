@@ -137,7 +137,7 @@
     
     
     CGRect rect = CGRectMake(0,0,16,10);
-    UIGraphicsBeginImageContext( rect.size );
+    UIGraphicsBeginImageContext(rect.size);
     [self.arrowImage drawInRect:rect];
     UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

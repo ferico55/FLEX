@@ -104,7 +104,7 @@
                                                   action:@selector(didTouchUpDoneButton:)];
     self.navigationItem.rightBarButtonItem = _doneButton;
     _doneButton.enabled = NO;
-    _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+    _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
 
     self.textView.placeholder = @"Isi pesan disini ...";
     self.textView.delegate = self;
@@ -128,6 +128,7 @@
     _uploadedPhotosURL = [NSMutableArray new];
     
     self.photoScrollView.delegate = self;
+    self.photoScrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 10);
     [self.photoScrollView addSubview:_scrollViewContentView];
     
     CGRect frame = _scrollViewContentView.frame;
@@ -350,7 +351,7 @@
         _doneButton.tintColor = [UIColor whiteColor];
     } else {
         _doneButton.enabled = NO;
-        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
     }
 }
 
@@ -358,7 +359,12 @@
 
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *dictionary;
-    NSString *attachmentString = [_uploadedPhotosURL componentsJoinedByString:@"~"];
+    
+    NSString *attachmentString = @"";
+    for (NSString *url in _uploadedPhotosURL) {
+        attachmentString = [NSString stringWithFormat:@"%@%@~", attachmentString, url];
+    }
+    
     NSString *newTicketStatus;
     if ([self.inboxTicket.ticket_status isEqualToString:@"1"]) {
         newTicketStatus = self.isCloseTicketForm?@"2":@"";
@@ -546,6 +552,8 @@
     [_uploadedPhotos removeAllObjects];
     [_uploadedPhotosURL removeAllObjects];
     
+    self.photoScrollView.hidden = NO;
+    
     NSInteger maxIndex = selectedImages.count;
     for (int i = 0; i < self.photosImageView.count; i++) {
         UIImageView *imageView = [self.photosImageView objectAtIndex:i];
@@ -626,7 +634,7 @@
     
     if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
         _doneButton.enabled = YES;
-        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:1];
+        _doneButton.tintColor = [UIColor whiteColor];
         self.navigationItem.rightBarButtonItem = _doneButton;
     }
     
@@ -641,25 +649,10 @@
 
 - (void)failedUploadObject:(id)object {
     NSDictionary *data = [object objectForKey:DATA_SELECTED_PHOTO_KEY];
-    NSDictionary *photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIImage *image = [photo objectForKey:@"photo"];
-    NSInteger index = [_uploadedPhotos indexOfObject:image];
+    NSInteger index = [_selectedImagesCameraController indexOfObject:data];
 
-    if (index < _uploadedPhotos.count && _uploadedPhotos.count > 0) {
-        [_uploadedPhotos removeObject:image];
-    }
-    
-    if (index < _uploadedPhotosURL.count && _uploadedPhotosURL.count > 0) {
-        [_uploadedPhotosURL removeObjectAtIndex:index];
-    }
-    
-    if (index < _selectedImagesCameraController.count && _selectedImagesCameraController.count > 0) {
-        [_selectedImagesCameraController removeObjectAtIndex:index];
-    }
-    
-    if (index < _selectedIndexPathCameraController.count && _selectedIndexPathCameraController.count > 0) {
-        [_selectedIndexPathCameraController removeObjectAtIndex:index];
-    }
+    [_selectedImagesCameraController removeObjectAtIndex:index];
+    [_selectedIndexPathCameraController removeObjectAtIndex:index];
     
     NSInteger maxIndex = _selectedImagesCameraController.count;
     for (int i = 0; i < self.photosImageView.count; i++) {
@@ -680,7 +673,7 @@
     
     if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
         _doneButton.enabled = YES;
-        _doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:1];
+        _doneButton.tintColor = [UIColor whiteColor];
         self.navigationItem.rightBarButtonItem = _doneButton;
     }
     

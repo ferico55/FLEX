@@ -95,20 +95,20 @@
     }
     
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
-    if ([ticket.ticket_status isEqualToString:@"1"]) {
-        cell.statusLabel.text = @"   Dalam Proses   ";
-        cell.statusLabel.textColor = [UIColor whiteColor];
-        cell.statusLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                           green:87.0/255.0
-                                                            blue:34.0/255.0
-                                                           alpha:1];
-        cell.statusLabel.layer.cornerRadius = 2;
-    } else {
+    if ([ticket.ticket_status isEqualToString:@"2"]) {
         cell.statusLabel.text = @"   Ditutup   ";
         cell.statusLabel.textColor = [UIColor whiteColor];
         cell.statusLabel.backgroundColor = [UIColor colorWithRed:97.0/255.0
                                                            green:97.0/255.0
                                                             blue:97.0/255.0
+                                                           alpha:1];
+        cell.statusLabel.layer.cornerRadius = 2;
+    } else {
+        cell.statusLabel.text = @"   Dalam Proses   ";
+        cell.statusLabel.textColor = [UIColor whiteColor];
+        cell.statusLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
+                                                           green:87.0/255.0
+                                                            blue:34.0/255.0
                                                            alpha:1];
         cell.statusLabel.layer.cornerRadius = 2;
     }
