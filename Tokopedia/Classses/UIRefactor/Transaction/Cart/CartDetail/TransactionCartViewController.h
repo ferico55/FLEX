@@ -37,4 +37,6 @@
 @property BOOL firstInit;
 @property NSArray *listSummary;
 
+-(void)doClearAllData;
+
 @end

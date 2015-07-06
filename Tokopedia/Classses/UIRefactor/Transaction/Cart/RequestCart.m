@@ -29,7 +29,6 @@
     
     TransactionObjectManager *_objectManager;
     
-    UIAlertView *_alertLoading;
 }
 
 @end
@@ -43,9 +42,7 @@
     }
     NSNumber *gatewayID  = [_param objectForKey:@"gateway"];
     _objectManager.gatewayID = [gatewayID integerValue];
-    
-    _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:_viewController cancelButtonTitle:nil otherButtonTitles:nil];
-    
+        
     return _objectManager;
 }
 
@@ -238,29 +235,6 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-    if (tag == TAG_REQUEST_CANCEL_CART) {
-        
-    }
-    
-    if (tag == TAG_REQUEST_CHECKOUT) {
-        //[_alertLoading show];
-    }
-    
-    if (tag == TAG_REQUEST_BUY) {
-        //[_alertLoading show];
-    }
-    if (tag == TAG_REQUEST_VOUCHER) {
-        
-    }
-    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
-    }
-    if (tag == TAG_REQUEST_EMONEY) {
-        //[_alertLoading show];
-    }
-    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
-        //[_alertLoading show];
-    }
-
     [_delegate actionBeforeRequest:tag];
 }
 
@@ -306,7 +280,6 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    [_delegate dissmissAlertView:_alertLoading];
     
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
@@ -414,7 +387,7 @@
         }
         else
         {
-            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:_viewController];
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran Anda gagal"] delegate:_viewController];
             [failedAlert show];
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
@@ -427,7 +400,7 @@
         }
         else
         {
-            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran gagal"] delegate:_viewController];
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran Anda gagal"] delegate:_viewController];
             [failedAlert show];
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
@@ -448,13 +421,18 @@
     
     StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_viewController];
     [failedAlert show];
-
+    
+    [self performSelector:@selector(doActionBeforeRequest:) withObject:@(tag) afterDelay:1.0f];
+    
+}
+-(void)doActionBeforeRequest:(NSInteger)tag
+{
+    [_delegate actionBeforeRequest:tag];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_delegate actionAfterFailRequestMaxTries:tag];
-    [_delegate dissmissAlertView:_alertLoading];
 }
 
 

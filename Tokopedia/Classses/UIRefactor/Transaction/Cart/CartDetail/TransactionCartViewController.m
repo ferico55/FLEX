@@ -62,8 +62,7 @@
     NSMutableDictionary *_dataInput;
     
     BOOL _isnodata;
-    BOOL _isRefreshRequest;
-    
+
     UITextField *_activeTextField;
     UITextView *_activeTextView;
     
@@ -112,6 +111,8 @@
     TransactionObjectManager *_objectManager;
     
     RequestCart *_requestCart;
+    
+    UIAlertView *_alertLoading;
     
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
@@ -206,7 +207,6 @@
     _dropshipStrList = [NSMutableArray new];
     _stockPartialDetail = [NSMutableArray new];
     _listProductFirstObjectIndexPath =[NSMutableArray new];
-    
     _objectManager = [TransactionObjectManager new];
     _mapping = [TransactionObjectMapping new];
     _navigate = [NavigateViewController new];
@@ -277,7 +277,11 @@
     _IDRformatter.currencyDecimalSeparator = @",";
     _IDRformatter.maximumFractionDigits = 0;
     _IDRformatter.minimumFractionDigits = 0;
+    
+    _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+
 }
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -287,6 +291,8 @@
     
     if (_indexPage == 0) {
         if (_shouldRefresh) {
+            _tableView.contentOffset = CGPointZero;
+            [_list removeAllObjects];
             [self refreshRequestCart];
         }
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
@@ -418,199 +424,12 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_list.count>0)
+    if (!_isnodata)
     {
         return (_indexPage==0)?[self rowHeightPage1AtIndexPath:indexPath]:[self rowHeightPage2AtIndexPath:indexPath];
     }
     
     return 0;
-}
-
--(CGFloat)rowHeightPage1AtIndexPath:(NSIndexPath*)indexPath
-{
-    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-
-    if (indexPath.section == _list.count) {
-        if (indexPath.row >0) {
-            return 0;
-        }
-    }
-    else if (indexPath.section < _list.count) {
-        TransactionCartList *list = _list[indexPath.section];
-        if (indexPath.row == 0)
-            return [self errorLabelHeight:list];
-        else if(indexPath.row <= list.cart_products.count) {
-            ProductDetail *product = list.cart_products[indexPath.row-1];
-            return [self productRowHeight:product];
-        }
-        else if ( indexPath.row == list.cart_products.count + 2) {
-            //adjust total partial cell tidak muncul ketika jumlah barang hanya 1
-            if ([list.cart_total_product integerValue]<=1) {
-                return 0;
-            }
-        }
-        else if (indexPath.row == list.cart_products.count + 4)
-        {
-            if (![_isDropshipper[indexPath.section] boolValue]) {
-                return 0;
-            }
-        }
-        else if (indexPath.row == list.cart_products.count + 5)
-        {
-            if (![_isDropshipper[indexPath.section] boolValue]) {
-                return 0;
-            }
-        }
-    }
-    else if (indexPath.section == _list.count+1)
-    {
-        if (indexPath.row == 0 || indexPath.row == 2) {
-            if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
-                [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
-                ([self depositAmountUser] == 0) ) {
-                return 0;
-            }
-        }
-        if (indexPath.row == 1 ) {
-            if (!_isUsingSaldoTokopedia) {
-                return 0;
-            }
-        }
-        if (indexPath.row == 2) {
-            if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
-                [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
-                ([self depositAmountUser] == 0) ) {
-                return 0;
-            }
-            else
-                return HEIGHT_VIEW_TOTAL_DEPOSIT;
-        }
-        if (indexPath.row == 3) {
-           return 0;
-        }
-    }
-
-    return DEFAULT_ROW_HEIGHT;
-}
-
--(CGFloat)rowHeightPage2AtIndexPath:(NSIndexPath*)indexPath
-{
-    if (indexPath.section < _list.count) {
-        TransactionCartList *list = _list[indexPath.section];
-        if (indexPath.row == 0)
-            return [self errorLabelHeight:list];
-        else if(indexPath.row <= list.cart_products.count) {
-            ProductDetail *product = list.cart_products[indexPath.row-1];
-            return [self productRowHeight:product];
-        }
-        else if ( indexPath.row == list.cart_products.count + 2) {
-            //partial
-            return 0;
-        }
-        else if ( indexPath.row == list.cart_products.count + 3) {
-            //dropship switch
-            return 0;
-        }
-        else if (indexPath.row == list.cart_products.count + 4)
-        {
-            // dropship name
-            return 0;
-        }
-        else if (indexPath.row == list.cart_products.count + 5)
-        {
-            // dropship phone
-            return 0;
-        }
-    }
-    else if (indexPath.section == _list.count)
-    {
-        //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 5 Total Pembayaran
-        if (indexPath.row == 0)
-        {
-            return 0;
-        }
-        if (indexPath.row == 2)
-        {
-            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
-                [_cartSummary.deposit_amount integerValue] <= 0) {
-                return 0;
-            }
-        }
-        if (indexPath.row == 3) {
-            if ([_cartSummary.voucher_amount_idr integerValue]<=0) {
-                return 0;
-            }
-        }
-        if (indexPath.row == 4) {
-            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
-            return 0;
-        }
-    }
-    else if (indexPath.section == _list.count+1)
-    {
-        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia
-        if (indexPath.row == 0)
-        {
-            return 0;
-        }
-        if (indexPath.row == 1)
-        {
-            return 0;
-        }
-        if (indexPath.row == 2)
-        {
-            return 0;
-        }
-        if (indexPath.row == 3)
-        {
-            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
-                [_cartSummary.deposit_amount integerValue] <= 0) {
-                return 0;
-            }
-        }
-
-    }
-    else if (indexPath.section == _list.count+2)
-    {
-        return 0;
-    }
-    return DEFAULT_ROW_HEIGHT;
-}
-
--(CGFloat)errorLabelHeight:(TransactionCartList*)list
-{
-    NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
-    NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
-    if ([error1 isEqualToString:@""]&& [error2 isEqualToString:@""])
-    {
-        return 0;
-    }
-    else
-    {
-        NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
-        CGSize maximumLabelSize = CGSizeMake(290,9999);
-        UILabel *errorLabel = (UILabel*)_errorLabel[0];
-        [errorLabel setCustomAttributedText:string];
-        CGSize expectedLabelSize = [string sizeWithFont:errorLabel.font
-                                      constrainedToSize:maximumLabelSize
-                                          lineBreakMode:errorLabel.lineBreakMode];
-        
-        return expectedLabelSize.height+40;
-    }
-}
-
--(CGFloat)productRowHeight:(ProductDetail*)product
-{
-    NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
-    NSString *string = productNotes;
-    
-    //Calculate the expected size based on the font and linebreak mode of your label
-    CGSize maximumLabelSize = CGSizeMake(290,9999);
-    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
-                                  constrainedToSize:maximumLabelSize
-                                      lineBreakMode:NSLineBreakByTruncatingTail];
-    
-    return CELL_PRODUCT_ROW_HEIGHT+expectedLabelSize.height;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -1140,7 +959,6 @@
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    _isRefreshRequest = YES;
     [_refreshControl beginRefreshing];
     [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
    
@@ -1315,7 +1133,6 @@
             [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:gateway.gateway_name];
         }
     }
-    _isRefreshRequest = NO;
     TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     NSNumber *gatewayID = gateway.gateway;
     if ([gatewayID integerValue] == TYPE_GATEWAY_TOKOPEDIA) {
@@ -1715,7 +1532,27 @@
     
     _requestCart.param = @{};
     [_requestCart doRequestCart];
+}
+
+-(void)doClearAllData
+{
+    _isnodata = YES;
+    [_dataInput removeAllObjects];
     
+    TransactionCartGateway *gateway = [TransactionCartGateway new];
+    gateway.gateway = @(-1);
+    [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
+    [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:@"Pilih"];
+    
+    _saldoTokopediaAmountTextField.text = @"";
+    
+    _voucherCodeButton.hidden = NO;
+    _voucherAmountLabel.hidden = YES;
+    _buttonVoucherInfo.hidden = NO;
+    _buttonCancelVoucher.hidden = YES;
+    
+    _requestCart.param = @{};
+    [_requestCart doRequestCart];
 }
 
 -(void)popShippingViewController
@@ -2142,6 +1979,193 @@
     return cell;
 }
 
+#pragma mark - Cell Height
+-(CGFloat)rowHeightPage1AtIndexPath:(NSIndexPath*)indexPath
+{
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    
+    if (indexPath.section == _list.count) {
+        if (indexPath.row >0) {
+            return 0;
+        }
+    }
+    else if (indexPath.section < _list.count) {
+        TransactionCartList *list = _list[indexPath.section];
+        if (indexPath.row == 0)
+            return [self errorLabelHeight:list];
+        else if(indexPath.row <= list.cart_products.count) {
+            ProductDetail *product = list.cart_products[indexPath.row-1];
+            return [self productRowHeight:product];
+        }
+        else if ( indexPath.row == list.cart_products.count + 2) {
+            //adjust total partial cell tidak muncul ketika jumlah barang hanya 1
+            if ([list.cart_total_product integerValue]<=1) {
+                return 0;
+            }
+        }
+        else if (indexPath.row == list.cart_products.count + 4)
+        {
+            if (![_isDropshipper[indexPath.section] boolValue]) {
+                return 0;
+            }
+        }
+        else if (indexPath.row == list.cart_products.count + 5)
+        {
+            if (![_isDropshipper[indexPath.section] boolValue]) {
+                return 0;
+            }
+        }
+    }
+    else if (indexPath.section == _list.count+1)
+    {
+        if (indexPath.row == 0 || indexPath.row == 2) {
+            if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
+                [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
+                ([self depositAmountUser] == 0) ) {
+                return 0;
+            }
+        }
+        if (indexPath.row == 1 ) {
+            if (!_isUsingSaldoTokopedia) {
+                return 0;
+            }
+        }
+        if (indexPath.row == 2) {
+            if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
+                [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
+                ([self depositAmountUser] == 0) ) {
+                return 0;
+            }
+            else
+                return HEIGHT_VIEW_TOTAL_DEPOSIT;
+        }
+        if (indexPath.row == 3) {
+            return 0;
+        }
+    }
+    
+    return DEFAULT_ROW_HEIGHT;
+}
+
+-(CGFloat)rowHeightPage2AtIndexPath:(NSIndexPath*)indexPath
+{
+    if (indexPath.section < _list.count) {
+        TransactionCartList *list = _list[indexPath.section];
+        if (indexPath.row == 0)
+            return [self errorLabelHeight:list];
+        else if(indexPath.row <= list.cart_products.count) {
+            ProductDetail *product = list.cart_products[indexPath.row-1];
+            return [self productRowHeight:product];
+        }
+        else if ( indexPath.row == list.cart_products.count + 2) {
+            //partial
+            return 0;
+        }
+        else if ( indexPath.row == list.cart_products.count + 3) {
+            //dropship switch
+            return 0;
+        }
+        else if (indexPath.row == list.cart_products.count + 4)
+        {
+            // dropship name
+            return 0;
+        }
+        else if (indexPath.row == list.cart_products.count + 5)
+        {
+            // dropship phone
+            return 0;
+        }
+    }
+    else if (indexPath.section == _list.count)
+    {
+        //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 5 Total Pembayaran
+        if (indexPath.row == 0)
+        {
+            return 0;
+        }
+        if (indexPath.row == 2)
+        {
+            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
+                [_cartSummary.deposit_amount integerValue] <= 0) {
+                return 0;
+            }
+        }
+        if (indexPath.row == 3) {
+            if ([_cartSummary.voucher_amount_idr integerValue]<=0) {
+                return 0;
+            }
+        }
+        if (indexPath.row == 4) {
+            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
+                return 0;
+        }
+    }
+    else if (indexPath.section == _list.count+1)
+    {
+        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia
+        if (indexPath.row == 0)
+        {
+            return 0;
+        }
+        if (indexPath.row == 1)
+        {
+            return 0;
+        }
+        if (indexPath.row == 2)
+        {
+            return 0;
+        }
+        if (indexPath.row == 3)
+        {
+            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
+                [_cartSummary.deposit_amount integerValue] <= 0) {
+                return 0;
+            }
+        }
+        
+    }
+    else if (indexPath.section == _list.count+2)
+    {
+        return 0;
+    }
+    return DEFAULT_ROW_HEIGHT;
+}
+
+-(CGFloat)errorLabelHeight:(TransactionCartList*)list
+{
+    NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
+    NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
+    if ([error1 isEqualToString:@""]&& [error2 isEqualToString:@""])
+    {
+        return 0;
+    }
+    else
+    {
+        NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
+        CGSize maximumLabelSize = CGSizeMake(290,9999);
+        UILabel *errorLabel = (UILabel*)_errorLabel[0];
+        [errorLabel setCustomAttributedText:string];
+        CGSize expectedLabelSize = [string sizeWithFont:errorLabel.font
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:errorLabel.lineBreakMode];
+        
+        return expectedLabelSize.height+40;
+    }
+}
+
+-(CGFloat)productRowHeight:(ProductDetail*)product
+{
+    NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+    NSString *string = productNotes;
+    
+    //Calculate the expected size based on the font and linebreak mode of your label
+    CGSize maximumLabelSize = CGSizeMake(290,9999);
+    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
+                                  constrainedToSize:maximumLabelSize
+                                      lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    return CELL_PRODUCT_ROW_HEIGHT+expectedLabelSize.height;
+}
 
 #pragma mark - Network Manager Delegate
 -(NSDictionary *)paramCancelCart
@@ -2297,10 +2321,14 @@
     
     if (tag == TAG_REQUEST_CHECKOUT) {
         _checkoutButton.enabled = NO;
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+        [_alertLoading show];
     }
     
     if (tag == TAG_REQUEST_BUY) {
         _buyButton.enabled = NO;
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+        [_alertLoading show];
     }
     if (tag == TAG_REQUEST_VOUCHER) {
         
@@ -2308,8 +2336,14 @@
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
     }
     if (tag == TAG_REQUEST_EMONEY) {
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+        [_alertLoading show];
+
     }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+        [_alertLoading show];
+
     }
 }
 
@@ -2358,6 +2392,7 @@
         [_act stopAnimating];
     }
     [self endRefreshing];
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 #pragma mark - Request Cart
@@ -2539,6 +2574,9 @@
     [self adjustAfterUpdateList];
     [self refreshView:nil];
     [self endRefreshing];
+    
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
 }
 
 
@@ -2564,6 +2602,7 @@
     _checkoutButton.enabled = YES;
     _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
     [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 
@@ -2607,6 +2646,9 @@
     _buyButton.enabled = YES;
     _buyButton.layer.opacity = 1;
     [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
+    
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
 }
 
 #pragma mark - Request Action Voucher
@@ -2653,6 +2695,9 @@
     [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
     [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
     [_tableView reloadData];
+    
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
 }
 
 #pragma mark - Request Edit Product
@@ -2676,6 +2721,9 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
 //
     [_act stopAnimating];
+
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
 }
 
 
@@ -2693,6 +2741,9 @@
 
     //
     [_act stopAnimating];
+    
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
 }
 
 -(void)dealloc
@@ -2704,15 +2755,6 @@
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
 
-}
--(void)dissmissAlertView:(UIAlertView *)alertView
-{
-    [self performSelector:@selector(dismiss:) withObject:alertView afterDelay:1.0];
-}
-
--(void)dismiss:(UIAlertView*)alert
-{
-    [alert dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 - (IBAction)switchUsingSaldo:(id)sender {

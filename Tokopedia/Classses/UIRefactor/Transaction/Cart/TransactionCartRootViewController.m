@@ -357,7 +357,9 @@
     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
     ((TransactionCartViewController*)[self viewControllerAtIndex:0]).indexPage = 0;
+    [((TransactionCartViewController*)[self viewControllerAtIndex:0]) doClearAllData];
     _isShouldRefreshingCart = YES;
+    
 }
 
 -(void)shouldBackToFirstPageRefresh:(BOOL)isRefresh
