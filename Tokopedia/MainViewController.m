@@ -487,6 +487,7 @@ typedef enum TagRequest {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
         moreNavBar = moreNavController;
+        
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 

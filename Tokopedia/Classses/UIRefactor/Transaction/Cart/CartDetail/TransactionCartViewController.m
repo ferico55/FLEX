@@ -283,8 +283,6 @@
 {
     [super viewWillAppear:animated];
     
-    self.navigationController.title = @"Keranjang";
-    
     if (_indexPage == 0) {
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];

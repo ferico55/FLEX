@@ -174,6 +174,7 @@
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [_requestTimer invalidate];
         [self requestSuccess:mappingResult withOperation:operation];
+        NSLog(@"========== NOTIFICATION ========= \n %@",operation.HTTPRequestOperation.responseString);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailure:error];
     }];
