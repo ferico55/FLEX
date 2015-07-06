@@ -437,7 +437,7 @@
         //Init Gold Merchant
         UIImageView *imgGoldMerchant = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, diameterGold, diameterGold)];
         imgGoldMerchant.tag = CTagGoldMerchant;
-        imgGoldMerchant.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Badges_gold_merchant" ofType:@"png"]];
+        imgGoldMerchant.image = [UIImage imageNamed:@"badges_gold_merchant.png"];
         [viewContent addSubview:imgGoldMerchant];
         
         //Init ProductName
@@ -451,7 +451,7 @@
         [viewContent addSubview:btnHeaderName];
         
         //Location
-        UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(imgHeader.frame.origin.x+imgHeader.bounds.size.height + padding, heightProductName+padding+(padding/2.0f), diameterGold, diameterGold)];
+        UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(imgHeader.frame.origin.x+imgHeader.bounds.size.height + padding, heightProductName+padding+(padding/2.0f), diameterGold-5, diameterGold-5)];
         imgLocation.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_location" ofType:@"png"]];
         [viewContent addSubview:imgLocation];
 
