@@ -32,6 +32,13 @@
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BQn-o1-x70">
+                    <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="zWI-n7-lpw"/>
+                    </constraints>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z9V-lt-b5H">
                     <rect key="frame" x="276" y="0.0" width="44" height="44"/>
                     <constraints>
@@ -49,6 +56,8 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstItem="BQn-o1-x70" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5E8-HO-Hnh"/>
+                <constraint firstItem="BQn-o1-x70" firstAttribute="bottom" secondItem="dNU-c7-nhX" secondAttribute="bottom" id="GC7-V8-tzn"/>
                 <constraint firstItem="z9V-lt-b5H" firstAttribute="leading" secondItem="FYa-Qi-T9k" secondAttribute="trailing" constant="4" id="K2U-j8-0h5"/>
                 <constraint firstItem="FYa-Qi-T9k" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Myj-U2-y4e"/>
                 <constraint firstItem="dNU-c7-nhX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="QIf-45-UqX"/>
@@ -58,6 +67,7 @@
                 <constraint firstAttribute="trailing" secondItem="z9V-lt-b5H" secondAttribute="trailing" id="hvw-nH-oyC"/>
                 <constraint firstItem="z9V-lt-b5H" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jsm-hq-XSt"/>
                 <constraint firstAttribute="bottom" secondItem="dNU-c7-nhX" secondAttribute="bottom" id="nv1-s2-r1T"/>
+                <constraint firstItem="BQn-o1-x70" firstAttribute="trailing" secondItem="z9V-lt-b5H" secondAttribute="trailing" id="uDh-cW-WoV"/>
                 <constraint firstAttribute="bottom" secondItem="z9V-lt-b5H" secondAttribute="bottom" id="una-Pc-8h5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

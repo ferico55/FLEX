@@ -28,6 +28,8 @@
     TokopediaNetworkManager *_networkManagerBCAClickPay;
     
     TransactionObjectManager *_objectManager;
+    
+    UIAlertView *_alertLoading;
 }
 
 @end
@@ -41,6 +43,9 @@
     }
     NSNumber *gatewayID  = [_param objectForKey:@"gateway"];
     _objectManager.gatewayID = [gatewayID integerValue];
+    
+    _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:_viewController cancelButtonTitle:nil otherButtonTitles:nil];
+    
     return _objectManager;
 }
 
@@ -165,6 +170,7 @@
     [[self networkManagerBCAClickPay]doRequest];
 }
 
+
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
@@ -232,6 +238,29 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
+    if (tag == TAG_REQUEST_CANCEL_CART) {
+        
+    }
+    
+    if (tag == TAG_REQUEST_CHECKOUT) {
+        //[_alertLoading show];
+    }
+    
+    if (tag == TAG_REQUEST_BUY) {
+        //[_alertLoading show];
+    }
+    if (tag == TAG_REQUEST_VOUCHER) {
+        
+    }
+    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+    }
+    if (tag == TAG_REQUEST_EMONEY) {
+        //[_alertLoading show];
+    }
+    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
+        //[_alertLoading show];
+    }
+
     [_delegate actionBeforeRequest:tag];
 }
 
@@ -277,6 +306,8 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
+    [_delegate dissmissAlertView:_alertLoading];
+    
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
     
@@ -417,12 +448,13 @@
     
     StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_viewController];
     [failedAlert show];
-    [_delegate actionAfterFailRequestMaxTries:tag];
+
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_delegate actionAfterFailRequestMaxTries:tag];
+    [_delegate dissmissAlertView:_alertLoading];
 }
 
 

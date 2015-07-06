@@ -28,6 +28,8 @@
 -(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
 
+-(void)dissmissAlertView:(UIAlertView*)alertView;
+
 -(void)actionBeforeRequest:(int)tag;
 -(void)actionAfterFailRequestMaxTries:(int)tag;
 
