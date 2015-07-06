@@ -33,7 +33,6 @@
 
 - (void)awakeFromNib
 {
-    // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -43,4 +42,14 @@
     // Configure the view for the selected state
 }
 
+
+
+#pragma mark - Method
+- (void)actionReputasi:(id)sender {
+    [_delegate actionReputasi:sender];
+}
+
+- (IBAction)actionKecepatan:(id)sender {
+    [_delegate actionKecepatan:sender];
+}
 @end

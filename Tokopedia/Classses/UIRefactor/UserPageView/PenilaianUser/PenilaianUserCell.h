@@ -9,5 +9,17 @@
 #import <UIKit/UIKit.h>
 
 @interface PenilaianUserCell : UITableViewCell
+{
+    IBOutlet UILabel *lblPositif1, *lblPositif6, *lblPositif12, *lblNetral1, *lblNetral6, *lblNetral12, *lblBad1, *lblBad6, *lblBad12;
+}
 
+- (void)setPositif1:(NSString *)strText;
+- (void)setPositif6:(NSString *)strText;
+- (void)setPositif12:(NSString *)strText;
+- (void)setNetral1:(NSString *)strText;
+- (void)setNetral6:(NSString *)strText;
+- (void)setNetral12:(NSString *)strText;
+- (void)setBad1:(NSString *)strText;
+- (void)setBad6:(NSString *)strText;
+- (void)setBad12:(NSString *)strText;
 @end

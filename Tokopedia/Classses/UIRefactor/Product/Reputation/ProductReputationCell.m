@@ -167,6 +167,17 @@
     lblDateDesc.text = strDate;
 }
 
+- (void)setHiddenViewLoad:(BOOL)isLoading {
+    if(! isLoading) {
+        viewContentLoad.hidden = NO;
+        [actLoading startAnimating];
+    }
+    else {
+        viewContentLoad.hidden = YES;
+        [actLoading stopAnimating];
+    }
+}
+
 - (void)setDescription:(NSString *)strDescription
 {
     [_delegate initLabelDesc:lblDesc withText:strDescription];

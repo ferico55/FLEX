@@ -136,6 +136,7 @@ typedef enum
 #define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"
 #define kTKPDDETAIL_APIGETSHOPTALKKEY @"get_shop_talk"
 #define kTKPDDETAIL_APIGETSHOPREVIEWKEY @"get_shop_review"
+#define kTKPDDETAIL_APIGETLIKEDISLIKE @"get_like_dislike_review_shop"
 
 #define kTKPDDETAIL_APIGETSHOPNOTESKEY @"get_shop_notes"
 #define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
@@ -662,6 +663,7 @@ typedef enum
 #define kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY @"shop_rate_accuracy"
 #define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
 #define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
+#define kTKPDDETAIL_REVIEWIDS @"review_ids"
 #define kTKPDDETAIL_APISHOPNAMEKEY @"shop_name"
 #define kTKPDDETAIL_APISHOPISGOLD @"shop_is_gold"
 #define kTKPDDETAILCATALOG_APISHOPLOCATIONKEY @"shop_location"

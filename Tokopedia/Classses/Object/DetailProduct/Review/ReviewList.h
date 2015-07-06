@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "ReputationDetail.h"
 #import "ReviewResponse.h"
 #import "ReviewProductOwner.h"
+#define CReviewUserReputation @"review_user_reputation"
 
 @interface ReviewList : NSObject
 
@@ -23,6 +24,7 @@
 @property (nonatomic, strong) NSString *review_user_name;
 @property (nonatomic, strong) NSString *review_message;
 @property (nonatomic, strong) NSString *review_user_id;
+@property (nonatomic, strong) ReputationDetail *review_user_reputation;
 
 // product
 @property (nonatomic) NSString* review_rate_quality;

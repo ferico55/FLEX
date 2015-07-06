@@ -11,11 +11,14 @@
 #import "UserInfo.h"
 #import "ShopStats.h"
 #import "ShopInfo.h"
+#import "ResponseSpeed.h"
+#define CRespondSpeed @"respond_speed"
 
 @interface ProfileInfoResult : NSObject
 
 @property (nonatomic, strong) UserInfo *user_info;
 @property (nonatomic, strong) ShopStats *shop_stats;
 @property (nonatomic, strong) ShopInfo *shop_info;
+@property (nonatomic, strong) ResponseSpeed *respond_speed;
 
 @end

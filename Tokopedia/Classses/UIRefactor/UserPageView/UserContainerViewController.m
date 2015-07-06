@@ -481,10 +481,27 @@
                                                            kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
                                                            kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
                                                            kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
+                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY,
+                                                           CShopReputationScore:CShopReputationScore
                                                            }];
     
+    RKObjectMapping *countRatingMapping = [RKObjectMapping mappingForClass:[CountRatingResult class]];
+    [countRatingMapping addAttributeMappingsFromDictionary:@{CCountScoreGood:CCountScoreGood,
+                                                             CCountScoreNeutral:CCountScoreNeutral,
+                                                             CCountScoreBad:CCountScoreBad}];
+    
+    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+                                                               CTwoDay:CTwoDay,
+                                                               CThreeDay:CThreeDay,
+                                                               CSpeedLevel:CSpeedLevel,
+                                                               CBadge:CBadge,
+                                                               CCountTotal:CCountTotal}];
+    
     // Relationship Mapping
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastOneMonth toKeyPath:CShopLastOneMonth withMapping:countRatingMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastSixMonth toKeyPath:CShopLastSixMonth withMapping:countRatingMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastTwelveMonth toKeyPath:CShopLastTwelveMonth withMapping:countRatingMapping]];
     [userinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:userReputationMapping]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
@@ -502,6 +519,7 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY
                                                                                   toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY
                                                                                 withMapping:shopstatsMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST

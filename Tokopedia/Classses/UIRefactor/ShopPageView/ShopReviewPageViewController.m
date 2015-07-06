@@ -104,6 +104,7 @@ UIAlertViewDelegate>
     Review *_review;
     Shop *_shop;
     NoResultView *_noResult;
+    NSMutableDictionary *dictLikeDislike, *loadingLikeDislike;
 }
 
 #pragma mark - Initialization
@@ -148,6 +149,8 @@ UIAlertViewDelegate>
     
     [self addBottomInsetWhen14inch];
     
+    dictLikeDislike = [NSMutableDictionary new];
+    loadingLikeDislike = [NSMutableDictionary new];
     style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     _talkNavigationFlag = [_data objectForKey:@"nav"];
@@ -249,6 +252,45 @@ UIAlertViewDelegate>
 
 
 #pragma mark - Method
+- (void)actionGetLikeStatus:(NSString *)strReviewID {
+    if(loadingLikeDislike.count > 10)
+        return;
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
+                            kTKPDDETAIL_REVIEWIDS : [NSString stringWithFormat:@"%@:%@", strReviewID, _shop.result.info.shop_id],
+                            kTKPDDETAIL_APISHOPIDKEY : _shop.result.info.shop_id};
+    RKManagedObjectRequestOperation *tempRequest = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"shop.pl" parameters:[param encrypt]];
+    
+    dispatch_sync(dispatch_get_main_queue(), ^(void){
+        NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:strReviewID repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timerLikeDislike forMode:NSRunLoopCommonModes];
+        [loadingLikeDislike setObject:@[tempRequest, timerLikeDislike] forKey:strReviewID];
+    });
+    
+
+    [tempRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+        NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:strReviewID] lastObject];
+        [temporaryTimer invalidate];
+        [loadingLikeDislike removeObjectForKey:strReviewID];
+//        [dictLikeDislike ]
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:strReviewID] lastObject];
+        [temporaryTimer invalidate];
+        [loadingLikeDislike removeObjectForKey:strReviewID];
+    }];
+    [_operationQueue addOperation:tempRequest];
+
+}
+
+- (void)timeOutGetLikeDislike:(NSTimer *)temp {
+    RKManagedObjectRequestOperation *operation = [[loadingLikeDislike objectForKey:[temp userInfo]] firstObject];
+    [operation cancel];
+    operation = nil;
+    [loadingLikeDislike removeObjectForKey:[temp userInfo]];
+}
+
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
@@ -421,12 +463,28 @@ UIAlertViewDelegate>
         [cell setLabelUser:list.review_user_name withTag:0];
         [cell setLabelDate:list.review_create_time?:@""];
         [cell setLabelProductName:list.review_product_name];
+        cell.getBtnRateEmoji.tag = indexPath.row;
         
+        //Set chat total
         if([list.review_response.response_message isEqualToString:@"0"]) {
             [cell.getBtnChat setTitle:list.review_response.response_message forState:UIControlStateNormal];
         }
         else {
             [cell.getBtnChat setTitle:@"1" forState:UIControlStateNormal];
+        }
+        
+        //Set like dislike total
+        if([dictLikeDislike objectForKey:list.review_id]) {
+            [cell setHiddenViewLoad:YES];
+            [cell.getBtnLike setTitle:@"1" forState:UIControlStateNormal];
+            [cell.getBtnDisLike setTitle:@"0" forState:UIControlStateNormal];
+        }
+        else {
+            [cell setHiddenViewLoad:NO];
+            if(! [loadingLikeDislike objectForKey:list.review_id]) {
+                [loadingLikeDislike setObject:list.review_id forKey:list.review_id];
+                [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:list.review_id];
+            }
         }
         
 
@@ -511,6 +569,12 @@ UIAlertViewDelegate>
                                                        kTKPDREVIEW_APIRATINGQUALITYKEY
                                                        ]];
     
+    RKObjectMapping *reviewUserReputation = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputation addAttributeMappingsFromDictionary:@{CPositivePercentage:CPositivePercentage,
+                                                               CNegative:CNegative,
+                                                               CNeutral:CNeutral,
+                                                               CPositif:CPositif}];
+    
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ReviewList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APIREVIEWSHOPIDKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIMAGEKEY,
@@ -546,7 +610,9 @@ UIAlertViewDelegate>
                                                                     REVIEW_PRODUCT_OWNER_USER_IMAGE:REVIEW_PRODUCT_OWNER_USER_IMAGE,
                                                                     REVIEW_PRODUCT_OWNER_USER_NAME:REVIEW_PRODUCT_OWNER_USER_NAME
                                                                     }];
-    
+
+    [ratinglistMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewUserReputation toKeyPath:CReviewUserReputation withMapping:reviewUserReputation]];
+
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:REVIEW_RESPONSE
                                                                                 toKeyPath:REVIEW_RESPONSE
                                                                               withMapping:reviewResponseMapping]];
@@ -800,6 +866,14 @@ UIAlertViewDelegate>
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
+    
+    for(NSArray *tempArr in [loadingLikeDislike allValues]) {
+        RKManagedObjectRequestOperation *operation = [tempArr firstObject];
+        [operation cancel];
+        
+        NSTimer *timer = [tempArr lastObject];
+        [timer invalidate];
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -913,13 +987,14 @@ UIAlertViewDelegate>
 }
 
 - (void)actionRate:(id)sender {
+    ReviewList *list = _list[((UIView *) sender).tag];
     int paddingRightLeftContent = 10;
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent+paddingRightLeftContent, CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:@"35" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor redColor]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:@"36" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor yellowColor]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:@"37" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor greenColor]];
+    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor redColor]];
+    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor yellowColor]];
+    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor greenColor]];
     
     btnMerah.tag = CTagMerah;
     btnKuning.tag = CTagKuning;

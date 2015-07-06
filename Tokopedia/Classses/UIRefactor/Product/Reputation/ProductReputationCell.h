@@ -29,16 +29,17 @@
 
 @interface ProductReputationCell : UITableViewCell
 {
-    IBOutlet UIView *viewContent, *lineSeparatorDesc, *viewStarKualitas, *viewStarAkurasi, *viewSeparatorKualitas;
+    IBOutlet UIView *viewContent, *lineSeparatorDesc, *viewStarKualitas, *viewStarAkurasi, *viewSeparatorKualitas, *viewContentLoad;
     IBOutlet UIImageView *imageProfile;
     IBOutlet ViewLabelUser *viewLabelUser;
     IBOutlet UIButton *btnRateEmoji, *btnLike, *btnDislike, *btnChat, *btnMore;
     IBOutlet UILabel *lblPercentageRage, *lblDateDesc, *lblKualitas, *lblAkurasi;
     TTTAttributedLabel *lblDesc;
+    IBOutlet UIActivityIndicatorView *actLoading;
+    
     BOOL isProductCell;
     IBOutletCollection(UIImageView) NSArray *arrImageKualitas, *arrImageAkurasi;
 }
-
 @property (nonatomic, unsafe_unretained) id<productReputationDelegate> delegate;
 
 - (void)setImageKualitas:(int)total;
@@ -47,6 +48,7 @@
 - (UIImageView *)getProductImage;
 - (void)setLabelProductName:(NSString *)strProductName;
 - (TTTAttributedLabel *)getLabelDesc;
+- (void)setHiddenViewLoad:(BOOL)isLoading;
 - (UIImageView *)getImageProfile;
 - (UIButton *)getBtnRateEmoji;
 - (UIButton *)getBtnLike;

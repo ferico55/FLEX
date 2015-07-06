@@ -191,6 +191,17 @@
                                     <action selector="actionChat:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="yYl-lP-B3o"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" id="97O-qd-D1T">
+                                <rect key="frame" x="0.0" y="127" width="304" height="30"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="ENc-Zq-46U">
+                                        <rect key="frame" x="142" y="5" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -198,6 +209,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <connections>
+                <outlet property="actLoading" destination="ENc-Zq-46U" id="4qN-K0-R6q"/>
                 <outlet property="btnChat" destination="mHn-G1-Dzi" id="mt2-Oh-6wx"/>
                 <outlet property="btnDislike" destination="XXr-0h-lDj" id="2Kx-c1-gaH"/>
                 <outlet property="btnLike" destination="Sj9-Qe-yDr" id="lKs-AU-xLO"/>
@@ -210,6 +222,7 @@
                 <outlet property="lblPercentageRage" destination="blx-H7-eKg" id="Wie-Yy-PVn"/>
                 <outlet property="lineSeparatorDesc" destination="EeS-Sk-syV" id="R7d-dC-6oY"/>
                 <outlet property="viewContent" destination="62g-9I-sk0" id="HPO-dp-OlN"/>
+                <outlet property="viewContentLoad" destination="97O-qd-D1T" id="J6N-sb-DAw"/>
                 <outlet property="viewLabelUser" destination="8VZ-P9-FGQ" id="xpr-GG-kdK"/>
                 <outlet property="viewSeparatorKualitas" destination="Rr7-Ag-VPT" id="XIv-JK-7gp"/>
                 <outlet property="viewStarAkurasi" destination="3Jn-uw-P78" id="hqm-7W-B7R"/>

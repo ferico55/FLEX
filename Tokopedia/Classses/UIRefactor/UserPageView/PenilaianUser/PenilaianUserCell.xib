@@ -87,7 +87,7 @@
                                 </state>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3LS-Re-OtP">
-                                <rect key="frame" x="90" y="41" width="70" height="21"/>
+                                <rect key="frame" x="90" y="44" width="70" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="rMD-sY-S62"/>
                                 </constraints>
@@ -96,13 +96,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyA-iz-O5k">
-                                <rect key="frame" x="160" y="41" width="70" height="21"/>
+                                <rect key="frame" x="160" y="44" width="70" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                 <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qls-EC-mpf">
-                                <rect key="frame" x="230" y="41" width="70" height="21"/>
+                                <rect key="frame" x="230" y="44" width="70" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                 <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -174,7 +174,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2fL-BH-Ogr" firstAttribute="top" secondItem="xoO-dq-9TT" secondAttribute="top" id="0YT-6p-G2b"/>
-                            <constraint firstItem="TMw-Iu-C5c" firstAttribute="top" secondItem="3LS-Re-OtP" secondAttribute="bottom" constant="32" id="0dr-Sa-z3w"/>
+                            <constraint firstItem="TMw-Iu-C5c" firstAttribute="top" secondItem="3LS-Re-OtP" secondAttribute="bottom" constant="29" id="0dr-Sa-z3w"/>
                             <constraint firstAttribute="trailing" secondItem="FOA-8L-FwR" secondAttribute="trailing" id="4oh-XS-DFD"/>
                             <constraint firstAttribute="trailing" secondItem="QKY-Zk-QCo" secondAttribute="trailing" id="4qy-1A-EHq"/>
                             <constraint firstItem="rFV-6Q-F75" firstAttribute="top" secondItem="DQV-2f-Guf" secondAttribute="bottom" id="5CU-Pm-dPt"/>
@@ -187,7 +187,7 @@
                             <constraint firstItem="1bc-2Q-lQh" firstAttribute="leading" secondItem="i0d-zi-QOz" secondAttribute="trailing" id="HOk-U4-ihI"/>
                             <constraint firstItem="1bc-2Q-lQh" firstAttribute="leading" secondItem="uSG-rb-qgz" secondAttribute="trailing" constant="70" id="HQU-w3-Op7"/>
                             <constraint firstItem="FOA-8L-FwR" firstAttribute="leading" secondItem="2fL-BH-Ogr" secondAttribute="trailing" id="IZw-Lb-VQ7"/>
-                            <constraint firstItem="3LS-Re-OtP" firstAttribute="top" secondItem="QHv-we-mrp" secondAttribute="bottom" constant="17" id="JTj-ek-mVK"/>
+                            <constraint firstItem="3LS-Re-OtP" firstAttribute="top" secondItem="QHv-we-mrp" secondAttribute="bottom" constant="20" id="JTj-ek-mVK"/>
                             <constraint firstItem="uSG-rb-qgz" firstAttribute="height" secondItem="1bc-2Q-lQh" secondAttribute="height" id="JcZ-dt-hUj"/>
                             <constraint firstItem="uSG-rb-qgz" firstAttribute="width" secondItem="TMw-Iu-C5c" secondAttribute="width" id="JhV-ak-pNY"/>
                             <constraint firstItem="DQV-2f-Guf" firstAttribute="leading" secondItem="xoO-dq-9TT" secondAttribute="leading" id="KTE-tz-DcJ"/>
@@ -203,9 +203,9 @@
                             <constraint firstItem="uSG-rb-qgz" firstAttribute="height" secondItem="Qls-EC-mpf" secondAttribute="height" id="WEt-r3-JSf"/>
                             <constraint firstItem="g4R-Kd-aIz" firstAttribute="top" secondItem="QHv-we-mrp" secondAttribute="bottom" constant="6" id="XgD-9q-dGe"/>
                             <constraint firstItem="uSG-rb-qgz" firstAttribute="width" secondItem="pyA-iz-O5k" secondAttribute="width" id="YU5-jW-lDA"/>
-                            <constraint firstItem="Qls-EC-mpf" firstAttribute="top" secondItem="QHv-we-mrp" secondAttribute="bottom" constant="17" id="YeK-dw-aOJ"/>
+                            <constraint firstItem="Qls-EC-mpf" firstAttribute="top" secondItem="QHv-we-mrp" secondAttribute="bottom" constant="20" id="YeK-dw-aOJ"/>
                             <constraint firstItem="QHv-we-mrp" firstAttribute="top" secondItem="0b1-hF-hKZ" secondAttribute="bottom" constant="2" id="YwJ-tI-gWm"/>
-                            <constraint firstItem="WCX-zu-e1y" firstAttribute="top" secondItem="pyA-iz-O5k" secondAttribute="bottom" constant="32" id="Zt9-f9-u86"/>
+                            <constraint firstItem="WCX-zu-e1y" firstAttribute="top" secondItem="pyA-iz-O5k" secondAttribute="bottom" constant="29" id="Zt9-f9-u86"/>
                             <constraint firstItem="uSG-rb-qgz" firstAttribute="width" secondItem="QKY-Zk-QCo" secondAttribute="width" id="aWn-dX-3u5"/>
                             <constraint firstItem="2fL-BH-Ogr" firstAttribute="leading" secondItem="zX5-Sy-ZfV" secondAttribute="trailing" id="aco-f7-2EK"/>
                             <constraint firstAttribute="trailing" secondItem="1bc-2Q-lQh" secondAttribute="trailing" id="b9e-kH-uqa"/>
@@ -223,8 +223,8 @@
                             <constraint firstItem="uSG-rb-qgz" firstAttribute="height" secondItem="pyA-iz-O5k" secondAttribute="height" id="mUG-38-x3K"/>
                             <constraint firstAttribute="trailing" secondItem="Qls-EC-mpf" secondAttribute="trailing" id="nQG-Zj-tow"/>
                             <constraint firstItem="uSG-rb-qgz" firstAttribute="width" secondItem="Qls-EC-mpf" secondAttribute="width" id="oY7-1l-Jk5"/>
-                            <constraint firstItem="pyA-iz-O5k" firstAttribute="top" secondItem="QHv-we-mrp" secondAttribute="bottom" constant="17" id="omL-Lw-ql4"/>
-                            <constraint firstItem="QKY-Zk-QCo" firstAttribute="top" secondItem="Qls-EC-mpf" secondAttribute="bottom" constant="32" id="q6r-9T-Avr"/>
+                            <constraint firstItem="pyA-iz-O5k" firstAttribute="top" secondItem="QHv-we-mrp" secondAttribute="bottom" constant="20" id="omL-Lw-ql4"/>
+                            <constraint firstItem="QKY-Zk-QCo" firstAttribute="top" secondItem="Qls-EC-mpf" secondAttribute="bottom" constant="29" id="q6r-9T-Avr"/>
                             <constraint firstItem="Qls-EC-mpf" firstAttribute="leading" secondItem="pyA-iz-O5k" secondAttribute="trailing" id="tQo-IG-cqd"/>
                             <constraint firstItem="i0d-zi-QOz" firstAttribute="top" secondItem="WCX-zu-e1y" secondAttribute="bottom" constant="29" id="ttK-wf-ZAy"/>
                             <constraint firstItem="DQV-2f-Guf" firstAttribute="height" secondItem="rFV-6Q-F75" secondAttribute="height" id="ugU-HM-Kb2"/>
@@ -242,7 +242,18 @@
                     <constraint firstAttribute="trailing" secondItem="xoO-dq-9TT" secondAttribute="trailing" constant="10" id="vNj-rX-lTO"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="472" y="313"/>
+            <connections>
+                <outlet property="lblBad1" destination="uSG-rb-qgz" id="Tcu-Qa-W1x"/>
+                <outlet property="lblBad12" destination="1bc-2Q-lQh" id="G9K-Tg-YPs"/>
+                <outlet property="lblBad6" destination="i0d-zi-QOz" id="bgO-hs-dm2"/>
+                <outlet property="lblNetral1" destination="TMw-Iu-C5c" id="WOn-HE-nTm"/>
+                <outlet property="lblNetral12" destination="QKY-Zk-QCo" id="8w9-dv-khf"/>
+                <outlet property="lblNetral6" destination="WCX-zu-e1y" id="W04-5J-BRX"/>
+                <outlet property="lblPositif1" destination="3LS-Re-OtP" id="qT2-ZU-wOm"/>
+                <outlet property="lblPositif12" destination="Qls-EC-mpf" id="C81-mK-OUc"/>
+                <outlet property="lblPositif6" destination="pyA-iz-O5k" id="4gp-bn-5LL"/>
+            </connections>
+            <point key="canvasLocation" x="464" y="308"/>
         </tableViewCell>
     </objects>
     <resources>

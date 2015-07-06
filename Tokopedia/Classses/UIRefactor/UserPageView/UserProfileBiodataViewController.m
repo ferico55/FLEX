@@ -5,18 +5,19 @@
 //  Created by Tonito Acen on 4/29/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
+#import "CMPopTipView.h"
 #import "UserProfileBiodataViewController.h"
 #import "UserPageHeader.h"
 #import "PenilaianUserCell.h"
 #import "ProfileInfo.h"
+#import "ProfileInfoResult.h"
 #import "ProfileBiodataShopCell.h"
 #import "ProfileBiodataCell.h"
 
 #import "detail.h"
 #define CStringPenilaianUser @"Data Penilaian User"
 
-@interface UserProfileBiodataViewController () <UserPageHeaderDelegate, ProfileBiodataShopCellDelegate, UIScrollViewDelegate, UITableViewDelegate>
+@interface UserProfileBiodataViewController () <UserPageHeaderDelegate, ProfileBiodataShopCellDelegate, UIScrollViewDelegate, UITableViewDelegate, CMPopTipViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -27,6 +28,7 @@
 @end
 
 @implementation UserProfileBiodataViewController {
+    CMPopTipView *popTipView;
     ProfileInfo *_profile;
     UserPageHeader *_userHeader;
     BOOL _isnodatashop;
@@ -46,11 +48,14 @@
         isNotMyBiodata = YES;
     }
     else {
-        NSString *strUserID = [tempDict objectForKey:@"user_id"];
-        if(strUserID==nil || strUserID.length==0 || _data==nil || _data.count==0) {
+        NSString *strUserID;
+        if([tempDict objectForKey:@"user_id"])
+            strUserID = [NSString stringWithFormat:@"%d", [[tempDict objectForKey:@"user_id"] intValue]];
+
+        if(strUserID==nil || strUserID.length==0 || _data==nil || _data.count==0 || ![_data objectForKey:@"user_id"]) {
             isNotMyBiodata = YES;
         }
-        else if(! [strUserID isEqualToString:[_data objectForKey:@"user_id"]]) {
+        else if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%d", [[_data objectForKey:@"user_id"] intValue]]]) {
             isNotMyBiodata = YES;
         }
     }
@@ -199,7 +204,19 @@
                 cell = [arrCell objectAtIndex:0];
             }
             
+            [cell setPositif1:_profile.result.shop_stats.shop_last_one_month.count_score_good];
+            [cell setPositif6:_profile.result.shop_stats.shop_last_six_months.count_score_good];
+            [cell setPositif12:_profile.result.shop_stats.shop_last_twelve_months.count_score_good];
             
+            [cell setNetral1:_profile.result.shop_stats.shop_last_one_month.count_score_neutral];
+            [cell setNetral6:_profile.result.shop_stats.shop_last_six_months.count_score_neutral];
+            [cell setNetral12:_profile.result.shop_stats.shop_last_twelve_months.count_score_neutral];
+            
+            [cell setBad1:_profile.result.shop_stats.shop_last_one_month.count_score_bad];
+            [cell setBad6:_profile.result.shop_stats.shop_last_six_months.count_score_bad];
+            [cell setBad12:_profile.result.shop_stats.shop_last_twelve_months.count_score_bad];
+            
+            return cell;
         }
         else if (indexPath.section == 1) {
             NSString *cellid = kTKPDPROFILEBIODATACELLIDENTIFIER;
@@ -213,11 +230,7 @@
             ((ProfileBiodataShopCell*)cell).labelname.text = _profile.result.shop_info.shop_name;
             
             [((ProfileBiodataShopCell*)cell).buttonName setTitle:_profile.result.shop_info.shop_name forState:UIControlStateNormal];
-            
             ((ProfileBiodataShopCell*)cell).labellocation.text = _profile.result.shop_info.shop_location;
-            ((ProfileBiodataShopCell*)cell).rateaccuracy.starscount = _profile.result.shop_stats.shop_accuracy_rate;
-            ((ProfileBiodataShopCell*)cell).rateservice.starscount = _profile.result.shop_stats.shop_service_rate;
-            ((ProfileBiodataShopCell*)cell).ratespeed.starscount = _profile.result.shop_stats.shop_speed_rate;
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_profile.result.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
@@ -279,6 +292,43 @@
 
 
 #pragma mark - Method
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    popTipView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    popTipView.delegate = self;
+    popTipView.backgroundColor = [UIColor blackColor];
+    popTipView.animation = CMPopTipAnimationSlide;
+    popTipView.has3DStyle = NO;
+    popTipView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [popTipView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+- (void)dismissAllPopTipViews
+{
+    [popTipView dismissAnimated:YES];
+    popTipView = nil;
+}
+
 - (void)actionGoToUserProfile:(id)sender
 {
     //    if(self.navigationController.viewControllers.count > 1) {
@@ -290,6 +340,15 @@
 -(void)ProfileBiodataShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     
+}
+
+- (void)actionKecepatan:(id)sender {
+    [self initPopUp:_profile.result.respond_speed.speed_level withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+}
+
+- (void)actionReputasi:(id)sender {
+    NSString *strText = [NSString stringWithFormat:@"%@ %@", _profile.result.shop_stats.shop_reputation_score, CStringPoin];
+    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
 }
 
 #pragma mark - Notification
@@ -355,5 +414,9 @@
     
 }
 
-
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
 @end
