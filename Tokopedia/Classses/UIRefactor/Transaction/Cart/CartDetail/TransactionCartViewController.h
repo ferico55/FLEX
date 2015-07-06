@@ -33,7 +33,6 @@
 
 @property (nonatomic) NSInteger indexPage;
 @property (strong,nonatomic,setter=setData:) NSDictionary *data;
-@property BOOL firstInit;
 @property NSArray *listSummary;
 
 -(void)doClearAllData;

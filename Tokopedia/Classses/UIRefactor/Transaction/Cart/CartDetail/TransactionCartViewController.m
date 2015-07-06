@@ -2466,9 +2466,7 @@
     }
     
     [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-    
-    if (_firstInit) _firstInit = NO;
-    
+        
     [self adjustDropshipperListParam];
     [self adjustPartialListParam];
     

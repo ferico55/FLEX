@@ -185,12 +185,8 @@
             if(!_cartViewController)
             {
                 _cartViewController = [TransactionCartViewController new];
-                _cartViewController.firstInit = YES;
             }
-            else
-            {
-                _cartViewController.firstInit = NO;
-            }
+
             _cartViewController.delegate = self;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartViewController;
