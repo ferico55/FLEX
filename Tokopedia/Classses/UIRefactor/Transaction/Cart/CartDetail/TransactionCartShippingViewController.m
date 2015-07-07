@@ -454,7 +454,7 @@
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if (![package.price isEqualToString:@"0"]) {
+                    if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
                         [shipmentPackages addObject:package];
                     }
                 }
@@ -956,7 +956,7 @@
         NSMutableArray *availablePackage = [NSMutableArray new];
         
         for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-            if (![package.price isEqualToString:@"0"]) {
+            if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
                 [availablePackage addObject:package];
             }
         }
