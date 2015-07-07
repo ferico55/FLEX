@@ -129,13 +129,6 @@
     [_cheatView addGestureRecognizer:doubleTapGesture];
     [_cheatView setUserInteractionEnabled:YES];
     
-    _loginView = [[FBLoginView alloc] init];
-    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
-    _loginView.frame = CGRectMake(0, 0,
-                                 _facebookLoginButton.frame.size.width,
-                                 _facebookLoginButton.frame.size.height);
-    [_facebookLoginButton addSubview:_loginView];
-    
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _operationQueueFacebookLogin = [NSOperationQueue new];
@@ -154,7 +147,16 @@
     _passwordTextField.isTopRoundCorner = YES;
     _passwordTextField.isBottomRoundCorner = YES;
     
+    _loginView = [[FBLoginView alloc] init];
     _loginView.delegate = self;
+    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
+    _loginView.frame = CGRectMake(0, 0,
+                                  _facebookLoginButton.frame.size.width,
+                                  _facebookLoginButton.frame.size.height);
+    
+    [_loginView removeFromSuperview];
+    [_facebookLoginButton layoutIfNeeded];    
+    [_facebookLoginButton addSubview:_loginView];
     
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
