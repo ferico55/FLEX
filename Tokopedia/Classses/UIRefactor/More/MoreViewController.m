@@ -462,7 +462,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 7;
+    return 8;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -491,7 +491,7 @@
             break;
             
         case 4:
-            return 5;
+            return 6;
             break;
             
         case 5:
@@ -499,6 +499,10 @@
             break;
             
         case 6:
+            return 1;
+            break;
+            
+        case 7 :
             return 1;
             break;
             
