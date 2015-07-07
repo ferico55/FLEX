@@ -55,7 +55,9 @@
 
 
 
-@implementation GalleryViewController
+@implementation GalleryViewController {
+    BOOL useNetwork;
+}
 @synthesize currentIndex = _currentIndex;
 @synthesize thumbsView = _thumbsView;
 @synthesize useThumbnailView = _useThumbnailView;
@@ -80,6 +82,10 @@
 	return self;
 }
 
+- (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex usingNetwork:(BOOL)usingNetwork {
+    useNetwork = usingNetwork;
+    return [self initWithPhotoSource:photoSrc withStartingIndex:startIndex];
+}
 
 - (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex
 {
@@ -123,7 +129,7 @@
             btnDownload.layer.shadowOffset = CGSizeMake(0, 0);
             btnDownload.layer.masksToBounds = YES;
             btnDownload.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth;
-            [btnDownload setTitle:@"Save Photo" forState:UIControlStateNormal];
+            [btnDownload setTitle:@"Download" forState:UIControlStateNormal];
             [btnDownload setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             
             
@@ -387,7 +393,7 @@
         if([_photoSource respondsToSelector:@selector(photoGallery:captionForPhotoAtIndex:)])
         {
             lblTitle.text = [_photoSource photoGallery:self captionForPhotoAtIndex:_currentIndex];
-            lblTitle.text = @"Testong aj";
+//            lblTitle.text = @"Testong aj";
             if(lblTitle.text.length>0 && lblTitle.layer.shadowOpacity != 0.5) {
                 lblTitle.layer.shadowColor = [UIColor blackColor].CGColor;
                 lblTitle.layer.shadowOffset = CGSizeMake(0, 0);
@@ -739,8 +745,14 @@
 	GalleryPhoto *photo;
 	UIImage *thumbImage;
     UIImage *fullImage;
-    thumbImage = fullImage = [_photoSource photoGallery:index];
-    photo = [[GalleryPhoto alloc] initWithThumbnail:thumbImage fullImage:fullImage delegate:self];
+    
+    if(useNetwork) {
+        photo = [[GalleryPhoto alloc] initWithThumbnailUrl:[_photoSource photoGallery:self urlForPhotoSize:FGalleryPhotoSizeFullsize atIndex:index] fullsizeUrl:[_photoSource photoGallery:self urlForPhotoSize:FGalleryPhotoSizeFullsize atIndex:index] delegate:self];
+    }
+    else {
+        thumbImage = fullImage = [_photoSource photoGallery:index];
+        photo = [[GalleryPhoto alloc] initWithThumbnail:thumbImage fullImage:fullImage delegate:self];
+    }
 	photo.tag = index;
 	[_photoLoaders setObject:photo forKey: [NSString stringWithFormat:@"%i", (int)index]];
 	

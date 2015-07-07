@@ -1,12 +1,13 @@
 //
-//  InboxCustomerServiceViewController.h
+//  InboxTicketViewController.h
 //  Tokopedia
 //
-//  Created by Feizal Badri Asmoro on 5/21/15.
+//  Created by Feizal Badri Asmoro on 6/8/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "TKPDTabViewController.h"
 
 typedef NS_ENUM(NSInteger, InboxCustomerServiceType) {
     InboxCustomerServiceTypeAll,
@@ -14,8 +15,9 @@ typedef NS_ENUM(NSInteger, InboxCustomerServiceType) {
     InboxCustomerServiceTypeClosed
 };
 
-@interface InboxCustomerServiceViewController : UITableViewController
+@interface InboxTicketViewController : UITableViewController
 
 @property InboxCustomerServiceType inboxCustomerServiceType;
+@property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;
 
 @end

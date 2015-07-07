@@ -38,6 +38,7 @@
         EncodeDecoderManager *encodeDecodeManager = [EncodeDecoderManager new];
         
         NSString *encryptedParam = [userManager addParameterAndConvertToString:self];
+        
         NSString *encodedKey   = encodeDecodeManager.encryptKeyAndIv;
         NSString *encodedParam = [encodeDecodeManager encryptParams:encryptedParam];
         NSDictionary *keyAndParam = @{@"key" : encodedKey, @"param" : encodedParam};

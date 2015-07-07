@@ -1,3 +1,4 @@
+
 //
 //  WishListViewController.m
 //  Tokopedia
@@ -5,292 +6,188 @@
 //  Created by Tokopedia on 4/8/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-#import "detail.h"
-#import "DetailProductViewController.h"
-#import "LoadingView.h"
-#import "Paging.h"
+
 #import "string_home.h"
+#import "string_product.h"
+#import "detail.h"
 #import "WishListViewController.h"
 #import "WishListObject.h"
-#import "WishListObjectList.h"
+#import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
 #import "NoResultView.h"
-#import "WishListObjectResult.h"
-@interface WishListViewController()<LoadingViewDelegate>
+
+#import "GeneralProductCollectionViewCell.h"
+#import "NavigateViewController.h"
+#import "ProductCell.h"
+
+
+@interface WishListViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
+
+
+@property (nonatomic, strong) NSMutableArray *product;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+
+
+typedef enum TagRequest {
+    ProductFeedTag
+} TagRequest;
 
 @end
 
-@implementation WishListViewController
-{
-    NSMutableArray *product;
-    int page, limit, requestCount;
-    BOOL isNoData, isRefreshView;
-    NSString *uriNext, *strUserID;
-    __weak RKObjectManager *objectManager;
-    __weak RKManagedObjectRequestOperation *request;
-    NSOperationQueue *operationQueue;
-    NSTimer *timer;
-    
-    LoadingView *loadingView;
-    UIRefreshControl *refreshControl;
-    NoResultView *_noResult;
-}
-@synthesize delegate;
 
-- (void)viewDidLoad {
+@implementation WishListViewController {
+    NSInteger _page;
+    NSString *_nextPageUri;
+    
+    BOOL _isNoData;
+    BOOL _isFailRequest;
+    BOOL _isShowRefreshControl;
+    
+    UIRefreshControl *_refreshControl;
+    
+    __weak RKObjectManager *_objectmanager;
+    TokopediaNetworkManager *_networkManager;
+    NoResultView *_noResult;
+    
+    NSInteger normalWidth;
+    NSInteger normalHeight;
+}
+
+#pragma mark - Initialization
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        _isShowRefreshControl = NO;
+        _isNoData = YES;
+        _isFailRequest = NO;
+    }
+    return self;
+}
+
+- (void) viewDidLoad {
     [super viewDidLoad];
     
-    isNoData = YES;
-    operationQueue = [NSOperationQueue new];
-    tokoPediaNetworkManager = [TokopediaNetworkManager new];
-    tokoPediaNetworkManager.delegate = self;
+    normalWidth = 320;
+    normalHeight = 568;
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    loadingView = [LoadingView new];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
+    double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
+    double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
     
-    /** create new **/
-    product = [NSMutableArray new];
-    
-    /** set first page become 1 **/
-    page = 1;
-    
-    /** set max data per page request **/
-    limit = kTKPDHOMEHOTLIST_LIMITPAGE;
-    
-    /** set table view datasource and delegate **/
-    tblWishList.delegate = self;
-    tblWishList.dataSource = self;
-    [self setTableInset];
-    
-    
-    /** set table footer view (loading act) **/
-    tblWishList.tableFooterView = footer;
-    [activityIndicator startAnimating];
-//    tblWishList.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
-    
-    if (product.count > 0) {
-        isNoData = NO;
-    }
+    //todo with variable
+    _product = [NSMutableArray new];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
+    _isNoData = (_product.count > 0);
+    _page = 1;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
     
+    //todo with view
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_collectionView addSubview:_refreshControl];
     
-    refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    [tblWishList addSubview:refreshControl];
+    [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
+    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    [_collectionView setCollectionViewLayout:_flowLayout];
+    [_collectionView setAlwaysBounceVertical:YES];
+    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
+    
+    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
+    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    
+    //todo with network
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    _networkManager.tagRequest = ProductFeedTag;
+    [_networkManager doRequest];
 }
 
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [tokoPediaNetworkManager requestCancel];
-    tokoPediaNetworkManager.delegate = nil;
-    tokoPediaNetworkManager = nil;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    BOOL isLoadData = YES;
-    //Check Difference userID
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    _auth = [_auth mutableCopy];
-    
-    if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
-        strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
-        product = [NSMutableArray new];
-        isNoData = YES;
-        uriNext = nil;
-        page = 1;
-    }
-    
-    
-    
-    if (! isRefreshView) {
-        [self configureRestKit];
-        if (isNoData || (uriNext != NULL && ![uriNext isEqualToString:@"0"] && uriNext != 0)) {
-            [self loadData];
-            isLoadData = NO;
-        }
-    }
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
     self.screenName = @"Home - Wishlist";
-    if(isLoadData) {
-        page = 1;
-        isRefreshView = NO;
-        uriNext = nil;
-        [tokoPediaNetworkManager doRequest];
-    }
 }
 
-- (void) setTableInset {
-    if([[UIScreen mainScreen]bounds].size.height >= 568) {
-        tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
-    } else {
-        tblWishList.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
-    }
+#pragma mark - Collection Delegate
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _product.count;
 }
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 
-#pragma mark - UITableView Delegate & Data Source
-- (void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger index = indexPath.section+2*(indexPath.row);
-    WishListObjectList *list = product[index];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ProductCellIdentifier" forIndexPath:indexPath];
     
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
+    WishListObjectList *product = _product[indexPath.row];
+    [cell setViewModel:product.viewModel];
     
-    [self.delegate pushViewController:vc];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger count = (product.count%2==0)?product.count/2:product.count/2+1;
-    return isNoData ? 0 : count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = nil;
-    if (! isNoData)
-    {
-        NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
-        
-        cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil)
-        {
-            cell = [GeneralProductCell newcell];
-            cell.contentView.userInteractionEnabled = YES;
-            ((GeneralProductCell*)cell).delegate = self;
+    //next page if already last cell
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+            _isFailRequest = NO;
+            [_networkManager doRequest];
         }
-        
-        if (product.count > indexPath.row)
-        {
-            //reset cell
-            [self reset:cell];
-            /** Flexible view count **/
-            NSUInteger indexsegment = indexPath.row * 2;
-            NSUInteger indexmax = indexsegment + 2;
-            NSUInteger indexlimit = MIN(indexmax, product.count);
-            
-            NSAssert(!(indexlimit > product.count), @"producs out of bounds");
-            
-            NSUInteger i;
-            
-            for (UIView *view in ((GeneralProductCell*)cell).viewcell ) {
-                view.hidden = YES;
-            }
-            
-            for (i = 0; (indexsegment + i) < indexlimit; i++) {
-                WishListObjectList *list = [product objectAtIndex:indexsegment + i];
-                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
-                (((GeneralProductCell*)cell).indexpath) = indexPath;
-                
-                ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.product_price;
-                
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
-                NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-                [paragrahStyle setLineSpacing:5];
-                [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
-                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).attributedText = attributedString;
-                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingTail;
-                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
-                
-                if(list.shop_gold_status == 1) {
-                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
-                } else {
-                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
-                }
-                
-                NSString *urlstring = list.product_image;
-                NSURLRequest *localRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                
-                UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
-                thumb.image = nil;
-                [thumb setImageWithURLRequest:localRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    [thumb setImage:image];
-                    [thumb setContentMode:UIViewContentModeScaleAspectFill];
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                }];
-            }
-        }
-    } else {
-        static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDHOME_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
     }
     
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (isNoData) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    [self registerNib];
     
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row)
-    {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        
-        if (uriNext != NULL && ![uriNext isEqualToString:@"0"] && uriNext != 0)
-        {
-            [self configureRestKit];
-            [self loadData];
+    if(kind == UICollectionElementKindSectionFooter) {
+        if(_isFailRequest) {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }
     }
+    
+    return reusableView;
 }
 
-#pragma mark - TokopediaNetwork Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
-    return @{kTKPDHOME_APIACTIONKEY      :   kTKPDGET_WISH_LIST,
-             kTKPDHOME_APIPAGEKEY        :       @(page),
-             kTKPDHOME_APILIMITPAGEKEY   :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NavigateViewController *navigateController = [NavigateViewController new];
+    WishListObjectList *product = [_product objectAtIndex:indexPath.row];
+    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
 }
 
-- (NSString*)getPath:(int)tag
-{
+
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_networkManager requestCancel];
+    _networkManager.delegate = nil;
+    _networkManager = nil;
+}
+
+#pragma mark - Tokopedia Network Delegate
+- (NSDictionary *)getParameter:(int)tag {
+    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:kTKPDGET_WISH_LIST, kTKPDHOME_APIACTIONKEY, @(_page),kTKPDHOME_APIPAGEKEY, @(kTKPDHOMEHOTLIST_LIMITPAGE), kTKPDHOME_APILIMITPAGEKEY, nil];
+    
+    return parameter;
+}
+
+- (NSString *)getPath:(int)tag {
     return kTKPDHOMEHOTLIST_APIPATH;
 }
 
-- (id)getObjectManager:(int)tag
-{
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    WishListObject *list = stat;
+    
+    return list.status;
+}
+
+- (id)getObjectManager:(int)tag {
     // initialize RestKit
-    objectManager =  [RKObjectManager sharedClient];
+    _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[WishListObject class]];
@@ -305,33 +202,13 @@
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[WishListObjectList class]];
     [listMapping addAttributeMappingsFromArray:@[
-                                                 KTKPDSHOP_GOLD_STATUS,
-                                                 KTKPDSHOP_ID,
-                                                 KTKPDPRODUCT_RATING_POINT,
-                                                 KTKPDPRODUCT_DEPARTMENT_ID,
-                                                 KTKPDPRODUCT_ETALASE,
-                                                 KTKPDSHOP_FEATURED_SHOP,
-                                                 KTKPDSHOP_URL,
-                                                 KTKPDPRODUCT_STATUS,
-                                                 KTKPDPRODUCT_ID,
-                                                 KTKPDPRODUCT_IMAGE_FULL,
-                                                 KTKPDPRODUCT_CURRENCY_ID,
-                                                 KTKPDPRODUCT_RATING_DESC,
-                                                 KTKPDPRODUCT_CURRENCY,
-                                                 KTKPDPRODUCT_TALK_COUNT,
-                                                 KTKPDPRODUCT_PRICE_NO_IDR,
-                                                 KTKPDPRODUCT_IMAGE,
-                                                 KTKPDPRODUCT_PRICE,
-                                                 KTKPDPRODUCT_SOLD_COUNT,
-                                                 KTKPDPRODUCT_RETURNABLE,
-                                                 KTKPDSHOP_LOCATION,
-                                                 KTKPDPRODUCT_NORMAL_PRICE,
-                                                 KTKPDPRODUCT_IMAGE_300,
-                                                 KTKPDSHOP_NAME,
-                                                 KTKPDPRODUCT_REVIEW_COUNT,
-                                                 KTKPDSHOP_IS_OWNER,
-                                                 KTKPDPRODUCT_URL,
-                                                 KTKPDPRODUCT_NAME
+                                                 kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY,
+                                                 kTKPDDETAILCATALOG_APIPRODUCTIDKEY,
+                                                 kTKPDDETAILCATALOG_APISHOPGOLDSTATUSKEY,
+                                                 kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
+                                                 kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
+                                                 kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
+                                                 API_PRODUCT_NAME_KEY
                                                  ]];
     
     //relation
@@ -354,219 +231,69 @@
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
-    [objectManager addResponseDescriptor:responseDescriptorStatus];
-    return objectManager;
+    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    return _objectmanager;
 }
 
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    return ((WishListObject *) stat).status;
+- (void)actionBeforeRequest:(int)tag {
+    
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
-    [self requestsuccess:successResult withOperation:operation];
-//    [tblWishList reloadData];
-    isRefreshView = NO;
-    [refreshControl endRefreshing];
-
-    if(tblWishList.contentSize.height <= tblWishList.bounds.size.height)
-        [activityIndicator setHidden:YES];
-
-    if([product count] == 0) {
-        tblWishList.tableFooterView = _noResult;
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    WishListObject *feed = [result objectForKey:@""];
+    [_noResult removeFromSuperview];
+    
+    if(_page == 1) {
+        _product = [feed.result.list mutableCopy];
+    } else {
+        [_product addObjectsFromArray: feed.result.list];
     }
-    else if(tblWishList.tableFooterView == _noResult) {
-        tblWishList.tableFooterView = nil;
-    }
-}
-
-
-//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-//{
-//    /** failure **/
-//}
-//
-- (void)actionBeforeRequest:(int)tag
-{
     
-}
-
-- (void)actionRequestAsync:(int)tag
-{
-
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
-    loadingView.delegate = self;
-    tblWishList.tableFooterView = loadingView.view;
-    isRefreshView = NO;
-    [refreshControl endRefreshing];
-}
-
-
-
-#pragma mark - Method
-- (void)reset:(UITableViewCell*)cell
-{
-    [((GeneralProductCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-    [((GeneralProductCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
-}
-
-- (void)refreshView:(UIRefreshControl*)refresh
-{
-    [self cancel];
-    /** clear object **/
-//    [product removeAllObjects];
-    page = 1;
-    requestCount = 0;
-    isRefreshView = YES;
-    
-//    [tblWishList reloadData];
-    /** request data **/
-    tblWishList.tableFooterView = nil;
-    [self configureRestKit];
-    [self loadData];
-}
-
-- (void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    WishListObject *wishListObject = [result objectForKey:@""];
-    BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if(status) {
-        [self requestproceed:wishListObject withObject:object];
+    if (_product.count >0) {
+        _isNoData = NO;
+        _nextPageUri =  feed.result.paging.uri_next;
+        _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
-        NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEPRODUCTFEED_APIRESPONSEFILE];
-        NSError *error;
-        BOOL success = [result writeToFile:path atomically:YES];
-        if (!success) {
-            NSLog(@"writeToFile failed with error %@", error);
+        if(_nextPageUri!=nil && [_nextPageUri isEqualToString:@"0"]) {
+            //remove loadingview if there is no more item
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
         }
-        
-        
-        //Hidden activity indicator
-        [activityIndicator setHidden:[wishListObject.result.paging.uri_next isEqualToString:@"0"]];
-    }
-}
-
-- (void)cancel
-{
-    [request cancel];
-    request = nil;
-    [objectManager.operationQueue cancelAllOperations];
-    objectManager = nil;
-}
-
-
-- (void)requestproceed:(WishListObject *)wishListObject withObject:(id)object
-{
-    if (object)
-    {
-        BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        
-        if (status)
-        {
-//            [product addObjectsFromArray:wishListObject.result.list];
-//            
-//            if (product.count > 0) {
-//                isNoData = NO;
-//                uriNext =  wishListObject.result.paging.uri_next;
-//                page = [[tokoPediaNetworkManager splitUriToPage:uriNext] intValue];
-//            }
-            if(page == 1) {
-                product = [wishListObject.result.list mutableCopy];
-            } else {
-                [product addObjectsFromArray: wishListObject.result.list];
-            }
-            
-            if (product.count >0) {
-                isNoData = NO;
-                uriNext =  wishListObject.result.paging.uri_next;
-                page = [[tokoPediaNetworkManager splitUriToPage:uriNext] intValue];
-            } else {
-                isNoData = YES;
-                tblWishList.tableFooterView = _noResult;
-            }
-            
-            
-            
-            if(refreshControl.isRefreshing) {
-                [refreshControl endRefreshing];
-                [tblWishList reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-            } else  {
-                [tblWishList reloadData];
-            }
-        }
-        else
-        {
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled)
-            {
-                if (requestCount < kTKPDREQUESTCOUNTMAX)
-                {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====", requestCount);
-                    tblWishList.tableFooterView = footer;
-                }
-                else
-                    tblWishList.tableFooterView = nil;
-            }
-            else
-                tblWishList.tableFooterView = nil;
-        }
-    }
-}
-
-
--(void)loadData
-{
-//    if(request.isExecuting)
-//        return;
-    
-    // create a new one, this one is expired or we've never gotten it
-    if(! isRefreshView) {
-        tblWishList.tableFooterView = footer;
-        //        [_act startAnimating];
+    } else {
+        // no data at all
+        _isNoData = YES;
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        [_collectionView addSubview:_noResult];
     }
     
-    [tokoPediaNetworkManager doRequest];
-}
-
-- (void)requestTimeout:(NSTimer*)timer
-{
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+        [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    } else  {
+        [_collectionView reloadData];
+    }
     
 }
 
-- (void) requestfailure:(id)error {
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    _isShowRefreshControl = NO;
+    [_refreshControl endRefreshing];
     
+    _isFailRequest = YES;
+    [_collectionView reloadData];
 }
 
-- (void)configureRestKit
-{
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     
-}
-
-
-
-#pragma mark - Loading View Delegate
-- (void)pressRetryButton
-{
-    tblWishList.tableFooterView = footer;
-    [activityIndicator startAnimating];
-    [tokoPediaNetworkManager doRequest];
 }
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
-    [tblWishList scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+    [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (void)userDidLogin:(NSNotification*)notification {
+    [self refreshView:_refreshControl];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
@@ -581,6 +308,29 @@
     
 }
 
+#pragma mark - Other Method
+- (IBAction)pressRetryButton:(id)sender {
+    [_networkManager doRequest];
+    _isFailRequest = NO;
+    [_collectionView reloadData];
+}
 
+-(void)refreshView:(UIRefreshControl*)refresh {
+    _page = 1;
+    _isShowRefreshControl = YES;
+    [_networkManager doRequest];
+}
+
+- (void)registerNib {
+    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
+    
+    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+    
+    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+}
 
 @end
+
