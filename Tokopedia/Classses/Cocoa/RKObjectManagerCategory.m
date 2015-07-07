@@ -13,7 +13,7 @@
 NSString * const kTraktAPIKey = @"8b0c367dd3ef0860f5730ec64e3bbdc9";
 NSString * const kTraktBaseURLString = kTkpdBaseURLString;
 
-    static RKObjectManager *_sharedClient = nil;
+static RKObjectManager *_sharedClient = nil;
 
 @implementation RKObjectManager (TkpdCategory)
 
@@ -44,7 +44,7 @@ NSString * const kTraktBaseURLString = kTkpdBaseURLString;
 }
 
 + (RKObjectManager *)sharedClientUploadImage:(NSString*)baseURLString {
-//    static RKObjectManager *_sharedClient = nil;
+    static RKObjectManager *_sharedClient = nil;
     
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
