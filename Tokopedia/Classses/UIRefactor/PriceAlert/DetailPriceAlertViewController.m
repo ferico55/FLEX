@@ -41,6 +41,11 @@
 #define CHeaderLabelHeader 3
 #define CHeaderLabelDate 4
 #define CTagGetProductDetail 5
+#define CTagGoldMerchant 6
+#define CTagLocation 7
+#define CTagKecepatan 8
+#define CTagAkurasi 9
+#define CTagPelayanan 10
 #define CTagSort 1
 #define CTagFilter 2
 
@@ -77,6 +82,9 @@
     priceAlertCell = [arrPriceAlert objectAtIndex:0];
     [self.view addSubview:priceAlertCell.getViewContent];
     
+    priceAlertCell.getBtnProductName.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    priceAlertCell.getBtnProductName.titleLabel.numberOfLines = 2;
+
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintTrailling];
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintBottom];
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintX];
@@ -104,7 +112,7 @@
         constraintWidthUrutkan.constant = 0;
         constraintWidthFilter.constant = self.view.bounds.size.width;
         constraintWidthSeparatorButton.constant = 0;
-        [btnFilter setTitle:CstringFilter forState:UIControlStateNormal];
+//        [btnFilter setTitle:CstringFilter forState:UIControlStateNormal];
         btnFilter.titleLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
         [btnFilter setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
@@ -156,9 +164,10 @@
         departmentViewController.selectedIndex = nSelectedSort;
         departmentViewController.tag = CTagSort;
         departmentViewController.navigationItem.title = CStringSort;
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
-        navController.navigationBar.translucent = NO;
-        [self presentViewController:navController animated:YES completion:nil];
+//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
+//        navController.navigationBar.translucent = NO;
+//        [self presentViewController:navController animated:YES completion:nil];
+        [self.navigationController pushViewController:departmentViewController animated:YES];
     }
 }
 
@@ -171,9 +180,10 @@
         departmentViewController.selectedIndex = nSelectedFilter;
         departmentViewController.tag = CTagFilter;
         departmentViewController.navigationItem.title = CstringFilter;
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
-        navController.navigationBar.translucent = NO;
-        [self presentViewController:navController animated:YES completion:nil];
+//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
+//        navController.navigationBar.translucent = NO;
+//        [self presentViewController:navController animated:YES completion:nil];
+        [self.navigationController pushViewController:departmentViewController animated:YES];
     }
 }
 
@@ -352,11 +362,23 @@
 
 - (void)setContentValue
 {
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 5.0;
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName: style};
+    NSAttributedString *myString = [[NSAttributedString alloc] initWithString:_detailPriceAlert.pricealert_product_name attributes:attributes];
+    priceAlertCell.getBtnProductName.titleLabel.attributedText = myString;
+    
+    CGSize tempSize = [priceAlertCell.getBtnProductName.titleLabel sizeThatFits:CGSizeMake(priceAlertCell.getBtnProductName.bounds.size.width, 9999)];
+    if((priceAlertCell.getConstraintHeigthProductName.constant*2) < tempSize.height)
+        priceAlertCell.getConstraintHeigthProductName.constant += priceAlertCell.getConstraintHeigthProductName.constant;
+    else if(tempSize.height > priceAlertCell.getConstraintHeigthProductName.constant)
+        priceAlertCell.getConstraintHeigthProductName.constant = tempSize.height;
+    
     [priceAlertCell setImageProduct:_imageHeader];
-    [priceAlertCell setLblDateProduct:[NSDate date]];
-    [priceAlertCell setProductName:_detailPriceAlert.pricealert_product_name];
+    [priceAlertCell setLblDateProduct:_detailPriceAlert.pricealert_time];
     [priceAlertCell setPriceNotification:[self getPrice:_detailPriceAlert.pricealert_price]];
     [priceAlertCell setLowPrice:_detailPriceAlert.pricealert_price_min];
+    [priceAlertCell setProductName:_detailPriceAlert.pricealert_product_name];
     
     [priceAlertCell getBtnProductName].userInteractionEnabled = YES;
     [[priceAlertCell getBtnProductName] addTarget:self action:@selector(actionDetailProduct:) forControlEvents:UIControlEventTouchUpInside];
@@ -389,25 +411,37 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    int diameterImage = 50;
+    int diameterGold = 20;
+    int padding = 8;
+    int heightProductName = 17;
+
     UITableViewHeaderFooterView *view = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
     if(view == nil) {
-        view = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 74)];
-        view.backgroundColor = [UIColor clearColor];
-        view.contentView.backgroundColor = [UIColor clearColor];
+        view = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 98)];
+        view.backgroundColor = tableView.backgroundColor;
+        view.contentView.backgroundColor = tableView.backgroundColor;
         
-        UIView *viewContent = [[UIView alloc] initWithFrame:CGRectMake(8, 8, tableView.bounds.size.width-(8*2), 66)];
+        UIView *viewContent = [[UIView alloc] initWithFrame:CGRectMake(8, 8, tableView.bounds.size.width-(8*2), 90)];
         viewContent.backgroundColor = [UIColor whiteColor];
         viewContent.tag = CHeaderViewContent;
         [view.contentView addSubview:viewContent];
         
-        UIImageView *imgHeader = [[UIImageView alloc] initWithFrame:CGRectMake(8, 8, 50, 50)];
+        UIImageView *imgHeader = [[UIImageView alloc] initWithFrame:CGRectMake(padding, padding, diameterImage, diameterImage)];
         imgHeader.tag = CHeaderImg;
         imgHeader.layer.cornerRadius = imgHeader.bounds.size.width/2.0f;
         imgHeader.layer.masksToBounds = YES;
         [viewContent addSubview:imgHeader];
         
+        
+        //Init Gold Merchant
+        UIImageView *imgGoldMerchant = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, diameterGold, diameterGold)];
+        imgGoldMerchant.tag = CTagGoldMerchant;
+        imgGoldMerchant.image = [UIImage imageNamed:@"badges_gold_merchant.png"];
+        [viewContent addSubview:imgGoldMerchant];
+        
+        //Init ProductName
         CustomButton *btnHeaderName = [CustomButton buttonWithType:UIButtonTypeCustom];
-        btnHeaderName.frame = CGRectMake(66, 17, 230, 17);
         btnHeaderName.backgroundColor = [UIColor clearColor];
         btnHeaderName.tag = CHeaderLabelHeader;
         btnHeaderName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -416,14 +450,73 @@
         [btnHeaderName addTarget:self action:@selector(actionShopName:) forControlEvents:UIControlEventTouchUpInside];
         [viewContent addSubview:btnHeaderName];
         
-        UILabel *lblDate = [[UILabel alloc] initWithFrame:CGRectMake(66, 34, 230, 15)];
-        lblDate.backgroundColor = [UIColor clearColor];
-        lblDate.tag = CHeaderLabelDate;
-        lblDate.font = [UIFont fontWithName:CGothamBook size:8.0f];
-        [viewContent addSubview:lblDate];
+        //Location
+        UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(imgHeader.frame.origin.x+imgHeader.bounds.size.height + padding, heightProductName+padding+(padding/2.0f), diameterGold-5, diameterGold-5)];
+        imgLocation.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_location" ofType:@"png"]];
+        [viewContent addSubview:imgLocation];
+
+        UILabel *lblLocation = [[UILabel alloc] initWithFrame:CGRectMake(imgLocation.frame.origin.x+imgLocation.bounds.size.width, imgLocation.frame.origin.y+2, viewContent.bounds.size.width-(imgLocation.frame.origin.x+imgLocation.bounds.size.width+3), heightProductName)];
+        lblLocation.backgroundColor = [UIColor clearColor];
+        lblLocation.tag = CTagLocation;
+        lblLocation.font = [UIFont fontWithName:CGothamBook size:12.0f];
+        [viewContent addSubview:lblLocation];
+        
+        //SetRate
+        UILabel *lblKecepatan = [[UILabel alloc] initWithFrame:CGRectMake(0, imgHeader.frame.origin.y+imgHeader.bounds.size.height+3, viewContent.bounds.size.width/3.0f, 12)];
+        lblKecepatan.text = CStringKecepatan;
+        lblKecepatan.textAlignment = NSTextAlignmentCenter;
+        lblKecepatan.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+        [viewContent addSubview:lblKecepatan];
+        
+        UIView *viewKecepatan = [[UIView alloc] initWithFrame:CGRectMake(0, lblKecepatan.frame.origin.y+lblKecepatan.bounds.size.height, lblKecepatan.bounds.size.width, 12)];
+        viewKecepatan.tag = CTagKecepatan;
+        int x = (viewKecepatan.bounds.size.width-(viewKecepatan.bounds.size.height*5))/2.0f;
+        for(int i=0;i<5;i++) {
+            UIImageView *imgStar = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, viewKecepatan.bounds.size.height, viewKecepatan.bounds.size.height)];
+            x += imgStar.bounds.size.width;
+            [viewKecepatan addSubview:imgStar];
+        }
+        [viewContent addSubview:viewKecepatan];
+
+        //Akurasi
+        UILabel *lblAkurasi = [[UILabel alloc] initWithFrame:CGRectMake(lblKecepatan.bounds.size.width, lblKecepatan.frame.origin.y, lblKecepatan.bounds.size.width, lblKecepatan.bounds.size.height)];
+        lblAkurasi.text = CStringAKurasi;
+        lblAkurasi.textAlignment = lblKecepatan.textAlignment;
+        lblAkurasi.font = lblKecepatan.font;
+        [viewContent addSubview:lblAkurasi];
+        UIView *viewAkurasi = [[UIView alloc] initWithFrame:CGRectMake(viewKecepatan.bounds.size.width, lblAkurasi.frame.origin.y+lblAkurasi.bounds.size.height, lblAkurasi.bounds.size.width, 12)];
+        viewAkurasi.tag = CTagAkurasi;
+
+        x = (viewAkurasi.bounds.size.width-(viewAkurasi.bounds.size.height*5))/2.0f;
+        for(int i=0;i<5;i++) {
+            UIImageView *imgStar = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, viewAkurasi.bounds.size.height, viewAkurasi.bounds.size.height)];
+            x += imgStar.bounds.size.width;
+            [viewAkurasi addSubview:imgStar];
+        }
+        [viewContent addSubview:viewAkurasi];
+        
+        
+        //Layanan
+        UILabel *lblPelayanan = [[UILabel alloc] initWithFrame:CGRectMake(lblAkurasi.frame.origin.x+lblAkurasi.bounds.size.width, lblKecepatan.frame.origin.y, lblKecepatan.bounds.size.width, lblKecepatan.bounds.size.height)];
+        lblPelayanan.text = CStringPelayanan;
+        lblPelayanan.textAlignment = lblAkurasi.textAlignment;
+        lblPelayanan.font = lblAkurasi.font;
+        [viewContent addSubview:lblPelayanan];
+        
+        [viewContent addSubview:lblAkurasi];
+        UIView *viewLayanan = [[UIView alloc] initWithFrame:CGRectMake(viewAkurasi.frame.origin.x+viewAkurasi.bounds.size.width, lblPelayanan.frame.origin.y+lblPelayanan.bounds.size.height, lblPelayanan.bounds.size.width, 12)];
+        viewLayanan.tag = CTagPelayanan;
+        
+        x = (viewLayanan.bounds.size.width-(viewLayanan.bounds.size.height*5))/2.0f;
+        for(int i=0;i<5;i++) {
+            UIImageView *imgStar = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, viewLayanan.bounds.size.height, viewLayanan.bounds.size.height)];
+            x += imgStar.bounds.size.width;
+            [viewLayanan addSubview:imgStar];
+        }
+        [viewContent addSubview:viewLayanan];
     }
-    CatalogShops *catalogShop = [catalogList objectAtIndex:section];
     
+    CatalogShops *catalogShop = [catalogList objectAtIndex:section];
     UIView *tempViewContent = [view viewWithTag:CHeaderViewContent];
     __weak UIImageView *tempImage = (UIImageView *)[tempViewContent viewWithTag:CHeaderImg];
     [tempImage setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:catalogShop.shop_image]]  placeholderImage:[UIImage imageNamed:@""] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -431,19 +524,65 @@
     } failure:nil];
 
     
+    UIImageView *imgGoldShop = (UIImageView *)[tempViewContent viewWithTag:CTagGoldMerchant];
+    imgGoldShop.frame = (catalogShop.is_gold_shop)?CGRectMake(tempImage.frame.origin.x+tempImage.bounds.size.width + padding, padding, diameterGold, diameterGold) : CGRectMake(tempImage.frame.origin.x+tempImage.bounds.size.width + padding, padding, 0, diameterGold);
+    
     CustomButton *btnHeaderName = (CustomButton *)[tempViewContent viewWithTag:CHeaderLabelHeader];
+    btnHeaderName.frame = CGRectMake(imgGoldShop.frame.origin.x+imgGoldShop.bounds.size.width+padding/2.0f, padding, tempViewContent.bounds.size.width-(imgGoldShop.frame.origin.x+imgGoldShop.bounds.size.height+padding/2.0f), heightProductName);
     btnHeaderName.tagIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     [btnHeaderName setTitle:catalogShop.shop_name forState:UIControlStateNormal];
+
+
+    UILabel *lblLocation = (UILabel *)[tempViewContent viewWithTag:CTagLocation];
+    lblLocation.text = catalogShop.shop_location;
     
-    UILabel *lblDate = (UILabel *)[tempViewContent viewWithTag:CHeaderLabelDate];
-    lblDate.text = @"2012-12-12 11:11AM";
+    //Akurasi
+    UIView *viewAkurasi = (UIView *)[tempViewContent viewWithTag:CTagAkurasi];
+    for(int i=0;i<viewAkurasi.subviews.count;i++) {
+        UIImageView *tempImg = [viewAkurasi.subviews objectAtIndex:i];
+        
+        if(i < catalogShop.shop_rate_accuracy) {
+            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
+        }
+        else {
+            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star" ofType:@"png"]];
+        }
+    }
+    
+    //Speed
+    UIView *viewKecepatan = (UIView *)[tempViewContent viewWithTag:CTagKecepatan];
+    for(int i=0;i<viewKecepatan.subviews.count;i++) {
+        UIImageView *tempImg = [viewKecepatan.subviews objectAtIndex:i];
+        
+        if(i < catalogShop.shop_rate_speed) {
+            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
+        }
+        else {
+            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star" ofType:@"png"]];
+        }
+    }
+    
+    //Pelayanan
+    UIView *viewPelayanan = (UIView *)[tempViewContent viewWithTag:CTagPelayanan];
+    for(int i=0;i<viewPelayanan.subviews.count;i++) {
+        UIImageView *tempImg = [viewPelayanan.subviews objectAtIndex:i];
+        
+        if(i < catalogShop.shop_rate_service) {
+            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
+        }
+        else {
+            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star" ofType:@"png"]];
+        }
+    }
+    
+    
     
     return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 74;
+    return 98;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -879,7 +1018,7 @@
 
     page = 1;
     [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
-    [self didCancel];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didCancel

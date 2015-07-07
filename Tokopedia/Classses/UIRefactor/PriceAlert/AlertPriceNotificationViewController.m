@@ -60,15 +60,7 @@
     
     tblPriceAlert.tableFooterView = [self getActivityIndicator];
     [[self getNetworkManager:CTagGetPriceAlert] doRequest];
-    
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
-    }
-    else
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CstringFilter style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -133,6 +125,8 @@
     if(! [tempPriceAlert.pricealert_total_unread isEqualToString:@"0"]) {
         tempUnreadIndexPath = indexPath;
     }
+    
+    tempPriceAlert.pricealert_product_name = [NSString convertHTML:tempPriceAlert.pricealert_product_name];
     DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
     detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
     detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
@@ -159,6 +153,8 @@
         NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
         cell = [arrPriceAlert objectAtIndex:0];
         cell.viewController = self;
+        cell.getBtnProductName.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     DetailPriceAlert *detailPriceAlert = [arrList objectAtIndex:indexPath.row];
@@ -171,8 +167,8 @@
     
     cell.getViewUnread.hidden = ([detailPriceAlert.pricealert_total_unread isEqualToString:@"0"]);
     [cell setTagBtnClose:(int)indexPath.row];
-    [cell setLblDateProduct:[NSDate date]];
-    [cell setProductName:detailPriceAlert.pricealert_product_name];
+    [cell setLblDateProduct:detailPriceAlert.pricealert_time];
+    [cell setProductName:[NSString convertHTML:detailPriceAlert.pricealert_product_name]];
     [cell setPriceNotification:[self getPrice:detailPriceAlert.pricealert_price]];
     [cell setLowPrice:detailPriceAlert.pricealert_price_min];
     
@@ -188,9 +184,10 @@
         departmentViewController.navigationItem.title = CStringCategory;
         departmentViewController.arrList = arrDepartment;
         departmentViewController.selectedIndex = nSelectedDepartment;
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
-        navController.navigationBar.translucent = NO;
-        [self presentViewController:navController animated:YES completion:nil];
+//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
+//        navController.navigationBar.translucent = NO;
+//        [self presentViewController:navController animated:YES completion:nil];
+        [self.navigationController pushViewController:departmentViewController animated:YES];
     }
     
 //    if(viewCategory.tag == 0) {//Show View Category
@@ -220,7 +217,7 @@
 - (void)actionCloseCell:(id)sender
 {
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
     }
     else {
@@ -239,7 +236,7 @@
 {
     [refreshControl endRefreshing];
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
     }
     else {
@@ -370,7 +367,8 @@
                                                           CPriceAlertPrice,
                                                           CPriceAlertProductImage,
                                                           CPriceAlertID,
-                                                          CPriceAlertProductID
+                                                          CPriceAlertProductID,
+                                                            CPriceAlertTime
                                                           ]];
         
         
@@ -583,8 +581,8 @@
         page = 1;
         [[self getNetworkManager:CTagGetPriceAlert] doRequest];
     }
-    
-    [self didCancel];
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -592,7 +590,7 @@
 - (void)pressRetryButton
 {
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithLoadingMessages:@[CStringWaitLoading] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
     }
     else {

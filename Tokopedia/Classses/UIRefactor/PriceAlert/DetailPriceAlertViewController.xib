@@ -27,7 +27,7 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s67-Nv-zra">
                     <rect key="frame" x="0.0" y="10" width="320" height="1"/>
-                    <color key="backgroundColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="320" id="H7J-pe-tjA"/>
                         <constraint firstAttribute="height" constant="1" id="Ihg-C5-9YZ"/>
@@ -43,7 +43,7 @@
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gf-HE-U4k">
                     <rect key="frame" x="0.0" y="522" width="320" height="1"/>
-                    <color key="backgroundColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="1EP-z4-TsW"/>
                         <constraint firstAttribute="width" constant="320" id="1NS-aP-Dqv"/>
@@ -51,7 +51,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vJH-Dz-e3C" userLabel="Vertical Border">
                     <rect key="frame" x="160" y="535" width="1" height="22"/>
-                    <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="22" id="oKv-GZ-pvf"/>
                         <constraint firstAttribute="width" constant="1" id="rpS-Ir-C9R"/>
