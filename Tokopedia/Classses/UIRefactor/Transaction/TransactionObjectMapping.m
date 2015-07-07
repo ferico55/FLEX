@@ -149,6 +149,27 @@
     return shopinfoMapping;
 }
 
+-(RKObjectMapping *)transactionCCDataMapping
+{
+    RKObjectMapping *ccDataMapping = [RKObjectMapping mappingForClass:[CCData class]];
+    [ccDataMapping addAttributeMappingsFromArray:@[@"city",
+                                                   @"postal_code",
+                                                   @"address",
+                                                   @"phone",
+                                                   @"state",
+                                                   @"last_name",
+                                                   @"first_name"]];
+    return ccDataMapping;
+}
+
+-(RKObjectMapping *)veritransDataMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[Veritrans class]];
+    [mapping addAttributeMappingsFromArray:@[@"token_url",
+                                                   @"client_key"]];
+    return mapping;
+}
+
 -(RKObjectMapping*)transactionDetailSummaryMapping
 {
     RKObjectMapping *transactionMapping = [RKObjectMapping mappingForClass:[TransactionSummaryDetail class]];

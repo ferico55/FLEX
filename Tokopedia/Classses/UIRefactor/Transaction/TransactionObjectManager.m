@@ -122,6 +122,7 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionSummaryResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[@"year_now"]];
     
     RKObjectMapping *transactionMapping = [[self mapping] transactionDetailSummaryMapping];
     RKObjectMapping *listMapping        = [[self mapping] transactionCartListMapping];
@@ -129,6 +130,8 @@
     RKObjectMapping *addressMapping     = [[self mapping] addressMapping];
     RKObjectMapping *shipmentsMapping   = [[self mapping] shipmentsMapping];
     RKObjectMapping *shopinfoMapping    = [[self mapping] shopInfoMapping];
+    RKObjectMapping *ccMapping          = [[self mapping] transactionCCDataMapping];
+    RKObjectMapping *veritransMapping   = [[self mapping] veritransDataMapping];
     
     if(_gatewayID == TYPE_GATEWAY_CLICK_BCA){
         RKObjectMapping *BCAParamMapping = [[self mapping] BCAParamMapping];
@@ -145,6 +148,12 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_KEY
                                                                                   toKeyPath:API_TRANSACTION_SUMMARY_KEY
                                                                                 withMapping:transactionMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card_data"
+                                                                                  toKeyPath:@"credit_card_data"
+                                                                                withMapping:ccMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"veritrans"
+                                                                                  toKeyPath:@"veritrans"
+                                                                                withMapping:veritransMapping]];
     
     RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
                                                                                                  toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
@@ -385,5 +394,30 @@
     return objectManagerBCAClickPay;
 }
 
+
+-(RKObjectManager*)objectManagerCC
+{
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_ACTION_CC_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    return objectManager;
+}
 
 @end

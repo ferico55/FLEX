@@ -704,6 +704,8 @@
 -(void)pushToCCInformation
 {
     TransactionCCViewController *vc = [TransactionCCViewController new];
+    vc.cartSummary = _cartSummary;
+    vc.ccData = [_data objectForKey:DATA_CC_KEY]?:[CCData new];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -2577,11 +2579,11 @@
                                DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
                                DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
                                DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
-                               DATA_CART_GATEWAY_KEY :selectedGateway
+                               DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
+                               DATA_CC_KEY : cart.result.credit_card_data?:[CCData new]
                                };
     [_delegate didFinishRequestCheckoutData:userInfo];
     
-    //
     _checkoutButton.enabled = YES;
     _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
@@ -2627,8 +2629,6 @@
     //
     _buyButton.enabled = YES;
     _buyButton.layer.opacity = 1;
-    [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
-    
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 
 }

@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TransactionSummaryDetail.h"
+#import "CCData.h"
 
 @interface TransactionCCViewController : UIViewController
+
+@property (nonatomic, strong) TransactionSummaryDetail *cartSummary;
+@property (nonatomic, strong) CCData *ccData;
 
 @end

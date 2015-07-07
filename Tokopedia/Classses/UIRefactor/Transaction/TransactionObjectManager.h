@@ -22,5 +22,6 @@
 -(RKObjectManager*)objectMangerEditProduct;
 -(RKObjectManager *)objectManagerEMoney;
 -(RKObjectManager*)objectManagerBCAClickPay;
+-(RKObjectManager*)objectManagerCC;
 
 @end

@@ -33,5 +33,7 @@
 -(RKObjectMapping*)transactionDetailSummaryMapping;
 -(RKObjectMapping*)BCAParamMapping;
 -(RKObjectMapping*)systemBankMapping;
+-(RKObjectMapping*)transactionCCDataMapping;
+-(RKObjectMapping*)veritransDataMapping;
 
 @end

@@ -95,6 +95,7 @@ typedef enum
 #define DATA_TODO_CALCULATE @"paramdo"
 #define DATA_CART_PRODUCT_KEY @"cart_product"
 #define DATA_CART_GATEWAY_KEY @"cart_gateway"
+#define DATA_CC_KEY @"cart_cc_data"
 #define DATA_CART_SHIPPING_KEY @"cart_shipping"
 #define DATA_CART_ADDRESS_KEY @"cart_address"
 #define DATA_CART_DETAIL_LIST_KEY @"cart_list_detail"
@@ -302,6 +303,17 @@ typedef enum
 
 #define API_LINK_MANDIRI_KEY @"link_mandiri"
 
+#pragma mark - Credit Card
+#define API_CC_EDIT_FLAG_KEY @"credit_card_edit_flag"
+#define API_CC_FIRST_NAME_KEY @"first_name"
+#define API_CC_LAST_NAME_KEY @"last_name"
+#define API_CC_CITY_KEY @"city"
+#define API_CC_POSTAL_CODE_KEY @"postal_code"
+#define API_CC_ADDRESS_KEY @"address_street"
+#define API_CC_PHONE_KEY @"phone"
+#define API_CC_STATE_KEY @"state"
+#define API_CC_CARD_NUMBER_KEY @"card_number"
+
 #define CALCULATE_PRODUCT @""
 #define CALCULATE_ADDRESS @"calculate_address_shipping"
 #define CALCULATE_SHIPMENT @"calculate_shipping"
@@ -313,6 +325,7 @@ typedef enum
 #define API_CHECK_VOUCHER_PATH @"tx-voucher.pl"
 #define API_EMONEY_PATH @"tx-payment-emoney.pl"
 #define API_BCA_KLICK_PAY_PATH @"tx-payment-bcaklikpay.pl"
+#define API_ACTION_CC_PATH @"action/tx.pl"
 
 #define TRANSACTION_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define TRANSACTION_NODATACELLTITLE @"no data"

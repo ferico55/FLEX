@@ -24,6 +24,8 @@
 		4594AEA11B4A9797001C823F /* TransactionCCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4594AE9F1B4A9797001C823F /* TransactionCCViewController.xib */; };
 		45A9FE741B4B6EF1008BE166 /* TransactionCCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A9FE721B4B6EF1008BE166 /* TransactionCCDetailViewController.m */; };
 		45A9FE751B4B6EF1008BE166 /* TransactionCCDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45A9FE731B4B6EF1008BE166 /* TransactionCCDetailViewController.xib */; };
+		45A9FE781B4BC684008BE166 /* CCData.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A9FE771B4BC684008BE166 /* CCData.m */; };
+		45A9FE7B1B4BCF6A008BE166 /* Veritrans.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A9FE7A1B4BCF6A008BE166 /* Veritrans.m */; };
 		45F8D0311B3BA57800A0E69D /* AddressProvince.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D0301B3BA57800A0E69D /* AddressProvince.m */; };
 		45F8D03F1B3BEE9300A0E69D /* TransactionObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D03E1B3BEE9300A0E69D /* TransactionObjectManager.m */; };
 		45F8D0421B3BF91700A0E69D /* RequestCart.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D0411B3BF91700A0E69D /* RequestCart.m */; };
@@ -1512,6 +1514,10 @@
 		45A9FE711B4B6EF1008BE166 /* TransactionCCDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCCDetailViewController.h; sourceTree = "<group>"; };
 		45A9FE721B4B6EF1008BE166 /* TransactionCCDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCCDetailViewController.m; sourceTree = "<group>"; };
 		45A9FE731B4B6EF1008BE166 /* TransactionCCDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCCDetailViewController.xib; sourceTree = "<group>"; };
+		45A9FE761B4BC684008BE166 /* CCData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCData.h; path = ../TransactionBuy/CCData.h; sourceTree = "<group>"; };
+		45A9FE771B4BC684008BE166 /* CCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCData.m; path = ../TransactionBuy/CCData.m; sourceTree = "<group>"; };
+		45A9FE791B4BCF6A008BE166 /* Veritrans.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Veritrans.h; sourceTree = "<group>"; };
+		45A9FE7A1B4BCF6A008BE166 /* Veritrans.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Veritrans.m; sourceTree = "<group>"; };
 		45F8D02F1B3BA57800A0E69D /* AddressProvince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressProvince.h; sourceTree = "<group>"; };
 		45F8D0301B3BA57800A0E69D /* AddressProvince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressProvince.m; sourceTree = "<group>"; };
 		45F8D03D1B3BEE9300A0E69D /* TransactionObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionObjectManager.h; sourceTree = "<group>"; };
@@ -5797,6 +5803,8 @@
 		FC76399D1B15E2760034A8F1 /* TransactionSummary */ = {
 			isa = PBXGroup;
 			children = (
+				45A9FE761B4BC684008BE166 /* CCData.h */,
+				45A9FE771B4BC684008BE166 /* CCData.m */,
 				FC76399E1B15E2760034A8F1 /* TransactionSummary.h */,
 				FC76399F1B15E2760034A8F1 /* TransactionSummary.m */,
 				FC7639A01B15E2760034A8F1 /* TransactionSummaryBCAParam.h */,
@@ -5805,6 +5813,8 @@
 				FC7639A31B15E2760034A8F1 /* TransactionSummaryDetail.m */,
 				FC7639A41B15E2760034A8F1 /* TransactionSummaryResult.h */,
 				FC7639A51B15E2760034A8F1 /* TransactionSummaryResult.m */,
+				45A9FE791B4BCF6A008BE166 /* Veritrans.h */,
+				45A9FE7A1B4BCF6A008BE166 /* Veritrans.m */,
 			);
 			path = TransactionSummary;
 			sourceTree = "<group>";
@@ -9070,6 +9080,7 @@
 				FC7641241B15E2820034A8F1 /* FavoriteShop.m in Sources */,
 				FC7641131B15E2820034A8F1 /* NotificationResult.m in Sources */,
 				FC7641CA1B15E2820034A8F1 /* TxOrderStatus.m in Sources */,
+				45A9FE781B4BC684008BE166 /* CCData.m in Sources */,
 				FC7643F01B15E2830034A8F1 /* TxOrderConfirmationProductCell.m in Sources */,
 				FC7643701B15E2830034A8F1 /* BerhasilBukaTokoViewController.m in Sources */,
 				FC76435C1B15E2830034A8F1 /* SettingBankDetailViewController.m in Sources */,
@@ -9355,6 +9366,7 @@
 				FC7642441B15E2830034A8F1 /* TableViewScrollAndSwipe.m in Sources */,
 				FC7643781B15E2830034A8F1 /* ShopEditViewController.m in Sources */,
 				FC7641931B15E2820034A8F1 /* TransactionATCFormDetail.m in Sources */,
+				45A9FE7B1B4BCF6A008BE166 /* Veritrans.m in Sources */,
 				FC76413E1B15E2820034A8F1 /* ReputationDetail.m in Sources */,
 				FC7642AE1B15E2830034A8F1 /* ReviewFormViewController.m in Sources */,
 				FC76415C1B15E2820034A8F1 /* ShipmentResult.m in Sources */,

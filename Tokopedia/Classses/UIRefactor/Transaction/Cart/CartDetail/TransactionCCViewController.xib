@@ -20,6 +20,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -28,7 +29,7 @@
                 <outlet property="addressTextView" destination="EWp-hp-WZk" id="lm4-DS-04q"/>
                 <outlet property="cityTextField" destination="g2R-58-A6J" id="J2x-Er-P1i"/>
                 <outlet property="firstNameTextField" destination="ACj-Ke-3mP" id="den-ZP-6It"/>
-                <outlet property="informationLabel" destination="ncn-yf-ASn" id="hUj-Ve-byl"/>
+                <outlet property="informationLabel" destination="VUY-jv-2be" id="uSb-AN-YzF"/>
                 <outlet property="lastNameTextField" destination="pCa-dA-0Dq" id="V58-Kn-Nnv"/>
                 <outlet property="phoneTextField" destination="q8S-FX-KRE" id="qcI-Fi-TIy"/>
                 <outlet property="postCodeTextField" destination="gGk-23-TNM" id="Lg1-3Y-j8Y"/>
@@ -76,23 +77,43 @@
             </constraints>
             <point key="canvasLocation" x="175" y="63"/>
         </view>
-        <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="ncn-yf-ASn" rowHeight="58" style="IBUITableViewCellStyleDefault" id="Fgi-zd-HJI">
+        <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="58" id="Fgi-zd-HJI">
             <rect key="frame" x="0.0" y="-2" width="320" height="69"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fgi-zd-HJI" id="PdX-4v-sN8">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Anda harus isi form ini ketika pertama kali memilih metode pembayaran melalui Kartu Kredit, selanjutnya akan terisi otomatis." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ncn-yf-ASn">
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cgD-Z6-yT4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <color key="backgroundColor" red="1" green="1" blue="0.80484169407894723" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+                        </variation>
+                    </view>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Anda harus isi form ini ketika pertama kali memilih metode pembayaran melalui Kartu Kredit, selanjutnya akan terisi otomatis." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUY-jv-2be">
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                         <nil key="highlightedColor"/>
+                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                            <rect key="frame" x="15" y="0.5" width="290" height="51.5"/>
+                        </variation>
                     </label>
                 </subviews>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <variation key="default">
+                    <mask key="subviews">
+                        <exclude reference="cgD-Z6-yT4"/>
+                        <exclude reference="VUY-jv-2be"/>
+                    </mask>
+                </variation>
+                <variation key="heightClass=regular-widthClass=compact">
+                    <mask key="subviews">
+                        <include reference="cgD-Z6-yT4"/>
+                        <include reference="VUY-jv-2be"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="540" y="-204"/>
+            <point key="canvasLocation" x="540" y="-204.5"/>
         </tableViewCell>
         <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8tm-x0-P81">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -455,6 +476,7 @@
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EWp-hp-WZk">
                         <rect key="frame" x="11" y="28" width="290" height="64.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <connections>
@@ -471,5 +493,12 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="522" y="423.5"/>
         </tableViewCell>
+        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Anda harus isi form ini ketika pertama kali memilih metode pembayaran melalui Kartu Kredit, selanjutnya akan terisi otomatis." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FXA-tn-JQT">
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+            <nil key="highlightedColor"/>
+        </label>
     </objects>
 </document>

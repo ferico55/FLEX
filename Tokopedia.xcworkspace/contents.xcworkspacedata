@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Tokopedia/Classses/Object/Transaction/TransactionBuy/CCData.h">
+   </FileRef>
+   <FileRef
+      location = "group:Tokopedia/Classses/Object/Transaction/TransactionBuy/CCData.m">
+   </FileRef>
+   <FileRef
       location = "group:Tokopedia.xcodeproj">
    </FileRef>
    <FileRef

@@ -10,4 +10,6 @@
 
 @interface TransactionCCDetailViewController : UIViewController
 
+@property (strong, nonatomic) NSDictionary *data;
+
 @end

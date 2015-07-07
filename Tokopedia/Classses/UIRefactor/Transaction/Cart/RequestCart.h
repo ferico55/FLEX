@@ -16,6 +16,7 @@
 #define TAG_REQUEST_EDIT_PRODUCT 15
 #define TAG_REQUEST_EMONEY 16
 #define TAG_REQUEST_BCA_CLICK_PAY 17
+#define TAG_REQUEST_CC 18
 
 @protocol RequestCartDelegate <NSObject>
 @required
@@ -27,6 +28,7 @@
 -(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation;
 
 -(void)actionBeforeRequest:(int)tag;
 -(void)actionAfterFailRequestMaxTries:(int)tag;
@@ -50,5 +52,6 @@
 -(void)doRequestEditProduct;
 -(void)doRequestEMoney;
 -(void)doRequestBCAClickPay;
+-(void)doRequestCC;
 
 @end
