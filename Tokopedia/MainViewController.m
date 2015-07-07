@@ -116,7 +116,7 @@ typedef enum TagRequest {
                    name:UPDATE_TABBAR object:nil];
     
     //refresh timer for GTM Container
-    _containerTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
+    _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
     
 }
 
