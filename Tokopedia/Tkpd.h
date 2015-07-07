@@ -226,5 +226,8 @@ typedef enum {
 #define GTMKeyProductPost @"product_post_url"
 #define GTMKeyProductFull @"product_full_url"
 
+#define GTMKeySearchBase @"search_base_url"
+#define GTMKeySearchPost @"search_post_url"
+#define GTMKeySearchFull @"search_full_url"
 
 #endif

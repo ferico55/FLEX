@@ -24,6 +24,8 @@
 #import "ReportViewController.h"
 #import "NoResultView.h"
 
+#import "TAGDataLayer.h"
+
 @interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate, ReportViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *reviewFooter;
@@ -83,6 +85,11 @@
     NSString *_reportedReviewId;
     NoResultView *_noResult;
     TAGContainer *_gtmContainer;
+    
+    //GTM
+    NSString *_inboxReviewBaseUrl;
+    NSString *_inboxReviewPostUrl;
+    NSString *_inboxReviewFullUrl;
 }
 
 #pragma mark - Initialization
@@ -161,10 +168,6 @@
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
     
-    // GTM
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _reviews = [NSMutableArray new];
@@ -180,11 +183,16 @@
         _isNoData = NO;
     }
     
+    //GTM
+    [self configureGTM];
+    
     [self initNavigationBar];
     [self initRefreshControl];
     [self initNotificationCenter];
     [self initCache];
     [self configureRestkit];
+    
+
     
     if(_reviewPage == 1) {
         _isLoadFromCache = YES;
@@ -394,7 +402,8 @@
 
 #pragma mark - Request + Restkit Init
 - (void)configureRestkit {
-    _objectManager = [RKObjectManager sharedClient];
+//    _objectManager = [RKObjectManager sharedClient];
+    _objectManager =  ![_inboxReviewBaseUrl isEqualToString:@""]?[RKObjectManager sharedClient:_inboxReviewBaseUrl]:[RKObjectManager sharedClient];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxReview class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
@@ -466,7 +475,7 @@
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:INBOX_REVIEW_API_PATH
+                                                                                             pathPattern:[_inboxReviewPostUrl isEqualToString:@""] ? INBOX_REVIEW_API_PATH : _inboxReviewPostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
@@ -490,7 +499,7 @@
     _requestCount++;
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:INBOX_REVIEW_API_PATH
+                                                                      path:[_inboxReviewPostUrl isEqualToString:@""] ? INBOX_REVIEW_API_PATH : _inboxReviewPostUrl
                                                                 parameters:[param encrypt]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
@@ -887,6 +896,19 @@
 
 - (void)cancel {
     
+}
+
+//GTM
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _inboxReviewBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxReviewBase];
+    _inboxReviewPostUrl = [_gtmContainer stringForKey:GTMKeyInboxReviewPost];
+    _inboxReviewFullUrl = [_gtmContainer stringForKey:GTMKeyInboxReviewFull];
 }
 
 @end

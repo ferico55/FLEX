@@ -33,6 +33,8 @@
 #import "GeneralPhotoProductCell.h"
 #import "GeneralSingleProductCell.h"
 
+#import "TAGDataLayer.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -104,6 +106,12 @@ LoadingViewDelegate
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    UserAuthentificationManager *_userManager;
+    TAGContainer *_gtmContainer;
+    
+    NSString *_searchBaseUrl;
+    NSString *_searchPostUrl;
+    NSString *_searchFullUrl;
 }
 
 #pragma mark - Initialization
@@ -123,6 +131,7 @@ LoadingViewDelegate
     [super viewDidDisappear:animated];
     [tokopediaNetworkManager requestCancel];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -130,6 +139,7 @@ LoadingViewDelegate
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -151,6 +161,8 @@ LoadingViewDelegate
         [_params addEntriesFromDictionary:_data];
     }
     
+    //GTM
+    [self configureGTM];
     
     _table.tableFooterView = _footer;
     [_act startAnimating];
@@ -1023,13 +1035,14 @@ LoadingViewDelegate
 
 - (NSString*)getPath:(int)tag
 {
-    return kTKPDSEARCH_APIPATH;
+    return [_searchPostUrl isEqualToString:@""] ? kTKPDSEARCH_APIPATH : _searchPostUrl;
 }
 
 - (id)getObjectManager:(int)tag
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  [RKObjectManager sharedClient];
+    _objectmanager =  ![_searchBaseUrl isEqualToString:@""]?[RKObjectManager sharedClient:_searchBaseUrl]:[RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];
@@ -1083,7 +1096,7 @@ LoadingViewDelegate
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDSEARCH_APIPATH
+                                                                                       pathPattern:[_searchPostUrl isEqualToString:@""] ? kTKPDSEARCH_APIPATH : _searchPostUrl
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -1134,6 +1147,19 @@ LoadingViewDelegate
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;
+}
+
+#pragma mark - Other Method 
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _searchBaseUrl = [_gtmContainer stringForKey:GTMKeySearchBase];
+    _searchPostUrl = [_gtmContainer stringForKey:GTMKeySearchPost];
+    _searchFullUrl = [_gtmContainer stringForKey:GTMKeySearchFull];
 }
 
 @end
