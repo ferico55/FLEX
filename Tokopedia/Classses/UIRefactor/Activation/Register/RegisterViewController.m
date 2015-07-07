@@ -788,6 +788,13 @@
     FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
     NSString *accessToken = [token accessToken]?:@"";
     
+    NSString *gender = @"";
+    if ([[user objectForKey:@"gender"] isEqualToString:@"male"]) {
+        gender = @"1";
+    } else if ([[user objectForKey:@"gender"] isEqualToString:@"female"]) {
+        gender = @"2";
+    }
+    
     NSDictionary *param = @{
                             kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
                             kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
@@ -795,7 +802,7 @@
                             kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
                             kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
                             kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
-                            kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
+                            kTKPDLOGIN_API_GENDER_KEY       : gender,
                             kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
                             };
     
@@ -866,6 +873,9 @@
         }
         else if ([_login.result.status isEqualToString:@"1"]) {
             
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
             controller.delegate = self;

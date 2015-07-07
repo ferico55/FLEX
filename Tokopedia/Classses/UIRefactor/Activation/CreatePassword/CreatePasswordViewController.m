@@ -294,6 +294,13 @@
     
     NSArray *dataComponents = [_dateOfBirthTextField.text componentsSeparatedByString:@"/"];
     
+    NSString *gender = @"";
+    if ([[_facebookUser objectForKey:@"gender"] isEqualToString:@"male"]) {
+        gender = @"1";
+    } else if ([[_facebookUser objectForKey:@"gender"] isEqualToString:@"female"]) {
+        gender = @"2";
+    }
+    
     NSDictionary *parameters = @{
                                  kTKPDREGISTER_APIACTIONKEY         : kTKPDREGISTER_APICREATE_PASSWORD_KEY,
                                  API_NEW_PASSWORD_KEY               : _passwordTextField.text,
@@ -303,7 +310,7 @@
                                  API_BIRTHDAY_DAY_KEY               : [dataComponents objectAtIndex:0],
                                  API_BIRTHDAY_MONTH_KEY             : [dataComponents objectAtIndex:1],
                                  API_BIRTHDAY_YEAR_KEY              : [dataComponents objectAtIndex:2],
-                                 API_GENDER_KEY                     : [_facebookUser objectForKey:@"gender"],
+                                 API_GENDER_KEY                     : gender,
                                  API_FULL_NAME_KEY                  : _fullNameTextField.text,
                                  };
 
@@ -356,16 +363,6 @@
         [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
         [secureStorage setKeychainWithValue:_fullNameTextField.text withKey:kTKPD_FULLNAMEKEY];
         [secureStorage setKeychainWithValue:@(YES) withKey:kTKPD_ISLOGINKEY];
-
-//        if (self.delegate && [self.delegate respondsToSelector:@selector(createPasswordSuccess)]) {
-//            [self.view layoutSubviews];
-//
-//            TKPDAlert *alert = [TKPDAlert newview];
-//            alert.text = @"Anda telah berhasil membuat akun Tokopedia";
-//            alert.tag = 12;
-//            alert.delegate = self;
-//            [alert show];
-//        }
 
         [self requestActionLogin];
         
