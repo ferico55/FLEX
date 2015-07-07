@@ -15,13 +15,7 @@
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import "AppsFlyerTracker.h"
-#import "ChangeMessageUrlTagHandler.h"
 
-
-
-@interface AppDelegate ()<TAGContainerOpenerNotifier>
-
-@end
 
 @implementation AppDelegate
 
@@ -38,24 +32,21 @@
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
     
-    _tagManager = [TAGManager instance];
-    [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
-    
-    NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
-    if(url != nil) {
-        [_tagManager previewWithUrl:url];
-    }
-    
-    [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
-                                 tagManager:self.tagManager
-                                   openType:kTAGOpenTypePreferFresh
-                                    timeout:nil
-                                   notifier:self];
-    
-//    self.container = [future get];
-    
-    
     dispatch_async(dispatch_get_main_queue(), ^{
+        //GTM init
+        _tagManager = [TAGManager instance];
+        [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
+        
+        NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+        if(url != nil) {
+            [_tagManager previewWithUrl:url];
+        }
+        
+        [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
+                                     tagManager:self.tagManager
+                                       openType:kTAGOpenTypePreferFresh
+                                        timeout:nil
+                                       notifier:self];
         
         //appsflyer init
         [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
@@ -150,20 +141,8 @@
 }
 
 - (void)containerAvailable:(TAGContainer *)container {
-    // Note that containerAvailable may be called on any thread, so you may need to dispatch back to
-    // your main thread.
     dispatch_async(dispatch_get_main_queue(), ^{
         self.container = container;
     });
 }
-
-//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-//    if([self.tagManager previewWithUrl:url]) {
-//        return YES;
-//    }
-//    
-//    return NO;
-//}
-
-
 @end
