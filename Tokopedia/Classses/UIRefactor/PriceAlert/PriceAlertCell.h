@@ -12,11 +12,12 @@
 {
     IBOutlet UIImageView *imgProductView;
     IBOutlet UIButton *btnProductName;
-    IBOutlet UILabel *lblDateProduct;
+    IBOutlet UILabel *lblProductDate;
     IBOutlet UILabel *lblPriceNotification;
     IBOutlet UILabel *lblLowPrice;
     IBOutlet UIView *viewContent, *viewUnread;
     IBOutlet UIButton *btnClose;
+    IBOutlet NSLayoutConstraint *constraintHeightProductName;
     IBOutlet NSLayoutConstraint *constraintYViewContent;
     IBOutlet NSLayoutConstraint *constraintXViewContent;
     IBOutlet NSLayoutConstraint *constraintBottomViewContent;
@@ -27,7 +28,7 @@
 
 - (void)setImageProduct:(UIImage *)imgProduct;
 - (void)setProductName:(NSString *)strProductName;
-- (void)setLblDateProduct:(NSDate *)date;
+- (void)setLblDateProduct:(NSString *)date;
 - (void)setLowPrice:(NSString *)strPrice;
 - (void)setPriceNotification:(NSString *)strPrice;
 - (void)setTagBtnClose:(int)tag;
@@ -37,6 +38,7 @@
 - (UIView *)getViewUnread;
 - (UIButton *)getBtnClose;
 - (UIButton *)getBtnProductName;
+- (NSLayoutConstraint *)getConstraintHeigthProductName;
 - (NSLayoutConstraint *)getConstraintY;
 - (NSLayoutConstraint *)getConstraintX;
 - (NSLayoutConstraint *)getConstraintBottom;

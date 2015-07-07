@@ -21,9 +21,10 @@
     if(self.navigationItem.title==nil || [self.navigationItem.title isEqualToString:@""]) {
         self.navigationItem.title = CStringDepartment;
     }
-    
+ 
+    self.tableView.contentInset = UIEdgeInsetsMake(30, 0, 0, 0);
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSelesai style:UIBarButtonItemStylePlain target:self action:@selector(actionSelesai:)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringBatal style:UIBarButtonItemStylePlain target:self action:@selector(actionBatal:)];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.view.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
 }
@@ -49,14 +50,16 @@
     if(cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CCellIdentifier];
         cell.textLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
+        cell.accessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.bounds.size.height-25, cell.bounds.size.height-25)];
+        ((UIImageView *) cell.accessoryView).image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_check_orange" ofType:@"png"]];
     }
     
     
     if(indexPath.row == _selectedIndex) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.accessoryView.hidden = NO;
     }
     else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryView.hidden = YES;
     }
     
     
@@ -79,10 +82,10 @@
     }
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    cell.accessoryView.hidden = NO;
     
     cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:0]];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView.hidden = YES;
     _selectedIndex = (int)indexPath.row;
 }
 
@@ -140,6 +143,6 @@
 
 - (void)actionBatal:(id)sender
 {
-    [_del didCancel];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import "AlertPriceNotificationViewController.h"
+#import "CatalogViewController.h"
 #import "CatalogInfo.h"
 #import "DetailProductViewController.h"
 #import "DetailPriceAlertViewController.h"
@@ -28,6 +29,7 @@
     RKObjectManager *rkObjectManager;
     
     UIBarButtonItem *rightBarButtonItem;
+    BOOL isEditCatalog;
 }
 @end
 
@@ -52,12 +54,38 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initNavigation];
-    
     if(_detailPriceAlert!=nil && ![_detailPriceAlert.pricealert_price isEqualToString:@"Rp 0"]) {
         NSString *tempStr = [_detailPriceAlert.pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
         txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
+        [self initNavigation:NO];
     }
+    else if(_catalogInfo!=nil && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"Rp 0"] && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"0"]) {
+        isEditCatalog = YES;
+        NSString *tempStr = [_catalogInfo.catalog_pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
+        txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
+        [self initNavigation:NO];
+    }
+    else
+        [self initNavigation:YES];
+    
+    
+    
+    //Set line space
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    [attributes setObject:style forKey:NSParagraphStyleAttributeName];
+    [attributes setObject:lblDesc.font forKey:NSFontAttributeName];
+
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:lblDesc.text attributes:attributes];
+    lblDesc.attributedText = attributedString;
+    
+    
+    //Add padding left
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, txtPrice.bounds.size.height)];
+    paddingView.backgroundColor = [UIColor clearColor];
+    [txtPrice setLeftViewMode:UITextFieldViewModeAlways];
+    [txtPrice setLeftView:paddingView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,10 +104,10 @@
 */
 
 #pragma mark - Setup View
-- (void)initNavigation
+- (void)initNavigation:(BOOL)isNew
 {
-    self.navigationItem.title = CStringPriceAlert;
-    rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringSave style:UIBarButtonItemStylePlain target:self action:@selector(actionTambah:)];;
+    self.navigationItem.title = CStringNotificationHarga;
+    rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(isNew?CStringSave:CStringUbah) style:UIBarButtonItemStylePlain target:self action:@selector(actionTambah:)];;
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
@@ -201,8 +229,15 @@
     GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
     if(tag == CTagAddCatalogPriceAlert) {
         if([generalAction.result.is_success isEqualToString:@"1"]) {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessAddPriceCatalog] delegate:self];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[(isEditCatalog? CStringSuccessEditPriceAlert:CStringSuccessAddPriceCatalog)] delegate:self];
             [stickyAlertView show];
+            
+            
+            //Update DetailPriceAlert ViewController
+            UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+            if([viewController isMemberOfClass:[CatalogViewController class]]) {
+                [((CatalogViewController *) viewController) updatePriceAlert:[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]];
+            }
             [self.navigationController popViewControllerAnimated:YES];
         }
         else {

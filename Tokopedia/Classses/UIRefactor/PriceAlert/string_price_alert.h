@@ -29,6 +29,9 @@
 #define CGothamBook @"Gotham Book"
 
 
+#define CStringKecepatan @"Kecepatan"
+#define CStringAKurasi @"Akurasi"
+#define CStringPelayanan @"Pelayanan"
 #define CStringAllPrice @"Semua Harga"
 #define CStringSort @"Urutkan"
 #define CstringFilter @"Filter"
@@ -58,10 +61,13 @@
 #define CStringDepartment @"Department"
 #define CStringSelesai @"Selesai"
 #define CStringPriceAlert @"Price Alert"
+#define CStringNotifikasiAlert @"Notifikasi Alert"
 #define CStringBatal @"Batal"
+#define CStringBack @"Back"
 #define CStringUbah @"Ubah"
 #define CStringNotificationHarga @"Notifikasi Harga"
-#define CStringSuccessEditPriceAlert @"Berhasil mengubah notifikasi harga produk"
-#define CStringSuccessAddPrice @"Berhasil menambah notifikasi harga produk"
-#define CStringSuccessAddPriceCatalog @"Berhasil menambah notifikasi harga katalog"
+#define CStringSuccessEditPriceAlert @"Anda telah berhasil memperbaharui notifikasi harga produk"
+#define CStringSuccessAddPrice @"Anda telah berhasil menambah notifikasi harga produk"
+#define CStringSuccessEditPriceCatalog @"Anda telah berhasil memperbaharui notifikasi katalog"
+#define CStringSuccessAddPriceCatalog @"Anda telah berhasil menambah notifikasi katalog"
 #endif

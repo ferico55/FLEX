@@ -12,6 +12,7 @@
 @interface PriceAlertViewController : UIViewController
 {
     IBOutlet UITextField *txtPrice;
+    IBOutlet UILabel *lblDesc;
 }
 
 @property (nonatomic) BOOL isCatalog;

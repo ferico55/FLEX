@@ -30,6 +30,7 @@
 #define CPriceAlertItemURI @"pricealert_item_uri"
 #define CPriceAlertCatalogName @"pricealert_catalog_name"
 #define CPriceAlertCatalogStatus @"pricealert_catalog_status"
+#define CPriceAlertTime @"pricealert_time"
 
 @interface DetailPriceAlert : NSObject
 @property (nonatomic, strong) NSString *pricealert_total_product;
@@ -43,6 +44,7 @@
 @property (nonatomic, strong) NSString *pricealert_product_image;
 @property (nonatomic, strong) NSString *pricealert_id;
 @property (nonatomic, strong) NSString *pricealert_product_id;
+@property (nonatomic, strong) NSString *pricealert_time;
 
 
 @property (nonatomic, strong) NSString *pricealert_item_image;
