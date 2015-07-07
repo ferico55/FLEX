@@ -141,6 +141,7 @@ typedef enum
 #define API_DEPARTMENT_ID_KEY @"department_id"
 #define API_PRODUCT_IMAGE_TOUPLOAD_KEY @"product_photo"
 #define API_PRODUCT_IMAGE_DEFAULT_KEY @"product_photo_default"
+#define API_PRODUCT_IMAGE_DEFAULT_INDEX @"index_default"
 #define API_PRODUCT_IMAGE_DESCRIPTION_KEY @"product_photo_desc"
 #define API_PRODUCT_FORM_DESCRIPTION_KEY @"product_short_desc"
 #define API_PRODUCT_FORM_DEPARTMENT_TREE_KEY @"product_department_tree"

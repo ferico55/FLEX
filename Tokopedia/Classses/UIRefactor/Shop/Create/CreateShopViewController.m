@@ -508,7 +508,7 @@
 
             //Btn Check Domain
             [customHeaderFooterTable getBtnCheckDomain].hidden = NO;
-            [self initAttributeText:[customHeaderFooterTable getLblFooter] withStrText:CStringDescCheckDomain withFont:[customHeaderFooterTable getLblFooter].font withColor:[customHeaderFooterTable getLblFooter].textColor];
+            [self initAttributeText:[customHeaderFooterTable getLblFooter] withStrText:CStringDescCheckDomain withFont:[customHeaderFooterTable getLblFooter].font withColor:[UIColor lightGrayColor]];
             [[customHeaderFooterTable getBtnCheckDomain] setTitle:CStringCekDomain forState:UIControlStateNormal];
             [[customHeaderFooterTable getBtnCheckDomain] addTarget:self action:@selector(checkDomain:) forControlEvents:UIControlEventTouchUpInside];
         }
@@ -517,7 +517,7 @@
         {
             float heightLblFooter = [self calculateHeight:CStringDescGambarFoto withFont:[customHeaderFooterTable getLblFooter].font andSize:CGSizeMake(widhtItem, 9999) withColor:[customHeaderFooterTable getLblFooter].textColor];
             [customHeaderFooterTable setLblFrame:CGRectMake(CPaddingLeft, CPaddingLeft, widhtItem, heightLblFooter) isHeader:NO];
-            [self initAttributeText:[customHeaderFooterTable getLblFooter] withStrText:CStringDescGambarFoto withFont:[customHeaderFooterTable getLblFooter].font withColor:[customHeaderFooterTable getLblFooter].textColor];
+            [self initAttributeText:[customHeaderFooterTable getLblFooter] withStrText:CStringDescGambarFoto withFont:[customHeaderFooterTable getLblFooter].font withColor:[UIColor lightGrayColor]];
             [customHeaderFooterTable getBtnCheckDomain].hidden = YES;
         }
             break;
@@ -622,17 +622,17 @@
             UILabel *lblUnggahGambar = [[UILabel alloc] initWithFrame:CGRectMake(0, (CHeightHeaderCell*3)-20, cell.bounds.size.width, 20)];
             lblUnggahGambar.text = CStringUnggahGambar;
             lblUnggahGambar.textAlignment = NSTextAlignmentCenter;
-            lblUnggahGambar.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
+            lblUnggahGambar.font = [UIFont fontWithName:CFont_Gotham_Medium size:CFontSizeFooter];
             lblUnggahGambar.backgroundColor = [UIColor clearColor];
-            lblUnggahGambar.textColor = [UIColor blueColor];
+            lblUnggahGambar.textColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
             lblUnggahGambar.userInteractionEnabled = YES;
             [viewImgGambar addSubview:lblUnggahGambar];
             
             int diameterImage = 100;
             imgGambar = [[UIImageView alloc] initWithFrame:CGRectMake((cell.bounds.size.width-diameterImage)/2.0f, 10, diameterImage, diameterImage)];
             imgGambar.layer.cornerRadius = imgGambar.bounds.size.width/2.0f;
-            imgGambar.layer.borderColor = [[UIColor blackColor] CGColor];
-            imgGambar.layer.borderWidth = 1.0f;
+            imgGambar.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+            imgGambar.layer.borderWidth = 0.5f;
             imgGambar.layer.masksToBounds = YES;
             imgGambar.contentMode = UIViewContentModeScaleAspectFit;
             imgGambar.userInteractionEnabled = YES;
@@ -640,8 +640,8 @@
             if(! hasSetImgGambar)
             {
                 tempImage = [UIImageView new];
-                tempImage.frame = CGRectMake((diameterImage-40)/2.0f, (diameterImage-30)/2.0f, 40, 30);
-                tempImage.image = [UIImage imageNamed:@"HS-camera-button.png"];
+                tempImage.frame = CGRectMake((diameterImage-60)/2.0f, (diameterImage-60)/2.0f, 60, 60);
+                tempImage.image = [UIImage imageNamed:@"icon_default_shop@2x.jpg"];
                 [imgGambar addSubview:tempImage];
             }
             

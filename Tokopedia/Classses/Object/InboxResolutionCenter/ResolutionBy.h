@@ -12,5 +12,7 @@
 
 @property (nonatomic) NSInteger by_customer;
 @property (nonatomic) NSInteger by_seller;
+@property (nonatomic, strong) NSString *user_label;
+@property (nonatomic, strong) NSString *user_label_id;
 
 @end

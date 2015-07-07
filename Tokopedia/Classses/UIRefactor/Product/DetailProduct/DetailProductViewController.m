@@ -1088,32 +1088,33 @@ UIAlertViewDelegate
 #pragma mark - TokopediaNetwork Delegate
 - (NSDictionary*)getParameter:(int)tag
 {
+    NSString *productID = _product.result.product.product_id?:@"0";
     if(tag == CTagPromote)
-        return @{@"action" : @"promote_product", @"product_id" : _product.result.product.product_id};
+        return @{@"action" : @"promote_product", @"product_id" : productID};
     else if(tag == CTagTokopediaNetworkManager)
         return @{
                  kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]
+                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"
                  };
     else if(tag == CTagOtherProduct)
-        return @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]};
+        return @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"};
     else if(tag == CTagFavorite)
     {
-        NSString *strShopID = [[NSString alloc] initWithString:tempShopID];
+        NSString *strShopID = [[NSString alloc] initWithString:tempShopID?:@"0"];
         tempShopID = nil;
         return @{kTKPDDETAIL_ACTIONKEY:@"fav_shop", @"shop_id":strShopID};
     }
     else if(tag == CTagUnWishList)
         return @{kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_WISHLIST_PRODUCT,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
+                 kTKPDDETAIL_APIPRODUCTIDKEY : productID};
     else if(tag == CTagWishList)
         return @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
+                 kTKPDDETAIL_APIPRODUCTIDKEY : productID};
     else if(tag == CTagNoteCanReture)
         return @{kTKPDDETAIL_ACTIONKEY:kTKPDDETAIL_APIGETNOTESDETAILKEY,
-                 kTKPDNOTES_APINOTEIDKEY:_product.result.shop_info.shop_has_terms,
+                 kTKPDNOTES_APINOTEIDKEY:_product.result.shop_info.shop_has_terms?:@"0",
                  NOTES_TERMS_FLAG_KEY:@(1),
-                 kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id};
+                 kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id?:@"0"};
     
     return nil;
 }
@@ -2031,6 +2032,7 @@ UIAlertViewDelegate
                 
                 container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
                                    kTKPD_AUTHKEY:_auth?:[NSNull null],
+                                   @"product_etalase_name" : _product.result.product.product_etalase,
                                    @"product_etalase_id" : _product.result.product.product_etalase_id};
                 [self.navigationController pushViewController:container animated:YES];
             }

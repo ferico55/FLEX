@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "StarsRateView.h"
+#import "ViewLabelUser.h"
 
 #define kTKPDGENERALREVIEWCELLIDENTIFIER @"GeneralReviewCellIdentifier"
 
@@ -34,7 +35,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadIcon;
-@property (weak, nonatomic) IBOutlet UILabel *userNamelabel;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *userNamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *productNamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *timelabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;

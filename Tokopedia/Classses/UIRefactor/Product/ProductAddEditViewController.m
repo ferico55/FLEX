@@ -1476,6 +1476,7 @@
     NSString *imageID = _productImageIDs[index];
     NSString *defaultImage = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?imagePath:imageID;
     [_dataInput setObject:defaultImage forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
+    [_dataInput setObject:[NSString stringWithFormat:@"%ld", (long)index] forKey:API_PRODUCT_IMAGE_DEFAULT_INDEX];
 }
 
 -(void)setProductImageName:(NSString *)name atIndex:(NSInteger)index
