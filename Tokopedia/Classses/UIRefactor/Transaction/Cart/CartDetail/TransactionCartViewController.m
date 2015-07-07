@@ -29,6 +29,8 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIEcommerceFields.h"
 
+#import "TransactionCCViewController.h"
+
 #import "TransactionObjectManager.h"
 #import "RequestCart.h"
 
@@ -669,12 +671,40 @@
                     
                 }
                     break;
+                case TYPE_GATEWAY_CC:
+                {
+                    [self pushToCCInformation];
+                }
+                    break;
                 default:
                     break;
             }
             [self sendingProductDataToGA];
         }
     }
+}
+
+-(BOOL)isValidInputCC
+{
+    BOOL isvalid = YES;
+    NSMutableArray *errorMessage = [NSMutableArray new];
+    if ([_cart.grand_total integerValue] <50000) {
+        [errorMessage addObject:@"Minimum pembayaran untuk kartu kredit adalah Rp 50.000,00."];
+        isvalid = NO;
+    }
+    
+    if (!isvalid) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
+    }
+    
+    return isvalid;
+}
+
+-(void)pushToCCInformation
+{
+    TransactionCCViewController *vc = [TransactionCCViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)changeSwitchSaldo:(UISwitch *)switchSaldo
@@ -735,7 +765,7 @@
     NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        if (![gateway.gateway isEqual:@(8)] && ![gateway.gateway isEqual:@(9)] && ![gateway.gateway isEqual:@(10)]) {
+        if (![gateway.gateway isEqual:@(9)] && ![gateway.gateway isEqual:@(10)]) {
             [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
         }
     }
@@ -863,6 +893,9 @@
         if (gateway == -1) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
+        }
+        if (gateway == TYPE_GATEWAY_CC) {
+            return [self isValidInputCC];
         }
         if (_isUsingSaldoTokopedia)
         {

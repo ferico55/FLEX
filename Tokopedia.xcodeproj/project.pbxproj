@@ -20,6 +20,10 @@
 		453959BB1B282CC200E5839F /* CatalogResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959BA1B282CC200E5839F /* CatalogResult.m */; };
 		453959BE1B282E8200E5839F /* CatalogList.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959BD1B282E8200E5839F /* CatalogList.m */; };
 		453959C11B282F2000E5839F /* CatalogAddProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 453959C01B282F2000E5839F /* CatalogAddProduct.m */; };
+		4594AEA01B4A9797001C823F /* TransactionCCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4594AE9E1B4A9797001C823F /* TransactionCCViewController.m */; };
+		4594AEA11B4A9797001C823F /* TransactionCCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4594AE9F1B4A9797001C823F /* TransactionCCViewController.xib */; };
+		45A9FE741B4B6EF1008BE166 /* TransactionCCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A9FE721B4B6EF1008BE166 /* TransactionCCDetailViewController.m */; };
+		45A9FE751B4B6EF1008BE166 /* TransactionCCDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45A9FE731B4B6EF1008BE166 /* TransactionCCDetailViewController.xib */; };
 		45F8D0311B3BA57800A0E69D /* AddressProvince.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D0301B3BA57800A0E69D /* AddressProvince.m */; };
 		45F8D03F1B3BEE9300A0E69D /* TransactionObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D03E1B3BEE9300A0E69D /* TransactionObjectManager.m */; };
 		45F8D0421B3BF91700A0E69D /* RequestCart.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F8D0411B3BF91700A0E69D /* RequestCart.m */; };
@@ -1502,6 +1506,12 @@
 		453959BD1B282E8200E5839F /* CatalogList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogList.m; sourceTree = "<group>"; };
 		453959BF1B282F2000E5839F /* CatalogAddProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogAddProduct.h; sourceTree = "<group>"; };
 		453959C01B282F2000E5839F /* CatalogAddProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogAddProduct.m; sourceTree = "<group>"; };
+		4594AE9D1B4A9797001C823F /* TransactionCCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCCViewController.h; sourceTree = "<group>"; };
+		4594AE9E1B4A9797001C823F /* TransactionCCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCCViewController.m; sourceTree = "<group>"; };
+		4594AE9F1B4A9797001C823F /* TransactionCCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCCViewController.xib; sourceTree = "<group>"; };
+		45A9FE711B4B6EF1008BE166 /* TransactionCCDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCCDetailViewController.h; sourceTree = "<group>"; };
+		45A9FE721B4B6EF1008BE166 /* TransactionCCDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCCDetailViewController.m; sourceTree = "<group>"; };
+		45A9FE731B4B6EF1008BE166 /* TransactionCCDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCCDetailViewController.xib; sourceTree = "<group>"; };
 		45F8D02F1B3BA57800A0E69D /* AddressProvince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressProvince.h; sourceTree = "<group>"; };
 		45F8D0301B3BA57800A0E69D /* AddressProvince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressProvince.m; sourceTree = "<group>"; };
 		45F8D03D1B3BEE9300A0E69D /* TransactionObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionObjectManager.h; sourceTree = "<group>"; };
@@ -7628,6 +7638,12 @@
 				FC763D9E1B15E27D0034A8F1 /* TransactionCartWebViewViewController.xib */,
 				FC763D9F1B15E27D0034A8F1 /* TransactionPaymenViewController.h */,
 				FC763DA01B15E27D0034A8F1 /* TransactionPaymenViewController.m */,
+				4594AE9D1B4A9797001C823F /* TransactionCCViewController.h */,
+				4594AE9E1B4A9797001C823F /* TransactionCCViewController.m */,
+				4594AE9F1B4A9797001C823F /* TransactionCCViewController.xib */,
+				45A9FE711B4B6EF1008BE166 /* TransactionCCDetailViewController.h */,
+				45A9FE721B4B6EF1008BE166 /* TransactionCCDetailViewController.m */,
+				45A9FE731B4B6EF1008BE166 /* TransactionCCDetailViewController.xib */,
 			);
 			path = CartDetail;
 			sourceTree = "<group>";
@@ -8423,6 +8439,7 @@
 				FC76434F1B15E2830034A8F1 /* SettingAddressDetailViewController.xib in Resources */,
 				7A1D2F271B235E55002F9341 /* ic_cart@2x.png in Resources */,
 				FC7644011B15E2830034A8F1 /* TxOrderConfirmedViewController.xib in Resources */,
+				4594AEA11B4A9797001C823F /* TransactionCCViewController.xib in Resources */,
 				7A1D2DB91B235E55002F9341 /* icon_2@2x.png in Resources */,
 				7A1D2EFE1B235E55002F9341 /* icon_view_14px.png in Resources */,
 				7A1D2EEC1B235E55002F9341 /* icon_signin@2x.png in Resources */,
@@ -8886,6 +8903,7 @@
 				7A1D2E6A1B235E55002F9341 /* icon_move_gudang.png in Resources */,
 				FC7642741B15E2830034A8F1 /* FavoritedShopViewController.xib in Resources */,
 				FC76426D1B15E2830034A8F1 /* ReportViewController.xib in Resources */,
+				45A9FE751B4B6EF1008BE166 /* TransactionCCDetailViewController.xib in Resources */,
 				FC7643651B15E2830034A8F1 /* SettingPasswordViewController.xib in Resources */,
 				FC7641F51B15E2820034A8F1 /* StickyAlertView.xib in Resources */,
 				7A1D2E511B235E55002F9341 /* icon_location.png in Resources */,
@@ -9046,6 +9064,7 @@
 				FC76410C1B15E2820034A8F1 /* ManageProduct.m in Sources */,
 				FC7640811B15E2820034A8F1 /* DBManager.m in Sources */,
 				FC7642041B15E2820034A8F1 /* RequestGenerateHost.m in Sources */,
+				45A9FE741B4B6EF1008BE166 /* TransactionCCDetailViewController.m in Sources */,
 				8563A1481B1EEFE600DFF001 /* LabelMenu.m in Sources */,
 				FC7642701B15E2830034A8F1 /* RedirectHandler.m in Sources */,
 				FC7641241B15E2820034A8F1 /* FavoriteShop.m in Sources */,
@@ -9073,6 +9092,7 @@
 				FC7640B61B15E2820034A8F1 /* Product.m in Sources */,
 				FC76439D1B15E2830034A8F1 /* ShopProductPageViewController.m in Sources */,
 				FC7642A01B15E2830034A8F1 /* ResolutionCenterDetailCell.m in Sources */,
+				4594AEA01B4A9797001C823F /* TransactionCCViewController.m in Sources */,
 				FC7642B91B15E2830034A8F1 /* WebViewController.m in Sources */,
 				FC7641731B15E2820034A8F1 /* AddProductPictureResult.m in Sources */,
 				FC7642E81B15E2830034A8F1 /* GalleryViewController.m in Sources */,
