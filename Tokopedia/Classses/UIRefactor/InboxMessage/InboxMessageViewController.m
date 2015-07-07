@@ -922,7 +922,7 @@ typedef enum TagRequest {
 
 - (NSString *)getPath:(int)tag {
     if(tag == messageListTag) {
-        return _inboxMessagePostUrl?:KTKPDMESSAGE_PATHURL;
+        return [_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl;
     }
     
     return nil;
@@ -983,7 +983,7 @@ typedef enum TagRequest {
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:_inboxMessagePostUrl?:KTKPDMESSAGE_PATHURL
+                                                                                                 pathPattern:[_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
