@@ -530,7 +530,7 @@
                 for (ShippingInfoShipments *shipment in _shipments) {
                     if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
                         for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                            if (![package.price isEqualToString:@"0"]) {
+                            if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                                 [shipmentPackages addObject:package];
                                 [shipmentPackagesName addObject:package.name];
                             }
