@@ -28,6 +28,14 @@
 				<string>fb126665634029576</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.tokopedia.Tokopedia</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tagmanager.c.com.tokopedia.Tokopedia</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>

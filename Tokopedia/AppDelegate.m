@@ -41,6 +41,11 @@
     _tagManager = [TAGManager instance];
     [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
     
+    NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+    if(url != nil) {
+        [_tagManager previewWithUrl:url];
+    }
+    
     [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
                                  tagManager:self.tagManager
                                    openType:kTAGOpenTypePreferFresh
@@ -117,8 +122,13 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
+    if([sourceApplication isEqualToString:@"com.facebook.Facebook"]) {
+        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    } else if ([self.tagManager previewWithUrl:url]) {
+        return YES;
+    }
     
-    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    return NO;
 }
 
 
@@ -146,6 +156,14 @@
         self.container = container;
     });
 }
+
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+//    if([self.tagManager previewWithUrl:url]) {
+//        return YES;
+//    }
+//    
+//    return NO;
+//}
 
 
 @end
