@@ -76,11 +76,18 @@
                 NSIndexPath* indexpath = _indexpath;
 
                 ReviewFormViewController *vc = [ReviewFormViewController new];
-                
-                UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
                 vc.data = _data;
                 vc.reviewIndex = indexpath.row;
-                [nav.navigationController pushViewController:vc animated:YES];
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    [self dissmissReviewFormBefore];
+                    [self performSelector:@selector(pushVC:) withObject:vc afterDelay:0.2f];
+                    [_delegate tapAtIndexPath:indexpath];
+                }
+                else
+                {
+                    UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+                    [nav.navigationController pushViewController:vc animated:YES];
+                }
                 break;
             }
                 
@@ -104,12 +111,21 @@
                 NSIndexPath* indexpath = _indexpath;
                 
                 ReviewFormViewController *vc = [ReviewFormViewController new];
-                
-                UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
                 vc.data = _data;
                 vc.reviewIndex = indexpath.row;
                 vc.isEditForm = YES;
-                [nav.navigationController pushViewController:vc animated:YES];
+                
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    [self dissmissReviewFormBefore];
+            
+                    [self performSelector:@selector(pushVC:) withObject:vc afterDelay:0.2f];
+                    [_delegate tapAtIndexPath:indexpath];
+                }
+                else
+                {
+                    UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+                    [nav.navigationController pushViewController:vc animated:YES];
+                }
                 break;
                 
             }
@@ -143,17 +159,28 @@
     ReviewList *list = (ReviewList*)_data;
     if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
         NSIndexPath* indexpath = _indexpath;
-        
         ReviewFormViewController *vc = [ReviewFormViewController new];
-        
-        UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
         vc.data = _data;
         vc.reviewIndex = indexpath.row;
-        [nav.navigationController pushViewController:vc animated:YES];
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            [self dissmissReviewFormBefore];
+            [self performSelector:@selector(pushVC:) withObject:vc afterDelay:0.2f];
+            [_delegate tapAtIndexPath:indexpath];
+        }
+        else
+        {
+            UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+            [nav.navigationController pushViewController:vc animated:YES];
+        }
+
     } else {
         [_delegate GeneralReviewCell:self withindexpath:indexpath];
     }
-    
+}
+
+-(void)pushVC:(UIViewController*)vc
+{
+    [_detailVC.navigationController pushViewController:vc animated:YES];
 
 }
 
@@ -171,6 +198,16 @@
     if(buttonIndex == 1) {
         NSIndexPath* indexpath = _indexpath;
         [_delegate skipReview:self withindexpath:indexpath];
+    }
+}
+
+-(void)dissmissReviewFormBefore
+{
+    for (id vc in _detailVC.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[ReviewFormViewController class]]) {
+            [((UIViewController*)vc).navigationController popViewControllerAnimated:NO];
+            break;
+        }
     }
 }
 

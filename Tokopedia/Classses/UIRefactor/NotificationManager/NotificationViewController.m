@@ -24,7 +24,9 @@
 #import "TxOrderStatusViewController.h"
 
 #import "InboxRootViewController.h"
-
+#import "InboxTalkSplitViewController.h"
+#import "InboxReviewSplitViewController.h"
+#import "InboxResolSplitViewController.h"
 
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
 
@@ -301,51 +303,70 @@
                 break;
             }
             case 1 : {
-                InboxTalkViewController *vc = [InboxTalkViewController new];
-                vc.data=@{@"nav":@"inbox-talk"};
-                
-                InboxTalkViewController *vc1 = [InboxTalkViewController new];
-                vc1.data=@{@"nav":@"inbox-talk-my-product"};
-                
-                InboxTalkViewController *vc2 = [InboxTalkViewController new];
-                vc2.data=@{@"nav":@"inbox-talk-following"};
-                
-                NSArray *vcs = @[vc,vc1, vc2];
-                
-                TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
-                [controller setSelectedIndex:2];
-                [controller setViewControllers:vcs];
-                controller.hidesBottomBarWhenPushed = YES;
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxTalkSplitViewController *controller = [InboxTalkSplitViewController new];
+                    [self.delegate pushViewController:controller];
+                    
+                } else {
+                    InboxTalkViewController *vc = [InboxTalkViewController new];
+                    vc.data=@{@"nav":@"inbox-talk"};
+                    
+                    InboxTalkViewController *vc1 = [InboxTalkViewController new];
+                    vc1.data=@{@"nav":@"inbox-talk-my-product"};
+                    
+                    InboxTalkViewController *vc2 = [InboxTalkViewController new];
+                    vc2.data=@{@"nav":@"inbox-talk-following"};
+                    
+                    NSArray *vcs = @[vc,vc1, vc2];
+                    
+                    TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
+                    [controller setSelectedIndex:2];
+                    [controller setViewControllers:vcs];
+                    controller.hidesBottomBarWhenPushed = YES;
 
-                [self.delegate pushViewController:controller];
+                    [self.delegate pushViewController:controller];
+                }
 
                 break;
             }
                 
             case 2 : {
-                InboxReviewViewController *vc = [InboxReviewViewController new];
-                vc.data=@{@"nav":@"inbox-review"};
-                
-                InboxReviewViewController *vc1 = [InboxReviewViewController new];
-                vc1.data=@{@"nav":@"inbox-review-my-product"};
-                
-                InboxReviewViewController *vc2 = [InboxReviewViewController new];
-                vc2.data=@{@"nav":@"inbox-review-my-review"};
-                
-                NSArray *vcs = @[vc,vc1, vc2];
-                
-                TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-                [nc setSelectedIndex:2];
-                [nc setViewControllers:vcs];
-                nc.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:nc];
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+                    [self.delegate pushViewController:controller];
+                    
+                } else {
+                    InboxReviewViewController *vc = [InboxReviewViewController new];
+                    vc.data=@{@"nav":@"inbox-review"};
+                    
+                    InboxReviewViewController *vc1 = [InboxReviewViewController new];
+                    vc1.data=@{@"nav":@"inbox-review-my-product"};
+                    
+                    InboxReviewViewController *vc2 = [InboxReviewViewController new];
+                    vc2.data=@{@"nav":@"inbox-review-my-review"};
+                    
+                    NSArray *vcs = @[vc,vc1, vc2];
+                    
+                    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+                    [nc setSelectedIndex:2];
+                    [nc setViewControllers:vcs];
+                    nc.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:nc];
+                }
                 break;
             }
             case 3:
             {
-                InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:vc];
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:controller];
+                    
+                } else {
+                    InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:controller];
+                }
                 break;
             }
             default:

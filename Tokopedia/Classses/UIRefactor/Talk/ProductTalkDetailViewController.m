@@ -37,7 +37,7 @@
 #import "string_more.h"
 #import "string_inbox_talk.h"
 
-@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate, GeneralTalkCommentCellDelegate>
+@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate, GeneralTalkCommentCellDelegate, UISplitViewControllerDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_list;
@@ -182,7 +182,11 @@
     
     //validate previous class so it can use several URL path
     NSArray *vcs = self.navigationController.viewControllers;
-    if([vcs[[vcs count] - 2] isKindOfClass:[TKPDTabInboxTalkNavigationController class]]) {
+    NSInteger index = [vcs count] - 2;
+    if (index<0) {
+        index = 0;
+    }
+    if([vcs[index] isKindOfClass:[TKPDTabInboxTalkNavigationController class]]) {
         
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
@@ -205,14 +209,14 @@
     
     
     
-    //UIBarButtonItem *barbutton1;
-    //NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    //UIBarButtonItem *barbutton1;
+//    //NSBundle* bundle = [NSBundle mainBundle];
+//    //TODO:: Change image
+//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+//    barButtonItem.tag = 10;
+//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -243,7 +247,7 @@
 
     
     NSDictionary *userinfo;
-    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
+    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]?:@"0"};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
     UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
@@ -441,7 +445,7 @@
                                  NSParagraphStyleAttributeName: style
                                  };
     
-    NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:TKPD_TALK_MESSAGE]
+    NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:TKPD_TALK_MESSAGE]?:@""
                                                                                     attributes:attributes];
     _talkmessagelabel.attributedText = productNameAttributedText;
     _talkmessagelabel.textAlignment = NSTextAlignmentLeft;
@@ -620,9 +624,9 @@
     }
     
     NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : _urlAction,
+                            kTKPDDETAIL_APIACTIONKEY : _urlAction?:@"",
                             TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID],
+                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
                             kTKPDDETAIL_APIPAGEKEY : @(_page)
                             };
 //    [_cachecontroller getFileModificationDate];
@@ -1383,5 +1387,25 @@
 
 - (void)userDidLogout:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];    
+}
+
+-(void)replaceDataSelected:(NSDictionary *)data
+{
+    _data = data;
+    
+    if (data) {
+        [self setHeaderData:data];
+        _page = 1;
+        [_list removeAllObjects];
+        [self configureRestKit];
+        [self loadData];
+        
+    }
+}
+
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 @end

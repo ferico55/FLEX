@@ -91,7 +91,23 @@
     _filterReadIndex = 0;
     [self updateCheckList];
     
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+    [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    self.navigationItem.leftBarButtonItem = barButton;
+    
 }
+
+-(IBAction)tapBackButton:(id)sender
+{
+    [_splitVC.navigationController popViewControllerAnimated:YES];
+}
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -281,6 +297,7 @@
         case 0:
         {
             if(!_myComplainViewController)_myComplainViewController = [InboxResolutionCenterComplainViewController new];
+            _myComplainViewController.detailViewController = _detailViewController;
             _myComplainViewController.isMyComplain = YES;
             _myComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _myComplainViewController;
@@ -291,6 +308,7 @@
             self.navigationItem.rightBarButtonItem = nil;
             
             if(!_buyerComplainViewController)_buyerComplainViewController = [InboxResolutionCenterComplainViewController new];
+            _buyerComplainViewController.detailViewController = _detailViewController;
             _buyerComplainViewController.isMyComplain = NO;
             _buyerComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _buyerComplainViewController;

@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class ResolutionCenterDetailViewController;
+
 @interface InboxResolutionCenterTabViewController : GAITrackedViewController
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceButtons;
+@property (strong, nonatomic)UIViewController *splitVC;
+@property (strong, nonatomic)ResolutionCenterDetailViewController *detailViewController;
 
 @end
