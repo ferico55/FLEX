@@ -882,6 +882,7 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [self requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
