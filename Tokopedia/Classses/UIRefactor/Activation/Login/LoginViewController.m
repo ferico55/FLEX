@@ -129,13 +129,6 @@
     [_cheatView addGestureRecognizer:doubleTapGesture];
     [_cheatView setUserInteractionEnabled:YES];
     
-    _loginView = [[FBLoginView alloc] init];
-    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
-    _loginView.frame = CGRectMake(0, 0,
-                                 _facebookLoginButton.frame.size.width,
-                                 _facebookLoginButton.frame.size.height);
-    [_facebookLoginButton addSubview:_loginView];
-    
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _operationQueueFacebookLogin = [NSOperationQueue new];
@@ -154,7 +147,16 @@
     _passwordTextField.isTopRoundCorner = YES;
     _passwordTextField.isBottomRoundCorner = YES;
     
+    _loginView = [[FBLoginView alloc] init];
     _loginView.delegate = self;
+    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
+    _loginView.frame = CGRectMake(0, 0,
+                                  _facebookLoginButton.frame.size.width,
+                                  _facebookLoginButton.frame.size.height);
+    
+    [_loginView removeFromSuperview];
+    [_facebookLoginButton layoutIfNeeded];    
+    [_facebookLoginButton addSubview:_loginView];
     
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
@@ -438,6 +440,13 @@
     FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
     NSString *accessToken = [token accessToken]?:@"";
     
+    NSString *gender = @"";
+    if ([[user objectForKey:@"gender"] isEqualToString:@"male"]) {
+        gender = @"1";
+    } else if ([[user objectForKey:@"gender"] isEqualToString:@"female"]) {
+        gender = @"2";
+    }
+    
     NSDictionary *param = @{
                             kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
                             kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
@@ -445,7 +454,7 @@
                             kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
                             kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
                             kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
-                            kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
+                            kTKPDLOGIN_API_GENDER_KEY       : gender,
                             kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
                             };
     
@@ -525,6 +534,10 @@
                                                                 object:nil
                                                               userInfo:nil];
         } else if ([_login.result.status isEqualToString:@"1"]) {
+
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+            
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
