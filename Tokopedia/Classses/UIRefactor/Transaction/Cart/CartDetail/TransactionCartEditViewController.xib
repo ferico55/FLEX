@@ -214,12 +214,15 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="mTw-Zn-yMQ" firstAttribute="leading" secondItem="blR-f3-fZu" secondAttribute="leading" id="MZT-0S-vwW"/>
+                <constraint firstItem="mTw-Zn-yMQ" firstAttribute="leading" secondItem="blR-f3-fZu" secondAttribute="leading" id="MZT-0S-vwW">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstAttribute="bottom" secondItem="mTw-Zn-yMQ" secondAttribute="bottom" id="PVS-SX-nqA"/>
-                <constraint firstAttribute="trailing" secondItem="mTw-Zn-yMQ" secondAttribute="trailing" id="WXu-SD-8YQ"/>
+                <constraint firstAttribute="trailing" secondItem="mTw-Zn-yMQ" secondAttribute="trailing" id="WXu-SD-8YQ">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstItem="mTw-Zn-yMQ" firstAttribute="top" secondItem="blR-f3-fZu" secondAttribute="top" id="l1H-Hf-f7I"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="-68" y="225"/>
         </view>
     </objects>

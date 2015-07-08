@@ -71,6 +71,8 @@
     NSDictionary *_objectCancelComplain;
     
     LoadingView *_loadingView;
+    
+    NSIndexPath *_selectedDetailIndexPath;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -343,25 +345,31 @@
 
 -(void)goToResolutionDetailAtIndexPath:(NSIndexPath *)indexPath
 {
-    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+    _selectedDetailIndexPath = indexPath;
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    vc.indexPath = indexPath;
-    vc.resolution = resolution;
-    vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
+    NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        if (![resolution isEqual:_detailViewController.resolution]) {
+            [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+        }
+    }
+    else
+    {
+        ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+        vc.indexPath = indexPath;
+        vc.resolution = resolution;
+        vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+        vc.delegate = self;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - Table View Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
-    InboxResolutionCenterList *resolution = _list[indexPath.row];
-    vc.indexPath = indexPath;
-    vc.resolution = resolution;
-    vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
+    _selectedDetailIndexPath = indexPath;
+    
+    [self goToResolutionDetailAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -558,6 +566,15 @@
                 
                 _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
                 _tableView.tableFooterView = nil;
+                
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _page <= 1) {
+                    NSIndexPath *indexPath = _selectedDetailIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    InboxResolutionCenterList *resolution = _list[indexPath.row];
+                    NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+                    if (![resolution isEqual:_detailViewController.resolution]) {
+                        [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+                    }
+                }
             }
             else
             {

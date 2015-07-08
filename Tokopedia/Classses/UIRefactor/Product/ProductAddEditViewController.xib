@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -91,14 +91,14 @@
             </connections>
         </tapGestureRecognizer>
         <view contentMode="scaleToFill" id="sjW-YA-btD">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="Xk3-VX-CiC">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <label key="tableHeaderView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FTs-60-oeR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="39"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <string key="text">
     GAMBAR PRODUK</string>
@@ -112,12 +112,20 @@
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="Xk3-VX-CiC" firstAttribute="leading" secondItem="sjW-YA-btD" secondAttribute="leading" id="0xC-YW-EtO"/>
-                <constraint firstItem="Xk3-VX-CiC" firstAttribute="top" secondItem="sjW-YA-btD" secondAttribute="top" id="6nc-IW-1I2"/>
-                <constraint firstAttribute="bottom" secondItem="Xk3-VX-CiC" secondAttribute="bottom" id="HdR-6t-MvV"/>
-                <constraint firstAttribute="trailing" secondItem="Xk3-VX-CiC" secondAttribute="trailing" id="wTI-ze-4yW"/>
+                <constraint firstItem="Xk3-VX-CiC" firstAttribute="leading" secondItem="sjW-YA-btD" secondAttribute="leading" id="0xC-YW-EtO">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="Xk3-VX-CiC" firstAttribute="top" secondItem="sjW-YA-btD" secondAttribute="top" id="6nc-IW-1I2">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="bottom" secondItem="Xk3-VX-CiC" secondAttribute="bottom" id="HdR-6t-MvV">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="Xk3-VX-CiC" secondAttribute="trailing" id="wTI-ze-4yW">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
             </constraints>
             <point key="canvasLocation" x="-43" y="400"/>
         </view>
@@ -489,9 +497,4 @@
     <resources>
         <image name="icon_upload_image.png" width="90" height="90"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

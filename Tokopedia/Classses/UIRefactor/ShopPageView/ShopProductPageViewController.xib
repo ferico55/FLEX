@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -50,6 +50,11 @@
                                     <state key="normal">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="constraints">
+                                            <exclude reference="b0M-Cd-3fy"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="V7E-6E-hID"/>
                                     </connections>
@@ -58,11 +63,27 @@
                                     <rect key="frame" x="29" y="11" width="22" height="22"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="22" id="kTU-jd-TBV"/>
+                                        <constraint firstAttribute="height" constant="22" id="lBH-pr-B4z"/>
                                         <constraint firstAttribute="width" constant="22" id="pxt-Py-UQy"/>
+                                        <constraint firstAttribute="width" constant="22" id="vAC-y0-HGc"/>
                                     </constraints>
                                     <state key="normal" image="icon_urutkan_alt.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="lBH-pr-B4z"/>
+                                            <exclude reference="vAC-y0-HGc"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="constraints">
+                                            <exclude reference="kTU-jd-TBV"/>
+                                            <include reference="lBH-pr-B4z"/>
+                                            <exclude reference="pxt-Py-UQy"/>
+                                            <include reference="vAC-y0-HGc"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="nh2-Xf-hpq"/>
                                     </connections>
@@ -79,14 +100,33 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="Nag-A7-Jys" secondAttribute="bottom" constant="13" id="3hT-WO-2Ev"/>
                                 <constraint firstAttribute="trailing" secondItem="uPB-5U-cIA" secondAttribute="trailing" id="5Dp-2K-qGm"/>
+                                <constraint firstAttribute="height" constant="60" id="9U6-2H-jbT"/>
+                                <constraint firstItem="uPB-5U-cIA" firstAttribute="centerY" secondItem="LlN-6Q-xg3" secondAttribute="centerY" id="FxK-LN-OYS"/>
                                 <constraint firstItem="uPB-5U-cIA" firstAttribute="top" secondItem="bom-db-7Zb" secondAttribute="top" id="GOM-qa-icr"/>
                                 <constraint firstItem="LlN-6Q-xg3" firstAttribute="centerX" secondItem="uPB-5U-cIA" secondAttribute="centerX" id="Ifd-gd-nhL"/>
                                 <constraint firstItem="uPB-5U-cIA" firstAttribute="centerY" secondItem="LlN-6Q-xg3" secondAttribute="centerY" id="Nbe-F5-zuC"/>
                                 <constraint firstItem="Nag-A7-Jys" firstAttribute="top" secondItem="bom-db-7Zb" secondAttribute="top" constant="9" id="RqL-7t-j6J"/>
                                 <constraint firstItem="uPB-5U-cIA" firstAttribute="leading" secondItem="bom-db-7Zb" secondAttribute="leading" id="cdU-R8-jAC"/>
+                                <constraint firstItem="uPB-5U-cIA" firstAttribute="centerX" secondItem="LlN-6Q-xg3" secondAttribute="centerX" id="fZS-ng-9S8"/>
                                 <constraint firstAttribute="trailing" secondItem="Nag-A7-Jys" secondAttribute="trailing" id="tUA-XL-1op"/>
                                 <constraint firstAttribute="bottom" secondItem="uPB-5U-cIA" secondAttribute="bottom" id="zJd-e9-GN6"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="9U6-2H-jbT"/>
+                                    <exclude reference="FxK-LN-OYS"/>
+                                    <exclude reference="fZS-ng-9S8"/>
+                                </mask>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=regular">
+                                <mask key="constraints">
+                                    <include reference="9U6-2H-jbT"/>
+                                    <include reference="FxK-LN-OYS"/>
+                                    <exclude reference="Nbe-F5-zuC"/>
+                                    <include reference="fZS-ng-9S8"/>
+                                    <exclude reference="Ifd-gd-nhL"/>
+                                </mask>
+                            </variation>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xTR-gW-UnV">
                             <rect key="frame" x="80" y="0.0" width="80" height="44"/>
@@ -104,11 +144,27 @@
                                     <rect key="frame" x="29" y="11" width="22" height="22"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="22" id="I4M-ow-uCq"/>
+                                        <constraint firstAttribute="width" constant="22" id="Npk-yQ-eh2"/>
+                                        <constraint firstAttribute="height" constant="22" id="i1C-2R-j7l"/>
                                         <constraint firstAttribute="height" constant="22" id="mSS-WO-oAj"/>
                                     </constraints>
                                     <state key="normal" image="icon_etalase.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="Npk-yQ-eh2"/>
+                                            <exclude reference="i1C-2R-j7l"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="constraints">
+                                            <exclude reference="I4M-ow-uCq"/>
+                                            <include reference="Npk-yQ-eh2"/>
+                                            <include reference="i1C-2R-j7l"/>
+                                            <exclude reference="mSS-WO-oAj"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="Ecr-wB-30u"/>
                                     </connections>
@@ -128,11 +184,30 @@
                                 <constraint firstAttribute="trailing" secondItem="JeA-NV-EG8" secondAttribute="trailing" id="Dzg-ga-oF1"/>
                                 <constraint firstAttribute="bottom" secondItem="JeA-NV-EG8" secondAttribute="bottom" constant="13" id="E9N-wr-O35"/>
                                 <constraint firstItem="JeA-NV-EG8" firstAttribute="leading" secondItem="tLe-7V-Cow" secondAttribute="trailing" id="K4b-Ry-e00"/>
+                                <constraint firstAttribute="height" constant="60" id="RLD-Qn-6YB"/>
                                 <constraint firstItem="tLe-7V-Cow" firstAttribute="centerX" secondItem="3b2-dN-r1K" secondAttribute="centerX" id="SSJ-tr-ihp"/>
                                 <constraint firstItem="tLe-7V-Cow" firstAttribute="centerY" secondItem="3b2-dN-r1K" secondAttribute="centerY" id="XSB-YN-3a2"/>
+                                <constraint firstItem="tLe-7V-Cow" firstAttribute="centerY" secondItem="3b2-dN-r1K" secondAttribute="centerY" id="aHm-Lc-C2q"/>
+                                <constraint firstItem="tLe-7V-Cow" firstAttribute="centerX" secondItem="3b2-dN-r1K" secondAttribute="centerX" id="m1s-fT-2vP"/>
                                 <constraint firstAttribute="bottom" secondItem="tLe-7V-Cow" secondAttribute="bottom" id="rhn-cy-NJV"/>
                                 <constraint firstItem="tLe-7V-Cow" firstAttribute="leading" secondItem="xTR-gW-UnV" secondAttribute="leading" id="vo2-QQ-80R"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="RLD-Qn-6YB"/>
+                                    <exclude reference="aHm-Lc-C2q"/>
+                                    <exclude reference="m1s-fT-2vP"/>
+                                </mask>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=regular">
+                                <mask key="constraints">
+                                    <include reference="RLD-Qn-6YB"/>
+                                    <exclude reference="SSJ-tr-ihp"/>
+                                    <exclude reference="XSB-YN-3a2"/>
+                                    <include reference="aHm-Lc-C2q"/>
+                                    <include reference="m1s-fT-2vP"/>
+                                </mask>
+                            </variation>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rtG-5l-uP9">
                             <rect key="frame" x="160" y="0.0" width="80" height="44"/>
@@ -145,6 +220,11 @@
                                     <state key="normal">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="constraints">
+                                            <exclude reference="PGQ-yj-bi8"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="93Q-pU-WA7"/>
                                     </connections>
@@ -153,11 +233,27 @@
                                     <rect key="frame" x="29" y="11" width="22" height="22"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="22" id="MhW-xM-aVi"/>
+                                        <constraint firstAttribute="width" constant="22" id="O2x-qm-mPt"/>
                                         <constraint firstAttribute="height" constant="22" id="TbW-0g-CEO"/>
+                                        <constraint firstAttribute="height" constant="22" id="gEs-44-d7G"/>
                                     </constraints>
                                     <state key="normal" image="icon_grid_dua.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="O2x-qm-mPt"/>
+                                            <exclude reference="gEs-44-d7G"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="constraints">
+                                            <exclude reference="MhW-xM-aVi"/>
+                                            <include reference="O2x-qm-mPt"/>
+                                            <exclude reference="TbW-0g-CEO"/>
+                                            <include reference="gEs-44-d7G"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="XU6-mp-88Y"/>
                                     </connections>
@@ -177,11 +273,30 @@
                                 <constraint firstAttribute="trailing" secondItem="rVL-OA-lS0" secondAttribute="trailing" id="OKt-Ne-McL"/>
                                 <constraint firstItem="XQ1-7n-awT" firstAttribute="centerY" secondItem="jqd-HS-fyI" secondAttribute="centerY" id="WtI-hA-dSO"/>
                                 <constraint firstItem="rVL-OA-lS0" firstAttribute="top" secondItem="rtG-5l-uP9" secondAttribute="top" constant="9" id="X4l-4c-SQS"/>
+                                <constraint firstAttribute="height" constant="60" id="XTl-Ur-L66"/>
+                                <constraint firstItem="XQ1-7n-awT" firstAttribute="centerX" secondItem="jqd-HS-fyI" secondAttribute="centerX" id="Yb8-aA-pAH"/>
+                                <constraint firstItem="XQ1-7n-awT" firstAttribute="centerY" secondItem="jqd-HS-fyI" secondAttribute="centerY" id="kDq-Gg-jEq"/>
                                 <constraint firstAttribute="bottom" secondItem="rVL-OA-lS0" secondAttribute="bottom" constant="13" id="kwR-3Q-N32"/>
                                 <constraint firstItem="jqd-HS-fyI" firstAttribute="centerX" secondItem="XQ1-7n-awT" secondAttribute="centerX" id="oxN-ck-Evh"/>
                                 <constraint firstItem="rVL-OA-lS0" firstAttribute="leading" secondItem="jqd-HS-fyI" secondAttribute="trailing" id="xHl-VV-JRl"/>
                                 <constraint firstItem="jqd-HS-fyI" firstAttribute="top" secondItem="rtG-5l-uP9" secondAttribute="top" id="xtH-al-GY1"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="XTl-Ur-L66"/>
+                                    <exclude reference="Yb8-aA-pAH"/>
+                                    <exclude reference="kDq-Gg-jEq"/>
+                                </mask>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=regular">
+                                <mask key="constraints">
+                                    <include reference="XTl-Ur-L66"/>
+                                    <exclude reference="oxN-ck-Evh"/>
+                                    <exclude reference="WtI-hA-dSO"/>
+                                    <include reference="Yb8-aA-pAH"/>
+                                    <include reference="kDq-Gg-jEq"/>
+                                </mask>
+                            </variation>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOl-TV-hea">
                             <rect key="frame" x="240" y="0.0" width="80" height="44"/>
@@ -194,6 +309,11 @@
                                     <state key="normal">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="constraints">
+                                            <exclude reference="kyJ-Mu-4T2"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="N7a-Ez-Cgh"/>
                                     </connections>
@@ -201,12 +321,28 @@
                                 <button opaque="NO" tag="11" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVF-1o-j7L">
                                     <rect key="frame" x="29" y="11" width="22" height="22"/>
                                     <constraints>
+                                        <constraint firstAttribute="height" constant="22" id="CS7-4j-Zxj"/>
+                                        <constraint firstAttribute="width" constant="22" id="ecQ-eK-KgA"/>
                                         <constraint firstAttribute="height" constant="22" id="gE6-W2-je4"/>
                                         <constraint firstAttribute="width" constant="22" id="qP2-XW-yCz"/>
                                     </constraints>
                                     <state key="normal" image="icon_share.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="CS7-4j-Zxj"/>
+                                            <exclude reference="ecQ-eK-KgA"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="constraints">
+                                            <include reference="CS7-4j-Zxj"/>
+                                            <include reference="ecQ-eK-KgA"/>
+                                            <exclude reference="gE6-W2-je4"/>
+                                            <exclude reference="qP2-XW-yCz"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="9Um-L9-DuE"/>
                                     </connections>
@@ -215,12 +351,31 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="Gt7-R1-HEe" firstAttribute="top" secondItem="yOl-TV-hea" secondAttribute="top" id="4La-yZ-p2l"/>
+                                <constraint firstItem="Gt7-R1-HEe" firstAttribute="centerX" secondItem="NVF-1o-j7L" secondAttribute="centerX" id="Ca0-mq-TOV"/>
                                 <constraint firstItem="Gt7-R1-HEe" firstAttribute="centerY" secondItem="NVF-1o-j7L" secondAttribute="centerY" id="HWu-RQ-09k"/>
                                 <constraint firstItem="Gt7-R1-HEe" firstAttribute="centerX" secondItem="NVF-1o-j7L" secondAttribute="centerX" id="cKa-8e-Dya"/>
                                 <constraint firstItem="Gt7-R1-HEe" firstAttribute="leading" secondItem="yOl-TV-hea" secondAttribute="leading" id="g67-1F-uFe"/>
                                 <constraint firstAttribute="bottom" secondItem="Gt7-R1-HEe" secondAttribute="bottom" id="hG8-55-PCv"/>
+                                <constraint firstItem="Gt7-R1-HEe" firstAttribute="centerY" secondItem="NVF-1o-j7L" secondAttribute="centerY" id="pPC-WY-pZv"/>
+                                <constraint firstAttribute="height" constant="60" id="sSG-LG-lr0"/>
                                 <constraint firstAttribute="trailing" secondItem="Gt7-R1-HEe" secondAttribute="trailing" id="vZ1-75-Gs9"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="sSG-LG-lr0"/>
+                                    <exclude reference="Ca0-mq-TOV"/>
+                                    <exclude reference="pPC-WY-pZv"/>
+                                </mask>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=regular">
+                                <mask key="constraints">
+                                    <include reference="sSG-LG-lr0"/>
+                                    <include reference="Ca0-mq-TOV"/>
+                                    <exclude reference="HWu-RQ-09k"/>
+                                    <exclude reference="cKa-8e-Dya"/>
+                                    <include reference="pPC-WY-pZv"/>
+                                </mask>
+                            </variation>
                         </view>
                     </subviews>
                     <constraints>
@@ -233,7 +388,9 @@
                         <constraint firstItem="yOl-TV-hea" firstAttribute="leading" secondItem="rtG-5l-uP9" secondAttribute="trailing" id="Iqb-9W-uJ8"/>
                         <constraint firstItem="bom-db-7Zb" firstAttribute="width" secondItem="xTR-gW-UnV" secondAttribute="width" id="JeR-zl-mZX"/>
                         <constraint firstAttribute="trailing" secondItem="7aR-jB-LOh" secondAttribute="trailing" id="MQS-eq-sbq"/>
-                        <constraint firstAttribute="height" constant="44" id="Nz9-zf-Asa"/>
+                        <constraint firstAttribute="height" constant="44" id="Nz9-zf-Asa">
+                            <variation key="heightClass=regular-widthClass=regular" constant="60"/>
+                        </constraint>
                         <constraint firstAttribute="bottom" secondItem="yOl-TV-hea" secondAttribute="bottom" id="PLe-cU-ET0"/>
                         <constraint firstItem="xTR-gW-UnV" firstAttribute="top" secondItem="7aR-jB-LOh" secondAttribute="bottom" constant="-1" id="R87-a6-7TN"/>
                         <constraint firstItem="7aR-jB-LOh" firstAttribute="top" secondItem="N7O-mI-2jh" secondAttribute="top" id="Rz0-eS-gYz"/>
@@ -245,6 +402,13 @@
                         <constraint firstItem="xTR-gW-UnV" firstAttribute="leading" secondItem="bom-db-7Zb" secondAttribute="trailing" id="kfo-6Q-Sm3"/>
                         <constraint firstItem="7aR-jB-LOh" firstAttribute="leading" secondItem="N7O-mI-2jh" secondAttribute="leading" id="luY-y8-HCY"/>
                     </constraints>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <exclude reference="7bv-YB-fis"/>
+                            <exclude reference="Dmd-2O-ylU"/>
+                            <exclude reference="9IS-IE-x1p"/>
+                        </mask>
+                    </variation>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5EI-FS-xn5">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="440"/>
@@ -408,18 +572,23 @@
             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="5EI-FS-xn5" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="5nC-LJ-H8U"/>
+                <constraint firstAttribute="trailing" secondItem="N7O-mI-2jh" secondAttribute="trailing" id="6Bp-I0-NPu"/>
                 <constraint firstAttribute="trailing" secondItem="MRz-8B-iSx" secondAttribute="trailing" id="EL8-pG-lvy"/>
+                <constraint firstAttribute="bottom" secondItem="N7O-mI-2jh" secondAttribute="bottom" id="JkV-mS-Ik7"/>
                 <constraint firstItem="MRz-8B-iSx" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="Nmn-zm-tnV"/>
-                <constraint firstItem="N7O-mI-2jh" firstAttribute="top" secondItem="5EI-FS-xn5" secondAttribute="bottom" constant="-4" id="Rm6-Nv-5e7"/>
+                <constraint firstItem="N7O-mI-2jh" firstAttribute="top" secondItem="5EI-FS-xn5" secondAttribute="bottom" constant="-4" id="Rm6-Nv-5e7">
+                    <variation key="heightClass=regular-widthClass=regular" constant="1"/>
+                </constraint>
                 <constraint firstAttribute="trailing" secondItem="N7O-mI-2jh" secondAttribute="trailing" id="TC8-cJ-GAz"/>
                 <constraint firstAttribute="trailing" secondItem="5EI-FS-xn5" secondAttribute="trailing" id="UQo-ax-bpJ"/>
                 <constraint firstItem="5EI-FS-xn5" firstAttribute="top" secondItem="56G-bC-GIm" secondAttribute="top" id="UwR-bv-tSz"/>
+                <constraint firstItem="N7O-mI-2jh" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="gom-KY-U5z"/>
                 <constraint firstItem="N7O-mI-2jh" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="mvN-Sp-R6z"/>
                 <constraint firstAttribute="bottom" secondItem="N7O-mI-2jh" secondAttribute="bottom" id="qAn-sQ-dY0"/>
                 <constraint firstItem="MRz-8B-iSx" firstAttribute="top" secondItem="56G-bC-GIm" secondAttribute="top" id="vii-XD-Lbw"/>
             </constraints>
             <nil key="simulatedBottomBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="145" y="160"/>
         </view>
         <view contentMode="scaleToFill" id="6N7-Wf-YM3" userLabel="FooterView">
@@ -469,9 +638,4 @@
         <image name="icon_share.png" width="30" height="30"/>
         <image name="icon_urutkan_alt.png" width="30" height="30"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

@@ -278,7 +278,7 @@
         [self requestSuccess:mappingResult withOperation:operation];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:_isEditForm?@[CStringGagalMemperbaharuiUlasan]:@[CStringGagalMenambahUlasan] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:_isEditForm?@[CStringGagalMemperbaharuiUlasan]:@[CStringGagalMenambahUlasan] delegate:self];
         [stickyAlertView show];
         [self.navigationController popViewControllerAnimated:YES];
     }];

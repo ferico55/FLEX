@@ -31,6 +31,9 @@
 
 #import "RedirectHandler.h"
 
+#import "InboxRootViewController.h"
+#import "NavigateViewController.h"
+
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
                                     RedirectHandlerDelegate,
@@ -40,6 +43,8 @@
     BOOL _isAbleToSwipe;
     UserAuthentificationManager *_userManager;
     RedirectHandler *_redirectHandler;
+    NavigateViewController *_navigate;
+    
 }
 
 @property (strong, nonatomic) HotlistViewController *hotlistController;
@@ -91,6 +96,8 @@
 
     _redirectHandler = [RedirectHandler new];
     _redirectHandler.delegate = self;
+    
+    _navigate = [NavigateViewController new];
     
     
     [self initNotificationCenter];
@@ -163,6 +170,12 @@
     greenArrowImageView.frame = frame;
 //    [self.navigationController.navigationBar addSubview:greenArrowImageView];
     [self.view addSubview:greenArrowImageView];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 - (void)setHeaderBar {
@@ -330,65 +343,15 @@
 }
 
 - (void)goToInboxMessage {
-    InboxMessageViewController *vc = [InboxMessageViewController new];
-    vc.data=@{@"nav":@"inbox-message"};
-    
-    InboxMessageViewController *vc1 = [InboxMessageViewController new];
-    vc1.data=@{@"nav":@"inbox-message-sent"};
-    
-    InboxMessageViewController *vc2 = [InboxMessageViewController new];
-    vc2.data=@{@"nav":@"inbox-message-archive"};
-    
-    InboxMessageViewController *vc3 = [InboxMessageViewController new];
-    vc3.data=@{@"nav":@"inbox-message-trash"};
-    NSArray *vcs = @[vc,vc1, vc2, vc3];
-    
-    TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-    [inboxController setSelectedIndex:2];
-    [inboxController setViewControllers:vcs];
-    
-    [self.navigationController pushViewController:inboxController animated:YES];
+    [_navigate navigateToInboxMessageFromViewController:self];
 }
 
 - (void)goToInboxTalk {
-    InboxTalkViewController *vc = [InboxTalkViewController new];
-    vc.data=@{@"nav":@"inbox-talk"};
-    
-    InboxTalkViewController *vc1 = [InboxTalkViewController new];
-    vc1.data=@{@"nav":@"inbox-talk-my-product"};
-    
-    InboxTalkViewController *vc2 = [InboxTalkViewController new];
-    vc2.data=@{@"nav":@"inbox-talk-following"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-    //    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-    //    [nav.navigationBar setTranslucent:NO];
-    //    [self.navigationController presentViewController:nav animated:YES completion:nil];
-    [self.navigationController pushViewController:nc animated:YES];
+    [_navigate navigateToInboxTalkFromViewController:self];
 }
 
 - (void)goToInboxReview {
-    InboxReviewViewController *vc = [InboxReviewViewController new];
-    vc.data=@{@"nav":@"inbox-review"};
-    
-    InboxReviewViewController *vc1 = [InboxReviewViewController new];
-    vc1.data=@{@"nav":@"inbox-review-my-product"};
-    
-    InboxReviewViewController *vc2 = [InboxReviewViewController new];
-    vc2.data=@{@"nav":@"inbox-review-my-review"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-    //    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-    //    [nav.navigationBar setTranslucent:NO];
-    //    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    [_navigate navigateToInboxReviewFromViewController:self];
 }
 
 - (void)goToNewOrder {
