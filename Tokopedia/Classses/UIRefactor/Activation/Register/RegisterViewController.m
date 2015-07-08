@@ -366,19 +366,27 @@
 -(void)cancel
 {
     [_request cancel];
-
     _request = nil;
+    
+    [_requestFacebookLogin cancel];
+    _requestFacebookLogin = nil;
+
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
+    
+    [_facebookObjectManager.operationQueue cancelAllOperations];
+    _facebookObjectManager = nil;
     
     _loadingView.hidden = YES;
     [_container addSubview:_contentView];
     _container.contentSize = CGSizeMake(self.view.frame.size.width,
                                         _contentView.frame.size.height);
     
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
+    if ([[FBSession activeSession] state] != FBSessionStateCreated) {
+        [[FBSession activeSession] closeAndClearTokenInformation];
+        [[FBSession activeSession] close];
+        [FBSession setActiveSession:nil];
+    }
 }
 
 - (void)configureRestKit
@@ -681,11 +689,10 @@
 // Call method when user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
     if ([[FBSession activeSession] state] == FBSessionStateOpen) {
-        [FBSession.activeSession closeAndClearTokenInformation];
-        [self requestLoginFacebookUser:user];        
         _facebookUser = user;
         _loadingView.hidden = NO;
         [_facebookLoginActivityIndicator startAnimating];
+        [self requestLoginFacebookUser:user];
     }
 }
 
