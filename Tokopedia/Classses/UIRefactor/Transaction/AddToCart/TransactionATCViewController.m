@@ -358,6 +358,23 @@
                 cell = _tableViewPaymentDetailCell[indexPath.row];
                 UILabel *label = (UILabel *)[cell viewWithTag:1];
                 switch (indexPath.row) {
+                    case TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE:
+                    {
+                        NSString *priceString = _productPrice;
+                        NSArray *wholesalePrice = _wholeSales;
+                        if (wholesalePrice.count>0) {
+                            for (WholesalePrice *price in wholesalePrice) {
+                                if (_productQuantityStepper.value >= [price.wholesale_min integerValue] && _productQuantityStepper.value <= [price.wholesale_max integerValue]) {
+                                    priceString = price.wholesale_price;
+                                    break;
+                                }
+                            }
+                        }
+                        
+
+                        label.text = [NSString stringWithFormat:@"Rp %@",priceString];
+                        break;
+                    }
                     case TAG_BUTTON_TRANSACTION_PRODUCT_PRICE:
                     {
                         label.text = product.product_price;
@@ -453,6 +470,15 @@
             break;
         case 2:
             cell = _tableViewPaymentDetailCell[indexPath.row];
+            if (indexPath.row == TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE) {
+                if (_productQuantityStepper.value<=1) {
+                    return 0;
+                }
+                else
+                {
+                    return 40;
+                }
+            }
         default:
             break;
     }
@@ -1240,6 +1266,7 @@
 - (IBAction)changeStepperValue:(UIStepper *)sender {
     _productQuantityChanged = YES;
     _productQuantityLabel.text = [NSString stringWithFormat:@"%d", (int)sender.value];
+    [_tableView reloadData];
 }
 
 #pragma mark - Keyboard Notification
