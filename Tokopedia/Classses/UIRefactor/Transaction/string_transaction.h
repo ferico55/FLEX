@@ -313,6 +313,10 @@ typedef enum
 #define API_CC_PHONE_KEY @"phone"
 #define API_CC_STATE_KEY @"state"
 #define API_CC_CARD_NUMBER_KEY @"card_number"
+#define API_CC_EXP_MONTH_KEY @"card_exp_month"
+#define API_CC_EXP_YEAR_KEY @"card_exp_year"
+#define API_CC_CVV_KEY @"card_cvv"
+#define API_CC_OWNER_KEY @"card_owner"
 
 #define CALCULATE_PRODUCT @""
 #define CALCULATE_ADDRESS @"calculate_address_shipping"
@@ -325,7 +329,7 @@ typedef enum
 #define API_CHECK_VOUCHER_PATH @"tx-voucher.pl"
 #define API_EMONEY_PATH @"tx-payment-emoney.pl"
 #define API_BCA_KLICK_PAY_PATH @"tx-payment-bcaklikpay.pl"
-#define API_ACTION_CC_PATH @"action/tx.pl"
+#define API_ACTION_CC_PATH @"tx-action.pl"
 
 #define TRANSACTION_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define TRANSACTION_NODATACELLTITLE @"no data"

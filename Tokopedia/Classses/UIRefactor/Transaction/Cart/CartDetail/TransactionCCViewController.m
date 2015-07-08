@@ -95,6 +95,11 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [_activeTextView resignFirstResponder];
+    [_activeTextField resignFirstResponder];
+    
+    _activeTextView = nil;
+    _activeTextField = nil;
     switch (indexPath.row) {
         case 1:
             [_firstNameTextField becomeFirstResponder];
@@ -124,6 +129,11 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [_activeTextView resignFirstResponder];
+    [_activeTextField resignFirstResponder];
+
+    _activeTextView = nil;
+    _activeTextField = nil;
 }
 
 #pragma mark - Text Field Delegate
@@ -164,6 +174,10 @@
 
 -(IBAction)nextButton:(id)sender
 {
+    [_activeTextView resignFirstResponder];
+    [_activeTextField resignFirstResponder];
+    
+    _activeTextView = nil;
     _activeTextField = nil;
     
     if ([self isValidInput]) {

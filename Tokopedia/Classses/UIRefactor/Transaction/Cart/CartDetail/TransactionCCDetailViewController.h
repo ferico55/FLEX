@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol TransactionCCDetailViewControllerDelegate <NSObject>
+
+@required
+- (void)shouldDoRequestCC:(NSDictionary*)param;
+
+@end
+
 @interface TransactionCCDetailViewController : UIViewController
 
+@property (nonatomic, weak) IBOutlet id<TransactionCCDetailViewControllerDelegate> delegate;
 @property (strong, nonatomic) NSDictionary *data;
 
 @end

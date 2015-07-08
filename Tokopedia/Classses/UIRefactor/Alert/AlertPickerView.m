@@ -65,13 +65,22 @@
 // The number of columns of data
 - (int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 1;
+    if (_pickerCount==0) {
+        _pickerCount = 1;
+    }
+    return _pickerCount;
 }
 
 // The number of rows of data
 - (int)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    int datacount = (int)_pickerData.count;
+    int datacount = 0;
+    if (component == 0) {
+        datacount = (int)_pickerData.count;
+    }
+    if (component == 1) {
+        datacount = (int)_secondPickerData.count;
+    }
     return datacount;
 }
 
@@ -79,6 +88,12 @@
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     NSString *dataname = [_pickerData[row] objectForKey:DATA_NAME_KEY];
+    if (component == 0) {
+        dataname = [_pickerData[row] objectForKey:DATA_NAME_KEY];
+    }
+    if (component == 1) {
+        dataname = [_secondPickerData[row] objectForKey:DATA_NAME_KEY];
+    }
     return dataname;
 }
 
@@ -93,7 +108,13 @@
         label.numberOfLines = 0;
     }
 
-    label.text=[_pickerData[row] objectForKey:DATA_NAME_KEY];
+    if (component == 0) {
+        label.text = [NSString stringWithFormat:@"%@",[_pickerData[row] objectForKey:DATA_NAME_KEY]];
+    }
+    if (component == 1) {
+        label.text = [NSString stringWithFormat:@"%@",[_secondPickerData[row] objectForKey:DATA_NAME_KEY]];
+    }
+    
     return label;
 }
 
@@ -102,7 +123,15 @@
 {
     // This method is triggered whenever the user makes a change to the picker selection.
     // The parameter named row and component represents what was selected.
-    _data = @{DATA_INDEX_KEY:@(row)};
+    NSInteger index = 0;
+    NSInteger secondIndex = 0 ;
+    if (component == 0) {
+        index = row;
+    }
+    if (component == 1) {
+        secondIndex = row;
+    }
+    _data = @{DATA_INDEX_KEY:@(index),DATA_INDEX_SECOND_KEY:@(secondIndex)};
 }
 
 #pragma mark - Methods

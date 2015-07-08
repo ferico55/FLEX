@@ -431,6 +431,20 @@
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
     }
+    if (tag == TAG_REQUEST_CC)
+    {
+        TransactionAction *actionCC = stat;
+        
+        if (actionCC.result.cc_agent != nil && ![actionCC.result.cc_agent isEqualToString:@"0"] && ![actionCC.result.cc_agent isEqualToString:@""]) {
+            [_delegate requestSuccessCC:successResult withOperation:operation];
+        }
+        else
+        {
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran Anda gagal"] delegate:_viewController];
+            [failedAlert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
+    }
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
