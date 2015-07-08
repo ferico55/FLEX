@@ -884,6 +884,7 @@
                     
                     commentlist.comment_create_time = dateString;
                     commentlist.is_just_sent = YES;
+                    commentlist.comment_user_label = [_userManager isMyShopWithShopId:[_data objectForKey:TKPD_TALK_SHOP_ID]] ? @"Penjual" : @"Pengguna";
                     
                     [_list insertObject:commentlist atIndex:lastindexpathrow];
                     NSArray *insertIndexPaths = [NSArray arrayWithObjects:
