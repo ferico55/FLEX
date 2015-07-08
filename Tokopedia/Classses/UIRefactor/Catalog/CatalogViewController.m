@@ -570,19 +570,10 @@
 
 - (IBAction)tap:(id)sender
 {
-    UIView *view = ((UITapGestureRecognizer *) sender).view;
+//    UIView *view = ((UITapGestureRecognizer *) sender).view;
     
-    if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {
-        if (_catalog) {
-            NSString *title = _catalog.result.catalog_info.catalog_name;
-            NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
-            UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                     applicationActivities:nil];
-            controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-            [self presentViewController:controller animated:YES completion:nil];
-        }
-    }
-    else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
             if (_catalog) {
@@ -621,6 +612,18 @@
 
         gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.navigationController presentViewController:gallery animated:YES completion:nil];
+    } else{
+        UIView *view = ((UIGestureRecognizer*)sender).view;
+        if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {
+            if (_catalog) {
+                NSString *title = _catalog.result.catalog_info.catalog_name;
+                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
+                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                         applicationActivities:nil];
+                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:controller animated:YES completion:nil];
+            }
+        }
     }
 }
 
