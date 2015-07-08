@@ -47,8 +47,10 @@
 {
     
     UserContainerViewController *container = [UserContainerViewController new];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
     container.data = @{
-                       @"user_id" : userID
+                       @"user_id" : userID,
+                       @"auth" : [auth getUserLoginData]
                        };
     
     [viewController.navigationController pushViewController:container animated:YES];
