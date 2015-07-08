@@ -23,6 +23,9 @@
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusViewController.h"
 
+#import "TKPDTabViewController.h"
+#import "InboxTicketViewController.h"
+
 
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
 
@@ -168,7 +171,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 5;
+            numberOfRows = 6;
             break;
             
         case 1:
@@ -354,18 +357,43 @@
             }
             case 3:
             {
+                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+                [self.delegate pushViewController:alertPriceNotificationViewController];
+                break;
+            }
+            case 4:
+            {
+                TKPDTabViewController *controller = [TKPDTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                
+                InboxTicketViewController *allInbox = [InboxTicketViewController new];
+                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+                allInbox.delegate = controller;
+                
+                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+                unreadInbox.delegate = controller;
+                
+                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+                closedInbox.delegate = controller;
+                
+                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+                
+                [self.delegate pushViewController:controller];
+                break;
+            }
+                
+            case 5 : {
                 InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
                 vc.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:vc];
                 break;
             }
-            case 4:
-            {
-                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
-                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:alertPriceNotificationViewController];
-            }
-                break;
+
             default:
                 break;
         }

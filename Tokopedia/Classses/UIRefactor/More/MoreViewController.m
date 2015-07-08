@@ -650,10 +650,15 @@
             [self.navigationController pushViewController:nc animated:YES];
             
         } else if (indexPath.row == 3) {
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
             
+
+        } else if (indexPath.row == 4) {
             TKPDTabViewController *controller = [TKPDTabViewController new];
             controller.hidesBottomBarWhenPushed = YES;
-        
+            
             InboxTicketViewController *allInbox = [InboxTicketViewController new];
             allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
             allInbox.delegate = controller;
@@ -669,15 +674,12 @@
             controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
             controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
             controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-
-            [self.navigationController pushViewController:controller animated:YES];
-
-        } else if (indexPath.row == 4) {
             
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (indexPath.row == 5) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-            
         }
     }
     
