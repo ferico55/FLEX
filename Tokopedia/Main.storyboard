@@ -4359,6 +4359,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="480"/>
                     <connections>
+                        <outlet property="customerCareCountLabel" destination="kEN-eT-vRp" id="NnS-Yd-2wT"/>
                         <outlet property="discussionCountLabel" destination="6L8-pJ-HnF" id="cNT-Jq-T4a"/>
                         <outlet property="messageCountLabel" destination="TxM-hZ-8iB" id="4Eo-Ag-ejs"/>
                         <outlet property="orderCancelled" destination="3Mg-91-72Q" id="NcT-dv-BuY"/>
@@ -4367,8 +4368,10 @@
                         <outlet property="orderStatusCountLabel" destination="nzS-0h-AaV" id="wKH-p5-5CR"/>
                         <outlet property="paymentConfirmation" destination="r8K-DU-Gt7" id="Nzz-A0-gOS"/>
                         <outlet property="paymentConfirmationLabel" destination="kUg-PO-kvQ" id="z0M-mj-X0x"/>
+                        <outlet property="priceNotificationCountLabel" destination="814-OG-8Cs" id="9q5-k3-kDs"/>
                         <outlet property="receiveConfirmation" destination="FPH-i8-0IG" id="vh5-f8-uhe"/>
                         <outlet property="receiveConfirmationCountLabel" destination="xnc-us-OGw" id="Fh7-tm-1dD"/>
+                        <outlet property="resolutionCenterCountLabel" destination="k9j-l2-oMf" id="JCS-Fb-VZO"/>
                         <outlet property="reviewCountLabel" destination="5Kt-UC-SF9" id="jKe-lH-Ac8"/>
                         <outlet property="salesNewOrder" destination="iN2-7A-Xxx" id="JKz-Ov-IzQ"/>
                         <outlet property="salesOrderLabel" destination="9Oh-50-UTG" id="ShY-iJ-ksT"/>

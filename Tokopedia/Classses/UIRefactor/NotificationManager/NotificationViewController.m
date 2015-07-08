@@ -90,7 +90,15 @@
         [self updateLabelAppearance:_priceNotificationCountLabel];
     }
     
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
     
+    if([_notification.result.inbox.inbox_ticket integerValue] > 0) {
+        _customerCareCountLabel.text = _notification.result.inbox.inbox_ticket;
+        [self updateLabelAppearance:_customerCareCountLabel];
+    }
     
     // Payment section
     if([_notification.result.sales.sales_new_order integerValue] > 0) {
