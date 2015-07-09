@@ -192,19 +192,29 @@
                                     <outletCollection property="gestureRecognizers" destination="Qbm-cK-4lC" appends="YES" id="SRy-2Y-nCH"/>
                                 </connections>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u6d-Vo-AAZ" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="73" width="300" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="iKE-cj-OxR"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="lxm-Z9-Kso" firstAttribute="top" secondItem="ry9-Nv-Ulq" secondAttribute="top" constant="10" id="4dP-uV-Qpx"/>
                             <constraint firstItem="QB5-o5-jz8" firstAttribute="top" secondItem="ry9-Nv-Ulq" secondAttribute="top" constant="10" id="7Lj-vY-BJk"/>
+                            <constraint firstItem="u6d-Vo-AAZ" firstAttribute="leading" secondItem="ry9-Nv-Ulq" secondAttribute="leading" id="EKi-r3-2w3"/>
                             <constraint firstItem="lxm-Z9-Kso" firstAttribute="leading" secondItem="QB5-o5-jz8" secondAttribute="trailing" constant="8" id="SS2-TZ-Rcc"/>
                             <constraint firstItem="Jnt-JS-GAW" firstAttribute="leading" secondItem="DcA-vL-j0M" secondAttribute="trailing" constant="8" id="SV1-1b-TMm"/>
                             <constraint firstAttribute="bottom" secondItem="QB5-o5-jz8" secondAttribute="bottom" constant="20" id="UdA-6L-ESB"/>
+                            <constraint firstAttribute="bottom" secondItem="u6d-Vo-AAZ" secondAttribute="bottom" id="awK-vv-IxH"/>
                             <constraint firstItem="QB5-o5-jz8" firstAttribute="leading" secondItem="yyR-P0-y9m" secondAttribute="trailing" constant="8" id="eBh-gj-cLQ"/>
                             <constraint firstItem="DcA-vL-j0M" firstAttribute="top" secondItem="ry9-Nv-Ulq" secondAttribute="top" constant="10" id="eGH-tV-4xd"/>
                             <constraint firstItem="Jnt-JS-GAW" firstAttribute="top" secondItem="ry9-Nv-Ulq" secondAttribute="top" constant="10" id="ect-WT-XFQ"/>
                             <constraint firstItem="yyR-P0-y9m" firstAttribute="top" secondItem="ry9-Nv-Ulq" secondAttribute="top" constant="10" id="gPP-hi-lla"/>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="74" id="ghj-zN-b1i"/>
+                            <constraint firstAttribute="trailing" secondItem="u6d-Vo-AAZ" secondAttribute="trailing" id="gqs-Ue-Txh"/>
                             <constraint firstItem="yyR-P0-y9m" firstAttribute="leading" secondItem="ry9-Nv-Ulq" secondAttribute="leading" constant="10" id="gvP-AJ-qjK"/>
                             <constraint firstAttribute="bottom" secondItem="Jnt-JS-GAW" secondAttribute="bottom" constant="20" id="jVm-cW-Zj2"/>
                             <constraint firstAttribute="bottom" secondItem="yyR-P0-y9m" secondAttribute="bottom" constant="20" id="kPz-EM-CsW"/>
@@ -349,6 +359,7 @@
                 <outlet property="buyerNameLabel" destination="4xe-3J-8jl" id="64J-ps-Bem"/>
                 <outlet property="buyerProfileImageView" destination="ul6-rf-nr2" id="kDH-tQ-H3f"/>
                 <outlet property="buyerSellerLabel" destination="nWc-fE-O2J" id="K70-bR-dZD"/>
+                <outlet property="buyerView" destination="HU8-BV-kCh" id="Vvr-PD-5j6"/>
                 <outlet property="imageConstraintHeight" destination="ghj-zN-b1i" id="SvF-zl-aos"/>
                 <outlet property="markAttachmentLabel" destination="nqw-gf-Wtu" id="8Fn-SJ-0u9"/>
                 <outlet property="markLabel" destination="Ep7-Aa-1UJ" id="RgF-lF-avy"/>
@@ -368,6 +379,12 @@
                 <outletCollection property="attachmentImages" destination="Jnt-JS-GAW" id="ZHN-oi-fWw"/>
                 <outletCollection property="twoButtons" destination="616-cY-QtC" id="RKz-hx-RMk"/>
                 <outletCollection property="twoButtons" destination="cRI-kN-knU" id="hI5-xb-4iH"/>
+                <outletCollection property="borders" destination="aiL-Ab-rOE" id="c1o-td-agE"/>
+                <outletCollection property="borders" destination="Wbg-nK-3fN" id="fK9-Df-YjQ"/>
+                <outletCollection property="borders" destination="EFU-xv-HAV" id="WEh-DV-dA3"/>
+                <outletCollection property="borders" destination="azT-SC-JKK" id="FIf-t7-hzr"/>
+                <outletCollection property="borders" destination="qco-Ip-2NE" id="lhR-Oa-OQR"/>
+                <outletCollection property="borders" destination="u6d-Vo-AAZ" id="Vbg-Pl-fAS"/>
             </connections>
             <point key="canvasLocation" x="135" y="181.5"/>
         </tableViewCell>

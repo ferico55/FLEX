@@ -23,6 +23,7 @@
 
 @property (nonatomic, weak) id<ResolutionCenterDetailCellDelegate> delegate;
 
+@property (weak, nonatomic) IBOutlet UIView *buyerView;
 @property (weak, nonatomic) IBOutlet UILabel *buyerNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeRemainingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *buyerSellerLabel;
@@ -33,6 +34,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *markAttachmentLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *buyerProfileImageView;
 @property (weak, nonatomic) IBOutlet UIView *photosView;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *borders;
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *attachmentImages;
 @property (weak, nonatomic) IBOutlet UIButton *oneButton;

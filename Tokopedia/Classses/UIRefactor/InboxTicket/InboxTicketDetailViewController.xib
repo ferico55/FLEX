@@ -20,6 +20,10 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -29,6 +33,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InboxTicketDetailViewController">
             <connections>
+                <outlet property="automaticCloseRatingNoButton" destination="oxg-ND-qZC" id="UIf-CK-q7N"/>
+                <outlet property="automaticCloseRatingYesButton" destination="54n-t3-XMG" id="gap-bG-u3u"/>
+                <outlet property="automaticCloseReopenButton" destination="lyO-wf-qMU" id="FUh-rb-bHr"/>
+                <outlet property="automaticCloseTitleLabel" destination="WtB-4h-XB9" id="gvS-eW-ieb"/>
+                <outlet property="automaticCloseView" destination="a0p-xc-Xzd" id="gnK-8y-Mck"/>
                 <outlet property="buttonsView" destination="8aI-YU-Rat" id="aWZ-1H-cj7"/>
                 <outlet property="cloesAfterCSButton" destination="CDs-NW-QDm" id="Ro1-lV-aoz"/>
                 <outlet property="closeTicketButton" destination="OlV-aX-adn" id="tZ5-Ed-yxH"/>
@@ -520,6 +529,118 @@
                         <constraint firstItem="pfg-NG-j0K" firstAttribute="leading" secondItem="6UJ-gf-7Es" secondAttribute="leading" constant="10" id="tfZ-xY-JpO"/>
                     </constraints>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0p-xc-Xzd" userLabel="Sudah terbantu form">
+                    <rect key="frame" x="0.0" y="330" width="320" height="150"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hhn-iI-McE">
+                            <rect key="frame" x="0.0" y="52" width="320" height="50"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ute-9d-4QD">
+                                    <rect key="frame" x="0.0" y="0.0" width="160" height="50"/>
+                                    <subviews>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxg-ND-qZC">
+                                            <rect key="frame" x="10" y="9" width="145" height="32"/>
+                                            <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                            <color key="tintColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <state key="normal" title="Tidak">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTouchUpCloseButton:" destination="-1" eventType="touchUpInside" id="aqt-5x-pVy"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="oxg-ND-qZC" secondAttribute="trailing" constant="5" id="6ik-uy-TMi"/>
+                                        <constraint firstItem="oxg-ND-qZC" firstAttribute="leading" secondItem="ute-9d-4QD" secondAttribute="leading" constant="10" id="8vX-OI-xAD"/>
+                                        <constraint firstAttribute="height" constant="50" id="DIJ-xm-hGI"/>
+                                        <constraint firstItem="oxg-ND-qZC" firstAttribute="top" secondItem="ute-9d-4QD" secondAttribute="top" constant="9" id="Pu5-um-uQ1"/>
+                                        <constraint firstAttribute="bottom" secondItem="oxg-ND-qZC" secondAttribute="bottom" constant="9" id="vU4-3A-uOE"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zOS-ev-taJ">
+                                    <rect key="frame" x="160" y="0.0" width="160" height="50"/>
+                                    <subviews>
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="54n-t3-XMG">
+                                            <rect key="frame" x="5" y="9" width="145" height="32"/>
+                                            <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <state key="normal" title="Ya">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTouchUpRatingYesButton:" destination="-1" eventType="touchUpInside" id="6Rh-Fu-p8j"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="54n-t3-XMG" firstAttribute="leading" secondItem="zOS-ev-taJ" secondAttribute="leading" constant="5" id="1CC-x5-RNY"/>
+                                        <constraint firstItem="54n-t3-XMG" firstAttribute="top" secondItem="zOS-ev-taJ" secondAttribute="top" constant="9" id="80f-8J-Oru"/>
+                                        <constraint firstAttribute="height" constant="50" id="M6f-nX-rZu"/>
+                                        <constraint firstAttribute="bottom" secondItem="54n-t3-XMG" secondAttribute="bottom" constant="9" id="f9B-c3-A5e"/>
+                                        <constraint firstAttribute="trailing" secondItem="54n-t3-XMG" secondAttribute="trailing" constant="10" id="tRi-gO-RPg"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="zOS-ev-taJ" secondAttribute="trailing" id="9P1-J2-ElY"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="D80-fr-5bq"/>
+                                <constraint firstAttribute="bottom" secondItem="zOS-ev-taJ" secondAttribute="bottom" id="RgM-MP-Vhd"/>
+                                <constraint firstItem="zOS-ev-taJ" firstAttribute="top" secondItem="Hhn-iI-McE" secondAttribute="top" id="Ulp-pb-bUG"/>
+                                <constraint firstItem="ute-9d-4QD" firstAttribute="top" secondItem="Hhn-iI-McE" secondAttribute="top" id="aBc-lw-76J"/>
+                                <constraint firstItem="ute-9d-4QD" firstAttribute="width" secondItem="zOS-ev-taJ" secondAttribute="width" id="fvW-GC-1qU"/>
+                                <constraint firstItem="zOS-ev-taJ" firstAttribute="leading" secondItem="ute-9d-4QD" secondAttribute="trailing" id="gST-c9-59G"/>
+                                <constraint firstItem="ute-9d-4QD" firstAttribute="leading" secondItem="Hhn-iI-McE" secondAttribute="leading" id="j6D-gD-jvn"/>
+                                <constraint firstAttribute="height" constant="50" id="nvg-IU-jeR"/>
+                                <constraint firstAttribute="bottom" secondItem="ute-9d-4QD" secondAttribute="bottom" id="sXp-B0-DUp"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apakah balasan dari CS kami membantu menyelesaikan masalah / pertanyaan anda?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WtB-4h-XB9">
+                            <rect key="frame" x="15" y="10" width="290" height="46"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="46" id="xNy-Dg-Hpk"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyO-wf-qMU">
+                            <rect key="frame" x="10" y="102" width="300" height="32"/>
+                            <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="av8-a6-jhc"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <state key="normal" title="Buka Kasus Kembali">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="didTouchReopenButton:" destination="-1" eventType="touchUpInside" id="OWC-G2-HOI"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="0.97647058819999999" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="WtB-4h-XB9" firstAttribute="top" secondItem="a0p-xc-Xzd" secondAttribute="top" constant="10" id="4co-vv-hVk"/>
+                        <constraint firstItem="WtB-4h-XB9" firstAttribute="leading" secondItem="a0p-xc-Xzd" secondAttribute="leading" constant="15" id="9G2-oD-ffn"/>
+                        <constraint firstItem="Hhn-iI-McE" firstAttribute="top" secondItem="WtB-4h-XB9" secondAttribute="bottom" constant="-4" id="C3a-Jy-Pbu"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="IKB-92-m6w"/>
+                        <constraint firstAttribute="trailing" secondItem="Hhn-iI-McE" secondAttribute="trailing" id="Sfw-Kh-5ks"/>
+                        <constraint firstAttribute="height" constant="150" id="aWQ-VX-S4A"/>
+                        <constraint firstAttribute="width" constant="320" id="bon-0z-is8"/>
+                        <constraint firstItem="Hhn-iI-McE" firstAttribute="leading" secondItem="a0p-xc-Xzd" secondAttribute="leading" id="d12-19-qEh"/>
+                        <constraint firstItem="lyO-wf-qMU" firstAttribute="top" secondItem="WtB-4h-XB9" secondAttribute="bottom" constant="46" id="ec5-A6-Wdf"/>
+                        <constraint firstAttribute="trailing" secondItem="WtB-4h-XB9" secondAttribute="trailing" constant="15" id="fjj-bk-pHX"/>
+                        <constraint firstAttribute="trailing" secondItem="lyO-wf-qMU" secondAttribute="trailing" constant="10" id="jGX-3k-lTH"/>
+                        <constraint firstItem="lyO-wf-qMU" firstAttribute="leading" secondItem="a0p-xc-Xzd" secondAttribute="leading" constant="10" id="ksa-iH-WdN"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -530,6 +651,7 @@
                 <constraint firstAttribute="bottom" secondItem="I1y-JA-qct" secondAttribute="bottom" id="8TI-np-cwP"/>
                 <constraint firstAttribute="trailing" secondItem="6UJ-gf-7Es" secondAttribute="trailing" id="8pB-00-038"/>
                 <constraint firstItem="FMp-8T-iEx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="BBc-k6-3vE"/>
+                <constraint firstAttribute="trailing" secondItem="a0p-xc-Xzd" secondAttribute="trailing" id="FA9-g8-CYJ"/>
                 <constraint firstItem="Mre-Ap-SEL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GuT-jy-cor"/>
                 <constraint firstAttribute="trailing" secondItem="Mre-Ap-SEL" secondAttribute="trailing" id="KmU-3L-tpk"/>
                 <constraint firstItem="cau-DK-rea" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="MPp-uC-jnb"/>
@@ -537,6 +659,7 @@
                 <constraint firstItem="6UJ-gf-7Es" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Nka-H9-WIZ"/>
                 <constraint firstAttribute="trailing" secondItem="cau-DK-rea" secondAttribute="trailing" id="RBh-8l-PRx"/>
                 <constraint firstAttribute="bottom" secondItem="cau-DK-rea" secondAttribute="bottom" id="Uss-fI-YAU"/>
+                <constraint firstAttribute="bottom" secondItem="a0p-xc-Xzd" secondAttribute="bottom" id="Wtu-pw-bmK"/>
                 <constraint firstAttribute="bottom" secondItem="6UJ-gf-7Es" secondAttribute="bottom" id="YN7-Bz-jZQ"/>
                 <constraint firstItem="8aI-YU-Rat" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="f3l-qd-xSp"/>
                 <constraint firstAttribute="bottom" secondItem="8aI-YU-Rat" secondAttribute="bottom" id="kRA-L5-WBr"/>
@@ -545,6 +668,7 @@
                 <constraint firstAttribute="bottom" secondItem="Mre-Ap-SEL" secondAttribute="bottom" id="sWm-qJ-Rla"/>
                 <constraint firstAttribute="bottom" secondItem="7hC-7n-VLZ" secondAttribute="bottom" id="vBU-FB-A1E"/>
                 <constraint firstAttribute="trailing" secondItem="I1y-JA-qct" secondAttribute="trailing" id="yin-Gv-2tc"/>
+                <constraint firstItem="a0p-xc-Xzd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zx2-s9-VsX"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
