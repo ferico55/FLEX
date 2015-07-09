@@ -7,10 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#define CResponseMsg @"response_msg"
+#define CResponseMessage @"response_message"
+#define CResponseTimeFmt @"response_time_fmt"
+#define CResponseCreateTime @"response_create_time"
 
 @interface ReviewResponse : NSObject
 
 @property (nonatomic, strong) NSString *response_create_time;
 @property (nonatomic, strong) NSString *response_message;
-
+@property (nonatomic, strong) NSString *response_time_fmt;
 @end

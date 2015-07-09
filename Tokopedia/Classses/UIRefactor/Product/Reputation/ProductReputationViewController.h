@@ -13,6 +13,7 @@
 {
     //Outlet for Header
     IBOutlet UIView *viewHeader, *viewFooter;
+    IBOutlet UIButton *btnFilter6Month, *btnFilterAllTime;
     IBOutlet UIActivityIndicatorView *footerActIndicator;
     IBOutlet UISegmentedControl *segmentedControl;
     IBOutletCollection(UIImageView) NSArray *arrImageHeaderRating, *arrImage5Rating, *arrImage4Rating, *arrImage3Rating, *arrImage2Rating, *arrImage1Rating;
@@ -24,6 +25,9 @@
     IBOutlet UITableView *tableContent;
 }
 
+@property (nonatomic, strong) NSString *strShopDomain, *strProductID;
+- (IBAction)actionFilter6Month:(id)sender;
+- (IBAction)actionFilterAllTime:(id)sender;
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc;
 - (IBAction)actionSegmentedValueChange:(id)sender;
 @end

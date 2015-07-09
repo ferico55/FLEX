@@ -504,11 +504,49 @@
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		8546BAA01B4391A3004A279F /* DetailStatisticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8546BA9E1B4391A3004A279F /* DetailStatisticViewController.m */; };
 		8546BAA11B4391A3004A279F /* DetailStatisticViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8546BA9F1B4391A3004A279F /* DetailStatisticViewController.xib */; };
+		855348B51B4CC4A400DC2C67 /* icon_smile_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348B41B4CC4A400DC2C67 /* icon_smile_small.png */; };
+		855348B71B4CC4B800DC2C67 /* icon_smile_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348B61B4CC4B800DC2C67 /* icon_smile_small@3x.png */; };
+		855348B91B4CC4BF00DC2C67 /* icon_smile_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348B81B4CC4BF00DC2C67 /* icon_smile_small@2x.png */; };
+		855348BC1B4CCA9F00DC2C67 /* AlertRateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 855348BB1B4CCA9F00DC2C67 /* AlertRateView.m */; };
+		855348BE1B4CDB4300DC2C67 /* icon_neutral.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348BD1B4CDB4300DC2C67 /* icon_neutral.png */; };
+		855348C21B4CDB7000DC2C67 /* icon_neutral@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348C11B4CDB7000DC2C67 /* icon_neutral@2x.png */; };
+		855348C41B4CDB8700DC2C67 /* icon_neutral@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348C31B4CDB8700DC2C67 /* icon_neutral@3x.png */; };
+		855348C81B4CFE3D00DC2C67 /* GiveReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 855348C61B4CFE3D00DC2C67 /* GiveReviewViewController.m */; };
+		855348C91B4CFE3D00DC2C67 /* GiveReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 855348C71B4CFE3D00DC2C67 /* GiveReviewViewController.xib */; };
+		855348CB1B4D275800DC2C67 /* icon_medal.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348CA1B4D275800DC2C67 /* icon_medal.png */; };
+		855348CD1B4D276000DC2C67 /* icon_medal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348CC1B4D276000DC2C67 /* icon_medal@2x.png */; };
+		855348CF1B4D276900DC2C67 /* icon_medal_3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348CE1B4D276900DC2C67 /* icon_medal_3x.png */; };
+		855348D11B4D277700DC2C67 /* icon_medal_gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348D01B4D277700DC2C67 /* icon_medal_gold.png */; };
+		855348D31B4D277E00DC2C67 /* icon_medal_gold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348D21B4D277E00DC2C67 /* icon_medal_gold@2x.png */; };
+		855348D51B4D278A00DC2C67 /* icon_medal_gold@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348D41B4D278A00DC2C67 /* icon_medal_gold@3x.png */; };
+		855348D71B4D27A100DC2C67 /* icon_medal_bronze@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348D61B4D27A100DC2C67 /* icon_medal_bronze@3x.png */; };
+		855348D91B4D27A800DC2C67 /* icon_medal_bronze@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348D81B4D27A800DC2C67 /* icon_medal_bronze@2x.png */; };
+		855348DB1B4D27AE00DC2C67 /* icon_medal_bronze.png in Resources */ = {isa = PBXBuildFile; fileRef = 855348DA1B4D27AE00DC2C67 /* icon_medal_bronze.png */; };
+		855404951B4E4763009F307E /* icon_medal_diamond_one.png in Resources */ = {isa = PBXBuildFile; fileRef = 855404941B4E4763009F307E /* icon_medal_diamond_one.png */; };
+		855404971B4E4773009F307E /* icon_medal_diamond_one@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855404961B4E4773009F307E /* icon_medal_diamond_one@2x.png */; };
+		855404991B4E4791009F307E /* icon_medal_diamond_one@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855404981B4E4791009F307E /* icon_medal_diamond_one@3x.png */; };
 		8563A1481B1EEFE600DFF001 /* LabelMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A1471B1EEFE600DFF001 /* LabelMenu.m */; };
 		8563A14B1B1EFBAC00DFF001 /* TextMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8563A14A1B1EFBAC00DFF001 /* TextMenu.m */; };
 		856F3FB31B41400B0077F0ED /* ProductReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 856F3FB11B41400B0077F0ED /* ProductReputationCell.m */; };
 		856F3FB41B41400B0077F0ED /* ProductReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 856F3FB21B41400B0077F0ED /* ProductReputationCell.xib */; };
 		856F3FB71B41420F0077F0ED /* ViewLabelUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 856F3FB61B41420F0077F0ED /* ViewLabelUser.m */; };
+		856FEB951B4B93E400864F6C /* MyReviewReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEB931B4B93E400864F6C /* MyReviewReputationViewController.m */; };
+		856FEB961B4B93E400864F6C /* MyReviewReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 856FEB941B4B93E400864F6C /* MyReviewReputationViewController.xib */; };
+		856FEB9A1B4B94EE00864F6C /* SegmentedReviewReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEB981B4B94EE00864F6C /* SegmentedReviewReputationViewController.m */; };
+		856FEB9B1B4B94EE00864F6C /* SegmentedReviewReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 856FEB991B4B94EE00864F6C /* SegmentedReviewReputationViewController.xib */; };
+		856FEB9F1B4BA58200864F6C /* MyReviewReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEB9D1B4BA58200864F6C /* MyReviewReputationCell.m */; };
+		856FEBA01B4BA58200864F6C /* MyReviewReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 856FEB9E1B4BA58200864F6C /* MyReviewReputationCell.xib */; };
+		856FEBA41B4BAAA100864F6C /* MyReviewReputationViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBA31B4BAAA100864F6C /* MyReviewReputationViewModel.m */; };
+		856FEBA71B4BAED000864F6C /* MyReviewReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBA61B4BAED000864F6C /* MyReviewReputation.m */; };
+		856FEBAA1B4BB44100864F6C /* MyReviewReputationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBA91B4BB44100864F6C /* MyReviewReputationResult.m */; };
+		856FEBAD1B4BB48600864F6C /* DetailMyInboxReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBAC1B4BB48600864F6C /* DetailMyInboxReputation.m */; };
+		856FEBB11B4BD08600864F6C /* DetailMyReviewReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBAF1B4BD08600864F6C /* DetailMyReviewReputationViewController.m */; };
+		856FEBB21B4BD08600864F6C /* DetailMyReviewReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 856FEBB01B4BD08600864F6C /* DetailMyReviewReputationViewController.xib */; };
+		856FEBB51B4BD4B300864F6C /* DetailReputationReview.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBB41B4BD4B300864F6C /* DetailReputationReview.m */; };
+		856FEBB81B4BD65900864F6C /* ProductOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBB71B4BD65900864F6C /* ProductOwner.m */; };
+		856FEBBF1B4BDF8B00864F6C /* DetailMyReviewReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBBD1B4BDF8B00864F6C /* DetailMyReviewReputationCell.m */; };
+		856FEBC01B4BDF8B00864F6C /* DetailMyReviewReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 856FEBBE1B4BDF8B00864F6C /* DetailMyReviewReputationCell.xib */; };
+		856FEBC31B4BE4C900864F6C /* DetailReviewReputaionViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 856FEBC21B4BE4C900864F6C /* DetailReviewReputaionViewModel.m */; };
 		8577A3D41B44D7B100804ECC /* icon_medal_silver@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8577A3D31B44D7B100804ECC /* icon_medal_silver@3x.png */; };
 		8577A3D61B44D7BE00804ECC /* icon_medal_silver@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8577A3D51B44D7BE00804ECC /* icon_medal_silver@2x.png */; };
 		8577A3D81B44D7CA00804ECC /* icon_medal_silver.png in Resources */ = {isa = PBXBuildFile; fileRef = 8577A3D71B44D7CA00804ECC /* icon_medal_silver.png */; };
@@ -521,6 +559,10 @@
 		8577A3EA1B44E6CB00804ECC /* icon_arrow_right_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 8577A3E71B44E6CB00804ECC /* icon_arrow_right_gray.png */; };
 		8577A3EB1B44E6CB00804ECC /* icon_arrow_right_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8577A3E81B44E6CB00804ECC /* icon_arrow_right_gray@2x.png */; };
 		8577A3EC1B44E6CB00804ECC /* icon_arrow_right_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8577A3E91B44E6CB00804ECC /* icon_arrow_right_gray@3x.png */; };
+		859BF3601B4A793E001AB889 /* LikeDislike.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF35F1B4A793D001AB889 /* LikeDislike.m */; };
+		859BF3631B4A794B001AB889 /* LikeDislikeResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF3621B4A794B001AB889 /* LikeDislikeResult.m */; };
+		859BF36C1B4A7B5A001AB889 /* TotalLikeDislike.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF36B1B4A7B5A001AB889 /* TotalLikeDislike.m */; };
+		859BF36F1B4A7B91001AB889 /* DetailTotalLikeDislike.m in Sources */ = {isa = PBXBuildFile; fileRef = 859BF36E1B4A7B91001AB889 /* DetailTotalLikeDislike.m */; };
 		85A53C971B1C880D00D626B7 /* DetailProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */; };
 		85B2BFF61B424C9500112DB8 /* ProductDetailReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B2BFF41B424C9500112DB8 /* ProductDetailReputationViewController.m */; };
 		85B2BFF71B424C9500112DB8 /* ProductDetailReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85B2BFF51B424C9500112DB8 /* ProductDetailReputationViewController.xib */; };
@@ -2013,6 +2055,29 @@
 		8546BA9D1B4391A3004A279F /* DetailStatisticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailStatisticViewController.h; sourceTree = "<group>"; };
 		8546BA9E1B4391A3004A279F /* DetailStatisticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailStatisticViewController.m; sourceTree = "<group>"; };
 		8546BA9F1B4391A3004A279F /* DetailStatisticViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailStatisticViewController.xib; sourceTree = "<group>"; };
+		855348B41B4CC4A400DC2C67 /* icon_smile_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_smile_small.png; sourceTree = "<group>"; };
+		855348B61B4CC4B800DC2C67 /* icon_smile_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_smile_small@3x.png"; sourceTree = "<group>"; };
+		855348B81B4CC4BF00DC2C67 /* icon_smile_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_smile_small@2x.png"; sourceTree = "<group>"; };
+		855348BA1B4CCA9F00DC2C67 /* AlertRateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertRateView.h; sourceTree = "<group>"; };
+		855348BB1B4CCA9F00DC2C67 /* AlertRateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertRateView.m; sourceTree = "<group>"; };
+		855348BD1B4CDB4300DC2C67 /* icon_neutral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_neutral.png; sourceTree = "<group>"; };
+		855348C11B4CDB7000DC2C67 /* icon_neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_neutral@2x.png"; sourceTree = "<group>"; };
+		855348C31B4CDB8700DC2C67 /* icon_neutral@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_neutral@3x.png"; sourceTree = "<group>"; };
+		855348C51B4CFE3D00DC2C67 /* GiveReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewViewController.h; sourceTree = "<group>"; };
+		855348C61B4CFE3D00DC2C67 /* GiveReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewViewController.m; sourceTree = "<group>"; };
+		855348C71B4CFE3D00DC2C67 /* GiveReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewViewController.xib; sourceTree = "<group>"; };
+		855348CA1B4D275800DC2C67 /* icon_medal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_medal.png; sourceTree = "<group>"; };
+		855348CC1B4D276000DC2C67 /* icon_medal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal@2x.png"; sourceTree = "<group>"; };
+		855348CE1B4D276900DC2C67 /* icon_medal_3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_medal_3x.png; sourceTree = "<group>"; };
+		855348D01B4D277700DC2C67 /* icon_medal_gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_medal_gold.png; sourceTree = "<group>"; };
+		855348D21B4D277E00DC2C67 /* icon_medal_gold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal_gold@2x.png"; sourceTree = "<group>"; };
+		855348D41B4D278A00DC2C67 /* icon_medal_gold@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal_gold@3x.png"; sourceTree = "<group>"; };
+		855348D61B4D27A100DC2C67 /* icon_medal_bronze@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal_bronze@3x.png"; sourceTree = "<group>"; };
+		855348D81B4D27A800DC2C67 /* icon_medal_bronze@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal_bronze@2x.png"; sourceTree = "<group>"; };
+		855348DA1B4D27AE00DC2C67 /* icon_medal_bronze.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_medal_bronze.png; sourceTree = "<group>"; };
+		855404941B4E4763009F307E /* icon_medal_diamond_one.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_medal_diamond_one.png; sourceTree = "<group>"; };
+		855404961B4E4773009F307E /* icon_medal_diamond_one@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal_diamond_one@2x.png"; sourceTree = "<group>"; };
+		855404981B4E4791009F307E /* icon_medal_diamond_one@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal_diamond_one@3x.png"; sourceTree = "<group>"; };
 		8563A1461B1EEFE600DFF001 /* LabelMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelMenu.h; sourceTree = "<group>"; };
 		8563A1471B1EEFE600DFF001 /* LabelMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelMenu.m; sourceTree = "<group>"; };
 		8563A1491B1EFBAC00DFF001 /* TextMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMenu.h; sourceTree = "<group>"; };
@@ -2022,6 +2087,35 @@
 		856F3FB21B41400B0077F0ED /* ProductReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReputationCell.xib; sourceTree = "<group>"; };
 		856F3FB51B41420F0077F0ED /* ViewLabelUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewLabelUser.h; sourceTree = "<group>"; };
 		856F3FB61B41420F0077F0ED /* ViewLabelUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewLabelUser.m; sourceTree = "<group>"; };
+		856FEB921B4B93E400864F6C /* MyReviewReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputationViewController.h; sourceTree = "<group>"; };
+		856FEB931B4B93E400864F6C /* MyReviewReputationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewReputationViewController.m; sourceTree = "<group>"; };
+		856FEB941B4B93E400864F6C /* MyReviewReputationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyReviewReputationViewController.xib; sourceTree = "<group>"; };
+		856FEB971B4B94EE00864F6C /* SegmentedReviewReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedReviewReputationViewController.h; sourceTree = "<group>"; };
+		856FEB981B4B94EE00864F6C /* SegmentedReviewReputationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedReviewReputationViewController.m; sourceTree = "<group>"; };
+		856FEB991B4B94EE00864F6C /* SegmentedReviewReputationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentedReviewReputationViewController.xib; sourceTree = "<group>"; };
+		856FEB9C1B4BA58200864F6C /* MyReviewReputationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputationCell.h; sourceTree = "<group>"; };
+		856FEB9D1B4BA58200864F6C /* MyReviewReputationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewReputationCell.m; sourceTree = "<group>"; };
+		856FEB9E1B4BA58200864F6C /* MyReviewReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyReviewReputationCell.xib; sourceTree = "<group>"; };
+		856FEBA21B4BAAA100864F6C /* MyReviewReputationViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputationViewModel.h; sourceTree = "<group>"; };
+		856FEBA31B4BAAA100864F6C /* MyReviewReputationViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewReputationViewModel.m; sourceTree = "<group>"; };
+		856FEBA51B4BAED000864F6C /* MyReviewReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputation.h; sourceTree = "<group>"; };
+		856FEBA61B4BAED000864F6C /* MyReviewReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewReputation.m; sourceTree = "<group>"; };
+		856FEBA81B4BB44100864F6C /* MyReviewReputationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputationResult.h; sourceTree = "<group>"; };
+		856FEBA91B4BB44100864F6C /* MyReviewReputationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewReputationResult.m; sourceTree = "<group>"; };
+		856FEBAB1B4BB48600864F6C /* DetailMyInboxReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailMyInboxReputation.h; sourceTree = "<group>"; };
+		856FEBAC1B4BB48600864F6C /* DetailMyInboxReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailMyInboxReputation.m; sourceTree = "<group>"; };
+		856FEBAE1B4BD08600864F6C /* DetailMyReviewReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailMyReviewReputationViewController.h; sourceTree = "<group>"; };
+		856FEBAF1B4BD08600864F6C /* DetailMyReviewReputationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailMyReviewReputationViewController.m; sourceTree = "<group>"; };
+		856FEBB01B4BD08600864F6C /* DetailMyReviewReputationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailMyReviewReputationViewController.xib; sourceTree = "<group>"; };
+		856FEBB31B4BD4B300864F6C /* DetailReputationReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReview.h; sourceTree = "<group>"; };
+		856FEBB41B4BD4B300864F6C /* DetailReputationReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReputationReview.m; sourceTree = "<group>"; };
+		856FEBB61B4BD65900864F6C /* ProductOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductOwner.h; sourceTree = "<group>"; };
+		856FEBB71B4BD65900864F6C /* ProductOwner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductOwner.m; sourceTree = "<group>"; };
+		856FEBBC1B4BDF8B00864F6C /* DetailMyReviewReputationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailMyReviewReputationCell.h; sourceTree = "<group>"; };
+		856FEBBD1B4BDF8B00864F6C /* DetailMyReviewReputationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailMyReviewReputationCell.m; sourceTree = "<group>"; };
+		856FEBBE1B4BDF8B00864F6C /* DetailMyReviewReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailMyReviewReputationCell.xib; sourceTree = "<group>"; };
+		856FEBC11B4BE4C900864F6C /* DetailReviewReputaionViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReviewReputaionViewModel.h; sourceTree = "<group>"; };
+		856FEBC21B4BE4C900864F6C /* DetailReviewReputaionViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReviewReputaionViewModel.m; sourceTree = "<group>"; };
 		8577A3D31B44D7B100804ECC /* icon_medal_silver@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal_silver@3x.png"; sourceTree = "<group>"; };
 		8577A3D51B44D7BE00804ECC /* icon_medal_silver@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_medal_silver@2x.png"; sourceTree = "<group>"; };
 		8577A3D71B44D7CA00804ECC /* icon_medal_silver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_medal_silver.png; sourceTree = "<group>"; };
@@ -2034,6 +2128,14 @@
 		8577A3E71B44E6CB00804ECC /* icon_arrow_right_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_arrow_right_gray.png; sourceTree = "<group>"; };
 		8577A3E81B44E6CB00804ECC /* icon_arrow_right_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_arrow_right_gray@2x.png"; sourceTree = "<group>"; };
 		8577A3E91B44E6CB00804ECC /* icon_arrow_right_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_arrow_right_gray@3x.png"; sourceTree = "<group>"; };
+		859BF35E1B4A793D001AB889 /* LikeDislike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeDislike.h; sourceTree = "<group>"; };
+		859BF35F1B4A793D001AB889 /* LikeDislike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeDislike.m; sourceTree = "<group>"; };
+		859BF3611B4A794A001AB889 /* LikeDislikeResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeDislikeResult.h; sourceTree = "<group>"; };
+		859BF3621B4A794B001AB889 /* LikeDislikeResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeDislikeResult.m; sourceTree = "<group>"; };
+		859BF36A1B4A7B5A001AB889 /* TotalLikeDislike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TotalLikeDislike.h; sourceTree = "<group>"; };
+		859BF36B1B4A7B5A001AB889 /* TotalLikeDislike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TotalLikeDislike.m; sourceTree = "<group>"; };
+		859BF36D1B4A7B91001AB889 /* DetailTotalLikeDislike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTotalLikeDislike.h; sourceTree = "<group>"; };
+		859BF36E1B4A7B91001AB889 /* DetailTotalLikeDislike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTotalLikeDislike.m; sourceTree = "<group>"; };
 		85A53C961B1C880D00D626B7 /* DetailProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductViewController.xib; sourceTree = "<group>"; };
 		85B2BFF21B424A0D00112DB8 /* String_Reputation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = String_Reputation.h; sourceTree = "<group>"; };
 		85B2BFF31B424C9500112DB8 /* ProductDetailReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductDetailReputationViewController.h; sourceTree = "<group>"; };
@@ -3938,6 +4040,9 @@
 				7A1D2C8C1B235E54002F9341 /* icon_move_etalase@2x.png */,
 				7A1D2C8D1B235E54002F9341 /* icon_move_gudang.png */,
 				7A1D2C8E1B235E54002F9341 /* icon_move_gudang@2x.png */,
+				855348BD1B4CDB4300DC2C67 /* icon_neutral.png */,
+				855348C11B4CDB7000DC2C67 /* icon_neutral@2x.png */,
+				855348C31B4CDB8700DC2C67 /* icon_neutral@3x.png */,
 				7A1D2C8F1B235E54002F9341 /* icon_nav_arrow_down.png */,
 				7A1D2C901B235E54002F9341 /* icon_nav_arrow_down@2x.png */,
 				7A1D2C911B235E54002F9341 /* icon_nav_arrow_up.png */,
@@ -3976,6 +4081,9 @@
 				7A1D2CB21B235E54002F9341 /* icon_search_active.png */,
 				7A1D2CB31B235E55002F9341 /* icon_search_active@2x (deleted d2fce92e740a733bef785d9e61e4f9d8).png */,
 				7A1D2CB41B235E55002F9341 /* icon_search_active@2x.png */,
+				855348B41B4CC4A400DC2C67 /* icon_smile_small.png */,
+				855348B81B4CC4BF00DC2C67 /* icon_smile_small@2x.png */,
+				855348B61B4CC4B800DC2C67 /* icon_smile_small@3x.png */,
 				7A1D2CB51B235E55002F9341 /* icon_share.png */,
 				7A1D2CB61B235E55002F9341 /* icon_share@2x.png */,
 				7A1D2CB71B235E55002F9341 /* icon_share_14px-01.png */,
@@ -4014,6 +4122,18 @@
 				8577A3DB1B44E4FF00804ECC /* icon_medal_diamond.png */,
 				8577A3DC1B44E4FF00804ECC /* icon_medal_diamond@2x.png */,
 				8577A3DD1B44E4FF00804ECC /* icon_medal_diamond@3x.png */,
+				855404941B4E4763009F307E /* icon_medal_diamond_one.png */,
+				855404961B4E4773009F307E /* icon_medal_diamond_one@2x.png */,
+				855404981B4E4791009F307E /* icon_medal_diamond_one@3x.png */,
+				855348CA1B4D275800DC2C67 /* icon_medal.png */,
+				855348CC1B4D276000DC2C67 /* icon_medal@2x.png */,
+				855348CE1B4D276900DC2C67 /* icon_medal_3x.png */,
+				855348DA1B4D27AE00DC2C67 /* icon_medal_bronze.png */,
+				855348D81B4D27A800DC2C67 /* icon_medal_bronze@2x.png */,
+				855348D61B4D27A100DC2C67 /* icon_medal_bronze@3x.png */,
+				855348D01B4D277700DC2C67 /* icon_medal_gold.png */,
+				855348D21B4D277E00DC2C67 /* icon_medal_gold@2x.png */,
+				855348D41B4D278A00DC2C67 /* icon_medal_gold@3x.png */,
 				8577A3D71B44D7CA00804ECC /* icon_medal_silver.png */,
 				8577A3D51B44D7BE00804ECC /* icon_medal_silver@2x.png */,
 				8577A3D31B44D7B100804ECC /* icon_medal_silver@3x.png */,
@@ -4476,8 +4596,62 @@
 				85B2BFF81B42582D00112DB8 /* ProductDetailReputationCell.h */,
 				85B2BFF91B42582D00112DB8 /* ProductDetailReputationCell.m */,
 				85B2BFFA1B42582D00112DB8 /* ProductDetailReputationCell.xib */,
+				856FEB921B4B93E400864F6C /* MyReviewReputationViewController.h */,
+				856FEB931B4B93E400864F6C /* MyReviewReputationViewController.m */,
+				856FEB941B4B93E400864F6C /* MyReviewReputationViewController.xib */,
+				856FEB971B4B94EE00864F6C /* SegmentedReviewReputationViewController.h */,
+				856FEB981B4B94EE00864F6C /* SegmentedReviewReputationViewController.m */,
+				856FEB991B4B94EE00864F6C /* SegmentedReviewReputationViewController.xib */,
+				856FEB9C1B4BA58200864F6C /* MyReviewReputationCell.h */,
+				856FEB9D1B4BA58200864F6C /* MyReviewReputationCell.m */,
+				856FEB9E1B4BA58200864F6C /* MyReviewReputationCell.xib */,
+				856FEBAE1B4BD08600864F6C /* DetailMyReviewReputationViewController.h */,
+				856FEBAF1B4BD08600864F6C /* DetailMyReviewReputationViewController.m */,
+				856FEBB01B4BD08600864F6C /* DetailMyReviewReputationViewController.xib */,
+				856FEBBC1B4BDF8B00864F6C /* DetailMyReviewReputationCell.h */,
+				856FEBBD1B4BDF8B00864F6C /* DetailMyReviewReputationCell.m */,
+				856FEBBE1B4BDF8B00864F6C /* DetailMyReviewReputationCell.xib */,
+				855348C51B4CFE3D00DC2C67 /* GiveReviewViewController.h */,
+				855348C61B4CFE3D00DC2C67 /* GiveReviewViewController.m */,
+				855348C71B4CFE3D00DC2C67 /* GiveReviewViewController.xib */,
 			);
 			path = Reputation;
+			sourceTree = "<group>";
+		};
+		856FEBA11B4BAA7E00864F6C /* MyReviewReputation */ = {
+			isa = PBXGroup;
+			children = (
+				856FEBA21B4BAAA100864F6C /* MyReviewReputationViewModel.h */,
+				856FEBA31B4BAAA100864F6C /* MyReviewReputationViewModel.m */,
+				856FEBA51B4BAED000864F6C /* MyReviewReputation.h */,
+				856FEBA61B4BAED000864F6C /* MyReviewReputation.m */,
+				856FEBA81B4BB44100864F6C /* MyReviewReputationResult.h */,
+				856FEBA91B4BB44100864F6C /* MyReviewReputationResult.m */,
+				856FEBAB1B4BB48600864F6C /* DetailMyInboxReputation.h */,
+				856FEBAC1B4BB48600864F6C /* DetailMyInboxReputation.m */,
+				856FEBB31B4BD4B300864F6C /* DetailReputationReview.h */,
+				856FEBB41B4BD4B300864F6C /* DetailReputationReview.m */,
+				856FEBB61B4BD65900864F6C /* ProductOwner.h */,
+				856FEBB71B4BD65900864F6C /* ProductOwner.m */,
+				856FEBC11B4BE4C900864F6C /* DetailReviewReputaionViewModel.h */,
+				856FEBC21B4BE4C900864F6C /* DetailReviewReputaionViewModel.m */,
+			);
+			path = MyReviewReputation;
+			sourceTree = "<group>";
+		};
+		859BF35D1B4A7915001AB889 /* LikeDislikeReview */ = {
+			isa = PBXGroup;
+			children = (
+				859BF35E1B4A793D001AB889 /* LikeDislike.h */,
+				859BF35F1B4A793D001AB889 /* LikeDislike.m */,
+				859BF3611B4A794A001AB889 /* LikeDislikeResult.h */,
+				859BF3621B4A794B001AB889 /* LikeDislikeResult.m */,
+				859BF36A1B4A7B5A001AB889 /* TotalLikeDislike.h */,
+				859BF36B1B4A7B5A001AB889 /* TotalLikeDislike.m */,
+				859BF36D1B4A7B91001AB889 /* DetailTotalLikeDislike.h */,
+				859BF36E1B4A7B91001AB889 /* DetailTotalLikeDislike.m */,
+			);
+			path = LikeDislikeReview;
 			sourceTree = "<group>";
 		};
 		85C947FD1B454E3B00B713FB /* ResponseSpeed */ = {
@@ -4686,6 +4860,8 @@
 		FC7637271B15E2720034A8F1 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				856FEBA11B4BAA7E00864F6C /* MyReviewReputation */,
+				859BF35D1B4A7915001AB889 /* LikeDislikeReview */,
 				85C947FD1B454E3B00B713FB /* ResponseSpeed */,
 				FC7637281B15E2720034A8F1 /* Activation */,
 				FC76373D1B15E2720034A8F1 /* Deposit */,
@@ -6209,6 +6385,8 @@
 				FC763A471B15E2780034A8F1 /* TKPDAlert.xib */,
 				FC763A481B15E2780034A8F1 /* TKPDAlertView.h */,
 				FC763A491B15E2780034A8F1 /* TKPDAlertView.m */,
+				855348BA1B4CCA9F00DC2C67 /* AlertRateView.h */,
+				855348BB1B4CCA9F00DC2C67 /* AlertRateView.m */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -8301,6 +8479,7 @@
 				FC7642F01B15E2830034A8F1 /* ProductReviewViewController.xib in Resources */,
 				8524BE8A1B462DB10000B401 /* icon_speed_bad.png in Resources */,
 				FC7643C11B15E2830034A8F1 /* TransactionATCViewController.xib in Resources */,
+				856FEBC01B4BDF8B00864F6C /* DetailMyReviewReputationCell.xib in Resources */,
 				7A1D2EB11B235E55002F9341 /* icon_sold@3x.png in Resources */,
 				7A1D2EC11B235E55002F9341 /* icon_track_grey.png in Resources */,
 				7A1D2EC31B235E55002F9341 /* icon_triangle_down_white.png in Resources */,
@@ -8335,6 +8514,7 @@
 				7A1D2ED41B235E55002F9341 /* icon_wishlist_unactive.png in Resources */,
 				FC7642EE1B15E2830034A8F1 /* ProductReviewDetailViewController.xib in Resources */,
 				850065D21B43F91B00F556BA /* icon_sad.png in Resources */,
+				856FEBB21B4BD08600864F6C /* DetailMyReviewReputationViewController.xib in Resources */,
 				FC76441E1B15E2830034A8F1 /* GothamMedium.ttf in Resources */,
 				7A1D2E2F1B235E55002F9341 /* icon_diskusi_report_grey.png in Resources */,
 				7A1D2E3F1B235E55002F9341 /* icon_grid_dua@2x.png in Resources */,
@@ -8398,6 +8578,7 @@
 				FC7643D41B15E2830034A8F1 /* TransactionCartResultCell.xib in Resources */,
 				7A1D2DB51B235E55002F9341 /* icon_20.png in Resources */,
 				7A1D2F4C1B235E55002F9341 /* icon_arrow_down_grey@2x.png in Resources */,
+				855348CF1B4D276900DC2C67 /* icon_medal_3x.png in Resources */,
 				7A1D2F161B235E55002F9341 /* icon_urutkan_alt@3x.png in Resources */,
 				7A1D2DC51B235E55002F9341 /* icon_8@2x.png in Resources */,
 				7A1D2DDD1B235E55002F9341 /* icon_button_favorite_nonactive@2x.png in Resources */,
@@ -8441,6 +8622,7 @@
 				7A1D2F111B235E55002F9341 /* icon_grid_dua@3x.png in Resources */,
 				7A1D2E031B235E55002F9341 /* icon_18@3x.png in Resources */,
 				7A1D2EE11B235E55002F9341 /* icon_home_active.png in Resources */,
+				855348C41B4CDB8700DC2C67 /* icon_neutral@3x.png in Resources */,
 				7A1D2DAE1B235E55002F9341 /* icon_17@2x.png in Resources */,
 				7A1D2EB91B235E55002F9341 /* icon_success@2x.png in Resources */,
 				7A1D2DD71B235E55002F9341 /* icon_arrow_up_white.png in Resources */,
@@ -8454,6 +8636,7 @@
 				FC7642241B15E2830034A8F1 /* TKPDTabBarController.xib in Resources */,
 				7A1D2F441B235E55002F9341 /* icon_search_active@2x.png in Resources */,
 				7A1D2ED51B235E55002F9341 /* icon_wishlist_unactive@2x.png in Resources */,
+				855348D31B4D277E00DC2C67 /* icon_medal_gold@2x.png in Resources */,
 				FC7643241B15E2830034A8F1 /* OrderDetailProductCell.xib in Resources */,
 				7A1D2E0F1B235E55002F9341 /* icon_9@3x.png in Resources */,
 				7A1D2DDB1B235E55002F9341 /* icon_button_favorite_active@3x.png in Resources */,
@@ -8465,6 +8648,7 @@
 				FC7643031B15E2830034A8F1 /* ProductListMyShopViewController.xib in Resources */,
 				7A1D2DFB1B235E55002F9341 /* icon_10@3x.png in Resources */,
 				850065D41B43F96800F556BA /* icon_like.png in Resources */,
+				855404951B4E4763009F307E /* icon_medal_diamond_one.png in Resources */,
 				7A1D2F241B235E55002F9341 /* active_tab.png in Resources */,
 				7A1D2EA91B235E55002F9341 /* icon_signin@2x (deleted 3215a80c68a23ca7d6e4274438f3c292).png in Resources */,
 				7A1D2E931B235E55002F9341 /* icon_share@2x.png in Resources */,
@@ -8554,6 +8738,7 @@
 				8524BE841B462D7E0000B401 /* icon_speed_neutral@3x.png in Resources */,
 				7A1D2E0C1B235E55002F9341 /* icon_6@3x.png in Resources */,
 				FC7643691B15E2830034A8F1 /* SettingPrivacyViewController.xib in Resources */,
+				856FEB9B1B4B94EE00864F6C /* SegmentedReviewReputationViewController.xib in Resources */,
 				7A1D2EDD1B235E55002F9341 /* icon_category_active.png in Resources */,
 				FC7643FD1B15E2830034A8F1 /* TxOrderConfirmedButtonCell.xib in Resources */,
 				7A1D2F641B235E55002F9341 /* icon_pesan_ulang@2x.png in Resources */,
@@ -8562,6 +8747,7 @@
 				7A1D2F401B235E55002F9341 /* icon_more_active@2x.png in Resources */,
 				7A1D2EBA1B235E55002F9341 /* icon_telephone.png in Resources */,
 				FC7642921B15E2830034A8F1 /* InboxMessageViewController.xib in Resources */,
+				855404991B4E4791009F307E /* icon_medal_diamond_one@3x.png in Resources */,
 				7A1D2F001B235E55002F9341 /* image-1.png in Resources */,
 				7A1D2F2F1B235E55002F9341 /* ic_search@2x.png in Resources */,
 				7A1D2E391B235E55002F9341 /* icon_filter.png in Resources */,
@@ -8600,11 +8786,13 @@
 				FC76433D1B15E2830034A8F1 /* DetailShipmentStatusViewController.xib in Resources */,
 				7A1D2EBC1B235E55002F9341 /* icon_toped_loading_grey-01.png in Resources */,
 				7A1D2F3B1B235E55002F9341 /* icon_home_active.png in Resources */,
+				855348BE1B4CDB4300DC2C67 /* icon_neutral.png in Resources */,
 				7A1D2DD81B235E55002F9341 /* icon_arrow_up_white@2x.png in Resources */,
 				FC7642BA1B15E2830034A8F1 /* WebViewController.xib in Resources */,
 				FC7642321B15E2830034A8F1 /* TKPDTabShopNavigationController.xib in Resources */,
 				7A1D2EC01B235E55002F9341 /* icon_toped_loading_grey@2x.png in Resources */,
 				7A1D2DBE1B235E55002F9341 /* icon_5.png in Resources */,
+				855348C21B4CDB7000DC2C67 /* icon_neutral@2x.png in Resources */,
 				FC7643491B15E2830034A8F1 /* SearchResultShopCell.xib in Resources */,
 				7A1D2DB81B235E55002F9341 /* icon_21@2x.png in Resources */,
 				7A1D2E701B235E55002F9341 /* icon_no_data.png in Resources */,
@@ -8637,6 +8825,7 @@
 				7A1D2E7A1B235E55002F9341 /* icon_order_check-01.png in Resources */,
 				FC7643A71B15E2830034A8F1 /* FilterLocationViewCell.xib in Resources */,
 				7A1D2F5D1B235E55002F9341 /* icon_komplain.png in Resources */,
+				855348D51B4D278A00DC2C67 /* icon_medal_gold@3x.png in Resources */,
 				7A1D2E861B235E55002F9341 /* icon_retry_grey@2x.png in Resources */,
 				7A1D2DD11B235E55002F9341 /* icon_arrow_down_white.png in Resources */,
 				FC7643711B15E2830034A8F1 /* BerhasilBukaTokoViewController.xib in Resources */,
@@ -8653,6 +8842,7 @@
 				FC7644051B15E2830034A8F1 /* TxOrderPaymentViewController.xib in Resources */,
 				FC76422B1B15E2830034A8F1 /* TKPDTabInboxReviewNavigationController.xib in Resources */,
 				FC7644191B15E2830034A8F1 /* UserProfileBiodataViewController.xib in Resources */,
+				855348B51B4CC4A400DC2C67 /* icon_smile_small.png in Resources */,
 				7A1D2F261B235E55002F9341 /* ic_cart.png in Resources */,
 				7A1D2E591B235E55002F9341 /* icon_love.png in Resources */,
 				7A1D2D9A1B235E55002F9341 /* button_white.png in Resources */,
@@ -8702,6 +8892,7 @@
 				7A1D2EA41B235E55002F9341 /* icon_shop_setting_2x.png in Resources */,
 				7A1D2E531B235E55002F9341 /* icon_lock_grey.png in Resources */,
 				FC76429E1B15E2830034A8F1 /* InboxResolutionCenterOpenViewController.xib in Resources */,
+				855348CB1B4D275800DC2C67 /* icon_medal.png in Resources */,
 				7A1D2F511B235E55002F9341 /* Icon_check_green_bg.png in Resources */,
 				7A1D2EDE1B235E55002F9341 /* icon_category_active@2x.png in Resources */,
 				7A1D2E421B235E55002F9341 /* icon_grid_tiga.png in Resources */,
@@ -8770,6 +8961,7 @@
 				FC76431E1B15E2830034A8F1 /* ProductQuantityCell.xib in Resources */,
 				FC7643D81B15E2830034A8F1 /* TransactionCartResultViewController.xib in Resources */,
 				7A1D2F191B235E55002F9341 /* icon_category@3x.png in Resources */,
+				855348B71B4CC4B800DC2C67 /* icon_smile_small@3x.png in Resources */,
 				FC7643A01B15E2830034A8F1 /* ShopReviewPageViewController.xib in Resources */,
 				7A1D2E071B235E55002F9341 /* icon_21@3x.png in Resources */,
 				FC76434B1B15E2830034A8F1 /* SearchResultShopViewController.xib in Resources */,
@@ -8785,6 +8977,7 @@
 				7A1D2E091B235E55002F9341 /* icon_3@3x.png in Resources */,
 				7A1D2E961B235E55002F9341 /* icon_shop.png in Resources */,
 				FC7642F71B15E2830034A8F1 /* ProductAddEditViewController.xib in Resources */,
+				855348DB1B4D27AE00DC2C67 /* icon_medal_bronze.png in Resources */,
 				FC7643DA1B15E2830034A8F1 /* TransactionCartRootViewController.xib in Resources */,
 				7A1D2E2D1B235E55002F9341 /* icon_diskusi_comment_grey.png in Resources */,
 				7A1D2E611B235E55002F9341 /* icon_maintenance_grey_2x.png in Resources */,
@@ -8792,6 +8985,7 @@
 				7A1D2F031B235E55002F9341 /* logo@2x.png in Resources */,
 				FC7643081B15E2830034A8F1 /* ReputationCell.xib in Resources */,
 				8577A3EB1B44E6CB00804ECC /* icon_arrow_right_gray@2x.png in Resources */,
+				855348D91B4D27A800DC2C67 /* icon_medal_bronze@2x.png in Resources */,
 				7A1D2E0B1B235E55002F9341 /* icon_5@3x.png in Resources */,
 				7A1D2F391B235E55002F9341 /* icon_home.png in Resources */,
 				FC7642A11B15E2830034A8F1 /* ResolutionCenterDetailCell.xib in Resources */,
@@ -8850,8 +9044,10 @@
 				FC7642EC1B15E2830034A8F1 /* ProductReviewCell.xib in Resources */,
 				7A1D2E241B235E55002F9341 /* icon_clock@2x.png in Resources */,
 				8577A3D61B44D7BE00804ECC /* icon_medal_silver@2x.png in Resources */,
+				855348C91B4CFE3D00DC2C67 /* GiveReviewViewController.xib in Resources */,
 				FC7643881B15E2830034A8F1 /* ShopInfoShipmentCell.xib in Resources */,
 				7A1D2ED11B235E55002F9341 /* icon_view@3x.png in Resources */,
+				855348B91B4CC4BF00DC2C67 /* icon_smile_small@2x.png in Resources */,
 				7A1D2DBD1B235E55002F9341 /* icon_4@2x.png in Resources */,
 				FC7642001B15E2820034A8F1 /* CameraCollectionCell.xib in Resources */,
 				7A1D2E251B235E55002F9341 /* icon_close_white.png in Resources */,
@@ -8868,6 +9064,7 @@
 				7A1D2EF01B235E55002F9341 /* launch_image@3x.png in Resources */,
 				FC76423D1B15E2830034A8F1 /* NoResultView.xib in Resources */,
 				7A1D2E041B235E55002F9341 /* icon_19@3x.png in Resources */,
+				856FEB961B4B93E400864F6C /* MyReviewReputationViewController.xib in Resources */,
 				7A1D2E1F1B235E55002F9341 /* icon_checkmark_green-01.png in Resources */,
 				FC76420C1B15E2820034A8F1 /* CatalogSectionHeaderView.xib in Resources */,
 				7A1D2E081B235E55002F9341 /* icon_2@3x.png in Resources */,
@@ -8886,6 +9083,7 @@
 				FC7643671B15E2830034A8F1 /* SettingPrivacyCell.xib in Resources */,
 				FC7641D91B15E2820034A8F1 /* CreatePasswordViewController.xib in Resources */,
 				7A1D2DDC1B235E55002F9341 /* icon_button_favorite_nonactive.png in Resources */,
+				855404971B4E4773009F307E /* icon_medal_diamond_one@2x.png in Resources */,
 				FC7643301B15E2830034A8F1 /* CancelShipmentViewController.xib in Resources */,
 				7A1D2DE21B235E55002F9341 /* icon_button_wishlist_active.png in Resources */,
 				FC7643791B15E2830034A8F1 /* ShopEditViewController.xib in Resources */,
@@ -8911,6 +9109,7 @@
 				7A1D2E161B235E55002F9341 /* icon_category_white.png in Resources */,
 				FC76441B1B15E2830034A8F1 /* GothamBlack.ttf in Resources */,
 				7A1D2DA01B235E55002F9341 /* icon_10@2x.png in Resources */,
+				855348D11B4D277700DC2C67 /* icon_medal_gold.png in Resources */,
 				7A1D2E2E1B235E55002F9341 /* icon_diskusi_comment_grey@2x.png in Resources */,
 				7A1D2EAC1B235E55002F9341 /* icon_signin_active.png in Resources */,
 				7A1D2E321B235E55002F9341 /* icon_diskusi_unfollow_grey@2x.png in Resources */,
@@ -8967,6 +9166,7 @@
 				7A1D2F041B235E55002F9341 /* navigation-button-bg-pt.png in Resources */,
 				7A1D2F121B235E55002F9341 /* icon_grid_satu@3x.png in Resources */,
 				7A1D2DA71B235E55002F9341 /* icon_14.png in Resources */,
+				856FEBA01B4BA58200864F6C /* MyReviewReputationCell.xib in Resources */,
 				FC7643AA1B15E2830034A8F1 /* FilterLocationViewCell.xib in Resources */,
 				FC7642BE1B15E2830034A8F1 /* MyShopAddressEditViewController.xib in Resources */,
 				FC7643461B15E2830034A8F1 /* SearchViewController.xib in Resources */,
@@ -9010,6 +9210,7 @@
 				7A1D2E551B235E55002F9341 /* icon_login.png in Resources */,
 				FC7643061B15E2830034A8F1 /* ProfileContactViewController.xib in Resources */,
 				7A1D2F521B235E55002F9341 /* Icon_check_green_bg@2x.png in Resources */,
+				855348D71B4D27A100DC2C67 /* icon_medal_bronze@3x.png in Resources */,
 				7A1D2F081B235E55002F9341 /* top_bg.png in Resources */,
 				FC76423F1B15E2830034A8F1 /* ProgressBarView.xib in Resources */,
 				FC7642391B15E2830034A8F1 /* LoadingView.xib in Resources */,
@@ -9027,6 +9228,7 @@
 				FC7643DF1B15E2830034A8F1 /* TxOrderStatusCell.xib in Resources */,
 				FC76434D1B15E2830034A8F1 /* SearchResultViewController.xib in Resources */,
 				7A1D2ED21B235E55002F9341 /* icon_wishlist_active.png in Resources */,
+				855348CD1B4D276000DC2C67 /* icon_medal@2x.png in Resources */,
 				FC76430A1B15E2830034A8F1 /* ReputationDetailFormViewController.xib in Resources */,
 				FC7641F71B15E2820034A8F1 /* TKPDAlert.xib in Resources */,
 				FC7641DE1B15E2820034A8F1 /* RegisterViewController.xib in Resources */,
@@ -9157,11 +9359,13 @@
 				FC7641071B15E2820034A8F1 /* InboxTicket.m in Sources */,
 				FC7641601B15E2820034A8F1 /* OpenShopPictureResult.m in Sources */,
 				FC7640CE1B15E2820034A8F1 /* Favorited.m in Sources */,
+				859BF36F1B4A7B91001AB889 /* DetailTotalLikeDislike.m in Sources */,
 				FC7640CD1B15E2820034A8F1 /* WholesalePrice.m in Sources */,
 				85046EA21B20395E00FF657B /* BarCodeViewController.m in Sources */,
 				FC76426C1B15E2830034A8F1 /* ReportViewController.m in Sources */,
 				FC7641DA1B15E2820034A8F1 /* LoginViewController.m in Sources */,
 				FC7641701B15E2820034A8F1 /* ShipmentPackage.m in Sources */,
+				856FEBA41B4BAAA100864F6C /* MyReviewReputationViewModel.m in Sources */,
 				FC76410C1B15E2820034A8F1 /* ManageProduct.m in Sources */,
 				FC7640811B15E2820034A8F1 /* DBManager.m in Sources */,
 				FC7642041B15E2820034A8F1 /* RequestGenerateHost.m in Sources */,
@@ -9180,6 +9384,7 @@
 				FC7643EC1B15E2830034A8F1 /* TxOrderConfirmationDetailViewController.m in Sources */,
 				FC7643E61B15E2830034A8F1 /* TxOrderConfirmationCell.m in Sources */,
 				FC7640871B15E2820034A8F1 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
+				856FEBAA1B4BB44100864F6C /* MyReviewReputationResult.m in Sources */,
 				FC76412E1B15E2820034A8F1 /* AddressFormResult.m in Sources */,
 				FC7643051B15E2830034A8F1 /* ProfileContactViewController.m in Sources */,
 				FC7640951B15E2820034A8F1 /* CreatePassword.m in Sources */,
@@ -9199,6 +9404,7 @@
 				FC7642C31B15E2830034A8F1 /* MyShopEtalaseEditViewController.m in Sources */,
 				FC7643C61B15E2830034A8F1 /* TransactionCartEditViewController.m in Sources */,
 				FC7642841B15E2830034A8F1 /* HotlistResultViewController.m in Sources */,
+				856FEBAD1B4BB48600864F6C /* DetailMyInboxReputation.m in Sources */,
 				FC7643341B15E2830034A8F1 /* ShipmentConfirmationViewController.m in Sources */,
 				FC76415B1B15E2820034A8F1 /* ShipmentOrder.m in Sources */,
 				FC7640B31B15E2820034A8F1 /* DetailProductResult.m in Sources */,
@@ -9228,6 +9434,7 @@
 				FC7641981B15E2820034A8F1 /* TransactionCalculatePrice.m in Sources */,
 				FC7640F31B15E2820034A8F1 /* ResolutionButton.m in Sources */,
 				FC7640FF1B15E2820034A8F1 /* InboxReview.m in Sources */,
+				855348C81B4CFE3D00DC2C67 /* GiveReviewViewController.m in Sources */,
 				FC7640961B15E2820034A8F1 /* CreatePasswordResult.m in Sources */,
 				FC7641621B15E2820034A8F1 /* EtalaseList.m in Sources */,
 				FC7643811B15E2830034A8F1 /* ShopStatView.m in Sources */,
@@ -9361,12 +9568,14 @@
 				FC7640E91B15E2820034A8F1 /* InboxMessageDetailList.m in Sources */,
 				FC76440D1B15E2830034A8F1 /* ProfileBiodataShopCell.m in Sources */,
 				FC7642051B15E2820034A8F1 /* RequestUploadImage.m in Sources */,
+				856FEBA71B4BAED000864F6C /* MyReviewReputation.m in Sources */,
 				FC7640D01B15E2820034A8F1 /* ListFavorited.m in Sources */,
 				FC7645FC1B15E2830034A8F1 /* HPTextViewInternal.m in Sources */,
 				FC7641AD1B15E2820034A8F1 /* TransactionVoucherResult.m in Sources */,
 				FC76427B1B15E2830034A8F1 /* ProductFeedViewController.m in Sources */,
 				FC7640E11B15E2820034A8F1 /* HotlistList.m in Sources */,
 				FC7643451B15E2830034A8F1 /* SearchViewController.m in Sources */,
+				856FEBB51B4BD4B300864F6C /* DetailReputationReview.m in Sources */,
 				FC7641D61B15E2820034A8F1 /* WishListObjectList.m in Sources */,
 				FC7643091B15E2830034A8F1 /* ReputationDetailFormViewController.m in Sources */,
 				FC7641261B15E2820034A8F1 /* ListFavoriteShop.m in Sources */,
@@ -9379,6 +9588,7 @@
 				FC7643DE1B15E2830034A8F1 /* TxOrderStatusCell.m in Sources */,
 				FC7641B31B15E2820034A8F1 /* TxOrderCancelPaymentResult.m in Sources */,
 				FC7640E61B15E2820034A8F1 /* InboxMessageActionResult.m in Sources */,
+				856FEB951B4B93E400864F6C /* MyReviewReputationViewController.m in Sources */,
 				FC7644141B15E2830034A8F1 /* UserContainerViewController.m in Sources */,
 				FC7640EE1B15E2820034A8F1 /* ResolutionActionResult.m in Sources */,
 				FC7640A81B15E2820034A8F1 /* CatalogInfo.m in Sources */,
@@ -9495,6 +9705,7 @@
 				FC76407F1B15E2820034A8F1 /* URLCacheConnection.m in Sources */,
 				FC7641B81B15E2820034A8F1 /* TxOrderConfirmedDetailInvoice.m in Sources */,
 				FC7641751B15E2820034A8F1 /* AddProductSubmitResult.m in Sources */,
+				856FEB9F1B4BA58200864F6C /* MyReviewReputationCell.m in Sources */,
 				FC76431A1B15E2830034A8F1 /* FilterNewOrderViewController.m in Sources */,
 				FC7643911B15E2830034A8F1 /* SendMessageViewController.m in Sources */,
 				FC76432F1B15E2830034A8F1 /* CancelShipmentViewController.m in Sources */,
@@ -9519,6 +9730,7 @@
 				FC7645FB1B15E2830034A8F1 /* HPGrowingTextView.m in Sources */,
 				8546BAA01B4391A3004A279F /* DetailStatisticViewController.m in Sources */,
 				FC7643311B15E2830034A8F1 /* FilterShipmentConfirmationViewController.m in Sources */,
+				856FEBBF1B4BDF8B00864F6C /* DetailMyReviewReputationCell.m in Sources */,
 				FC7640FB1B15E2820034A8F1 /* ResolutionDispute.m in Sources */,
 				FC7642361B15E2830034A8F1 /* BackgroundLayer.m in Sources */,
 				FC7641921B15E2820034A8F1 /* TransactionATCForm.m in Sources */,
@@ -9545,6 +9757,7 @@
 				FC76437A1B15E2830034A8F1 /* ShopFavoritedCell.m in Sources */,
 				FC7641651B15E2820034A8F1 /* NoteDetailResult.m in Sources */,
 				FC7643BE1B15E2830034A8F1 /* TrackOrderViewController.m in Sources */,
+				855348BC1B4CCA9F00DC2C67 /* AlertRateView.m in Sources */,
 				FC7641711B15E2820034A8F1 /* Shop.m in Sources */,
 				FC7643111B15E2830034A8F1 /* ReputationMyReviewViewController.m in Sources */,
 				FC7642031B15E2820034A8F1 /* TKPDLiveCameraTableViewCell.m in Sources */,
@@ -9576,6 +9789,7 @@
 				FC7643541B15E2830034A8F1 /* SettingAddressViewController.m in Sources */,
 				FC7641311B15E2820034A8F1 /* BankAccountFormResult.m in Sources */,
 				FC7641561B15E2820034A8F1 /* SearchResult.m in Sources */,
+				859BF36C1B4A7B5A001AB889 /* TotalLikeDislike.m in Sources */,
 				FC7643331B15E2830034A8F1 /* RequestShipmentCourier.m in Sources */,
 				FC36DF9719B0656400AF74C1 /* AppDelegate.m in Sources */,
 				FC76424F1B15E2830034A8F1 /* DepositSummaryCell.m in Sources */,
@@ -9622,6 +9836,7 @@
 				FC7643191B15E2830034A8F1 /* DueDateViewController.m in Sources */,
 				FC7641C71B15E2820034A8F1 /* TxOrderPaymentEditResult.m in Sources */,
 				FC7641671B15E2820034A8F1 /* Notes.m in Sources */,
+				859BF3631B4A794B001AB889 /* LikeDislikeResult.m in Sources */,
 				FC76421B1B15E2820034A8F1 /* CategoryViewController.m in Sources */,
 				FC7640B01B15E2820034A8F1 /* ProductList.m in Sources */,
 				FC76411B1B15E2820034A8F1 /* ProductTalkForm.m in Sources */,
@@ -9653,6 +9868,7 @@
 				FC7643231B15E2830034A8F1 /* OrderDetailProductCell.m in Sources */,
 				85C9480C1B4559A100B713FB /* Quality.m in Sources */,
 				FC7642791B15E2830034A8F1 /* HomeTabViewController.m in Sources */,
+				856FEBB11B4BD08600864F6C /* DetailMyReviewReputationViewController.m in Sources */,
 				FC7641B21B15E2820034A8F1 /* TxOrderCancelPaymentFormForm.m in Sources */,
 				FC7642131B15E2820034A8F1 /* CatalogViewController.m in Sources */,
 				FC7642B41B15E2830034A8F1 /* MoreNavigationController.m in Sources */,
@@ -9660,10 +9876,12 @@
 				FC7642471B15E2830034A8F1 /* DepositFormAccountBankViewController.m in Sources */,
 				FC7645FE1B15E2830034A8F1 /* MarqueeLabel.m in Sources */,
 				FC7642D51B15E2830034A8F1 /* MyShopShipmentViewController.m in Sources */,
+				856FEBB81B4BD65900864F6C /* ProductOwner.m in Sources */,
 				FC7643071B15E2830034A8F1 /* ReputationCell.m in Sources */,
 				FC7640A61B15E2820034A8F1 /* Catalog.m in Sources */,
 				FC7641581B15E2820034A8F1 /* SendMessageResult.m in Sources */,
 				FC76408D1B15E2820034A8F1 /* TKPDSecureStorage.m in Sources */,
+				856FEB9A1B4B94EE00864F6C /* SegmentedReviewReputationViewController.m in Sources */,
 				FC7644061B15E2830034A8F1 /* WebViewInvoiceViewController.m in Sources */,
 				FC7642D71B15E2830034A8F1 /* NotificationManager.m in Sources */,
 				FC7641E31B15E2820034A8F1 /* AlertCameraView.m in Sources */,
@@ -9723,6 +9941,7 @@
 				FC7640C11B15E2820034A8F1 /* ShopInfo.m in Sources */,
 				FC7640981B15E2820034A8F1 /* LoginResult.m in Sources */,
 				FC76418F1B15E2820034A8F1 /* TransactionAddressShipping.m in Sources */,
+				859BF3601B4A793E001AB889 /* LikeDislike.m in Sources */,
 				FC7640D81B15E2820034A8F1 /* HistoryProduct.m in Sources */,
 				FC7640AB1B15E2820034A8F1 /* CatalogPrice.m in Sources */,
 				FC7640CA1B15E2820034A8F1 /* TheOtherProduct.m in Sources */,
@@ -9823,6 +10042,7 @@
 				FC76419A1B15E2820034A8F1 /* TransactionCart.m in Sources */,
 				FC7641201B15E2820034A8F1 /* ProfileEditForm.m in Sources */,
 				FC7641CE1B15E2820034A8F1 /* GenerateHost.m in Sources */,
+				856FEBC31B4BE4C900864F6C /* DetailReviewReputaionViewModel.m in Sources */,
 				FC7642221B15E2820034A8F1 /* ContactUsViewController.m in Sources */,
 				FC7642911B15E2830034A8F1 /* InboxMessageViewController.m in Sources */,
 				FC7643AF1B15E2830034A8F1 /* SortCell.m in Sources */,
@@ -9982,7 +10202,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0a78102e-6ed7-4374-9578-49cf7c2413ce";
+				PROVISIONING_PROFILE = "15dafd05-f45f-44c7-93bf-e9f1654b5230";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -10020,7 +10240,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0a78102e-6ed7-4374-9578-49cf7c2413ce";
+				PROVISIONING_PROFILE = "15dafd05-f45f-44c7-93bf-e9f1654b5230";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;

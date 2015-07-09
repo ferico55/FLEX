@@ -1,0 +1,160 @@
+//
+//  DetailMyReviewReputationCell.m
+//  Tokopedia
+//
+//  Created by Tokopedia on 7/7/15.
+//  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
+//
+#import "DetailReviewReputaionViewModel.h"
+#import "DetailMyReviewReputationCell.h"
+#define CStringKomentar @"Komentar"
+
+@implementation CustomBtnSkip : UIButton
+@synthesize isLewati;
+@end
+
+
+
+@implementation DetailMyReviewReputationCell
+- (void)awakeFromNib {
+//    self.contentView.backgroundColor = [UIColor clearColor];
+//    self.backgroundColor = [UIColor clearColor];
+    lblDesc = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+    lblDesc.delegate = self;
+    [viewContent addSubview:lblDesc];
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+- (void)layoutSubviews
+{
+    imgProduct.frame = CGRectMake(imgProduct.frame.origin.x, imgProduct.frame.origin.y, CDiameterImage, CDiameterImage);
+    btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, imgProduct.frame.origin.y, self.bounds.size.width-(CPaddingTopBottom*4), (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
+    
+    
+    //Set content star
+    viewContentStar.frame = CGRectMake(imgProduct.frame.origin.x, lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, viewContent.bounds.size.width-(imgProduct.frame.origin.x*2), (viewContentStar.isHidden)?0:CHeightContentStar);
+    lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, CPaddingTopBottom, lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
+    viewKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width, lblKualitas.frame.origin.y-3, viewKualitas.bounds.size.width, viewKualitas.bounds.size.height);
+    
+    viewAkurasi.frame = CGRectMake(viewContentStar.bounds.size.width-viewAkurasi.bounds.size.width-lblKualitas.frame.origin.x, lblKualitas.frame.origin.y-3, viewAkurasi.bounds.size.width, viewAkurasi.bounds.size.height);
+    lblAkurasi.frame = CGRectMake(viewAkurasi.frame.origin.x-lblAkurasi.bounds.size.width, viewAkurasi.frame.origin.y+3, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
+    
+    
+    //set content action
+    viewContentAction.frame = CGRectMake(0, viewContentStar.frame.origin.y+viewContentStar.bounds.size.height, viewContentStar.bounds.size.width, viewContentAction.isHidden?0:CHeightContentAction);
+    btnKomentar.frame = CGRectMake(CPaddingTopBottom, CPaddingTopBottom, 100, btnKomentar.bounds.size.height);
+    btnUbah.frame = CGRectMake(viewContentStar.bounds.size.width-100-CPaddingTopBottom, btnKomentar.frame.origin.y, 100, btnUbah.bounds.size.height);
+    
+    viewContent.frame = CGRectMake(CPaddingTopBottom, CPaddingTopBottom, self.contentView.bounds.size.width-(CPaddingTopBottom*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
+    self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
+}
+
+
+#pragma mark - Getter
+- (TTTAttributedLabel *)getLabelDesc {
+    return lblDesc;
+}
+
+
+#pragma mark - Method
+- (void)setHiddenAction:(BOOL)hidden {
+    viewContentAction.hidden = hidden;
+}
+
+- (UIButton *)getBtnKomentar {
+    return btnKomentar;
+}
+
+- (IBAction)actionBeriReview:(id)sender {
+    [_delegate actionBeriReview:sender];
+}
+
+- (void)setHiddenRating:(BOOL)hidden {
+    viewContentStar.hidden = hidden;
+}
+
+- (IBAction)actionUbah:(id)sender {
+    [_delegate actionUbah:sender];
+}
+
+- (IBAction)actionProduct:(id)sender {
+    [_delegate actionProduct:sender];
+}
+
+- (void)setView:(DetailReviewReputaionViewModel *)viewModel {
+    lblDate.text = viewModel.review_create_time;
+    [btnProduct setTitle:viewModel.product_name forState:UIControlStateNormal];
+    
+    //Set star akurasi and kualitas
+    for(int i=0;i<arrImgKualitas.count;i++) {
+        UIImageView *tempImage = arrImgKualitas[i];
+        tempImage.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i < [viewModel.product_service_point intValue])?@"icon_star_active":@"icon_star" ofType:@"png"]];
+    }
+    for(int i=0;i<arrImgAkurasi.count;i++) {
+        UIImageView *tempImage = arrImgAkurasi[i];
+        tempImage.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i < [viewModel.product_accuracy_point intValue])?@"icon_star_active":@"icon_star" ofType:@"png"]];
+    }
+    
+    
+    
+    //Set image product
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.product_uri] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    UIImageView *thumb = imgProduct;
+    thumb.image = nil;
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        [thumb setImage:image];
+#pragma clang diagnostic pop
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+    }];
+
+
+    //check skipable
+    if([viewModel.review_is_skipable isEqualToString:@"1"]) {
+        [btnUbah setTitle:@"Lewati" forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        btnUbah.isLewati = YES;
+    }
+    else if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0) {
+        [btnUbah setTitle:@"Ubah" forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+        btnUbah.isLewati = NO;
+    }
+    else {
+        btnUbah.isLewati = NO;
+    }
+    
+    //Set description
+    [_delegate initLabelDesc:lblDesc withText:viewModel.review_message];
+    lblDesc.frame = CGRectMake(imgProduct.frame.origin.x, CPaddingTopBottom + imgProduct.frame.origin.y+imgProduct.bounds.size.height, viewContent.bounds.size.width-(imgProduct.frame.origin.x*2), 0);
+    CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
+    CGRect tempLblRect = lblDesc.frame;
+    tempLblRect.size.height = tempSizeDesc.height;
+    lblDesc.frame = tempLblRect;
+    
+    if(viewModel.review_response == nil) {
+        [self setHiddenRating:YES];
+        btnKomentar.enabled = YES;
+        [btnKomentar setTitle:@"Beri Review" forState:UIControlStateNormal];
+        [btnKomentar setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    }
+    else {
+        btnKomentar.enabled = NO;
+        [btnKomentar setTitle:[NSString stringWithFormat:@"%@ %@", @"3", CStringKomentar] forState:UIControlStateNormal];
+        [btnKomentar setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+}
+
+#pragma mark - TTTAttributedLabel delegate
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    [_delegate attributedLabel:label didSelectLinkWithURL:url];
+}
+@end

@@ -14,6 +14,8 @@
 #define CHeightViewStar 18
 #define CHeightButton 30
 #define CheightImage 50
+#define CHeightContentRate 30
+#define CHeightContentAction 35
 
 @class ViewLabelUser;
 @protocol productReputationDelegate <NSObject>
@@ -29,7 +31,7 @@
 
 @interface ProductReputationCell : UITableViewCell
 {
-    IBOutlet UIView *viewContent, *lineSeparatorDesc, *viewStarKualitas, *viewStarAkurasi, *viewSeparatorKualitas, *viewContentLoad;
+    IBOutlet UIView *viewContent, *lineSeparatorDesc, *viewStarKualitas, *viewStarAkurasi, *viewSeparatorKualitas, *viewContentLoad, *viewContentRating, *viewContentAction;
     IBOutlet UIImageView *imageProfile;
     IBOutlet ViewLabelUser *viewLabelUser;
     IBOutlet UIButton *btnRateEmoji, *btnLike, *btnDislike, *btnChat, *btnMore;
@@ -37,7 +39,7 @@
     TTTAttributedLabel *lblDesc;
     IBOutlet UIActivityIndicatorView *actLoading;
     
-    BOOL isProductCell;
+    BOOL isProductCell;//flag is used to product data
     IBOutletCollection(UIImageView) NSArray *arrImageKualitas, *arrImageAkurasi;
 }
 @property (nonatomic, unsafe_unretained) id<productReputationDelegate> delegate;
@@ -47,6 +49,8 @@
 - (void)initProductCell;
 - (UIImageView *)getProductImage;
 - (void)setLabelProductName:(NSString *)strProductName;
+- (void)setHiddenRating:(BOOL)hidden;
+- (void)setHiddenAction:(BOOL)hidden;
 - (TTTAttributedLabel *)getLabelDesc;
 - (void)setHiddenViewLoad:(BOOL)isLoading;
 - (UIImageView *)getImageProfile;
@@ -61,6 +65,7 @@
 - (void)setDescription:(NSString *)strDescription;
 - (IBAction)actionRate:(id)sender;
 - (UIView *)getViewContent;
+- (UIView *)getViewContentAction;
 - (IBAction)actionLike:(id)sender;
 - (IBAction)actionDisLike:(id)sender;
 - (IBAction)actionChat:(id)sender;

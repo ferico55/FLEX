@@ -501,8 +501,12 @@ CMPopTipViewDelegate
         switch (btn.tag) {
             case 12:
             {
-                ProductReputationViewController *productReputationViewController = [ProductReputationViewController new];
-                [self.navigationController pushViewController:productReputationViewController animated:YES];
+                if(_product.result.shop_info.shop_domain != nil) {
+                    ProductReputationViewController *productReputationViewController = [ProductReputationViewController new];
+                    productReputationViewController.strShopDomain = _product.result.shop_info.shop_domain;
+                    productReputationViewController.strProductID = _product.result.product.product_id;
+                    [self.navigationController pushViewController:productReputationViewController animated:YES];
+                }
                 return;
                 
                 

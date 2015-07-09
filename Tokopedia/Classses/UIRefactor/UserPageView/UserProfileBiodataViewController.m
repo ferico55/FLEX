@@ -84,6 +84,10 @@
     self.screenName = @"Profile - Profile Information";
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    constraintHeightTableView.constant = self.view.bounds.size.height;
+}
+
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateInfoProfileScroll:)
@@ -111,7 +115,7 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40;
+    return 45;
 }
 
 
@@ -127,7 +131,7 @@
         }
         else if (indexPath.section == 1) {
             //height shop
-            return 130;
+            return 133;
         }
         else
             //height biodata

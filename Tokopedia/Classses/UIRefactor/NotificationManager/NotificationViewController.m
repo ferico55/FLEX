@@ -15,6 +15,7 @@
 #import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
+#import "SegmentedReviewReputationViewController.h"
 
 #import "SalesNewOrderViewController.h"
 #import "ShipmentStatusViewController.h"
@@ -315,6 +316,11 @@
             }
                 
             case 2 : {
+                SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+                [self.delegate pushViewController:segmentedReputationViewController];
+
+                /*
                 InboxReviewViewController *vc = [InboxReviewViewController new];
                 vc.data=@{@"nav":@"inbox-review"};
                 
@@ -331,6 +337,7 @@
                 [nc setViewControllers:vcs];
                 nc.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:nc];
+                 */
                 break;
             }
             case 3:

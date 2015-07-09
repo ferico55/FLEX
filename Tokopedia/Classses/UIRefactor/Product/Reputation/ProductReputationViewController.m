@@ -5,14 +5,25 @@
 //  Created by Tokopedia on 6/29/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "AdvanceReview.h"
 #import "CMPopTipView.h"
+#import "DetailReputationReview.h"
+#import "LoadingView.h"
+#import "NoResultView.h"
 #import "ProductReputationCell.h"
+#import "ProductOwner.h"
 #import "ProductDetailReputationViewController.h"
 #import "ProductReputationViewController.h"
+#import "Paging.h"
+#import "RatingList.h"
+#import "ReviewResponse.h"
+#import "Review.h"
 #import "String_Reputation.h"
+#import "TokopediaNetworkManager.h"
 #define CCellIdentifier @"cell"
+#define CTagGetProductReview 1
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -20,6 +31,14 @@
     NSMutableParagraphStyle *style;
     CMPopTipView *popTipView;
     UIRefreshControl *refreshControl;
+    LoadingView *loadingView;
+    NoResultView *noResultView;
+    
+    int page;
+    NSString *strUri;
+    Review *review;
+    NSMutableArray *arrList;
+    TokopediaNetworkManager *tokopediaNetworkManager;
 }
 
 
@@ -27,10 +46,14 @@
     [super viewDidLoad];
     style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
+    page = 0;
     
     [self initTable];
-    [self setRateStar:0 withAnimate:NO];
     tableContent.allowsSelection = NO;
+    tableContent.backgroundColor = [UIColor clearColor];
+
+    [self setLoadingView:YES];
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,13 +61,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    tableContent.backgroundColor = [UIColor clearColor];
-    tableContent.delegate = self;
-    tableContent.dataSource = self;
-    [tableContent reloadData];
-}
 
 /*
 #pragma mark - Navigation
@@ -83,84 +99,87 @@
 }
 
 - (void)setRateStar:(int)tag withAnimate:(BOOL)isAnimate {
-    //Set Progress
-    switch (tag) {
-        case 0:
-        {
-            //Set Progress
-            float totalCount = 100000.0f;
-            [progress1 setProgress:80000/totalCount animated:isAnimate];
-            [progress2 setProgress:20000/totalCount animated:isAnimate];
-            [progress3 setProgress:0/totalCount animated:isAnimate];
-            [progress4 setProgress:0/totalCount animated:isAnimate];
-            [progress5 setProgress:0/totalCount animated:isAnimate];
-            
-            lblTotal1Rate.text = [NSString stringWithFormat:@"(%d)", 80000];
-            lblTotal2Rate.text = [NSString stringWithFormat:@"(%d)", 20000];
-            lblTotal3Rate.text = [NSString stringWithFormat:@"(%d)", 0];
-            lblTotal4Rate.text = [NSString stringWithFormat:@"(%d)", 0];
-            lblTotal5Rate.text = [NSString stringWithFormat:@"(%d)", 0];
-            
-            //Calculate widht total rate
-            UILabel *tempLabel = [UILabel new];
-            tempLabel.text = lblTotal1Rate.text;
-            tempLabel.font = lblTotal1Rate.font;
-            tempLabel.textColor = lblTotal1Rate.textColor;
-            tempLabel.numberOfLines = 0;
-            CGSize tempSize = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)];
-            constWidthLblRate1.constant = constWidthLblRate2.constant = constWidthLblRate3.constant = constWidthLblRate4.constant = constWidthLblRate5.constant = tempSize.width;
-            
-            
-            
-            //Set header rate
-            for(int i=0;i<arrImageHeaderRating.count;i++) {
-                UIImageView *tempImageView = arrImageHeaderRating[i];
-                tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<3)?@"icon_star_active":@"icon_star" ofType:@"png"]];
+    int nRate1, nRate2, nRate3, nRate4, nRate5;
+    float totalCount = 0;
+    nRate1 = nRate2 = nRate3 = nRate4 = nRate5 = 0;
+    
+    
+    for(RatingList *tempRatingList in review.result.advance_review.rating_list) {
+        switch ([tempRatingList.rating_rating_star_point intValue]) {
+            case 5:
+            {
+                nRate5 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                totalCount += nRate5;
             }
-            
-            lblTotalHeaderRating.text = [NSString stringWithFormat:@"%d Out of %d", 3, 6];
-            lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"Based on %d ratings in the post %d months", 3, 6];
-        }
-            break;
-        case 1:
-        {
-            //Set Progress
-            float totalCount = 200000.0f;
-            [progress1 setProgress:80000/totalCount animated:isAnimate];
-            [progress2 setProgress:20000/totalCount animated:isAnimate];
-            [progress3 setProgress:60000/totalCount animated:isAnimate];
-            [progress4 setProgress:40000/totalCount animated:isAnimate];
-            [progress5 setProgress:0/totalCount animated:isAnimate];
-            
-            
-            lblTotal1Rate.text = [NSString stringWithFormat:@"(%d)", 80000];
-            lblTotal2Rate.text = [NSString stringWithFormat:@"(%d)", 20000];
-            lblTotal3Rate.text = [NSString stringWithFormat:@"(%d)", 60000];
-            lblTotal4Rate.text = [NSString stringWithFormat:@"(%d)", 40000];
-            lblTotal5Rate.text = [NSString stringWithFormat:@"(%d)", 0];
-            
-            //Calculate widht total rate
-            UILabel *tempLabel = [UILabel new];
-            tempLabel.text = lblTotal1Rate.text;
-            tempLabel.font = lblTotal1Rate.font;
-            tempLabel.textColor = lblTotal1Rate.textColor;
-            tempLabel.numberOfLines = 0;
-            CGSize tempSize = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)];
-            constWidthLblRate1.constant = constWidthLblRate2.constant = constWidthLblRate3.constant = constWidthLblRate4.constant = constWidthLblRate5.constant = tempSize.width;
-            
-            
-            
-            //Set header rate
-            for(int i=0;i<4;i++) {
-                UIImageView *tempImageView = arrImageHeaderRating[i];
-                tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<4)?@"icon_star_active":@"icon_star" ofType:@"png"]];
+                break;
+            case 4:
+            {
+                nRate4 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                totalCount += nRate4;
             }
-            
-            lblTotalHeaderRating.text = [NSString stringWithFormat:@"%d Out of %d", 4, 6];
-            lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"Based on %d ratings in the post %d months", 4, 6];
+                break;
+            case 3:
+            {
+                nRate3 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                totalCount += nRate3;
+            }
+                break;
+            case 2:
+            {
+                nRate2 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                totalCount += nRate2;
+            }
+                break;
+            case 1:
+            {
+                nRate1 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                totalCount += nRate1;
+            }
+                break;
         }
-            break;
     }
+    
+    //Set Progress
+    if(totalCount == 0) {
+        [progress1 setProgress:0 animated:isAnimate];
+        [progress2 setProgress:0 animated:isAnimate];
+        [progress3 setProgress:0 animated:isAnimate];
+        [progress4 setProgress:0 animated:isAnimate];
+        [progress5 setProgress:0 animated:isAnimate];
+    }
+    else {
+        [progress1 setProgress:nRate1/totalCount animated:isAnimate];
+        [progress2 setProgress:nRate2/totalCount animated:isAnimate];
+        [progress3 setProgress:nRate3/totalCount animated:isAnimate];
+        [progress4 setProgress:nRate4/totalCount animated:isAnimate];
+        [progress5 setProgress:nRate5/totalCount animated:isAnimate];
+    }
+    
+    lblTotal1Rate.text = [NSString stringWithFormat:@"(%d)", nRate1];
+    lblTotal2Rate.text = [NSString stringWithFormat:@"(%d)", nRate2];
+    lblTotal3Rate.text = [NSString stringWithFormat:@"(%d)", nRate3];
+    lblTotal4Rate.text = [NSString stringWithFormat:@"(%d)", nRate4];
+    lblTotal5Rate.text = [NSString stringWithFormat:@"(%d)", nRate5];
+    
+    //Calculate widht total rate
+    UILabel *tempLabel = [UILabel new];
+    tempLabel.text = lblTotal1Rate.text;
+    tempLabel.font = lblTotal1Rate.font;
+    tempLabel.textColor = lblTotal1Rate.textColor;
+    tempLabel.numberOfLines = 0;
+    CGSize tempSize = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)];
+    constWidthLblRate1.constant = constWidthLblRate2.constant = constWidthLblRate3.constant = constWidthLblRate4.constant = constWidthLblRate5.constant = tempSize.width;
+    
+    
+    
+    //Set header rate
+    for(int i=0;i<arrImageHeaderRating.count;i++) {
+        UIImageView *tempImageView = arrImageHeaderRating[i];
+        tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<3)?@"icon_star_active":@"icon_star" ofType:@"png"]];
+    }
+    
+    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f Out of %d", [review.result.advance_review.product_rating_point floatValue], 5];
+    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"Based on %d ratings in the post %d months", [review.result.advance_review.product_rating_point intValue], 6];
 }
 
 
@@ -193,8 +212,12 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    tableView.tableFooterView = viewFooter;
-    [footerActIndicator startAnimating];
+    if(indexPath.row == arrList.count-1) {
+        if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
+            [self setLoadingView:YES];
+            [[self getNetworkManager:CTagGetProductReview] doRequest];
+        }
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -207,25 +230,52 @@
         [self setPropertyLabelDesc:cell.getLabelDesc];
     }
     
-    cell.getBtnRateEmoji.tag = cell.getBtnChat.tag = cell.getBtnDisLike.tag = cell.getBtnLike.tag = cell.getBtnMore.tag = indexPath.row;
+    cell.getBtnRateEmoji.tag = cell.getBtnChat.tag = cell.getBtnDisLike.tag = cell.getBtnLike.tag = cell.getBtnMore.tag = cell.getLabelDesc.tag = indexPath.row;
+    DetailReputationReview *detailReputationReview = [arrList objectAtIndex:indexPath.row];
     
-    cell.getImageProfile.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_no_data" ofType:@"png"]];
-    [cell setLabelUser:@"Andre" withTag:0];
-    [cell setPercentage:@"35"];
-    [cell setLabelDate:@"3 hari yang lalu"];
-    [cell setDescription:@"pasjk pdlf klksa jflj asldf jsadj flkjsalkdf jask jdflksa jdlkf jaslkdj flkas jdfl ajslkdf jsakl jflkasj dlfk jaslk jflksd"];
+    //Set Image
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailReputationReview.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [cell.getImageProfile setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [cell.getImageProfile setImage:image];
+#pragma clang diagnostic pop
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+    }];
+    
+    //Set data
+    [cell setLabelUser:detailReputationReview.review_user_name withTag:0];
+    [cell setPercentage:detailReputationReview.review_user_reputation.positive_percentage];
+    [cell setLabelDate:detailReputationReview.review_create_time];
+    [cell setDescription:detailReputationReview.review_message];
+    [cell setImageKualitas:[detailReputationReview.review_rate_service intValue]];
+    [cell setImageAkurasi:[detailReputationReview.review_rate_accuracy intValue]];
     
     return cell;
+}
+
+- (void)mappingAttribute:(DetailReputationReview *)reputationReview {
+    reputationReview.product_rating_point = reputationReview.review_rate_service;
+    reputationReview.product_accuracy_point = reputationReview.review_rate_accuracy;
+    reputationReview.review_full_name = reputationReview.review_user_name;
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
+    
+    [self mappingAttribute:detailReputationReview];
+    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return arrList.count;
 }
 
 
@@ -237,7 +287,12 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    NSLog(@"test");
+    DetailReputationReview *detailReputationReview = arrList[label.tag];
+    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
+    
+    [self mappingAttribute:detailReputationReview];
+    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 
 
@@ -246,6 +301,13 @@
 {
     NSLog(@"sdf");
     [refresh endRefreshing];
+}
+
+- (IBAction)actionFilter6Month:(id)sender {
+}
+
+- (IBAction)actionFilterAllTime:(id)sender {
+
 }
 
 - (IBAction)actionSegmentedValueChange:(id)sender {
@@ -269,6 +331,32 @@
 
 
 #pragma mark - Method
+- (void)setLoadingView:(BOOL)isLoad {
+    if(isLoad) {
+        tableContent.tableFooterView = viewFooter;
+        [footerActIndicator startAnimating];
+    }
+    else {
+        [footerActIndicator stopAnimating];
+        tableContent.tableFooterView = nil;
+    }
+}
+
+
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
+    if(tag == CTagGetProductReview) {
+        if(tokopediaNetworkManager == nil) {
+            tokopediaNetworkManager = [TokopediaNetworkManager new];
+            tokopediaNetworkManager.tagRequest = tag;
+            tokopediaNetworkManager.delegate = self;
+        }
+        
+        return tokopediaNetworkManager;
+    }
+    
+    return nil;
+}
+
 - (void)dismissAllPopTipViews
 {
     [popTipView dismissAnimated:YES];
@@ -334,12 +422,13 @@
 
 - (void)actionRate:(id)sender {
     int paddingRightLeftContent = 10;
+    DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent+paddingRightLeftContent, CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:@"35" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor redColor]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:@"36" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor yellowColor]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:@"37" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor greenColor]];
+    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor redColor]];
+    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor yellowColor]];
+    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor greenColor]];
     
     btnMerah.tag = CTagMerah;
     btnKuning.tag = CTagKuning;
@@ -377,5 +466,234 @@
 #pragma mark - UIActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSLog(@"%d", (int)buttonIndex);
+}
+
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag {
+    if(tag == CTagGetProductReview) {
+        return @{@"action" : @"get_product_review",
+                 @"shop_domain" : _strShopDomain,
+                 @"product_id" : _strProductID,
+                 @"page" : @(page)};
+    }
+    
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag {
+    if(tag == CTagGetProductReview) {
+        return @"product.pl";
+    }
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag {
+    if(tag == CTagGetProductReview) {
+        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Review class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ReviewResult class]];
+        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+        [pagingMapping addAttributeMappingsFromArray:@[CUriNext,
+                                                       CUriPrevious]];
+        
+        
+        RKObjectMapping *advreviewMapping = [RKObjectMapping mappingForClass:[AdvanceReview class]];
+        [advreviewMapping addAttributeMappingsFromDictionary:@{CProductRatingPoint:CProductRatingPoint,
+                                                          CProductRateAccuracyPoint:CProductRateAccuracyPoint,
+                                                          CProductPositiveReviewRating:CProductPositiveReviewRating,
+                                                          CProductNetralReviewRating:CProductNetralReviewRating,
+                                                          CProductRatingStarPoint:CProductRatingStarPoint,
+                                                          CProductRatingStarDesc:CProductRatingStarDesc,
+                                                          CProductNegativeReviewRating:CProductNegativeReviewRating,
+                                                          CProductReview:CProductReview,
+                                                          CProductRateAccuracy:CProductRateAccuracy,
+                                                          CProductAccuracyStarDesc:CProductAccuracyStarDesc,
+                                                          CProductRating:CProductRating,
+                                                          CProductNetralReviewRateAccuray:CProductNetralReviewRateAccuray,
+                                                          CProductAccuacyStarRate:CProductAccuacyStarRate,
+                                                          CProductPositiveReviewRateAccuracy:CProductPositiveReviewRateAccuracy,
+                                                          CProductNegativeReviewRateAccuracy:CProductNegativeReviewRateAccuracy
+                                                        }];
+        
+        RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
+        [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{CReviewUpdateTime:CReviewUpdateTime,
+                                                                       CReviewRateAccuracyDesc:CReviewRateAccuracyDesc,
+                                                                       CReviewUserLabelID:CReviewUserLabelID,
+                                                                       CReviewUserName:CReviewUserName,
+                                                                       CReviewRateAccuracy:CReviewRateAccuracy,
+                                                                       CReviewMessage:CReviewMessage,
+                                                                       CReviewRateProductDesc:CReviewRateProductDesc,
+                                                                       CReviewRateSpeedDesc:CReviewRateSpeedDesc,
+                                                                       CReviewShopID:CShopID,
+                                                                       CReviewUserImage:CReviewUserImage,
+                                                                       CReviewUserLabel:CReviewUserLabel,
+                                                                       CReviewCreateTime:CReviewCreateTime,
+                                                                       CReviewID:CReviewID,
+                                                                       CReviewRateServiceDesc:CReviewRateServiceDesc,
+                                                                       CReviewRateProduct:CReviewRateProduct,
+                                                                       CReviewRateSpeed:CReviewRateSpeed,
+                                                                       CReviewRateService:CReviewRateService,
+                                                                       CReviewUserID:CReviewUserID
+                                                                            }];
+        
+        RKObjectMapping *reviewReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+        [reviewReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                CNegative,
+                                                                CNeutral,
+                                                                CPositif]];
+        
+        RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
+        [reviewReputationMapping addAttributeMappingsFromArray:@[CResponseCreateTime,
+                                                                CResponseMessage]];
+        
+        
+        RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
+        [reviewReputationMapping addAttributeMappingsFromDictionary:@{CUserLabelID:CUserLabelID,
+                                                                CUserLabel:CUserLabel,
+                                                                CuserID:CuserID,
+                                                                CUserImage:CUserImage,
+                                                                CFullName:CUserName}];
+        
+
+        RKObjectMapping *ratingListMapping = [RKObjectMapping mappingForClass:[RatingList class]];
+        [ratingListMapping addAttributeMappingsFromArray:@[CRatingRatingStarPoint,
+                                                           CRatingTotalRateAccuracyPersen,
+                                                           CRatingRateService,
+                                                           CRatingRatingStarDesc,
+                                                           CRatingRatingFmt,
+                                                           CRatingTotalRatingPersen,
+                                                           CRatingUrlFilterRateAccuracy,
+                                                           CRatingRating,
+                                                           CRatingUrlFilterRating,
+                                                           CRatingRateSpeed,
+                                                           CRatingRateAccuracy
+                                                           CRatingRateAccuracyFmt,
+                                                           CRatingRatingPoint]];
+        
+                                                                
+        //add relationship mapping
+        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping]];
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CAdvanceReview toKeyPath:CAdvanceReview withMapping:advreviewMapping]];
+        
+        [advreviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductRatingList toKeyPath:CRating_List withMapping:ratingListMapping]];
+        
+        [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewUserReputation toKeyPath:CReviewUserReputation withMapping:reviewReputationMapping]];
+        [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];
+        [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
+        
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CList toKeyPath:CList withMapping:detailReputationReviewMapping]];
+
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:[self getPath:tag]
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [objectManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return objectManager;
+    }
+    
+    return nil;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
+    NSDictionary *resultDict = ((RKMappingResult*) result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    if(tag == CTagGetProductReview) {
+        Review *tempReview = stat;
+        return tempReview.status;
+    }
+    
+    return nil;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+    NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    if(tag == CTagGetProductReview) {
+        review = stat;
+        
+        if(page==0 && review.result.list!=nil) {
+            arrList = [[NSMutableArray alloc] initWithArray:review.result.list];
+            
+            segmentedControl.enabled = YES;
+            btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
+            [self setRateStar:0 withAnimate:YES];
+        }
+        else if(review.result.list != nil) {
+            [arrList addObjectsFromArray:review.result.list];
+        }
+        
+        //Check next page
+        strUri = review.result.paging.uri_next;
+        page = [[[self getNetworkManager:CTagGetProductReview] splitUriToPage:strUri] integerValue];
+        
+
+        //Add delegate to talbe view
+        if(arrList!=nil && arrList.count>0) {
+            if(tableContent.delegate == nil) {
+                tableContent.delegate = self;
+                tableContent.dataSource = self;
+            }
+            
+            [tableContent reloadData];
+        }
+        else  {
+            [self setLoadingView:NO];
+            
+            if(noResultView == nil) {
+                noResultView = [NoResultView new];
+            }
+            tableContent.tableFooterView = noResultView.view;
+        }
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    if(tag == CTagGetProductReview) {
+        
+    }
+}
+
+- (void)actionBeforeRequest:(int)tag {
+}
+
+- (void)actionRequestAsync:(int)tag {
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    if(tag == CTagGetProductReview) {
+        [self setLoadingView:NO];
+        
+        
+        if(loadingView == nil) {
+            loadingView = [LoadingView new];
+            loadingView.delegate = self;
+        }
+        
+        tableContent.tableFooterView = loadingView.view;
+    }
+}
+
+
+#pragma mark - LoadingView Delegate
+- (void)pressRetryButton
+{
+    [self setLoadingView:YES];
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 @end

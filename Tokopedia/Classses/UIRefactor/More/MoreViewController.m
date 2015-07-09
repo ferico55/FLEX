@@ -5,6 +5,8 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "MyReviewReputationViewController.h"
+#import "SegmentedReviewReputationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
@@ -628,6 +630,13 @@
             nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
         } else if (indexPath.row == 2) {
+            SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+            segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:segmentedReputationViewController animated:YES];
+            
+            
+            
+            /*
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
             
@@ -644,7 +653,7 @@
             [nc setViewControllers:vcs];
             nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
-            
+            */
         } else if (indexPath.row == 3) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;

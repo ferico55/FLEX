@@ -26,6 +26,7 @@
 
 @property (nonatomic, unsafe_unretained) id<ProductDetailReputationDelegate> delegate;
 
+- (void)setStar:(int)valueStar;
 - (ViewLabelUser *)getViewLabelUser;
 - (UIView *)getViewStar;
 - (UITextView *)getTvDesc;

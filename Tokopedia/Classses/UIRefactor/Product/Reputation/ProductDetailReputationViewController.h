@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-@class HPGrowingTextView;
+@class ReviewList;
+@class HPGrowingTextView, LikeDislike, DetailReputationReview;
 
 @interface ProductDetailReputationViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 {
@@ -18,5 +19,10 @@
     IBOutlet NSLayoutConstraint *constraintHeightViewMessage, *constHeightViewContent;
 }
 
+@property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputaitonReview;
+@property (nonatomic, strong) ReviewList *reviewList;
+@property (nonatomic, strong) NSString *strTotalLike;
+@property (nonatomic, strong) NSString *strTotalDisLike;
 - (IBAction)actionSend:(id)sender;
+- (void)updateLikeDislike:(LikeDislike *)likeDislikeObj;
 @end

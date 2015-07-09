@@ -5,12 +5,16 @@
 //  Created by Tokopedia on 6/30/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 #import "CMPopTipView.h"
+#import "DetailReputationReview.h"
 #import "HPGrowingTextView.h"
+#import "LikeDislike.h"
 #import "ProductReputationCell.h"
 #import "ProductDetailReputationCell.h"
 #import "ProductReputationViewController.h"
 #import "ProductDetailReputationViewController.h"
+#import "ReviewList.h"
 #import "String_Reputation.h"
+#import "TotalLikeDislike.h"
 #import "ViewLabelUser.h"
 
 #define CCellIdentifier @"cell"
@@ -149,22 +153,67 @@
     productReputationCell.contentView.backgroundColor = productReputationCell.getViewContent.backgroundColor;
     productReputationCell.getBtnMore.frame = CGRectZero;
     [productReputationCell.getBtnMore removeFromSuperview];
-    productReputationCell.getImageProfile.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_no_data" ofType:@"png"]];
-    [productReputationCell setLabelUser:@"Andre" withTag:0];
-    [productReputationCell setPercentage:@"35"];
-    [productReputationCell setLabelDate:@"3 hari yang lalu"];
-    [productReputationCell setDescription:@"pasjk pdlf klksa jflj asldf jsadj flkjsalkdf jask jdflksa jdlkf jaslkdj flkas jdfl ajslkdf jsakl jflkasj dlfk jaslk jflksd"];
-    [productReputationCell layoutSubviews];
     
-    //Add Background view and line separator
-    UIView *backgroundHeaderView = [[UIView alloc] initWithFrame:CGRectMake(-productReputationCell.getViewContent.frame.origin.x, productReputationCell.getBtnLike.frame.origin.y, self.view.bounds.size.width, productReputationCell.contentView.bounds.size.height-productReputationCell.getBtnLike.frame.origin.y)];
-    backgroundHeaderView.backgroundColor = self.view.backgroundColor;
-    [productReputationCell.getViewContent insertSubview:backgroundHeaderView belowSubview:productReputationCell.getBtnLike];
+    
+    //Set profile image
+    if((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && _detailReputaitonReview.review_message.length>0) || (_reviewList!=nil && _reviewList.review_message!=nil && _reviewList.review_message!=nil && _reviewList.review_message.length>0)) {
+        [productReputationCell initProductCell];
+        [productReputationCell setLabelProductName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name];
+        
+        
+        //Set image product
+        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_uri : _reviewList.product_images] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        productReputationCell.getProductImage.image = nil;
+        [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            [productReputationCell.getProductImage setImage:image];
+#pragma clang diagnostic pop
+        } failure:nil];
+    }
+    
+    
+    //Set image profile
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil? _detailReputaitonReview.user_image:_reviewList.review_user_image)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    UIImageView *userImageView = productReputationCell.getImageProfile;
+    userImageView.image = nil;
+    [userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [userImageView setImage:image];
+#pragma clang diagnostic pop
+    } failure:nil];
+    [productReputationCell setLabelUser:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_full_name:_reviewList.review_user_name) withTag:0];
+    [productReputationCell setPercentage:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive_percentage:_reviewList.review_user_reputation.positive_percentage)];
+    [productReputationCell setLabelDate:(_detailReputaitonReview!=nil? (_detailReputaitonReview.review_create_time?:@""):(_reviewList.review_create_time?:@""))];
+    
+    
+    if(_detailReputaitonReview != nil) {
+        productReputationCell.getViewContentAction.hidden = YES;
+    }
+    else {
+        //Set chat total
+        if([_reviewList.review_response.response_message isEqualToString:@"0"]) {
+            [productReputationCell.getBtnChat setTitle:_reviewList.review_response.response_message forState:UIControlStateNormal];
+        }
+        else {
+            [productReputationCell.getBtnChat setTitle:@"1" forState:UIControlStateNormal];
+        }
+    }
+    
+    [productReputationCell setImageKualitas:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_rating_point:_reviewList.review_rate_quality) intValue]];
+    [productReputationCell setImageAkurasi:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_accuracy_point:_reviewList.review_rate_accuracy) intValue]];
+    [productReputationCell setDescription:[NSString convertHTML:(_detailReputaitonReview!=nil? (_detailReputaitonReview.review_message?:@""):(_reviewList.review_message?:@""))]];
+    
+    if(_strTotalDisLike != nil) {
+        [productReputationCell.getBtnLike setTitle:_strTotalLike forState:UIControlStateNormal];
+        [productReputationCell.getBtnDisLike setTitle:_strTotalDisLike forState:UIControlStateNormal];
+    }
+    [productReputationCell layoutSubviews];
     
     UIView *viewSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, productReputationCell.contentView.bounds.size.height-1, self.view.bounds.size.width, 1.0f)];
     viewSeparator.backgroundColor = [UIColor lightGrayColor];
     [productReputationCell.contentView addSubview:viewSeparator];
-    
     
     tableReputation.tableHeaderView = productReputationCell.contentView;
     tableReputation.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
@@ -195,7 +244,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    if(_detailReputaitonReview != nil) {
+        if(_detailReputaitonReview.product_owner!=nil && _detailReputaitonReview.review_response!=nil && _detailReputaitonReview.review_response.response_create_time!=nil && ![_detailReputaitonReview.review_response.response_create_time isEqualToString:@"0"])
+            return 1;
+        return 0;
+    }
+    else {
+        if(_reviewList.review_product_owner!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_create_time!=nil && ![_reviewList.review_response.response_create_time isEqualToString:@"0"])
+            return 1;
+        
+        return 0;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -209,12 +268,24 @@
         [dictCell setObject:cell forKey:reuseIdentifier];
     }
     
-    cell.getTvDesc.text = @"aslkdjf lksajlfkjlsakj flksajdlkf jslakj flkasjlkfjsalkdj flkasjdlk fjslajd flsad fjsaljd flsad fsadf asd fasdf asd fasd fsad fas fadf adf sa dfsad fsaf sad fd";
-    cell.getLblDate.text = @"1 hari yang lalu";
-    cell.getImgProfile.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_no_data" ofType:@"png"]];
-    [cell.getViewLabelUser setText:@"Andre"];
-    [cell.getViewLabelUser setColor:0];
     
+    cell.getTvDesc.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_message:_reviewList.review_response.response_message;
+    cell.getLblDate.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_time_fmt:_reviewList.review_response.response_time_fmt;
+
+    
+    //Set image
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    productReputationCell.getProductImage.image = nil;
+    [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [productReputationCell.getProductImage setImage:image];
+#pragma clang diagnostic pop
+    } failure:nil];
+    
+    
+    [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.full_name:_reviewList.review_product_owner.user_name];
+    [cell.getViewLabelUser setColor:0];
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
@@ -237,10 +308,31 @@
         cell.delegate = self;
         [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:15.0f]];
     }
-    cell.getTvDesc.text = @"aslkdjf lksajlfkjlsakj flksajdlkf jslakj flkasjlkfjsalkdj flkasjdlk fjslajd flsad fjsaljd flsad fsadf asd fasdf asd fasd fsad fas fadf adf sa dfsad fsaf sad fd";
-    cell.getLblDate.text = @"1 hari yang lalu";
-    cell.getImgProfile.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_no_data" ofType:@"png"]];
-    [cell.getViewLabelUser setText:@"Andre"];
+    cell.getTvDesc.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_message:_reviewList.review_response.response_message;
+    cell.getLblDate.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_time_fmt:_reviewList.review_response.response_time_fmt;
+    
+    
+    //Set image
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    productReputationCell.getProductImage.image = nil;
+    [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [productReputationCell.getProductImage setImage:image];
+#pragma clang diagnostic pop
+    } failure:nil];
+    
+    
+    int nStar = 0;
+    if(_detailReputaitonReview != nil) {
+        nStar = (_detailReputaitonReview.product_owner.shop_reputation_score==nil||_detailReputaitonReview.product_owner.shop_reputation_score.length==0? 0 : [_detailReputaitonReview.product_owner.shop_reputation_score intValue]);
+    }
+    else {
+        nStar = 0;//(_reviewList.review_product_owner.shop_reputation_score==nil||_reviewList.review_product_owner.shop_reputation_score.length==0? 0 : [_reviewList.review_product_owner.shop_reputation_score intValue]);
+    }
+    
+    [cell setStar:nStar];
+    [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.full_name:_reviewList.review_product_owner.user_name];
     [cell.getViewLabelUser setColor:0];
     cell.getViewStar.tag = indexPath.row;
 
@@ -284,9 +376,9 @@
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent+paddingRightLeftContent, CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:@"35" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor redColor]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:@"36" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor yellowColor]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:@"37" withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor greenColor]];
+    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor redColor]];
+    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor yellowColor]];
+    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor greenColor]];
     
     btnMerah.tag = CTagMerah;
     btnKuning.tag = CTagKuning;
@@ -344,6 +436,11 @@
 
 
 #pragma mark - Method
+- (void)updateLikeDislike:(LikeDislike *)likeDislikeObj {
+    [productReputationCell.getBtnDisLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_dislike  forState:UIControlStateNormal];
+    [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_like  forState:UIControlStateNormal];
+}
+
 - (void)dismissAllPopTipViews
 {
     [popTipView dismissAnimated:YES];

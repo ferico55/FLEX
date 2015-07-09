@@ -14,6 +14,10 @@
 #define CStringPoin @"Poin"
 #define CWidthItemPopUp 50
 #define CHeightItemPopUp 50
+#define CRevieweeScroreBad @"-1"
+#define CRevieweeScroreNetral @"1"
+#define CRevieweeScroreGood @"2"
+
 enum emoticonTag
 {
     CTagMerah = 1,

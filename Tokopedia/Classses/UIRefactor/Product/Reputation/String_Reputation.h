@@ -11,5 +11,14 @@
 
 #define CStringBatal @"Batal"
 #define CStringLapor @"Lapor"
+#define CStringFailedInsertReputation @"Gagal mengirim reputasi"
+#define CStringSuccessInsertReputation @"Berhasil mengirim reputasi"
+#define CPleaseWait @"Please wait"
+
+
+
 #define CKirimPesanMu @"Kirim pesanmu di sini.."
+#define CInsertReputation @"insert_reputation"
+#define CGetProductReview @"get_product_review"
+
 #endif

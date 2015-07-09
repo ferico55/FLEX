@@ -110,7 +110,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="37t-Te-Zzb">
+                <scrollView autoresizesSubviews="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="37t-Te-Zzb">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UvD-NM-Mdf">
@@ -1083,7 +1083,8 @@
                         </view>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="UvD-NM-Mdf" secondAttribute="bottom" constant="-137" placeholder="YES" id="Gsn-5O-AQs"/>
+                        <constraint firstAttribute="bottom" secondItem="UvD-NM-Mdf" secondAttribute="bottom" id="63Z-dM-Uey"/>
+                        <constraint firstAttribute="height" constant="568" id="BQz-Lt-yQ4"/>
                         <constraint firstAttribute="centerX" secondItem="UvD-NM-Mdf" secondAttribute="centerX" id="Llu-h3-qPj"/>
                         <constraint firstItem="UvD-NM-Mdf" firstAttribute="top" secondItem="37t-Te-Zzb" secondAttribute="top" id="NFB-OQ-Tvj"/>
                         <constraint firstItem="UvD-NM-Mdf" firstAttribute="leading" secondItem="37t-Te-Zzb" secondAttribute="leading" id="QL2-bv-zHa"/>

@@ -64,20 +64,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    if(SYSTEM_VERSION_LESS_THAN(@"7.1")) {
-        [scrollContent setContentSize:CGSizeMake(self.view.bounds.size.width, viewContent.bounds.size.height)];
-    }
-}
-
-- (void)viewDidLayoutSubviews
-{
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.1")) {
-        [scrollContent setContentSize:CGSizeMake(self.view.bounds.size.width, viewContent.bounds.size.height)];
-    }
-}
-
 /*
 #pragma mark - Navigation
 
