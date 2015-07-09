@@ -760,7 +760,6 @@
         _tableView.tableFooterView = _footer;
         [_act startAnimating];
         _isRequestFrom = YES;
-        [self buyButtonIsLoading:YES];
     }
     if (tag == TAG_REQUEST_ATC) {
         [self buyButtonIsLoading:YES];
