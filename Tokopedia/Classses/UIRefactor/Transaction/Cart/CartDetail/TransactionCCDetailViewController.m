@@ -12,6 +12,7 @@
 #import "string_transaction.h"
 #import "TransactionAction.h"
 #import "TransactionCartWebViewViewController.h"
+#import "AlertInfoView.h"
 
 @interface TransactionCCDetailViewController ()
 <
@@ -189,7 +190,10 @@
     }
 }
 - (IBAction)infoCVC:(id)sender {
-    
+    AlertInfoView *alertInfo = [AlertInfoView newview];
+    alertInfo.text = @"Info CVC/CVV2";
+    alertInfo.detailText = @"CVC atau Card Verification Code adalah tiga digit angka terakhir yang terdapat pada bagian belakang kartu kredit.";
+    [alertInfo show];
 }
 
 -(BOOL)isValidInput
