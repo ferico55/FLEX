@@ -118,7 +118,7 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="EVU-33-0wi"/>
                     </connections>
                 </button>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="guT-MQ-tD1">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="guT-MQ-tD1">
                     <rect key="frame" x="74" y="534" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="Ppy-J1-DFq"/>
