@@ -371,7 +371,7 @@
                             }
                         }
                         
-
+                        priceString = [priceString stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
                         label.text = [NSString stringWithFormat:@"Rp %@",priceString];
                         break;
                     }
