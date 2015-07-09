@@ -1498,6 +1498,7 @@
     [_senderPhoneDropshipper removeAllObjects];
     [_isDropshipper removeAllObjects];
     [_stockPartialDetail removeAllObjects];
+    [_stockPartialStrList removeAllObjects];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
     
