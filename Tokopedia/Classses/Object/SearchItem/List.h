@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ProductModelView.h"
+#import "CatalogModelView.h"
+
 @interface List : NSObject
 
 /** shop **/
@@ -36,5 +39,10 @@
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *product_talk_count;
 @property (nonatomic, strong) NSString *product_review_count;
+
+@property (nonatomic, strong) NSString *statusInfo;
+
+@property (nonatomic, strong) ProductModelView *viewModel;
+@property (nonatomic, strong) CatalogModelView *catalogViewModel;
 
 @end

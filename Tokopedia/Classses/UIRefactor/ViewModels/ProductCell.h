@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class ProductModelView;
+@class CatalogModelView;
 
 @interface ProductCell : UICollectionViewCell
 
 - (void)setViewModel:(ProductModelView*)viewModel;
+- (void)setCatalogViewModel:(CatalogModelView*)viewModel;
 
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
 @property (strong, nonatomic) IBOutlet UILabel *productPrice;

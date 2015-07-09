@@ -79,13 +79,16 @@
     [viewController.navigationController presentViewController:vc animated:YES completion:nil];
 }
 
--(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID
-{
+-(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID {
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{@"product_id" : productID};
     vc.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID {
+    
 }
 
 @end
