@@ -54,7 +54,8 @@
     TransactionCartWebViewViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
     LoadingViewDelegate,
-    RequestCartDelegate
+    RequestCartDelegate,
+    TransactionCCViewControllerDelegate
 >
 {
     NSMutableArray *_list;
@@ -705,6 +706,7 @@
 {
     TransactionCCViewController *vc = [TransactionCCViewController new];
     vc.cartSummary = _cartSummary;
+    vc.delegate = self;
     vc.ccData = [_data objectForKey:DATA_CC_KEY]?:[CCData new];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -1270,6 +1272,13 @@
 -(void)TransactionCartMandiriClickPayForm:(TransactionCartFormMandiriClickPayViewController *)VC withUserInfo:(NSDictionary *)userInfo
 {
     [_dataInput addEntriesFromDictionary:userInfo];
+    _requestCart.param = [self paramBuy];
+    [_requestCart dorequestBuy];
+}
+
+-(void)doRequestCC:(NSDictionary *)param
+{
+    [_dataInput addEntriesFromDictionary:param];
     _requestCart.param = [self paramBuy];
     [_requestCart dorequestBuy];
 }

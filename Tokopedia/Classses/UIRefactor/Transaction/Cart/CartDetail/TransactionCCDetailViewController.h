@@ -12,7 +12,7 @@
 @protocol TransactionCCDetailViewControllerDelegate <NSObject>
 
 @required
-- (void)shouldDoRequestCC:(NSDictionary*)param;
+- (void)doRequestCC:(NSDictionary*)param;
 
 @end
 

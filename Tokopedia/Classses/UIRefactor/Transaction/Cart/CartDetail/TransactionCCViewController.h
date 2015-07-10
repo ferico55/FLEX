@@ -10,7 +10,17 @@
 #import "TransactionSummaryDetail.h"
 #import "CCData.h"
 
+@protocol TransactionCCViewControllerDelegate <NSObject>
+
+@required
+- (void)doRequestCC:(NSDictionary*)param;
+
+@end
+
 @interface TransactionCCViewController : UIViewController
+
+@property (nonatomic, weak) IBOutlet id<TransactionCCViewControllerDelegate> delegate;
+
 
 @property (nonatomic, strong) TransactionSummaryDetail *cartSummary;
 @property (nonatomic, strong) CCData *ccData;

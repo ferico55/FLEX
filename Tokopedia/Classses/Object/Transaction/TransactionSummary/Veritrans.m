@@ -8,6 +8,6 @@
 
 #import "Veritrans.h"
 
-@implementation Veritrans
+@implementation Veritrans : NSObject
 
 @end

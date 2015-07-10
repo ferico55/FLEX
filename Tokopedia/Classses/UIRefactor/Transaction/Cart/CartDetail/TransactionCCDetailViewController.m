@@ -142,7 +142,7 @@
     _selectedMonth = _months[[[alertData objectForKey:DATA_INDEX_KEY] integerValue] ][DATA_NAME_KEY];
     _selectedYear = _years[[[alertData objectForKey:DATA_INDEX_SECOND_KEY] integerValue]][DATA_NAME_KEY];
     _expDateLabel.text = [NSString stringWithFormat:@"%@/%@",_selectedMonth,_selectedYear];
-    _selectedMonth = [alertData objectForKey:DATA_INDEX_KEY];
+    _selectedMonth = [NSString stringWithFormat:@"%zd",[[alertData objectForKey:DATA_INDEX_KEY] integerValue]+1];
 }
 
 #pragma mark - Request Delegate
@@ -155,7 +155,10 @@
 {
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 
-    TransactionCC *step1 = (TransactionCC*)object;
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    
+    TransactionCC *step1 = stat;
     _CCAgent = step1.result.data_credit.cc_agent;
     
     NSMutableDictionary *dataInput = [NSMutableDictionary new];
@@ -166,10 +169,12 @@
     [dataInput setObject:_selectedMonth?:@"" forKey:API_CC_EXP_MONTH_KEY];
     [dataInput setObject:_selectedYear?:@"" forKey:API_CC_EXP_YEAR_KEY];
     
-    [self shouldDoRequestCC];
+    if ([_CCAgent integerValue] == 1) {
+        [self shouldDoRequestCCVeritrans];
+    }
 }
 
--(void)shouldDoRequestCC
+-(void)shouldDoRequestCCVeritrans
 {
     [VTConfig setCLIENT_KEY:@"a2ce64ee-ecc5-4cff-894d-c789ff2ab003"];
     [VTConfig setVT_IsProduction:NO];
@@ -190,10 +195,15 @@
         if (exception == nil) {
             _token = token;
             if (token.redirect_url != nil) {
-                UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 400, 420)];
+                UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
                 [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:token.redirect_url]]];
                 webView.delegate = self;
                 [self.view addSubview:webView];
+            }
+            else
+            {
+                StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[_token.status_message] delegate:self];
+                [alert show];
             }
         }
     }];
@@ -206,47 +216,49 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != 0) {
+    if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
         [webView removeFromSuperview];
         
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:@"http://128.199.141.15:9091/index.php"]];
-        NSURLSession *session = [NSURLSession sharedSession];
-        request.HTTPMethod = @"POST";
-        NSString *postString = [NSString stringWithFormat:@"token-id=%@&price=%@", _token.token_id, _cartSummary.payment_left];
-        NSData *bodyData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-
-        request.HTTPBody = bodyData;
-        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        
-        [[session dataTaskWithRequest:request
-                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                        if (error == nil) {
-                            NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                            NSLog(@"String Data Veritrans :%@",strData);
-                            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                            NSString *status = [json[@"status"] stringValue];
-                        
-                            if (status != nil) {
-                                if ([status isEqualToString:@"success"]) {
-                                    //do request
-                                    NSLog(@"success to Charge");
-                                }
-                                else
-                                {
-                                    NSLog(@" Error : %@", [json[@"status"] stringValue]);
-                                }
-                            }
-                            else
-                            {
-                                NSLog(@"Failed to Charge");
-                            }
-                        }
-                        else
-                        {
-                            NSLog(@" Error : %@",error.localizedDescription);
-                        }
-                    }] resume];
+        [_delegate doRequestCC:_data];
+//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:@"http://128.199.141.15:9091/index.php"]];
+//        NSURLSession *session = [NSURLSession sharedSession];
+//        request.HTTPMethod = @"POST";
+//        NSString *postString = [NSString stringWithFormat:@"token-id=%@&price=%@", _token.token_id, _cartSummary.payment_left];
+//        NSData *bodyData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+//        
+//        request.HTTPBody = bodyData;
+//        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+//        
+//        [[session dataTaskWithRequest:request
+//                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//                        if (error == nil) {
+//                            NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//                            NSLog(@"String Data Veritrans :%@",strData);
+//                            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//                            NSString *status = [json[@"status"] stringValue];
+//                            
+//                            if (status != nil) {
+//                                if ([status isEqualToString:@"success"]) {
+//                                    //do request
+//                                    NSLog(@"success to Charge");
+//                                }
+//                                else
+//                                {
+//                                    NSLog(@" Error : %@", [json[@"status"] stringValue]);
+//                                }
+//                            }
+//                            else
+//                            {
+//                                NSLog(@"Failed to Charge");
+//                            }
+//                        }
+//                        else
+//                        {
+//                            NSLog(@" Error : %@",error.localizedDescription);
+//                        }
+//                    }] resume];
     }
+
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
@@ -274,6 +286,7 @@
 
 -(IBAction)nextButton:(id)sender
 {
+    [self.view endEditing:YES];
     if ([self isValidInput]) {
         _requestCart.param = [self param];
         [_requestCart doRequestCC];

@@ -23,18 +23,17 @@
 		457DE0461B4E7BD2002E26DD /* DataCredit.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0451B4E7BD2002E26DD /* DataCredit.m */; };
 		457DE04A1B4E7C57002E26DD /* TransactionCC.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0491B4E7C57002E26DD /* TransactionCC.m */; };
 		457DE04D1B4E7C67002E26DD /* TransactionCCResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE04C1B4E7C67002E26DD /* TransactionCCResult.m */; };
-		457DE04F1B4E904E002E26DD /* libVTiOSAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 457DE04E1B4E904E002E26DD /* libVTiOSAPI.a */; };
-		457DE0681B4E940F002E26DD /* VTAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0531B4E940F002E26DD /* VTAddress.m */; };
-		457DE0691B4E940F002E26DD /* VTBaseTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0551B4E940F002E26DD /* VTBaseTransaction.m */; };
-		457DE06A1B4E940F002E26DD /* VTBaseTransactionMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0571B4E940F002E26DD /* VTBaseTransactionMethod.m */; };
-		457DE06B1B4E940F002E26DD /* VTCardDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0591B4E940F002E26DD /* VTCardDetails.m */; };
-		457DE06C1B4E940F002E26DD /* VTConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE05B1B4E940F002E26DD /* VTConfig.m */; };
-		457DE06D1B4E940F002E26DD /* VTCustomerDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE05D1B4E940F002E26DD /* VTCustomerDetails.m */; };
-		457DE06E1B4E940F002E26DD /* VTDirect.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE05F1B4E940F002E26DD /* VTDirect.m */; };
-		457DE06F1B4E940F002E26DD /* VTiOSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0611B4E940F002E26DD /* VTiOSAPI.m */; };
-		457DE0701B4E940F002E26DD /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0631B4E940F002E26DD /* VTItemDetails.m */; };
-		457DE0711B4E940F002E26DD /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0651B4E940F002E26DD /* VTToken.m */; };
-		457DE0721B4E940F002E26DD /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 457DE0671B4E940F002E26DD /* VTTransactionDetails.m */; };
+		45906AC91B4F7BBE00A8069D /* VTAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AB41B4F7BBE00A8069D /* VTAddress.m */; };
+		45906ACA1B4F7BBE00A8069D /* VTBaseTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AB61B4F7BBE00A8069D /* VTBaseTransaction.m */; };
+		45906ACB1B4F7BBE00A8069D /* VTBaseTransactionMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AB81B4F7BBE00A8069D /* VTBaseTransactionMethod.m */; };
+		45906ACC1B4F7BBE00A8069D /* VTCardDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906ABA1B4F7BBE00A8069D /* VTCardDetails.m */; };
+		45906ACD1B4F7BBE00A8069D /* VTConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906ABC1B4F7BBE00A8069D /* VTConfig.m */; };
+		45906ACE1B4F7BBE00A8069D /* VTCustomerDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906ABE1B4F7BBE00A8069D /* VTCustomerDetails.m */; };
+		45906ACF1B4F7BBE00A8069D /* VTDirect.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AC01B4F7BBE00A8069D /* VTDirect.m */; };
+		45906AD01B4F7BBE00A8069D /* VTiOSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AC21B4F7BBE00A8069D /* VTiOSAPI.m */; };
+		45906AD11B4F7BBE00A8069D /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AC41B4F7BBE00A8069D /* VTItemDetails.m */; };
+		45906AD21B4F7BBE00A8069D /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AC61B4F7BBE00A8069D /* VTToken.m */; };
+		45906AD31B4F7BBE00A8069D /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906AC81B4F7BBE00A8069D /* VTTransactionDetails.m */; };
 		4594AEA01B4A9797001C823F /* TransactionCCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4594AE9E1B4A9797001C823F /* TransactionCCViewController.m */; };
 		4594AEA11B4A9797001C823F /* TransactionCCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4594AE9F1B4A9797001C823F /* TransactionCCViewController.xib */; };
 		45A9FE741B4B6EF1008BE166 /* TransactionCCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A9FE721B4B6EF1008BE166 /* TransactionCCDetailViewController.m */; };
@@ -1530,28 +1529,28 @@
 		457DE04B1B4E7C67002E26DD /* TransactionCCResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCCResult.h; sourceTree = "<group>"; };
 		457DE04C1B4E7C67002E26DD /* TransactionCCResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCCResult.m; sourceTree = "<group>"; };
 		457DE04E1B4E904E002E26DD /* libVTiOSAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVTiOSAPI.a; path = Tokopedia/Resources/Libraries/Veritrans/libVTiOSAPI.a; sourceTree = "<group>"; };
-		457DE0521B4E940F002E26DD /* VTAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTAddress.h; sourceTree = "<group>"; };
-		457DE0531B4E940F002E26DD /* VTAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTAddress.m; sourceTree = "<group>"; };
-		457DE0541B4E940F002E26DD /* VTBaseTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBaseTransaction.h; sourceTree = "<group>"; };
-		457DE0551B4E940F002E26DD /* VTBaseTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBaseTransaction.m; sourceTree = "<group>"; };
-		457DE0561B4E940F002E26DD /* VTBaseTransactionMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBaseTransactionMethod.h; sourceTree = "<group>"; };
-		457DE0571B4E940F002E26DD /* VTBaseTransactionMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBaseTransactionMethod.m; sourceTree = "<group>"; };
-		457DE0581B4E940F002E26DD /* VTCardDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCardDetails.h; sourceTree = "<group>"; };
-		457DE0591B4E940F002E26DD /* VTCardDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCardDetails.m; sourceTree = "<group>"; };
-		457DE05A1B4E940F002E26DD /* VTConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTConfig.h; sourceTree = "<group>"; };
-		457DE05B1B4E940F002E26DD /* VTConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTConfig.m; sourceTree = "<group>"; };
-		457DE05C1B4E940F002E26DD /* VTCustomerDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCustomerDetails.h; sourceTree = "<group>"; };
-		457DE05D1B4E940F002E26DD /* VTCustomerDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCustomerDetails.m; sourceTree = "<group>"; };
-		457DE05E1B4E940F002E26DD /* VTDirect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTDirect.h; sourceTree = "<group>"; };
-		457DE05F1B4E940F002E26DD /* VTDirect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTDirect.m; sourceTree = "<group>"; };
-		457DE0601B4E940F002E26DD /* VTiOSAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTiOSAPI.h; sourceTree = "<group>"; };
-		457DE0611B4E940F002E26DD /* VTiOSAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTiOSAPI.m; sourceTree = "<group>"; };
-		457DE0621B4E940F002E26DD /* VTItemDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTItemDetails.h; sourceTree = "<group>"; };
-		457DE0631B4E940F002E26DD /* VTItemDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTItemDetails.m; sourceTree = "<group>"; };
-		457DE0641B4E940F002E26DD /* VTToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTToken.h; sourceTree = "<group>"; };
-		457DE0651B4E940F002E26DD /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
-		457DE0661B4E940F002E26DD /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
-		457DE0671B4E940F002E26DD /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
+		45906AB31B4F7BBE00A8069D /* VTAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTAddress.h; sourceTree = "<group>"; };
+		45906AB41B4F7BBE00A8069D /* VTAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTAddress.m; sourceTree = "<group>"; };
+		45906AB51B4F7BBE00A8069D /* VTBaseTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBaseTransaction.h; sourceTree = "<group>"; };
+		45906AB61B4F7BBE00A8069D /* VTBaseTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBaseTransaction.m; sourceTree = "<group>"; };
+		45906AB71B4F7BBE00A8069D /* VTBaseTransactionMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBaseTransactionMethod.h; sourceTree = "<group>"; };
+		45906AB81B4F7BBE00A8069D /* VTBaseTransactionMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBaseTransactionMethod.m; sourceTree = "<group>"; };
+		45906AB91B4F7BBE00A8069D /* VTCardDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCardDetails.h; sourceTree = "<group>"; };
+		45906ABA1B4F7BBE00A8069D /* VTCardDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCardDetails.m; sourceTree = "<group>"; };
+		45906ABB1B4F7BBE00A8069D /* VTConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTConfig.h; sourceTree = "<group>"; };
+		45906ABC1B4F7BBE00A8069D /* VTConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTConfig.m; sourceTree = "<group>"; };
+		45906ABD1B4F7BBE00A8069D /* VTCustomerDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCustomerDetails.h; sourceTree = "<group>"; };
+		45906ABE1B4F7BBE00A8069D /* VTCustomerDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCustomerDetails.m; sourceTree = "<group>"; };
+		45906ABF1B4F7BBE00A8069D /* VTDirect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTDirect.h; sourceTree = "<group>"; };
+		45906AC01B4F7BBE00A8069D /* VTDirect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTDirect.m; sourceTree = "<group>"; };
+		45906AC11B4F7BBE00A8069D /* VTiOSAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTiOSAPI.h; sourceTree = "<group>"; };
+		45906AC21B4F7BBE00A8069D /* VTiOSAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTiOSAPI.m; sourceTree = "<group>"; };
+		45906AC31B4F7BBE00A8069D /* VTItemDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTItemDetails.h; sourceTree = "<group>"; };
+		45906AC41B4F7BBE00A8069D /* VTItemDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTItemDetails.m; sourceTree = "<group>"; };
+		45906AC51B4F7BBE00A8069D /* VTToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTToken.h; sourceTree = "<group>"; };
+		45906AC61B4F7BBE00A8069D /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
+		45906AC71B4F7BBE00A8069D /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
+		45906AC81B4F7BBE00A8069D /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
 		4594AE9D1B4A9797001C823F /* TransactionCCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCCViewController.h; sourceTree = "<group>"; };
 		4594AE9E1B4A9797001C823F /* TransactionCCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCCViewController.m; sourceTree = "<group>"; };
 		4594AE9F1B4A9797001C823F /* TransactionCCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCCViewController.xib; sourceTree = "<group>"; };
@@ -3748,7 +3747,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				457DE04F1B4E904E002E26DD /* libVTiOSAPI.a in Frameworks */,
 				7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */,
 				7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */,
 				853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */,
@@ -3849,39 +3847,39 @@
 			path = TransactionCC;
 			sourceTree = "<group>";
 		};
-		457DE0501B4E940F002E26DD /* Veritrans */ = {
+		45906AB11B4F7BBE00A8069D /* Veritrans */ = {
 			isa = PBXGroup;
 			children = (
-				457DE0511B4E940F002E26DD /* VTiOSAPI */,
+				45906AB21B4F7BBE00A8069D /* VTiOSAPI */,
 			);
 			path = Veritrans;
 			sourceTree = "<group>";
 		};
-		457DE0511B4E940F002E26DD /* VTiOSAPI */ = {
+		45906AB21B4F7BBE00A8069D /* VTiOSAPI */ = {
 			isa = PBXGroup;
 			children = (
-				457DE0521B4E940F002E26DD /* VTAddress.h */,
-				457DE0531B4E940F002E26DD /* VTAddress.m */,
-				457DE0541B4E940F002E26DD /* VTBaseTransaction.h */,
-				457DE0551B4E940F002E26DD /* VTBaseTransaction.m */,
-				457DE0561B4E940F002E26DD /* VTBaseTransactionMethod.h */,
-				457DE0571B4E940F002E26DD /* VTBaseTransactionMethod.m */,
-				457DE0581B4E940F002E26DD /* VTCardDetails.h */,
-				457DE0591B4E940F002E26DD /* VTCardDetails.m */,
-				457DE05A1B4E940F002E26DD /* VTConfig.h */,
-				457DE05B1B4E940F002E26DD /* VTConfig.m */,
-				457DE05C1B4E940F002E26DD /* VTCustomerDetails.h */,
-				457DE05D1B4E940F002E26DD /* VTCustomerDetails.m */,
-				457DE05E1B4E940F002E26DD /* VTDirect.h */,
-				457DE05F1B4E940F002E26DD /* VTDirect.m */,
-				457DE0601B4E940F002E26DD /* VTiOSAPI.h */,
-				457DE0611B4E940F002E26DD /* VTiOSAPI.m */,
-				457DE0621B4E940F002E26DD /* VTItemDetails.h */,
-				457DE0631B4E940F002E26DD /* VTItemDetails.m */,
-				457DE0641B4E940F002E26DD /* VTToken.h */,
-				457DE0651B4E940F002E26DD /* VTToken.m */,
-				457DE0661B4E940F002E26DD /* VTTransactionDetails.h */,
-				457DE0671B4E940F002E26DD /* VTTransactionDetails.m */,
+				45906AB31B4F7BBE00A8069D /* VTAddress.h */,
+				45906AB41B4F7BBE00A8069D /* VTAddress.m */,
+				45906AB51B4F7BBE00A8069D /* VTBaseTransaction.h */,
+				45906AB61B4F7BBE00A8069D /* VTBaseTransaction.m */,
+				45906AB71B4F7BBE00A8069D /* VTBaseTransactionMethod.h */,
+				45906AB81B4F7BBE00A8069D /* VTBaseTransactionMethod.m */,
+				45906AB91B4F7BBE00A8069D /* VTCardDetails.h */,
+				45906ABA1B4F7BBE00A8069D /* VTCardDetails.m */,
+				45906ABB1B4F7BBE00A8069D /* VTConfig.h */,
+				45906ABC1B4F7BBE00A8069D /* VTConfig.m */,
+				45906ABD1B4F7BBE00A8069D /* VTCustomerDetails.h */,
+				45906ABE1B4F7BBE00A8069D /* VTCustomerDetails.m */,
+				45906ABF1B4F7BBE00A8069D /* VTDirect.h */,
+				45906AC01B4F7BBE00A8069D /* VTDirect.m */,
+				45906AC11B4F7BBE00A8069D /* VTiOSAPI.h */,
+				45906AC21B4F7BBE00A8069D /* VTiOSAPI.m */,
+				45906AC31B4F7BBE00A8069D /* VTItemDetails.h */,
+				45906AC41B4F7BBE00A8069D /* VTItemDetails.m */,
+				45906AC51B4F7BBE00A8069D /* VTToken.h */,
+				45906AC61B4F7BBE00A8069D /* VTToken.m */,
+				45906AC71B4F7BBE00A8069D /* VTTransactionDetails.h */,
+				45906AC81B4F7BBE00A8069D /* VTTransactionDetails.m */,
 			);
 			path = VTiOSAPI;
 			sourceTree = "<group>";
@@ -4629,7 +4627,7 @@
 		FC7636F61B15E2710034A8F1 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
-				457DE0501B4E940F002E26DD /* Veritrans */,
+				45906AB11B4F7BBE00A8069D /* Veritrans */,
 				FC7636F71B15E2710034A8F1 /* CacheController */,
 				FC7636FE1B15E2710034A8F1 /* Cocoa */,
 				FC76371F1B15E2720034A8F1 /* Encryption */,
@@ -9175,7 +9173,7 @@
 				45A9FE741B4B6EF1008BE166 /* TransactionCCDetailViewController.m in Sources */,
 				8563A1481B1EEFE600DFF001 /* LabelMenu.m in Sources */,
 				FC7642701B15E2830034A8F1 /* RedirectHandler.m in Sources */,
-				457DE0701B4E940F002E26DD /* VTItemDetails.m in Sources */,
+				45906AD11B4F7BBE00A8069D /* VTItemDetails.m in Sources */,
 				FC7641241B15E2820034A8F1 /* FavoriteShop.m in Sources */,
 				FC7641131B15E2820034A8F1 /* NotificationResult.m in Sources */,
 				FC7641CA1B15E2820034A8F1 /* TxOrderStatus.m in Sources */,
@@ -9214,13 +9212,13 @@
 				FC76415B1B15E2820034A8F1 /* ShipmentOrder.m in Sources */,
 				FC7640B31B15E2820034A8F1 /* DetailProductResult.m in Sources */,
 				FC76414F1B15E2820034A8F1 /* OrderTransaction.m in Sources */,
-				457DE06C1B4E940F002E26DD /* VTConfig.m in Sources */,
+				45906ACD1B4F7BBE00A8069D /* VTConfig.m in Sources */,
 				FC7641161B15E2820034A8F1 /* ProductFeed.m in Sources */,
 				FC7643D21B15E2830034A8F1 /* TransactionPaymenViewController.m in Sources */,
 				FC7640971B15E2820034A8F1 /* Login.m in Sources */,
 				FC7640A21B15E2820034A8F1 /* DepositSummary.m in Sources */,
 				FC7641411B15E2820034A8F1 /* ActionOrder.m in Sources */,
-				457DE0681B4E940F002E26DD /* VTAddress.m in Sources */,
+				45906AC91B4F7BBE00A8069D /* VTAddress.m in Sources */,
 				FC7641A91B15E2820034A8F1 /* TransactionSummaryDetail.m in Sources */,
 				FC7640AF1B15E2820034A8F1 /* DetailCatalogResult.m in Sources */,
 				FC76429D1B15E2830034A8F1 /* InboxResolutionCenterOpenViewController.m in Sources */,
@@ -9244,7 +9242,7 @@
 				FC7640FF1B15E2820034A8F1 /* InboxReview.m in Sources */,
 				FC7640961B15E2820034A8F1 /* CreatePasswordResult.m in Sources */,
 				FC7641621B15E2820034A8F1 /* EtalaseList.m in Sources */,
-				457DE0691B4E940F002E26DD /* VTBaseTransaction.m in Sources */,
+				45906ACA1B4F7BBE00A8069D /* VTBaseTransaction.m in Sources */,
 				FC7643811B15E2830034A8F1 /* ShopStatView.m in Sources */,
 				FC7642951B15E2830034A8F1 /* InboxResolutionCenterComplainCell.m in Sources */,
 				FC7641591B15E2820034A8F1 /* ShipmentCourier.m in Sources */,
@@ -9422,7 +9420,7 @@
 				FC7644081B15E2830034A8F1 /* TxOrderObjectMapping.m in Sources */,
 				FC7640A71B15E2820034A8F1 /* CatalogImages.m in Sources */,
 				FC76409B1B15E2820034A8F1 /* Register.m in Sources */,
-				457DE06A1B4E940F002E26DD /* VTBaseTransactionMethod.m in Sources */,
+				45906ACB1B4F7BBE00A8069D /* VTBaseTransactionMethod.m in Sources */,
 				FC7641681B15E2820034A8F1 /* NotesList.m in Sources */,
 				FC76409F1B15E2820034A8F1 /* DepositForm.m in Sources */,
 				FC76418D1B15E2820034A8F1 /* TransactionAction.m in Sources */,
@@ -9447,7 +9445,7 @@
 				FC7641DF1B15E2820034A8F1 /* AddressCell.m in Sources */,
 				FC7641CB1B15E2820034A8F1 /* TxOrderStatusList.m in Sources */,
 				FC7641801B15E2820034A8F1 /* POSIndonesia.m in Sources */,
-				457DE06B1B4E940F002E26DD /* VTCardDetails.m in Sources */,
+				45906ACC1B4F7BBE00A8069D /* VTCardDetails.m in Sources */,
 				FC7640DB1B15E2820034A8F1 /* DepartmentChild.m in Sources */,
 				FC7643401B15E2830034A8F1 /* ShipmentStatusCell.m in Sources */,
 				FC76424D1B15E2830034A8F1 /* DepositListBankViewController.m in Sources */,
@@ -9566,7 +9564,7 @@
 				FC7643BE1B15E2830034A8F1 /* TrackOrderViewController.m in Sources */,
 				FC7641711B15E2820034A8F1 /* Shop.m in Sources */,
 				FC7643111B15E2830034A8F1 /* ReputationMyReviewViewController.m in Sources */,
-				457DE06D1B4E940F002E26DD /* VTCustomerDetails.m in Sources */,
+				45906ACE1B4F7BBE00A8069D /* VTCustomerDetails.m in Sources */,
 				FC7642031B15E2820034A8F1 /* TKPDLiveCameraTableViewCell.m in Sources */,
 				FC7640D51B15E2820034A8F1 /* FavoriteShopActionResult.m in Sources */,
 				FC7640D71B15E2820034A8F1 /* GeneralActionResult.m in Sources */,
@@ -9584,7 +9582,7 @@
 				FC7641C41B15E2820034A8F1 /* TxOrderPaymentEditForm.m in Sources */,
 				FC7642C71B15E2830034A8F1 /* MyShopEtalaseFilterViewController.m in Sources */,
 				FC76407E1B15E2820034A8F1 /* URLCacheAlert.m in Sources */,
-				457DE06F1B4E940F002E26DD /* VTiOSAPI.m in Sources */,
+				45906AD01B4F7BBE00A8069D /* VTiOSAPI.m in Sources */,
 				FC7640F71B15E2820034A8F1 /* ResolutionDetailConversation.m in Sources */,
 				FC7641ED1B15E2820034A8F1 /* AlertListViewCell.m in Sources */,
 				FC7643F81B15E2830034A8F1 /* TxOrderConfirmedBankCell.m in Sources */,
@@ -9604,9 +9602,9 @@
 				FC7641CD1B15E2820034A8F1 /* GeneratedHost.m in Sources */,
 				FC76423A1B15E2830034A8F1 /* NoResult.m in Sources */,
 				FC7642991B15E2830034A8F1 /* InboxResolutionCenterObjectMapping.m in Sources */,
-				457DE06E1B4E940F002E26DD /* VTDirect.m in Sources */,
+				45906ACF1B4F7BBE00A8069D /* VTDirect.m in Sources */,
 				FC7642381B15E2830034A8F1 /* LoadingView.m in Sources */,
-				457DE0711B4E940F002E26DD /* VTToken.m in Sources */,
+				45906AD21B4F7BBE00A8069D /* VTToken.m in Sources */,
 				FC7641F81B15E2820034A8F1 /* TKPDAlertView.m in Sources */,
 				457DE04A1B4E7C57002E26DD /* TransactionCC.m in Sources */,
 				FC7642061B15E2820034A8F1 /* TKPDPhotoPicker.m in Sources */,
@@ -9847,7 +9845,7 @@
 				FC76418E1B15E2820034A8F1 /* TransactionActionResult.m in Sources */,
 				FC76437C1B15E2830034A8F1 /* ShopFavoritedViewController.m in Sources */,
 				FC76419A1B15E2820034A8F1 /* TransactionCart.m in Sources */,
-				457DE0721B4E940F002E26DD /* VTTransactionDetails.m in Sources */,
+				45906AD31B4F7BBE00A8069D /* VTTransactionDetails.m in Sources */,
 				FC7641201B15E2820034A8F1 /* ProfileEditForm.m in Sources */,
 				FC7641CE1B15E2820034A8F1 /* GenerateHost.m in Sources */,
 				FC7642221B15E2820034A8F1 /* ContactUsViewController.m in Sources */,
