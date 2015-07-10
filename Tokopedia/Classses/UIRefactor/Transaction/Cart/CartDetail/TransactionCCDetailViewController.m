@@ -13,11 +13,18 @@
 #import "TransactionAction.h"
 #import "TransactionCartWebViewViewController.h"
 #import "AlertInfoView.h"
+#import "TransactionCC.h"
+
+#import "VTConfig.h"
+#import "VTDirect.h"
+#import "VTCardDetails.h"
+
 
 @interface TransactionCCDetailViewController ()
 <
     TKPDAlertViewDelegate,
-    RequestCartDelegate
+    RequestCartDelegate,
+    UIWebViewDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -39,6 +46,8 @@
     RequestCart *_requestCart;
     NSString *_CCAgent;
     UIAlertView *_alertLoading;
+    
+    VTToken *_token;
 }
 
 - (void)viewDidLoad {
@@ -133,6 +142,7 @@
     _selectedMonth = _months[[[alertData objectForKey:DATA_INDEX_KEY] integerValue] ][DATA_NAME_KEY];
     _selectedYear = _years[[[alertData objectForKey:DATA_INDEX_SECOND_KEY] integerValue]][DATA_NAME_KEY];
     _expDateLabel.text = [NSString stringWithFormat:@"%@/%@",_selectedMonth,_selectedYear];
+    _selectedMonth = [alertData objectForKey:DATA_INDEX_KEY];
 }
 
 #pragma mark - Request Delegate
@@ -145,8 +155,8 @@
 {
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 
-    TransactionAction *step1 = (TransactionAction*)object;
-    _CCAgent = step1.result.cc_agent;
+    TransactionCC *step1 = (TransactionCC*)object;
+    _CCAgent = step1.result.data_credit.cc_agent;
     
     NSMutableDictionary *dataInput = [NSMutableDictionary new];
     [dataInput addEntriesFromDictionary:_data];
@@ -155,8 +165,92 @@
     [dataInput setObject:_CVVTextField.text?:@"" forKey:API_CC_CVV_KEY];
     [dataInput setObject:_selectedMonth?:@"" forKey:API_CC_EXP_MONTH_KEY];
     [dataInput setObject:_selectedYear?:@"" forKey:API_CC_EXP_YEAR_KEY];
+    
+    [self shouldDoRequestCC];
+}
 
-    [_delegate shouldDoRequestCC:_data];
+-(void)shouldDoRequestCC
+{
+    [VTConfig setCLIENT_KEY:@"a2ce64ee-ecc5-4cff-894d-c789ff2ab003"];
+    [VTConfig setVT_IsProduction:NO];
+    
+    VTDirect *vtDirect = [VTDirect new];
+    VTCardDetails *cardDetails = [VTCardDetails new];
+    
+    cardDetails.card_number = _CCNumberTextField.text?:@"";
+    cardDetails.card_cvv = _CVVTextField.text?:@"";
+    cardDetails.card_exp_month = [_selectedMonth integerValue]?:0;
+    cardDetails.card_exp_year = [_selectedYear integerValue]?:0;
+    cardDetails.secure = YES;
+    cardDetails.gross_amount = _cartSummary.payment_left;
+    
+    vtDirect.card_details = cardDetails;
+    
+    [vtDirect getToken:^(VTToken *token, NSException *exception) {
+        if (exception == nil) {
+            _token = token;
+            if (token.redirect_url != nil) {
+                UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 400, 420)];
+                [webView loadRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:token.redirect_url]]];
+                webView.delegate = self;
+                [self.view addSubview:webView];
+            }
+        }
+    }];
+}
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    return YES;
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != 0) {
+        [webView removeFromSuperview];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest ]
+    }
+    if(webView.request?.URL.absoluteString?.rangeOfString("callback") != nil){
+        //remove webview from parent
+        //TODO: charge user and check whether transaction is success
+        webView.removeFromSuperview();
+        
+        
+        var request = NSMutableURLRequest(URL: NSURL(string: "http://128.199.141.15:9091/index.php")!)
+        var session = NSURLSession.sharedSession()
+        request.HTTPMethod = "POST"
+        var bodyData = "token-id=\(self.token!.token_id)&price=\(totalPrice)"
+        
+        request.HTTPBody = bodyData.dataUsingEncoding(NSUTF8StringEncoding)
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        var task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+            if(error == nil){
+                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
+                println("Body: \(strData!)")
+                let json = JSON(data:data)
+                if let success = json["status"].stringValue{
+                    if(success == "success"){
+                        let trxId = json["body"]["transaction_id"]
+                        println("Success to Charging data with transaction id\(trxId)")
+                    }else{
+                        println("Failed to Charge")
+                    }
+                    
+                }else{
+                    var errorS = json["status"]
+                    println("error: \(errorS)")
+                }
+                
+            }else{
+                println("Error: \(error.localizedDescription)")
+            }
+            
+        })
+        task.resume()
+        
+    }
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
@@ -167,7 +261,7 @@
 #pragma mark - Methods
 -(NSDictionary *)param
 {
-    NSDictionary *param = @{@"act":@"step_1_process_credit_card",
+    NSDictionary *param = @{@"action":@"step_1_process_credit_card",
                             @"credit_card_edit_flag":@"1",
                             API_CC_FIRST_NAME_KEY:[_data objectForKey:API_CC_FIRST_NAME_KEY]?:@"",
                             API_CC_LAST_NAME_KEY:[_data objectForKey:API_CC_LAST_NAME_KEY]?:@"",

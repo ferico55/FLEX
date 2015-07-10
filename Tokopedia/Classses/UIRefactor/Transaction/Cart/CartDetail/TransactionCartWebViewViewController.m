@@ -20,6 +20,9 @@
 {
     BOOL _isSuccessBCA;
     NSOperationQueue *_operationQueue;
+    
+    NSInteger requestCount;
+    BOOL _isAlertShow ;
 }
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
@@ -34,28 +37,42 @@
     
     _operationQueue = [NSOperationQueue new];
     
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [backBarButtonItem setTintColor:[UIColor whiteColor]];
+    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
+    _isSuccessBCA = NO;
+    
+    _isAlertShow = NO;
+    [self loadRequest];
+}
+
+-(void)loadRequest
+{
+    requestCount++;
     
     NSInteger gateway = [_gateway integerValue];
     
-    self.title = (gateway == TYPE_GATEWAY_CLICK_BCA)?@"KlikPay BCA":@"Mandiri e-Cash";
-    
-    NSString *urlAddress = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_url:_URLStringMandiri;
+    NSString *urlAddress = @"" ;
     _webView.scalesPageToFit = YES;
-    NSLog(@"%@", urlAddress);
     
-    NSString *clickPayCode = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_code:@"";
-    NSString *paymentID = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.payment_id:@"";
-    NSString *amount = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_amt:@"";
-    NSString *currency = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.currency:@"";
-    NSString *payType = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.payType:@"";
-    NSString *callBack = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.callback:@"";
-    NSString *date = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_date:@"";
-    NSString *MISCFee = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.miscFee:@"";
-    NSString *signature = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.signature:@"";
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     
     if (gateway == TYPE_GATEWAY_CLICK_BCA) {
+        self. title = @"KlikPay BCA";
+        urlAddress =_BCAParam.bca_url;
+        
+        NSString *clickPayCode = _BCAParam.bca_code?:@"";
+        NSString *paymentID = _BCAParam.payment_id?:@"";
+        NSString *amount = _BCAParam.bca_amt?:@"";
+        NSString *currency = _BCAParam.currency?:@"";
+        NSString *payType = _BCAParam.payType?:@"";
+        NSString *callBack = _BCAParam.callback?:@"";
+        NSString *date = _BCAParam.bca_date?:@"";
+        NSString *MISCFee = _BCAParam.miscFee?:@"";
+        NSString *signature = _BCAParam.signature?:@"";
         NSString *postString = [NSString stringWithFormat:@"token_cart=%@&gateway=%@&step=2&klikPayCode=%@&transactionNo=%@&totalAmount=%@&currency=%@&payType=%@&callback=%@&transactionDate=%@&miscFee=%@&signature=%@",
                                 _token,
                                 _gateway,
@@ -75,25 +92,41 @@
         [request setHTTPMethod:@"POST"];
         //[_delegate shouldDoRequestBCAClickPay];
     }
+    if (gateway == TYPE_GATEWAY_MANDIRI_E_CASH) {
+        urlAddress = _URLStringMandiri ;
+    }
+    if (gateway == TYPE_GATEWAY_CC) {
+        urlAddress = @"https://api.sandbox.veritrans.co.id/v2/token?";
+        self. title = @"Veritrans";
+        NSString *postString = [NSString stringWithFormat:@"token_cart=%@&gateway=%@&step=2&klikPayCode=%@&transactionNo=%@&totalAmount=%@&currency=%@&payType=%@&callback=%@&transactionDate=%@&miscFee=%@&signature=%@",
+                                _token,
+                                _gateway,
+                                clickPayCode,
+                                paymentID,
+                                amount,
+                                currency,
+                                payType,
+                                callBack,
+                                date,
+                                MISCFee,
+                                signature
+                                ];
+        NSLog(@"%@", postString);
+        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        [request setHTTPBody:postData];
+        [request setHTTPMethod:@"GET"];
+    }
     
     [request setURL:[NSURL URLWithString:urlAddress]];
     [_webView loadRequest:request];
-    
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
-    backBarButtonItem.tag = 20;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
-    
-    _isSuccessBCA = NO;
 }
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    [_act startAnimating];
     NSInteger gateway = [_gateway integerValue];
     if ( gateway == TYPE_GATEWAY_CLICK_BCA)
     {
-        [_act startAnimating];
         if ([request.URL.absoluteString isEqualToString:_BCAParam.callback] ||
             [request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION] ||
             [webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]
@@ -125,8 +158,12 @@
     {
         //if ([request.URL.absoluteString rangeOfString:@"ws-new"].location != NSNotFound) {
             if ([request.URL.absoluteString rangeOfString:@"http://www.tokopedia.com/ws-new/tx-payment-emoney.pl?id="].location != NSNotFound) {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                [_delegate shouldDoRequestEMoney:YES];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    [_delegate shouldDoRequestEMoney:YES];
+                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+                [backBarButtonItem setTintColor:[UIColor whiteColor]];
+                backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+                self.navigationItem.leftBarButtonItem = backBarButtonItem;
             }
         //}
         //if ([request.URL.absoluteString rangeOfString:@"ws"].location != NSNotFound) {
@@ -151,13 +188,35 @@
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [webView stopLoading];
-    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:@"ERROR" message:error.localizedDescription delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [errorAlert show];
-    NSData *jsonData = webView.request.HTTPBody;
-    id jsonObj = [NSJSONSerialization JSONObjectWithData: jsonData options: NSJSONReadingMutableContainers error: nil];
-    NSLog(@"JSON %@", jsonObj);
+    [_act stopAnimating];
+    NSString *errorMessage ;
+
+    if (error.code==-1009) {
+        errorMessage = @"Tidak ada koneksi internet";
+    } else {
+        errorMessage = @"Mohon maaf, terjadi kendala pada server. Mohon coba beberapa saat lagi.";
+    }
     
-    
+    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:nil message:errorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    if (!_isAlertShow) {
+        _isAlertShow = YES;
+        errorAlert.tag = 11;
+        [errorAlert show];
+    }
+}
+
+- (BOOL)checkAlertExist {
+    for (UIWindow* window in [UIApplication sharedApplication].windows) {
+        NSArray* subviews = window.subviews;
+        if ([subviews count] > 0) {
+            for (id cc in subviews) {
+                if ([cc isKindOfClass:[UIAlertView class]]) {
+                    return YES;
+                }
+            }
+        }
+    }
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -172,14 +231,23 @@
         UIAlertView *alertCancel = [[UIAlertView alloc]initWithTitle:nil message:@"Apakah Anda yakin ingin membatalkan transaksi pembayaran Anda?" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
         [alertCancel show];
     }
+    
 }
 
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        [_delegate refreshCartAfterCancelPayment];
+    if (alertView.tag == 11) {
+        [_webView stopLoading];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        if (buttonIndex == 1) {
+            [_delegate refreshCartAfterCancelPayment];
+            [_webView stopLoading];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
     }
 }
 

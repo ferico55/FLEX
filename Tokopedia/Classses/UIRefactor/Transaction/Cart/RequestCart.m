@@ -12,6 +12,7 @@
 #import "TransactionSummary.h"
 #import "TransactionBuy.h"
 #import "TransactionVoucher.h"
+#import "TransactionCC.h"
 
 #import "TransactionObjectManager.h"
 #import "string_transaction.h"
@@ -298,7 +299,7 @@
         return BCAClickPay.status;
     }
     if (tag == TAG_REQUEST_CC) {
-        TransactionAction *action = stat;
+        TransactionCC *action = stat;
         return action.status;
     }
     return nil;
@@ -350,19 +351,12 @@
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
         else{
-            NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:_viewController];
-            [alert show];
             [_delegate requestSuccessActionCheckout:successResult withOperation:operation];
         }
     }
     if (tag == TAG_REQUEST_BUY) {
         TransactionBuy *cart = stat;
         if (cart.result.is_success == 1) {
-            NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:_viewController];
-            [alert show];
-            
             [_delegate requestSuccessActionBuy:successResult withOperation:operation];
         }
         else
@@ -413,7 +407,7 @@
         }
         else
         {
-            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran Anda gagal"] delegate:_viewController];
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan anda tidak berhasil"] delegate:_viewController];
             [failedAlert show];
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
@@ -426,16 +420,16 @@
         }
         else
         {
-            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran Anda gagal"] delegate:_viewController];
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan anda tidak berhasil"] delegate:_viewController];
             [failedAlert show];
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
     }
     if (tag == TAG_REQUEST_CC)
     {
-        TransactionAction *actionCC = stat;
+        TransactionCC *actionCC = stat;
         
-        if (actionCC.result.cc_agent != nil && ![actionCC.result.cc_agent isEqualToString:@"0"] && ![actionCC.result.cc_agent isEqualToString:@""]) {
+        if (actionCC.result.data_credit.cc_agent != nil && ![actionCC.result.data_credit.cc_agent isEqualToString:@"0"] && ![actionCC.result.data_credit.cc_agent isEqualToString:@""]) {
             [_delegate requestSuccessCC:successResult withOperation:operation];
         }
         else

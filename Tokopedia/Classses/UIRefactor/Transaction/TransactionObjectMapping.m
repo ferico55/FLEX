@@ -149,26 +149,6 @@
     return shopinfoMapping;
 }
 
--(RKObjectMapping *)transactionCCDataMapping
-{
-    RKObjectMapping *ccDataMapping = [RKObjectMapping mappingForClass:[CCData class]];
-    [ccDataMapping addAttributeMappingsFromArray:@[@"city",
-                                                   @"postal_code",
-                                                   @"address",
-                                                   @"phone",
-                                                   @"state",
-                                                   @"last_name",
-                                                   @"first_name"]];
-    return ccDataMapping;
-}
-
--(RKObjectMapping *)veritransDataMapping
-{
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[Veritrans class]];
-    [mapping addAttributeMappingsFromArray:@[@"token_url",
-                                                   @"client_key"]];
-    return mapping;
-}
 
 -(RKObjectMapping*)transactionDetailSummaryMapping
 {
@@ -256,6 +236,38 @@
                                                                   API_SHIPMENT_PRICE_TOTAL:API_SHIPMENT_PRICE_TOTAL
                                                                   }];
     return shipmentspackageMapping;
+}
+
+#pragma mark - CC
+-(RKObjectMapping *)transactionCCDataMapping
+{
+    RKObjectMapping *ccDataMapping = [RKObjectMapping mappingForClass:[CCData class]];
+    [ccDataMapping addAttributeMappingsFromArray:@[@"city",
+                                                   @"postal_code",
+                                                   @"address",
+                                                   @"phone",
+                                                   @"state",
+                                                   @"last_name",
+                                                   @"first_name"]];
+    return ccDataMapping;
+}
+
+-(RKObjectMapping *)veritransDataMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[Veritrans class]];
+    [mapping addAttributeMappingsFromArray:@[@"token_url",
+                                             @"client_key"]];
+    return mapping;
+}
+
+-(RKObjectMapping *)dataCreditMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[DataCredit class]];
+    [mapping addAttributeMappingsFromArray:@[@"user_email",
+                                             @"payment_id",
+                                             @"cc_agent",
+                                             @"cc_type"]];
+    return mapping;
 }
 
 

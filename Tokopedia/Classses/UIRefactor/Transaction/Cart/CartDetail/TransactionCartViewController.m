@@ -396,7 +396,7 @@
         TransactionCartList *list = _list[indexPath.section];
         NSArray *products = list.cart_products;
         NSInteger productCount = products.count;
-        if (indexPath.section <shopCount && indexPath.row <=productCount && indexPath.row !=0) {
+        if (indexPath.section <shopCount && indexPath.row <=productCount) {
             [lineView removeFromSuperview];
             UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width,1)];
             lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
@@ -706,6 +706,7 @@
     TransactionCCViewController *vc = [TransactionCCViewController new];
     vc.cartSummary = _cartSummary;
     vc.ccData = [_data objectForKey:DATA_CC_KEY]?:[CCData new];
+    vc.totalPrice = _cartSummary.payment_left;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -1270,8 +1271,8 @@
 -(void)TransactionCartMandiriClickPayForm:(TransactionCartFormMandiriClickPayViewController *)VC withUserInfo:(NSDictionary *)userInfo
 {
     [_dataInput addEntriesFromDictionary:userInfo];
-    [_requestCart dorequestBuy];
     _requestCart.param = [self paramBuy];
+    [_requestCart dorequestBuy];
 }
 
 #pragma mark - Textfield Delegate
@@ -1533,6 +1534,7 @@
     [_senderPhoneDropshipper removeAllObjects];
     [_isDropshipper removeAllObjects];
     [_stockPartialDetail removeAllObjects];
+    [_stockPartialStrList removeAllObjects];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
     
@@ -1602,6 +1604,9 @@
         }
         headerView.section = section;
         headerView.delegate = self;
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, headerView.frame.size.height, headerView.frame.size.width,1)];
+        lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
+        [headerView addSubview:lineView];
         return headerView;
     }
     else
@@ -1726,6 +1731,7 @@
     [cell.textLabel setCustomAttributedText:string];
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.textColor = [UIColor redColor];
+    
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     
     cell.clipsToBounds = YES;
@@ -1928,7 +1934,7 @@
     }
     [cell.productNameLabel setAttributedText:attributedText];
 
-    [cell.productPriceLabel setText:product.product_total_price_idr animated:YES];
+    [cell.productPriceLabel setText:product.product_price_idr animated:YES];
     
     NSString *weightTotal = [NSString stringWithFormat:@"%@ Barang (%@ kg)",product.product_quantity, product.product_total_weight];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
@@ -2140,13 +2146,11 @@
     {
         NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
         CGSize maximumLabelSize = CGSizeMake(290,9999);
-        UILabel *errorLabel = (UILabel*)_errorLabel[0];
-        [errorLabel setCustomAttributedText:string];
-        CGSize expectedLabelSize = [string sizeWithFont:errorLabel.font
+        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_18
                                       constrainedToSize:maximumLabelSize
-                                          lineBreakMode:errorLabel.lineBreakMode];
+                                          lineBreakMode:NSLineBreakByTruncatingTail];
         
-        return expectedLabelSize.height+40;
+        return expectedLabelSize.height;
     }
 }
 

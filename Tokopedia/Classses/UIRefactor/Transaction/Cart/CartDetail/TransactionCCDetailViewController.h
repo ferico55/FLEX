@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TransactionSummaryDetail.h"
 
 @protocol TransactionCCDetailViewControllerDelegate <NSObject>
 
@@ -19,5 +20,6 @@
 
 @property (nonatomic, weak) IBOutlet id<TransactionCCDetailViewControllerDelegate> delegate;
 @property (strong, nonatomic) NSDictionary *data;
+@property (nonatomic, strong) TransactionSummaryDetail *cartSummary;
 
 @end

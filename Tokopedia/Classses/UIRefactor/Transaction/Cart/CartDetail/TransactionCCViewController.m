@@ -190,6 +190,7 @@
                      API_CC_PHONE_KEY :_phoneTextField.text,
                      API_CC_STATE_KEY :_provinceTextField.text,
                     };
+        vc.cartSummary = _cartSummary;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

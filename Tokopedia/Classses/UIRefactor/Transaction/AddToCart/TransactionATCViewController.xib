@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -80,6 +82,7 @@
                 <outletCollection property="tableViewShipmentCell" destination="aPJ-FY-wpC" id="ygJ-hl-bk8"/>
                 <outletCollection property="tableViewPaymentDetailCell" destination="T1e-I5-MeF" id="CHq-ha-RRb"/>
                 <outletCollection property="tableViewShipmentCell" destination="zrh-Ec-ndt" id="iXr-v9-aWw"/>
+                <outletCollection property="tableViewPaymentDetailCell" destination="BSY-vM-0Kc" id="0qs-b0-aK8"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -115,7 +118,7 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="EVU-33-0wi"/>
                     </connections>
                 </button>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="guT-MQ-tD1">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="guT-MQ-tD1">
                     <rect key="frame" x="74" y="534" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="Ppy-J1-DFq"/>
@@ -779,9 +782,9 @@
                     <constraint firstItem="bFr-0v-ToE" firstAttribute="top" secondItem="yPk-3S-rgn" secondAttribute="top" constant="15" id="vIc-zN-90U"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="500" y="-36"/>
+            <point key="canvasLocation" x="500" y="-48"/>
         </tableViewCell>
-        <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="0SA-3F-dOB">
+        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="0SA-3F-dOB">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0SA-3F-dOB" id="L5u-36-lkM">
@@ -845,7 +848,60 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="499" y="95"/>
         </tableViewCell>
-        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cLJ-bo-2Qu">
+        <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BSY-vM-0Kc">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BSY-vM-0Kc" id="YKW-eY-YoT">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OrT-83-Tum">
+                        <rect key="frame" x="126" y="1" width="179" height="41"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harga Satuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="foA-zQ-f2P">
+                        <rect key="frame" x="15" y="1" width="103" height="41"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="103" id="8Z5-4H-gK0"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <activityIndicatorView hidden="YES" opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="BZC-u0-XmP">
+                        <rect key="frame" x="285" y="12" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="5D7-Si-6C0"/>
+                            <constraint firstAttribute="height" constant="20" id="nKC-8c-o09"/>
+                        </constraints>
+                    </activityIndicatorView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xv0-Wc-1kC" userLabel="Border">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="PAx-JC-5tC"/>
+                            <constraint firstAttribute="height" constant="1" id="fb7-dG-asx"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="OrT-83-Tum" secondAttribute="bottom" constant="1" id="6Sc-Lj-hFP"/>
+                    <constraint firstItem="OrT-83-Tum" firstAttribute="leading" secondItem="foA-zQ-f2P" secondAttribute="trailing" constant="8" id="JaZ-DN-aCy"/>
+                    <constraint firstAttribute="bottom" secondItem="foA-zQ-f2P" secondAttribute="bottom" constant="1" id="L4M-aZ-WKQ"/>
+                    <constraint firstAttribute="trailing" secondItem="Xv0-Wc-1kC" secondAttribute="trailing" id="Of4-If-RWu"/>
+                    <constraint firstItem="BZC-u0-XmP" firstAttribute="top" secondItem="YKW-eY-YoT" secondAttribute="top" constant="12" id="PsR-5t-urV"/>
+                    <constraint firstItem="foA-zQ-f2P" firstAttribute="leading" secondItem="YKW-eY-YoT" secondAttribute="leading" constant="15" id="dH2-gq-QVm"/>
+                    <constraint firstAttribute="trailing" secondItem="OrT-83-Tum" secondAttribute="trailing" constant="15" id="eQZ-0v-tdd"/>
+                    <constraint firstItem="OrT-83-Tum" firstAttribute="top" secondItem="Xv0-Wc-1kC" secondAttribute="bottom" id="eR2-cj-nGU"/>
+                    <constraint firstItem="foA-zQ-f2P" firstAttribute="top" secondItem="Xv0-Wc-1kC" secondAttribute="bottom" id="fED-cS-gkE"/>
+                    <constraint firstItem="Xv0-Wc-1kC" firstAttribute="top" secondItem="YKW-eY-YoT" secondAttribute="top" id="n76-sB-YRR"/>
+                    <constraint firstItem="Xv0-Wc-1kC" firstAttribute="leading" secondItem="YKW-eY-YoT" secondAttribute="leading" id="sS1-Bl-hio"/>
+                    <constraint firstAttribute="trailing" secondItem="BZC-u0-XmP" secondAttribute="trailing" constant="15" id="ups-2q-Wlq"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="499" y="24"/>
+        </tableViewCell>
+        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cLJ-bo-2Qu">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cLJ-bo-2Qu" id="NLC-vV-RPc">
@@ -894,7 +950,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="501" y="190"/>
         </tableViewCell>
-        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="56" id="T1e-I5-MeF">
+        <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="56" id="T1e-I5-MeF">
             <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="T1e-I5-MeF" id="HKN-ha-hfx">
