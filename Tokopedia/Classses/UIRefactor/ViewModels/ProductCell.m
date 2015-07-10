@@ -20,6 +20,10 @@
     [self.productName setText:viewModel.productName];
     [self.productPrice setText:viewModel.productPrice];
     [self.productShop setText:viewModel.productShop];
+    
+    if(!viewModel.productShop || [viewModel.productShop isEqualToString:@"0"]) {
+        [self.productShop setHidden:YES];
+    }
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
