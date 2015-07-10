@@ -95,27 +95,6 @@
     if (gateway == TYPE_GATEWAY_MANDIRI_E_CASH) {
         urlAddress = _URLStringMandiri ;
     }
-    if (gateway == TYPE_GATEWAY_CC) {
-        urlAddress = @"https://api.sandbox.veritrans.co.id/v2/token?";
-        self. title = @"Veritrans";
-        NSString *postString = [NSString stringWithFormat:@"token_cart=%@&gateway=%@&step=2&klikPayCode=%@&transactionNo=%@&totalAmount=%@&currency=%@&payType=%@&callback=%@&transactionDate=%@&miscFee=%@&signature=%@",
-                                _token,
-                                _gateway,
-                                clickPayCode,
-                                paymentID,
-                                amount,
-                                currency,
-                                payType,
-                                callBack,
-                                date,
-                                MISCFee,
-                                signature
-                                ];
-        NSLog(@"%@", postString);
-        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        [request setHTTPBody:postData];
-        [request setHTTPMethod:@"GET"];
-    }
     
     [request setURL:[NSURL URLWithString:urlAddress]];
     [_webView loadRequest:request];

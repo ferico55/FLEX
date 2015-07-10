@@ -706,7 +706,6 @@
     TransactionCCViewController *vc = [TransactionCCViewController new];
     vc.cartSummary = _cartSummary;
     vc.ccData = [_data objectForKey:DATA_CC_KEY]?:[CCData new];
-    vc.totalPrice = _cartSummary.payment_left;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

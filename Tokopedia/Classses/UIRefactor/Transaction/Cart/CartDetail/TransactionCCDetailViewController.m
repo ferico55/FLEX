@@ -191,7 +191,7 @@
             _token = token;
             if (token.redirect_url != nil) {
                 UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 400, 420)];
-                [webView loadRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:token.redirect_url]]];
+                [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:token.redirect_url]]];
                 webView.delegate = self;
                 [self.view addSubview:webView];
             }
@@ -209,47 +209,43 @@
     if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != 0) {
         [webView removeFromSuperview];
         
-        NSMutableURLRequest *request = [NSMutableURLRequest ]
-    }
-    if(webView.request?.URL.absoluteString?.rangeOfString("callback") != nil){
-        //remove webview from parent
-        //TODO: charge user and check whether transaction is success
-        webView.removeFromSuperview();
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:@"http://128.199.141.15:9091/index.php"]];
+        NSURLSession *session = [NSURLSession sharedSession];
+        request.HTTPMethod = @"POST";
+        NSString *postString = [NSString stringWithFormat:@"token-id=%@&price=%@", _token.token_id, _cartSummary.payment_left];
+        NSData *bodyData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+
+        request.HTTPBody = bodyData;
+        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
         
-        
-        var request = NSMutableURLRequest(URL: NSURL(string: "http://128.199.141.15:9091/index.php")!)
-        var session = NSURLSession.sharedSession()
-        request.HTTPMethod = "POST"
-        var bodyData = "token-id=\(self.token!.token_id)&price=\(totalPrice)"
-        
-        request.HTTPBody = bodyData.dataUsingEncoding(NSUTF8StringEncoding)
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        var task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
-            if(error == nil){
-                var strData = NSString(data: data, encoding: NSUTF8StringEncoding)
-                println("Body: \(strData!)")
-                let json = JSON(data:data)
-                if let success = json["status"].stringValue{
-                    if(success == "success"){
-                        let trxId = json["body"]["transaction_id"]
-                        println("Success to Charging data with transaction id\(trxId)")
-                    }else{
-                        println("Failed to Charge")
-                    }
-                    
-                }else{
-                    var errorS = json["status"]
-                    println("error: \(errorS)")
-                }
-                
-            }else{
-                println("Error: \(error.localizedDescription)")
-            }
-            
-        })
-        task.resume()
-        
+        [[session dataTaskWithRequest:request
+                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                        if (error == nil) {
+                            NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                            NSLog(@"String Data Veritrans :%@",strData);
+                            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                            NSString *status = [json[@"status"] stringValue];
+                        
+                            if (status != nil) {
+                                if ([status isEqualToString:@"success"]) {
+                                    //do request
+                                    NSLog(@"success to Charge");
+                                }
+                                else
+                                {
+                                    NSLog(@" Error : %@", [json[@"status"] stringValue]);
+                                }
+                            }
+                            else
+                            {
+                                NSLog(@"Failed to Charge");
+                            }
+                        }
+                        else
+                        {
+                            NSLog(@" Error : %@",error.localizedDescription);
+                        }
+                    }] resume];
     }
 }
 
