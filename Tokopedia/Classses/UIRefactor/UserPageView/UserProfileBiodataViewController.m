@@ -320,7 +320,6 @@
     popTipView.delegate = self;
     popTipView.backgroundColor = [UIColor blackColor];
     popTipView.animation = CMPopTipAnimationSlide;
-    popTipView.has3DStyle = NO;
     popTipView.dismissTapAnywhere = YES;
     
     UIButton *button = (UIButton *)sender;

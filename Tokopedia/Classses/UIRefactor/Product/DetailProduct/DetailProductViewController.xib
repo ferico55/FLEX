@@ -518,11 +518,11 @@
             <point key="canvasLocation" x="814" y="88"/>
         </view>
         <view contentMode="scaleToFill" id="S8c-C2-gKh" userLabel="Shop Information - View">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="410"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="424"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fWw-Ck-UQr">
-                    <rect key="frame" x="10" y="8" width="300" height="136"/>
+                    <rect key="frame" x="10" y="8" width="300" height="150"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ml1-bf-Teo">
                             <rect key="frame" x="10" y="10" width="65" height="65"/>
@@ -546,7 +546,7 @@
                             </constraints>
                         </imageView>
                         <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xjh-ct-TjF">
-                            <rect key="frame" x="80" y="23" width="49" height="20"/>
+                            <rect key="frame" x="80" y="23" width="43" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="IRo-Z2-Du6"/>
                             </constraints>
@@ -560,7 +560,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lokasi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6SQ-DJ-iQi">
-                            <rect key="frame" x="80" y="43" width="34" height="21"/>
+                            <rect key="frame" x="80" y="43" width="31" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="0qm-Fa-LhK"/>
                             </constraints>
@@ -569,7 +569,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VoJ-od-2P9">
-                            <rect key="frame" x="0.0" y="0.0" width="262" height="85"/>
+                            <rect key="frame" x="0.0" y="0.0" width="242" height="85"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="85" id="Cr3-MD-qgE"/>
@@ -577,15 +577,15 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5rC-uU-jyp">
                             <rect key="frame" x="10" y="85" width="282" height="1"/>
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="ZJC-Vz-VMF"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fGg-D4-sKa">
-                            <rect key="frame" x="8" y="86" width="141" height="50"/>
+                            <rect key="frame" x="8" y="86" width="141" height="64"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="jEK-YN-j7d"/>
+                                <constraint firstAttribute="height" constant="64" id="jEK-YN-j7d"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-25"/>
@@ -600,16 +600,16 @@
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hts-z7-Qk8">
                             <rect key="frame" x="149" y="85" width="1" height="50"/>
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="1" id="rmy-S5-hU0"/>
                                 <constraint firstAttribute="height" constant="50" id="vIz-lm-1FU"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tiu-tN-nyQ">
-                            <rect key="frame" x="150" y="84" width="140" height="50"/>
+                            <rect key="frame" x="150" y="84" width="140" height="64"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="GKU-De-Jx8"/>
+                                <constraint firstAttribute="height" constant="64" id="GKU-De-Jx8"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-25"/>
@@ -623,10 +623,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="15" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C82-7i-IjR">
-                            <rect key="frame" x="262" y="23" width="30" height="30"/>
+                            <rect key="frame" x="252" y="23" width="40" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="IkR-GM-ygE"/>
-                                <constraint firstAttribute="width" constant="30" id="n7N-jK-Nkk"/>
+                                <constraint firstAttribute="width" constant="40" id="n7N-jK-Nkk"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -662,10 +662,10 @@
                         <constraint firstItem="VoJ-od-2P9" firstAttribute="leading" secondItem="fWw-Ck-UQr" secondAttribute="leading" id="bWY-0R-Jye"/>
                         <constraint firstItem="q89-lk-mkR" firstAttribute="top" secondItem="fWw-Ck-UQr" secondAttribute="top" constant="8" id="cIA-CT-vxK"/>
                         <constraint firstItem="ml1-bf-Teo" firstAttribute="leading" secondItem="fWw-Ck-UQr" secondAttribute="leading" constant="10" id="eRg-iV-nyT"/>
-                        <constraint firstAttribute="height" constant="136" id="eUb-Ux-CzC"/>
+                        <constraint firstAttribute="height" constant="150" id="eUb-Ux-CzC"/>
                         <constraint firstItem="fGg-D4-sKa" firstAttribute="leading" secondItem="fWw-Ck-UQr" secondAttribute="leading" constant="8" id="gYK-HL-B4b"/>
                         <constraint firstItem="C82-7i-IjR" firstAttribute="top" secondItem="fWw-Ck-UQr" secondAttribute="top" constant="23" id="itZ-Hk-Xcu"/>
-                        <constraint firstItem="C82-7i-IjR" firstAttribute="leading" secondItem="VoJ-od-2P9" secondAttribute="trailing" id="oNe-Lo-uyi"/>
+                        <constraint firstItem="C82-7i-IjR" firstAttribute="leading" secondItem="VoJ-od-2P9" secondAttribute="trailing" constant="10" id="oNe-Lo-uyi"/>
                         <constraint firstItem="fGg-D4-sKa" firstAttribute="top" secondItem="5rC-uU-jyp" secondAttribute="bottom" id="ogm-hC-W5m"/>
                         <constraint firstItem="5rC-uU-jyp" firstAttribute="top" secondItem="ml1-bf-Teo" secondAttribute="bottom" constant="10" id="r7g-Tf-YIf"/>
                         <constraint firstAttribute="trailing" secondItem="tiu-tN-nyQ" secondAttribute="trailing" constant="10" id="uex-YA-L1e"/>
@@ -674,7 +674,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Produk lainnya dari Toko ini" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="And-LZ-Qxq">
-                    <rect key="frame" x="10" y="159" width="300" height="21"/>
+                    <rect key="frame" x="10" y="173" width="300" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="qHB-jh-b2p"/>
                     </constraints>
@@ -683,7 +683,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" tag="111" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sPl-HV-1Ei">
-                    <rect key="frame" x="0.0" y="185" width="320" height="190"/>
+                    <rect key="frame" x="0.0" y="199" width="320" height="190"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8vh-UP-jfQ">
                             <rect key="frame" x="150" y="85" width="20" height="20"/>
@@ -705,7 +705,7 @@
                     </connections>
                 </scrollView>
                 <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-IX-aJW">
-                    <rect key="frame" x="0.0" y="373" width="320" height="37"/>
+                    <rect key="frame" x="0.0" y="387" width="320" height="37"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="37" id="Yg4-hv-2RD"/>
                     </constraints>
@@ -721,7 +721,7 @@
                 <constraint firstAttribute="bottom" secondItem="sPl-HV-1Ei" secondAttribute="bottom" constant="35" id="DRV-EP-F9v"/>
                 <constraint firstItem="fWw-Ck-UQr" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" constant="10" id="HNB-Gv-nt1"/>
                 <constraint firstItem="eSi-IX-aJW" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" id="Wkw-RD-Slo"/>
-                <constraint firstItem="And-LZ-Qxq" firstAttribute="top" secondItem="S8c-C2-gKh" secondAttribute="top" constant="159" id="aEN-fZ-kPh"/>
+                <constraint firstItem="And-LZ-Qxq" firstAttribute="top" secondItem="S8c-C2-gKh" secondAttribute="top" constant="173" id="aEN-fZ-kPh"/>
                 <constraint firstItem="sPl-HV-1Ei" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" id="eiA-mm-YgI"/>
                 <constraint firstItem="eSi-IX-aJW" firstAttribute="top" secondItem="sPl-HV-1Ei" secondAttribute="bottom" constant="-2" id="giT-m0-Gim"/>
                 <constraint firstItem="And-LZ-Qxq" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" constant="10" id="iwM-Zf-3zO"/>

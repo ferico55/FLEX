@@ -123,15 +123,23 @@
                                                object:nil];
     
     //Set Position Btn Lihat Detail Statistic
-    btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width-btnLihatDetailStat.imageView.bounds.size.width, 0, 0);
+    CGSize newSize = CGSizeMake(15, 15);
+    UIGraphicsBeginImageContext(newSize);
+    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_arrow_right_gray" ofType:@"png"]] drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *tempImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [btnLihatDetailStat setImage:tempImage forState:UIControlStateNormal];
+    btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width-btnLihatDetailStat.imageView.bounds.size.width-15, 0, 0);
     btnLihatDetailStat.titleEdgeInsets = UIEdgeInsetsMake(0, -btnLihatDetailStat.imageView.bounds.size.width+15, 0, 0);
     
-    //set reputasi and akurasi
-    UILabel *lblShow = [[UILabel alloc] init];
-    UIFont *boldFont = [UIFont boldSystemFontOfSize:lblReputasi.font.pointSize+1];
     
-    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblShow.textColor, NSForegroundColorAttributeName, nil];
-    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblShow.font, NSFontAttributeName, lblShow.textColor, NSForegroundColorAttributeName, nil];
+    
+    //set reputasi and akurasi
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:lblReputasi.font.pointSize];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblReputasi.textColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblReputasi.font, NSFontAttributeName, lblReputasi.textColor, NSForegroundColorAttributeName, nil];
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", _shop.result.stats.shop_reputation_score, CStringPoin] attributes:attrs];
     [attributedText setAttributes:subAttrs range:NSMakeRange(attributedText.string.length-CStringPoin.length, CStringPoin.length)];
     [lblReputasi setAttributedText:attributedText];

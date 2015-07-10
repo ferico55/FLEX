@@ -66,6 +66,7 @@
 - (IBAction)actionRate:(id)sender;
 - (UIView *)getViewContent;
 - (UIView *)getViewContentAction;
+- (UIView *)getViewSeparatorKualitas;
 - (IBAction)actionLike:(id)sender;
 - (IBAction)actionDisLike:(id)sender;
 - (IBAction)actionChat:(id)sender;

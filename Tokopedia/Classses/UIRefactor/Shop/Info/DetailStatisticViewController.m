@@ -54,6 +54,7 @@
     [imgDescTrSukses.layer setCornerRadius:imgDescTrSukses.bounds.size.width/2.0f];
     imgDescTrSukses.layer.masksToBounds = YES;
     
+    self.title = @"Statistik";
     [self setProgressHeader:0 withAnimate:NO];
     [self initSpeedData];
     [self initKepuasanToko];

@@ -22,6 +22,10 @@
     [viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:15.0f]];
     lblDesc = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
     [viewContent addSubview:lblDesc];
+    
+    
+    imageProfile.layer.cornerRadius = imageProfile.bounds.size.height/2.0f;
+    imageProfile.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -45,19 +49,19 @@
     lineSeparatorDesc.frame = CGRectMake(0, 0, viewContentRating.bounds.size.width, lineSeparatorDesc.bounds.size.height);
     
     lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, lineSeparatorDesc.frame.origin.y+lineSeparatorDesc.bounds.size.height+CPaddingTopBottom, lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
-    viewStarKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width, lblKualitas.frame.origin.y-3, viewStarKualitas.bounds.size.width, viewStarKualitas.bounds.size.height);
+    viewStarKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width, lblKualitas.frame.origin.y, viewStarKualitas.bounds.size.width, viewStarKualitas.bounds.size.height);
     
-    viewStarAkurasi.frame = CGRectMake(viewContentRating.bounds.size.width-viewStarAkurasi.bounds.size.width-lblKualitas.frame.origin.x, lblKualitas.frame.origin.y-3, viewStarAkurasi.bounds.size.width, viewStarAkurasi.bounds.size.height);
+    viewStarAkurasi.frame = CGRectMake(viewContentRating.bounds.size.width-viewStarAkurasi.bounds.size.width-lblKualitas.frame.origin.x, lblKualitas.frame.origin.y, viewStarAkurasi.bounds.size.width, viewStarAkurasi.bounds.size.height);
     lblAkurasi.frame = CGRectMake(viewStarAkurasi.frame.origin.x-lblAkurasi.bounds.size.width, viewStarAkurasi.frame.origin.y+3, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
     
     
     //View content action
     viewContentAction.frame = CGRectMake(0, viewContentRating.frame.origin.y+viewContentRating.bounds.size.height, viewContent.bounds.size.width, viewContentAction.isHidden?0:CHeightContentAction);
     viewSeparatorKualitas.frame = CGRectMake(0, 0, viewContent.bounds.size.width, viewSeparatorKualitas.bounds.size.height);
-    btnLike.frame = CGRectMake(lblKualitas.frame.origin.x+3, viewSeparatorKualitas.frame.origin.y+viewSeparatorKualitas.bounds.size.height, btnLike.bounds.size.width, btnLike.bounds.size.height);
+    btnLike.frame = CGRectMake(viewContentRating.frame.origin.x, viewSeparatorKualitas.frame.origin.y+viewSeparatorKualitas.bounds.size.height, btnLike.bounds.size.width, btnLike.bounds.size.height);
     btnDislike.frame = CGRectMake(btnLike.frame.origin.x+btnLike.bounds.size.width+3, btnLike.frame.origin.y, btnDislike.bounds.size.width, btnDislike.bounds.size.height);
-    btnMore.frame = CGRectMake(viewContent.bounds.size.width-btnMore.bounds.size.width, btnLike.frame.origin.y, btnMore.bounds.size.width, btnMore.bounds.size.height);
-    btnChat.frame = CGRectMake(btnMore.frame.origin.x-3-btnChat.bounds.size.width, btnMore.frame.origin.y, btnChat.bounds.size.width, btnChat.bounds.size.height);
+    btnMore.frame = CGRectMake(viewContent.bounds.size.width-btnMore.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y, btnMore.bounds.size.width, btnMore.bounds.size.height);
+    btnChat.frame = CGRectMake(btnMore.frame.origin.x-3-btnMore.bounds.size.width, btnMore.frame.origin.y, btnMore.bounds.size.width, btnChat.bounds.size.height);
     
     
     viewContent.frame = CGRectMake(viewContent.frame.origin.x, viewContent.frame.origin.y, self.contentView.bounds.size.width-(viewContent.frame.origin.x*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
@@ -136,6 +140,10 @@
 
 - (UIView *)getViewContentAction {
     return viewContentAction;
+}
+
+- (UIView *)getViewSeparatorKualitas {
+    return viewSeparatorKualitas;
 }
 
 - (TTTAttributedLabel *)getLabelDesc {

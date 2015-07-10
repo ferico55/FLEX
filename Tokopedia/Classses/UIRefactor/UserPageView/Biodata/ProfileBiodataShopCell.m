@@ -33,6 +33,18 @@
 
 - (void)awakeFromNib
 {
+    //Set image and title kecepatan
+    CGFloat spacing = 6.0;
+    CGSize imageSize = btnKecepatan.imageView.frame.size;
+    btnKecepatan.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+    CGSize titleSize = btnKecepatan.titleLabel.frame.size;
+    btnKecepatan.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+    
+    //Set image and title reputasi
+    imageSize = btnReputasi.imageView.frame.size;
+    btnReputasi.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+    titleSize = btnReputasi.titleLabel.frame.size;
+    btnReputasi.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

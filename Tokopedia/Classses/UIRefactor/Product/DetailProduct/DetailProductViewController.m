@@ -344,21 +344,6 @@ CMPopTipViewDelegate
     
     //Add observer
     [self initNotification];
-    
-    //Set image and title for reputasi
-    int spacing = 6;
-    CGSize imageSize = btnReputasi.imageView.bounds.size;
-    CGSize titleSize = btnReputasi.titleLabel.bounds.size;
-    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
-    btnReputasi.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
-    btnReputasi.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
-    
-    //Set image and title kecepatan
-    imageSize = btnKecepatan.imageView.bounds.size;
-    titleSize = btnKecepatan.titleLabel.bounds.size;
-    totalHeight = (imageSize.height + titleSize.height + spacing);
-    btnKecepatan.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height)+4, 30.0, 0.0, -titleSize.width);
-    btnKecepatan.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
 }
 
 - (void)initNotification {
@@ -1826,6 +1811,21 @@ CMPopTipViewDelegate
             [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_neutral" ofType:@"png"]] forState:UIControlStateNormal];
         }
         
+        //Set image and title kecepatan
+        CGFloat spacing = 6.0;
+        CGSize imageSize = btnKecepatan.imageView.frame.size;
+        btnKecepatan.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+        CGSize titleSize = btnKecepatan.titleLabel.frame.size;
+        btnKecepatan.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+
+        //Set image and title reputasi
+        imageSize = btnReputasi.imageView.frame.size;
+        btnReputasi.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+        titleSize = btnReputasi.titleLabel.frame.size;
+        btnReputasi.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+        
+        
+        
         //Set toko tutup
         if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
             viewContentTokoTutup.hidden = NO;
@@ -2129,7 +2129,6 @@ CMPopTipViewDelegate
     cmPopTitpView.delegate = self;
     cmPopTitpView.backgroundColor = [UIColor blackColor];
     cmPopTitpView.animation = CMPopTipAnimationSlide;
-    cmPopTitpView.has3DStyle = NO;
     cmPopTitpView.dismissTapAnywhere = YES;
     
     UIButton *button = (UIButton *)sender;

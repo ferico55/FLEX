@@ -107,7 +107,7 @@
     _profileImage = [UIImageView circleimageview:_profileImage];
     
     //Set icon rate
-    CGRect rect = CGRectMake(0, 0, btnRate.bounds.size.height, btnRate.bounds.size.height);
+    CGRect rect = CGRectMake(0, 0, 30, 30);
     UIGraphicsBeginImageContext(rect.size);
     [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] drawInRect:rect];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
