@@ -487,6 +487,8 @@ UICollectionViewDelegateFlowLayout
                 if (_product.count == 0) {
                     [_act stopAnimating];
                     NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+                    [_flowLayout setFooterReferenceSize:CGSizeZero];
+                    [_collectionView addSubview:noResultView];
                 }
                 
                 if (_product.count >0) {
@@ -511,6 +513,8 @@ UICollectionViewDelegateFlowLayout
                     NSLog(@"next page : %zd",_page);
                     _isnodata = NO;
                     [_collectionView reloadData];
+                } else {
+                    [_flowLayout setFooterReferenceSize:CGSizeZero];
                 }
                 
             } else {
