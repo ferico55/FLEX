@@ -2264,12 +2264,36 @@
     NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
     NSString *password = [_dataInput objectForKey:API_PASSWORD_KEY]?:@"";
     
+    NSString *CCToken = [_dataInput objectForKey:API_CC_TOKEN_ID_KEY]?:@"";
+    NSString *CCEditFlag =[_dataInput objectForKey:API_CC_EDIT_FLAG_KEY]?:@"1";
+    NSString *CCFirstName=[_dataInput objectForKey:API_CC_FIRST_NAME_KEY]?:@"";
+    NSString *CCLastName =[_dataInput objectForKey:API_CC_LAST_NAME_KEY]?:@"";
+    NSString *CCCity =[_dataInput objectForKey:API_CC_CITY_KEY]?:@"";
+    NSString *CCPostalCode =[_dataInput objectForKey:API_CC_POSTAL_CODE_KEY]?:@"";
+    NSString *CCAddress =[_dataInput objectForKey:API_CC_ADDRESS_KEY]?:@"";
+    NSString *CCPhone =[_dataInput objectForKey:API_CC_PHONE_KEY]?:@"";
+    NSString *CCState =[_dataInput objectForKey:API_CC_STATE_KEY]?:@"";
+    NSString *CCOwnerName =[_dataInput objectForKey:API_CC_OWNER_KEY]?:@"";
+    NSString *CCNumber =[_dataInput objectForKey:API_CC_CARD_NUMBER_KEY]?:@"";
+    
+    
     NSDictionary* param = @{API_STEP_KEY:@(STEP_BUY),
                             API_TOKEN_KEY:token,
                             API_GATEWAY_LIST_ID_KEY:gatewayID,
                             API_MANDIRI_TOKEN_KEY:mandiriToken,
                             API_CARD_NUMBER_KEY:cardNumber,
-                            API_PASSWORD_KEY:password
+                            API_PASSWORD_KEY:password,
+                            API_CC_TOKEN_ID_KEY : CCToken,
+                            API_CC_OWNER_KEY:CCOwnerName,
+                            API_CC_EDIT_FLAG_KEY : CCEditFlag,
+                            API_CC_FIRST_NAME_KEY :CCFirstName,
+                            API_CC_LAST_NAME_KEY : CCLastName,
+                            API_CC_CITY_KEY : CCCity,
+                            API_CC_POSTAL_CODE_KEY : CCPostalCode,
+                            API_CC_ADDRESS_KEY : CCAddress,
+                            API_CC_PHONE_KEY : CCPhone,
+                            API_CC_STATE_KEY : CCState,
+                            API_CC_CARD_NUMBER_KEY : CCNumber
                             };
     return param;
 }
@@ -2627,7 +2651,7 @@
             navigationController.navigationBar.tintColor = [UIColor whiteColor];
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         }
-        break;
+            break;
         default:
         {
             NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};

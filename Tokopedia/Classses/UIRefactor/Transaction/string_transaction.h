@@ -318,6 +318,7 @@ typedef enum
 #define API_CC_EXP_YEAR_KEY @"card_exp_year"
 #define API_CC_CVV_KEY @"card_cvv"
 #define API_CC_OWNER_KEY @"card_owner"
+#define API_CC_TOKEN_ID_KEY @"credit_card_token"
 
 #define CALCULATE_PRODUCT @""
 #define CALCULATE_ADDRESS @"calculate_address_shipping"

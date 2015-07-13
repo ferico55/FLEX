@@ -44,9 +44,11 @@
     NSString *_selectedYear;
     
     RequestCart *_requestCart;
-    NSString *_CCAgent;
     UIAlertView *_alertLoading;
     
+    UIActivityIndicatorView *_act;
+    
+    DataCredit *_dataCC;
     VTToken *_token;
 }
 
@@ -79,6 +81,11 @@
     _requestCart = [RequestCart new];
     _requestCart.viewController = self;
     _requestCart.delegate = self;
+    
+    _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _act = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(screenRect.size.width/2, screenRect.size.height/2,50,50)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -148,7 +155,8 @@
 #pragma mark - Request Delegate
 -(void)actionBeforeRequest:(int)tag
 {
-    _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+    [_alertLoading show];
 }
 
 -(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -159,18 +167,13 @@
     id stat = [result objectForKey:@""];
     
     TransactionCC *step1 = stat;
-    _CCAgent = step1.result.data_credit.cc_agent;
+    _dataCC = step1.result.data_credit;
     
-    NSMutableDictionary *dataInput = [NSMutableDictionary new];
-    [dataInput addEntriesFromDictionary:_data];
-    [dataInput setObject:_CCNumberTextField.text?:@"" forKey:API_CC_CARD_NUMBER_KEY];
-    [dataInput setObject:_nameTextField.text?:@"" forKey:API_CC_OWNER_KEY];
-    [dataInput setObject:_CVVTextField.text?:@"" forKey:API_CC_CVV_KEY];
-    [dataInput setObject:_selectedMonth?:@"" forKey:API_CC_EXP_MONTH_KEY];
-    [dataInput setObject:_selectedYear?:@"" forKey:API_CC_EXP_YEAR_KEY];
-    
-    if ([_CCAgent integerValue] == 1) {
+    if ([_dataCC.cc_agent integerValue] == 1) {
         [self shouldDoRequestCCVeritrans];
+    }
+    else if ([_dataCC.cc_agent integerValue] == 2) {
+        [self shouldDoRequestCCSprintAsia];
     }
 }
 
@@ -195,6 +198,8 @@
         if (exception == nil) {
             _token = token;
             if (token.redirect_url != nil) {
+                [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+                self.navigationItem.rightBarButtonItem = nil;
                 UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
                 [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:token.redirect_url]]];
                 webView.delegate = self;
@@ -202,6 +207,7 @@
             }
             else
             {
+                [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
                 StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[_token.status_message] delegate:self];
                 [alert show];
             }
@@ -209,54 +215,106 @@
     }];
 }
 
+-(void)shouldDoRequestCCSprintAsia
+{
+    UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    
+    NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",kTraktBaseURLString];
+    
+    NSString *CCFirstName=[_data objectForKey:API_CC_FIRST_NAME_KEY]?:@"";
+    NSString *CCLastName =[_data objectForKey:API_CC_LAST_NAME_KEY]?:@"";
+    NSString *CCCity =[_data objectForKey:API_CC_CITY_KEY]?:@"";
+    NSString *CCPostalCode =[_data objectForKey:API_CC_POSTAL_CODE_KEY]?:@"";
+    NSString *CCAddress =[_data objectForKey:API_CC_ADDRESS_KEY]?:@"";
+    NSString *CCPhone =[_data objectForKey:API_CC_PHONE_KEY]?:@"";
+    NSString *CCState =[_data objectForKey:API_CC_STATE_KEY]?:@"";
+    NSString *CCOwnerName =[_data objectForKey:API_CC_OWNER_KEY]?:@"";
+    NSString *CCNumber =[_data objectForKey:API_CC_CARD_NUMBER_KEY]?:@"";
+    
+    NSDictionary *param = @{
+                            @"address_street": CCAddress,
+                            @"amount":_cartSummary.payment_left?:@"",
+                            @"billingAddress" : CCAddress,
+                            @"billingCity": CCCity,
+                            @"billingCountry" : @"Indonesia",
+                            @"billingEmail": _dataCC.user_email?:@"",
+                            @"billingName": CCOwnerName,
+                            @"billingPhone" : CCPhone,
+                            @"billingPostalCode": CCPostalCode,
+                            @"billingState":CCState,
+                            @"cardExpMonth":_selectedMonth?:@"",
+                            @"cardExpYear":_selectedYear?:@"",
+                            @"cardNo": CCNumber,
+                            @"cardSecurity": _CVVTextField.text?:@"",
+                            @"cardType":_dataCC.cc_type?:@"",
+                            @"city":CCCity,
+                            @"credit_card_edit_flag" :@"1",
+                            @"credit_card_token":_dataCC.payment_id?:@"",
+                            @"currency":@"IDR",
+                            @"deliveryAddress":CCAddress,
+                            @"deliveryCity":CCCity,
+                            @"deliveryCountry":@"Indonesia",
+                            @"deliveryName":CCOwnerName,
+                            @"deliveryPostalCode":CCPostalCode,
+                            @"deliveryState":CCState,
+                            @"first_name":CCFirstName,
+                            @"gateway":_cartSummary.gateway,
+                            @"last_name":CCLastName,
+                            @"merchantTransactionID":_dataCC.payment_id?:@"",
+                            @"merchantTransactionNote":@"",
+                            @"phone":CCPhone,
+                            @"postal_code":CCPostalCode,
+                            @"refback":@"",
+                            @"serviceVersion":@"1.1",
+                            @"siteID":@"mTokopediaios",
+                            @"step":@"2",
+                            @"token":_cartSummary.token?:@"",
+                            @"transactionType":@"SALE"
+                            };
+    [request setURL:[NSURL URLWithString:stringURL]];
+
+    NSString *postString = [[param encrypt] description];
+    NSLog(@"%@", postString);
+    NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    [request setHTTPBody:postData];
+    [request setHTTPMethod:@"POST"];
+    
+    [webView loadRequest:request];
+    webView.delegate = self;
+    [self.view addSubview:webView];
+}
+
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    [_act startAnimating];
     return YES;
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-        [webView removeFromSuperview];
+    [_act stopAnimating];
+    if ([_dataCC.cc_agent integerValue] == 1) {
+        if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+            [webView removeFromSuperview];
+            [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+            NSMutableDictionary *dataInput = [NSMutableDictionary new];
+            [dataInput addEntriesFromDictionary:_data];
+            [dataInput setObject:_CCNumberTextField.text?:@"" forKey:API_CC_CARD_NUMBER_KEY];
+            [dataInput setObject:_nameTextField.text?:@"" forKey:API_CC_OWNER_KEY];
+            [dataInput setObject:_CVVTextField.text?:@"" forKey:API_CC_CVV_KEY];
+            [dataInput setObject:_selectedMonth?:@"" forKey:API_CC_EXP_MONTH_KEY];
+            [dataInput setObject:_selectedYear?:@"" forKey:API_CC_EXP_YEAR_KEY];
+            [dataInput setObject:_token.token_id?:@"" forKey:API_CC_TOKEN_ID_KEY];
+            
+            [_delegate doRequestCC:dataInput];
+            [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
+        }
+    }
+    else
+    {
         
-        [_delegate doRequestCC:_data];
-//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:@"http://128.199.141.15:9091/index.php"]];
-//        NSURLSession *session = [NSURLSession sharedSession];
-//        request.HTTPMethod = @"POST";
-//        NSString *postString = [NSString stringWithFormat:@"token-id=%@&price=%@", _token.token_id, _cartSummary.payment_left];
-//        NSData *bodyData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-//        
-//        request.HTTPBody = bodyData;
-//        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-//        
-//        [[session dataTaskWithRequest:request
-//                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//                        if (error == nil) {
-//                            NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//                            NSLog(@"String Data Veritrans :%@",strData);
-//                            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//                            NSString *status = [json[@"status"] stringValue];
-//                            
-//                            if (status != nil) {
-//                                if ([status isEqualToString:@"success"]) {
-//                                    //do request
-//                                    NSLog(@"success to Charge");
-//                                }
-//                                else
-//                                {
-//                                    NSLog(@" Error : %@", [json[@"status"] stringValue]);
-//                                }
-//                            }
-//                            else
-//                            {
-//                                NSLog(@"Failed to Charge");
-//                            }
-//                        }
-//                        else
-//                        {
-//                            NSLog(@" Error : %@",error.localizedDescription);
-//                        }
-//                    }] resume];
     }
 
 }
@@ -317,7 +375,7 @@
         isValid = NO;
     }
     if ([_CVVTextField.text isEqualToString:@""]) {
-        [errorMessage addObject:@"CVC "];
+        [errorMessage addObject:@"CVC harus diisi."];
         isValid = NO;
     }
     

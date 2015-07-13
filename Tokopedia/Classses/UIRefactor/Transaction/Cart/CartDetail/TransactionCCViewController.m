@@ -16,7 +16,8 @@
     UITableViewDataSource,
     UITableViewDelegate,
     UITextFieldDelegate,
-    UITextViewDelegate
+    UITextViewDelegate,
+    TransactionCCDetailViewControllerDelegate
 >
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableCells;
@@ -136,6 +137,11 @@
     _activeTextField = nil;
 }
 
+-(void)doRequestCC:(NSDictionary *)param
+{
+    [_delegate doRequestCC:param];
+}
+
 #pragma mark - Text Field Delegate
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -158,6 +164,7 @@
 {
     _activeTextView = nil;
 }
+
 
 #pragma mark - Methods
 
@@ -190,6 +197,7 @@
                      API_CC_PHONE_KEY :_phoneTextField.text,
                      API_CC_STATE_KEY :_provinceTextField.text,
                     };
+        vc.delegate = self;
         vc.cartSummary = _cartSummary;
         [self.navigationController pushViewController:vc animated:YES];
     }
