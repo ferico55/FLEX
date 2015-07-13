@@ -20,7 +20,7 @@
 }
 
 - (IBAction)tapBeta:(id)sender {
-    baseUrl = @"http://beta.tokopedia.com/ws";
+    baseUrl = @"http://staging.tokopedia.com/ws";
     [self didChangeButtonColor:_betaButton];
 }
 
