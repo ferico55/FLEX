@@ -366,19 +366,27 @@
 -(void)cancel
 {
     [_request cancel];
-
     _request = nil;
+    
+    [_requestFacebookLogin cancel];
+    _requestFacebookLogin = nil;
+
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
+    
+    [_facebookObjectManager.operationQueue cancelAllOperations];
+    _facebookObjectManager = nil;
     
     _loadingView.hidden = YES;
     [_container addSubview:_contentView];
     _container.contentSize = CGSizeMake(self.view.frame.size.width,
                                         _contentView.frame.size.height);
     
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
+    if ([[FBSession activeSession] state] != FBSessionStateCreated) {
+        [[FBSession activeSession] closeAndClearTokenInformation];
+        [[FBSession activeSession] close];
+        [FBSession setActiveSession:nil];
+    }
 }
 
 - (void)configureRestKit
@@ -681,11 +689,10 @@
 // Call method when user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
     if ([[FBSession activeSession] state] == FBSessionStateOpen) {
-        [FBSession.activeSession closeAndClearTokenInformation];
-        [self requestLoginFacebookUser:user];        
         _facebookUser = user;
         _loadingView.hidden = NO;
         [_facebookLoginActivityIndicator startAnimating];
+        [self requestLoginFacebookUser:user];
     }
 }
 
@@ -847,11 +854,17 @@
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            
+            if(_login.result.user_image != nil) {
+                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            }
+            
             [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            
+            if(_login.result.shop_avatar != nil) {
+                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            }
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];

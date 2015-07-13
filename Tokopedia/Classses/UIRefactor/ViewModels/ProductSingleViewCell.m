@@ -10,10 +10,11 @@
 
 #import "ProductCell.h"
 #import "ProductModelView.h"
+#import "CatalogModelView.h"
 
 @interface ProductSingleViewCell()
 
-@property (weak, nonatomic) IBOutlet UILabel *productInfoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *productInfoLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
 @property (strong, nonatomic) IBOutlet UILabel *productPrice;
 @property (strong, nonatomic) IBOutlet UILabel *productShop;
@@ -32,21 +33,10 @@
     [self.productName setText:viewModel.productName];
     [self.productPrice setText:viewModel.productPrice];
     [self.productShop setText:viewModel.productShop];
-    self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
+    [self.goldShopBadge setHidden:viewModel.isGoldShopProduct ? NO : YES];
+    [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Diskusi - %@ Ulasan", viewModel.productTalk, viewModel.productReview]];
     
-    UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
-    
-    NSString *stats = viewModel.statusInfo;
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
-    [attributedText addAttribute:NSFontAttributeName
-                           value:boldFont
-                           range:NSMakeRange(0, viewModel.statusInfo.length)];
-    [attributedText addAttribute:NSFontAttributeName
-                           value:boldFont
-                           range:NSMakeRange(viewModel.product_review_count.length + 10, viewModel.product_talk_count.length)];
-    self.productInfoLabel.attributedText = attributedText;
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.product_image_full] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     [self.productImage setContentMode:UIViewContentModeCenter];
     [self.productImage setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -58,6 +48,25 @@
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
+}
+
+- (void)setCatalogViewModel:(CatalogModelView *)viewModel {
+    [self.productName setText:viewModel.catalogName];
+    [self.productPrice setText:viewModel.catalogPrice];
+    [self.productInfoLabel setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
+    self.goldShopBadge.hidden = YES;
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [self.productImage setContentMode:UIViewContentModeCenter];
+    [self.productImage setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
+        [self.productImage setImage:image];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    }];
 }
 
 @end

@@ -142,6 +142,7 @@
         _page = 1;
         _isNeedToRemoveAllObject = YES;
         [_networkManager doRequest];
+        [self initCacheHotlist];
         _table.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
     }
 }

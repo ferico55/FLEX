@@ -8,9 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *TKPDTabViewSegmentedIndex = @"TKPDTabViewSegmentedIndex";
+static NSString *TKPDTabViewNavigationMenuIndex = @"TKPDTabViewNavigationMenuIndex";
+static NSString *TKPDTabNotification = @"TKPDTabNotification";
+
 @protocol TKPDTabViewDelegate <NSObject>
 
-- (void)segmentController:(UISegmentedControl *)segmentedController didSelectSegmentAtIndex:(NSInteger)index;
+@optional;
+- (void)tabViewController:(id)controller didTapButtonAtIndex:(NSInteger)index;
+- (void)pushViewController:(id)controller;
 
 @end
 
@@ -21,6 +27,7 @@
 
 @property (strong, nonatomic) NSArray *viewControllers;
 @property (strong, nonatomic) NSArray *tabTitles;
+@property (strong, nonatomic) NSArray *menuTitles;
 
 @property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;
 

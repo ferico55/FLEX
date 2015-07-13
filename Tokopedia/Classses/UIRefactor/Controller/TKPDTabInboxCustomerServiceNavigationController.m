@@ -7,12 +7,12 @@
 //
 
 #import "TKPDTabInboxCustomerServiceNavigationController.h"
-#import "InboxCustomerServiceViewController.h"
+#import "InboxTicketViewController.h"
 
 @interface TKPDTabInboxCustomerServiceNavigationController () {
-    InboxCustomerServiceViewController *_allInboxController;
-    InboxCustomerServiceViewController *_processInboxController;
-    InboxCustomerServiceViewController *_closedInboxController;
+    InboxTicketViewController *_allInboxController;
+    InboxTicketViewController *_processInboxController;
+    InboxTicketViewController *_closedInboxController;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
@@ -24,9 +24,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _allInboxController = [InboxCustomerServiceViewController new];
-    _processInboxController = [InboxCustomerServiceViewController new];
-    _closedInboxController = [InboxCustomerServiceViewController new];
+    _allInboxController = [InboxTicketViewController new];
+    _processInboxController = [InboxTicketViewController new];
+    _closedInboxController = [InboxTicketViewController new];
 
     _segmentedControl.selectedSegmentIndex = 0;
     [self valueChangedSegmentedControl:_segmentedControl];

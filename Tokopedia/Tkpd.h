@@ -160,6 +160,8 @@ typedef enum {
 
 #define UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME @"tokopedia.UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME"
 
+#define kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION @"tokopedia.kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION"
+
 #define kTKPD_APPLICATIONKEY @"application"
 #define kTKPD_INSTALLEDKEY @"installed"
 
@@ -202,9 +204,6 @@ typedef enum {
 #define productCollectionViewCellWidthNormal 145
 #define productCollectionViewCellHeight6plus 250
 #define productCollectionViewCellHeightNormal 205
-
-
-
 
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"

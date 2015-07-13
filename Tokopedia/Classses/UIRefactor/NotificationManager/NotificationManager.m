@@ -219,10 +219,8 @@
     _notificationButton.enabled = YES;
     _notificationButton.badgeLabel.hidden = NO;
     
-    //TODO::removing price alert was here
-    NSString *notifWithNoPriceAlert = [NSString stringWithFormat:@"%ld", (long)([_notification.result.total_notif integerValue] - [_notification.result.inbox.inbox_wishlist integerValue])];
-    
-    _notificationButton.badgeLabel.text = [notifWithNoPriceAlert  stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    _notificationButton.badgeLabel.text = [_notification.result.total_notif  stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSInteger totalNotif = [_notification.result.total_notif integerValue];
     CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
     if (totalNotif >= 10 && totalNotif < 100) {
