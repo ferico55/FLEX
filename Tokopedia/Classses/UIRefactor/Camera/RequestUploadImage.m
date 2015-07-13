@@ -82,19 +82,15 @@
     NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA]?:@"";
     NSString* imageName = [[photo objectForKey:DATA_CAMERA_IMAGENAME] lowercaseString]?:@"";
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"0";
-    NSInteger userID = _generateHost.result.generated_host.user_id;
-    
-    NSInteger newAdd = (_isNotUsingNewAdd)?0:1;
-    
-    NSDictionary *param;
+    NSString *userID = [NSString stringWithFormat:@"%d", _generateHost.result.generated_host.user_id];
+    NSString *newAdd = [NSString stringWithFormat:@"%d", _isNotUsingNewAdd?0:1];
 
-    param = @{ kTKPDDETAIL_APIACTIONKEY: _action,
-                         kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
-                         kTKPD_USERIDKEY : @(userID),
-                         @"product_id" : _productID?:@"",
-                         @"new_add" : @(newAdd),
-                         @"payment_id" : _paymentID?:@""
-                         //@"is_temp" :@(1)
+    NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY           : _action,
+                             kTKPDGENERATEDHOST_APISERVERIDKEY  : serverID,
+                             kTKPD_USERIDKEY                    : userID,
+                             @"product_id"                      : _productID?:@"",
+                             @"new_add"                         : newAdd,
+                             @"payment_id"                      : _paymentID?:@""
                          };
     
     

@@ -5,7 +5,7 @@
 //  Created by Tokopedia PT on 12/15/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "AlertPriceNotificationViewController.h"
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
@@ -22,6 +22,9 @@
 #import "TxOrderTabViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusViewController.h"
+
+#import "TKPDTabViewController.h"
+#import "InboxTicketViewController.h"
 
 
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
@@ -82,6 +85,20 @@
         [self updateLabelAppearance:_resolutionCenterCountLabel];
     }
     
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
+    
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
+    
+    if([_notification.result.inbox.inbox_ticket integerValue] > 0) {
+        _customerCareCountLabel.text = _notification.result.inbox.inbox_ticket;
+        [self updateLabelAppearance:_customerCareCountLabel];
+    }
     
     // Payment section
     if([_notification.result.sales.sales_new_order integerValue] > 0) {
@@ -162,7 +179,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 4;
+            numberOfRows = 6;
             break;
             
         case 1:
@@ -348,11 +365,43 @@
             }
             case 3:
             {
+                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+                [self.delegate pushViewController:alertPriceNotificationViewController];
+                break;
+            }
+            case 4:
+            {
+                TKPDTabViewController *controller = [TKPDTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                
+                InboxTicketViewController *allInbox = [InboxTicketViewController new];
+                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+                allInbox.delegate = controller;
+                
+                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+                unreadInbox.delegate = controller;
+                
+                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+                closedInbox.delegate = controller;
+                
+                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+                
+                [self.delegate pushViewController:controller];
+                break;
+            }
+                
+            case 5 : {
                 InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
                 vc.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:vc];
                 break;
             }
+
             default:
                 break;
         }

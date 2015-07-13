@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class ProductModelView;
+@class CatalogModelView;
 
 @interface ProductSingleViewCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *infoContraint;
 
 - (void)setViewModel:(ProductModelView*)viewModel;
+- (void)setCatalogViewModel:(CatalogModelView*)viewModel;
 
 @end

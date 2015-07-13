@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSString *ticket_title;
 @property (strong, nonatomic) NSString *ticket_total_message;
 @property (strong, nonatomic) NSString *ticket_show_more;
+@property (strong, nonatomic) NSString *ticket_show_reopen_btn;
 @property (strong, nonatomic) NSString *ticket_respond_status;
 @property (strong, nonatomic) NSString *ticket_is_replied;
 @property (strong, nonatomic) NSString *ticket_url_detail;
@@ -31,5 +32,7 @@
 @property (strong, nonatomic) NSString *ticket_update_by_id;
 @property (strong, nonatomic) NSString *ticket_id;
 @property (strong, nonatomic) NSString *ticket_update_by_name;
+
+@property BOOL ticket_show_more_messages;
 
 @end

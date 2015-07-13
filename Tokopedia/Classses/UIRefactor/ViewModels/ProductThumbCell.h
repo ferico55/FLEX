@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 @class ProductModelView;
+@class CatalogModelView;
 
 @interface ProductThumbCell : UICollectionViewCell
 
 - (void)setViewModel:(ProductModelView*)viewModel;
+- (void)setCatalogViewModel:(CatalogModelView*)viewModel;
 
 @end

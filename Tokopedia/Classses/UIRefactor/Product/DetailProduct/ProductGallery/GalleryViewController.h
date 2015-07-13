@@ -41,6 +41,7 @@ typedef enum
 
 - (IBAction)actionDownload:(id)sender;
 - (IBAction)actionCancel:(id)sender;
+- (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex usingNetwork:(BOOL)usingNetwork;
 - (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex;
 - (void)gotoImageByIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)removeImageAtIndex:(NSUInteger)index;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -15,9 +15,9 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -39,13 +39,14 @@
                 <outlet property="reviewCreateTimeLabel" destination="J2Z-Dj-mZo" id="PyI-qz-pAR"/>
                 <outlet property="reviewRespondLabel" destination="YzB-Za-dOk" id="cvs-vM-e3K"/>
                 <outlet property="scrollContent" destination="Gt1-uG-8I4" id="hMc-uu-1Ei"/>
+                <outlet property="sellerLabel" destination="mGO-iO-oZx" id="EGV-Jl-8Fh"/>
                 <outlet property="sendButton" destination="Bjm-md-Us0" id="3fv-tR-QfB"/>
                 <outlet property="servicerate" destination="Its-ZE-6V1" id="kzC-us-37Z"/>
                 <outlet property="speedrate" destination="bhu-cR-wAx" id="bgq-jo-vhr"/>
                 <outlet property="talkInputView" destination="Clf-QR-SE2" id="Y9u-OD-NWa"/>
                 <outlet property="timelabel" destination="6be-sE-orR" id="9HW-fG-ZYd"/>
+                <outlet property="userButton" destination="OiS-Uh-cAs" id="qde-7J-rKP"/>
                 <outlet property="userImageView" destination="s9u-CW-HzA" id="afd-Uk-CPN"/>
-                <outlet property="userNamelabel" destination="g4z-kv-MBi" id="idf-lj-avW"/>
                 <outlet property="userView" destination="ag0-iy-p65" id="DIU-iT-H0d"/>
                 <outlet property="view" destination="3sB-MC-Mi0" id="SHL-5Q-Knu"/>
             </connections>
@@ -70,6 +71,11 @@
                                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <view contentMode="scaleToFill" id="OiS-Uh-cAs" customClass="ViewLabelUser">
+                                    <rect key="frame" x="74" y="15" width="214" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6be-sE-orR" userLabel="create_time">
                                     <rect key="frame" x="74" y="33" width="214" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -311,8 +317,8 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Penjual" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mGO-iO-oZx">
                                     <rect key="frame" x="8" y="18" width="50" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                    <color key="backgroundColor" red="0.72549019609999998" green="0.2901960784" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="10"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>

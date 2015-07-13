@@ -214,7 +214,7 @@ typedef enum TagRequest {
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [_networkManager requestCancel];
+//    [_networkManager requestCancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -365,23 +365,18 @@ typedef enum TagRequest {
                     ((InboxMessageCell*)cell).is_unread.hidden = NO;
                 }
             }
-                        
+            
+
+            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
             thumb = [UIImageView circleimageview:thumb];
-            if(![list.user_image isEqualToString:@"0"]) {
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                
-
-                thumb.image = nil;
-                [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            thumb.image = nil;
+            [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    [thumb setImage:image];
+                [thumb setImage:image];
 #pragma clang diagnostic pop
-                } failure:nil];
-            } else {
-                [thumb setImage:[UIImage imageNamed:@"default-boy.png"]];
-            }
+            } failure:nil];
         }
         
         return cell;
