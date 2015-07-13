@@ -16,7 +16,7 @@
 
 - (void)awakeFromNib {
     self.layer.cornerRadius = 5;
-    baseUrl = kTraktBaseURLString;
+    baseUrl = kTkpdBaseURLString;
 }
 
 - (IBAction)tapBeta:(id)sender {

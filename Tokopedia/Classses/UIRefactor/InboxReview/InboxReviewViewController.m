@@ -403,8 +403,12 @@
 #pragma mark - Request + Restkit Init
 - (void)configureRestkit {
 //    _objectManager = [RKObjectManager sharedClient];
-    _objectManager =  ![_inboxReviewBaseUrl isEqualToString:@""]?[RKObjectManager sharedClient:_inboxReviewBaseUrl]:[RKObjectManager sharedClient];
-    
+    if([_inboxReviewBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxReviewBaseUrl isEqualToString:@""]) {
+        _objectManager = [RKObjectManager sharedClient];
+    } else {
+        _objectManager = [RKObjectManager sharedClient:_inboxReviewBaseUrl];
+    }
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxReview class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -908,7 +912,6 @@
     
     _inboxReviewBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxReviewBase];
     _inboxReviewPostUrl = [_gtmContainer stringForKey:GTMKeyInboxReviewPost];
-    _inboxReviewFullUrl = [_gtmContainer stringForKey:GTMKeyInboxReviewFull];
 }
 
 @end

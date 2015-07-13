@@ -846,7 +846,12 @@ UICollectionViewDelegateFlowLayout
 {
     // initialize RestKit
 //    _objectmanager =  [RKObjectManager sharedClient];
-    _objectmanager =  ![_searchBaseUrl isEqualToString:@""]?[RKObjectManager sharedClient:_searchBaseUrl]:[RKObjectManager sharedClient];
+//    _objectmanager =  ![_searchBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_searchBaseUrl]:[RKObjectManager sharedClient];
+    if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
+        _objectmanager = [RKObjectManager sharedClient];
+    } else {
+        _objectmanager = [RKObjectManager sharedClient:_searchBaseUrl];
+    }
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];

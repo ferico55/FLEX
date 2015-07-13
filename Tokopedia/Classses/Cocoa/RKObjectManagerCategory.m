@@ -12,34 +12,27 @@
 // Set this to your Trakt API Key
 NSString * const kTraktAPIKey = @"8b0c367dd3ef0860f5730ec64e3bbdc9";
 NSString * const kTraktBaseURLString = kTkpdBaseURLString;
-
+NSString *_selectedBaseUrl;
 static RKObjectManager *_sharedClient = nil;
 
 @implementation RKObjectManager (TkpdCategory)
 
 + (RKObjectManager *)sharedClient {
-//    static RKObjectManager *_sharedClient = nil;
-    
     static dispatch_once_t oncePredicate;
+    
     dispatch_once(&oncePredicate, ^{
         _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLString]];
     });
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
 
     return _sharedClient;
 }
 
-//ONLY FOR GTM PURPOSE::ASK TONITO IF YOU WANT TO USE THIS METHOD
 + (RKObjectManager *)sharedClient:(NSString*)baseUrl{
     static RKObjectManager *_sharedClient = nil;
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
-        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseUrl?:kTraktBaseURLString]];
-    });
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
-    
+    _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseUrl?:kTraktBaseURLString]];
     return _sharedClient;
 }
 
@@ -54,12 +47,14 @@ static RKObjectManager *_sharedClient = nil;
 }
 
 + (void)refreshBaseUrl {
-//    static RKObjectManager *_sharedClient = nil;
-    
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *data = [secureStorage keychainDictionary];
-
-    _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[data objectForKey:@"AppBaseUrl"]?:kTraktBaseURLString]];
+    
+    _selectedBaseUrl = [data objectForKey:@"AppBaseUrl"];
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:_selectedBaseUrl]];
+    });
 }
 
 

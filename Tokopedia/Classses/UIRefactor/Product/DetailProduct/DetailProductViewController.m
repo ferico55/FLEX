@@ -1202,7 +1202,12 @@ UIAlertViewDelegate
     {
         // initialize RestKit
 //        _objectmanager =  [RKObjectManager sharedClient];
-        _objectmanager =  ![_detailProductBaseUrl isEqualToString:@""]?[RKObjectManager sharedClient:_detailProductBaseUrl]:[RKObjectManager sharedClient];
+//        _objectmanager =  ![_detailProductBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_detailProductBaseUrl]:[RKObjectManager sharedClient];
+        if([_detailProductBaseUrl isEqualToString:kTkpdBaseURLString] || [_detailProductBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_detailProductBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];

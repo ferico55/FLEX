@@ -570,7 +570,7 @@ typedef enum TagRequest {
 //    [_cacheController clearCache];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-    _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTraktBaseURLString;
+    _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
     
     [storage resetKeychain];
     [_auth removeAllObjects];

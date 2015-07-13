@@ -938,7 +938,12 @@ typedef enum TagRequest {
 - (id)getObjectManager:(int)tag {
     if(tag == messageListTag) {
 //        _objectmanager =  [RKObjectManager sharedClient];
-        _objectmanager =  ![_inboxMessageBaseUrl isEqualToString:@""]?[RKObjectManager sharedClient:_inboxMessageBaseUrl]:[RKObjectManager sharedClient];
+//        _objectmanager =  ![_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxMessageBaseUrl]:[RKObjectManager sharedClient];
+        if([_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxMessageBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_inboxMessageBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
@@ -1067,7 +1072,6 @@ typedef enum TagRequest {
     
     _inboxMessageBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxMessageBase];
     _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
-    _inboxMessageFullUrl = [_gtmContainer stringForKey:GTMKeyInboxMessageFull];
 }
 
 @end

@@ -384,7 +384,13 @@
 - (void)configureRestKit
 {
 //    _objectmanager =  [RKObjectManager sharedClient];
-    _objectmanager =  ![_inboxTalkBaseUrl isEqualToString:@""]?[RKObjectManager sharedClient:_inboxTalkBaseUrl]:[RKObjectManager sharedClient];
+//    _objectmanager =  ![_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxTalkBaseUrl]:[RKObjectManager sharedClient];
+    if([_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxTalkBaseUrl isEqualToString:@""]) {
+        _objectmanager = [RKObjectManager sharedClient];
+    } else {
+        _objectmanager = [RKObjectManager sharedClient:_inboxTalkBaseUrl];
+    }
+    
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
@@ -948,7 +954,6 @@
     
     _inboxTalkBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkBase];
     _inboxTalkPostUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkPost];
-    _inboxTalkFullUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkFull];
 }
 
 @end
