@@ -1989,7 +1989,7 @@
     
     if ([product.product_min_order integerValue]>=1000) {
         isValid = NO;
-        [_errorMessage addObject:@"Maksimal untuk minimal pembelian 1 produk adalah 999"];
+        [_errorMessage addObject:@"Maksimal minimum pembelian untuk 1 produk adalah 999"];
     }
     
     if (!isValidImage) {
