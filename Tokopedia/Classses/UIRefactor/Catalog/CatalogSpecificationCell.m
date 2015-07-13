@@ -18,6 +18,7 @@
 @implementation CatalogSpecificationCell
 
 - (void)awakeFromNib {
+    [self.valueLabel sizeToFit];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
