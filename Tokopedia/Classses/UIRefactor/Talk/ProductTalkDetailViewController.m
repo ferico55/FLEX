@@ -90,7 +90,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UILabel *talkmessagelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talkcreatetimelabel;
-@property (weak, nonatomic) IBOutlet UILabel *talkusernamelabel;
+//@property (weak, nonatomic) IBOutlet UILabel *talkusernamelabel;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *userButton;
 @property (weak, nonatomic) IBOutlet UILabel *talktotalcommentlabel;
 @property (weak, nonatomic) IBOutlet UIImageView *talkuserimage;
 @property (weak, nonatomic) IBOutlet UIImageView *talkProductImage;
@@ -303,7 +304,7 @@
         if (cell == nil) {
             cell = [GeneralTalkCommentCell newcell];
             ((GeneralTalkCommentCell*)cell).delegate = self;
-            [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:15.0f]];
+            [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
         }
         
         if (_list.count > indexPath.row) {
@@ -475,7 +476,11 @@
     _talkmessagelabel.frame = myFrame;
     
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
-    _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
+//    _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
+    [_userButton setLabelBackground:[data objectForKey:TKPD_TALK_USER_LABEL]];
+    [_userButton setText:[data objectForKey:TKPD_TALK_USER_NAME]];
+    [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
+
     _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
@@ -879,6 +884,7 @@
                     
                     commentlist.comment_create_time = dateString;
                     commentlist.is_just_sent = YES;
+                    commentlist.comment_user_label = [_userManager isMyShopWithShopId:[_data objectForKey:TKPD_TALK_SHOP_ID]] ? @"Penjual" : @"Pengguna";
                     
                     [_list insertObject:commentlist atIndex:lastindexpathrow];
                     NSArray *insertIndexPaths = [NSArray arrayWithObjects:

@@ -781,7 +781,8 @@
                 TKPD_TALK_PRODUCT_IMAGE:[_data objectForKey:@"talk_product_image"],
                 TKPD_TALK_PRODUCT_NAME:[_data objectForKey:@"product_name"],
                 //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
-                kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0
+                kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
+                TKPD_TALK_USER_LABEL:list.talk_user_label
                 };
     [self.navigationController pushViewController:vc animated:YES];
     

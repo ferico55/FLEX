@@ -5,6 +5,7 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
@@ -462,7 +463,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 7;
+    return 8;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -491,7 +492,7 @@
             break;
             
         case 4:
-            return 5;
+            return 6;
             break;
             
         case 5:
@@ -499,6 +500,10 @@
             break;
             
         case 6:
+            return 1;
+            break;
+            
+        case 7 :
             return 1;
             break;
             
@@ -645,10 +650,15 @@
             [self.navigationController pushViewController:nc animated:YES];
             
         } else if (indexPath.row == 3) {
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
             
+
+        } else if (indexPath.row == 4) {
             TKPDTabViewController *controller = [TKPDTabViewController new];
             controller.hidesBottomBarWhenPushed = YES;
-        
+            
             InboxTicketViewController *allInbox = [InboxTicketViewController new];
             allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
             allInbox.delegate = controller;
@@ -664,17 +674,13 @@
             controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
             controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
             controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-
-            [self.navigationController pushViewController:controller animated:YES];
-
-        } else if (indexPath.row == 4) {
             
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (indexPath.row == 5) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-            
         }
-        
     }
     
     else if (indexPath.section == 5) {
@@ -876,6 +882,7 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [self requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 

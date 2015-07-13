@@ -15,5 +15,6 @@
 -(void)navigateToInvoiceFromViewController:(UIViewController*)viewController withInvoiceURL:(NSString *)invoiceURL;
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings indexImage:(NSInteger)index;
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString*)productID;
+- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID;
 
 @end
