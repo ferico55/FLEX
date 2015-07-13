@@ -2641,7 +2641,7 @@
             TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
             vc.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
             vc.token = _cartSummary.token;
-            vc.URLStringMandiri = cart.result.link_mandiri?:@"";
+            vc.URLString = cart.result.link_mandiri?:@"";
             vc.cartDetail = _cartSummary;
             vc.emoney_code = cart.result.transaction.emoney_code;
             vc.delegate = self;

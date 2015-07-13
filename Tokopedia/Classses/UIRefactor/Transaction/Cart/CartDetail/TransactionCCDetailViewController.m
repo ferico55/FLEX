@@ -24,6 +24,8 @@
 <
     TKPDAlertViewDelegate,
     RequestCartDelegate,
+    TransactionCartWebViewViewControllerDelegate,
+    UITextFieldDelegate,
     UIWebViewDelegate
 >
 
@@ -86,6 +88,7 @@
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     _act = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(screenRect.size.width/2, screenRect.size.height/2,50,50)];
+    _act.hidesWhenStopped = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -177,6 +180,11 @@
     }
 }
 
+-(void)refreshCartAfterCancelPayment
+{
+    
+}
+
 -(void)shouldDoRequestCCVeritrans
 {
     [VTConfig setCLIENT_KEY:@"a2ce64ee-ecc5-4cff-894d-c789ff2ab003"];
@@ -199,11 +207,18 @@
             _token = token;
             if (token.redirect_url != nil) {
                 [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
-                self.navigationItem.rightBarButtonItem = nil;
-                UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-                [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:token.redirect_url]]];
-                webView.delegate = self;
-                [self.view addSubview:webView];
+                TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+                vc.gateway = @(TYPE_GATEWAY_CC);
+                vc.token = _cartSummary.token;
+                vc.URLString = token.redirect_url?:@"";
+                vc.cartDetail = _cartSummary;
+                vc.delegate = self;
+                vc.isVeritrans = YES;
+                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                navigationController.navigationBar.translucent = NO;
+                navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }
             else
             {
@@ -217,6 +232,8 @@
 
 -(void)shouldDoRequestCCSprintAsia
 {
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+    
     UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -233,6 +250,7 @@
     NSString *CCOwnerName =[_data objectForKey:API_CC_OWNER_KEY]?:@"";
     NSString *CCNumber =[_data objectForKey:API_CC_CARD_NUMBER_KEY]?:@"";
     
+    
     NSDictionary *param = @{
                             @"address_street": CCAddress,
                             @"amount":_cartSummary.payment_left?:@"",
@@ -244,8 +262,8 @@
                             @"billingPhone" : CCPhone,
                             @"billingPostalCode": CCPostalCode,
                             @"billingState":CCState,
-                            @"cardExpMonth":_selectedMonth?:@"",
-                            @"cardExpYear":_selectedYear?:@"",
+                            @"cardExpMonth":[NSString stringWithFormat:@"%zd",_selectedMonth]?:@"",
+                            @"cardExpYear":[NSString stringWithFormat:@"%zd",_selectedYear]?:@"",
                             @"cardNo": CCNumber,
                             @"cardSecurity": _CVVTextField.text?:@"",
                             @"cardType":_dataCC.cc_type?:@"",
@@ -260,7 +278,7 @@
                             @"deliveryPostalCode":CCPostalCode,
                             @"deliveryState":CCState,
                             @"first_name":CCFirstName,
-                            @"gateway":_cartSummary.gateway,
+                            @"gateway":_cartSummary.gateway?:@"",
                             @"last_name":CCLastName,
                             @"merchantTransactionID":_dataCC.payment_id?:@"",
                             @"merchantTransactionNote":@"",
@@ -275,48 +293,34 @@
                             };
     [request setURL:[NSURL URLWithString:stringURL]];
 
-    NSString *postString = [[param encrypt] description];
-    NSLog(@"%@", postString);
-    NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    [request setHTTPBody:postData];
-    [request setHTTPMethod:@"POST"];
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+    vc.gateway = @(TYPE_GATEWAY_CC);
+    vc.token = _cartSummary.token;
+    vc.URLString = stringURL?:@"";
+    vc.cartDetail = _cartSummary;
+    vc.delegate = self;
+    vc.CCParam = param;
+    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+-(void)doRequestCC:(NSDictionary *)param
+{
+    NSMutableDictionary *dataInput = [NSMutableDictionary new];
+    [dataInput addEntriesFromDictionary:_data];
+    [dataInput setObject:_CCNumberTextField.text?:@"" forKey:API_CC_CARD_NUMBER_KEY];
+    [dataInput setObject:_nameTextField.text?:@"" forKey:API_CC_OWNER_KEY];
+    [dataInput setObject:_CVVTextField.text?:@"" forKey:API_CC_CVV_KEY];
+    [dataInput setObject:_selectedMonth?:@"" forKey:API_CC_EXP_MONTH_KEY];
+    [dataInput setObject:_selectedYear?:@"" forKey:API_CC_EXP_YEAR_KEY];
+    [dataInput setObject:_token.token_id?:@"" forKey:API_CC_TOKEN_ID_KEY];
     
-    [webView loadRequest:request];
-    webView.delegate = self;
-    [self.view addSubview:webView];
-}
-
--(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    [_act startAnimating];
-    return YES;
-}
-
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    [_act stopAnimating];
-    if ([_dataCC.cc_agent integerValue] == 1) {
-        if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-            [webView removeFromSuperview];
-            [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
-            NSMutableDictionary *dataInput = [NSMutableDictionary new];
-            [dataInput addEntriesFromDictionary:_data];
-            [dataInput setObject:_CCNumberTextField.text?:@"" forKey:API_CC_CARD_NUMBER_KEY];
-            [dataInput setObject:_nameTextField.text?:@"" forKey:API_CC_OWNER_KEY];
-            [dataInput setObject:_CVVTextField.text?:@"" forKey:API_CC_CVV_KEY];
-            [dataInput setObject:_selectedMonth?:@"" forKey:API_CC_EXP_MONTH_KEY];
-            [dataInput setObject:_selectedYear?:@"" forKey:API_CC_EXP_YEAR_KEY];
-            [dataInput setObject:_token.token_id?:@"" forKey:API_CC_TOKEN_ID_KEY];
-            
-            [_delegate doRequestCC:dataInput];
-            [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
-        }
-    }
-    else
-    {
-        
-    }
-
+    [_delegate doRequestCC:dataInput];
+    [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
@@ -355,6 +359,16 @@
     alertInfo.text = @"Info CVC/CVV2";
     alertInfo.detailText = @"CVC atau Card Verification Code adalah tiga digit angka terakhir yang terdapat pada bagian belakang kartu kredit.";
     [alertInfo show];
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+#define CHARACTER_LIMIT 16
+    if (textField == _CCNumberTextField) {
+        return textField.text.length + (string.length - range.length) <= CHARACTER_LIMIT;
+    }
+    
+    return YES;
 }
 
 -(BOOL)isValidInput

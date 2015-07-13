@@ -59,6 +59,7 @@
     
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    NSURL *url;
     
     if (gateway == TYPE_GATEWAY_CLICK_BCA) {
         self. title = @"KlikPay BCA";
@@ -90,13 +91,41 @@
         NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         [request setHTTPBody:postData];
         [request setHTTPMethod:@"POST"];
+        
+        url = [NSURL URLWithString:urlAddress];
         //[_delegate shouldDoRequestBCAClickPay];
     }
     if (gateway == TYPE_GATEWAY_MANDIRI_E_CASH) {
-        urlAddress = _URLStringMandiri ;
+        urlAddress = _URLString;
+        url = [NSURL URLWithString:urlAddress];
+    }
+    if (gateway == TYPE_GATEWAY_CC) {
+        urlAddress = _URLString;
+        
+        NSDictionary *paramEncrypt = [_CCParam encrypt];
+        NSURLComponents *components = [NSURLComponents componentsWithString:urlAddress];
+        
+        NSMutableArray *queryItems = [NSMutableArray array];
+        for (NSString *key in paramEncrypt) {
+            if ([paramEncrypt[key] isKindOfClass:[NSString class]]) {
+                [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:paramEncrypt[key]]];
+            }
+        }
+        components.queryItems = queryItems;
+        
+        url = components.URL;
+        
+        NSArray *arrayWithTwoStrings = [[components.URL absoluteString] componentsSeparatedByString:@"?"];
+        NSString *postString = arrayWithTwoStrings[1];
+        
+        NSLog(@"POST String %@", postString);
+        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        [request setHTTPBody:postData];
+        [request setHTTPMethod:@"POST"];
+        url = [NSURL URLWithString:urlAddress];
     }
     
-    [request setURL:[NSURL URLWithString:urlAddress]];
+    [request setURL:url];
     [_webView loadRequest:request];
 }
 
@@ -115,9 +144,6 @@
             [_delegate shouldDoRequestBCAClickPay];
             return NO;
         }
-        //if ([request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION]) {
-        //    _isSuccessBCA = YES;
-        //}
         
         if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]) {
             UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -153,6 +179,10 @@
         //}
 
     }
+    else if (gateway == TYPE_GATEWAY_CC && !_isVeritrans)
+    {
+        
+    }
     
     return YES;
 }
@@ -162,6 +192,15 @@
 {
     [_act stopAnimating];
     NSLog(@"URL String WebView %@", [webView request]);
+    
+    if (_isVeritrans)
+    {
+        if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            [_delegate doRequestCC:_data];
+        }
+        
+    }
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
