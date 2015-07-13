@@ -5,7 +5,7 @@
 //  Created by IT Tkpd on 9/2/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "GeneralProductCollectionViewCell.h"
 #import "HotlistDetail.h"
 #import "SearchResult.h"
 #import "List.h"
@@ -30,9 +30,25 @@
 
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"
+#import "ProductSingleViewCell.h"
+#import "ProductThumbCell.h"
 
 #import "GeneralSingleProductCell.h"
 #import "GeneralPhotoProductCell.h"
+
+
+#define CTagGeneralProductCollectionView @"GeneralProductCollectionViewCell"
+#define CTagGeneralProductIdentifier @"GeneralProductCollectionViewIdentifier"
+#define CTagFooterCollectionView @"FooterCollectionReusableView"
+#define CTagFooterCollectionIdentifier @"FooterView"
+#define CTagRetryCollectionView @"RetryCollectionReusableView"
+#define CTagRetryCollectionIdentifier @"RetryView"
+#define CTagHeaderCollectionView @"HeaderCollectionReusableView"
+#define CTagHeaderIdentifier @"HeaderIdentifier"
+#define CProductSingleView @"ProductSingleViewCell"
+#define CProductSingleViewIdentifier @"ProductSingleViewIdentifier"
+#define CProductThumbView @"ProductThumbCell"
+#define CProductThumbIdentifier @"ProductThumbCellIdentifier"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -42,14 +58,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 @interface HotlistResultViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
-    GeneralProductCellDelegate,
-    CategoryMenuViewDelegate,
-    SortViewControllerDelegate,
-    FilterViewControllerDelegate,
-    GeneralSingleProductDelegate,
-    GeneralPhotoProductDelegate
+GeneralProductCellDelegate,
+CategoryMenuViewDelegate,
+SortViewControllerDelegate,
+FilterViewControllerDelegate,
+GeneralSingleProductDelegate,
+GeneralPhotoProductDelegate
 >
 {
     NSInteger _page;
@@ -68,6 +82,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     BOOL _isnodata;
     BOOL _isrefreshview;
+    BOOL isFailedRequest;
     
     UIRefreshControl *_refreshControl;
     
@@ -85,13 +100,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
-
+    
     NSTimeInterval _timeinterval;
+    NoResultView *_noResultView;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
@@ -132,7 +146,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
     // set title navigation
     if ([_data objectForKey:kTKPDHOME_DATATITLEKEY]) {
         self.title = [_data objectForKey:kTKPDHOME_DATATITLEKEY];
@@ -149,13 +162,14 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _cachecontroller = [URLCacheController new];
     _cacheconnection = [URLCacheConnection new];
     _operationQueue = [NSOperationQueue new];
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, self.view.frame.size.width, 100)];
+
     
     // set max data per page request
     _limit = kTKPDHOMEHOTLISTRESULT_LIMITPAGE;
     
     _page = 1;
     
-    _table.tableHeaderView = _header;
     
     if (_product.count > 0) {
         _isnodata = NO;
@@ -200,9 +214,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDHOMEHOTLISTRESULT_APIRESPONSEFILEFORMAT,[_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry]];
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    [_cachecontroller initCacheWithDocumentPath:path];
     self.navigationController.navigationBar.translucent = NO;
- 
+    
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
         self.cellType = [[data objectForKey:USER_LAYOUT_PREFERENCES] integerValue];
@@ -226,21 +240,35 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    [_table addSubview:_refreshControl];
-
+    [viewCollection addSubview:_refreshControl];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    //Set CollectionView
+    if(viewCollection.backgroundColor != [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f]) {
+        [self registerNibCell:CTagGeneralProductCollectionView withIdentifier:CTagGeneralProductIdentifier isFooterView:NO isHeader:NO];
+        [self registerNibCell:CTagFooterCollectionView withIdentifier:CTagFooterCollectionIdentifier isFooterView:YES isHeader:NO];
+        [self registerNibCell:CTagRetryCollectionView withIdentifier:CTagRetryCollectionIdentifier isFooterView:YES isHeader:NO];
+        [self registerNibCell:CTagHeaderCollectionView withIdentifier:CTagHeaderIdentifier isFooterView:NO isHeader:YES];
+        [self registerNibCell:CProductSingleView withIdentifier:CProductSingleViewIdentifier isFooterView:NO isHeader:NO];
+        [self registerNibCell:CProductThumbView withIdentifier:CProductThumbIdentifier isFooterView:NO isHeader:NO];
+        
+        viewCollection.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
+        [viewCollection setAlwaysBounceVertical:YES];
+        [flowLayout setFooterReferenceSize:CGSizeMake(self.view.bounds.size.height, 50)];
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    }
+    
+    
     self.screenName = @"Browse HotList Detail";
     [self configureRestKit];
     if (_isnodata) {
         [self request];
     }
-
-    
     self.hidesBottomBarWhenPushed = YES;
 }
 
@@ -258,270 +286,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-}
-
-#pragma mark - Table View Data Source
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger count = 0;
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        count = _product.count;
-        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
-            count = _isnodata?1:count;
-        #else
-            count = _isnodata?0:count;
-        #endif
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
-        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
-            count = _isnodata?1:count;
-        #else
-            count = _isnodata?0:count;
-        #endif
-    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
-        count = (_product.count%3==0)?_product.count/3:_product.count/3+1;
-        #ifdef kTKPDSEARCHRESULT_NODATAENABLE
-            count = _isnodata?1:count;
-        #else
-            count = _isnodata?0:count;
-        #endif
-    }
-    return count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        return 400;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        return 215;
-    } else {
-        return 103;
-    }
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell;
-    if (_isnodata) {
-        static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDHOME_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
-    } else {
-        if (self.cellType == UITableViewCellTypeOneColumn) {
-            cell = [self tableView:tableView oneColumnCellForRowAtIndexPath:indexPath];
-        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-            cell = [self tableView:tableView twoColumnCellForRowAtIndexPath:indexPath];
-        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
-            cell = [self tableView:tableView threeColumnCellForRowAtIndexPath:indexPath];
-        }
-    }
-	return cell;
-}
-
-- (GeneralSingleProductCell *)tableView:(UITableView *)tableView oneColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    GeneralSingleProductCell *cell;
-    
-    NSString *cellIdentifier = kTKPDGENERAL_SINGLE_PRODUCT_CELL_IDENTIFIER;
-
-    cell = (GeneralSingleProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [GeneralSingleProductCell initCell];
-        cell.delegate = self;
-    }
-    
-    List *list = [_product objectAtIndex:indexPath.row];
-    
-    cell.productNameLabel.text = list.product_name;
-    cell.productPriceLabel.text = list.product_price;
-    cell.productShopLabel.text = list.shop_name;
-    
-    UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
-    
-    NSString *stats = [NSString stringWithFormat:@"%@ Ulasan   %@ Diskusi",
-                       list.product_review_count,
-                       list.product_talk_count];
-
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
-    [attributedText addAttribute:NSFontAttributeName
-                           value:boldFont
-                           range:NSMakeRange(0, list.product_review_count.length)];
-    [attributedText addAttribute:NSFontAttributeName
-                           value:boldFont
-                           range:NSMakeRange(list.product_review_count.length + 11, list.product_talk_count.length)];
-
-    cell.productInfoLabel.attributedText = attributedText;
-
-    cell.indexPath = indexPath;
-
-    cell.badge.hidden = (![list.shop_gold_status boolValue]);
-
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_full]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-
-    cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-    cell.productImageView.contentMode = UIViewContentModeCenter;
-    
-    [cell.productImageView setImageWithURLRequest:request
-                 placeholderImage:nil
-                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                              [cell.productImageView setImage:image];
-                              [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
-                          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                              cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-                          }];
-
-    return cell;
-}
-
-- (GeneralProductCell *)tableView:(UITableView *)tableView twoColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
-    
-    GeneralProductCell *cell = (GeneralProductCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [GeneralProductCell newcell];
-        cell.delegate = self;
-    }
-    
-    [self reset:cell];
-    
-    for (UIView *viewCell in cell.viewcell) {
-        viewCell.hidden = YES;
-    }
-    
-    if (_product.count > indexPath.row) {
-        /** Flexible view count **/
-        NSUInteger indexSegment = indexPath.row * 2;
-        NSUInteger indexMax = indexSegment + 2;
-        NSUInteger indexLimit = MIN(indexMax, _product.count);
-        
-        NSAssert(!(indexLimit > _product.count), @"producs out of bounds");
-        
-        NSUInteger i;
-        
-        for (i = 0; (indexSegment + i) < indexLimit; i++) {
-            List *list = [_product objectAtIndex:indexSegment + i];
-            
-            ((UIView *)[cell.viewcell objectAtIndex:i]).hidden = NO;
-            
-            cell.indexpath = indexPath;
-
-            [[cell.labelprice objectAtIndex:i] setText:list.catalog_price?:list.product_price animated:YES];
-            [[cell.labeldescription objectAtIndex:i] setText:list.catalog_name?:list.product_name animated:YES];
-            [[cell.labelalbum objectAtIndex:i] setText:list.shop_name?:@"" animated:YES];
-            
-            if([list.shop_gold_status isEqualToString:@"1"]) {
-                ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
-            } else {
-                ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
-            }
-            
-            NSString *urlString = list.catalog_image?:list.product_image;
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]
-                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            
-            UIImageView *thumb = (UIImageView*)[cell.thumb objectAtIndex:i];
-            thumb.image = nil;
-            
-            NSLog(@"============================== START GET IMAGE =====================");
-            [thumb setImageWithURLRequest:request
-                         placeholderImage:nil
-                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
-                [thumb setContentMode:UIViewContentModeScaleAspectFill];
-#pragma clang diagnostic pop
-            } failure:nil];
-        }
-    }
-    return cell;
-}
-
-- (GeneralPhotoProductCell *)tableView:(UITableView *)tableView threeColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *cellIdentifier = kTKPDGENERAL_PHOTO_PRODUCT_CELL_IDENTIFIER;
-    
-    GeneralPhotoProductCell *cell;
-    
-    cell = (GeneralPhotoProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [GeneralPhotoProductCell initCell];
-        cell.delegate = self;
-    }
-    
-    NSUInteger indexsegment = indexPath.row * 3;
-    NSUInteger indexmax = indexsegment + 3;
-    NSUInteger indexlimit = MIN(indexmax, _product.count);
-    
-    NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
-    
-    for (UIView *view in ((GeneralPhotoProductCell*)cell).viewcell ) {
-        view.hidden = YES;
-    }
-    
-    for (int i = 0; (indexsegment + i) < indexlimit; i++) {
-        List *list = [_product objectAtIndex:indexsegment + i];
-        ((UIView*)((GeneralPhotoProductCell*)cell).viewcell[i]).hidden = NO;
-        
-        (((GeneralPhotoProductCell*)cell).indexPath) = indexPath;
-        
-        NSString *imageURL;
-        imageURL = list.product_image;
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:imageURL]
-                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        
-        UIImageView *thumb = [cell.productImageViews objectAtIndex:i];
-        thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-        thumb.contentMode = UIViewContentModeCenter;
-        thumb.hidden = NO;
-        
-        [thumb setImageWithURLRequest:request
-                     placeholderImage:nil
-                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                  thumb.image = image;
-                                  thumb.contentMode = UIViewContentModeScaleAspectFill;
-#pragma clang diagnostic pop
-                              } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                  thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-                              }];
-        
-        [[cell.badges objectAtIndex:i] setHidden:(![list.shop_gold_status boolValue])];
-    }
-    
-    return cell;
-}
-
-#pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            /** called if need to load next page **/
-            //NSLog(@"%@", NSStringFromSelector(_cmd));
-            [self configureRestKit];
-            [self request];
-        }
-	}
 }
 
 
@@ -553,9 +317,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 vc.delegate = self;
                 
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                [self.navigationController presentViewController:navigationController animated:YES completion:nil];                
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }
-            break;
+                break;
             case 12 : {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
@@ -565,7 +329,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton*)sender;
+        // buttons tag >=20 are tags untuk hashtags
         if (button.tag >=20) {
+            //TODO::
             NSArray *hashtagsarray = _hotlistdetail.result.hashtags;
             Hashtags *hashtags = hashtagsarray[button.tag - 20];
             
@@ -582,10 +348,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
                 vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
                 NSArray *viewcontrollers = @[vc,vc1,vc2];
-
-                NSMutableDictionary *data = [NSMutableDictionary dictionaryWithDictionary:@{kTKPDHASHTAG_HOTLIST: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDCATEGORY_DATADEPARTMENTIDKEY : hashtags.department_id}];
+                
                 TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-                [c setData:data];
+                [c setData:@{kTKPDHASHTAG_HOTLIST: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)}];
                 [c setNavigationTitle:hashtags.name];
                 [c setSelectedIndex:0];
                 [c setViewControllers:viewcontrollers];
@@ -630,7 +395,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                         title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _hotlistdetail.result.info.title_enc];
                         url = [NSURL URLWithString:_hotlistdetail.result.hotlist_url];
                     }
-
+                    
                     if (title && url) {
                         UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                           applicationActivities:nil];
@@ -643,7 +408,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 case 13:
                 {
                     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-
+                    
                     if (self.cellType == UITableViewCellTypeOneColumn) {
                         self.cellType = UITableViewCellTypeTwoColumn;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
@@ -653,7 +418,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                         self.cellType = UITableViewCellTypeThreeColumn;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                                forState:UIControlStateNormal];
-
+                        
                     } else if (self.cellType == UITableViewCellTypeThreeColumn) {
                         self.cellType = UITableViewCellTypeOneColumn;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
@@ -661,12 +426,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                         
                     }
                     
-                    self.table.contentOffset = CGPointMake(0, 0);
-                    [self.table reloadData];
-                    
                     NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
                     [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
-
+                    [viewCollection reloadData];
+                    
                     break;
                 }
                 default:
@@ -685,9 +448,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                     [self descriptionviewhideanimation:YES];
                     _pagecontrol.currentPage=0;
                 }
-               if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
-                   [self descriptionviewshowanimation:YES];
-                   _pagecontrol.currentPage=1;
+                if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
+                    [self descriptionviewshowanimation:YES];
+                    _pagecontrol.currentPage=1;
                 }
                 break;
             }
@@ -700,6 +463,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 -(void)descriptionviewshowanimation:(BOOL)animated
 {
     if (animated) {
+        _descriptionview.frame = CGRectMake(_descriptionview.frame.origin.x, _descriptionview.frame.origin.y, _imageview.bounds.size.width, _imageview.bounds.size.height);
         [UIView animateWithDuration:0.5
                               delay:0
                             options: UIViewAnimationOptionCurveEaseInOut
@@ -718,8 +482,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                               delay:0
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
-                             [self.view addSubview:_descriptionview];
+                             [_descriptionview setFrame:CGRectMake(self.view.bounds.size.width, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
+                             //                             [self.view addSubview:_descriptionview];
                          }
                          completion:^(BOOL finished){
                          }];
@@ -750,31 +514,31 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY,
                                                         KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTION1KEY,
                                                         kTKPDHOME_APIHOTLISTURLKEY:kTKPDHOME_APIHOTLISTURLKEY}];
-
+    
     RKObjectMapping *resultInfoMapping = [RKObjectMapping mappingForClass:[HotlistResultInfo class]];
     [resultInfoMapping addAttributeMappingsFromDictionary:@{
-        kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY   : kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY,
-        kTKPDHOMEHOTLIST_KEYWORD_KEY            : kTKPDHOMEHOTLIST_KEYWORD_KEY,
-        kTKPDHOMEHOTLIST_TITLE_ENC              : kTKPDHOMEHOTLIST_TITLE_ENC,
-        kTKPDHOMEHOTLIST_CATALOG_KEY            : kTKPDHOMEHOTLIST_CATALOG_KEY,
-        kTKPDHOMEHOTLIST_MIN_PRICE_KEY          : kTKPDHOMEHOTLIST_MIN_PRICE_KEY,
-        kTKPDHOMEHOTLIST_HASHTAG_KEY            : kTKPDHOMEHOTLIST_HASHTAG_KEY,
-        kTKPDHOMEHOTLIST_FILE_NAME_KEY          : kTKPDHOMEHOTLIST_FILE_NAME_KEY,
-        kTKPDHOMEHOTLIST_ALIAS_KEY              : kTKPDHOMEHOTLIST_ALIAS_KEY,
-        kTKPDHOMEHOTLIST_COVER_IMG_KEY          : kTKPDHOMEHOTLIST_COVER_IMG_KEY,
-        kTKPDHOMEHOTLIST_URL_KEY                : kTKPDHOMEHOTLIST_URL_KEY,
-        kTKPDHOMEHOTLIST_ID_KEY                 : kTKPDHOMEHOTLIST_ID_KEY,
-        kTKPDHOMEHOTLIST_D_ID_KEY               : kTKPDHOMEHOTLIST_D_ID_KEY,
-        kTKPDHOMEHOTLIST_FILE_PATH_KEY          : kTKPDHOMEHOTLIST_FILE_PATH_KEY,
-        kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY   : kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY,
-        kTKPDHOMEHOTLIST_SORT_BY_KEY            : kTKPDHOMEHOTLIST_SORT_BY_KEY,
-        kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY    : kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY,
-        kTKPDHOMEHOTLIST_DESCRIPTION_KEY        : kTKPDHOMEHOTLIST_HOTLIST_DESCRIPTION_KEY,
-        kTKPDHOMEHOTLIST_MAX_PRICE_KEY          : kTKPDHOMEHOTLIST_MAX_PRICE_KEY,
-        kTKPDHOMEHOTLIST_SHOP_KEY               : kTKPDHOMEHOTLIST_SHOP_KEY,
-        kTKPDHOMEHOTLIST_TITLE_KEY              : kTKPDHOMEHOTLIST_TITLE_KEY,
-        kTKPDHOMEHOTLIST_SHARE_FILE_NAME        : kTKPDHOMEHOTLIST_SHARE_FILE_NAME,
-    }];
+                                                            kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY   : kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY,
+                                                            kTKPDHOMEHOTLIST_KEYWORD_KEY            : kTKPDHOMEHOTLIST_KEYWORD_KEY,
+                                                            kTKPDHOMEHOTLIST_TITLE_ENC              : kTKPDHOMEHOTLIST_TITLE_ENC,
+                                                            kTKPDHOMEHOTLIST_CATALOG_KEY            : kTKPDHOMEHOTLIST_CATALOG_KEY,
+                                                            kTKPDHOMEHOTLIST_MIN_PRICE_KEY          : kTKPDHOMEHOTLIST_MIN_PRICE_KEY,
+                                                            kTKPDHOMEHOTLIST_HASHTAG_KEY            : kTKPDHOMEHOTLIST_HASHTAG_KEY,
+                                                            kTKPDHOMEHOTLIST_FILE_NAME_KEY          : kTKPDHOMEHOTLIST_FILE_NAME_KEY,
+                                                            kTKPDHOMEHOTLIST_ALIAS_KEY              : kTKPDHOMEHOTLIST_ALIAS_KEY,
+                                                            kTKPDHOMEHOTLIST_COVER_IMG_KEY          : kTKPDHOMEHOTLIST_COVER_IMG_KEY,
+                                                            kTKPDHOMEHOTLIST_URL_KEY                : kTKPDHOMEHOTLIST_URL_KEY,
+                                                            kTKPDHOMEHOTLIST_ID_KEY                 : kTKPDHOMEHOTLIST_ID_KEY,
+                                                            kTKPDHOMEHOTLIST_D_ID_KEY               : kTKPDHOMEHOTLIST_D_ID_KEY,
+                                                            kTKPDHOMEHOTLIST_FILE_PATH_KEY          : kTKPDHOMEHOTLIST_FILE_PATH_KEY,
+                                                            kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY   : kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY,
+                                                            kTKPDHOMEHOTLIST_SORT_BY_KEY            : kTKPDHOMEHOTLIST_SORT_BY_KEY,
+                                                            kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY    : kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY,
+                                                            kTKPDHOMEHOTLIST_DESCRIPTION_KEY        : kTKPDHOMEHOTLIST_HOTLIST_DESCRIPTION_KEY,
+                                                            kTKPDHOMEHOTLIST_MAX_PRICE_KEY          : kTKPDHOMEHOTLIST_MAX_PRICE_KEY,
+                                                            kTKPDHOMEHOTLIST_SHOP_KEY               : kTKPDHOMEHOTLIST_SHOP_KEY,
+                                                            kTKPDHOMEHOTLIST_TITLE_KEY              : kTKPDHOMEHOTLIST_TITLE_KEY,
+                                                            kTKPDHOMEHOTLIST_SHARE_FILE_NAME        : kTKPDHOMEHOTLIST_SHARE_FILE_NAME,
+                                                            }];
     
     // list mapping
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
@@ -802,7 +566,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     // hashtags mapping
     RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
     [hashtagMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHASHTAGSNAMEKEY, kTKPDHOME_APIHASHTAGSURLKEY, kTKPDHOME_APIDEPARTMENTIDKEY]];
-
+    
     // departmenttree mapping
     RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
     [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY,
@@ -818,7 +582,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     //add list relationship
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:hotlistMapping];
     [resultMapping addPropertyMapping:listRel];
-
+    
     // add page relationship
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
@@ -844,7 +608,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     // add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-
+    
 }
 
 
@@ -855,8 +619,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _requestcount ++;
     
     NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
-
-	NSDictionary* param = @{
+    
+    NSDictionary* param = @{
                             kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry,
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLISTRESULT_LIMITPAGE),
@@ -872,46 +636,38 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                                                     method:RKRequestMethodPOST
                                                                       path:kTKPDHOMEHOTLISTRESULT_APIPATH
                                                                 parameters:[param encrypt]];
-//	[_cachecontroller getFileModificationDate];
-//	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-//	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
-        //[_cachecontroller clearCache];
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [self requestsuccess:mappingResult withOperation:operation];
-            [_act stopAnimating];
-            [_act setHidden:YES];
-//            _table.tableFooterView = nil;
-            [_table reloadData];
-            [_refreshControl endRefreshing];
-            [_timer invalidate];
-            _timer = nil;
-            
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            [self requestfailure:error];
-            [_act stopAnimating];
-            [_act setHidden:YES];
-//            _table.tableFooterView = nil;
-            [_refreshControl endRefreshing];
-            [_timer invalidate];
-            _timer = nil;
-        }];
+    //	[_cachecontroller getFileModificationDate];
+    //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+    //[_cachecontroller clearCache];
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestsuccess:mappingResult withOperation:operation];
+        [_table reloadData];
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
         
-        [_operationQueue addOperation:_request];
-        
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-//    }
-//	else {
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-//        NSLog(@"cache and updated in last 24 hours.");
-//        [self requestfailure:nil];
-//	}
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestfailure:error];
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
+    }];
+    
+    [_operationQueue addOperation:_request];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    //    }
+    //	else {
+    //        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    //        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    //        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+    //        NSLog(@"cache and updated in last 24 hours.");
+    //        [self requestfailure:nil];
+    //	}
 }
 
 
@@ -941,11 +697,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if (_isrefreshview) {
         [self requestprocess:object];
     }
-    
+    else {
+        isFailedRequest = YES;
+        [viewCollection reloadData];
+    }
 }
 
 -(void)requestprocess:(id)object
 {
+    [_noResultView removeFromSuperview];
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -961,6 +721,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 }
                 
                 [_product addObjectsFromArray: _hotlistdetail.result.list];
+                
+                if(_product.count == 0) {
+                    [flowLayout setFooterReferenceSize:CGSizeZero];
+                    [viewCollection addSubview:_noResultView];
+                }
                 _pagecontrol.hidden = NO;
                 _swipegestureleft.enabled = YES;
                 _swipegestureright.enabled = YES;
@@ -1002,14 +767,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                     _isnodata = NO;
                     
                     _filterview.hidden = NO;
-                    
-                } else {
-                    
-                    NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
-                    _table.tableFooterView = noResultView;
-                    _table.sectionFooterHeight = noResultView.frame.size.height;
-                    
                 }
+                
+                [viewCollection reloadData];
             }
         }
     }
@@ -1018,8 +778,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
         if ([(NSError*)object code] == NSURLErrorCancelled) {
             if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                _table.tableFooterView = _footer;
-                [_act startAnimating];
                 [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
             }
@@ -1033,9 +791,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         }
         else
         {
-            [_act stopAnimating];
-            [_act setHidden:YES];
-//            _table.tableFooterView = nil;
+            [viewCollection reloadData];
             NSError *error = object;
             if (!([error code] == NSURLErrorCancelled)){
                 NSString *errorDescription = error.localizedDescription;
@@ -1051,26 +807,25 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [self cancel];
 }
 
-#pragma mark - Cell Delegate
-
--(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger index = 0;
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        index = indexPath.row;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        index = indexPath.section+2*(indexPath.row);
-    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
-        index = indexPath.section+3*(indexPath.row);
-    }
-    List *list = _product[index];
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
 #pragma mark - Methods
+- (IBAction)pressRetryButton:(id)sender
+{
+    [viewCollection reloadData];
+    [self configureRestKit];
+    [self request];
+}
+
+- (void)registerNibCell:(NSString *)strTag withIdentifier:(NSString *)strIdentifier isFooterView:(BOOL)isFooter isHeader:(BOOL)isHeader
+{
+    UINib *cellNib = [UINib nibWithNibName:strTag bundle:nil];
+    if(isFooter || isHeader) {
+        [viewCollection registerNib:cellNib forSupplementaryViewOfKind:(isFooter?UICollectionElementKindSectionFooter:UICollectionElementKindSectionHeader) withReuseIdentifier:strIdentifier];
+    }
+    else {
+        [viewCollection registerNib:cellNib forCellWithReuseIdentifier:strIdentifier];
+    }
+}
 
 -(void)setHeaderData
 {
@@ -1084,19 +839,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
         
-        [_act startAnimating];
-        
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             [thumb setImage:image];
 #pragma clang diagnostic pop
-            [_act stopAnimating];
-            [_act setHidden:YES];
-            
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [_act stopAnimating];
-            [_act setHidden:YES];
         }];
     }
     
@@ -1138,7 +886,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         button.layer.borderWidth = 1;
         button.layer.cornerRadius = 3;
         button.tag = 20+i;
-
+        
         [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
         
         CGSize stringSize = [button.titleLabel.text sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
@@ -1200,4 +948,126 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [self refreshView:nil];
 }
 
+
+#pragma mark - CollectionView Delegate And Datasource
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    CGSize cellSize = CGSizeMake(0, 0);
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    
+    NSInteger cellCount;
+    float heightRatio;
+    float widhtRatio;
+    float inset;
+    
+    CGFloat screenWidth = screenRect.size.width;
+    
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        cellCount = 1;
+        heightRatio = 389;
+        widhtRatio = 300;
+        inset = 15;
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        cellCount = 2;
+        heightRatio = 41;
+        widhtRatio = 29;
+        inset = 15;
+    } else {
+        cellCount = 3;
+        heightRatio = 1;
+        widhtRatio = 1;
+        inset = 14;
+    }
+    
+    CGFloat cellWidth;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        screenWidth = screenRect.size.width/2;
+        cellWidth = screenWidth/cellCount-inset;
+    } else {
+        screenWidth = screenRect.size.width;
+        cellWidth = screenWidth/cellCount-inset;
+    }
+    
+    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    return cellSize;
+}
+
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _isnodata?0:_product.count;
+}
+
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell;
+    List *list = [_product objectAtIndex:indexPath.row];
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        cell = (ProductSingleViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductSingleViewIdentifier forIndexPath:indexPath];
+        [(ProductSingleViewCell *)cell setViewModel:list.viewModel];
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        cell = (GeneralProductCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
+        [(GeneralProductCollectionViewCell *)cell setViewModel:list.viewModel];
+    } else {
+        cell = (ProductThumbCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductThumbIdentifier forIndexPath:indexPath];
+        [(ProductThumbCell *)cell setViewModel:list.viewModel];
+    }
+    
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] -1;
+    if (row == indexPath.row) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+            [self configureRestKit];
+            [self request];
+        }
+        else {
+            [flowLayout setFooterReferenceSize:CGSizeZero];
+        }
+    }
+    
+    return cell;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
+    return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
+}
+
+
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    
+    if(kind == UICollectionElementKindSectionFooter) {
+        if(isFailedRequest) {
+            isFailedRequest = !isFailedRequest;
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:CTagFooterCollectionIdentifier forIndexPath:indexPath];
+        }
+    }
+    else if(kind == UICollectionElementKindSectionHeader) {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CTagHeaderIdentifier forIndexPath:indexPath];
+        [_header removeFromSuperview];
+        [reusableView addSubview:_header];
+    }
+    
+    return reusableView;
+}
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    List *list = _product[indexPath.row];
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+    [self.navigationController pushViewController:vc animated:YES];
+}
 @end
