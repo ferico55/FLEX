@@ -19,6 +19,6 @@
 
 @property (nonatomic, weak) IBOutlet id<MyShopAddressDetailViewControllerDelegate> delegate;
 
-@property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) NSMutableDictionary *data;
 
 @end

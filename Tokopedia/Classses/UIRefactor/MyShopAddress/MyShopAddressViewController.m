@@ -211,11 +211,13 @@
     }
     
     MyShopAddressDetailViewController *vc = [MyShopAddressDetailViewController new];
-    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDDETAIL_DATAADDRESSKEY : _list[indexPath.row],
-                kTKPDDETAIL_DATAINDEXPATHKEY : indexPath,
-                kTKPDDETAIL_DATAISDEFAULTKEY : @(isdefault)
-                };
+    NSDictionary *data = @{
+                           kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                           kTKPDDETAIL_DATAADDRESSKEY : _list[indexPath.row],
+                           kTKPDDETAIL_DATAINDEXPATHKEY : indexPath,
+                           kTKPDDETAIL_DATAISDEFAULTKEY : @(isdefault)
+                           };
+    vc.data = [NSMutableDictionary dictionaryWithDictionary:data];
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
