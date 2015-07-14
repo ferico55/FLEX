@@ -1898,10 +1898,22 @@
     }
     [cell.productNameLabel setAttributedText:attributedText];
 
-    [cell.productPriceLabel setText:product.product_price_idr animated:YES];
+    NSString *priceIsChangedString = [NSString stringWithFormat:@"%@ (Sebelumnya %@)", product.product_price_idr, product.product_price_last];
+    NSString *productSebelumnya = [NSString stringWithFormat:@"(Sebelumnya %@)", product.product_price_last];
+    NSString *priceString = product.product_price_idr;
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:priceIsChangedString];
+    [attributedString addAttribute:NSFontAttributeName
+                             value:FONT_GOTHAM_BOOK_10
+                             range:[priceIsChangedString rangeOfString:productSebelumnya]];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[priceIsChangedString rangeOfString:productSebelumnya]];
+    if ([list.cart_is_price_changed integerValue] == 1)
+        cell.productPriceLabel.attributedText = attributedString;
+    else
+        cell.productPriceLabel.text = priceString;
     
     NSString *weightTotal = [NSString stringWithFormat:@"%@ Barang (%@ kg)",product.product_quantity, product.product_total_weight];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
+    attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
     [attributedString addAttribute:NSFontAttributeName
                              value:FONT_GOTHAM_BOOK_12
                              range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_total_weight]]];
@@ -1941,6 +1953,11 @@
             cell.errorProductLabel.text = @"HAPUS";
     }
     
+    if ([list.cart_is_price_changed integerValue] == 1)
+    {
+        cell.errorProductLabel.hidden = NO;
+        [cell.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
+    }
     
     cell.userInteractionEnabled = (_indexPage ==0);
     return cell;

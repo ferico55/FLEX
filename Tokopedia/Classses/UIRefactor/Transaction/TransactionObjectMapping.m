@@ -47,7 +47,8 @@
                                                  API_TOTAL_SHIPPING_RATE_KEY,
                                                  API_TOTAL_LOGISTIC_FEE_KEY,
                                                  API_CART_ERROR_1,
-                                                 API_CART_ERROR_2
+                                                 API_CART_ERROR_2,
+                                                 @"cart_is_price_changed"
                                                  ]];
     return listMapping;
 }
@@ -78,7 +79,8 @@
                                                      API_PRODUCT_NOTES_KEY,
                                                      API_PRICE_KEY,
                                                      API_PRODUCT_ERROR_MESSAGE_KEY,
-                                                     API_PRODUCT_MUST_INSURANCE_KEY
+                                                     API_PRODUCT_MUST_INSURANCE_KEY,
+                                                     @"product_price_last"
                                                      ]];
     return productMapping;
 }
