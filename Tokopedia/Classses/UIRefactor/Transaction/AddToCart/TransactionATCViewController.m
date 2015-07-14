@@ -449,28 +449,8 @@
             cell = _tableViewProductCell[indexPath.row];
             break;
         case 1:
-            if (indexPath.row == 1) {
-                NSString *textString = _addressLabel.text;
-                [_addressLabel setCustomAttributedText:textString];
-                
-                //Calculate the expected size based on the font and linebreak mode of your label
-                CGSize maximumLabelSize = CGSizeMake(180,9999);
-                
-                CGSize expectedLabelSize = [textString sizeWithFont:_addressLabel.font
-                                                  constrainedToSize:maximumLabelSize
-                                                      lineBreakMode:_addressLabel.lineBreakMode];
-                
-                //adjust the label the the new height.
-                CGRect newFrame = _addressLabel.frame;
-                newFrame.size.height = expectedLabelSize.height + 26;
-                _addressLabel.frame = newFrame;
-                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                if ([address.address_name isEqualToString:@"0"]) {
-                    return 0;
-                }
-                return 243-76+_addressLabel.frame.size.height;
-
-            }
+            
+            
             cell = _tableViewShipmentCell[indexPath.row];
             break;
         case 2:

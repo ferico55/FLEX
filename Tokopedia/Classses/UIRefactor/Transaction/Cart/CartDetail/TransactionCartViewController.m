@@ -1907,7 +1907,10 @@
                              value:FONT_GOTHAM_BOOK_10
                              range:[priceIsChangedString rangeOfString:productSebelumnya]];
     [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[priceIsChangedString rangeOfString:productSebelumnya]];
-    if ([list.cart_is_price_changed integerValue] == 1)
+    
+    NSString *productPriceWORp = [product.product_price_last stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
+    productPriceWORp = [productPriceWORp stringByReplacingOccurrencesOfString:@"." withString:@""];
+    if ([productPriceWORp integerValue] != 0)
         cell.productPriceLabel.attributedText = attributedString;
     else
         cell.productPriceLabel.text = priceString;
@@ -1936,7 +1939,7 @@
     
     cell.editButton.hidden = (_indexPage == 1);
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if (([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil ) && [productPriceWORp integerValue] == 0) {
         cell.errorProductLabel.hidden = YES;
     }
     else
@@ -1949,16 +1952,15 @@
         {
             cell.errorProductLabel.text = @"MODERASI";
         }
+        else if ([list.cart_is_price_changed integerValue] == 1)
+        {
+            [cell.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
+        }
         else
             cell.errorProductLabel.text = @"HAPUS";
     }
     
-    if ([list.cart_is_price_changed integerValue] == 1)
-    {
-        cell.errorProductLabel.hidden = NO;
-        [cell.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
-    }
-    
+
     cell.userInteractionEnabled = (_indexPage ==0);
     return cell;
 }
