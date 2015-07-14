@@ -1262,7 +1262,7 @@
 
 -(BOOL)isShowButtonReorder:(TxOrderStatusList*)order
 {
-    if (order.order_detail.detail_order_status == ORDER_CANCELED) {
+    if (order.order_detail.detail_order_status == ORDER_CANCELED || order.order_detail.detail_order_status == ORDER_REJECTED) {
         return YES;
     }
     return NO;
