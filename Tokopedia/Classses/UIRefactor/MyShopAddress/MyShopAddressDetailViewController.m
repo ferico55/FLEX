@@ -128,12 +128,11 @@
 }
 
 #pragma mark - Methods
--(void)setDefaultData:(NSDictionary*)data
+-(void)setDefaultData:(NSMutableDictionary *)data
 {
     _data = data;
     if (data) {
         Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
-        
         [self setAddress:list];
     }
 }
@@ -142,19 +141,23 @@
 
 -(void)successEditAddress:(Address *)address
 {
+    [self.data setObject:address forKey:kTKPDDETAIL_DATAADDRESSKEY];
     [self setAddress:address];
 }
 
--(void)setAddress:(Address*)address
+-(void)setAddress:(Address *)address
 {
     _labeladdressname.text = address.location_address_name;
+    
     _labelcity.text = address.location_city_name;
     _labeldistrict.text = address.location_district_name;
-    _labelphonenumber.text = address.location_phone;
     _labelprovince.text = address.location_province_name;
+
     NSString *email = [address.location_email isEqualToString:@"0"]?@"-":address.location_email;
-    _faxLabel.text = address.location_fax;
     _labelemail.text = email;
+    
+    _labelphonenumber.text = address.location_phone?:@"-";
+    _faxLabel.text = address.location_fax;
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;

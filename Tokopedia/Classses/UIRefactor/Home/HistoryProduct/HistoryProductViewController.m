@@ -20,7 +20,7 @@
 #import "HistoryProduct.h"
 #import "ProductCell.h"
 
-//NSString *const ProductCellIdentifier = @"ProductCellIdentifier";
+static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 NSInteger const normalWidth = 320;
 NSInteger const normalHeight = 568;
 
@@ -123,7 +123,7 @@ typedef enum TagRequest {
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ProductCellIdentifier" forIndexPath:indexPath];
+    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:historyProductCellIdentifier forIndexPath:indexPath];
     
     HistoryProductList *product = _product[indexPath.row];
     [cell setViewModel:product.viewModel];
@@ -304,10 +304,10 @@ typedef enum TagRequest {
         _nextPageUri =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
-//        if(_nextPageUri!=nil && [_nextPageUri isEqualToString:@"0"]) {
-//            //remove loadingview if there is no more item
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-//        }
+        //        if(_nextPageUri!=nil && [_nextPageUri isEqualToString:@"0"]) {
+        //            //remove loadingview if there is no more item
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        //        }
     } else {
         // no data at all
         _isNoData = YES;
@@ -368,7 +368,7 @@ typedef enum TagRequest {
 
 - (void)registerNib {
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:historyProductCellIdentifier];
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
