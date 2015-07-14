@@ -7,8 +7,13 @@
 //
 #import "AdvanceReview.h"
 #import "CMPopTipView.h"
+#import "detail.h"
 #import "DetailReputationReview.h"
 #import "LoadingView.h"
+#import "LikeDislike.h"
+#import "LoginViewController.h"
+#import "LikeDislikePost.h"
+#import "LikeDislikePostResult.h"
 #import "NoResultView.h"
 #import "ProductReputationCell.h"
 #import "ProductOwner.h"
@@ -19,11 +24,13 @@
 #import "ReviewResponse.h"
 #import "Review.h"
 #import "String_Reputation.h"
+#import "TotalLikeDislikePost.h"
+#import "TotalLikeDislike.h"
 #import "TokopediaNetworkManager.h"
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -33,11 +40,13 @@
     UIRefreshControl *refreshControl;
     LoadingView *loadingView;
     NoResultView *noResultView;
+    NSOperationQueue *_operationQueue, *operationQueueLikeDislike;
     
     int page;
     NSString *strUri;
     Review *review;
     NSMutableArray *arrList;
+    NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
 }
 
@@ -52,6 +61,10 @@
     tableContent.allowsSelection = NO;
     tableContent.backgroundColor = [UIColor clearColor];
 
+    _operationQueue = [NSOperationQueue new];
+    operationQueueLikeDislike = [NSOperationQueue new];
+    loadingLikeDislike = [NSMutableDictionary new];
+    dictLikeDislike = [NSMutableDictionary new];
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
@@ -59,6 +72,28 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)dealloc
+{
+    [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager.delegate = nil;
+
+    for(id obj in [loadingLikeDislike allValues]) {
+        if([obj isMemberOfClass:[NSArray class]]) {
+            NSArray *tempArr = (NSArray *)obj;
+            RKManagedObjectRequestOperation *operation = [tempArr firstObject];
+            [operation cancel];
+            
+            NSTimer *timer = [tempArr lastObject];
+            [timer invalidate];
+        }
+    }
+    
+    
+    
+    [operationQueueLikeDislike cancelAllOperations];
 }
 
 
@@ -243,6 +278,37 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
+    
+    
+    
+    //Set like dislike total
+    [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+    [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+    
+    if([dictLikeDislike objectForKey:detailReputationReview.review_id]) {
+        [cell setHiddenViewLoad:YES];
+        
+        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:detailReputationReview.review_id];
+        [cell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like forState:UIControlStateNormal];
+        [cell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
+        
+        if(totalLikeDislike.like_status!=nil && [totalLikeDislike.like_status isEqualToString:@"1"]) {
+            [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
+            [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+        else if(totalLikeDislike.like_status!=nil && [totalLikeDislike.like_status isEqualToString:@"2"]) {
+            [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
+            [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+    }
+    else {
+        [cell setHiddenViewLoad:NO];
+        if(! [loadingLikeDislike objectForKey:detailReputationReview.review_id]) {
+            [loadingLikeDislike setObject:detailReputationReview.review_id forKey:detailReputationReview.review_id];
+            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[detailReputationReview, [NSNumber numberWithInt:(int)indexPath.row]]];
+        }
+    }
+    
     //Set data
     [cell setLabelUser:detailReputationReview.review_user_name withTag:0];
     [cell setPercentage:detailReputationReview.review_user_reputation.positive_percentage];
@@ -331,6 +397,207 @@
 
 
 #pragma mark - Method
+- (void)showLoginView {
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    
+    LoginViewController *controller = [LoginViewController new];
+    controller.delegate = self;
+    controller.isPresentedViewController = YES;
+    controller.redirectViewController = self;
+    navigationController.viewControllers = @[controller];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)configureRestKitLikeDislike:(RKObjectManager *)objectManager {
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[LikeDislikePost class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{CLStatus:CLStatus,
+                                                        CLServerProcessTime:CLServerProcessTime,
+                                                        CLMessageError:CLMessageError}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LikeDislikePostResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{CIsSuccess:CIsSuccess}];
+    
+    RKObjectMapping *totalLikeDislikePostMapping = [RKObjectMapping mappingForClass:[TotalLikeDislikePost class]];
+    RKObjectMapping *detailTotalLikeMapping = [RKObjectMapping mappingForClass:[DetailTotalLikeDislike class]];
+    [detailTotalLikeMapping addAttributeMappingsFromDictionary:@{CTotalLike:CTotalLike,
+                                                                 CTotalDislike:CTotalDislike}];
+    
+    
+    //add relationship mapping
+    [totalLikeDislikePostMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTotalLikeDislike toKeyPath:CTotalLikeDislike withMapping:detailTotalLikeMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CContent toKeyPath:CContent withMapping:totalLikeDislikePostMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:@"action/review.pl"
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)doActionLikeDislike:(int)likeDislikeTag withView:(UIView *)btnLike {
+    //1 is like
+    //2 is dislike
+    //3 is unlike or undislike
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    [self configureRestKitLikeDislike:objectManager];
+    DetailReputationReview *detailReputationReview = arrList[btnLike.tag];
+    NSDictionary* param = @{@"action":@"like_dislike_review",
+                            @"review_id":detailReputationReview.review_id,
+                            @"like_status":@(likeDislikeTag),
+                            @"shop_id":detailReputationReview.shop_id,
+                            @"product_id":_strProductID};
+    
+    RKObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/review.pl" parameters:[param encrypt]];
+    __block NSTimer *_timer;
+    [request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+        [_timer invalidate];
+        _timer = nil;
+        
+        //Result
+        NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
+        LikeDislikePost *likeDislikePost = [result objectForKey:@""];
+        LikeDislikePostResult *likeDislikePostResult = likeDislikePost.result;
+        BOOL status = [likeDislikePostResult.is_success isEqualToString:@"1"];
+        
+        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:detailReputationReview.review_id];
+        if(status) {
+            if(totalLikeDislike) {
+                totalLikeDislike.total_like_dislike.total_like = likeDislikePostResult.content.total_like_dislike.total_like;
+                totalLikeDislike.total_like_dislike.total_dislike = likeDislikePostResult.content.total_like_dislike.total_dislike;
+                totalLikeDislike.like_status = [NSString stringWithFormat:@"%d", likeDislikeTag];
+
+                //Reload UI
+                [tableContent reloadRowsAtIndexPaths:@[[loadingLikeDislike objectForKey:detailReputationReview.review_id]] withRowAnimation:UITableViewRowAnimationNone];
+                [loadingLikeDislike removeObjectForKey:detailReputationReview.review_id];
+            }
+        }
+        else {
+            if(likeDislikePost.message_error!=nil && likeDislikePost.message_error.count>0) {
+                StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:likeDislikePost.message_error delegate:self];
+                [stickyAlertView show];
+            }
+        }
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+        [_timer invalidate];
+        _timer = nil;
+        [loadingLikeDislike removeObjectForKey:detailReputationReview.review_id];
+    }];
+    [operationQueueLikeDislike addOperation:request];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout:) userInfo:detailReputationReview.review_id repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+- (void)timeOutGetLikeDislike:(NSTimer *)temp {
+    RKManagedObjectRequestOperation *operation = [[loadingLikeDislike objectForKey:[temp userInfo]] firstObject];
+    [operation cancel];
+    operation = nil;
+    [loadingLikeDislike removeObjectForKey:[temp userInfo]];
+}
+
+- (RKObjectManager *)getObjectManagerTotalLike
+{
+    // initialize RestKit
+    RKObjectManager *tempObjectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLString]];
+    
+    // setup object mappings
+    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[LikeDislike class]];
+    [productMapping addAttributeMappingsFromDictionary:@{CLStatus:CLStatus,
+                                                         CLServerProcessTime:CLServerProcessTime,
+                                                         CLStatus:CLStatus,
+                                                         CLMessageError:CLMessageError}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LikeDislikeResult class]];
+    RKObjectMapping *totalLikeDislikeMapping = [RKObjectMapping mappingForClass:[TotalLikeDislike class]];
+    [totalLikeDislikeMapping addAttributeMappingsFromArray:@[CLikeStatus,
+                                                             CReviewID]];
+    
+    RKObjectMapping *detailTotalLikeMapping = [RKObjectMapping mappingForClass:[DetailTotalLikeDislike class]];
+    [detailTotalLikeMapping addAttributeMappingsFromDictionary:@{CTotalLike:CTotalLike,
+                                                                 CTotalDislike:CTotalDislike}];
+    
+    
+    
+    //Relation Mapping
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CLikeDislikeReview toKeyPath:CLikeDislikeReview withMapping:totalLikeDislikeMapping]];
+    [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CLResult toKeyPath:CLResult withMapping:resultMapping]];
+    [totalLikeDislikeMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTotalLikeDislike toKeyPath:CTotalLikeDislike withMapping:detailTotalLikeMapping]];
+    // Response Descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping method:RKRequestMethodPOST pathPattern:[self getPathLikeDislike] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    [tempObjectManager addResponseDescriptor:responseDescriptor];
+    
+    return tempObjectManager;
+}
+
+- (NSString *)getPathLikeDislike {
+    return @"shop.pl";
+}
+
+- (void)actionGetLikeStatus:(NSArray *)arrayList {
+    if(loadingLikeDislike.count > 10)
+        return;
+    
+    DetailReputationReview *list = (DetailReputationReview *)[arrayList firstObject];
+    RKObjectManager *tempObjectManager = [self getObjectManagerTotalLike];
+    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
+                            kTKPDDETAIL_REVIEWIDS : list.review_id,
+                            kTKPDDETAIL_APISHOPIDKEY : list.shop_id};
+    RKManagedObjectRequestOperation *tempRequest = [tempObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[self getPathLikeDislike] parameters:[param encrypt]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:list.review_id repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timerLikeDislike forMode:NSRunLoopCommonModes];
+        [loadingLikeDislike setObject:@[tempRequest, [NSIndexPath indexPathForRow:[[arrayList lastObject] intValue] inSection:0], timerLikeDislike] forKey:list.review_id];
+        
+        
+        [tempRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:list.review_id] lastObject];
+            [temporaryTimer invalidate];
+            
+            NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
+            LikeDislike *obj = [result objectForKey:@""];
+            [dictLikeDislike setObject:((TotalLikeDislike *) [obj.result.like_dislike_review firstObject]) forKey:((TotalLikeDislike *) [obj.result.like_dislike_review firstObject]).review_id];
+//            [self performSelectorInBackground:@selector(updateDataInDetailView:) withObject:obj];
+            
+            //Update UI
+            [tableContent reloadRowsAtIndexPaths:@[[[loadingLikeDislike objectForKey:list.review_id] objectAtIndex:1]] withRowAnimation:UITableViewRowAnimationNone];
+            [loadingLikeDislike removeObjectForKey:list.review_id];
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:list.review_id] lastObject];
+            [temporaryTimer invalidate];
+            [loadingLikeDislike removeObjectForKey:list.review_id];
+        }];
+        [_operationQueue addOperation:tempRequest];
+    });
+}
+
+- (ProductReputationCell *)getCell:(UIView *)btn {
+    UIView *tempView = btn.superview;
+    while(tempView) {
+        if([tempView isMemberOfClass:[ProductReputationCell class]]) {
+            return (ProductReputationCell *)tempView;
+        }
+        
+        tempView = tempView.superview;
+    }
+    
+    return nil;
+}
+
 - (void)setLoadingView:(BOOL)isLoad {
     if(isLoad) {
         tableContent.tableFooterView = viewFooter;
@@ -402,11 +669,95 @@
 }
 
 - (void)actionLike:(id)sender {
-    
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    NSDictionary *_auth = [_userManager getUserLoginData];
+    if(_auth) {
+        UIButton *btnLike = (UIButton *)sender;
+        ProductReputationCell *cell = [self getCell:btnLike];
+        DetailReputationReview *detailReputationReview = arrList[btnLike.tag];
+        UIButton *btnDislike = [cell getBtnDisLike];
+        
+        int tagRequest = 3;
+        if([dictLikeDislike objectForKey:detailReputationReview.review_id] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"0"])) {
+            tagRequest = 1;
+            
+            [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+            [UIView animateWithDuration:0.5 animations:^{
+                btnLike.alpha = 0.0f;
+            } completion:^(BOOL finished) {
+                [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
+                [UIView animateWithDuration:0.5 animations:^{
+                    btnLike.alpha = 1.0f;
+                }];
+            }];
+        }
+        else {
+            [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+
+        
+        [loadingLikeDislike setObject:[NSIndexPath indexPathForRow:btnLike.tag inSection:0] forKey:detailReputationReview.review_id];
+        
+        //Set data
+        ((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status = @"3";
+        if([((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"0"] || [((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"3"]) {
+            ((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status = @"1";
+        }
+        
+        [self doActionLikeDislike:tagRequest withView:btnLike];
+    }
+    else {
+        [self showLoginView];
+    }
 }
+
+- (void)requestTimeout:(NSTimer *)timer {
+    [loadingLikeDislike removeObjectForKey:[timer userInfo]];
+    
+    RKObjectRequestOperation *objectReputation = [operationQueueLikeDislike.operations firstObject];
+    [objectReputation cancel];
+}
+
 - (void)actionDisLike:(id)sender {
-    
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    NSDictionary *_auth = [_userManager getUserLoginData];
+    if(_auth) {
+        UIButton *btnDislike = (UIButton *)sender;
+        ProductReputationCell *cell = [self getCell:btnDislike];
+        DetailReputationReview *detailReputationReview = arrList[btnDislike.tag];
+        UIButton *btnLike = [cell getBtnLike];
+
+        int tagRequest = 3;
+        if([dictLikeDislike objectForKey:detailReputationReview.review_id] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"0"])) {
+            tagRequest = 2;
+            [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+            [UIView animateWithDuration:0.5 animations:^{
+                btnDislike.alpha = 0.0f;
+            } completion:^(BOOL finished) {
+                [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
+                [UIView animateWithDuration:0.5 animations:^{
+                    btnDislike.alpha = 1.0f;
+                }];
+            }];
+        }
+        else {
+            [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+
+        [loadingLikeDislike setObject:[NSIndexPath indexPathForRow:btnDislike.tag inSection:0] forKey:detailReputationReview.review_id];
+
+        //Set data
+        ((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status = @"3";
+        if([((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"0"] || [((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"3"])
+            ((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status = @"2";
+        
+        [self doActionLikeDislike:tagRequest withView:btnDislike];
+    }
+    else {
+        [self showLoginView];
+    }
 }
+
 - (void)actionChat:(id)sender {
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
@@ -694,5 +1045,14 @@
 {
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
+}
+
+#pragma mark - LoginView Delegate
+- (void)redirectViewController:(id)viewController{
+    
+}
+
+- (void)cancelLoginView {
+    
 }
 @end

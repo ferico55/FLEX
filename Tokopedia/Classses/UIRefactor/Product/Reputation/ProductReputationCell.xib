@@ -154,7 +154,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Sj9-Qe-yDr">
+                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Sj9-Qe-yDr">
                                         <rect key="frame" x="8" y="0.0" width="50" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
@@ -166,7 +166,7 @@
                                             <action selector="actionLike:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZOO-Ye-MGe"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XXr-0h-lDj">
+                                    <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XXr-0h-lDj">
                                         <rect key="frame" x="60" y="0.0" width="49" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>

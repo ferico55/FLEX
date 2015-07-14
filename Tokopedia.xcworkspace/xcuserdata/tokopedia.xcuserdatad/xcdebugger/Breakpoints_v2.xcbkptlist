@@ -89,78 +89,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/ShopPageView/ShopReviewPageViewController.m"
-            timestampString = "458193119.752074"
+            filePath = "Tokopedia/Classses/UIRefactor/Product/Reputation/ProductReputationViewController.m"
+            timestampString = "458548978.694791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1120"
-            endingLineNumber = "1120"
-            landmarkName = "-actionLike:"
+            startingLineNumber = "477"
+            endingLineNumber = "477"
+            landmarkName = "-doActionLikeDislike:withView:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/ShopPageView/ShopReviewPageViewController.m"
-            timestampString = "458193119.752074"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1130"
-            endingLineNumber = "1130"
-            landmarkName = "-actionLike:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/ShopPageView/ShopReviewPageViewController.m"
-            timestampString = "458193119.752074"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1119"
-            endingLineNumber = "1119"
-            landmarkName = "-actionLike:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ShopReviewPageViewController actionLike:]"
-                  moduleName = "Tokopedia"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/ShopPageView/ShopReviewPageViewController.m"
-                  timestampString = "458199028.193994"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1119"
-                  endingLineNumber = "1119"
-                  offsetFromSymbolStart = "1048">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__43-[ShopReviewPageViewController actionLike:]_block_invoke"
-                  moduleName = "Tokopedia"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/ShopPageView/ShopReviewPageViewController.m"
-                  timestampString = "458199028.194127"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1119"
-                  endingLineNumber = "1119"
-                  offsetFromSymbolStart = "62">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

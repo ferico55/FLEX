@@ -10,7 +10,7 @@
 #import "DetailTotalLikeDislike.h"
 #define CLikeStatus @"like_status"
 #define CReviewID @"review_id"
-#define CtotalLikeDislike @"total_like_dislike"
+#define CTotalLikeDislike @"total_like_dislike"
 
 @interface TotalLikeDislike : NSObject
 @property (nonatomic, strong) NSString *like_status;

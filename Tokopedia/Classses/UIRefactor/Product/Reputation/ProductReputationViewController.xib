@@ -94,7 +94,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="160" height="50"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="6 Months">
-                                <color key="titleColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <color key="titleColor" red="0.43529411764705883" green="0.44313725490196076" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -112,7 +112,7 @@
                             <rect key="frame" x="160" y="0.0" width="160" height="50"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="All Time">
-                                <color key="titleColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <color key="titleColor" red="0.43529411764705883" green="0.44313725490196076" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -350,7 +350,7 @@
                         <constraint firstAttribute="height" constant="21" id="F49-IB-j2f"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQ4-8k-Evu">
@@ -360,7 +360,7 @@
                         <constraint firstAttribute="height" constant="21" id="Lin-5f-WWG"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ARF-iI-PWi">
@@ -370,7 +370,7 @@
                         <constraint firstAttribute="height" constant="21" id="js0-ye-ffI"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i9g-h3-pLE">
@@ -380,7 +380,7 @@
                         <constraint firstAttribute="width" constant="33" id="yVq-oZ-Tsx"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dtm-TO-BXB">
@@ -390,7 +390,7 @@
                         <constraint firstAttribute="height" constant="21" id="W5t-iZ-CXY"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="vIy-jH-9ag">

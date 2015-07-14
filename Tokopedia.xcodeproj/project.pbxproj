@@ -577,6 +577,15 @@
 		85C948061B45562E00B713FB /* CountRatingResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C948051B45562E00B713FB /* CountRatingResult.m */; };
 		85C9480C1B4559A100B713FB /* Quality.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C9480B1B4559A100B713FB /* Quality.m */; };
 		85D12B341B1C4668001B9272 /* DetailProductInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85D12B331B1C4668001B9272 /* DetailProductInfoCell.xib */; };
+		85D226A71B54A8C20013461A /* icon_like_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D226A61B54A8C20013461A /* icon_like_active.png */; };
+		85D226A91B54A8DE0013461A /* icon_like_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D226A81B54A8DE0013461A /* icon_like_active@2x.png */; };
+		85D226AB1B54A8F40013461A /* icon_like_active@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D226AA1B54A8F40013461A /* icon_like_active@3x.png */; };
+		85D226AD1B54A9530013461A /* icon_dislike_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D226AC1B54A9530013461A /* icon_dislike_active.png */; };
+		85D226AF1B54A9690013461A /* icon_dislike_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D226AE1B54A9690013461A /* icon_dislike_active@2x.png */; };
+		85D226B11B54A97F0013461A /* icon_dislike_active@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D226B01B54A97F0013461A /* icon_dislike_active@3x.png */; };
+		85D226B41B54CF4B0013461A /* LikeDislikePost.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D226B31B54CF4B0013461A /* LikeDislikePost.m */; };
+		85D226B71B54CF8D0013461A /* LikeDislikePostResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D226B61B54CF8D0013461A /* LikeDislikePostResult.m */; };
+		85D226BA1B54D0110013461A /* TotalLikeDislikePost.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D226B91B54D0110013461A /* TotalLikeDislikePost.m */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -2156,6 +2165,18 @@
 		85C9480A1B4559A100B713FB /* Quality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quality.h; sourceTree = "<group>"; };
 		85C9480B1B4559A100B713FB /* Quality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Quality.m; sourceTree = "<group>"; };
 		85D12B331B1C4668001B9272 /* DetailProductInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductInfoCell.xib; sourceTree = "<group>"; };
+		85D226A61B54A8C20013461A /* icon_like_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_like_active.png; sourceTree = "<group>"; };
+		85D226A81B54A8DE0013461A /* icon_like_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_like_active@2x.png"; sourceTree = "<group>"; };
+		85D226AA1B54A8F40013461A /* icon_like_active@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_like_active@3x.png"; sourceTree = "<group>"; };
+		85D226AC1B54A9530013461A /* icon_dislike_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_dislike_active.png; sourceTree = "<group>"; };
+		85D226AE1B54A9690013461A /* icon_dislike_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_dislike_active@2x.png"; sourceTree = "<group>"; };
+		85D226B01B54A97F0013461A /* icon_dislike_active@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_dislike_active@3x.png"; sourceTree = "<group>"; };
+		85D226B21B54CF4B0013461A /* LikeDislikePost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeDislikePost.h; sourceTree = "<group>"; };
+		85D226B31B54CF4B0013461A /* LikeDislikePost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeDislikePost.m; sourceTree = "<group>"; };
+		85D226B51B54CF8D0013461A /* LikeDislikePostResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeDislikePostResult.h; sourceTree = "<group>"; };
+		85D226B61B54CF8D0013461A /* LikeDislikePostResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeDislikePostResult.m; sourceTree = "<group>"; };
+		85D226B81B54D0110013461A /* TotalLikeDislikePost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TotalLikeDislikePost.h; sourceTree = "<group>"; };
+		85D226B91B54D0110013461A /* TotalLikeDislikePost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TotalLikeDislikePost.m; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -3979,6 +4000,9 @@
 				7A1D2C4B1B235E54002F9341 /* icon_comment_bubble@2x.png */,
 				7A1D2C4C1B235E54002F9341 /* icon_comment_bubble@3x.png */,
 				7A1D2C4D1B235E54002F9341 /* icon_correct@2x.png */,
+				85D226AC1B54A9530013461A /* icon_dislike_active.png */,
+				85D226AE1B54A9690013461A /* icon_dislike_active@2x.png */,
+				85D226B01B54A97F0013461A /* icon_dislike_active@3x.png */,
 				7A1D2C4E1B235E54002F9341 /* icon_default_shop.jpg */,
 				7A1D2C4F1B235E54002F9341 /* icon_default_shop@2x.jpg */,
 				7A1D2C501B235E54002F9341 /* icon_diskusi_comment_grey.png */,
@@ -4021,6 +4045,9 @@
 				7A1D2C791B235E54002F9341 /* icon_login@2x.png */,
 				7A1D2C7A1B235E54002F9341 /* icon_login_active.png */,
 				7A1D2C7B1B235E54002F9341 /* icon_login_active@2x.png */,
+				85D226A61B54A8C20013461A /* icon_like_active.png */,
+				85D226A81B54A8DE0013461A /* icon_like_active@2x.png */,
+				85D226AA1B54A8F40013461A /* icon_like_active@3x.png */,
 				7A1D2C7C1B235E54002F9341 /* icon_love.png */,
 				7A1D2C7D1B235E54002F9341 /* icon_love@2x.png */,
 				7A1D2C7E1B235E54002F9341 /* icon_love_active.png */,
@@ -4650,6 +4677,12 @@
 				859BF36B1B4A7B5A001AB889 /* TotalLikeDislike.m */,
 				859BF36D1B4A7B91001AB889 /* DetailTotalLikeDislike.h */,
 				859BF36E1B4A7B91001AB889 /* DetailTotalLikeDislike.m */,
+				85D226B21B54CF4B0013461A /* LikeDislikePost.h */,
+				85D226B31B54CF4B0013461A /* LikeDislikePost.m */,
+				85D226B51B54CF8D0013461A /* LikeDislikePostResult.h */,
+				85D226B61B54CF8D0013461A /* LikeDislikePostResult.m */,
+				85D226B81B54D0110013461A /* TotalLikeDislikePost.h */,
+				85D226B91B54D0110013461A /* TotalLikeDislikePost.m */,
 			);
 			path = LikeDislikeReview;
 			sourceTree = "<group>";
@@ -8574,6 +8607,7 @@
 				7A1D2E741B235E55002F9341 /* icon_no_data_grey_2x.png in Resources */,
 				FC7642A71B15E2830034A8F1 /* ResolutionCenterSystemCell.xib in Resources */,
 				FC76428C1B15E2830034A8F1 /* InboxMessageCell.xib in Resources */,
+				85D226A71B54A8C20013461A /* icon_like_active.png in Resources */,
 				7A1D2E1C1B235E55002F9341 /* icon_checkmark@2x.png in Resources */,
 				FC7643D41B15E2830034A8F1 /* TransactionCartResultCell.xib in Resources */,
 				7A1D2DB51B235E55002F9341 /* icon_20.png in Resources */,
@@ -8721,6 +8755,7 @@
 				FC7643391B15E2830034A8F1 /* ChangeReceiptNumberViewController.xib in Resources */,
 				FC7643441B15E2830034A8F1 /* SearchCell.xib in Resources */,
 				FC76435D1B15E2830034A8F1 /* SettingBankDetailViewController.xib in Resources */,
+				85D226AB1B54A8F40013461A /* icon_like_active@3x.png in Resources */,
 				7A1D2F231B235E55002F9341 /* icon_signin_active@3x.png in Resources */,
 				FC76438C1B15E2830034A8F1 /* ShopNotesDetailViewController.xib in Resources */,
 				FC7642D21B15E2830034A8F1 /* MyShopPaymentViewController.xib in Resources */,
@@ -8790,6 +8825,7 @@
 				7A1D2DD81B235E55002F9341 /* icon_arrow_up_white@2x.png in Resources */,
 				FC7642BA1B15E2830034A8F1 /* WebViewController.xib in Resources */,
 				FC7642321B15E2830034A8F1 /* TKPDTabShopNavigationController.xib in Resources */,
+				85D226A91B54A8DE0013461A /* icon_like_active@2x.png in Resources */,
 				7A1D2EC01B235E55002F9341 /* icon_toped_loading_grey@2x.png in Resources */,
 				7A1D2DBE1B235E55002F9341 /* icon_5.png in Resources */,
 				855348C21B4CDB7000DC2C67 /* icon_neutral@2x.png in Resources */,
@@ -8888,6 +8924,7 @@
 				7A1D2F0C1B235E55002F9341 /* person2.png in Resources */,
 				FC7644151B15E2830034A8F1 /* UserContainerViewController.xib in Resources */,
 				7A1D2EF31B235E55002F9341 /* navigate-down.png in Resources */,
+				85D226AD1B54A9530013461A /* icon_dislike_active.png in Resources */,
 				FC7642541B15E2830034A8F1 /* ForgotPasswordViewController.xib in Resources */,
 				7A1D2EA41B235E55002F9341 /* icon_shop_setting_2x.png in Resources */,
 				7A1D2E531B235E55002F9341 /* icon_lock_grey.png in Resources */,
@@ -9020,6 +9057,7 @@
 				7A1D2F3C1B235E55002F9341 /* icon_home_active@2x.png in Resources */,
 				7A1D2E8D1B235E55002F9341 /* icon_search@2x.png in Resources */,
 				FC7642851B15E2830034A8F1 /* HotlistResultViewController.xib in Resources */,
+				85D226AF1B54A9690013461A /* icon_dislike_active@2x.png in Resources */,
 				850065D61B43F97000F556BA /* icon_like@2x.png in Resources */,
 				FC7642351B15E2830034A8F1 /* TKPDTabViewController.xib in Resources */,
 				FC7642AB1B15E2830034A8F1 /* DetailReviewViewController.xib in Resources */,
@@ -9170,6 +9208,7 @@
 				FC7643AA1B15E2830034A8F1 /* FilterLocationViewCell.xib in Resources */,
 				FC7642BE1B15E2830034A8F1 /* MyShopAddressEditViewController.xib in Resources */,
 				FC7643461B15E2830034A8F1 /* SearchViewController.xib in Resources */,
+				85D226B11B54A97F0013461A /* icon_dislike_active@3x.png in Resources */,
 				7A1D2F0B1B235E55002F9341 /* person1.png in Resources */,
 				FC7643981B15E2830034A8F1 /* ShopContainerViewController.xib in Resources */,
 				FC7642561B15E2830034A8F1 /* GeneralAlertCell.xib in Resources */,
@@ -9433,6 +9472,7 @@
 				FC7643D31B15E2830034A8F1 /* TransactionCartResultCell.m in Sources */,
 				FC7641981B15E2820034A8F1 /* TransactionCalculatePrice.m in Sources */,
 				FC7640F31B15E2820034A8F1 /* ResolutionButton.m in Sources */,
+				85D226B71B54CF8D0013461A /* LikeDislikePostResult.m in Sources */,
 				FC7640FF1B15E2820034A8F1 /* InboxReview.m in Sources */,
 				855348C81B4CFE3D00DC2C67 /* GiveReviewViewController.m in Sources */,
 				FC7640961B15E2820034A8F1 /* CreatePasswordResult.m in Sources */,
@@ -9455,6 +9495,7 @@
 				FC7640CC1B15E2820034A8F1 /* TheOtherProductResult.m in Sources */,
 				FC76420F1B15E2820034A8F1 /* CatalogShopViewController.m in Sources */,
 				FC7642CD1B15E2830034A8F1 /* MyShopNoteViewController.m in Sources */,
+				85D226BA1B54D0110013461A /* TotalLikeDislikePost.m in Sources */,
 				FC76413A1B15E2820034A8F1 /* PrivacyFormResult.m in Sources */,
 				FC7641BF1B15E2820034A8F1 /* TxOrderConfirmPaymentForm.m in Sources */,
 				FC7643751B15E2830034A8F1 /* ShopDeliveryCell.m in Sources */,
@@ -9941,6 +9982,7 @@
 				FC7640C11B15E2820034A8F1 /* ShopInfo.m in Sources */,
 				FC7640981B15E2820034A8F1 /* LoginResult.m in Sources */,
 				FC76418F1B15E2820034A8F1 /* TransactionAddressShipping.m in Sources */,
+				85D226B41B54CF4B0013461A /* LikeDislikePost.m in Sources */,
 				859BF3601B4A793E001AB889 /* LikeDislike.m in Sources */,
 				FC7640D81B15E2820034A8F1 /* HistoryProduct.m in Sources */,
 				FC7640AB1B15E2820034A8F1 /* CatalogPrice.m in Sources */,

@@ -18,6 +18,7 @@
 #import "ViewLabelUser.h"
 
 #define CCellIdentifier @"cell"
+#define CTagLikeDislike 1
 
 @interface ProductDetailReputationViewController ()<productReputationDelegate, CMPopTipViewDelegate, HPGrowingTextViewDelegate, ProductDetailReputationDelegate>
 
@@ -25,9 +26,10 @@
 
 @implementation ProductDetailReputationViewController {
     ProductReputationCell *productReputationCell;
+    TokopediaNetworkManager *tokopediaNetworkManagerLike;
     CMPopTipView *popTipView;
     
-    NSMutableDictionary *dictCell;
+    NSMutableDictionary *dictCell, *dictRequestLikeDislike;
     float heightScreenView;
 }
 
@@ -55,6 +57,8 @@
     growTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     growTextView.backgroundColor = [UIColor whiteColor];
     growTextView.placeholder = CKirimPesanMu;
+    
+    dictRequestLikeDislike = [NSMutableDictionary new];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -439,6 +443,20 @@
 
 
 #pragma mark - Method
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
+    if(tag == CTagLikeDislike) {
+        if(tokopediaNetworkManagerLike == nil) {
+            tokopediaNetworkManagerLike = [TokopediaNetworkManager new];
+            tokopediaNetworkManagerLike.tagRequest = tag;
+            tokopediaNetworkManagerLike.delegate = self;
+        }
+        
+        return tokopediaNetworkManagerLike;
+    }
+    
+    return nil;
+}
+
 - (void)updateLikeDislike:(LikeDislike *)likeDislikeObj {
     [productReputationCell.getBtnDisLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_dislike  forState:UIControlStateNormal];
     [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_like  forState:UIControlStateNormal];
@@ -463,8 +481,6 @@
 
 
 #pragma mark - ProductDetailReputation Delegate
-
-
 - (void)actionTapStar:(UIView *)sender
 {
     NSString *strText = @"1,000,100 Like";
