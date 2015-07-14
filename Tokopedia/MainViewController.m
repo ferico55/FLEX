@@ -463,10 +463,7 @@ typedef enum TagRequest {
 
 - (void)applicationLogin:(NSNotification*)notification
 {
-    if (_logingOutAlertView) {
-        [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        _logingOutAlertView = nil;
-    }
+
     
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
@@ -587,6 +584,11 @@ typedef enum TagRequest {
                                                       userInfo:@{}];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
+    
+    if (_logingOutAlertView) {
+        [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        _logingOutAlertView = nil;
+    }
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
