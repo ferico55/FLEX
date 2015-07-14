@@ -142,18 +142,12 @@
                BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                
                if (status) {
-                   if (images.message_error) {
-                       NSArray *array = images.message_error;
-                       [self showErrorMessages:array?:@[]];
-                       [_delegate failedUploadObject:_imageObject];
-                   }
-                   else if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
+                   if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
                        [_delegate successUploadObject:_imageObject withMappingResult:images];
                    }
                    else
                    {
                        NSArray *array = images.message_error;
-                       
                       [self showErrorMessages:array?:@[]];
                        [_delegate failedUploadObject:_imageObject];
                    }
@@ -166,17 +160,16 @@
            }
            else
            {
-               if (!([error code] == NSURLErrorCancelled)){
-                   NSString *errorDescription = error.localizedDescription;
-                   UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:_delegate cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                   [errorAlert show];
-                   [_delegate failedUploadObject:_imageObject];
-               }
+               [self showErrorMessages:@[]];
+               [_delegate failedUploadObject:_imageObject];
            }
        }
        else
        {
-           [self showErrorMessages:@[]];
+           if ([error code] == NSURLErrorNotConnectedToInternet)
+               [self showErrorMessages:@[@"Tidak ada koneksi internet"]];
+           else
+               [self showErrorMessages:@[]];
            [_delegate failedUploadObject:_imageObject];
        }
                                
