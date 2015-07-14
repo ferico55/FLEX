@@ -306,6 +306,9 @@
     cell.buyerOrSellerLabel.text = _isMyComplain?@"Pembelian dari":@"Pembelian oleh";
     cell.indexPath = indexPath;
     
+    cell.unreadBorderView.hidden = (((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status == 2)?YES:NO;
+    cell.unreadIconImageView.hidden = cell.unreadBorderView.hidden;
+    
     cell.warningLabel.hidden = !(resolution.resolution_dispute.dispute_30_days == 1);
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -369,6 +372,11 @@
     vc.resolution = resolution;
     vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
     vc.delegate = self;
+    
+    resolution.resolution_read_status = 2;
+    [_list replaceObjectAtIndex:indexPath.row withObject:resolution];
+    [_tableView reloadData];
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -381,6 +389,11 @@
     vc.resolution = resolution;
     vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
     vc.delegate = self;
+    
+    resolution.resolution_read_status = 2;
+    [_list replaceObjectAtIndex:indexPath.row withObject:resolution];
+    [_tableView reloadData];
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 

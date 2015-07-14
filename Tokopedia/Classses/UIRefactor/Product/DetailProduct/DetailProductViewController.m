@@ -2185,7 +2185,7 @@ UIAlertViewDelegate
     style.lineSpacing = 4.0;
     style.alignment = alignment;
     NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName: color,
+                                 NSForegroundColorAttributeName: (color == nil) ? [UIColor whiteColor] : color,
                                  NSFontAttributeName:(font == nil)? fontDesc : font,
                                  NSParagraphStyleAttributeName: style,
                                  };

@@ -15,11 +15,10 @@
 #import "LoadingView.h"
 #import "NoResultView.h"
 
-#import "GeneralProductCollectionViewCell.h"
 #import "NavigateViewController.h"
 #import "ProductCell.h"
 
-NSString *const ProductCellIdentifier = @"ProductCellIdentifier";
+static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 NSInteger const normalWidth = 320;
 NSInteger const normalHeight = 568;
 
@@ -115,7 +114,7 @@ typedef enum TagRequest {
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ProductCellIdentifier forIndexPath:indexPath];
+    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:productFeedCellIdentifier forIndexPath:indexPath];
     
     ProductFeedList *product = _product[indexPath.row];
     [cell setViewModel:product.viewModel];
@@ -350,7 +349,7 @@ typedef enum TagRequest {
 
 - (void)registerNib {
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:productFeedCellIdentifier];
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];

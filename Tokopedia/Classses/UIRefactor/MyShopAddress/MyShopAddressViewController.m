@@ -15,7 +15,7 @@
 #import "MyShopAddressDetailViewController.h"
 #import "MyShopAddressEditViewController.h"
 #import "GeneralList1GestureCell.h"
-
+#import "MGSwipeButton.h"
 #import "URLCacheController.h"
 
 @interface MyShopAddressViewController ()
@@ -126,6 +126,12 @@
     addBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = addBarButton;
     
+    /// adjust refresh control
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
+    
     [self configureRestKit];
     [self request];
 }
@@ -211,11 +217,13 @@
     }
     
     MyShopAddressDetailViewController *vc = [MyShopAddressDetailViewController new];
-    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDDETAIL_DATAADDRESSKEY : _list[indexPath.row],
-                kTKPDDETAIL_DATAINDEXPATHKEY : indexPath,
-                kTKPDDETAIL_DATAISDEFAULTKEY : @(isdefault)
-                };
+    NSDictionary *data = @{
+                           kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                           kTKPDDETAIL_DATAADDRESSKEY : _list[indexPath.row],
+                           kTKPDDETAIL_DATAINDEXPATHKEY : indexPath,
+                           kTKPDDETAIL_DATAISDEFAULTKEY : @(isdefault)
+                           };
+    vc.data = [NSMutableDictionary dictionaryWithDictionary:data];
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -342,7 +350,7 @@
     
 	if (_isrefreshview) {
         if (_request.isExecuting) return;
-
+        
         _table.tableFooterView = _footer;
         [_act startAnimating];
         
@@ -418,8 +426,14 @@
             BOOL status = [address.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
+
+                if (_page == 1) {
+                    [_list removeAllObjects];
+                }
+
                 [_list addObjectsFromArray:address.result.list];
-                if (_list.count >0) {
+
+                if (_list.count > 0) {
                     _isnodata = NO;
                     _table.tableFooterView = nil;
                 } else {
@@ -653,20 +667,35 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    Address *list = _list[indexpath.row];
-    [_datainput setObject:list.location_address_id forKey:kTKPDSHOP_APIADDRESSIDKEY];
-    switch (button.tag) {
-        case 11:
-        {
-            //delete
-            [self deleteListAtIndexPath:indexpath];
-            break;
-        }
-        default:
-            break;
+-(NSArray *)swipeTableCell:(MGSwipeTableCell *)cell swipeButtonsForDirection:(MGSwipeDirection)direction
+             swipeSettings:(MGSwipeSettings *)swipeSettings expansionSettings:(MGSwipeExpansionSettings *)expansionSettings {
+    swipeSettings.transition = MGSwipeTransitionStatic;
+    expansionSettings.buttonIndex = -1;
+    
+    if (direction == MGSwipeDirectionRightToLeft) {
+        
+        expansionSettings.fillOnTrigger = YES;
+        expansionSettings.threshold = 1.1;
+        
+        NSIndexPath *indexPath = ((GeneralList1GestureCell *) cell).indexpath;
+        
+        CGFloat padding = 15;
+        
+        UIColor *redColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
+        
+        MGSwipeButton *trash = [MGSwipeButton buttonWithTitle:@"Hapus"
+                                              backgroundColor:redColor
+                                                      padding:padding
+                                                     callback:^BOOL(MGSwipeTableCell *sender) {
+                                                         [self deleteListAtIndexPath:indexPath];
+                                                         return YES;
+                                                     }];
+        
+        trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
+        
+        return @[trash];
     }
+    return nil;
 }
 
 #pragma mark - delegate address detail
@@ -689,14 +718,21 @@
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     [self cancel];
+
     /** clear object **/
-    [_list removeAllObjects];
+//    [_list removeAllObjects];
+
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
     
+    if (_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    }
+    
     [_table reloadData];
     /** request data **/
+    
     [self configureRestKit];
     [self request];
 }

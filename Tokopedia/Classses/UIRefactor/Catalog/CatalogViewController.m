@@ -20,6 +20,9 @@
 #import "PriceAlertViewController.h"
 #import "GalleryViewController.h"
 
+static NSString *cellIdentifer = @"CatalogSpecificationCell";
+static CGFloat rowHeight = 40;
+
 @interface CatalogViewController ()
 <
     UITableViewDataSource,
@@ -181,8 +184,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifer = @"CatalogSpecificationCell";
-    
     CatalogSpecificationCell *cell = (CatalogSpecificationCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
     
     if (cell == nil) {
@@ -192,22 +193,71 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     
+    [self configureCell:cell atIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (void)configureCell:(CatalogSpecificationCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 9.0;
+
+    UIColor *gray = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
+    
+    NSDictionary *titleAttributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:14],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : gray,
+                                 };
+    
     NSString *title = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([title isEqualToString:@""]) {
         [cell hideTopBorder:YES];
         cell.titleLabel.text = @"";
     } else {
         cell.titleLabel.text = title;
+        cell.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:titleAttributes];
     }
+    
+    NSString *values = [[_specificationValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : gray,
+                                 };
+    
+    cell.valueLabel.attributedText = [[NSAttributedString alloc] initWithString:values attributes:attributes];
+    cell.valueLabel.numberOfLines = 0;
+    [cell.valueLabel sizeToFit];
+    
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
+    
     [cell hideBottomBorder:YES];
     
     if (indexPath.row == ([[_specificationKeys objectAtIndex:indexPath.section] count] - 1)) {
         [cell hideBottomBorder:NO];
     }
-    
-    cell.valueLabel.text = [[_specificationValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    
-    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *text = [[_specificationValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (text.length < 20) {
+        return rowHeight;
+    } else {
+        CGSize maximumLabelSize = CGSizeMake(220, CGFLOAT_MAX);
+        CGSize expectedLabelSize = [text sizeWithFont:FONT_GOTHAM_BOOK_14
+                                    constrainedToSize:maximumLabelSize
+                                        lineBreakMode:NSLineBreakByWordWrapping];
+        CGFloat height = rowHeight + (3 * expectedLabelSize.height); // add margin
+        return height;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return rowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
