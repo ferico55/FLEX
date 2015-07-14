@@ -363,7 +363,12 @@
                         NSString *priceString = _productPrice;
                         NSArray *wholesalePrice = _wholeSales;
                         if (wholesalePrice.count>0) {
-                            for (WholesalePrice *price in wholesalePrice) {
+                            for (int i = 0; i<wholesalePrice.count; i++) {
+                                WholesalePrice *price = wholesalePrice[i];
+                                if (i == wholesalePrice.count-1) {
+                                    priceString = price.wholesale_price;
+                                    break;
+                                }
                                 if (_productQuantityStepper.value >= [price.wholesale_min integerValue] && _productQuantityStepper.value <= [price.wholesale_max integerValue]) {
                                     priceString = price.wholesale_price;
                                     break;
