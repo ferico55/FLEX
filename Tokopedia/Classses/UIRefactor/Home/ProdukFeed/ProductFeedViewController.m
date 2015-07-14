@@ -16,6 +16,7 @@
 #import "NoResultView.h"
 
 #import "NavigateViewController.h"
+#import "ProductCell.h"
 
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 NSInteger const normalWidth = 320;
