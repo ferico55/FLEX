@@ -11,6 +11,9 @@
 @implementation InboxTicketDetail
 
 - (NSString *)ticket_detail_message {
+    if ([_ticket_detail_message isEqualToString:@"0"]) {
+        return @"";
+    }
     return [_ticket_detail_message kv_decodeHTMLCharacterEntities];
 }
 
@@ -27,6 +30,11 @@
             viewModel.conversationOwner = @"Administrator";
         } else {
             viewModel.conversationOwner = @"Pengguna";
+        }
+        if ([_ticket_detail_new_rating isEqualToString:@"1"]) {
+            viewModel.conversationNote = @"Memberikan Penilaian : Membantu";
+        } else if ([_ticket_detail_new_rating isEqualToString:@"2"]) {
+            viewModel.conversationNote = @"Memberikan Penilaian : Tidak Membantu";
         }
         _viewModel = viewModel;
     }
