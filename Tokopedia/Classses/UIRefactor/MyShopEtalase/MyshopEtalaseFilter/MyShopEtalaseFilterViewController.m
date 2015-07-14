@@ -25,6 +25,9 @@
     NSInteger _requestcount;
     NSTimer *_timer;
     
+    NSString *_uriNext;
+    NSInteger _page;
+    
     Etalase *_etalase;
     
     TokopediaNetworkManager *_networkManager;
@@ -70,6 +73,8 @@
     _networkManager.delegate = self;
     _table.dataSource = self;
     _table.delegate = self;
+    
+    _page = 1;
     
     self.title = @"Etalase";
     
@@ -276,6 +281,13 @@
     if (_isnodata) {
         cell.backgroundColor = [UIColor whiteColor];
     }
+    
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            [_networkManager doRequest];
+        }
+    }
 }
 
 #pragma mark - Request + Mapping Etalase
@@ -292,8 +304,10 @@
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
-                            kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+    NSDictionary* param = @{
+                            kTKPDDETAIL_APIACTIONKEY    : kTKPDDETAIL_APIGETETALASEKEY,
+                            kTKPDDETAIL_APISHOPIDKEY    : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPD_APIPAGEKEY            : [NSNumber numberWithInteger:_page],
                             };
     return param;
 }
@@ -420,13 +434,11 @@
             
             EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
             _selectedEtalase = selectedEtalase;
-//            if (!selectedEtalase) {
-//                _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
-//            }
-//            else
-//            {
-//                _selectedEtalase = selectedEtalase;
-//            }
+            
+            _uriNext = _etalase.result.paging.uri_next;
+            if (_uriNext) {
+                _page = [[_networkManager splitUriToPage:_uriNext] integerValue];
+            }
             
             [_table reloadData];
         }
