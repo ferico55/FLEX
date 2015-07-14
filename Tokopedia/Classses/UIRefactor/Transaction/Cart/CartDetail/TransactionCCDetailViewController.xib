@@ -198,19 +198,13 @@
                                 <rect key="frame" x="15" y="0.0" width="255" height="44"/>
                                 <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="15" y="0.0" width="75" height="44"/>
-                                </variation>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="-1" id="iQV-0C-cm8"/>
                                 </connections>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="gZQ-ra-g9R">
                                 <rect key="frame" x="285" y="12" width="20" height="20"/>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="105" y="-78" width="200" height="200"/>
-                                </variation>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="516-QG-BRk">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>

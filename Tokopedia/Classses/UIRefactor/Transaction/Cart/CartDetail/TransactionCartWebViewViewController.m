@@ -99,7 +99,7 @@
         urlAddress = _URLString;
         url = [NSURL URLWithString:urlAddress];
     }
-    if (gateway == TYPE_GATEWAY_CC) {
+    if (gateway == TYPE_GATEWAY_CC && !_isVeritrans) {
         urlAddress = _URLString;
         
         NSDictionary *paramEncrypt = [_CCParam encrypt];
@@ -122,6 +122,11 @@
         NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         [request setHTTPBody:postData];
         [request setHTTPMethod:@"POST"];
+        url = [NSURL URLWithString:urlAddress];
+    }
+    else
+    {
+        urlAddress = _URLString;
         url = [NSURL URLWithString:urlAddress];
     }
     

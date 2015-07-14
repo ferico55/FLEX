@@ -20,6 +20,8 @@
 @implementation AlertPickerView
 {
     UITapGestureRecognizer *_newGesture;
+    NSInteger index;
+    NSInteger secondIndex;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -123,8 +125,6 @@
 {
     // This method is triggered whenever the user makes a change to the picker selection.
     // The parameter named row and component represents what was selected.
-    NSInteger index = 0;
-    NSInteger secondIndex = 0 ;
     if (component == 0) {
         index = row;
     }
