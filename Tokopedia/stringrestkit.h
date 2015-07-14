@@ -34,6 +34,8 @@
 #define TKPD_TALK_PRODUCT_IMAGE @"talk_product_image"
 #define TKPD_TALK_OWN @"talk_own"
 #define TKPD_TALK_USER_ID @"talk_user_id"
+#define TKPD_TALK_USER_LABEL @"talk_user_label"
+#define TKPD_TALK_USER_LABEL_ID @"talk_user_label_id"
 
 
 /** string for comment talk */
@@ -48,6 +50,8 @@
 #define TKPD_TALK_COMMENT_USERIMG @"comment_user_image"
 #define TKPD_TALK_COMMENT_USERNAME @"comment_user_name"
 #define TKPD_TALK_COMMENT_USERID @"comment_user_id"
+#define TKPD_TALK_COMMENT_USER_LABEL @"comment_user_label"
+#define TKPD_TALK_COMMENT_USER_LABEL_ID @"comment_user_label_id"
 #define TKPD_TALK_FOLLOW @"Ikuti"
 #define TKPD_TALK_UNFOLLOW @"Berhenti Ikuti"
 #define TKPD_FOLLOW_TALK_ACTION @"follow_product_talk"
@@ -58,6 +62,7 @@
 #define INBOX_REVIEW_API_PATH @"inbox-review.pl"
 #define REVIEW_PRODUCT_IMG @"review_product_image"
 #define REVIEW_USER_NAME @"review_user_name"
+#define REVIEW_USER_LABEL @"review_user_label"
 #define REVIEW_RATE_ACCURACY @"review_rate_accuracy"
 #define REVIEW_MESSAGE @"review_message"
 #define REVIEW_PRODUCT_ID @"review_product_id"

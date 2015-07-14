@@ -658,6 +658,7 @@
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
     
     self.scrollview.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    [self.scrollview scrollRectToVisible:CGRectMake(0, _textviewhobbies.superview.frame.origin.y, self.scrollview.bounds.size.width, 100) animated:YES];
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {

@@ -90,6 +90,8 @@
     TokopediaNetworkManager *_networkManager;
     TKPDPhotoPicker *_photoPicker;
     LoadingView *_loadingView;
+    
+    UIAlertView *_loadingAlert;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -136,6 +138,8 @@
     
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    
+    _loadingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -269,6 +273,7 @@
     _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
                                               pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
     _photoPicker.delegate = self;
+    _photoPicker.data = @{@"indexOfCell" : indexPath};
 }
 
 -(void)didTapInvoiceButton:(UIButton *)button atIndexPath:(NSIndexPath *)indexPath
@@ -364,6 +369,14 @@
     //cell.editButton.enabled = (detailOrder.has_user_bank == 1);
     cell.uploadProofButton.hidden = ([[detailOrder.button objectForKey:API_ORDER_BUTTON_UPLOAD_PROOF_KEY] integerValue] != 1);
     cell.indexPath = indexPath;
+    
+    
+    if([cell.indexPath isEqual:[_dataInput objectForKey:@"indexOfCell"]]) {
+        [cell.actUploadProof startAnimating];
+    } else {
+        [cell.actUploadProof stopAnimating];
+        [cell.actUploadProof setHidesWhenStopped:YES];
+    }
     
     return cell;
 }
@@ -709,8 +722,10 @@
 
 -(void)failedUploadObject:(id)object
 {
-    
+    [_dataInput removeAllObjects];
+    [_tableView reloadData];
 }
+
 
 #pragma mark - Request Cancel Payment Confirmation
 -(void)cancelProof
@@ -786,14 +801,19 @@
         [timer invalidate];
         _tableView.tableFooterView = nil;
         [_act stopAnimating];
+        [_dataInput removeAllObjects];
+        [_tableView reloadData];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureProof:error];
         [_refreshControl endRefreshing];
         [timer invalidate];
         _tableView.tableFooterView = nil;
         [_act stopAnimating];
+        [_dataInput removeAllObjects];
+        [_tableView reloadData];
     }];
     
+
     [_operationQueue addOperation:_requestProof];
 }
 
@@ -816,6 +836,7 @@
 
 -(void)requestProcessProof:(id)object
 {
+    [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -833,6 +854,7 @@
                     NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                     [self showStickyAlertErrorMessage:array];
                 }
+
             }
         }
         else{
@@ -874,7 +896,10 @@
     NSString *imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME]?:@"";
 
     [_dataInput setObject:imageName forKey:API_FILE_NAME_KEY];
+    [_dataInput setObject:[userInfo objectForKey:@"indexOfCell"] forKey:@"indexOfCell"];
 
+    [_loadingAlert show];
+    
     RequestUploadImage *requestImage = [RequestUploadImage new];
     requestImage.generateHost = _generateHost;
     requestImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:userInfo};
@@ -883,6 +908,7 @@
     requestImage.delegate = self;
     TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     requestImage.paymentID = selectedConfirmation.payment_id?:@"";
+    [_tableView reloadData];
     [requestImage configureRestkitUploadPhoto];
     [requestImage requestActionUploadPhoto];
 }

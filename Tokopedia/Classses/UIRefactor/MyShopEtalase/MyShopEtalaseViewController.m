@@ -14,7 +14,7 @@
 #import "MyShopEtalaseDetailViewController.h"
 #import "MyShopEtalaseEditViewController.h"
 #import "GeneralList1GestureCell.h"
-
+#import "MGSwipeButton.h"
 #import "URLCacheController.h"
 
 @interface MyShopEtalaseViewController ()
@@ -622,19 +622,35 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    switch (button.tag) {
-        case 11:
-        {
-            //delete
-            [self deleteListAtIndexPath:indexpath];
-            break;
-        }
-        default:
-            break;
-    }
+-(NSArray *)swipeTableCell:(MGSwipeTableCell *)cell swipeButtonsForDirection:(MGSwipeDirection)direction
+             swipeSettings:(MGSwipeSettings *)swipeSettings expansionSettings:(MGSwipeExpansionSettings *)expansionSettings {
+    swipeSettings.transition = MGSwipeTransitionStatic;
+    expansionSettings.buttonIndex = -1;
     
+    if (direction == MGSwipeDirectionRightToLeft) {
+
+        expansionSettings.fillOnTrigger = YES;
+        expansionSettings.threshold = 1.1;
+        
+        NSIndexPath *indexPath = ((GeneralList1GestureCell *) cell).indexpath;
+        
+        CGFloat padding = 15;
+        
+        UIColor *redColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
+
+        MGSwipeButton *trash = [MGSwipeButton buttonWithTitle:@"Hapus"
+                                              backgroundColor:redColor
+                                                      padding:padding
+                                                     callback:^BOOL(MGSwipeTableCell *sender) {
+                                                         [self deleteListAtIndexPath:indexPath];
+                                                         return YES;
+                                                     }];
+        
+        trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
+        
+        return @[trash];
+    }
+    return nil;
 }
 
 #pragma mark - Etalase Detail Delegate

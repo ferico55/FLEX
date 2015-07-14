@@ -100,6 +100,14 @@
     
     _footerLabel.attributedText = [[NSAttributedString alloc] initWithString:_footerLabel.text
                                                                   attributes:attributes];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:)
+               name:UIKeyboardWillShowNotification
+             object:nil];
+    [nc addObserver:self selector:@selector(keyboardWillHide:)
+               name:UIKeyboardWillHideNotification
+             object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -480,6 +488,19 @@
 
 - (void)cancelCamera:(id)camera {
     
+}
+
+#pragma mark - Keyboard Notification
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+    self.tableView.contentInset = UIEdgeInsetsZero;
 }
 
 @end

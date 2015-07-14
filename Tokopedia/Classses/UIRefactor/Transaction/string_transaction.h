@@ -358,6 +358,7 @@ typedef enum
 #define FORMAT_CART_PARTIAL_STR_CART_SUMMARY_KEY @"%zd-%zd-%zd"
 #define FORMAT_TOKO_TUTUP @"Toko tutup sampai tanggal : %@"
 #define FORMAT_SUCCESS_BUY @"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran %@"
+#define FORMAT_TOKO_TUTUP @"Toko tutup sampai tanggal : %@"
 
 #define ERRORMESSAGE_NULL_ADDRESS @"Alamat harus diisi."
 #define ERRORMESSAGE_NULL_CART_SHIPPING_AGENT @"Agen kurir harus diisi."

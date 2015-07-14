@@ -5,7 +5,7 @@
 //  Created by Tokopedia PT on 12/15/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "AlertPriceNotificationViewController.h"
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
@@ -22,6 +22,9 @@
 #import "TxOrderTabViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusViewController.h"
+
+#import "TKPDTabViewController.h"
+#import "InboxTicketViewController.h"
 
 
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
@@ -76,12 +79,26 @@
         _reviewCountLabel.text = _notification.result.inbox.inbox_review;
         [self updateLabelAppearance:_reviewCountLabel];
     }
-
+    
     if ([_notification.result.resolution integerValue] > 0) {
         _resolutionCenterCountLabel.text = [_notification.result.resolution stringValue];
         [self updateLabelAppearance:_resolutionCenterCountLabel];
     }
     
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
+    
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
+    
+    if([_notification.result.inbox.inbox_ticket integerValue] > 0) {
+        _customerCareCountLabel.text = _notification.result.inbox.inbox_ticket;
+        [self updateLabelAppearance:_customerCareCountLabel];
+    }
     
     // Payment section
     if([_notification.result.sales.sales_new_order integerValue] > 0) {
@@ -104,7 +121,7 @@
     } else {
         _shippingStatus.hidden = YES;
     }
-
+    
     // Purchase section
     if([_notification.result.purchase.purchase_reorder integerValue] > 0) {
         _orderCancelledLabel.text = _notification.result.purchase.purchase_reorder;
@@ -135,7 +152,6 @@
     } else {
         _receiveConfirmation.hidden = YES;
     }
-
     
 }
 
@@ -163,7 +179,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 4;
+            numberOfRows = 6;
             break;
             
         case 1:
@@ -178,6 +194,20 @@
             break;
     }
     return numberOfRows;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    // Background color
+    view.tintColor = [UIColor clearColor];
+    
+    // Text Color
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    //    [header.textLabel setTextColor:[UIColor whiteColor]];
+    
+    // Another way to set the background color
+    // Note: does not preserve gradient effect of original header
+    // header.contentView.backgroundColor = [UIColor blackColor];
 }
 
 
@@ -232,17 +262,17 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 4, self.view.frame.size.width, 30)];
-    titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:15];
     titleLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1];
     if (section == 0) titleLabel.text = @"Kotak Masuk";
     else if (section == 1) titleLabel.text = @"Penjualan";
     else if (section == 2) titleLabel.text = @"Pembelian";
-
+    
     UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 33, self.view.frame.size.width, 1)];
     borderView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:0.5f];
-
+    
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34)];
-    headerView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+    headerView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:0.7];
     [headerView addSubview:titleLabel];
     [headerView addSubview:borderView];
     
@@ -256,7 +286,7 @@
     CGRect messageFrame = label.frame;
     messageFrame.origin.x -= 18;
     label.frame = messageFrame;
-
+    
     UIView *redCircle = [[UIView alloc] initWithFrame:CGRectMake(40, 17, 8, 8)];
     redCircle.backgroundColor = [UIColor colorWithRed:229.0/255.0 green:28.0/255.0 blue:35.0/255.0 alpha:1];
     redCircle.layer.cornerRadius = 4;
@@ -289,7 +319,7 @@
                 [controller setViewControllers:vcs];
                 controller.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:controller];
-
+                
                 break;
             }
             case 1 : {
@@ -308,9 +338,9 @@
                 [controller setSelectedIndex:2];
                 [controller setViewControllers:vcs];
                 controller.hidesBottomBarWhenPushed = YES;
-
+                
                 [self.delegate pushViewController:controller];
-
+                
                 break;
             }
                 
@@ -335,11 +365,43 @@
             }
             case 3:
             {
+                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+                [self.delegate pushViewController:alertPriceNotificationViewController];
+                break;
+            }
+            case 4:
+            {
+                TKPDTabViewController *controller = [TKPDTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                
+                InboxTicketViewController *allInbox = [InboxTicketViewController new];
+                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+                allInbox.delegate = controller;
+                
+                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+                unreadInbox.delegate = controller;
+                
+                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+                closedInbox.delegate = controller;
+                
+                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+                
+                [self.delegate pushViewController:controller];
+                break;
+            }
+                
+            case 5 : {
                 InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
                 vc.hidesBottomBarWhenPushed = YES;
                 [self.delegate pushViewController:vc];
                 break;
             }
+
             default:
                 break;
         }

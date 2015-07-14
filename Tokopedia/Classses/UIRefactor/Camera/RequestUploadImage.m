@@ -82,19 +82,15 @@
     NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA]?:@"";
     NSString* imageName = [[photo objectForKey:DATA_CAMERA_IMAGENAME] lowercaseString]?:@"";
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"0";
-    NSInteger userID = _generateHost.result.generated_host.user_id;
-    
-    NSInteger newAdd = (_isNotUsingNewAdd)?0:1;
-    
-    NSDictionary *param;
+    NSString *userID = [NSString stringWithFormat:@"%d", _generateHost.result.generated_host.user_id];
+    NSString *newAdd = [NSString stringWithFormat:@"%d", _isNotUsingNewAdd?0:1];
 
-    param = @{ kTKPDDETAIL_APIACTIONKEY: _action,
-                         kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
-                         kTKPD_USERIDKEY : @(userID),
-                         @"product_id" : _productID?:@"",
-                         @"new_add" : @(newAdd),
-                         @"payment_id" : _paymentID?:@""
-                         //@"is_temp" :@(1)
+    NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY           : _action,
+                             kTKPDGENERATEDHOST_APISERVERIDKEY  : serverID,
+                             kTKPD_USERIDKEY                    : userID,
+                             @"product_id"                      : _productID?:@"",
+                             @"new_add"                         : newAdd,
+                             @"payment_id"                      : _paymentID?:@""
                          };
     
     
@@ -146,18 +142,12 @@
                BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                
                if (status) {
-                   if (images.message_error) {
-                       NSArray *array = images.message_error;
-                       [self showErrorMessages:array?:@[]];
-                       [_delegate failedUploadObject:_imageObject];
-                   }
-                   else if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
+                   if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
                        [_delegate successUploadObject:_imageObject withMappingResult:images];
                    }
                    else
                    {
                        NSArray *array = images.message_error;
-                       
                       [self showErrorMessages:array?:@[]];
                        [_delegate failedUploadObject:_imageObject];
                    }
@@ -170,17 +160,16 @@
            }
            else
            {
-               if (!([error code] == NSURLErrorCancelled)){
-                   NSString *errorDescription = error.localizedDescription;
-                   UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:_delegate cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                   [errorAlert show];
-                   [_delegate failedUploadObject:_imageObject];
-               }
+               [self showErrorMessages:@[]];
+               [_delegate failedUploadObject:_imageObject];
            }
        }
        else
        {
-           [self showErrorMessages:@[]];
+           if ([error code] == NSURLErrorNotConnectedToInternet)
+               [self showErrorMessages:@[@"Tidak ada koneksi internet"]];
+           else
+               [self showErrorMessages:@[]];
            [_delegate failedUploadObject:_imageObject];
        }
                                

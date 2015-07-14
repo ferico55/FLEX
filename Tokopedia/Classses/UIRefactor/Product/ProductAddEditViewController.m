@@ -109,13 +109,13 @@
     TKPDPhotoPicker *_photoPicker;
     UIAlertView *_alertProcessing;
     
-    GeneralTableViewController *_catalogVC;
-    
     CatalogList *_selectedCatalog;
     
     BOOL _isCatalog;
     
     NSString *_productNameBeforeCopy;
+    
+    BOOL _isDoneRequestCatalog;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
@@ -135,6 +135,8 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *addImageButtons;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumbProductImageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *defaultImageLabels;
+@property (weak, nonatomic) IBOutlet UILabel *catalogLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actCatalog;
 
 @property (weak, nonatomic) IBOutlet UIView *productNameViewCell;
 
@@ -168,9 +170,6 @@
     _section1TableViewCell = [NSArray sortViewsWithTagInArray:_section1TableViewCell];
     _section2TableViewCell = [NSArray sortViewsWithTagInArray:_section2TableViewCell];
     _section3TableViewCell = [NSArray sortViewsWithTagInArray:_section3TableViewCell];
-    
-    _catalogVC = [GeneralTableViewController new];
-    _catalogVC.delegate = self;
     
     _dataInput = [NSMutableDictionary new];
     _errorMessage = [NSMutableArray new];
@@ -596,6 +595,7 @@
                     cell.detailTextLabel.text = departmentTitle;
                 }
                 if (indexPath.row == BUTTON_PRODUCT_CATALOG) {
+                    _catalogLabel.text = _selectedCatalog.catalog_name?:@"Pilih Katalog";
                     cell.detailTextLabel.text = _selectedCatalog.catalog_name?:@"Pilih Katalog";
                 }
                 break;
@@ -714,13 +714,17 @@
                 }
                 case BUTTON_PRODUCT_CATALOG:
                 {
-                    NSMutableArray *catalogs =[NSMutableArray new];
-                    for (CatalogList *catalog in _catalog.result.list) {
-                        [catalogs addObject:catalog.catalog_name];
+                    if (_isDoneRequestCatalog) {
+                        GeneralTableViewController *catalogVC = [GeneralTableViewController new];
+                        catalogVC.delegate = self;
+                        NSMutableArray *catalogs =[NSMutableArray new];
+                        for (CatalogList *catalog in _catalog.result.list) {
+                            [catalogs addObject:catalog.catalog_name];
+                        }
+                        catalogVC.objects = [catalogs copy];
+                        catalogVC.selectedObject = _selectedCatalog.catalog_name?:@"";
+                        [self.navigationController pushViewController:catalogVC animated:YES];
                     }
-                    _catalogVC.objects = [catalogs copy];
-                    _catalogVC.selectedObject = _selectedCatalog.catalog_name?:@"";
-                    [self.navigationController pushViewController:_catalogVC animated:YES];
                 }
                     break;
                 case BUTTON_PRODUCT_MIN_ORDER:
@@ -885,7 +889,8 @@
         
     }
     if (tag == TAG_REQUEST_LIST_CATALOG) {
-        
+        _isDoneRequestCatalog = NO;
+        [_actCatalog startAnimating];
     }
 }
 
@@ -910,6 +915,8 @@
             _isCatalog = NO;
             [_tableView reloadData];
         }
+        _isDoneRequestCatalog = YES;
+        [_actCatalog stopAnimating];
     }
 }
 
@@ -1469,6 +1476,7 @@
     NSString *imageID = _productImageIDs[index];
     NSString *defaultImage = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?imagePath:imageID;
     [_dataInput setObject:defaultImage forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
+    [_dataInput setObject:[NSString stringWithFormat:@"%ld", (long)index] forKey:API_PRODUCT_IMAGE_DEFAULT_INDEX];
 }
 
 -(void)setProductImageName:(NSString *)name atIndex:(NSInteger)index
@@ -1981,7 +1989,7 @@
     
     if ([product.product_min_order integerValue]>=1000) {
         isValid = NO;
-        [_errorMessage addObject:@"Maksimal untuk minimal pembelian 1 produk adalah 999"];
+        [_errorMessage addObject:@"Maksimal minimum pembelian untuk 1 produk adalah 999"];
     }
     
     if (!isValidImage) {

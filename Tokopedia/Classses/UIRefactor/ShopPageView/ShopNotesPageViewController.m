@@ -27,11 +27,16 @@
 
 #import "NoResultView.h"
 
-@interface ShopNotesPageViewController () <UITableViewDataSource,
-UITableViewDelegate,
-TKPDTabInboxTalkNavigationControllerDelegate,
-ShopPageHeaderDelegate,
-UIAlertViewDelegate, MGSwipeTableCellDelegate>
+@interface ShopNotesPageViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UIAlertViewDelegate,
+    TKPDTabInboxTalkNavigationControllerDelegate,
+    ShopPageHeaderDelegate,
+    MGSwipeTableCellDelegate,
+    MyShopNoteDetailDelegate
+>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -206,6 +211,8 @@ UIAlertViewDelegate, MGSwipeTableCellDelegate>
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NotesList *list = _list[indexPath.row];
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
+    vc.delegate = self;
+    vc.noteList = list;
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
                 kTKPDNOTES_APINOTEIDKEY:list.note_id,
@@ -498,14 +505,12 @@ UIAlertViewDelegate, MGSwipeTableCellDelegate>
     return self;
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark - Note detail delegate
+
+- (void)successEditNote:(NotesList *)noteList {
+    NSInteger index = [_list indexOfObject:noteList];
+    [_list replaceObjectAtIndex:index withObject:noteList];
+    [self.table reloadData];
+}
 
 @end

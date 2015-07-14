@@ -13,6 +13,8 @@
 #import "SettingPasswordViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
+#define CStringMatchChangePass @"Kata sandi baru tidak sesuai dengan konfirmasi sandi"
+
 
 #pragma mark - Setting Password View Controller
 @interface SettingPasswordViewController () <UITextFieldDelegate, TokopediaNetworkManagerDelegate>

@@ -243,62 +243,55 @@
     NSString *prov = _selectedProvince[DATA_ID_KEY]?:list.location_province_id;
     NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
     NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
-    //NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax;
-    
-    NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
     
     if (!addressname || [addressname isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:@"Nama Alamat harus diisi."];
     }
-    if (!address || [address isEqualToString:@""]) {
+    else if (!address || [address isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:@"Alamat harus diisi."];
     }
-    if (!postcode||postcode ==0 ) {
+    else if (!postcode||postcode ==0 ) {
         isValid = NO;
         [messages addObject:@"Kode Pos harus diisi."];
     }
-    if (!prov||[prov isEqualToString:@""]) {
+    else if (!prov||[prov isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:@"Provinsi harus diisi."];
     }
-    if (!city||[city isEqualToString:@""]) {
+    else if (!city||[city isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:@"Kota harus diisi."];
     }
-    if (!district||[district isEqualToString:@""]) {
+    else if (!district||[district isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:@"Kecamatan harus diisi."];
     }
-    if (!phone || [phone isEqualToString:@""]) {
-        isValid = NO;
-        [messages addObject:@"Telepon harus diisi."];
-    }
-    else
-    {
-        if (phoneCharCount<6) {
-            isValid = NO;
-            [messages addObject:@"Phone minimum 6 Character"];
-        }
-    }
-    if (!email) {
+    else if (!email) {
         isValid = NO;
         [messages addObject:@"Email harus diisi."];
     }
-    else{
-        if (![email isEmail]) {
-            isValid = NO;
-            [messages addObject:@"Format email harus benar."];
-        }
+    else if (![email isEmail]) {
+        isValid = NO;
+        [messages addObject:@"Format email harus benar."];
     }
     
+    NSString *regex = @"[0-9]*";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    if ([predicate evaluateWithObject:phone]) {
+        if (phone.length > 0 && phone.length < 6) {
+            [messages addObject:@"Telepon terlalu pendek, minimum 6 karakter."];
+        }
+    } else {
+        [messages addObject:@"Telepon harus berupa angka."];
+    }
+
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
         [alert show];
     }
 
-    
     return  isValid;
 }
 
@@ -439,12 +432,36 @@
                                                                         object:nil
                                                                       userInfo:userinfo];
                     
-                    Address *address = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
-                    address.location_city_name = _selectedCity[DATA_NAME_KEY]?:@"";
-                    address.location_district_name = _selectedDistrict[DATA_NAME_KEY]?:@"";
-                    address.location_province_name = _selectedProvince[DATA_NAME_KEY]?:@"";
-                    [_delegate successEditAddress:address];
+                    if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
 
+                        Address *address = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+                        
+                        NSString *addressName = [userinfo objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:address.location_address_name;
+                        NSString *streetAddress = [userinfo objectForKey:kTKPDSHOP_APIADDRESSKEY]?:address.location_address;
+                        NSInteger postalCode = [[userinfo objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[address.location_postal_code integerValue];
+                        NSString *districtID = _selectedDistrict[@"ID"]?:address.location_district_id?:@"";
+                        NSString *cityID = _selectedCity[@"ID"]?:address.location_city_id?:@"";
+                        NSString *provinceID = _selectedProvince[@"ID"]?:address.location_province_id?:@"";
+                        NSString *phone = [userinfo objectForKey:kTKPDSHOP_APIPHONEKEY]?:address.location_phone?:@"";
+                        NSString *email = [userinfo objectForKey:kTKPDSHOP_APIEMAILKEY]?:address.location_email?:@"";
+                        NSString *fax = [userinfo objectForKey:kTKPDSHOP_APIFAXKEY]?:address.location_fax?:@"";
+                    
+                        address.location_city_name = _selectedCity[DATA_NAME_KEY]?:@"";
+                        address.location_district_name = _selectedDistrict[DATA_NAME_KEY]?:@"";
+                        address.location_province_name = _selectedProvince[DATA_NAME_KEY]?:@"";
+                        address.location_address_name = addressName;
+                        address.location_address = streetAddress;
+                        address.location_postal_code = [NSString stringWithFormat:@"%d", postalCode];
+                        address.location_district_id = districtID;
+                        address.location_city_id = cityID;
+                        address.location_province_id = provinceID;
+                        address.location_phone = phone;
+                        address.location_email = email;
+                        address.location_fax = fax;
+                        
+                        [self.delegate successEditAddress:address];
+                    }
+                    
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
                 }

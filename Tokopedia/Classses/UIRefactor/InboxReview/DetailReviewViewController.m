@@ -12,6 +12,7 @@
 #import "GeneralAction.h"
 #import "string_inbox_review.h"
 #import "NavigateViewController.h"
+#import "ViewLabelUser.h"
 
 #import "TokopediaNetworkManager.h"
 
@@ -26,7 +27,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
-@property (weak, nonatomic) IBOutlet UILabel *userNamelabel;
+@property (weak, nonatomic) IBOutlet UILabel *sellerLabel;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *userButton;
 @property (weak, nonatomic) IBOutlet UILabel *productNamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *timelabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
@@ -128,6 +130,8 @@
     [_productView addGestureRecognizer:tapProductGes];
     [_productView setUserInteractionEnabled:YES];
     
+    _sellerLabel.layer.cornerRadius = 2.0;
+    
 }
 
 
@@ -147,7 +151,11 @@
 - (void)initReviewData {
     _review = _data;
     
-    [_userNamelabel setText:_review.review_user_name];
+//    [_userNamelabel setText:_review.review_user_name];
+    [_userButton setLabelBackground:_review.review_user_label];
+    [_userButton setText:_review.review_user_name];
+    [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
+    
     [_timelabel setText:_review.review_create_time];
     
     if([_review.review_response.response_message isEqualToString:@"0"]) {
@@ -239,6 +247,7 @@
             frameRespond.size.height = scrollContent.bounds.size.height-frameRespond.origin.y;
         }
         _respondView.frame = frameRespond;
+
     }
     
     if(![[NSString stringWithFormat:@"%@", _userManager.getShopId]  isEqualToString:_review.review_shop_id]) {

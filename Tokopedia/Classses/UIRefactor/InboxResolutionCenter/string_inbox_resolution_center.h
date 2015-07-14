@@ -110,6 +110,8 @@ typedef enum {
 #define API_RESOLUTION_BY_KEY @"resolution_by"
 #define API_BY_CUSTOMER_KEY @"by_customer"
 #define API_BY_SELLER_KEY @"by_seller"
+#define API_BY_USER_LABEL @"user_label"
+#define API_BY_USER_LABEL_ID @"user_label_id"
 
 #pragma mark - Resolution Shop
 #define API_RESOLUTION_SHOP_KEY @"resolution_shop"

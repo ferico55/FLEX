@@ -214,7 +214,7 @@ typedef enum TagRequest {
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [_networkManager requestCancel];
+//    [_networkManager requestCancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -296,7 +296,13 @@ typedef enum TagRequest {
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
     [_messages_selected removeAllObjects];
+    if(_messages==nil || _messages.count==0) {
+        _isnodata = YES;
+        _table.tableFooterView = _noresult;
+    }
     [_table endUpdates];
+    
+
     
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
@@ -334,6 +340,24 @@ typedef enum TagRequest {
             ((InboxMessageCell*)cell).indexpath = indexPath;
             
             
+            //Set user label
+//            if([list.user_label isEqualToString:CPenjual]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPenjual];
+//            }
+//            else if([list.user_label isEqualToString:CPembeli]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPembeli];
+//            }
+//            else if([list.user_label isEqualToString:CAdministrator]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagAdministrator];
+//            }
+//            else if([list.user_label isEqualToString:CPengguna]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPengguna];
+//            }
+//            else {
+//                [((InboxMessageCell*)cell).message_title setColor:-1];//-1 is set to empty string
+//            }
+            [((InboxMessageCell*)cell).message_title setLabelBackground:list.user_label];
+            
             if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
                 if([list.message_read_status isEqualToString:@"1"]) {
                     ((InboxMessageCell*)cell).is_unread.hidden = YES;
@@ -341,23 +365,18 @@ typedef enum TagRequest {
                     ((InboxMessageCell*)cell).is_unread.hidden = NO;
                 }
             }
-                        
+            
+
+            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
             thumb = [UIImageView circleimageview:thumb];
-            if(![list.user_image isEqualToString:@"0"]) {
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                
-
-                thumb.image = nil;
-                [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            thumb.image = nil;
+            [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    [thumb setImage:image];
+                [thumb setImage:image];
 #pragma clang diagnostic pop
-                } failure:nil];
-            } else {
-                [thumb setImage:[UIImage imageNamed:@"default-boy.png"]];
-            }
+            } failure:nil];
         }
         
         return cell;
@@ -932,7 +951,9 @@ typedef enum TagRequest {
                                                      KTKPDMESSAGE_MESSAGEREPLYKEY,
                                                      KTKPDMESSAGE_INBOXIDKEY,
                                                      KTKPDMESSAGE_USERIMAGEKEY,
-                                                     KTKPDMESSAGE_JSONDATAKEY
+                                                     KTKPDMESSAGE_JSONDATAKEY,
+                                                     KTKPDMESSAGE_USER_LABEL,
+                                                     KTKPDMESSAGE_USER_LABEL_ID
                                                      ]];
         
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
