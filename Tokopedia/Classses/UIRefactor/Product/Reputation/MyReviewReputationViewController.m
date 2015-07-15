@@ -165,6 +165,7 @@
     cell.getBtnInvoice.tag = indexPath.row;
     cell.getBtnReview.tag = indexPath.row;
     cell.getLabelUser.tag = indexPath.row;
+    cell.getImageFlagReview.tag = indexPath.row;
     DetailMyInboxReputation *tempReputation = arrList[indexPath.row];
 
     //Check is request give rating or not
@@ -226,6 +227,7 @@
         RKObjectMapping *detailReputationMapping = [RKObjectMapping mappingForClass:[DetailMyInboxReputation class]];
         [detailReputationMapping addAttributeMappingsFromArray:@[CRevieweeScoreStatus,
                                                                  CShopID,
+                                                                 CShowBookmark,
                                                                  CBuyerScrore,
                                                                  CRevieweePicture,
                                                                  CRevieweeName,
@@ -446,6 +448,43 @@
         webViewController.strTitle = @"";
         [self.navigationController pushViewController:webViewController animated:YES];
     }
+}
+
+- (void)actionFlagReview:(id)sender {
+    DetailMyInboxReputation *object = arrList[((UIView *)sender).tag];
+//    1 buyer & seller sudah mengisi
+//    2 buyer sudah mengisi
+//    3 buyer belum mengisi
+//    4 seller & buyer sudah mengisi
+//    5 seller sudah mengisi
+//    6 seller belum mengisi
+    
+    UIAlertView *alertView;
+    if([object.reviewee_score_status isEqualToString:@"6"]) {
+        alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penjual belum memberikan Feedback untuk anda" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alertView show];
+    }
+    else if([object.reviewee_score_status isEqualToString:@"3"]) {
+        alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penasaran\nIsi Feedback Pembeli dulu ya!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alertView show];
+    }
+    else if([object.reviewee_score_status isEqualToString:@"5"]) {
+        NSString *strRespond = @"Tidak Puas";
+        if(object.seller_score!=nil && ![object.seller_score isEqualToString:@""]) {
+            if([object.seller_score isEqualToString:CRevieweeScroreNetral]) {
+                strRespond = @"Cukup Puas";
+            }
+            else if([object.seller_score isEqualToString:CRevieweeScroreGood]) {
+                strRespond = @"Puas";
+            }
+        }
+        else {
+            return;
+        }
+        
+        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Wow!\nReview dari Pembeli:\"%@\"", strRespond] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alertView show];
+    } 
 }
 
 - (void)actionFooter:(id)sender {

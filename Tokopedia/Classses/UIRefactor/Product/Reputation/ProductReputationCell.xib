@@ -244,16 +244,16 @@
                 <outlet property="viewSeparatorKualitas" destination="Rr7-Ag-VPT" id="XIv-JK-7gp"/>
                 <outlet property="viewStarAkurasi" destination="3Jn-uw-P78" id="hqm-7W-B7R"/>
                 <outlet property="viewStarKualitas" destination="Xgt-4G-bim" id="ApR-dd-Zw4"/>
-                <outletCollection property="arrImageKualitas" destination="C0j-3m-BYe" id="dmm-Mq-nit"/>
-                <outletCollection property="arrImageKualitas" destination="KBb-RV-WhF" id="4Te-2j-diF"/>
-                <outletCollection property="arrImageKualitas" destination="FxE-HQ-F8S" id="FYy-1f-7qw"/>
-                <outletCollection property="arrImageKualitas" destination="P0a-Jp-11o" id="oDc-PM-zSv"/>
-                <outletCollection property="arrImageKualitas" destination="sKr-sA-xrb" id="3hs-Cy-dsH"/>
-                <outletCollection property="arrImageAkurasi" destination="Ied-nm-fot" id="Ior-ls-MTj"/>
-                <outletCollection property="arrImageAkurasi" destination="NVc-l9-kqF" id="dlL-ZR-eeW"/>
-                <outletCollection property="arrImageAkurasi" destination="Pa3-le-UCb" id="tu7-5G-zyc"/>
-                <outletCollection property="arrImageAkurasi" destination="ybI-m6-Agj" id="yxR-h4-VsP"/>
-                <outletCollection property="arrImageAkurasi" destination="zEu-l5-U5Z" id="2i1-ni-klV"/>
+                <outletCollection property="arrImageAkurasi" destination="ybI-m6-Agj" id="btb-Os-ZSK"/>
+                <outletCollection property="arrImageAkurasi" destination="Pa3-le-UCb" id="ty2-hP-F8H"/>
+                <outletCollection property="arrImageAkurasi" destination="Ied-nm-fot" id="1fe-Ag-5Ve"/>
+                <outletCollection property="arrImageAkurasi" destination="NVc-l9-kqF" id="ZhG-Oq-yzz"/>
+                <outletCollection property="arrImageAkurasi" destination="zEu-l5-U5Z" id="0AV-Hx-XqL"/>
+                <outletCollection property="arrImageKualitas" destination="KBb-RV-WhF" id="N1n-2L-Vsy"/>
+                <outletCollection property="arrImageKualitas" destination="C0j-3m-BYe" id="16i-ps-nlb"/>
+                <outletCollection property="arrImageKualitas" destination="FxE-HQ-F8S" id="13O-GC-bEK"/>
+                <outletCollection property="arrImageKualitas" destination="P0a-Jp-11o" id="ssU-hZ-iZq"/>
+                <outletCollection property="arrImageKualitas" destination="sKr-sA-xrb" id="DPQ-1C-5vR"/>
             </connections>
             <point key="canvasLocation" x="416" y="318"/>
         </tableViewCell>

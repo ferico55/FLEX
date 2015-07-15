@@ -18,4 +18,5 @@
 
 @property (nonatomic, unsafe_unretained) DetailMyInboxReputation *detailMyInboxReputation;
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription;
+- (void)reloadTable;
 @end

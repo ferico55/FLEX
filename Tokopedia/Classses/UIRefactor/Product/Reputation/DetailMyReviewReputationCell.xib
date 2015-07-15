@@ -187,6 +187,7 @@
                 <outlet property="viewContentAction" destination="XdZ-2m-URX" id="tS6-WZ-Qhe"/>
                 <outlet property="viewContentStar" destination="2lt-hu-Dyk" id="Y5k-t1-7Cm"/>
                 <outlet property="viewKualitas" destination="dyV-XP-UR4" id="eG3-wJ-l9v"/>
+                <outlet property="viewSeparatorContentAction" destination="Pei-nM-ZOd" id="shy-WZ-TQK"/>
                 <outletCollection property="arrImgKualitas" destination="Yq0-Vj-JnU" id="WJg-Gk-vjL"/>
                 <outletCollection property="arrImgKualitas" destination="BVn-0f-kvD" id="gKH-XQ-lTG"/>
                 <outletCollection property="arrImgKualitas" destination="OXJ-Sr-1b1" id="LG0-bW-p0N"/>

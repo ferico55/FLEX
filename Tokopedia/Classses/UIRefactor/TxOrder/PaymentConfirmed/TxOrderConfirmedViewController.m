@@ -90,6 +90,8 @@
     TokopediaNetworkManager *_networkManager;
     TKPDPhotoPicker *_photoPicker;
     LoadingView *_loadingView;
+    
+    UIAlertView *_loadingAlert;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -136,6 +138,8 @@
     
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    
+    _loadingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -816,6 +820,7 @@
 
 -(void)requestProcessProof:(id)object
 {
+    [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -875,6 +880,8 @@
 
     [_dataInput setObject:imageName forKey:API_FILE_NAME_KEY];
 
+    [_loadingAlert show];
+    
     RequestUploadImage *requestImage = [RequestUploadImage new];
     requestImage.generateHost = _generateHost;
     requestImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:userInfo};

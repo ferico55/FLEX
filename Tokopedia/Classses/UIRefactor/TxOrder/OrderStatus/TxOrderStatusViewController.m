@@ -75,6 +75,8 @@
     
     TxOrderStatusList *_selectedTrackOrder;
     LoadingView *_loadingView;
+    
+    RequestCancelResolution *_requestCancelComplain;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -171,6 +173,7 @@
     }
     _networkManager.delegate = self;
 }
+
 
 -(void)viewDidDisappear:(BOOL)animated
 {
@@ -413,17 +416,17 @@
         else
             title2 = @"Lacak";
     }
-    if ([self isShowButtonConfirmOrder:order]) {
-        if ([title1 isEqualToString:@""])
-            title1 = @"Sudah Terima";
-        else
-            title2 = @"Sudah Terima";
-    }
     if ([self isShowButtonComplainOrder:order]) {
         if ([title1 isEqualToString:@""])
             title1 = @"Komplain";
         else
             title2 = @"Komplain";
+    }
+    if ([self isShowButtonConfirmOrder:order]) {
+        if ([title1 isEqualToString:@""])
+            title1 = @"Sudah Terima";
+        else
+            title2 = @"Sudah Terima";
     }
     
     UIButton *button1 = (UIButton*)cell.twoButtons[0];
@@ -446,7 +449,7 @@
         imageName = @"icon_order_check-01.png";
     }
     if ([button.titleLabel.text isEqualToString:@"Komplain"]) {
-        imageName = @"icon_cancel_grey.png";
+        imageName = @"icon_komplain.png";
     }
     return imageName;
 }
@@ -1059,18 +1062,31 @@
 -(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderStatusList *order = _list[indexPath.row];
-    RequestCancelResolution *request = [RequestCancelResolution new];
+    RequestCancelResolution *request = [self requestCancelComlpain];
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     request.resolutionID = [resolutionID integerValue];
     request.delegate = self;
+    request.resolution = resolution;
     [request doRequest];
+}
+
+-(RequestCancelResolution*)requestCancelComlpain
+{
+    if (!_requestCancelComplain) {
+        _requestCancelComplain = [RequestCancelResolution new];
+        _requestCancelComplain.delegate = self;
+    }
+    
+    return _requestCancelComplain;
 }
 
 -(void)successCancelComplain:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
 {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus delegate:self];
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil membatalkan komplain"] delegate:self];
     [alert show];
+    [_list removeObject:resolution];
+    [_tableView reloadData];
     [self refreshRequest];
 }
 
@@ -1181,7 +1197,8 @@
        orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
        orderStatus == ORDER_DELIVERED ||
        orderStatus == ORDER_DELIVERY_FAILURE||
-        orderStatus == ORDER_SHIPPING_WAITING)
+       orderStatus == ORDER_SHIPPING_WAITING||
+       orderStatus == ORDER_DELIVERED_DUE_LIMIT)
     {
         
         if((orderStatus == ORDER_SHIPPING ||

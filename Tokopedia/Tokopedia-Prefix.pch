@@ -5,6 +5,10 @@
 //
 
 #import <Availability.h>
+#ifndef Constant
+#define Constant
+#define degreeToRadian(x) (M_PI*(x) /180)
+
 #define CStringLastCheckVerify @"lastCheckVerify"
 #define CStringMSISDNIsVerify @"msisdnIsVerify"
 #define CStringMSISDN @"msisdn"
@@ -17,6 +21,11 @@
 #define CRevieweeScroreBad @"-1"
 #define CRevieweeScroreNetral @"1"
 #define CRevieweeScroreGood @"2"
+#define CPriceAlertCell @"PriceAlertCell"
+#define CDetailPriceAlertTableViewCell @"DetailPriceAlertTableViewCell"
+#define CStringFailedInServer @"Server error"
+#define CStringNoConnection @"Tidak ada koneksi internet"
+#endif
 
 enum emoticonTag
 {

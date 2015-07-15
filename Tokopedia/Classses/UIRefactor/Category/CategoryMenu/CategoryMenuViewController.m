@@ -56,6 +56,7 @@
     _menu = [NSMutableArray new];
 
     _isBeingPresented = self.navigationController.isBeingPresented;
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     if (_isBeingPresented) {
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                    style:UIBarButtonItemStyleBordered
@@ -63,14 +64,14 @@
                                                                   action:@selector(tap:)];
         button.tag = 10;
         self.navigationItem.leftBarButtonItem = button;
-    } else {
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-        self.navigationItem.backBarButtonItem = button;
     }
-    
+
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                               style:UIBarButtonItemStyleBordered
+                                                              target:self
+                                                              action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = button;
+
     /** set max data per page request **/
     _table.delegate = self;
     _table.dataSource = self;
@@ -96,6 +97,16 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = barButtonItem;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -265,14 +276,14 @@
             else{
                 [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"Semua Kategori %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]]}];
             }
-            NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",parentid]];
+            NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" and status=1 order by weight",parentid]];
             
             [_menu addObjectsFromArray:data];
             
             /** ceck is have a child or not **/
             for (int i = 1 ; i<_menu.count; i++) {
                 NSInteger childparentid = [_menu[i][kTKPDCATEGORY_DATADIDKEY]integerValue];
-                NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",childparentid]];
+                NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" and status=1 order by weight",childparentid]];
                 if (data == nil || data.count == 0) {
                     [_menu[i] setObject:@(YES) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
                 }
@@ -281,14 +292,14 @@
             }
         }
         else{
-            NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",parentid]];
+            NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" and status=1 order by weight",parentid]];
             
             [_menu addObjectsFromArray:data];
             
             /** ceck is have a child or not **/
             for (int i = 0 ; i<_menu.count; i++) {
                 NSInteger childparentid = [_menu[i][kTKPDCATEGORY_DATADIDKEY]integerValue];
-                NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",childparentid]];
+                NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" and status=1 order by weight",childparentid]];
                 NSMutableDictionary *menu = [NSMutableDictionary new];
                 [menu addEntriesFromDictionary: _menu[i]];
                 if (data == nil || data.count == 0) {

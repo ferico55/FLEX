@@ -10,7 +10,7 @@
 #define CStringKomentar @"Komentar"
 
 @implementation CustomBtnSkip : UIButton
-@synthesize isLewati;
+@synthesize isLewati, isLapor;
 @end
 
 
@@ -19,6 +19,8 @@
 - (void)awakeFromNib {
 //    self.contentView.backgroundColor = [UIColor clearColor];
 //    self.backgroundColor = [UIColor clearColor];
+    
+    _strRole = @"";
     lblDesc = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
     lblDesc.delegate = self;
     [viewContent addSubview:lblDesc];
@@ -47,6 +49,7 @@
     
     //set content action
     viewContentAction.frame = CGRectMake(0, viewContentStar.frame.origin.y+viewContentStar.bounds.size.height, viewContentStar.bounds.size.width, viewContentAction.isHidden?0:CHeightContentAction);
+    viewSeparatorContentAction.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewSeparatorContentAction.bounds.size.height);
     btnKomentar.frame = CGRectMake(CPaddingTopBottom, CPaddingTopBottom, 100, btnKomentar.bounds.size.height);
     btnUbah.frame = CGRectMake(viewContentStar.bounds.size.width-100-CPaddingTopBottom, btnKomentar.frame.origin.y, 100, btnUbah.bounds.size.height);
     
@@ -116,19 +119,33 @@
     }];
 
 
+    [self setHiddenRating:NO];
     //check skipable
     if([viewModel.review_is_skipable isEqualToString:@"1"]) {
         [btnUbah setTitle:@"Lewati" forState:UIControlStateNormal];
         [btnUbah setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btnUbah.isLewati = YES;
+        btnUbah.isLapor = NO;
+        btnUbah.hidden = NO;
     }
-    else if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0) {
+    else if(viewModel.review_message!=nil && viewModel.review_message.length>0 && ![viewModel.review_message isEqualToString:@"0"] && [viewModel.review_is_allow_edit isEqualToString:@"1"] && ![_strRole isEqualToString:@"2"]) {
         [btnUbah setTitle:@"Ubah" forState:UIControlStateNormal];
         [btnUbah setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
         btnUbah.isLewati = NO;
+        btnUbah.isLapor = NO;
+        btnUbah.hidden = NO;
+    }
+    else if([_strRole isEqualToString:@"2"]) {
+        [btnUbah setTitle:@"Lapor" forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+        btnUbah.isLewati = NO;
+        btnUbah.isLapor = YES;
+        btnUbah.hidden = NO;
     }
     else {
+        btnUbah.isLapor = NO;
         btnUbah.isLewati = NO;
+        btnUbah.hidden = YES;
     }
     
     //Set description
@@ -139,16 +156,21 @@
     tempLblRect.size.height = tempSizeDesc.height;
     lblDesc.frame = tempLblRect;
     
-    if(viewModel.review_response == nil) {
+    if(viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) {
+        btnKomentar.hidden = NO;
         [self setHiddenRating:YES];
         btnKomentar.enabled = YES;
         [btnKomentar setTitle:@"Beri Review" forState:UIControlStateNormal];
         [btnKomentar setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     }
-    else {
+    else if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0) {
+        btnKomentar.hidden = NO;
         btnKomentar.enabled = NO;
-        [btnKomentar setTitle:[NSString stringWithFormat:@"%@ %@", @"3", CStringKomentar] forState:UIControlStateNormal];
+        [btnKomentar setTitle:[NSString stringWithFormat:@"1 %@", CStringKomentar] forState:UIControlStateNormal];
         [btnKomentar setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+    else {
+        btnKomentar.hidden = YES;
     }
 }
 

@@ -19,5 +19,8 @@
 @interface ReportViewController : UIViewController
 
 @property (weak, nonatomic) id<ReportViewControllerDelegate> delegate;
-
+@property (nonatomic, strong) NSString *strProductID;
+@property (nonatomic, strong) NSString *strCommentTalkID;
+@property (nonatomic, strong) NSString *strShopID;
+@property (nonatomic, strong) NSString *strReviewID;
 @end

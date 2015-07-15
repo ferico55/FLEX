@@ -55,7 +55,9 @@
 
 
 
-@implementation GalleryViewController
+@implementation GalleryViewController {
+    BOOL useNetwork;
+}
 @synthesize currentIndex = _currentIndex;
 @synthesize thumbsView = _thumbsView;
 @synthesize useThumbnailView = _useThumbnailView;
@@ -80,6 +82,10 @@
 	return self;
 }
 
+- (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex usingNetwork:(BOOL)usingNetwork {
+    useNetwork = usingNetwork;
+    return [self initWithPhotoSource:photoSrc withStartingIndex:startIndex];
+}
 
 - (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex
 {
@@ -100,23 +106,48 @@
         lblTitle.backgroundColor = [UIColor clearColor];
         lblTitle.textColor = [UIColor whiteColor];
         
+        UIView *contentHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 70)];
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient.frame = contentHeader.bounds;
+        gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3f] CGColor], (id)[[UIColor clearColor] CGColor], nil];
+        [contentHeader.layer insertSublayer:gradient atIndex:0];
+        [contentHeader addSubview:lblTitle];
+        [contentHeader addSubview:btnCancel];
+        [self.view addSubview:contentHeader];
         
-        [self.view addSubview:lblTitle];
-        [self.view addSubview:btnCancel];
+        
+        UIView *contentDownload;
         if(self.canDownload) {
             btnDownload = [UIButton buttonWithType:UIButtonTypeCustom];
             btnDownload.titleLabel.font = [UIFont fontWithName:CFont_Gotham_book size:13.0f];
             [btnDownload addTarget:self action:@selector(actionDownload:) forControlEvents:UIControlEventTouchUpInside];
-            btnDownload.backgroundColor = [UIColor lightGrayColor];
-            btnDownload.frame = CGRectMake(([[UIScreen mainScreen] bounds].size.width-100)/2.0f, [[UIScreen mainScreen] bounds].size.height-40, 100, 30);
+            btnDownload.backgroundColor = [UIColor whiteColor];
             btnDownload.layer.cornerRadius = 5.0f;
+            btnDownload.layer.shadowRadius = 3.0f;
+            btnDownload.layer.shadowOpacity = 1.0f;
+            btnDownload.layer.shadowColor = [UIColor blackColor].CGColor;
+            btnDownload.layer.shadowOffset = CGSizeMake(0, 0);
             btnDownload.layer.masksToBounds = YES;
             btnDownload.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth;
             [btnDownload setTitle:@"Download" forState:UIControlStateNormal];
-            [btnDownload setTitleColor:btnCancel.titleLabel.textColor forState:UIControlStateNormal];
+            [btnDownload setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            
+            
+            contentDownload = [[UIView alloc] initWithFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-70, [[UIScreen mainScreen] bounds].size.width, 70)];
+            btnDownload.frame = CGRectMake((contentDownload.bounds.size.width-100)/2.0f, 30, 100, 30);
+
+            CAGradientLayer *gradient = [CAGradientLayer layer];
+            gradient.frame = contentDownload.bounds;
+            gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3f] CGColor], nil];
+            [contentDownload.layer insertSublayer:gradient atIndex:0];
+            [self.view addSubview:contentDownload];
+            [contentDownload addSubview:btnDownload];
         }
         
-        [self.view addSubview:btnDownload];
+        [self.view addSubview:contentDownload];
+        
+        
+        
         
         UISwipeGestureRecognizer *swipeBottom = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(actionCancel:)];
         swipeBottom.direction = UISwipeGestureRecognizerDirectionDown | UISwipeGestureRecognizerDirectionUp;
@@ -362,6 +393,14 @@
         if([_photoSource respondsToSelector:@selector(photoGallery:captionForPhotoAtIndex:)])
         {
             lblTitle.text = [_photoSource photoGallery:self captionForPhotoAtIndex:_currentIndex];
+//            lblTitle.text = @"Testong aj";
+            if(lblTitle.text.length>0 && lblTitle.layer.shadowOpacity != 0.5) {
+                lblTitle.layer.shadowColor = [UIColor blackColor].CGColor;
+                lblTitle.layer.shadowOffset = CGSizeMake(0, 0);
+                lblTitle.layer.shadowOpacity = 0.8;
+                lblTitle.layer.shadowRadius = 3.0;
+                lblTitle.layer.masksToBounds = NO;
+            }
         }
     }
 }
@@ -706,8 +745,14 @@
 	GalleryPhoto *photo;
 	UIImage *thumbImage;
     UIImage *fullImage;
-    thumbImage = fullImage = [_photoSource photoGallery:index];
-    photo = [[GalleryPhoto alloc] initWithThumbnail:thumbImage fullImage:fullImage delegate:self];
+    
+    if(useNetwork) {
+        photo = [[GalleryPhoto alloc] initWithThumbnailUrl:[_photoSource photoGallery:self urlForPhotoSize:FGalleryPhotoSizeFullsize atIndex:index] fullsizeUrl:[_photoSource photoGallery:self urlForPhotoSize:FGalleryPhotoSizeFullsize atIndex:index] delegate:self];
+    }
+    else {
+        thumbImage = fullImage = [_photoSource photoGallery:index];
+        photo = [[GalleryPhoto alloc] initWithThumbnail:thumbImage fullImage:fullImage delegate:self];
+    }
 	photo.tag = index;
 	[_photoLoaders setObject:photo forKey: [NSString stringWithFormat:@"%i", (int)index]];
 	

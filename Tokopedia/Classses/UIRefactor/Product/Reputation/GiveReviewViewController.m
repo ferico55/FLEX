@@ -6,11 +6,16 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import "DetailReputationReview.h"
+#import "DetailMyReviewReputationViewController.h"
 #import "GeneralAction.h"
 #import "GiveReviewViewController.h"
 #import "TKPDTextView.h"
 #import "TokopediaNetworkManager.h"
+#define CStringTidakAdaPerubahan @"Tidak ada perubahan review"
+#define CStringAndaTidakDapatMenurunkanRate @"Anda tidak dapat memberi penurunan rating"
+#define CStringPleaseFillReviewRating @"Please rate akurasi dan kualitas"
 #define CPlaceHolderTulisReview @"Tulis review disini..."
+#define CStringPleaseFillReview @"Please fill your review with min 30 character."
 #define CTagSubmitReputation 1
 
 @interface GiveReviewViewController ()<TokopediaNetworkManagerDelegate>
@@ -88,9 +93,9 @@
         [tempImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureKualitas:)]];
     }
     
-    isEdit = !(_detailReputationView.review_response==nil || _detailReputationView.review_response.response_message==nil || _detailReputationView.review_response.response_message.length == 0);
+    isEdit = !(_detailReputationView.review_message==nil || [_detailReputationView.review_message isEqualToString:@"0"]);
     if(isEdit) {
-        txtDes.text = _detailReputationView.review_response.response_message;
+        txtDes.text = _detailReputationView.review_message;
         
         //Set Akurasi
         nRateAkurasi = (_detailReputationView.product_accuracy_point==nil || _detailReputationView.product_accuracy_point.length==0)? 0:[_detailReputationView.product_accuracy_point intValue];
@@ -100,7 +105,7 @@
         
         
         //Set kualitas
-        nRateKualitas = (_detailReputationView.product_rating_point==nil || _detailReputationView.product_rating_point.length==0)? 0:[_detailReputationView.product_rating_point intValue];
+        nRateKualitas = (_detailReputationView.product_service_point==nil || _detailReputationView.product_service_point.length==0)? 0:[_detailReputationView.product_service_point intValue];
         if(nRateKualitas != 0) {
             [self setKualitasStar];
         }
@@ -127,6 +132,26 @@
     if([txtDes.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length==0 || [txtDes.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length<30) {
         return NO;
     }
+    return YES;
+}
+
+- (BOOL)successValidateRating {
+    if(isEdit) {
+        if([_detailReputationView.product_accuracy_point intValue]>nRateAkurasi || [_detailReputationView.product_service_point intValue]>nRateKualitas) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringAndaTidakDapatMenurunkanRate] delegate:self];
+            [stickyAlertView show];
+            return NO;
+        }
+    }
+    else {
+        if(nRateAkurasi==0 && nRateKualitas==0) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringPleaseFillReviewRating] delegate:self];
+            [stickyAlertView show];
+            
+            return NO;
+        }
+    }
+    
     return YES;
 }
 
@@ -160,11 +185,22 @@
 #pragma mark - Action
 - (void)actionSubmit:(id)sender {
     if(! [self successValidate]) {
-#define CStringPleaseFillReview @"Please fill your review with min 30 character."
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringPleaseFillReview] delegate:self];
         [stickyAlertView show];
         
         return;
+    }
+    else if(! [self successValidateRating]) {
+        return;
+    }
+    else if(isEdit) {
+        if([_detailReputationView.review_message isEqualToString:txtDes.text] && [_detailReputationView.product_service_point intValue]==nRateKualitas && [_detailReputationView.product_accuracy_point intValue]==nRateAkurasi) {
+
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringTidakAdaPerubahan] delegate:self];
+            [stickyAlertView show];
+            
+            return;
+        }
     }
     
     [self isLoading:YES];
@@ -204,12 +240,12 @@
 
 
 - (void)gestureAkurasi:(UITapGestureRecognizer *)sender {
-    nRateAkurasi = sender.view.tag;
+    nRateAkurasi = (int)sender.view.tag;
     [self setAkurasiStar];
 }
 
 - (void)gestureKualitas:(UITapGestureRecognizer *)sender {
-    nRateKualitas = sender.view.tag;
+    nRateKualitas = (int)sender.view.tag;
     [self setKualitasStar];
 }
 
@@ -280,13 +316,34 @@
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-//    NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
-//    id stat = [resultDict objectForKey:@""];
+    NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
+    id stat = [resultDict objectForKey:@""];
     
     if(tag == CTagSubmitReputation) {
         [self isLoading:NO];
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[isEdit? @"Berhasil memperbaharui reputasi review":@"Berhasil mengisi reputasi review"] delegate:self];
-        [stickyAlertView show];
+        GeneralAction *action = stat;
+        
+        if([action.result.is_success isEqualToString:@"1"]) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[isEdit? @"Anda telah berhasil mengubah review":@"Anda telah berhasil mengisi review"] delegate:self];
+            [stickyAlertView show];
+            
+            _detailReputationView.viewModel.review_message = _detailReputationView.review_message = [txtDes.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            _detailReputationView.viewModel.product_service_point = _detailReputationView.product_service_point = [NSString stringWithFormat:@"%d", nRateKualitas];
+            _detailReputationView.viewModel.product_accuracy_point = _detailReputationView.product_accuracy_point = [NSString stringWithFormat:@"%d", nRateAkurasi];
+            [_delegate reloadTable];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else {
+            StickyAlertView *stickyAlertView;
+            if(action.message_error!=nil && action.message_error.count>0) {
+                stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error delegate:self];
+            }
+            else {
+                stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[isEdit? @"Gagal memperbaharui reputasi review":@"Gagal mengisi reputasi review"] delegate:self];
+            }
+            
+            [stickyAlertView show];
+        }
     }
 }
 

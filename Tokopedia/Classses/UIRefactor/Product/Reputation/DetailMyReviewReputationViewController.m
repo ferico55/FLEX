@@ -16,14 +16,21 @@
 #import "NoResultView.h"
 #import "ProductDetailReputationViewController.h"
 #import "Paging.h"
+#import "ReportViewController.h"
+#import "SkipReview.h"
+#import "SkipReviewResult.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 
 #define CCellIdentifier @"cell"
 #define CGetListReputationReview @"get_list_reputation_review"
+#define CSkipReputationReview @"skip_reputation_review"
+#define CStringGagalLewatiReview @"Gagal lewati review"
+#define CStringSuccessLewatiReview @"Berhasil lewati review"
 #define CTagListReputationReview 1
+#define CTagSkipReputationReview 2
 
-@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell>
+@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate>
 
 @end
 
@@ -32,16 +39,20 @@
     NSMutableArray *arrList;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSString *strUriNext;
-    int page;
+    int page, tempTagSkip;
     NSMutableParagraphStyle *style;
     
+    UIView *shadowBlockUI;
+    UIActivityIndicatorView *activityIndicator;
     MyReviewReputationCell *myReviewReputationCell;
+    DetailReputationReview *tempDetailReputationReview;
     LoadingView *loadingView;
     NoResultView *noResultView;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     page = 0;
+    tempTagSkip = -1;
     
     [self initTable];
     [self loadMoreData:YES];
@@ -92,6 +103,7 @@
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
     cell.getLabelDesc.tag = indexPath.row;
     cell.getBtnKomentar.tag = indexPath.row;
+    cell.strRole = _detailMyInboxReputation.role;
     [cell setView:detailReputationReview.viewModel];
     
     return cell;
@@ -101,8 +113,9 @@
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
     int height = 0;
     
-    if(YES)//Hidden star
+    if(detailReputationReview.review_message!=nil && detailReputationReview.review_message.length>0 && ![detailReputationReview.review_message isEqualToString:@"0"]) {
         height = CHeightContentStar;
+    }
     
     TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width-(CPaddingTopBottom*4), 0)];
     [self setPropertyLabelDesc:tempLabel];
@@ -121,9 +134,16 @@
     
     
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
-    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
-    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+    if(detailReputationReview.viewModel==nil || detailReputationReview.viewModel.review_message==nil || [detailReputationReview.viewModel.review_message isEqualToString:@"0"]) {
+        UIView *tempView = [UIView new];
+        tempView.tag = indexPath.row;
+        
+        [self actionBeriReview:tempView];
+    }
+    else {
+        DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+        [self redirectToProductDetailReputationReview:detailReputationReview];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -150,8 +170,54 @@
     tableContent.tableHeaderView = myReviewReputationCell.contentView;
 }
 
+- (void)blockUI:(BOOL)block {
+    if(block){
+        shadowBlockUI = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.navigationController.view.bounds.size.height)];
+        shadowBlockUI.backgroundColor = [UIColor blackColor];
+        shadowBlockUI.alpha = 0.5f;
+        [self.navigationController.view addSubview:shadowBlockUI];
+        
+        
+        activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        activityIndicator.color = [UIColor whiteColor];
+        [activityIndicator startAnimating];
+        activityIndicator.center = CGPointMake(self.navigationController.view.bounds.size.width/2.0f, self.navigationController.view.bounds.size.height/2.0f);
+        [self.navigationController.view addSubview:activityIndicator];
+    }
+    else {
+        [activityIndicator stopAnimating];
+        activityIndicator = nil;
+        
+        [shadowBlockUI removeFromSuperview];
+        shadowBlockUI = nil;
+    }
+}
 
 #pragma mark - Method
+- (void)redirectToGiveReviewViewController:(int)tag {
+    GiveReviewViewController *giveReviewViewController = [GiveReviewViewController new];
+    DetailReputationReview *detailReputationReview = arrList[tag];
+    
+    giveReviewViewController.delegate = self;
+    giveReviewViewController.detailReputationView = detailReputationReview;
+    [self.navigationController pushViewController:giveReviewViewController animated:YES];
+}
+
+- (void)reloadTable {
+    [tableContent reloadData];
+}
+
+- (void)redirectToProductDetailReputationReview:(DetailReputationReview *)detailReputationReview {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    NSDictionary *auth = [_userManager getUserLoginData];
+    
+    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
+    productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+}
+
+
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
     lblDesc.backgroundColor = [UIColor clearColor];
     lblDesc.textAlignment = NSTextAlignmentLeft;
@@ -171,17 +237,13 @@
 }
 
 - (TokopediaNetworkManager *)getNetworkManager:(int)tag {
-    if(tag == CTagListReputationReview) {
-        if(tokopediaNetworkManager == nil) {
-            tokopediaNetworkManager = [TokopediaNetworkManager new];
-            tokopediaNetworkManager.delegate = self;
-            tokopediaNetworkManager.tagRequest = tag;
-
-            return tokopediaNetworkManager;
-        }
+    if(tokopediaNetworkManager == nil) {
+        tokopediaNetworkManager = [TokopediaNetworkManager new];
+        tokopediaNetworkManager.delegate = self;
     }
+    tokopediaNetworkManager.tagRequest = tag;
     
-    return nil;
+    return tokopediaNetworkManager;
 }
 
 - (void)loadMoreData:(BOOL)load {
@@ -202,6 +264,11 @@
         return @{@"action":CGetListReputationReview,
                  @"reputation_id":_detailMyInboxReputation.reputation_id};
     }
+    else if(tag == CTagSkipReputationReview)
+        return @{@"action":CSkipReputationReview,
+                 @"reputation_id":tempDetailReputationReview.reputation_id,
+                 @"shop_id":tempDetailReputationReview.shop_id,
+                 @"product_id":tempDetailReputationReview.product_id};
     
     return nil;
 }
@@ -209,6 +276,9 @@
 - (NSString*)getPath:(int)tag {
     if(tag == CTagListReputationReview) {
         return @"inbox-reputation.pl";
+    }
+    else if(tag == CTagSkipReputationReview) {
+        return @"action/reputation.pl";
     }
     
     return nil;
@@ -308,6 +378,26 @@
         
         return objectManager;
     }
+    else if(tag == CTagSkipReputationReview) {
+        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectMapping *skipReviewMapping = [RKObjectMapping mappingForClass:[SkipReview class]];
+        [skipReviewMapping addAttributeMappingsFromArray:@[CStatus,
+                                                          CServerProcessTime,
+                                                          CMessageError,
+                                                          CMessageStatus]];
+        
+        RKObjectMapping *skipReviewResultMapping = [RKObjectMapping mappingForClass:[SkipReviewResult class]];
+        [skipReviewResultMapping addAttributeMappingsFromArray:@[CReputationReviewCounter, CIsSuccess, CShowBookmark]];
+        
+        //Add Relation
+        [skipReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResult toKeyPath:CResult withMapping:skipReviewResultMapping]];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:skipReviewMapping method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        [objectManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return objectManager;
+    }
     
     return nil;
 }
@@ -319,6 +409,10 @@
     if(tag == CTagListReputationReview) {
         MyReviewReputation *reviewReputationn = (MyReviewReputation *)stat;
         return reviewReputationn.status;
+    }
+    else if(tag == CTagSkipReputationReview) {
+        SkipReview *skipReview = (SkipReview *)stat;
+        return skipReview.status;
     }
     
     return nil;
@@ -357,6 +451,31 @@
         }
         [tableContent reloadData];
     }
+    else if(tag == CTagSkipReputationReview) {
+        [self blockUI:NO];
+        tempDetailReputationReview = nil;
+        
+        StickyAlertView *stickyAlertView;
+        SkipReview *skipReview = (SkipReview *)stat;
+        if(skipReview.result.is_success!=nil && [skipReview.result.is_success isEqualToString:@"1"]) {
+            stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessLewatiReview] delegate:self];
+            [stickyAlertView show];
+            
+            //Load Data again
+            page = 0;
+            strUriNext = @"";
+            [arrList removeAllObjects];
+            [tableContent reloadData];
+            
+            _detailMyInboxReputation.unassessed_reputation_review = _detailMyInboxReputation.viewModel.unassessed_reputation_review = [NSString stringWithFormat:@"%d", [_detailMyInboxReputation.unassessed_reputation_review intValue]-1];
+            [self loadMoreData:YES];
+            [[self getNetworkManager:CTagListReputationReview] doRequest];
+        }
+        else {
+            stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:((skipReview.message_error!=nil && skipReview.message_error.count>0)?skipReview.message_error:@[CStringGagalLewatiReview]) delegate:self];
+            [stickyAlertView show];
+        }
+    }
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
@@ -374,6 +493,12 @@
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == CTagListReputationReview) {
         tableContent.tableFooterView = [self getLoadView].view;
+    }
+    else if(tag == CTagSkipReputationReview) {
+        [self blockUI:NO];
+        tempDetailReputationReview = nil;
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringGagalLewatiReview] delegate:self];
+        [stickyAlertView show];
     }
 }
 
@@ -414,11 +539,7 @@
 
 - (void)actionBeriReview:(id)sender
 {
-    GiveReviewViewController *giveReviewViewController = [GiveReviewViewController new];
-    DetailReputationReview *detailReputationReview = arrList[((UIButton *) sender).tag];
-
-    giveReviewViewController.detailReputationView = detailReputationReview;
-    [self.navigationController pushViewController:giveReviewViewController animated:YES];
+    [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
 }
 
 - (void)actionProduct:(id)sender {
@@ -426,14 +547,57 @@
 }
 
 - (void)actionUbah:(id)sender {
+    if(((CustomBtnSkip *) sender).isLewati) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Apakah anda yakin melewati review ini?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+        alertView.tag = CTagSkipReputationReview;
+        [alertView show];
+        tempTagSkip = ((UIButton *) sender).tag;
+    }
+    else if(((CustomBtnSkip *) sender).isLapor) {
+        ReportViewController *reportViewController = [ReportViewController new];
+        DetailReputationReview *detailReputationReview = arrList[((UIButton *) sender).tag];
 
+        reportViewController.delegate = self;
+        reportViewController.strProductID = detailReputationReview.product_id;
+        reportViewController.strShopID = detailReputationReview.shop_id;
+        reportViewController.strReviewID = detailReputationReview.review_id;
+        [self.navigationController pushViewController:reportViewController animated:YES];
+    }
+    else {
+        [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
+    }
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
     DetailReputationReview *detailReputationReview = arrList[label.tag];
-    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
-    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+    [self redirectToProductDetailReputationReview:detailReputationReview];
+}
+
+
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == CTagSkipReputationReview) {
+        if(buttonIndex == 1) {
+            tempDetailReputationReview = arrList[tempTagSkip];
+            tempTagSkip = -1;
+            [tokopediaNetworkManager requestCancel];
+            [self loadMoreData:NO];
+            [self blockUI:YES];
+            [[self getNetworkManager:CTagSkipReputationReview] doRequest];
+        }
+        else {
+            tempDetailReputationReview = nil;
+            tempTagSkip = -1;
+        }
+    }
+}
+
+
+#pragma mark - ReportView Delegate
+- (NSString *)getPath
+{
+    return @"action/review.pl";
 }
 @end

@@ -13,6 +13,7 @@
 #import "URLCacheController.h"
 #import "TKPDTextView.h"
 #import "UserAuthentificationManager.h"
+#import "DetailShopResult.h"
 
 #pragma mark - MyShopNoteDetailViewController
 
@@ -54,7 +55,6 @@
     BOOL _isNewNoteReturnableProduct;
 }
 
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *titleNoteTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeNoteLabel;
 @property (weak, nonatomic) IBOutlet UITextView *contentNoteTextView;
@@ -133,7 +133,6 @@
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
             self.title = kTKPDTITLE_NEW_NOTE;
             _barbuttonedit.tag = 11;
-            _titleNoteTextField.hidden = NO;
             [_titleNoteTextField becomeFirstResponder];
             _timeNoteLabel.hidden = NO;
             break;
@@ -154,12 +153,12 @@
             self.title = [_data objectForKey:kTKPDNOTES_APINOTETITLEKEY];
             _barbuttonedit.tag = 12;
             _barbuttonedit.enabled = NO;
-            _titleNoteTextField.hidden = YES;
+            _titleNoteTextField.enabled = NO;
             break;
         case NOTES_RETURNABLE_PRODUCT:
             self.title = @"Tambah Catatan";
             _barbuttonedit.tag = 11;
-            _titleNoteTextField.hidden = YES;
+            _titleNoteTextField.enabled = NO;
             break;
         default:
             break;
@@ -281,11 +280,13 @@
                 MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
                 vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 vc.delegate = self;
+                vc.noteList = _noteList;
                 vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
                             kTKPDDETAIL_DATANOTEKEY : _note?:@"",
                             kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@(0),
-                            kTKPDNOTES_APINOTESTATUSKEY : [_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY]
+                            kTKPDNOTES_APINOTESTATUSKEY : [_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY],
+                            kTKPD_SHOPIDKEY : [_data objectForKey:kTKPD_SHOPIDKEY]?:@"",
                             };
                 
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -477,26 +478,9 @@
                 }
                 _barbuttonedit.enabled = YES;
                 
-                _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                
-                NSString *note = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
                 style.lineSpacing = 6.0;
                 
-                NSDictionary *titleAttributes = @{NSParagraphStyleAttributeName : style,
-                                                  NSFontAttributeName : [UIFont fontWithName:@"GothamMedium" size:15]};
-                
-                _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:note]
-                                                                             attributes:titleAttributes];
-                _titleLabel.numberOfLines = 2;
-                [_titleLabel sizeToFit];
-            
-                
-                
-                _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
-                _timeNoteLabel.hidden = NO;
-                _titleNoteTextField.hidden = NO;
 
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 
@@ -504,6 +488,7 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 
                 NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
+                contentNote = [contentNote stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
                 
                 if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
                     _isNewNoteReturnableProduct = YES;
@@ -522,15 +507,9 @@
                     [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
                 }];
                 _contentNoteTextView.attributedText = attributedString;
-
-                if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
-                    _barbuttonedit.enabled = YES;
-                    _barbuttonedit.tintColor = [UIColor whiteColor];
-                }
                 
-                if (_type == NOTES_RETURNABLE_PRODUCT && [_note.result.detail.notes_title isEqual:@"0"])
+                if (_type == NOTES_RETURNABLE_PRODUCT)
                 {
-                    _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
                     _titleNoteTextField.enabled = NO;
                     _barbuttonedit.enabled = YES;
                     
@@ -553,32 +532,18 @@
                                            day, monthString, year, currentTime];
                     [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
                 }
-                
-                switch (_type) {
-                    case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
-                        _titleNoteTextField.hidden = NO;
-                        _titleLabel.hidden = YES;
-                        break;
-                    case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
-                        _titleNoteTextField.hidden = NO;
-                        _titleLabel.hidden = YES;
-                        break;
-                    case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
-                        _titleNoteTextField.hidden = NO;
-                        _titleLabel.hidden = YES;
-                        break;
-                    case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
-                        _titleNoteTextField.hidden = YES;
-                        _titleLabel.hidden = NO;
-                        break;
-                    case NOTES_RETURNABLE_PRODUCT:
-                        _titleNoteTextField.hidden = YES;
-                        _titleLabel.hidden = NO;
-                        _titleLabel.text = @"Kebijakan Pengembalian Produk";
-                        _titleLabel.hidden = NO;
-                        break;
-                    default:
-                        break;
+                else
+                {
+                    if (_type == kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY) {
+                        _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
+                        _timeNoteLabel.hidden = NO;
+                    }
+                    _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
+                }
+
+                if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
+                    _barbuttonedit.enabled = YES;
+                    _barbuttonedit.tintColor = [UIColor whiteColor];
                 }
             }
         } else {
@@ -753,8 +718,16 @@
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                     [alert show];
                 
-                    if ([_delegate respondsToSelector:@selector(successEditNote:text:)]) {
-                        [_delegate successEditNote:_titleNoteTextField.text text:_contentNoteTextView.text];
+                    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+                        if ([_delegate respondsToSelector:@selector(successCreateNewNote)]) {
+                            [_delegate successCreateNewNote];
+                        }
+                    } else {
+                        if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
+                            _noteList.note_title = _titleNoteTextField.text;
+                            _noteList.note_status = _contentNoteTextView.text;
+                            [_delegate successEditNote:_noteList];
+                        }
                     }
                     
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -857,7 +830,9 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
-                NSData *data = [_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding];
+                NSString *note = _note.result.detail.notes_content;
+                note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+                NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
                                                                                                       options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                                                                                            documentAttributes:nil
@@ -896,7 +871,9 @@
                 style.lineSpacing = 6.0;
                 
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                NSData *data = [_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding];
+                NSString *note = _note.result.detail.notes_content;
+                note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+                NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
                                                                                                       options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                                                                                            documentAttributes:nil
@@ -926,8 +903,6 @@
                 _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
                 _titleNoteTextField.enabled = NO;
                 _barbuttonedit.enabled = YES;
-                _titleLabel.text = @"Kebijakan Pengembalian Produk";
-                _titleLabel.hidden = NO;
                 
                 
                 [self setTimeLabelBecomeCurrentDate];
@@ -1003,12 +978,20 @@
 
 #pragma mark - My shop note delegate
 
-- (void)successEditNote:(NSString *)title text:(NSString *)text
+- (void)successEditNote:(NotesList *)noteList
 {
-    _titleLabel.text = title;
-    [_titleLabel sizeToFit];
+    _noteList = noteList;
+ 
+    self.title = _noteList.note_title;
+
+    _titleNoteTextField.text = _noteList.note_title;
+    [_titleNoteTextField sizeToFit];
     
-    _contentNoteTextView.text = text;
+    _contentNoteTextView.text = _noteList.note_status;
+    
+    if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
+        [_delegate successEditNote:_noteList];
+    }
 }
 
 @end

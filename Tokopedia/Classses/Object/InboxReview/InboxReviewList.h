@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSString *review_product_image;
 @property (nonatomic, strong) NSString *review_user_name;
+@property (nonatomic, strong) NSString *review_user_label;
 @property (nonatomic, strong) NSString *review_user_image;
 @property (nonatomic, strong) NSString *review_rate_accuracy;
 @property (nonatomic, strong) NSString *review_message;

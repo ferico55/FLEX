@@ -17,6 +17,7 @@
 #define CShopTotalTransactionCancel @"shop_total_transaction_canceled"
 #define CShopSpeedDesc @"shop_speed_description"
 #define CRateSuccess @"rate_success"
+#define CToolTip @"tooltip"
 @interface ShopStats : NSObject
 
 @property (nonatomic) NSInteger shop_service_rate;
@@ -39,4 +40,5 @@
 @property (nonatomic, strong) NSString *shop_total_transaction_canceled;
 @property (nonatomic, strong) NSString *shop_reputation_score;
 @property (nonatomic, strong) NSString *rate_success;
+@property (nonatomic, strong) NSString *tooltip;
 @end

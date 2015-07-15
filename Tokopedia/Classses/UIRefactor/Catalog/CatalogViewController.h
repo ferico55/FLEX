@@ -18,4 +18,5 @@
 @property (strong, nonatomic) NSString *catalogPrice;
 @property (strong, nonatomic) NSString *catalogImage;
 
+- (void)updatePriceAlert:(NSString *)strPrice;
 @end

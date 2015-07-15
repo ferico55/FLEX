@@ -31,6 +31,7 @@
 #define CUnaccessedReputationReview @"unassessed_reputation_review"
 #define CShowRevieweeSCore @"show_reviewee_score"
 #define CRole @"role"
+#define CShowBookmark @"show_bookmark"
 @class DetailMyInboxReputation, MyReviewReputationViewModel;
 
 @interface DetailMyInboxReputation : NSObject
@@ -46,6 +47,7 @@
 @property (nonatomic, strong) NSString *seller_score;
 @property (nonatomic, strong) NSString *inbox_id;
 @property (nonatomic, strong) NSString *invoice_ref_num;
+@property (nonatomic, strong) NSString *show_bookmark;
 @property (nonatomic, strong) NSString *invoice_uri;
 @property (nonatomic, strong) NSString *read_status;
 @property (nonatomic, strong) NSString *create_time_ago;

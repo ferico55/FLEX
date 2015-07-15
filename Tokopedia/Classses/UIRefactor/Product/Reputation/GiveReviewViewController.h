@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TKPDTextView, DetailReputationReview;
+@class TKPDTextView, DetailReputationReview, DetailMyReviewReputationViewController;
 
 @interface GiveReviewViewController : UIViewController
 {
@@ -20,5 +20,6 @@
     IBOutlet NSLayoutConstraint *constraintHeightScrollView, *constHeightContentView;
 }
 
+@property (nonatomic, unsafe_unretained) DetailMyReviewReputationViewController *delegate;
 @property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputationView;
 @end

@@ -15,6 +15,7 @@
 - (void)actionFooter:(id)sender;
 - (void)actionReviewRate:(id)sender;
 - (void)actionLabelUser:(id)sender;
+- (void)actionFlagReview:(id)sender;
 @end
 
 
@@ -34,6 +35,7 @@
 - (UIButton *)getBtnInvoice;
 - (UIButton *)getBtnFooter;
 - (UIButton *)getBtnReview;
+- (UIImageView *)getImageFlagReview;
 - (IBAction)actionInvoice:(id)sender;
 - (IBAction)actionFooter:(id)sender;
 - (IBAction)actionReview:(id)sender;

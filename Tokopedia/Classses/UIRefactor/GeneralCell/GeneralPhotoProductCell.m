@@ -22,7 +22,10 @@
 }
 
 - (void)awakeFromNib {
-
+    [super awakeFromNib];
+    self.viewcell = [NSArray sortViewsWithTagInArray:_viewcell];
+    self.badges = [NSArray sortViewsWithTagInArray:_badges];
+    self.productImageViews = [NSArray sortViewsWithTagInArray:_productImageViews];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

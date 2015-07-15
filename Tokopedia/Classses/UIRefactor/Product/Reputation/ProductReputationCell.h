@@ -59,7 +59,7 @@
 - (UIButton *)getBtnDisLike;
 - (UIButton *)getBtnChat;
 - (UIButton *)getBtnMore;
-- (void)setLabelUser:(NSString *)strUser withTag:(int)tag;
+- (void)setLabelUser:(NSString *)strUser withUserLabel:(NSString *)strUserLabel;
 - (void)setPercentage:(NSString *)strPercentage;
 - (void)setLabelDate:(NSString *)strDate;
 - (void)setDescription:(NSString *)strDescription;

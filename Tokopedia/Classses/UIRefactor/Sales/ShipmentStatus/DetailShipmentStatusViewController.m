@@ -19,6 +19,7 @@
 
 @interface DetailShipmentStatusViewController ()
 <
+    LabelMenuDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
     OrderDetailDelegate,
@@ -356,11 +357,6 @@
 
 
 #pragma mark - Method
-- (void)copy:(id)sender
-{
-    [UIPasteboard generalPasteboard].string = labelReceiptNumber.text;
-}
-
 - (void)longPress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state==UIGestureRecognizerStateBegan) {
@@ -382,4 +378,10 @@
     [self requestChangeReceiptNumber:receiptNumber];
 }
 
+
+#pragma mark - LabelMenu Delegate
+- (void)duplicate:(int)tag
+{
+    [UIPasteboard generalPasteboard].string = labelReceiptNumber.text;    
+}
 @end

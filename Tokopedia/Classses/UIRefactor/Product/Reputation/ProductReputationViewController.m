@@ -20,6 +20,7 @@
 #import "ProductDetailReputationViewController.h"
 #import "ProductReputationViewController.h"
 #import "Paging.h"
+#import "ReportViewController.h"
 #import "RatingList.h"
 #import "ReviewResponse.h"
 #import "Review.h"
@@ -30,7 +31,7 @@
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -42,10 +43,11 @@
     NoResultView *noResultView;
     NSOperationQueue *_operationQueue, *operationQueueLikeDislike;
     
-    int page;
+    int page, filterStar;
     NSString *strUri;
     Review *review;
     NSMutableArray *arrList;
+    NSDictionary *auth;
     NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
 }
@@ -58,15 +60,33 @@
     page = 0;
     
     [self initTable];
-    tableContent.allowsSelection = NO;
     tableContent.backgroundColor = [UIColor clearColor];
 
     _operationQueue = [NSOperationQueue new];
     operationQueueLikeDislike = [NSOperationQueue new];
     loadingLikeDislike = [NSMutableDictionary new];
     dictLikeDislike = [NSMutableDictionary new];
+    [btnFilterAllTime setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    btnFilter6Month.tag = 0;
+    btnFilterAllTime.tag = 1;
+    
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    auth = [_userManager getUserLoginData];
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
+    
+    //Add gesture to view star
+    viewStarOne.tag = 1;
+    viewStarTwo.tag = 2;
+    viewStarThree.tag = 3;
+    viewStarFour.tag = 4;
+    viewStarFive.tag = 5;
+
+    [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
+    [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
+    [viewStarThree addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
+    [viewStarFour addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
+    [viewStarFive addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -268,6 +288,21 @@
     cell.getBtnRateEmoji.tag = cell.getBtnChat.tag = cell.getBtnDisLike.tag = cell.getBtnLike.tag = cell.getBtnMore.tag = cell.getLabelDesc.tag = indexPath.row;
     DetailReputationReview *detailReputationReview = [arrList objectAtIndex:indexPath.row];
     
+    //Set chat total
+    if(auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]) {
+        [cell.getBtnChat setHidden:NO];
+        if([detailReputationReview.review_response.response_message isEqualToString:@"0"]) {
+            [cell.getBtnChat setTitle:detailReputationReview.review_response.response_message forState:UIControlStateNormal];
+        }
+        else {
+            [cell.getBtnChat setTitle:@"1" forState:UIControlStateNormal];
+        }
+    }
+    else {
+        [cell.getBtnChat setHidden:YES];
+    }
+    
+    
     //Set Image
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailReputationReview.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [cell.getImageProfile setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -310,7 +345,7 @@
     }
     
     //Set data
-    [cell setLabelUser:detailReputationReview.review_user_name withTag:0];
+    [cell setLabelUser:detailReputationReview.review_user_name withUserLabel:detailReputationReview.review_user_label];
     [cell setPercentage:detailReputationReview.review_user_reputation.positive_percentage];
     [cell setLabelDate:detailReputationReview.review_create_time];
     [cell setDescription:detailReputationReview.review_message];
@@ -332,11 +367,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
-    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-    
-    [self mappingAttribute:detailReputationReview];
-    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
-    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+    [self redirectToProductDetailReputation:detailReputationReview];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -354,26 +385,107 @@
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
     DetailReputationReview *detailReputationReview = arrList[label.tag];
-    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-    
-    [self mappingAttribute:detailReputationReview];
-    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
-    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+    [self redirectToProductDetailReputation:detailReputationReview];
 }
 
 
 #pragma mark - Action
 - (void)refreshView:(UIRefreshControl*)refresh
 {
-    NSLog(@"sdf");
     [refresh endRefreshing];
+    
+    [operationQueueLikeDislike cancelAllOperations];
+    [_operationQueue cancelAllOperations];
+    
+    page = 0;
+    strUri = nil;
+    [arrList removeAllObjects];
+    [tableContent reloadData];
+    
+    [self setLoadingView:YES];
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
+}
+
+- (void)actionResetFilter:(id)sender {
+    if(filterStar == 0) {
+        return;
+    }
+     
+    [operationQueueLikeDislike cancelAllOperations];
+    [_operationQueue cancelAllOperations];
+
+    switch (filterStar) {
+        case 1:
+        {
+            viewStarOne.backgroundColor = [UIColor clearColor];
+        }
+            break;
+        case 2:
+        {
+            viewStarTwo.backgroundColor = [UIColor clearColor];
+        }
+            break;
+        case 3:
+        {
+            viewStarThree.backgroundColor = [UIColor clearColor];
+        }
+            break;
+        case 4:
+        {
+            viewStarFour.backgroundColor = [UIColor clearColor];
+        }
+            break;
+        case 5:
+        {
+            viewStarFive.backgroundColor = [UIColor clearColor];
+        }
+            break;
+    }
+    
+    page = 0;
+    filterStar = 0;
+    strUri = nil;
+    [arrList removeAllObjects];
+    [tableContent reloadData];
+    
+    
+    [self setLoadingView:YES];
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 
 - (IBAction)actionFilter6Month:(id)sender {
+    [operationQueueLikeDislike cancelAllOperations];
+    [_operationQueue cancelAllOperations];
+    [btnFilterAllTime setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    [btnFilter6Month setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    
+    page = 0;
+    strUri = nil;
+    [arrList removeAllObjects];
+    [tableContent reloadData];
+    btnFilter6Month.tag = 1;
+    btnFilterAllTime.tag = 0;
+    
+    [self setLoadingView:YES];
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 
 - (IBAction)actionFilterAllTime:(id)sender {
-
+    [operationQueueLikeDislike cancelAllOperations];
+    [_operationQueue cancelAllOperations];
+    [btnFilter6Month setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    [btnFilterAllTime setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    
+    
+    page = 0;
+    strUri = nil;
+    [arrList removeAllObjects];
+    [tableContent reloadData];
+    btnFilter6Month.tag = 0;
+    btnFilterAllTime.tag = 1;
+    
+    [self setLoadingView:YES];
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 
 - (IBAction)actionSegmentedValueChange:(id)sender {
@@ -397,6 +509,93 @@
 
 
 #pragma mark - Method
+- (void)gestureViewStar:(UITapGestureRecognizer *)sender {
+    switch (filterStar) {
+        case 1:
+        {
+            viewStarOne.backgroundColor = [UIColor clearColor];
+        }
+            break;
+        case 2:
+        {
+            viewStarTwo.backgroundColor = [UIColor clearColor];
+        }
+            break;
+        case 3:
+        {
+            viewStarThree.backgroundColor = [UIColor clearColor];
+        }
+            break;
+        case 4:
+        {
+            viewStarFour.backgroundColor = [UIColor clearColor];
+        }
+            break;
+        case 5:
+        {
+            viewStarFive.backgroundColor = [UIColor clearColor];
+        }
+            break;
+    }
+    
+    
+    switch (sender.view.tag) {
+        case 1:
+        {
+            filterStar = 1;
+            viewStarOne.backgroundColor = [UIColor greenColor];
+        }
+            break;
+        case 2:
+        {
+            filterStar = 2;
+            viewStarTwo.backgroundColor = [UIColor greenColor];
+        }
+            break;
+        case 3:
+        {
+            filterStar = 3;
+            viewStarThree.backgroundColor = [UIColor greenColor];
+        }
+            break;
+        case 4:
+        {
+            filterStar = 4;
+            viewStarFour.backgroundColor = [UIColor greenColor];
+        }
+            break;
+        case 5:
+        {
+            filterStar = 5;
+            viewStarFive.backgroundColor = [UIColor greenColor];
+        }
+            break;
+    }
+    
+    
+    //Load data
+    [operationQueueLikeDislike cancelAllOperations];
+    [_operationQueue cancelAllOperations];
+    
+    page = 0;
+    strUri = nil;
+    [arrList removeAllObjects];
+    [tableContent reloadData];
+    
+    [self setLoadingView:YES];
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
+}
+
+
+- (void)redirectToProductDetailReputation:(DetailReputationReview *)detailReputationReview {
+    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
+    
+    [self mappingAttribute:detailReputationReview];
+    productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+}
+
 - (void)showLoginView {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -669,16 +868,14 @@
 }
 
 - (void)actionLike:(id)sender {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    NSDictionary *_auth = [_userManager getUserLoginData];
-    if(_auth) {
+    if(auth) {
         UIButton *btnLike = (UIButton *)sender;
         ProductReputationCell *cell = [self getCell:btnLike];
         DetailReputationReview *detailReputationReview = arrList[btnLike.tag];
         UIButton *btnDislike = [cell getBtnDisLike];
         
         int tagRequest = 3;
-        if([dictLikeDislike objectForKey:detailReputationReview.review_id] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"0"])) {
+        if([dictLikeDislike objectForKey:detailReputationReview.review_id] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"0"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"2"])) {
             tagRequest = 1;
             
             [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
@@ -719,16 +916,14 @@
 }
 
 - (void)actionDisLike:(id)sender {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    NSDictionary *_auth = [_userManager getUserLoginData];
-    if(_auth) {
+    if(auth) {
         UIButton *btnDislike = (UIButton *)sender;
         ProductReputationCell *cell = [self getCell:btnDislike];
         DetailReputationReview *detailReputationReview = arrList[btnDislike.tag];
         UIButton *btnLike = [cell getBtnLike];
 
         int tagRequest = 3;
-        if([dictLikeDislike objectForKey:detailReputationReview.review_id] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"0"])) {
+        if([dictLikeDislike objectForKey:detailReputationReview.review_id] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"0"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"1"])) {
             tagRequest = 2;
             [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
             [UIView animateWithDuration:0.5 animations:^{
@@ -759,15 +954,19 @@
 }
 
 - (void)actionChat:(id)sender {
-    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+//    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
+//    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 
 - (void)actionMore:(id)sender {
-
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:nil otherButtonTitles:CStringLapor, nil];
-    actionSheet.tag = ((UIButton *) sender).tag;
-    [actionSheet showInView:self.view];
+    if(auth) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:nil otherButtonTitles:CStringLapor, nil];
+        actionSheet.tag = ((UIButton *) sender).tag;
+        [actionSheet showInView:self.view];
+    }
+    else {
+        [self showLoginView];
+    }
 }
 
 
@@ -815,17 +1014,37 @@
 
 #pragma mark - UIActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSLog(@"%d", (int)buttonIndex);
+    if(buttonIndex == 0) {
+        ReportViewController *_reportController = [ReportViewController new];
+        _reportController.delegate = self;
+        
+        DetailReputationReview *detailReputationReview = [arrList objectAtIndex:actionSheet.tag];
+        _reportController.strProductID = _strProductID;
+        _reportController.strReviewID = detailReputationReview.review_id;
+        _reportController.strShopID = detailReputationReview.shop_id;
+        [self.navigationController pushViewController:_reportController animated:YES];
+    }
 }
 
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagGetProductReview) {
-        return @{@"action" : @"get_product_review",
-                 @"shop_domain" : _strShopDomain,
-                 @"product_id" : _strProductID,
-                 @"page" : @(page)};
+        NSMutableDictionary *dictFilter = [NSMutableDictionary new];
+        [dictFilter setObject:@"get_product_review" forKey:@"action"];
+        [dictFilter setObject:_strShopDomain forKey:@"shop_domain"];
+        [dictFilter setObject:_strProductID forKey:@"product_id"];
+        [dictFilter setObject:(btnFilterAllTime.tag==1? @(0):@(1)) forKey:@"month_range"];
+        [dictFilter setObject:@(page) forKey:@"page"];
+        
+        if((int)segmentedControl.selectedSegmentIndex==0 && filterStar>0) {//Quality
+            [dictFilter setObject:@(filterStar) forKey:@"rating"];
+        }
+        else if(filterStar > 0){
+            [dictFilter setObject:@(filterStar) forKey:@"rate_accuracy"];
+        }
+        
+        return dictFilter;
     }
     
     return nil;
@@ -901,15 +1120,15 @@
                                                                 CPositif]];
         
         RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
-        [reviewReputationMapping addAttributeMappingsFromArray:@[CResponseCreateTime,
+        [reviewResponseMapping addAttributeMappingsFromArray:@[CResponseCreateTime,
                                                                 CResponseMessage]];
         
         
         RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
-        [reviewReputationMapping addAttributeMappingsFromDictionary:@{CUserLabelID:CUserLabelID,
+        [productOwnerMapping addAttributeMappingsFromDictionary:@{CUserLabelID:CUserLabelID,
                                                                 CUserLabel:CUserLabel,
                                                                 CuserID:CuserID,
-                                                                CUserImage:CUserImage,
+                                                                CUserImage:CUserImg,
                                                                 CFullName:CUserName}];
         
 
@@ -924,7 +1143,7 @@
                                                            CRatingRating,
                                                            CRatingUrlFilterRating,
                                                            CRatingRateSpeed,
-                                                           CRatingRateAccuracy
+                                                           CRatingRateAccuracy,
                                                            CRatingRateAccuracyFmt,
                                                            CRatingRatingPoint]];
         
@@ -982,7 +1201,7 @@
             
             segmentedControl.enabled = YES;
             btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
-            [self setRateStar:0 withAnimate:YES];
+            [self setRateStar:segmentedControl.selectedSegmentIndex withAnimate:YES];
         }
         else if(review.result.list != nil) {
             [arrList addObjectsFromArray:review.result.list];
@@ -1001,6 +1220,7 @@
             }
             
             [tableContent reloadData];
+            [self setLoadingView:NO];
         }
         else  {
             [self setLoadingView:NO];
@@ -1055,4 +1275,14 @@
 - (void)cancelLoginView {
     
 }
+
+- (NSDictionary *)getParameter {
+    return nil;
+}
+
+
+- (NSString *)getPath {
+    return @"action/review.pl";
+}
 @end
+

@@ -23,6 +23,8 @@
         tempViewModel.product_accuracy_point = _product_accuracy_point;
         tempViewModel.review_message = _review_message;
         tempViewModel.review_response = _review_response;
+        tempViewModel.review_status = _review_status;
+        tempViewModel.review_is_allow_edit = _review_is_allow_edit;
 
         _viewModel = tempViewModel;
     }

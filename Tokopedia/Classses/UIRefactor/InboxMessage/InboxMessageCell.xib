@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
             <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -26,11 +23,11 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rYu-on-PC9">
                         <rect key="frame" x="15" y="13" width="305" height="57"/>
                         <subviews>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="rD6-FP-ZPL">
-                                <rect key="frame" x="277" y="8" width="10" height="10"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPG-Zx-wp8">
-                                <rect key="frame" x="64" y="18" width="230" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPG-Zx-wp8">
+                                <rect key="frame" x="64" y="21" width="230" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="IL0-0P-bdC"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -42,24 +39,49 @@
                                     <constraint firstAttribute="height" constant="51" id="h4q-rj-XqI"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZM-UR-E6t">
-                                <rect key="frame" x="64" y="3" width="230" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vmQ-ds-6vr">
-                                <rect key="frame" x="64" y="35" width="230" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vmQ-ds-6vr">
+                                <rect key="frame" x="64" y="38" width="230" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="MnJ-cx-L4h"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ggk-nE-jyh" customClass="ViewLabelUser">
+                                <rect key="frame" x="64" y="3" width="230" height="21"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="D1i-EC-ktI"/>
+                                </constraints>
+                            </view>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="rD6-FP-ZPL">
+                                <rect key="frame" x="277" y="8" width="10" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="8ZI-1P-gY9"/>
+                                    <constraint firstAttribute="width" constant="10" id="Vxd-Mz-xpP"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="vmQ-ds-6vr" secondAttribute="trailing" constant="11" id="9ZP-ld-B57"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="pKq-no-j9h" secondAttribute="bottom" constant="3" id="AzX-YA-Z9c"/>
+                            <constraint firstAttribute="trailing" secondItem="ggk-nE-jyh" secondAttribute="trailing" constant="11" id="Cr0-Qb-kKL"/>
+                            <constraint firstAttribute="trailing" secondItem="rD6-FP-ZPL" secondAttribute="trailing" constant="18" id="EZ4-mo-qDi"/>
+                            <constraint firstAttribute="trailing" secondItem="PPG-Zx-wp8" secondAttribute="trailing" constant="11" id="OaG-hn-mjv"/>
+                            <constraint firstItem="ggk-nE-jyh" firstAttribute="leading" secondItem="pKq-no-j9h" secondAttribute="trailing" constant="13" id="RjM-Hx-NRl"/>
                             <constraint firstItem="pKq-no-j9h" firstAttribute="leading" secondItem="rYu-on-PC9" secondAttribute="leading" id="RuU-M4-u2M"/>
+                            <constraint firstItem="pKq-no-j9h" firstAttribute="leading" secondItem="rYu-on-PC9" secondAttribute="leading" id="T4f-ju-oqq"/>
+                            <constraint firstItem="PPG-Zx-wp8" firstAttribute="leading" secondItem="pKq-no-j9h" secondAttribute="trailing" constant="13" id="Uiw-za-Hp3"/>
+                            <constraint firstItem="rD6-FP-ZPL" firstAttribute="top" secondItem="rYu-on-PC9" secondAttribute="top" constant="8" id="V12-Tj-wV2"/>
                             <constraint firstAttribute="bottom" secondItem="pKq-no-j9h" secondAttribute="bottom" constant="3" id="Vy9-i2-JZM"/>
                             <constraint firstItem="pKq-no-j9h" firstAttribute="top" secondItem="rYu-on-PC9" secondAttribute="top" constant="3" id="aDi-vB-YdZ"/>
+                            <constraint firstItem="pKq-no-j9h" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rYu-on-PC9" secondAttribute="top" constant="3" id="cFH-9W-sxk"/>
+                            <constraint firstItem="vmQ-ds-6vr" firstAttribute="top" secondItem="PPG-Zx-wp8" secondAttribute="bottom" constant="-4" id="dUC-LL-4Po"/>
+                            <constraint firstItem="vmQ-ds-6vr" firstAttribute="leading" secondItem="pKq-no-j9h" secondAttribute="trailing" constant="13" id="dkT-j6-erd"/>
+                            <constraint firstItem="PPG-Zx-wp8" firstAttribute="top" secondItem="ggk-nE-jyh" secondAttribute="bottom" constant="-3" id="gsk-0p-bht"/>
+                            <constraint firstItem="ggk-nE-jyh" firstAttribute="top" secondItem="rYu-on-PC9" secondAttribute="top" constant="3" id="zwQ-7c-Z7M"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -75,7 +97,7 @@
                 <outlet property="is_unread" destination="rD6-FP-ZPL" id="gdc-B8-ayE"/>
                 <outlet property="message_create_time" destination="PPG-Zx-wp8" id="tvL-aB-WXq"/>
                 <outlet property="message_reply" destination="vmQ-ds-6vr" id="IAQ-PI-Egp"/>
-                <outlet property="message_title" destination="WZM-UR-E6t" id="3Re-VH-7MU"/>
+                <outlet property="message_title" destination="ggk-nE-jyh" id="dHN-Wr-a79"/>
                 <outlet property="movingview" destination="rYu-on-PC9" id="2iL-Nu-MFs"/>
                 <outlet property="userimageview" destination="pKq-no-j9h" id="tkv-5W-eGo"/>
             </connections>

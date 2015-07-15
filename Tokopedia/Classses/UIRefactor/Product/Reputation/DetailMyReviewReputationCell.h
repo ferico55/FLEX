@@ -15,7 +15,7 @@
 
 @class DetailReviewReputaionViewModel;
 @interface CustomBtnSkip : UIButton
-@property (nonatomic) BOOL isLewati;
+@property (nonatomic) BOOL isLewati, isLapor;
 @end
 
 
@@ -29,7 +29,7 @@
 
 @interface DetailMyReviewReputationCell : UITableViewCell<TTTAttributedLabelDelegate>
 {
-    IBOutlet UIView *viewContent, *viewContentStar, *viewContentAction, *viewKualitas, *viewAkurasi;
+    IBOutlet UIView *viewContent, *viewContentStar, *viewContentAction, *viewKualitas, *viewAkurasi, *viewSeparatorContentAction;
     IBOutlet UIButton *btnProduct, *btnKomentar;
     IBOutlet CustomBtnSkip *btnUbah;
     TTTAttributedLabel *lblDesc;
@@ -37,6 +37,7 @@
     IBOutlet UILabel *lblKualitas, *lblAkurasi, *lblDate;
     IBOutletCollection(UIImageView) NSArray *arrImgKualitas, *arrImgAkurasi;
 }
+@property (nonatomic, strong) NSString *strRole;
 @property (nonatomic, unsafe_unretained) id<detailMyReviewReputationCell> delegate;
 
 - (UIButton *)getBtnKomentar;

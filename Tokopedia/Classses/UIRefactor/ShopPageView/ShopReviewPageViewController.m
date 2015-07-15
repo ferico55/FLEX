@@ -186,6 +186,7 @@ UIAlertViewDelegate>
     
     _table.delegate = self;
     _table.dataSource = self;
+    _table.allowsSelection = YES;
     
     _shopPageHeader = [ShopPageHeader new];
     _shopPageHeader.delegate = self;
@@ -434,7 +435,6 @@ UIAlertViewDelegate>
     
     dispatch_async(dispatch_get_main_queue(), ^(void){
         NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:list.review_id repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timerLikeDislike forMode:NSRunLoopCommonModes];
         [loadingLikeDislike setObject:@[tempRequest, [NSIndexPath indexPathForRow:[[arrList lastObject] intValue] inSection:0], timerLikeDislike] forKey:list.review_id];
     
 
@@ -541,6 +541,11 @@ UIAlertViewDelegate>
     return tempSizeDesc.height + CHeightDate + (CheightImage*2) + (CPaddingTopBottom*7); //6 is total padding of each row component
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self redirectToProductDetailReputation:_list[indexPath.row]];
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell* cell = nil;
     if (!_isNoData) {
@@ -556,7 +561,7 @@ UIAlertViewDelegate>
         }
         
         ReviewList *list = _list[indexPath.row];
-        [cell setLabelUser:list.review_user_name withTag:0];
+        [cell setLabelUser:list.review_user_name withUserLabel:list.review_user_label];
         [cell setLabelDate:list.review_create_time?:@""];
         [cell setLabelProductName:list.review_product_name];
         [cell setPercentage:list.review_user_reputation.positive_percentage];
@@ -701,6 +706,7 @@ UIAlertViewDelegate>
                                                  kTKPDREVIEW_APIREVIEWUSERIMAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWCREATETIMEKEY,
                                                  kTKPDREVIEW_APIREVIEWIDKEY,
+                                                 CReviewReputationID,
                                                  kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
@@ -712,7 +718,8 @@ UIAlertViewDelegate>
                                                  kTKPDREVIEW_APIPRODUCTIDKEY,
                                                  kTKPDREVIEW_APIPRODUCTIMAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWISOWNERKEY,
-                                                 kTKPDREVIEW_APIPRODUCTSTATUSKEY
+                                                 kTKPDREVIEW_APIPRODUCTSTATUSKEY,
+                                                 KTKPDREVIEW_APIREVIEWUSERLABELKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -996,13 +1003,21 @@ UIAlertViewDelegate>
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     
-    for(NSArray *tempArr in [loadingLikeDislike allValues]) {
-        RKManagedObjectRequestOperation *operation = [tempArr firstObject];
-        [operation cancel];
+    for(id obj in [loadingLikeDislike allValues]) {
+		if([obj isMemberOfClass:[NSArray class]]) {
+			NSArray *tempArr = obj;
+	        RKManagedObjectRequestOperation *operation = [tempArr firstObject];
+    	    [operation cancel];
         
-        NSTimer *timer = [tempArr lastObject];
-        [timer invalidate];
+        	NSTimer *timer = [tempArr lastObject];
+	        [timer invalidate];
+		}
     }
+
+    [_operationQueue cancelAllOperations];
+	[_operationUnfollowQueue cancelAllOperations];
+	[_operationDeleteQueue cancelAllOperations];
+	[operationQueueLikeDislike cancelAllOperations];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -1232,8 +1247,16 @@ UIAlertViewDelegate>
 }
 
 - (void)actionChat:(id)sender {
+//    [self redirectToProductDetailReputation:_list[((UIView *) sender).tag]];
+}
+
+- (void)redirectToProductDetailReputation:(ReviewList *)reviewList {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    NSDictionary *auth = [_userManager getUserLoginData];
+    
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-    productDetailReputationViewController.reviewList = _list[((UIView *) sender).tag];
+    productDetailReputationViewController.reviewList = reviewList;
+    productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:reviewList.review_product_owner.user_id]);
     
     if([dictLikeDislike objectForKey:productDetailReputationViewController.reviewList.review_id]) {
         TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.reviewList.review_id];
@@ -1244,17 +1267,24 @@ UIAlertViewDelegate>
 }
 
 - (void)actionMore:(id)sender {
-    ReviewList *list = _list[((UIButton *)sender).tag];
-    UIActionSheet *actionSheet;
-    if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:@"Lapor", @"Edit", nil];
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    NSDictionary *_auth = [_userManager getUserLoginData];
+    if(_auth) {
+        ReviewList *list = _list[((UIButton *)sender).tag];
+        UIActionSheet *actionSheet;
+        if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:@"Lapor", @"Edit", nil];
+        }
+        else {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:@"Lapor", nil];
+        }
+        
+        actionSheet.tag = ((UIButton *) sender).tag;
+        [actionSheet showInView:self.view];
     }
     else {
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:@"Lapor", nil];
+        [self showLoginView];
     }
-    
-    actionSheet.tag = ((UIButton *) sender).tag;
-    [actionSheet showInView:self.view];
 }
 
 #pragma mark - TTTAttributeLabel Delegate
@@ -1265,14 +1295,7 @@ UIAlertViewDelegate>
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-    productDetailReputationViewController.reviewList = _list[label.tag];
-    if([dictLikeDislike objectForKey:productDetailReputationViewController.reviewList.review_id]) {
-        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.reviewList.review_id];
-        productDetailReputationViewController.strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
-        productDetailReputationViewController.strTotalLike = totalLikeDislike.total_like_dislike.total_like;
-    }
-    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+    [self redirectToProductDetailReputation:_list[label.tag]];
 }
 
 

@@ -12,7 +12,7 @@
 @interface ProductReputationViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 {
     //Outlet for Header
-    IBOutlet UIView *viewHeader, *viewFooter;
+    IBOutlet UIView *viewHeader, *viewFooter, *viewStarOne, *viewStarTwo, *viewStarThree, *viewStarFour, *viewStarFive;
     IBOutlet UIButton *btnFilter6Month, *btnFilterAllTime;
     IBOutlet UIActivityIndicatorView *footerActIndicator;
     IBOutlet UISegmentedControl *segmentedControl;
@@ -26,6 +26,7 @@
 }
 
 @property (nonatomic, strong) NSString *strShopDomain, *strProductID;
+- (IBAction)actionResetFilter:(id)sender;
 - (IBAction)actionFilter6Month:(id)sender;
 - (IBAction)actionFilterAllTime:(id)sender;
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc;

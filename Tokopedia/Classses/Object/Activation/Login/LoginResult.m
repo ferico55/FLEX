@@ -11,4 +11,8 @@
 
 @implementation LoginResult
 
+- (NSString *)shop_name {
+    return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

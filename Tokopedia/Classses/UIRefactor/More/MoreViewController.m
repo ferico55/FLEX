@@ -7,6 +7,7 @@
 //
 #import "MyReviewReputationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
+#import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
@@ -37,8 +38,8 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
-//#import "TKPDTabViewController.h"
-//#import "InboxCustomerServiceViewController.h"
+#import "TKPDTabViewController.h"
+#import "InboxTicketViewController.h"
 
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
@@ -292,7 +293,10 @@
         if(profileInfo.result.shop_info!=nil && profileInfo.result.shop_info.shop_avatar!=nil && ![profileInfo.result.shop_info.shop_avatar isEqualToString:@""]) {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             if(secureStorage != nil) {
-                [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                
+                if(profileInfo.result.shop_info.shop_avatar != nil) {
+                    [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                }
                 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:profileInfo.result.shop_info.shop_avatar]
                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                           timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -360,8 +364,9 @@
                                              } failure: nil];
     
     if([_auth objectForKey:@"shop_id"]) {
-        if([_auth objectForKey:@"shop_name"])
+        if([_auth objectForKey:@"shop_name"]) {
             _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
+        }
         
         NSString *strAvatar = [[_auth objectForKey:@"shop_avatar"] isMemberOfClass:[NSString class]]? [_auth objectForKey:@"shop_avatar"] : [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_avatar"]];
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strAvatar]
@@ -490,7 +495,7 @@
             break;
             
         case 4:
-            return 4;
+            return 6;
             break;
             
         case 5:
@@ -655,20 +660,37 @@
             [self.navigationController pushViewController:nc animated:YES];
             */
         } else if (indexPath.row == 3) {
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
+            
+
+        } else if (indexPath.row == 4) {
+            TKPDTabViewController *controller = [TKPDTabViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+            
+            InboxTicketViewController *allInbox = [InboxTicketViewController new];
+            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+            allInbox.delegate = controller;
+            
+            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+            unreadInbox.delegate = controller;
+            
+            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+            closedInbox.delegate = controller;
+            
+            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+            controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+            
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (indexPath.row == 5) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
-//            controller.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:controller animated:YES];
-            
-        } else if (indexPath.row  == 4) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-            
         }
-        
     }
     
     else if (indexPath.section == 5) {
@@ -870,6 +892,7 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [self requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 

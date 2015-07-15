@@ -444,6 +444,9 @@ typedef enum TagRequest {
     [proxy setShadowImage:[[UIImage alloc] init]];
     
 #endif
+    
+    // redirect to home after login or register
+    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
 }
 
 #pragma mark - Notification observers

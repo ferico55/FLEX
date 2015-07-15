@@ -100,12 +100,43 @@
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hry-mr-LIy">
+                        <rect key="frame" x="235" y="0.0" width="77" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="77" id="FwC-0Q-bWK"/>
+                            <constraint firstAttribute="height" constant="30" id="dAF-vE-6ra"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <state key="normal" title="Coba Lagi">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="actionTryAgain:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="TOZ-CB-DQi"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oiP-7X-LSX">
+                        <rect key="frame" x="235" y="96" width="77" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="77" id="Cvg-GZ-CC3"/>
+                            <constraint firstAttribute="height" constant="30" id="wIh-C6-XZJ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <state key="normal" title="Hapus">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="actionHapus:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Sm4-zs-yL2"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="b5A-at-UYZ" secondAttribute="trailing" constant="8" id="9GU-vY-ztr"/>
+                    <constraint firstItem="hry-mr-LIy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="9sJ-H9-Dph"/>
                     <constraint firstItem="b5A-at-UYZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="27" id="EHc-wE-4ly"/>
+                    <constraint firstAttribute="bottom" secondItem="oiP-7X-LSX" secondAttribute="bottom" constant="3" id="HAE-g2-zbO"/>
                     <constraint firstItem="4Jg-qE-n04" firstAttribute="top" secondItem="Ren-ZO-Oll" secondAttribute="bottom" constant="14" id="Hg8-lI-rCg"/>
                     <constraint firstItem="Ren-ZO-Oll" firstAttribute="leading" secondItem="ego-e9-4y8" secondAttribute="trailing" constant="8" id="I7l-6Q-yk8"/>
+                    <constraint firstAttribute="trailing" secondItem="hry-mr-LIy" secondAttribute="trailing" constant="8" id="Lcf-CI-Pje"/>
                     <constraint firstItem="b5A-at-UYZ" firstAttribute="leading" secondItem="ego-e9-4y8" secondAttribute="trailing" constant="8" id="N3f-ev-8db"/>
                     <constraint firstAttribute="bottom" secondItem="4Jg-qE-n04" secondAttribute="bottom" constant="3" id="N93-sG-LsJ"/>
                     <constraint firstItem="vm7-Hd-qNV" firstAttribute="leading" secondItem="ego-e9-4y8" secondAttribute="trailing" constant="5" id="NYk-ua-4Dl"/>
@@ -114,11 +145,14 @@
                     <constraint firstItem="vm7-Hd-qNV" firstAttribute="top" secondItem="b5A-at-UYZ" secondAttribute="bottom" id="Vwy-Ix-wWn"/>
                     <constraint firstItem="ego-e9-4y8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="WCK-Up-6Kv"/>
                     <constraint firstItem="Ren-ZO-Oll" firstAttribute="top" secondItem="ego-e9-4y8" secondAttribute="bottom" constant="1" id="cE7-6a-8zs"/>
+                    <constraint firstAttribute="trailing" secondItem="oiP-7X-LSX" secondAttribute="trailing" constant="8" id="eDV-mA-zeW"/>
                     <constraint firstAttribute="trailing" secondItem="Ren-ZO-Oll" secondAttribute="trailing" constant="5" id="wU4-iH-Jzu"/>
                     <constraint firstAttribute="trailing" secondItem="4Jg-qE-n04" secondAttribute="trailing" constant="8" id="x3g-1u-0Wz"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="btnHapus" destination="oiP-7X-LSX" id="bXY-52-Gkj"/>
+                <outlet property="btnRetry" destination="hry-mr-LIy" id="LNc-A1-Ul4"/>
                 <outlet property="constraintHeightDesc" destination="PVC-T9-lZv" id="KNZ-gC-We1"/>
                 <outlet property="imgProfile" destination="ego-e9-4y8" id="HFx-QD-CCZ"/>
                 <outlet property="lblDate" destination="4Jg-qE-n04" id="KnE-L9-RY7"/>

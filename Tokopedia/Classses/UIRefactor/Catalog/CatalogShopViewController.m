@@ -8,6 +8,7 @@
 #import "string_catalog.h"
 #import "detail.h"
 
+#import "CMPopTipView.h"
 #import "CatalogShopViewController.h"
 #import "CatalogShopCell.h"
 #import "UserAuthentificationManager.h"
@@ -23,14 +24,16 @@
     UITableViewDelegate,
     GeneralTableViewControllerDelegate,
     FilterCatalogDelegate,
-    CatalogShopDelegate
+    CatalogShopDelegate,
+    CMPopTipViewDelegate
 >
 {
     UserAuthentificationManager *_userManager;
     
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
-    
+
+    CMPopTipView *cmPopTitpView;
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
     NSInteger _requestCount;
@@ -130,8 +133,10 @@
         cell.masking.hidden = NO;
     }
     
-    NSInteger rateAverage = (shop.shop_rate_accuracy + shop.shop_rate_service + shop.shop_rate_speed) / 3;
-    [cell setShopRate:rateAverage];
+//    NSInteger rateAverage = (shop.shop_rate_accuracy + shop.shop_rate_service + shop.shop_rate_speed) / 3;
+//    [cell setShopRate:rateAverage];
+    [cell setShopRate:[shop.shop_reputation.shop_reputation_score intValue]];
+    [cell setTagContentStar:(int)indexPath.row];
     
     return cell;
 }
@@ -339,6 +344,7 @@
                                                                 parameters:[parameters encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [_timer invalidate];
         [_activityIndicatorView stopAnimating];
         [_tableView setTableFooterView:nil];
@@ -434,7 +440,52 @@
                    orderBy:@""];
 }
 
+
+#pragma mark - Method
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
 #pragma mark - Cell delegate
+- (void)actionContentStar:(id)sender {
+    CatalogShops *shop = _catalog_shops[((UIView *)sender).tag];
+    [self initPopUp:shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+}
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
 {

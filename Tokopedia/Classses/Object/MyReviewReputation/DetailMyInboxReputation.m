@@ -24,6 +24,8 @@
         viewModel.reviewee_uri = _reviewee_uri;
         viewModel.read_status = _read_status;
         viewModel.reviewee_score_status = _reviewee_score_status;
+        viewModel.show_bookmark = _show_bookmark;
+        viewModel.unassessed_reputation_review = _unassessed_reputation_review;
         
         _viewModel = viewModel;
     }

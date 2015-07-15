@@ -208,6 +208,9 @@
             
             [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
             [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+            
+            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
+                tempView.frame = CGRectMake(0, 0, self.view.bounds.size.width, viewContent.bounds.size.height);
         }
             break;
         case CTagProductSaya:
@@ -227,6 +230,9 @@
             
             [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
             [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+            
+            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
+                tempView.frame = CGRectMake(0, 0, self.view.bounds.size.width, viewContent.bounds.size.height);
         }
             break;
         case CTagReviewSaya:
@@ -246,6 +252,10 @@
             
             [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
             [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+            
+            
+            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
+                tempView.frame = CGRectMake(0, 0, self.view.bounds.size.width, viewContent.bounds.size.height);
         }
             break;
     }

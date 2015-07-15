@@ -180,10 +180,10 @@
     lblPercentageRage.text = [NSString stringWithFormat:@"%@%%", strPercentage];
 }
 
-- (void)setLabelUser:(NSString *)strUser withTag:(int)tag
+- (void)setLabelUser:(NSString *)strUser withUserLabel:(NSString *)strUserLabel
 {
+    [viewLabelUser setLabelBackground:strUserLabel];
     [viewLabelUser setText:strUser];
-    [viewLabelUser setColor:3];
 }
 
 

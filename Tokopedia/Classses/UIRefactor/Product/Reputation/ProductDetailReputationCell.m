@@ -50,6 +50,14 @@
     [_delegate actionTapStar:((UITapGestureRecognizer *) sender).view];
 }
 
+- (IBAction)actionTryAgain:(id)sender {
+    [_delegate actionTryAgain:sender];
+}
+
+- (IBAction)actionHapus:(id)sender {
+    [_delegate actionHapus:sender];
+}
+
 #pragma mark - Method 
 - (void)setStar:(int)valueStar {
     if(valueStar == 0) {
@@ -112,6 +120,14 @@
 
 
 #pragma mark - Setter Getter
+- (UIButton *)getBtnTryAgain {
+    return btnRetry;
+}
+
+- (UIButton *)getBtnHapus {
+    return btnHapus;
+}
+
 - (UIView *)getViewStar {
     return viewStar;
 }

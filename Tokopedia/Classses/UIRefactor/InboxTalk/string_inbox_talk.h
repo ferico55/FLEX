@@ -36,6 +36,6 @@
 
 #define STATE_TALK_PRODUCT_DELETED @"0"
 #define STATE_TALK_PRODUCT_BANNED @"-2"
-
+#define CStringFailedSendReport @"Gagal kirim report"
 
 #endif

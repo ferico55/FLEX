@@ -5,11 +5,12 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "string_inbox_message.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationCell.h"
 #import "ViewLabelUser.h"
-#define CTagPembeli 1
-#define CTagPenjual 2
+//#define CTagPembeli 1
+//#define CTagPenjual 2
 #define CFormatWaitYourReview @"%@ Produk menunggu review anda"
 
 @implementation MyReviewReputationCell
@@ -31,7 +32,10 @@
 
     labelUser.userInteractionEnabled = YES;
     [labelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionLabelUser:)]];
+    
+    [imageFlagReview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionFlagReview:)]];
 }
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
@@ -41,6 +45,10 @@
 
 
 #pragma mark - Getter
+- (UIImageView *)getImageFlagReview {
+    return imageFlagReview;
+}
+
 - (UIButton *)getBtnInvoice {
     return btnInvoice;
 }
@@ -58,6 +66,10 @@
 }
 
 #pragma mark - Action
+- (void)actionFlagReview:(id)sender {
+    [_delegate actionFlagReview:((UITapGestureRecognizer *) sender).view];
+}
+
 - (IBAction)actionFooter:(id)sender {
     [_delegate actionFooter:sender];
 }
@@ -97,9 +109,10 @@
 - (void)setView:(MyReviewReputationViewModel *)object {
     [labelUser setText:object.reviewee_name];
     [labelUser setText:[UIColor lightGrayColor] withFont:[UIFont fontWithName:@"GothamBook" size:btnInvoice.titleLabel.font.pointSize]];
-    [labelUser setColor:[object.reviewee_role isEqualToString:@"1"]? CTagPembeli:CTagPenjual];
+    
+    [labelUser setLabelBackground:[object.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual];
     [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
-    [btnFooter setTitle:[NSString stringWithFormat:CFormatWaitYourReview, object.show_reviewee_score] forState:UIControlStateNormal];
+    [btnFooter setTitle:[NSString stringWithFormat:CFormatWaitYourReview, object.unassessed_reputation_review] forState:UIControlStateNormal];
     
     //Set color smile
     btnReview.enabled = YES;
@@ -123,11 +136,14 @@
     //3&6. 2 pihak belum kasih
     if([object.reviewee_score_status isEqualToString:@"1"] || [object.reviewee_score_status isEqualToString:@"4"]) {
         imageFlagReview.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]];
+        imageFlagReview.userInteractionEnabled = YES;
     }
     else if([object.reviewee_score_status isEqualToString:@"2"] || [object.reviewee_score_status isEqualToString:@"5"]) {
         imageFlagReview.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver" ofType:@"png"]];
+        imageFlagReview.userInteractionEnabled = YES;
     }
-    else if([object.reviewee_score_status isEqualToString:@"3"] || [object.reviewee_score_status isEqualToString:@"6"]) {
+    else {
+        imageFlagReview.userInteractionEnabled = NO;
         imageFlagReview.image = nil;
     }
     

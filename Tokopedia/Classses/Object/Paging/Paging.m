@@ -10,7 +10,7 @@
 
 @implementation Paging
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
+- (void)encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:_uri_next forKey:kTKPD_APIURINEXTKEY];
 }
 
@@ -20,6 +20,14 @@
         _uri_next = [decoder decodeObjectForKey:kTKPD_APIURINEXTKEY];
     }
     return self;
+}
+
+- (NSString *)uri_next {
+    if ([_uri_next isEqualToString:@"0"]) {
+        return nil;
+    } else {
+        return _uri_next;
+    }
 }
 
 @end

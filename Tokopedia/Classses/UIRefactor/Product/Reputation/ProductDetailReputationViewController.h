@@ -19,6 +19,7 @@
     IBOutlet NSLayoutConstraint *constraintHeightViewMessage, *constHeightViewContent;
 }
 
+@property (nonatomic) BOOL isMyProduct;
 @property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputaitonReview;
 @property (nonatomic, strong) ReviewList *reviewList;
 @property (nonatomic, strong) NSString *strTotalLike;

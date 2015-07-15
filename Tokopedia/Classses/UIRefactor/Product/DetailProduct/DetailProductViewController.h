@@ -11,7 +11,7 @@
 @interface DetailProductViewController : GAITrackedViewController
 {
     IBOutlet UIView *viewTableContentHeader, *viewContentWishList, *viewContentUlasanAndDiskusi, *viewContentWarehouse;
-    IBOutlet UIButton *btnWishList, *btnShare, *btnReputasi, *btnKecepatan;
+    IBOutlet UIButton *btnWishList, *btnShare, *btnReputasi, *btnKecepatan, *btnPriceAlert;
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;
     IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle, *lblTitleWarehouse, *lblDescWarehouse;
@@ -19,10 +19,12 @@
 }
 @property (strong,nonatomic) NSDictionary *data;
 
-- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText;
+- (void)setButtonFav;
+- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment;
 - (void)setBackgroundPriceAlert:(BOOL)isActive;
 - (IBAction)actionShare:(id)sender;
 - (IBAction)actionWishList:(id)sender;
 - (IBAction)actionReputasi:(id)sender;
 - (IBAction)actionKecepatan:(id)sender;
+- (IBAction)actionPriceAlert:(id)sender;
 @end

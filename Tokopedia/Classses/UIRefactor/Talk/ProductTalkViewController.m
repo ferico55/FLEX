@@ -24,6 +24,7 @@
 #import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
 #import "string_inbox_talk.h"
+#import "string_inbox_message.h"
 #import "stringrestkit.h"
 #import "inbox.h"
 
@@ -225,14 +226,35 @@
 		if (cell == nil) {
 			cell = [GeneralTalkCell newcell];
 			((GeneralTalkCell*)cell).delegate = self;
+            [((GeneralTalkCell*)cell).userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
+            ((GeneralTalkCell*)cell).userButton.userInteractionEnabled = YES;
+            [((GeneralTalkCell*)cell).userButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(tap:)]];
 		}
         
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
-            [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal] ;
+            ((GeneralTalkCell*)cell).userButton.text = list.talk_user_name;
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             ((GeneralTalkCell*)cell).data = list;
+            
+            //Set user label
+//            if([list.talk_user_label isEqualToString:CPenjual]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPenjual];
+//            }
+//            else if([list.talk_user_label isEqualToString:CPembeli]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPembeli];
+//            }
+//            else if([list.talk_user_label isEqualToString:CAdministrator]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagAdministrator];
+//            }
+//            else if([list.talk_user_label isEqualToString:CPengguna]) {
+//                [((GeneralTalkCell*)cell).userButton setColor:CTagPengguna];
+//            }
+//            else {
+//                [((GeneralTalkCell*)cell).userButton setColor:-1];//-1 is set to empty string
+//            }
+            [((GeneralTalkCell*)cell).userButton setLabelBackground:list.talk_user_label];
             
             NSString *followStatus;
             if(!list.talk_follow_status) {
@@ -517,7 +539,9 @@
                                                  TKPD_TALK_FOLLOW_STATUS,
                                                  TKPD_TALK_SHOP_ID,
                                                  TKPD_TALK_USER_ID,
-                                                 TKPD_TALK_PRODUCT_STATUS
+                                                 TKPD_TALK_PRODUCT_STATUS,
+                                                 TKPD_TALK_USER_LABEL_ID,
+                                                 TKPD_TALK_USER_LABEL
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -708,6 +732,12 @@
                     _table.tableFooterView = _noResultView;
                     NSError *error = object;
                     NSString *errorDescription = error.localizedDescription;
+                    
+                    if(error.code == -1011) {
+                        errorDescription = CStringFailedInServer;
+                    } else if (error.code==-1009 || error.code==-999) {
+                        errorDescription = CStringNoConnection;
+                    }
                     UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                     [errorAlert show];
                 }
@@ -718,6 +748,12 @@
                 _table.tableFooterView = _noResultView;
                 NSError *error = object;
                 NSString *errorDescription = error.localizedDescription;
+                
+                if(error.code == -1011) {
+                    errorDescription = CStringFailedInServer;
+                } else if (error.code==-1009 || error.code==-999) {
+                    errorDescription = CStringNoConnection;
+                }
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
             }
@@ -745,7 +781,8 @@
                 TKPD_TALK_PRODUCT_IMAGE:[_data objectForKey:@"talk_product_image"],
                 TKPD_TALK_PRODUCT_NAME:[_data objectForKey:@"product_name"],
                 //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
-                kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0
+                kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
+                TKPD_TALK_USER_LABEL:list.talk_user_label
                 };
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -889,10 +926,9 @@
     
     NSDate *today = [NSDate date];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
-    NSString *dateString = [dateFormat stringFromDate:today];
+    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:mm"];
     
-    list.talk_create_time = [dateString stringByAppendingString:@" WIB"];
+    list.talk_create_time = [dateFormat stringFromDate:today];
     list.talk_message = [userinfo objectForKey:TKPD_TALK_MESSAGE];
     
     list.disable_comment = YES;

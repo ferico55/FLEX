@@ -182,34 +182,9 @@
     
     _descriptionView.nameLabel.text = [NSString stringWithFormat:@"Terakhir Online : %@", _shop.result.info.shop_owner_last_login];
     
-//    [_descriptionView.nameLabel sizeToFit];
-    
     if (_shop.result.info.shop_is_gold == 1) {
         _goldBadgeView.hidden = NO;
-        
-//        CGRect newFrame = self.view.frame;
-//        newFrame.size.height += 70;
-//        self.view.frame = newFrame;
-//        
-//        CGRect newFrame2 = _manipulatedView.frame;
-//        newFrame2.origin.y += 70;
-//        _manipulatedView.frame = newFrame2;
-    } else {
-//        CGRect newFrame = _manipulatedView.frame;
-//        newFrame.origin.y -= 70;
-//        _manipulatedView.frame = newFrame;
-//        
-//        CGRect newFrame2 = self.view.frame;
-//        newFrame2.size.height -= 70;
-//        self.view.frame = newFrame2;
-        
     }
-    
-    if(_shop.result.info.shop_already_favorited == 1) {
-//        [self setButtonFav];
-    }
-    
-//    self.title = _shop.result.info.shop_name;
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
     
@@ -237,16 +212,8 @@
     myFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y, 280, myFrame.size.height);
     _descriptionView.descriptionLabel.frame = myFrame;
     
-    
-    
-    
-    
     _statView.locationLabel.text = _shop.result.info.shop_name;
-    
-    
     _statView.openStatusLabel.text = _shop.result.info.shop_location;
-    
-    
     NSString *stats = [NSString stringWithFormat:@"%@ Barang Terjual & %@ Favorit",
                        _shop.result.stats.shop_item_sold,
                        _shop.result.info.shop_total_favorit];
@@ -378,60 +345,6 @@
             
             
             break;
-        }
-            
-        case 15: {
-            
-//            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
-//                ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
-//                productViewController.data = @{
-//                                               kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-//                                               DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-//                                               };
-//                [nav.navigationController pushViewController:productViewController animated:YES];
-//                break;
-//            }
-//            
-//            if(_auth) {
-//                // Favorite shop action
-//                [self configureFavoriteRestkit];
-//                [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
-//                [self setButtonFav];
-//                
-//            } else {
-//                UINavigationController *navigationController = [[UINavigationController alloc] init];
-//                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-//                navigationController.navigationBar.translucent = NO;
-//                navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//                
-//                
-//                LoginViewController *controller = [LoginViewController new];
-//                controller.delegate = self;
-//                controller.isPresentedViewController = YES;
-//                controller.redirectViewController = self;
-//                navigationController.viewControllers = @[controller];
-//                
-//                [nav.navigationController presentViewController:navigationController animated:YES completion:nil];
-//            }
-            
-            
-            break;
-        }
-            
-        case 16: {
-//            [self configureFavoriteRestkit];
-//            
-//            [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
-//            
-//            _rightButton.tag = 15;
-//            [_rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
-//            [_rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-//            [_rightButton.layer setBorderWidth:1];
-////            self.rightButton.tintColor = [UIColor lightGrayColor];
-//            [UIView animateWithDuration:0.3 animations:^(void) {
-//                [_rightButton setBackgroundColor:[UIColor whiteColor]];
-//                [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//            }];
         }
             
         default:
