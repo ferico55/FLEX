@@ -628,6 +628,10 @@
                 TKPD_TALK_USER_LABEL:list.talk_user_label
                 };
     
+    NSDictionary *userinfo;
+    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(row)};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
+    
 //    DetailProductViewController *vc = [DetailProductViewController new];
 //    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : @"11957147"};
     [self.navigationController pushViewController:vc animated:YES];
