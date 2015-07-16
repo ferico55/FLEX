@@ -67,8 +67,15 @@
 }
 
 - (void)setNavigationTitle:(NSString *)strTitle {
+    UIImage *arrowImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_triangle_down_white" ofType:@"png"]];
+    CGRect rect = CGRectMake(0, 0, 10 ,7);
+    UIGraphicsBeginImageContext( rect.size );
+    [arrowImage drawInRect:rect];
+    arrowImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
     [btnTitle setTitle:strTitle forState:UIControlStateNormal];
-    [btnTitle setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_arrow_down_white" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnTitle setImage:arrowImage forState:UIControlStateNormal];
     
     UILabel *lblTemp = [[UILabel alloc] initWithFrame:CGRectZero];
     lblTemp.textColor = btnTitle.titleLabel.textColor;
@@ -93,15 +100,15 @@
 
 - (void)hiddenShadowFilter:(BOOL)isHidden {
     viewShadow.hidden = viewContentAction.hidden = isHidden;
-    [btnTitle setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(isHidden? @"icon_arrow_down_white":@"icon_arrow_up") ofType:@"png"]] forState:UIControlStateNormal];
+//    [btnTitle setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(isHidden? @"icon_arrow_down_white":@"icon_arrow_up") ofType:@"png"]] forState:UIControlStateNormal];
 }
 
 #pragma mark - Action 
 - (void)actionChangeFilter:(id)sender {
     [self hiddenShadowFilter:!viewShadow.isHidden];
     [btnTempFilter setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_check_orange" ofType:@"png"]] forState:UIControlStateNormal];
-    btnTempFilter.titleEdgeInsets = UIEdgeInsetsMake(0, -btnTempFilter.imageView.frame.size.width-5, 0, btnTempFilter.imageView.frame.size.width+5);
-    btnTempFilter.imageEdgeInsets = UIEdgeInsetsMake(0, btnTempFilter.titleLabel.frame.size.width, 0, -btnTempFilter.titleLabel.frame.size.width);
+//    btnTempFilter.titleEdgeInsets = UIEdgeInsetsMake(0, -btnTempFilter.imageView.frame.size.width-5, 0, btnTempFilter.imageView.frame.size.width+5);
+    btnTempFilter.imageEdgeInsets = UIEdgeInsetsMake(0, btnTempFilter.bounds.size.width-50, 0, -btnTempFilter.titleLabel.frame.size.width);
 }
 
 - (IBAction)actionReview:(id)sender {

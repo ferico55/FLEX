@@ -257,13 +257,14 @@ UIAlertViewDelegate>
     [tempBtn setImage:image forState:UIControlStateNormal];
     [tempBtn setTitle:strTitle forState:UIControlStateNormal];
     [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
+    tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
     CGSize imageSize = tempBtn.imageView.bounds.size;
     CGSize titleSize = tempBtn.titleLabel.bounds.size;
     CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
     
     tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
+    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(5.0, - imageSize.width, - (totalHeight - titleSize.height), 0.0);
     
     return (id)tempBtn;
 }
@@ -1117,7 +1118,7 @@ UIAlertViewDelegate>
         
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
         lblDesc.attributedText = str;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
     }
@@ -1133,7 +1134,7 @@ UIAlertViewDelegate>
 - (void)actionRate:(id)sender {
     ReviewList *list = _list[((UIView *) sender).tag];
     int paddingRightLeftContent = 10;
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent+paddingRightLeftContent, CHeightItemPopUp)];
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+(paddingRightLeftContent*4), CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
     UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];

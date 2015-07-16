@@ -23,17 +23,35 @@
     UIGraphicsEndImageContext();
 
     [btnReview setImage:newImage forState:UIControlStateNormal];
-    
-    
     btnReview.layer.cornerRadius = btnReview.bounds.size.height/2.0f;
     btnReview.layer.borderColor = [UIColor lightGrayColor].CGColor;
     btnReview.layer.borderWidth = 1.0f;
     btnReview.layer.masksToBounds = YES;
+    
+    imageProfile.layer.cornerRadius = imageProfile.bounds.size.height/2.0f;
+    imageProfile.layer.masksToBounds = YES;
+    imageProfile.contentMode = UIViewContentModeScaleAspectFit;
 
     labelUser.userInteractionEnabled = YES;
     [labelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionLabelUser:)]];
-    
     [imageFlagReview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionFlagReview:)]];
+    
+    
+    //Set image
+    CGRect rect = CGRectMake(0, 0, 20 ,20);
+    UIGraphicsBeginImageContext(rect.size);
+    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] drawInRect:rect];
+    imageQSmile = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
+    imageQuestionBlue = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_questionmark_blue" ofType:@"png"]];
+    imageQuestionGray = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_questionmark_grey" ofType:@"png"]];
+    imageSad = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]];
+    imageNetral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]];
+    imageSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]];
+    imageNeutral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral" ofType:@"png"]];
+    
 }
 
 
@@ -44,9 +62,34 @@
 }
 
 
+#pragma mark - Setter
+- (NSLayoutConstraint *)getTopViewContentConstraint {
+    return constraintTopViewContent;
+}
+
+- (void)setLeftViewContentContraint:(int)n {
+    constraintLeftViewContent.constant = n;
+}
+
+- (void)setBottomViewContentContraint:(int)n {
+    cosntraintBottomViewContent.constant = n;
+}
+
+- (void)setRightViewContentContraint:(int)n {
+    constraintRightViewContent.constant = n;
+}
+
+- (void)setTopViewContentContraint:(int)n {
+    constraintTopViewContent.constant = n;
+}
+
 #pragma mark - Getter
 - (UIImageView *)getImageFlagReview {
     return imageFlagReview;
+}
+
+- (UIView *)getViewContent {
+    return viewContent;
 }
 
 - (UIButton *)getBtnInvoice {
@@ -108,7 +151,7 @@
 
 - (void)setView:(MyReviewReputationViewModel *)object {
     [labelUser setText:object.reviewee_name];
-    [labelUser setText:[UIColor lightGrayColor] withFont:[UIFont fontWithName:@"GothamBook" size:btnInvoice.titleLabel.font.pointSize]];
+    [labelUser setText:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:btnInvoice.titleLabel.font.pointSize]];
     
     [labelUser setLabelBackground:[object.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual];
     [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
@@ -117,17 +160,17 @@
     //Set color smile
     btnReview.enabled = YES;
     if([object.reviewee_score isEqualToString:CRevieweeScroreBad]) {
-        [btnReview setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnReview setImage:imageSad forState:UIControlStateNormal];
     }
     else if([object.reviewee_score isEqualToString:CRevieweeScroreNetral]) {
-        [btnReview setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnReview setImage:imageNetral forState:UIControlStateNormal];
     }
     else if([object.reviewee_score isEqualToString:CRevieweeScroreGood]) {
         btnReview.enabled = NO;
-        [btnReview setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnReview setImage:imageSmile forState:UIControlStateNormal];
     }
     else {
-        [btnReview setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnReview setImage:imageNeutral forState:UIControlStateNormal];
     }
     
     //Check flag has reviewed or not
@@ -135,16 +178,16 @@
     //2&5. salah satu sudah kasih
     //3&6. 2 pihak belum kasih
     if([object.reviewee_score_status isEqualToString:@"1"] || [object.reviewee_score_status isEqualToString:@"4"]) {
-        imageFlagReview.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]];
+        imageFlagReview.image = imageQSmile;
         imageFlagReview.userInteractionEnabled = YES;
     }
     else if([object.reviewee_score_status isEqualToString:@"2"] || [object.reviewee_score_status isEqualToString:@"5"]) {
-        imageFlagReview.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver" ofType:@"png"]];
+        imageFlagReview.image = imageQuestionBlue;
         imageFlagReview.userInteractionEnabled = YES;
     }
     else {
-        imageFlagReview.userInteractionEnabled = NO;
-        imageFlagReview.image = nil;
+        imageFlagReview.image = imageQuestionGray;
+        imageFlagReview.userInteractionEnabled = YES;
     }
     
     //check read unread status
@@ -156,7 +199,7 @@
     
     UIImageView *thumb = imageProfile;
     thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_profile_picture" ofType:@"jpeg"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [thumb setImage:image];

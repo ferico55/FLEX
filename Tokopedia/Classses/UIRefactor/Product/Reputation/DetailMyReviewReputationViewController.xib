@@ -45,7 +45,7 @@
                     </constraints>
                 </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="YY0-xm-dgY" secondAttribute="centerY" id="BDf-cp-BEG"/>
                 <constraint firstAttribute="centerX" secondItem="YY0-xm-dgY" secondAttribute="centerX" id="IMz-mG-UEd"/>

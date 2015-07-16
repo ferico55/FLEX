@@ -458,23 +458,25 @@
 //    4 seller & buyer sudah mengisi
 //    5 seller sudah mengisi
 //    6 seller belum mengisi
-    
+
     UIAlertView *alertView;
-    if([object.reviewee_score_status isEqualToString:@"6"]) {
-        alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penjual belum memberikan Feedback untuk anda" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+    if([object.reviewee_score_status isEqualToString:@"6"] || [object.reviewee_score_status isEqualToString:@"3"]) {
+        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"%@ belum memberikan Feedback untuk anda", ([object.role isEqualToString:@"2"]? @"Pembeli":@"Penjual")] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [alertView show];
     }
-    else if([object.reviewee_score_status isEqualToString:@"3"]) {
-        alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penasaran\nIsi Feedback Pembeli dulu ya!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+    else if([object.reviewee_score_status isEqualToString:@"2"] || [object.reviewee_score_status isEqualToString:@"5"]) {
+        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Penasaran\nIsi Feedback %@ dulu ya!", ([object.role isEqualToString:@"2"]? @"pembeli":@"penjual")] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [alertView show];
     }
-    else if([object.reviewee_score_status isEqualToString:@"5"]) {
+    else if([object.reviewee_score_status isEqualToString:@"1"] || [object.reviewee_score_status isEqualToString:@"4"]) {
         NSString *strRespond = @"Tidak Puas";
-        if(object.seller_score!=nil && ![object.seller_score isEqualToString:@""]) {
-            if([object.seller_score isEqualToString:CRevieweeScroreNetral]) {
+        NSString *score = ([object.role isEqualToString:@"2"]? object.buyer_score:object.seller_score);
+        
+        if(score!=nil && ![score isEqualToString:@""]) {
+            if([score isEqualToString:CRevieweeScroreNetral]) {
                 strRespond = @"Cukup Puas";
             }
-            else if([object.seller_score isEqualToString:CRevieweeScroreGood]) {
+            else if([score isEqualToString:CRevieweeScroreGood]) {
                 strRespond = @"Puas";
             }
         }
@@ -482,7 +484,7 @@
             return;
         }
         
-        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Wow!\nReview dari Pembeli:\"%@\"", strRespond] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Wow!\nReview dari %@:\"%@\"", ([object.role isEqualToString:@"2"]? @"Pembeli":@"Penjual"), strRespond] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [alertView show];
     } 
 }

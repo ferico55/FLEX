@@ -1873,7 +1873,7 @@ UIAlertViewDelegate
         }
         
         //Set icon speed
-        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
+//        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
         if([_product.result.shop_info.respond_speed.badge isEqualToString:CBadgeSpeedGood]) {
             [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_fast" ofType:@"png"]] forState:UIControlStateNormal];
         }

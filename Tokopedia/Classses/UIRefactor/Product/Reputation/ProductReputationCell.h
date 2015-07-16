@@ -11,8 +11,6 @@
 
 #define CPaddingTopBottom 8
 #define CHeightDate 15
-#define CHeightViewStar 18
-#define CHeightButton 30
 #define CheightImage 50
 #define CHeightContentRate 30
 #define CHeightContentAction 35
@@ -64,6 +62,7 @@
 - (void)setLabelDate:(NSString *)strDate;
 - (void)setDescription:(NSString *)strDescription;
 - (IBAction)actionRate:(id)sender;
+- (ViewLabelUser *)getLabelUser;
 - (UIView *)getViewContent;
 - (UIView *)getViewContentAction;
 - (UIView *)getViewSeparatorKualitas;

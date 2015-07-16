@@ -137,13 +137,14 @@
     [tempBtn setImage:image forState:UIControlStateNormal];
     [tempBtn setTitle:strTitle forState:UIControlStateNormal];
     [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
+    tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
     CGSize imageSize = tempBtn.imageView.bounds.size;
     CGSize titleSize = tempBtn.titleLabel.bounds.size;
     CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
     
     tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
+    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(5.0, - imageSize.width, - (totalHeight - titleSize.height), 0.0);
     
     return (id)tempBtn;
 }
@@ -258,11 +259,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+    DetailReputationReview *detailReputationReview = [arrList objectAtIndex:indexPath.row];
     [self setPropertyLabelDesc:tempLabel];
-    [self initLabelDesc:tempLabel withText:@"pasjk pdlf klksa jflj asldf jsadj flkjsalkdf jask jdflksa jdlkf jaslkdj flkas jdfl ajslkdf jsakl jflkasj dlfk jaslk jflksd"];
+    [self initLabelDesc:tempLabel withText:detailReputationReview.review_message];
 
     CGSize tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width-(CPaddingTopBottom*4), 9999)];//4 padding left and right of label description
-    return tempSizeDesc.height + (CPaddingTopBottom*8) + 2 + CPaddingTopBottom + CHeightDate + CHeightViewStar + CHeightButton + CheightImage; //9 is total padding of each row component
+    return tempSizeDesc.height + (CPaddingTopBottom*6) + CHeightDate + CHeightContentRate + CHeightContentAction + CheightImage; //6 is total padding of each row component
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -305,7 +307,7 @@
     
     //Set Image
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailReputationReview.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [cell.getImageProfile setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [cell.getImageProfile setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_profile_picture" ofType:@"jpeg"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [cell.getImageProfile setImage:image];
@@ -855,7 +857,7 @@
         
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
         lblDesc.attributedText = str;
     }
     else {
@@ -960,7 +962,7 @@
 
 - (void)actionMore:(id)sender {
     if(auth) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:nil otherButtonTitles:CStringLapor, nil];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:CStringLapor otherButtonTitles:nil, nil];
         actionSheet.tag = ((UIButton *) sender).tag;
         [actionSheet showInView:self.view];
     }
@@ -973,12 +975,12 @@
 - (void)actionRate:(id)sender {
     int paddingRightLeftContent = 10;
     DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent+paddingRightLeftContent, CHeightItemPopUp)];
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+(paddingRightLeftContent*4), CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
     UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
+    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
+    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
     
     btnMerah.tag = CTagMerah;
     btnKuning.tag = CTagKuning;

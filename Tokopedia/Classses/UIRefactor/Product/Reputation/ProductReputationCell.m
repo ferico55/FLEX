@@ -58,10 +58,10 @@
     //View content action
     viewContentAction.frame = CGRectMake(0, viewContentRating.frame.origin.y+viewContentRating.bounds.size.height, viewContent.bounds.size.width, viewContentAction.isHidden?0:CHeightContentAction);
     viewSeparatorKualitas.frame = CGRectMake(0, 0, viewContent.bounds.size.width, viewSeparatorKualitas.bounds.size.height);
-    btnLike.frame = CGRectMake(viewContentRating.frame.origin.x, viewSeparatorKualitas.frame.origin.y+viewSeparatorKualitas.bounds.size.height, btnLike.bounds.size.width, btnLike.bounds.size.height);
-    btnDislike.frame = CGRectMake(btnLike.frame.origin.x+btnLike.bounds.size.width+3, btnLike.frame.origin.y, btnDislike.bounds.size.width, btnDislike.bounds.size.height);
-    btnMore.frame = CGRectMake(viewContent.bounds.size.width-btnMore.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y, btnMore.bounds.size.width, btnMore.bounds.size.height);
-    btnChat.frame = CGRectMake(btnMore.frame.origin.x-3-btnMore.bounds.size.width, btnMore.frame.origin.y, btnMore.bounds.size.width, btnChat.bounds.size.height);
+    btnLike.frame = CGRectMake(viewContentRating.frame.origin.x, viewSeparatorKualitas.frame.origin.y+viewSeparatorKualitas.bounds.size.height, btnLike.bounds.size.width, viewContentAction.bounds.size.height);
+    btnDislike.frame = CGRectMake(btnLike.frame.origin.x+btnLike.bounds.size.width+3, btnLike.frame.origin.y, btnDislike.bounds.size.width, btnLike.bounds.size.height);
+    btnMore.frame = CGRectMake(viewContent.bounds.size.width-btnMore.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y, btnMore.bounds.size.width, btnLike.bounds.size.height);
+    btnChat.frame = CGRectMake(btnMore.frame.origin.x-8-btnMore.bounds.size.width, btnMore.frame.origin.y, btnMore.bounds.size.width, btnLike.bounds.size.height);
     
     
     viewContent.frame = CGRectMake(viewContent.frame.origin.x, viewContent.frame.origin.y, self.contentView.bounds.size.width-(viewContent.frame.origin.x*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
@@ -83,7 +83,7 @@
     viewSeparatorProduct = [[UIView alloc] initWithFrame:CGRectZero];
     imageProduct = [[UIImageView alloc] initWithFrame:CGRectZero];
     labelProductName = [[UILabel alloc] initWithFrame:CGRectZero];
-    labelProductName.font = [UIFont fontWithName:@"GothamBook" size:15.0f];
+    labelProductName.font = [UIFont fontWithName:@"Gotham Medium" size:15.0f];
     labelProductName.numberOfLines = 3;
     [viewContent addSubview:viewSeparatorProduct];
     [viewContent addSubview:imageProduct];
@@ -140,6 +140,10 @@
 
 - (UIView *)getViewContentAction {
     return viewContentAction;
+}
+
+- (ViewLabelUser *)getLabelUser {
+    return viewLabelUser;
 }
 
 - (UIView *)getViewSeparatorKualitas {

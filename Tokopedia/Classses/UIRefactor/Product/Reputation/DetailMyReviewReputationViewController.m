@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "DetailProductViewController.h"
 #import "DetailMyReviewReputationCell.h"
 #import "DetailMyInboxReputation.h"
 #import "DetailReputationReview.h"
@@ -121,7 +122,7 @@
     [self setPropertyLabelDesc:tempLabel];
     [self initLabelDesc:tempLabel withText:detailReputationReview.viewModel.review_message];
     CGSize tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(tempLabel.bounds.size.width, 9999)];
-    return (CPaddingTopBottom*6) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
+    return (CPaddingTopBottom*5) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -161,11 +162,17 @@
 - (void)initTable {
     NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MyReviewReputationCell" owner:self options:nil];
     myReviewReputationCell = [topLevelObjects objectAtIndex:0];
+    
+    int topConstraint = [myReviewReputationCell getTopViewContentConstraint].constant;
+    [myReviewReputationCell setLeftViewContentContraint:0];
+    [myReviewReputationCell setRightViewContentContraint:0];
+    [myReviewReputationCell setTopViewContentContraint:0];
+    [myReviewReputationCell setBottomViewContentContraint:0];
     [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
     [myReviewReputationCell.getBtnFooter removeFromSuperview];
     
     CGRect tempRect = myReviewReputationCell.contentView.frame;
-    tempRect.size.height -= myReviewReputationCell.getBtnFooter.bounds.size.height;
+    tempRect.size.height -= (myReviewReputationCell.getBtnFooter.bounds.size.height+topConstraint+topConstraint);
     myReviewReputationCell.contentView.frame = tempRect;
     tableContent.tableHeaderView = myReviewReputationCell.contentView;
 }
@@ -360,7 +367,8 @@
         
         
         RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
-        [reviewResponseMapping addAttributeMappingsFromDictionary:@{CResponseMsg:CResponseMessage,
+        [reviewResponseMapping addAttributeMappingsFromDictionary:@{CResponseMessage:CResponseMessage,
+                                                                    CResponseCreateTime:CResponseCreateTime,
                                                                     CResponseTimeFmt:CResponseTimeFmt}];
         
         
@@ -522,10 +530,9 @@
         lblDesc.linkAttributes = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
         
-        
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
         lblDesc.attributedText = str;
     }
     else {
@@ -543,7 +550,13 @@
 }
 
 - (void)actionProduct:(id)sender {
-
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    DetailReputationReview *detailReputationReview = arrList[((UIButton *) sender).tag];
+    
+    DetailProductViewController *detailProductViewController = [DetailProductViewController new];
+    detailProductViewController.data = @{@"product_id" : detailReputationReview.product_id, kTKPD_AUTHKEY:auth?:[NSNull null]};
+    [self.navigationController pushViewController:detailProductViewController animated:YES];
 }
 
 - (void)actionUbah:(id)sender {
@@ -551,7 +564,7 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Apakah anda yakin melewati review ini?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
         alertView.tag = CTagSkipReputationReview;
         [alertView show];
-        tempTagSkip = ((UIButton *) sender).tag;
+        tempTagSkip = (int)((UIButton *) sender).tag;
     }
     else if(((CustomBtnSkip *) sender).isLapor) {
         ReportViewController *reportViewController = [ReportViewController new];
@@ -599,5 +612,9 @@
 - (NSString *)getPath
 {
     return @"action/review.pl";
+}
+
+- (NSDictionary *)getParameter {
+    return nil;
 }
 @end

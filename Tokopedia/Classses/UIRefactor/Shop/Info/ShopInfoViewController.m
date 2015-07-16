@@ -138,12 +138,23 @@
     //set reputasi and akurasi
     UIFont *boldFont = [UIFont boldSystemFontOfSize:lblReputasi.font.pointSize];
     
-    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblReputasi.textColor, NSForegroundColorAttributeName, nil];
-    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblReputasi.font, NSFontAttributeName, lblReputasi.textColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblKecepatan.textColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblReputasi.font, NSFontAttributeName, lblKecepatan.textColor, NSForegroundColorAttributeName, nil];
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", _shop.result.stats.shop_reputation_score, CStringPoin] attributes:attrs];
     [attributedText setAttributes:subAttrs range:NSMakeRange(attributedText.string.length-CStringPoin.length, CStringPoin.length)];
     [lblReputasi setAttributedText:attributedText];
-    lblKecepatan.text = _shop.result.respond_speed.speed_level;
+    lblKecepatan.text = [_shop.result.respond_speed.speed_level stringByReplacingOccurrencesOfString:@"Respon" withString:@"Transaksi"];
+    
+    //Set image speed
+    if([_shop.result.respond_speed.badge isEqualToString:CBadgeSpeedGood]) {
+        imageSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_fast" ofType:@"png"]];
+    }
+    else if([_shop.result.respond_speed.badge isEqualToString:CBadgeSpeedBad]) {
+        imageSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_bad" ofType:@"png"]];
+    }
+    else if([_shop.result.respond_speed.badge isEqualToString:CBadgeSpeedNeutral]) {
+        imageSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_neutral" ofType:@"png"]];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

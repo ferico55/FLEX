@@ -20,6 +20,12 @@
 		854AB9471B56231100C796EA /* SkipReviewResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 854AB9461B56231100C796EA /* SkipReviewResult.m */; };
 		854AB94A1B56792400C796EA /* ResponseComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 854AB9491B56792400C796EA /* ResponseComment.m */; };
 		854AB94D1B56793200C796EA /* ResponseCommentResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 854AB94C1B56793200C796EA /* ResponseCommentResult.m */; };
+		855B999A1B575AFB009637EC /* icon_questionmark_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 855B99981B575AFB009637EC /* icon_questionmark_blue.png */; };
+		855B999B1B575AFB009637EC /* icon_questionmark_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 855B99991B575AFB009637EC /* icon_questionmark_grey.png */; };
+		855B999E1B575B03009637EC /* icon_questionmark_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855B999C1B575B03009637EC /* icon_questionmark_blue@2x.png */; };
+		855B999F1B575B03009637EC /* icon_questionmark_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855B999D1B575B03009637EC /* icon_questionmark_grey@2x.png */; };
+		855B99A21B575B14009637EC /* icon_questionmark_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855B99A01B575B14009637EC /* icon_questionmark_blue@3x.png */; };
+		855B99A31B575B14009637EC /* icon_questionmark_grey@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 855B99A11B575B14009637EC /* icon_questionmark_grey@3x.png */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1650,6 +1656,12 @@
 		854AB9491B56792400C796EA /* ResponseComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseComment.m; sourceTree = "<group>"; };
 		854AB94B1B56793200C796EA /* ResponseCommentResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseCommentResult.h; sourceTree = "<group>"; };
 		854AB94C1B56793200C796EA /* ResponseCommentResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseCommentResult.m; sourceTree = "<group>"; };
+		855B99981B575AFB009637EC /* icon_questionmark_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_questionmark_blue.png; sourceTree = "<group>"; };
+		855B99991B575AFB009637EC /* icon_questionmark_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_questionmark_grey.png; sourceTree = "<group>"; };
+		855B999C1B575B03009637EC /* icon_questionmark_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_questionmark_blue@2x.png"; sourceTree = "<group>"; };
+		855B999D1B575B03009637EC /* icon_questionmark_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_questionmark_grey@2x.png"; sourceTree = "<group>"; };
+		855B99A01B575B14009637EC /* icon_questionmark_blue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_questionmark_blue@3x.png"; sourceTree = "<group>"; };
+		855B99A11B575B14009637EC /* icon_questionmark_grey@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_questionmark_grey@3x.png"; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -7957,6 +7969,12 @@
 				85D22FEA1B54F6220013461A /* icon_plus_blue.png */,
 				85D22FEB1B54F6220013461A /* icon_plus_blue@2x.png */,
 				85D22FEC1B54F6220013461A /* icon_profile_picture.jpeg */,
+				855B99981B575AFB009637EC /* icon_questionmark_blue.png */,
+				855B999C1B575B03009637EC /* icon_questionmark_blue@2x.png */,
+				855B99A01B575B14009637EC /* icon_questionmark_blue@3x.png */,
+				855B99991B575AFB009637EC /* icon_questionmark_grey.png */,
+				855B999D1B575B03009637EC /* icon_questionmark_grey@2x.png */,
+				855B99A11B575B14009637EC /* icon_questionmark_grey@3x.png */,
 				85D22FED1B54F6220013461A /* icon_quote.png */,
 				85D22FEE1B54F6220013461A /* icon_quote@2x.png */,
 				85D22FEF1B54F6220013461A /* icon_retry_grey.png */,
@@ -8919,6 +8937,7 @@
 				85D235931B54F6260013461A /* icon_1@3x.png in Resources */,
 				85D232E11B54F6260013461A /* CategoryMenuViewController.xib in Resources */,
 				85D237001B54F6260013461A /* icon_search_active.png in Resources */,
+				855B99A31B575B14009637EC /* icon_questionmark_grey@3x.png in Resources */,
 				85D236BF1B54F6260013461A /* logo.png in Resources */,
 				85D235541B54F6260013461A /* icon_arrow_down.png in Resources */,
 				85D236251B54F6260013461A /* Icon_no_photo_transparan@2x.png in Resources */,
@@ -9066,6 +9085,7 @@
 				85D236831B54F6260013461A /* icon_track_grey@2x.png in Resources */,
 				85D2355A1B54F6260013461A /* icon_arrow_right_gray@3x.png in Resources */,
 				85D234F61B54F6260013461A /* TxOrderPaymentViewController.xib in Resources */,
+				855B999B1B575AFB009637EC /* icon_questionmark_grey.png in Resources */,
 				85D2333D1B54F6260013461A /* HomeTabHeaderViewController.xib in Resources */,
 				85D233AD1B54F6260013461A /* PriceAlertViewController.xib in Resources */,
 				85D234911B54F6260013461A /* ShopReviewPageViewController.xib in Resources */,
@@ -9114,6 +9134,7 @@
 				85D236721B54F6260013461A /* icon_speed_neutral@3x.png in Resources */,
 				85D234831B54F6260013461A /* SendMessageViewController.xib in Resources */,
 				85D237051B54F6260013461A /* icon_signin_active@2x.png in Resources */,
+				855B999F1B575B03009637EC /* icon_questionmark_grey@2x.png in Resources */,
 				85D233281B54F6260013461A /* GeneralReviewCell.xib in Resources */,
 				85D2356D1B54F6260013461A /* icon_button_pricealert_active.png in Resources */,
 				85D237141B54F6260013461A /* icon_info_grey.png in Resources */,
@@ -9126,6 +9147,7 @@
 				85D236321B54F6260013461A /* icon_profile_picture.jpeg in Resources */,
 				85D236261B54F6260013461A /* icon_order_cancel-01.png in Resources */,
 				85D236B91B54F6260013461A /* icon_sold.png in Resources */,
+				855B999A1B575AFB009637EC /* icon_questionmark_blue.png in Resources */,
 				85D2354C1B54F6260013461A /* icon_9@2x.png in Resources */,
 				85D235341B54F6260013461A /* icon_18.png in Resources */,
 				85D235611B54F6260013461A /* icon_arrow_white_down.png in Resources */,
@@ -9303,6 +9325,7 @@
 				85D234EC1B54F6260013461A /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
 				85D2359A1B54F6260013461A /* icon_6@3x.png in Resources */,
 				85D2343C1B54F6260013461A /* SearchResultViewController.xib in Resources */,
+				855B999E1B575B03009637EC /* icon_questionmark_blue@2x.png in Resources */,
 				85D2371E1B54F6260013461A /* icon_more_grey.png in Resources */,
 				85D237131B54F6260013461A /* icon_close_white@2x.png in Resources */,
 				85D2361C1B54F6260013461A /* icon_netral@3x.png in Resources */,
@@ -9406,6 +9429,7 @@
 				85D2360A1B54F6260013461A /* icon_medal_silver@2x.png in Resources */,
 				85D235351B54F6260013461A /* icon_18@2x.png in Resources */,
 				85D234CD1B54F6260013461A /* TransactionShipmentViewController.xib in Resources */,
+				855B99A21B575B14009637EC /* icon_questionmark_blue@3x.png in Resources */,
 				85D234811B54F6260013461A /* ShopReviewViewController.xib in Resources */,
 				85D234B61B54F6260013461A /* TransactionCartCostView.xib in Resources */,
 				85D236DF1B54F6260013461A /* icon_signin@3x.png in Resources */,

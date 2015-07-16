@@ -35,26 +35,26 @@
 - (void)layoutSubviews
 {
     imgProduct.frame = CGRectMake(imgProduct.frame.origin.x, imgProduct.frame.origin.y, CDiameterImage, CDiameterImage);
-    btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, imgProduct.frame.origin.y, self.bounds.size.width-(CPaddingTopBottom*4), (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
+    btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, imgProduct.frame.origin.y, self.bounds.size.width-(CPaddingTopBottom*5)-CDiameterImage, (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
     
     
     //Set content star
     viewContentStar.frame = CGRectMake(imgProduct.frame.origin.x, lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, viewContent.bounds.size.width-(imgProduct.frame.origin.x*2), (viewContentStar.isHidden)?0:CHeightContentStar);
-    lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, CPaddingTopBottom, lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
-    viewKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width, lblKualitas.frame.origin.y-3, viewKualitas.bounds.size.width, viewKualitas.bounds.size.height);
+    lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, 0, lblKualitas.bounds.size.width, viewContentStar.bounds.size.height);
+    viewKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width, (viewContentStar.bounds.size.height-viewKualitas.bounds.size.height)/2.0f, viewKualitas.bounds.size.width, viewKualitas.bounds.size.height);
     
-    viewAkurasi.frame = CGRectMake(viewContentStar.bounds.size.width-viewAkurasi.bounds.size.width-lblKualitas.frame.origin.x, lblKualitas.frame.origin.y-3, viewAkurasi.bounds.size.width, viewAkurasi.bounds.size.height);
+    viewAkurasi.frame = CGRectMake(viewContentStar.bounds.size.width-viewAkurasi.bounds.size.width-lblKualitas.frame.origin.x, viewKualitas.frame.origin.y, viewAkurasi.bounds.size.width, viewAkurasi.bounds.size.height);
     lblAkurasi.frame = CGRectMake(viewAkurasi.frame.origin.x-lblAkurasi.bounds.size.width, viewAkurasi.frame.origin.y+3, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
     
     
     //set content action
-    viewContentAction.frame = CGRectMake(0, viewContentStar.frame.origin.y+viewContentStar.bounds.size.height, viewContentStar.bounds.size.width, viewContentAction.isHidden?0:CHeightContentAction);
+    viewContentAction.frame = CGRectMake(0, viewContentStar.frame.origin.y+viewContentStar.bounds.size.height, viewContentStar.bounds.size.width+(viewContentStar.frame.origin.x*2), viewContentAction.isHidden?0:CHeightContentAction);
     viewSeparatorContentAction.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewSeparatorContentAction.bounds.size.height);
-    btnKomentar.frame = CGRectMake(CPaddingTopBottom, CPaddingTopBottom, 100, btnKomentar.bounds.size.height);
-    btnUbah.frame = CGRectMake(viewContentStar.bounds.size.width-100-CPaddingTopBottom, btnKomentar.frame.origin.y, 100, btnUbah.bounds.size.height);
+    btnKomentar.frame = CGRectMake(CPaddingTopBottom, 0, 100, viewContentAction.bounds.size.height);
+    btnUbah.frame = CGRectMake(viewContentStar.bounds.size.width-100-CPaddingTopBottom, 0, 100, viewContentAction.bounds.size.height);
     
     viewContent.frame = CGRectMake(CPaddingTopBottom, CPaddingTopBottom, self.contentView.bounds.size.width-(CPaddingTopBottom*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
-    self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
+    self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, 0, self.contentView.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
 }
 
 
@@ -123,21 +123,21 @@
     //check skipable
     if([viewModel.review_is_skipable isEqualToString:@"1"]) {
         [btnUbah setTitle:@"Lewati" forState:UIControlStateNormal];
-        [btnUbah setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor colorWithRed:110/255.0f green:110/255.0f blue:110/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnUbah.isLewati = YES;
         btnUbah.isLapor = NO;
         btnUbah.hidden = NO;
     }
     else if(viewModel.review_message!=nil && viewModel.review_message.length>0 && ![viewModel.review_message isEqualToString:@"0"] && [viewModel.review_is_allow_edit isEqualToString:@"1"] && ![_strRole isEqualToString:@"2"]) {
         [btnUbah setTitle:@"Ubah" forState:UIControlStateNormal];
-        [btnUbah setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnUbah.isLewati = NO;
         btnUbah.isLapor = NO;
         btnUbah.hidden = NO;
     }
     else if([_strRole isEqualToString:@"2"]) {
         [btnUbah setTitle:@"Lapor" forState:UIControlStateNormal];
-        [btnUbah setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnUbah.isLewati = NO;
         btnUbah.isLapor = YES;
         btnUbah.hidden = NO;
@@ -161,16 +161,16 @@
         [self setHiddenRating:YES];
         btnKomentar.enabled = YES;
         [btnKomentar setTitle:@"Beri Review" forState:UIControlStateNormal];
-        [btnKomentar setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
-    }
-    else if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0) {
-        btnKomentar.hidden = NO;
-        btnKomentar.enabled = NO;
-        [btnKomentar setTitle:[NSString stringWithFormat:@"1 %@", CStringKomentar] forState:UIControlStateNormal];
-        [btnKomentar setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnKomentar setTitleColor:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
     else {
-        btnKomentar.hidden = YES;
+        btnKomentar.hidden = NO;
+        btnKomentar.enabled = NO;
+        if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0)
+            [btnKomentar setTitle:[NSString stringWithFormat:@"1 %@", CStringKomentar] forState:UIControlStateNormal];
+        else
+            [btnKomentar setTitle:[NSString stringWithFormat:@"0 %@", CStringKomentar] forState:UIControlStateNormal];
+        [btnKomentar setTitleColor:[UIColor colorWithRed:110/255.0f green:110/255.0f blue:110/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
 }
 

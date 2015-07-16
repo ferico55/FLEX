@@ -35,7 +35,7 @@
     CGRect rect = CGRectMake(0.0f, 0.0f, imgDescTrGagal.bounds.size.width, imgDescTrGagal.bounds.size.height);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[UIColor lightGrayColor] CGColor]);
+    CGContextSetFillColorWithColor(context, [[self pieChart:nil colorForSliceAtIndex:1] CGColor]);
     CGContextFillRect(context, rect);
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -46,7 +46,9 @@
     rect = CGRectMake(0.0f, 0.0f, imgDescTrGagal.bounds.size.width, imgDescTrGagal.bounds.size.height);
     UIGraphicsBeginImageContext(rect.size);
     context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[UIColor greenColor] CGColor]);
+    
+    
+    CGContextSetFillColorWithColor(context, [[self pieChart:nil colorForSliceAtIndex:0] CGColor]);
     CGContextFillRect(context, rect);
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -256,9 +258,9 @@
 //Optional
 - (UIColor *)pieChart:(XYPieChart *)pieChart colorForSliceAtIndex:(NSUInteger)index {
     if(index == 0)
-        return [UIColor greenColor];
+        return [UIColor colorWithRed:107/255.0f green:189/255.0f blue:44/255.0f alpha:1.0f];
     else
-        return [UIColor lightGrayColor];
+        return [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f];
 }
 
 - (NSString *)pieChart:(XYPieChart *)pieChart textForSliceAtIndex:(NSUInteger)index {

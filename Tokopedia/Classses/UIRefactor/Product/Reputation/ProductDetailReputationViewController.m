@@ -119,6 +119,11 @@
     }
 }
 
+- (void)dealloc {
+    tokopediaNetworkManager.delegate = nil;
+    [tokopediaNetworkManager requestCancel];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -174,13 +179,14 @@
     [tempBtn setImage:image forState:UIControlStateNormal];
     [tempBtn setTitle:strTitle forState:UIControlStateNormal];
     [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
+    tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
     CGSize imageSize = tempBtn.imageView.bounds.size;
     CGSize titleSize = tempBtn.titleLabel.bounds.size;
     CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
     
     tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
+    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(5.0, - imageSize.width, - (totalHeight - titleSize.height), 0.0);
     
     return (id)tempBtn;
 }
@@ -202,7 +208,7 @@
     productReputationCell.contentView.backgroundColor = productReputationCell.getViewContent.backgroundColor;
     productReputationCell.getBtnMore.frame = CGRectZero;
     [productReputationCell.getBtnMore removeFromSuperview];
-    
+    [productReputationCell.getLabelUser setText:[UIColor colorWithRed:62/255.0f green:114/255.0f blue:9/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:14.0f]];
     
     //Set profile image
     if((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && ![_detailReputaitonReview.review_message isEqualToString:@"0"]) || (_reviewList!=nil && _reviewList.review_message!=nil && ![_reviewList.review_message isEqualToString:@"0"])) {
@@ -258,6 +264,7 @@
         [productReputationCell.getBtnDisLike setTitle:_strTotalDisLike forState:UIControlStateNormal];
     }
     [productReputationCell layoutSubviews];
+    productReputationCell.contentView.frame = CGRectMake(0, 0, productReputationCell.contentView.bounds.size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom);
     
     //Add separator
     UIView *viewSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, productReputationCell.contentView.bounds.size.height-1, self.view.bounds.size.width, 1.0f)];
@@ -396,7 +403,7 @@
         [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:15.0f]];
     }
     cell.getTvDesc.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_message:_reviewList.review_response.response_message;
-    cell.getLblDate.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_time_fmt:_reviewList.review_response.response_time_fmt;
+    cell.getLblDate.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_create_time:_reviewList.review_response.response_create_time;
     cell.getBtnTryAgain.tag = indexPath.row;
     cell.getBtnTryAgain.hidden = !(_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
     
@@ -410,11 +417,10 @@
     
     //Set image
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    productReputationCell.getProductImage.image = nil;
-    [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [productReputationCell.getImageProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_profile_picture" ofType:@"jpeg"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [productReputationCell.getProductImage setImage:image];
+        [productReputationCell.getImageProfile setImage:image];
 #pragma clang diagnostic pop
     } failure:nil];
     
@@ -469,12 +475,12 @@
 
 - (void)actionRate:(id)sender {
     int paddingRightLeftContent = 10;
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent+paddingRightLeftContent, CHeightItemPopUp)];
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+(paddingRightLeftContent*4), CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
     UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
+    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
+    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
     
     btnMerah.tag = CTagMerah;
     btnKuning.tag = CTagKuning;
@@ -778,7 +784,7 @@
             isSuccessSentMessage = YES;
             
             if(_detailReputaitonReview != nil) {
-                _detailReputaitonReview.review_response.response_create_time = responseComment.result.review_response.response_time_ago;
+                _detailReputaitonReview.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
                 _detailReputaitonReview.review_response.response_message = responseComment.result.review_response.response_message;
                 _detailReputaitonReview.review_response.failedSentMessage = NO;
                 _detailReputaitonReview.review_response.canDelete = YES;

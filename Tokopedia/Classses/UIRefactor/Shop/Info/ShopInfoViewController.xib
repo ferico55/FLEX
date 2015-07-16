@@ -54,6 +54,7 @@
                 <outlet property="buttonitemsold" destination="8uq-Zo-ZDV" id="dSH-B6-jrU"/>
                 <outlet property="buttonofflocation" destination="NXr-90-gzo" id="EWR-Mm-kDF"/>
                 <outlet property="containerview" destination="SPN-F6-FwN" id="Ava-I5-27P"/>
+                <outlet property="imageSpeed" destination="aN1-CY-Ug6" id="G8B-Yp-muk"/>
                 <outlet property="labeletalase" destination="LKB-Ns-97P" id="U9S-tV-GqZ"/>
                 <outlet property="labellastlogin" destination="aIz-fv-w5w" id="zfM-0o-qgC"/>
                 <outlet property="labellocation" destination="elH-5F-6s9" id="dUj-vr-8xv"/>
@@ -92,6 +93,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="29" y="374"/>
         </view>
         <view autoresizesSubviews="NO" contentMode="scaleToFill" id="SPN-F6-FwN">
             <rect key="frame" x="0.0" y="0.0" width="320" height="1220"/>
@@ -314,20 +316,25 @@
                                             <rect key="frame" x="0.0" y="8" width="150" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                            <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.30980392156862746" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kecepatan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y2A-dk-mFZ">
                                             <rect key="frame" x="150" y="8" width="150" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                            <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.30980392156862746" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" id="7uP-f4-bBl">
                                             <rect key="frame" x="0.0" y="80" width="300" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                        </view>
+                                        <view contentMode="scaleToFill" id="CX4-z2-bMM">
+                                            <rect key="frame" x="150" y="0.0" width="1" height="80"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_diamond.png" id="quH-OI-aEy">
                                             <rect key="frame" x="0.0" y="30" width="150" height="21"/>
@@ -348,7 +355,7 @@
                                             <rect key="frame" x="150" y="54" width="150" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                            <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.52156862745098043" green="0.52156862745098043" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yyb-Zo-VFO">

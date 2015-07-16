@@ -27,15 +27,23 @@
     IBOutlet UIButton *btnInvoice, *btnFooter, *btnReview;
     IBOutlet ViewLabelUser *labelUser;
     UIActivityIndicatorView *activityRating;
+    UIImage *imageSmile, *imageSad, *imageNetral, *imageNeutral, *imageQuestionGray, *imageQuestionBlue, *imageQSmile;
+    IBOutlet NSLayoutConstraint *constraintLeftViewContent, *constraintRightViewContent, *constraintTopViewContent, *cosntraintBottomViewContent;
 }
 @property (nonatomic, unsafe_unretained) id<MyReviewReputationDelegate> delegate;
 
+- (void)setLeftViewContentContraint:(int)n;
+- (void)setBottomViewContentContraint:(int)n;
+- (void)setTopViewContentContraint:(int)n;
+- (void)setRightViewContentContraint:(int)n;
 - (void)isLoadInView:(BOOL)isLoad withView:(UIView *)view;
 - (ViewLabelUser *)getLabelUser;
+- (UIView *)getViewContent;
 - (UIButton *)getBtnInvoice;
 - (UIButton *)getBtnFooter;
 - (UIButton *)getBtnReview;
 - (UIImageView *)getImageFlagReview;
+- (NSLayoutConstraint *)getTopViewContentConstraint;
 - (IBAction)actionInvoice:(id)sender;
 - (IBAction)actionFooter:(id)sender;
 - (IBAction)actionReview:(id)sender;

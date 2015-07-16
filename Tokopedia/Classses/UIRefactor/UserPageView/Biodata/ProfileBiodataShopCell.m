@@ -57,6 +57,18 @@
 
 
 #pragma mark - Method
+- (void)setBadgeIcon:(NSString *)badge {
+    if([badge isEqualToString:CBadgeSpeedGood]) {
+        [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_fast" ofType:@"png"]] forState:UIControlStateNormal];
+    }
+    else if([badge isEqualToString:CBadgeSpeedBad]) {
+        [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_bad" ofType:@"png"]] forState:UIControlStateNormal];
+    }
+    else if([badge isEqualToString:CBadgeSpeedNeutral]) {
+        [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_neutral" ofType:@"png"]] forState:UIControlStateNormal];
+    }
+}
+
 - (void)actionReputasi:(id)sender {
     [_delegate actionReputasi:sender];
 }

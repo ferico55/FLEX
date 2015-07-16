@@ -36,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 
 +(id)newcell;
+- (void)setBadgeIcon:(NSString *)badge;
 - (IBAction)actionReputasi:(id)sender;
 - (IBAction)actionKecepatan:(id)sender;
 @end

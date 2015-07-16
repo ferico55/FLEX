@@ -232,7 +232,7 @@
                 [((ProfileBiodataShopCell *)cell).labelname addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionGoToUserProfile:)]];
             }
             ((ProfileBiodataShopCell*)cell).labelname.text = _profile.result.shop_info.shop_name;
-            
+            [((ProfileBiodataShopCell*)cell) setBadgeIcon:_profile.result.respond_speed.badge];
             [((ProfileBiodataShopCell*)cell).buttonName setTitle:_profile.result.shop_info.shop_name forState:UIControlStateNormal];
             ((ProfileBiodataShopCell*)cell).labellocation.text = _profile.result.shop_info.shop_location;
             
