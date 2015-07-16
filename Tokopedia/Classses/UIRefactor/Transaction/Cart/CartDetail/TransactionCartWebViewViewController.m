@@ -10,13 +10,14 @@
 
 #import "TxEmoney.h"
 #import "string_transaction.h"
+#import "RequestCart.h"
 
 #define CLICK_BCA_LOGIN_URL @"https://klikpay.klikbca.com/login.do?action=loginRequest"
 #define CLICK_BCA_LOGIN_PAYEMNET_URL @"https://klikpay.klikbca.com/purchasing/purchase.do?action=loginRequest"
 #define CLICK_BCA_SUMMARY_URL @"https://klikpay.klikbca.com/purchasing/payment.do?action=summaryRequest"
 #define CLICK_BCA_VIEW_TRANSACTION @"https://klikpay.klikbca.com/purchasing/payment.do?action=viewTransaction"
 
-@interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate>
+@interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 {
     BOOL _isSuccessBCA;
     NSOperationQueue *_operationQueue;
@@ -46,6 +47,12 @@
     
     _isAlertShow = NO;
     [self loadRequest];
+}
+
+-(IBAction)didTapGesture:(id)sender
+{
+    [_delegate isSucessSprintAsia:_data];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)loadRequest
@@ -103,25 +110,17 @@
         urlAddress = _URLString;
         
         NSDictionary *paramEncrypt = [_CCParam encrypt];
-        NSURLComponents *components = [NSURLComponents componentsWithString:urlAddress];
         
-        NSMutableArray *queryItems = [NSMutableArray array];
-        for (NSString *key in paramEncrypt) {
-            if ([paramEncrypt[key] isKindOfClass:[NSString class]]) {
-                [queryItems addObject:[NSURLQueryItem queryItemWithName:key value:paramEncrypt[key]]];
-            }
-        }
-        components.queryItems = queryItems;
-        
-        url = components.URL;
-        
-        NSArray *arrayWithTwoStrings = [[components.URL absoluteString] componentsSeparatedByString:@"?"];
-        NSString *postString = arrayWithTwoStrings[1];
-        
-        NSLog(@"POST String %@", postString);
+        NSString *postString = [self encodeDictionary:paramEncrypt];
+
+        postString = [postString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        postString = [postString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
         NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSLog(@"POST String %@", postString);
+        
         [request setHTTPBody:postData];
         [request setHTTPMethod:@"POST"];
+
         url = [NSURL URLWithString:urlAddress];
     }
     else
@@ -134,9 +133,28 @@
     [_webView loadRequest:request];
 }
 
+
+-(NSString*)encodeDictionary:(NSDictionary*)dictionary{
+    NSMutableString *bodyData = [[NSMutableString alloc]init];
+    int i = 0;
+    for (NSString *key in dictionary.allKeys) {
+        i++;
+        [bodyData appendFormat:@"%@=",key];
+        NSString *value = [dictionary valueForKey:key];
+        NSString *newString = [value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        [bodyData appendString:newString];
+        if (i < dictionary.allKeys.count) {
+            [bodyData appendString:@"&"];
+        }
+    }
+    return bodyData;
+}
+
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     [_act startAnimating];
+     NSLog(@"%@", webView.request.URL.absoluteString);
+
     NSInteger gateway = [_gateway integerValue];
     if ( gateway == TYPE_GATEWAY_CLICK_BCA)
     {
@@ -196,15 +214,36 @@
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [_act stopAnimating];
-    NSLog(@"URL String WebView %@", [webView request]);
+    NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
+    NSLog(@"html String WebView %@", html);
+    NSLog(@"%@", webView.request.URL.absoluteString);
     
-    if (_isVeritrans)
+    NSInteger gateway = [_gateway integerValue];
+    
+    if(gateway == TYPE_GATEWAY_CC)
     {
-        if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            [_delegate doRequestCC:_data];
+        if (_isVeritrans)
+        {
+            if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [_delegate doRequestCC:_data];
+            }
         }
-        
+        else
+        {
+            if ([webView.request.URL.absoluteString rangeOfString:@"tx-payment-cc-bca.pl"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                // get issuccess value
+                NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
+                if ([html rangeOfString:@"value=\"1\""].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                    UIButton *transparentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [transparentButton addTarget:self action:@selector(didTapGesture:) forControlEvents:(UIControlEventTouchUpInside)];
+                    transparentButton.frame = webView.frame;
+                    transparentButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+                    [self.webView addSubview:transparentButton];
+
+                }
+            }
+        }
     }
 }
 

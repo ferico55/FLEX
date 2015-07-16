@@ -79,6 +79,7 @@ typedef enum
 #define STRING_SALDO_TOKOPEDIA_TERSISA @"Saldo Tokopedia yang tersisa"
 #define STRING_JUMLAH_YANG_HARUS_DIBAYAR @"Jumlah yang harus dibayar"
 #define STRING_PENGGUNAAN_KUPON @"Penggunaan Kupon"
+#define STRING_PAYMENT
 
 #define DATA_DETAIL_PRODUCT_KEY @"product"
 #define DATA_SHIPMENT_KEY @"shipment"

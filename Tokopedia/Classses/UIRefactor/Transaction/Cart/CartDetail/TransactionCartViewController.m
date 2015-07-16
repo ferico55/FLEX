@@ -163,6 +163,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonVoucherInfo;
 @property (weak, nonatomic) IBOutlet UIButton *buttonCancelVoucher;
 @property (strong, nonatomic) IBOutlet UITableViewCell *depositAmmountCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *ccAdministrationCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *ccFeeCell;
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentDetail;
 @property (weak, nonatomic) IBOutlet UILabel *depositAmountLabel;
@@ -356,7 +358,7 @@
     NSInteger rowCount;
     
     if (section == listCount) {
-        rowCount = 6; // Kode Promo Tokopedia, Total invoice, Saldo Tokopedia Terpakai, Kode Transfer, Voucher, Total Pembayaran
+        rowCount = 7; // Kode Promo Tokopedia, Total invoice, Saldo Tokopedia Terpakai, Kode Transfer, Voucher, Biaya Administrasi,Total Pembayaran
     }
     else if (section < listCount) {
         TransactionCartList *list = _list[section];
@@ -365,7 +367,7 @@
     }
     else if (section == listCount+1)
         rowCount = 4; //saldo tokopedia, textfield saldo, deposit amount, password tokopedia
-    else rowCount = 1; // total pembayaran
+    else rowCount = 2; // Biaya administrasi, total pembayaran
     
     return _isnodata?0:rowCount;
 }
@@ -384,8 +386,14 @@
         cell = [self cellAdjustDepositAtIndexPath:indexPath];
     else
     {
-        cell = _totalPaymentCell;
-        [cell.detailTextLabel setText:(_indexPage ==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
+        if (indexPath.row == 1) {
+            cell = _ccFeeCell;
+        }
+        else
+        {
+            cell = _totalPaymentCell;
+            [cell.detailTextLabel setText:(_indexPage ==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
+        }
     }
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, cell.contentView.frame.size.width,1)];
@@ -629,47 +637,45 @@
         {
             switch ([_cartSummary.gateway integerValue]) {
                 case TYPE_GATEWAY_TOKOPEDIA:
-                {
+                case TYPE_GATEWAY_TRANSFER_BANK:
                     if ([self isValidInput]) {
                         _requestCart.param = [self paramBuy];
                         [_requestCart dorequestBuy];
-                        
                     }
-                }
-                break;
-                case TYPE_GATEWAY_TRANSFER_BANK:
-                    _requestCart.param = [self paramBuy];
-                    [_requestCart dorequestBuy];
-                    
                     break;
                 case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
                 {
-                    NSDictionary *data = @{DATA_KEY:_dataInput,
-                                           DATA_CART_SUMMARY_KEY: _cartSummary
-                                           };
-                    [_delegate pushVC:self toMandiriClickPayVCwithData:data];
+                    if ([self isValidInput]) {
+                        NSDictionary *data = @{DATA_KEY:_dataInput,
+                                               DATA_CART_SUMMARY_KEY: _cartSummary
+                                               };
+                        [_delegate pushVC:self toMandiriClickPayVCwithData:data];
+                    }
                 }
                     break;
                 case TYPE_GATEWAY_CLICK_BCA:
                 {
-                    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-                    vc.BCAParam = _cartSummary.bca_param;
-                    vc.gateway = @(TYPE_GATEWAY_CLICK_BCA);
-                    vc.token = _cartSummary.token;
-                    vc.cartDetail = _cartSummary;
-                    vc.delegate = self;
-                    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                    navigationController.navigationBar.translucent = NO;
-                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                    if ([self isValidInput]) {
+                        TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+                        vc.BCAParam = _cartSummary.bca_param;
+                        vc.gateway = @(TYPE_GATEWAY_CLICK_BCA);
+                        vc.token = _cartSummary.token;
+                        vc.cartDetail = _cartSummary;
+                        vc.delegate = self;
+                        UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                        navigationController.navigationBar.translucent = NO;
+                        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                    }
                 }
                     break;
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
                 {
-                    _requestCart.param = [self paramBuy];
-                    [_requestCart dorequestBuy];
-                    
+                    if ([self isValidInput]) {
+                        _requestCart.param = [self paramBuy];
+                        [_requestCart dorequestBuy];
+                    }
                 }
                     break;
                 case TYPE_GATEWAY_CC:
@@ -917,7 +923,7 @@
         }
     }
     else if (_indexPage == 1 && [_cartSummary.deposit_amount integerValue]>0) {
-        NSString *password = [_dataInput objectForKey:API_PASSWORD_KEY];
+        NSString *password = _passwordTextField.text;
         if ([password isEqualToString:@""] || password == nil) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
@@ -1283,6 +1289,17 @@
     [_requestCart dorequestBuy];
 }
 
+-(void)isSucessSprintAsia:(NSDictionary *)param
+{
+    _cartBuy = [TransactionBuyResult new];
+    _cartBuy.transaction = _cartSummary;
+    _cartBuy.is_success = 1;
+    NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy};
+    [_delegate didFinishRequestBuyData:userInfo];
+    [_dataInput removeAllObjects];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+}
+
 #pragma mark - Textfield Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
@@ -1318,7 +1335,7 @@
         [_tableView reloadData];
     }
     if (textField == _passwordTextField) {
-        [_dataInput setObject:textField.text forKey:API_PASSWORD_KEY];
+        [_dataInput setObject:textField.text?:@"" forKey:API_PASSWORD_KEY];
     }
     
     //_checkoutButton.enabled = isValid;
@@ -1751,7 +1768,7 @@
 
 -(UITableViewCell*)cellPaymentInformationAtIndexPath:(NSIndexPath*)indexPath
 {
-    //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 5 Total Pembayaran
+    //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 5. Biaya Administrasi, 6 Total Pembayaran
     UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case 0:
@@ -1763,7 +1780,7 @@
             break;
         case 2:
             cell = _usedSaldoCell;
-            [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr animated:YES];
+            [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr];
             break;
         case 3:
             cell = _voucherUsedCell;
@@ -1771,11 +1788,18 @@
             break;
         case 4:
             cell = _transferCodeCell;
-            [cell.detailTextLabel setText:_cartSummary.conf_code_idr animated:YES];
+            [cell.detailTextLabel setText:_cartSummary.conf_code_idr];
             break;
         case 5:
+        {
+            cell = _ccAdministrationCell;
+            NSString *administrationFeeStr = _cartSummary.credit_card.charge_idr?:@"Rp 0";
+            [cell.detailTextLabel setText:administrationFeeStr];
+        }
+            break;
+        case 6:
             cell = _totalPaymentDetail;
-            [cell.detailTextLabel setText:_cartSummary.payment_left_idr animated:YES];
+            [cell.detailTextLabel setText:_cartSummary.payment_left_idr?:@"Rp 0" animated:YES];
             break;
         default:
             break;
@@ -2054,6 +2078,14 @@
             return 0;
         }
     }
+    else
+    {
+        if (indexPath.row == 1) {
+            if ([selectedGateway.gateway integerValue] != TYPE_GATEWAY_CC) {
+                return 0;
+            }
+        }
+    }
     
     return DEFAULT_ROW_HEIGHT;
 }
@@ -2089,7 +2121,7 @@
     }
     else if (indexPath.section == _list.count)
     {
-        //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 5 Total Pembayaran
+        //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 5 Biaya Administrasi, 6 Total Pembayaran
         if (indexPath.row == 0)
         {
             return 0;
@@ -2110,6 +2142,11 @@
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
                 return 0;
         }
+        if (indexPath.row == 5) {
+            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_CC) {
+                return 0;
+            }
+        }
     }
     else if (indexPath.section == _list.count+1)
     {
@@ -2128,8 +2165,9 @@
         }
         if (indexPath.row == 3)
         {
-            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
-                [_cartSummary.deposit_amount integerValue] <= 0) {
+            if (([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
+                [_cartSummary.deposit_amount integerValue] <= 0)||
+                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC) {
                 return 0;
             }
         }
@@ -2262,7 +2300,7 @@
     NSNumber *gatewayID = _cartSummary.gateway;
     NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
     NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
-    NSString *password = [_dataInput objectForKey:API_PASSWORD_KEY]?:@"";
+    NSString *password = _passwordTextField.text?:@"";
     
     NSString *CCToken = [_dataInput objectForKey:API_CC_TOKEN_ID_KEY]?:@"";
     NSString *CCEditFlag =[_dataInput objectForKey:API_CC_EDIT_FLAG_KEY]?:@"1";

@@ -132,6 +132,7 @@
     RKObjectMapping *shopinfoMapping    = [[self mapping] shopInfoMapping];
     RKObjectMapping *ccMapping          = [[self mapping] transactionCCDataMapping];
     RKObjectMapping *veritransMapping   = [[self mapping] veritransDataMapping];
+    RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
     
     if(_gatewayID == TYPE_GATEWAY_CLICK_BCA){
         RKObjectMapping *BCAParamMapping = [[self mapping] BCAParamMapping];
@@ -154,6 +155,9 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"veritrans"
                                                                                   toKeyPath:@"veritrans"
                                                                                 withMapping:veritransMapping]];
+    [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
+                                                                                       toKeyPath:@"credit_card"
+                                                                                     withMapping:ccFeeMapping]];
     
     RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
                                                                                                  toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
@@ -210,13 +214,14 @@
     [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY,
                                                    API_LINK_MANDIRI_KEY]];
     
-    RKObjectMapping *systemBankMapping = [[self mapping] systemBankMapping];
+    RKObjectMapping *systemBankMapping  = [[self mapping] systemBankMapping];
     RKObjectMapping *transactionMapping = [[self mapping] transactionDetailSummaryMapping];
-    RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
-    RKObjectMapping *productMapping = [[self mapping] productMapping];
-    RKObjectMapping *addressMapping = [[self mapping] addressMapping];
-    RKObjectMapping *shipmentsMapping = [[self mapping] shipmentsMapping];
-    RKObjectMapping *shopinfoMapping = [[self mapping] shopInfoMapping];
+    RKObjectMapping *listMapping        = [[self mapping] transactionCartListMapping];
+    RKObjectMapping *productMapping     = [[self mapping] productMapping];
+    RKObjectMapping *addressMapping     = [[self mapping] addressMapping];
+    RKObjectMapping *shipmentsMapping   = [[self mapping] shipmentsMapping];
+    RKObjectMapping *shopinfoMapping    = [[self mapping] shopInfoMapping];
+    RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -239,6 +244,10 @@
     [listMapping addPropertyMapping:shipmentRel];
     
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
+                                                                                       toKeyPath:@"credit_card"
+                                                                                     withMapping:ccFeeMapping]];
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -356,13 +365,14 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionBuyResult class]];
     [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
     
-    RKObjectMapping *systemBankMapping = [[self mapping] systemBankMapping];
+    RKObjectMapping *systemBankMapping  = [[self mapping] systemBankMapping];
     RKObjectMapping *transactionMapping = [[self mapping] transactionDetailSummaryMapping];
-    RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
-    RKObjectMapping *productMapping = [[self mapping] productMapping];
-    RKObjectMapping *addressMapping = [[self mapping] addressMapping];
-    RKObjectMapping *shipmentsMapping = [[self mapping] shipmentsMapping];
-    RKObjectMapping *shopinfoMapping = [[self mapping] shopInfoMapping];
+    RKObjectMapping *listMapping        = [[self mapping] transactionCartListMapping];
+    RKObjectMapping *productMapping     = [[self mapping] productMapping];
+    RKObjectMapping *addressMapping     = [[self mapping] addressMapping];
+    RKObjectMapping *shipmentsMapping   = [[self mapping] shipmentsMapping];
+    RKObjectMapping *shopinfoMapping    = [[self mapping] shopInfoMapping];
+    RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -385,6 +395,10 @@
     [listMapping addPropertyMapping:shipmentRel];
     
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
+                                                                                       toKeyPath:@"credit_card"
+                                                                                     withMapping:ccFeeMapping]];
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_BCA_KLICK_PAY_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];

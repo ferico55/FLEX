@@ -21,6 +21,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -95,7 +96,7 @@
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                         <nil key="highlightedColor"/>
                         <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                            <rect key="frame" x="15" y="0.5" width="290" height="51.5"/>
+                            <rect key="frame" x="15" y="1" width="290" height="52"/>
                         </variation>
                     </label>
                 </subviews>
@@ -479,6 +480,9 @@
                         <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                            <rect key="frame" x="11" y="28" width="290" height="65"/>
+                        </variation>
                         <connections>
                             <outlet property="delegate" destination="-1" id="PBH-bP-Cwp"/>
                         </connections>

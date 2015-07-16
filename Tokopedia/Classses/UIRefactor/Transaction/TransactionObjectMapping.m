@@ -189,7 +189,7 @@
                                                         API_GATEWAY_LIST_ID_KEY,
                                                         API_TOKEN_KEY,
                                                         API_STEP_KEY,
-                                                        API_DROPSHIP_LIST_KEY
+                                                        API_DROPSHIP_LIST_KEY,
                                                         ]];
     return transactionMapping;
 }
@@ -270,5 +270,17 @@
     return mapping;
 }
 
+-(RKObjectMapping *)ccFeeMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[CCFee class]];
+    [mapping addAttributeMappingsFromArray:@[@"charge",
+                                             @"charge_idr",
+                                             @"total_idr",
+                                             @"total",
+                                             @"charge_25"
+                                             ]
+     ];
+    return mapping;
+}
 
 @end

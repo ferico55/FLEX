@@ -21,6 +21,7 @@
 #import "TransactionVoucher.h"
 #import "TransactionSummaryBCAParam.h"
 #import "TransactionCC.h"
+#import "CCFee.h"
 
 @interface TransactionObjectMapping : NSObject
 
@@ -37,5 +38,6 @@
 -(RKObjectMapping*)transactionCCDataMapping;
 -(RKObjectMapping*)veritransDataMapping;
 -(RKObjectMapping *)dataCreditMapping;
+-(RKObjectMapping *)ccFeeMapping;
 
 @end

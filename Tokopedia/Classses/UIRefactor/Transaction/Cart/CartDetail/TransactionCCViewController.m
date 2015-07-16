@@ -142,6 +142,11 @@
     [_delegate doRequestCC:param];
 }
 
+-(void)isSucessSprintAsia:(NSDictionary *)param
+{
+    [_delegate isSucessSprintAsia:param];
+}
+
 #pragma mark - Text Field Delegate
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {

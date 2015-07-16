@@ -77,7 +77,7 @@
     
     _years = [NSMutableArray new];
     for (int i=i2; i<=i2+11; i++) {
-        [_years addObject:@{DATA_NAME_KEY:@(i)}];
+        [_years addObject:@{DATA_NAME_KEY:[NSString stringWithFormat:@"%d",i]}];
     }
     
     _requestCart = [RequestCart new];
@@ -193,7 +193,7 @@
     VTDirect *vtDirect = [VTDirect new];
     VTCardDetails *cardDetails = [VTCardDetails new];
     
-    cardDetails.card_number = _CCNumberTextField.text?:@"";
+    cardDetails.card_number = [self CCNumber]?:@"";
     cardDetails.card_cvv = _CVVTextField.text?:@"";
     cardDetails.card_exp_month = [_selectedMonth integerValue]?:0;
     cardDetails.card_exp_year = [_selectedYear integerValue]?:0;
@@ -247,49 +247,52 @@
     NSString *CCAddress =[_data objectForKey:API_CC_ADDRESS_KEY]?:@"";
     NSString *CCPhone =[_data objectForKey:API_CC_PHONE_KEY]?:@"";
     NSString *CCState =[_data objectForKey:API_CC_STATE_KEY]?:@"";
-    NSString *CCOwnerName =[_data objectForKey:API_CC_OWNER_KEY]?:@"";
-    NSString *CCNumber =[_data objectForKey:API_CC_CARD_NUMBER_KEY]?:@"";
-    
+    NSString *CCOwnerName =_nameTextField.text?:@"";
+    NSString *CCNumber =[self CCNumber]?:@"";
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userID = [auth getUserId];
     
     NSDictionary *param = @{
-                            @"address_street": CCAddress
-//                            @"amount":_cartSummary.payment_left?:@"",
-//                            @"billingAddress" : CCAddress,
-//                            @"billingCity": CCCity,
-//                            @"billingCountry" : @"Indonesia",
-//                            @"billingEmail": _dataCC.user_email?:@"",
-//                            @"billingName": CCOwnerName,
-//                            @"billingPhone" : CCPhone,
-//                            @"billingPostalCode": CCPostalCode,
-//                            @"billingState":CCState,
-//                            @"cardExpMonth":[NSString stringWithFormat:@"%zd",_selectedMonth]?:@"",
-//                            @"cardExpYear":[NSString stringWithFormat:@"%zd",_selectedYear]?:@"",
-//                            @"cardNo": CCNumber,
-//                            @"cardSecurity": _CVVTextField.text?:@"",
-//                            @"cardType":_dataCC.cc_type?:@"",
-//                            @"city":CCCity,
-//                            @"credit_card_edit_flag" :@"1",
-//                            @"credit_card_token":_dataCC.payment_id?:@"",
-//                            @"currency":@"IDR",
-//                            @"deliveryAddress":CCAddress,
-//                            @"deliveryCity":CCCity,
-//                            @"deliveryCountry":@"Indonesia",
-//                            @"deliveryName":CCOwnerName,
-//                            @"deliveryPostalCode":CCPostalCode,
-//                            @"deliveryState":CCState,
-//                            @"first_name":CCFirstName,
-//                            @"gateway":_cartSummary.gateway?:@"",
-//                            @"last_name":CCLastName,
-//                            @"merchantTransactionID":_dataCC.payment_id?:@"",
-//                            @"merchantTransactionNote":@"",
-//                            @"phone":CCPhone,
-//                            @"postal_code":CCPostalCode,
-//                            @"refback":@"",
-//                            @"serviceVersion":@"1.1",
-//                            @"siteID":@"mTokopediaios",
-//                            @"step":@"2",
-//                            @"token":_cartSummary.token?:@"",
-//                            @"transactionType":@"SALE"
+                            @"address_street": CCAddress,
+                            @"amount":_cartSummary.payment_left?:@"",
+                            @"billingAddress" : CCAddress,
+                            @"billingCity": CCCity,
+                            @"billingCountry" : @"Indonesia",
+                            @"billingEmail": _dataCC.user_email?:@"",
+                            @"billingName": CCOwnerName,
+                            @"billingPhone" : CCPhone,
+                            @"billingPostalCode": CCPostalCode,
+                            @"billingState":CCState,
+                            @"cardExpMonth":_selectedMonth?:@"",
+                            @"cardExpYear":_selectedYear?:@"",
+                            @"cardNo": CCNumber,
+                            @"cardSecurity": _CVVTextField.text?:@"",
+                            @"cardType":_dataCC.cc_type?:@"",
+                            @"city":CCCity,
+                            @"credit_card_edit_flag" :@"1",
+                            @"credit_card_token":_dataCC.payment_id?:@"",
+                            @"currency":@"IDR",
+                            @"deliveryAddress":CCAddress,
+                            @"deliveryCity":CCCity,
+                            @"deliveryCountry":@"Indonesia",
+                            @"deliveryName":CCOwnerName,
+                            @"deliveryPostalCode":CCPostalCode,
+                            @"deliveryState":CCState,
+                            @"first_name":CCFirstName,
+                            @"gateway":[_cartSummary.gateway stringValue]?:@"",
+                            @"last_name":CCLastName,
+                            @"merchantTransactionID":_dataCC.payment_id?:@"",
+                            @"merchantTransactionNote":@"",
+                            @"phone":CCPhone,
+                            @"postal_code":CCPostalCode,
+                            @"refback":@"",
+                            @"serviceVersion":@"1.1",
+                            @"siteID":@"mTokopediaios",
+                            @"step":@"2",
+                            @"token":_cartSummary.token?:@"",
+                            @"transactionType":@"SALE",
+                            //@"redirect":@"1",
+                            //@"user_id":userID?:@""
                             };
     [request setURL:[NSURL URLWithString:stringURL]];
 
@@ -312,7 +315,7 @@
 {
     NSMutableDictionary *dataInput = [NSMutableDictionary new];
     [dataInput addEntriesFromDictionary:_data];
-    [dataInput setObject:_CCNumberTextField.text?:@"" forKey:API_CC_CARD_NUMBER_KEY];
+    [dataInput setObject:[self CCNumber]?:@"" forKey:API_CC_CARD_NUMBER_KEY];
     [dataInput setObject:_nameTextField.text?:@"" forKey:API_CC_OWNER_KEY];
     [dataInput setObject:_CVVTextField.text?:@"" forKey:API_CC_CVV_KEY];
     [dataInput setObject:_selectedMonth?:@"" forKey:API_CC_EXP_MONTH_KEY];
@@ -320,6 +323,12 @@
     [dataInput setObject:_token.token_id?:@"" forKey:API_CC_TOKEN_ID_KEY];
     
     [_delegate doRequestCC:dataInput];
+    [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
+}
+
+-(void)isSucessSprintAsia:(NSDictionary *)param
+{
+    [_delegate isSucessSprintAsia:param];
     [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
 }
 
@@ -340,10 +349,15 @@
                             API_CC_ADDRESS_KEY:[_data objectForKey:API_CC_ADDRESS_KEY]?:@"",
                             API_CC_PHONE_KEY:[_data objectForKey:API_CC_PHONE_KEY]?:@"",
                             API_CC_STATE_KEY:[_data objectForKey:API_CC_STATE_KEY]?:@"",
-                            API_CC_CARD_NUMBER_KEY: _CCNumberTextField.text?:@""
+                            API_CC_CARD_NUMBER_KEY:[self CCNumber]?:@""
                             };
     
     return param;
+}
+
+-(NSString*)CCNumber
+{
+    return [_CCNumberTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
 -(IBAction)nextButton:(id)sender
@@ -365,7 +379,37 @@
 {
 #define CHARACTER_LIMIT 16
     if (textField == _CCNumberTextField) {
-        return textField.text.length + (string.length - range.length) <= CHARACTER_LIMIT;
+//        return textField.text.length + (string.length - range.length) <= CHARACTER_LIMIT;
+        __block NSString *text = [textField text];
+        
+        NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789\b"];
+        string = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if ([string rangeOfCharacterFromSet:[characterSet invertedSet]].location != NSNotFound) {
+            return NO;
+        }
+        
+        text = [text stringByReplacingCharactersInRange:range withString:string];
+        text = [text stringByReplacingOccurrencesOfString:@" " withString:@""];
+        
+        NSString *newString = @"";
+        while (text.length > 0) {
+            NSString *subString = [text substringToIndex:MIN(text.length, 4)];
+            newString = [newString stringByAppendingString:subString];
+            if (subString.length == 4) {
+                newString = [newString stringByAppendingString:@" "];
+            }
+            text = [text substringFromIndex:MIN(text.length, 4)];
+        }
+        
+        newString = [newString stringByTrimmingCharactersInSet:[characterSet invertedSet]];
+        
+        if (newString.length >= 20) {
+            return NO;
+        }
+        
+        [textField setText:newString];
+        
+        return NO;
     }
     
     return YES;

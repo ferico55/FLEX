@@ -13,6 +13,7 @@
 
 @required
 - (void)doRequestCC:(NSDictionary*)param;
+- (void)isSucessSprintAsia:(NSDictionary*)param;
 
 @end
 

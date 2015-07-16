@@ -15,6 +15,7 @@
 - (void)shouldDoRequestEMoney:(BOOL)isWSNew;
 - (void)shouldDoRequestBCAClickPay;
 - (void)doRequestCC:(NSDictionary*)param;
+- (void)isSucessSprintAsia:(NSDictionary*)param;
 - (void)refreshCartAfterCancelPayment;
 
 @end
