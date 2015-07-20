@@ -342,13 +342,21 @@
     else if(tag == CTagInsertReputation) {
         ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reviewee_score = emoticonState;
         ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.reviewee_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reviewee_score;
+        
+        //Update ui detail reputation
+        UIViewController *tempViewController = [self.navigationController.viewControllers lastObject];
+        if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+            [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id];
+        }
+        else {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessInsertReputation] delegate:self];
+            [stickyAlertView show];
+        }
+        
+        
         strInsertReputationRole = strRequestingInsertReputation = emoticonState = nil;
         [tableContent reloadRowsAtIndexPaths:@[indexPathInsertReputation] withRowAnimation:UITableViewRowAnimationNone];
         indexPathInsertReputation = nil;
-        
-        
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessInsertReputation] delegate:self];
-        [stickyAlertView show];
     }
 }
 
@@ -366,12 +374,19 @@
         tableContent.tableFooterView = [self getLoadView].view;
     }
     else if(tag == CTagInsertReputation) {
+        //Update ui detail reputation
+        UIViewController *tempViewController = [self.navigationController.viewControllers lastObject];
+        if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+            [((DetailMyReviewReputationViewController *) tempViewController) failedInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id];
+        }
+        else {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedInsertReputation] delegate:self];
+            [stickyAlertView show];
+        }
+        
         strInsertReputationRole = strRequestingInsertReputation = emoticonState = nil;
         [tableContent reloadRowsAtIndexPaths:@[indexPathInsertReputation] withRowAnimation:UITableViewRowAnimationNone];
         indexPathInsertReputation = nil;
-        
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedInsertReputation] delegate:self];
-        [stickyAlertView show];
     }
 }
 
@@ -495,6 +510,7 @@
     tempObj.read_status = CValueRead;
     tempObj.viewModel.read_status = CValueRead;
     DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
+    detailMyReviewReputationViewController.tag = ((UIButton *) sender).tag;
     detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
     [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
 }
@@ -539,6 +555,11 @@
     [tableContent reloadRowsAtIndexPaths:@[indexPathInsertReputation] withRowAnimation:UITableViewRowAnimationNone];
     alertRateView = nil;
     
+    //Update ui detail my review reputation
+    UIViewController *tempViewController = [self.navigationController.viewControllers lastObject];
+    if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+        [((DetailMyReviewReputationViewController *) tempViewController) doingActInsertReview:tempObj.reputation_id];
+    }
     
     //Request to server
     [[self getNetworkManager:CTagInsertReputation] doRequest];

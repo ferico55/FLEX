@@ -17,6 +17,10 @@
 }
 
 @property (nonatomic, unsafe_unretained) DetailMyInboxReputation *detailMyInboxReputation;
+@property (nonatomic) int tag;
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription;
 - (void)reloadTable;
+- (void)successInsertReputation:(NSString *)reputationID;
+- (void)failedInsertReputation:(NSString *)reputationID;
+- (void)doingActInsertReview:(NSString *)reputationID;
 @end

@@ -11,6 +11,7 @@
 #import "DetailReputationReview.h"
 #import "DetailMyReviewReputationViewController.h"
 #import "GiveReviewViewController.h"
+#import "MyReviewReputationViewController.h"
 #import "MyReviewReputation.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationCell.h"
@@ -18,7 +19,9 @@
 #import "ProductDetailReputationViewController.h"
 #import "Paging.h"
 #import "ReportViewController.h"
+#import "SegmentedReviewReputationViewController.h"
 #import "SkipReview.h"
+#import "String_Reputation.h"
 #import "SkipReviewResult.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
@@ -31,7 +34,7 @@
 #define CTagListReputationReview 1
 #define CTagSkipReputationReview 2
 
-@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate>
+@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate>
 
 @end
 
@@ -162,6 +165,7 @@
 - (void)initTable {
     NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MyReviewReputationCell" owner:self options:nil];
     myReviewReputationCell = [topLevelObjects objectAtIndex:0];
+    myReviewReputationCell.delegate = self;
     
     int topConstraint = [myReviewReputationCell getTopViewContentConstraint].constant;
     [myReviewReputationCell setLeftViewContentContraint:0];
@@ -201,6 +205,32 @@
 }
 
 #pragma mark - Method
+- (void)successInsertReputation:(NSString *)reputationID {
+    if([_detailMyInboxReputation.reputation_id isEqualToString:reputationID]) {
+        [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
+        [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
+
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessInsertReputation] delegate:self];
+        [stickyAlertView show];
+    }
+}
+
+
+- (void)failedInsertReputation:(NSString *)reputationID {
+    if([_detailMyInboxReputation.reputation_id isEqualToString:reputationID]) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedInsertReputation] delegate:self];
+        [stickyAlertView show];
+        
+        [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
+    }
+}
+
+- (void)doingActInsertReview:(NSString *)reputationID {
+    if([_detailMyInboxReputation.reputation_id isEqualToString:reputationID]) {
+        [myReviewReputationCell isLoadInView:YES withView:myReviewReputationCell.getBtnReview];
+    }
+}
+
 - (void)redirectToGiveReviewViewController:(int)tag {
     GiveReviewViewController *giveReviewViewController = [GiveReviewViewController new];
     DetailReputationReview *detailReputationReview = arrList[tag];
@@ -616,5 +646,31 @@
 
 - (NSDictionary *)getParameter {
     return nil;
+}
+
+#pragma mark - MyReviewReputationCell delegate
+- (void)actionInvoice:(id)sender {
+}
+
+- (void)actionFooter:(id)sender {
+}
+
+- (void)actionReviewRate:(id)sender {
+    UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+    if([tempViewController isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
+        UIView *tempView = [UIView new];
+        tempView.tag = _tag;
+        [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) tempViewController) getSegmentedViewController]) actionReviewRate:tempView];
+    }
+    
+//    [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
+
+}
+
+- (void)actionLabelUser:(id)sender {
+}
+
+- (void)actionFlagReview:(id)sender {
+    
 }
 @end

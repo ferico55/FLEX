@@ -14,6 +14,7 @@
 #define CTagSemuaReview @"all"
 #define CTagBelumDibaca @"unread"
 #define CtagBelumDireviw @"unassessed"
+@class MyReviewReputationViewController;
 
 @interface SegmentedReviewReputationViewController : UIViewController
 {
@@ -29,4 +30,5 @@
 - (IBAction)actionValueChange:(id)sender;
 - (int)getSelectedSegmented;
 - (void)setNavigationTitle:(NSString *)strTitle;
+- (MyReviewReputationViewController *)getSegmentedViewController;
 @end

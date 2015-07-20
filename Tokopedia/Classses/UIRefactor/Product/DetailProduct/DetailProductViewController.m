@@ -1660,7 +1660,7 @@ UIAlertViewDelegate
         NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
         GeneralAction *generalAction = [result objectForKey:@""];
         if([generalAction.result.is_success isEqualToString:@"1"]) {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:generalAction.message_status delegate:self];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
             [stickyAlertView show];
             
             _product.result.product.product_price_alert = @"0";

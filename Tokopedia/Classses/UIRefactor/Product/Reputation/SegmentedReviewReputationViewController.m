@@ -94,6 +94,28 @@
     return (int)segmentedControl.selectedSegmentIndex;
 }
 
+- (MyReviewReputationViewController *)getSegmentedViewController {
+    switch (segmentedControl.selectedSegmentIndex) {
+        case CTagSemua:
+        {
+            return allReviewViewController;
+        }
+            break;
+        case CTagProductSaya:
+        {
+            return myProductViewController;
+        }
+            break;
+        case CTagReviewSaya:
+        {
+            return myReviewViewController;
+        }
+            break;
+    }
+    
+    return nil;
+}
+
 - (NSString *)getSelectedFilter {
     return selectedFilter;
 }

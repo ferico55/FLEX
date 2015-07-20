@@ -46,6 +46,7 @@
 
 
 #pragma mark - String
+#define CStringSelectedShipping @"Metode pengiriman harus dipilih"
 #define CStringLimitNamaToko @"Nama toko maksimal 24 karakter"
 #define CStringFailedCreateShop @"Gagal buat toko"
 #define CStringPilihProvinsi @"Pilih provinsi"
