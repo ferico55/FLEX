@@ -393,8 +393,8 @@
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
 #define CHARACTER_LIMIT 16
+    
     if (textField == _CCNumberTextField) {
-//        return textField.text.length + (string.length - range.length) <= CHARACTER_LIMIT;
         __block NSString *text = [textField text];
         
         NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789\b"];
@@ -426,6 +426,10 @@
         
         return NO;
     }
+    if (textField == _CVVTextField) {
+#define CVV_CHARACTER_LIMIT 3
+        return textField.text.length + (string.length - range.length) <= CVV_CHARACTER_LIMIT;
+    }
     
     return YES;
 }
@@ -440,11 +444,11 @@
         isValid = NO;
     }
     if ([_CCNumberTextField.text isEqualToString:@""]) {
-        [errorMessage addObject:@"Nomer kartu kredit harus diisi."];
+        [errorMessage addObject:@"Nomor kartu kredit harus diisi."];
         isValid = NO;
     }
     else if (_CCNumberTextField.text.length < 16) {
-        [errorMessage addObject:@"Nomer kartu minimal 16 karakter."];
+        [errorMessage addObject:@"Nomor kartu harus 16 karakter."];
         isValid = NO;
     }
     if ([_expDateLabel.text isEqualToString:@"MM/YYYY"]) {
@@ -452,7 +456,12 @@
         isValid = NO;
     }
     if ([_CVVTextField.text isEqualToString:@""]) {
-        [errorMessage addObject:@"CVC harus diisi."];
+        [errorMessage addObject:@"CVC/CVV2 harus diisi."];
+        isValid = NO;
+    }
+    else if (_CVVTextField.text.length <3)
+    {
+        [errorMessage addObject:@"Kode CVC/CVV2 harus 3 karakter."];
         isValid = NO;
     }
     
