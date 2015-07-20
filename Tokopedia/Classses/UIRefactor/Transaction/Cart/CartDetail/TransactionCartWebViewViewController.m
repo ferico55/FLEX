@@ -49,9 +49,14 @@
     [self loadRequest];
 }
 
--(IBAction)didTapGesture:(id)sender
+-(IBAction)didTapSuccess:(id)sender
 {
     [_delegate isSucessSprintAsia:_data];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(IBAction)didTapRetry:(id)sender
+{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -236,11 +241,17 @@
                 NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
                 if ([html rangeOfString:@"value=\"1\""].location != NSNotFound && webView.request.URL.absoluteString != nil) {
                     UIButton *transparentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                    [transparentButton addTarget:self action:@selector(didTapGesture:) forControlEvents:(UIControlEventTouchUpInside)];
+                    [transparentButton addTarget:self action:@selector(didTapSuccess:) forControlEvents:(UIControlEventTouchUpInside)];
                     transparentButton.frame = webView.frame;
                     transparentButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
                     [self.webView addSubview:transparentButton];
-
+                }
+                if ([html rangeOfString:@"Ulangi"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                    UIButton *transparentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [transparentButton addTarget:self action:@selector(didTapRetry:) forControlEvents:(UIControlEventTouchUpInside)];
+                    transparentButton.frame = webView.frame;
+                    transparentButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+                    [self.webView addSubview:transparentButton];
                 }
             }
         }

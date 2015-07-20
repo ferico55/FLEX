@@ -52,6 +52,8 @@
     
     DataCredit *_dataCC;
     VTToken *_token;
+    
+    UITextField *_activeTextField;
 }
 
 - (void)viewDidLoad {
@@ -120,6 +122,9 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [_activeTextField resignFirstResponder];
+    _activeTextField = nil;
+
     switch (indexPath.row) {
         case 0:
             [_nameTextField becomeFirstResponder];
@@ -363,6 +368,11 @@
 -(IBAction)nextButton:(id)sender
 {
     [self.view endEditing:YES];
+
+    [_activeTextField resignFirstResponder];
+    _activeTextField = nil;
+
+    
     if ([self isValidInput]) {
         _requestCart.param = [self param];
         [_requestCart doRequestCC];
@@ -373,6 +383,11 @@
     alertInfo.text = @"Info CVC/CVV2";
     alertInfo.detailText = @"CVC atau Card Verification Code adalah tiga digit angka terakhir yang terdapat pada bagian belakang kartu kredit.";
     [alertInfo show];
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    _activeTextField = textField;
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -426,6 +441,10 @@
     }
     if ([_CCNumberTextField.text isEqualToString:@""]) {
         [errorMessage addObject:@"Nomer kartu kredit harus diisi."];
+        isValid = NO;
+    }
+    else if (_CCNumberTextField.text.length < 16) {
+        [errorMessage addObject:@"Nomer kartu minimal 16 karakter."];
         isValid = NO;
     }
     if ([_expDateLabel.text isEqualToString:@"MM/YYYY"]) {
