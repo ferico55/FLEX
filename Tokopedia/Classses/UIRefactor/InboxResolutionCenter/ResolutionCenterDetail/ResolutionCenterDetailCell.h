@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ConversationViewModel.h"
 
 #define RESOLUTION_CENTER_DETAIL_CELL_IDENTIFIER @"ResolutionCenterDetailCellIdentifier"
 
@@ -20,7 +21,7 @@
 
 @interface ResolutionCenterDetailCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet id<ResolutionCenterDetailCellDelegate> delegate;
+@property (nonatomic, weak) id<ResolutionCenterDetailCellDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet UILabel *buyerNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeRemainingLabel;
@@ -31,7 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIView *atachmentView;
 @property (weak, nonatomic) IBOutlet UILabel *markAttachmentLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *buyerProfileImageView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UIView *photosView;
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *attachmentImages;
 @property (weak, nonatomic) IBOutlet UIButton *oneButton;
@@ -45,10 +46,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *twobuttonConstraintHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageConstraintHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *oneButtonConstraintHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topMarginConstraint;
 
-+(id)newCell;
--(void)hideAllViews;
-
-
++ (id)newCell;
+- (void)hideAllViews;
+- (void)setViewModel:(ConversationViewModel *)viewModel;
 
 @end

@@ -65,7 +65,6 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    NSlog(@"asda");
     return _isnodata?1:_wholesales.count;
 #else
     NSInteger rows = _isnodata?0:_wholesales.count;

@@ -116,7 +116,9 @@
 -(void)requestFailureGenerateHost:(NSError*)object
 {
     if(_delegate!=nil && [_delegate respondsToSelector:@selector(failedGenerateHost:)])
+    {
         [_delegate failedGenerateHost:@[[object localizedDescription]]];
+    }
 }
 
 -(void)requestProcessGenerateHost:(id)object

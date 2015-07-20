@@ -8,6 +8,7 @@
  */
 
 #import "InboxMessageDetailCell.h"
+#define CXTimeLabel 60.0f
 
 @implementation InboxMessageDetailCell
 
@@ -74,6 +75,8 @@ static CGFloat messageTextSize = 17.0;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         /*Now the basic view-lements are initialized...*/
+        _viewLabelUser = [[ViewLabelUser alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width-CXTimeLabel, CHeightUserLabel)];
+        [_viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:12.0f]];
         messageView = [[UIView alloc] initWithFrame:CGRectZero];
         messageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         
@@ -101,6 +104,7 @@ static CGFloat messageTextSize = 17.0;
         [self.messageView addSubview: self.balloonView];
         [self.messageView addSubview: self.messageLabel];
         
+        [self.balloonView addSubview:_viewLabelUser];
         [self.contentView addSubview: self.timeLabel];
         [self.contentView addSubview: self.messageView];
         [self.contentView addSubview: self.avatarImageView];
@@ -116,6 +120,17 @@ static CGFloat messageTextSize = 17.0;
     }
     
     return self;
+}
+
+- (float)calculateSender:(UIFont *)font withColor:(UIColor *)color withSize:(CGSize)size withText:(NSString *)strText
+{
+    UILabel *tempLabel = [[UILabel alloc] init];
+    tempLabel.textColor = color;
+    tempLabel.font = font;
+    tempLabel.text = strText;
+    CGSize tempSize = [tempLabel sizeThatFits:size];
+    
+    return tempSize.width;
 }
 
 
@@ -137,31 +152,40 @@ static CGFloat messageTextSize = 17.0;
     CGRect messageLabelFrame = CGRectZero;
     CGRect timeLabelFrame = CGRectZero;
     CGRect avatarImageFrame = CGRectZero;
+    CGRect rectViewLabelUser = CGRectZero;
     
     if (self.sent == YES) {
         ballonViewFrame = CGRectMake(self.frame.size.width - (textSize.width + 2*textMarginHorizontal), timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
+        
         
         timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, ballonViewFrame.size.height +5, dateSize.width, dateSize.height);
         
         messageLabelFrame = CGRectMake(self.frame.size.width - (textSize.width + textMarginHorizontal),  ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
         avatarImageFrame = CGRectMake(self.frame.size.width - 55.0f,  timeLabelFrame.size.height + ballonViewFrame.size.height - 40.0f , 45.0f, 45.0f);
-        
-
-        
+        _viewLabelUser.hidden = YES;
     } else {
-        ballonViewFrame = CGRectMake(55.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
+        float widthUserLabel = [self calculateSender:_viewLabelUser.getLblText.font withColor:_viewLabelUser.getLblText.textColor withSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CHeightUserLabel) withText:_viewLabelUser.getLblText.text];
         
-        timeLabelFrame = CGRectMake(60.0f, ballonViewFrame.size.height +5 , dateSize.width, dateSize.height);
+        ballonViewFrame = CGRectMake(55.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f + CHeightUserLabel);
         
-        messageLabelFrame = CGRectMake(textMarginHorizontal + 55.0f, ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
+        if(ballonViewFrame.size.width < (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal))) {
+            ballonViewFrame.size.width = (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal));
+        }
+        
+        timeLabelFrame = CGRectMake(CXTimeLabel, ballonViewFrame.size.height +5 , dateSize.width, dateSize.height);
+        
+        messageLabelFrame = CGRectMake(textMarginHorizontal + 55.0f, CHeightUserLabel + ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
         
         avatarImageFrame = CGRectMake(5.0f, timeLabelFrame.size.height + ballonViewFrame.size.height - 40.0f, 45.0f, 45.0f);
         
-        
+        rectViewLabelUser = CGRectMake(textMarginHorizontal, 6, [InboxMessageDetailCell maxTextWidth], CHeightUserLabel);
+        _viewLabelUser.hidden = NO;
+
     }
     
+    self.viewLabelUser.frame = rectViewLabelUser;
     self.balloonView.image = [InboxMessageDetailCell balloonImage:self.sent isSelected:self.selected];
     
     /*Sets the pre-initialized frames  for the balloonView and messageView.*/

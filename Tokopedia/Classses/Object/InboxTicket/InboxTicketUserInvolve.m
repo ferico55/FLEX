@@ -10,4 +10,9 @@
 
 @implementation InboxTicketUserInvolve
 
+- (id)description
+{
+    return _full_name;
+}
+
 @end

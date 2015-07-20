@@ -11,12 +11,13 @@
 #import "TKPDTabHomeViewController.h"
 #import "TokopediaNetworkManager.h"
 
-@interface WishListViewController : GAITrackedViewController<UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, TokopediaNetworkManagerDelegate>
-{
+@interface WishListViewController : GAITrackedViewController {
     IBOutlet UITableView *tblWishList;
     IBOutlet UIView *footer, *viewNoData;
     IBOutlet UIActivityIndicatorView *activityIndicator;
     TokopediaNetworkManager *tokoPediaNetworkManager;
 }
+
 @property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;
+
 @end

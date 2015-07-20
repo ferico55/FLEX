@@ -244,11 +244,24 @@
         if (_etalaseList.count > indexPath.row) {
             EtalaseList *list =_etalaseList[indexPath.row];
 
-            if ([list.etalase_name isEqualToString:_selectedEtalase.etalase_name]) {
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+            if(!_selectedEtalase) {
+                if ([list.etalase_name isEqualToString:[_data objectForKey:@"product_etalase_name"]]) {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                } else {
+                    if([[_data objectForKey:@"product_etalase_name"] isEqualToString:@""] && [list.etalase_name isEqualToString:@"Semua Etalase"]) {
+                        ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                    } else {
+                        ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                    }
+                }
             } else {
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                if([_selectedEtalase.etalase_name isEqualToString:list.etalase_name]) {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                } else {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                }
             }
+            
             
             ((MyShopEtalaseFilterCell*)cell).label.text = list.etalase_name;
             ((MyShopEtalaseFilterCell*)cell).indexpath = indexPath;
@@ -317,6 +330,14 @@
 {
     [_act stopAnimating];
     _table.tableFooterView = nil;
+    
+    NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];
+    if (presentedEtalaseType == PRESENTED_ETALASE_ADD_PRODUCT && _etalaseList.count==0) {
+        EtalaseList *etalase = [EtalaseList new];
+        etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+        etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
+        [_etalaseList addObject:etalase];
+    }
 }
 
 - (RKObjectManager*)objectManagerEtalase
@@ -398,13 +419,14 @@
             [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
             
             EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
-            if (!selectedEtalase) {
-                _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
-            }
-            else
-            {
-                _selectedEtalase = selectedEtalase;
-            }
+            _selectedEtalase = selectedEtalase;
+//            if (!selectedEtalase) {
+//                _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
+//            }
+//            else
+//            {
+//                _selectedEtalase = selectedEtalase;
+//            }
             
             [_table reloadData];
         }

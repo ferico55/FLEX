@@ -20,6 +20,8 @@
 #define KTKPDMESSAGE_INBOXIDKEY @"message_inbox_id"
 #define KTKPDMESSAGE_USERIMAGEKEY @"user_image"
 #define KTKPDMESSAGE_JSONDATAKEY @"json_data_info"
+#define KTKPDMESSAGE_USER_LABEL @"user_label"
+#define KTKPDMESSAGE_USER_LABEL_ID @"user_label_id"
 
 #define KTKPDMESSAGE_ACTIONKEY @"message_action"
 #define KTKPDMESSAGE_CREATEBYKEY @"message_create_by"
