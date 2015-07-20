@@ -115,14 +115,45 @@
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
 
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor blackColor],
-                                 };
-    
-    self.markLabel.attributedText = [[NSAttributedString alloc] initWithString:viewModel.conversationMessage?:@""
-                                                                    attributes:attributes];
+    UIFont *gothamBookFont = [UIFont fontWithName:@"GothamBook" size:12];
+    UIFont *gothamMediumFont = [UIFont fontWithName:@"GothamMedium" size:12];
+
+    if (![viewModel.conversationMessage isEqualToString:@"0"] && !viewModel.conversationNote) {
+
+        NSDictionary *textAttributes = @{
+                                         NSFontAttributeName            : gothamBookFont,
+                                         NSParagraphStyleAttributeName  : style,
+                                         NSForegroundColorAttributeName : [UIColor blackColor],
+                                         };
+
+        self.markLabel.attributedText = [[NSAttributedString alloc] initWithString:viewModel.conversationMessage?:@""
+                                                                        attributes:textAttributes];
+
+    } else if (![viewModel.conversationMessage isEqualToString:@"0"] && viewModel.conversationNote) {
+        
+        NSString *message = [NSString stringWithFormat:@"%@\n\n%@", viewModel.conversationMessage, viewModel.conversationNote];
+        
+        NSMutableAttributedString *attributedMessage = [[NSMutableAttributedString alloc] initWithString:message];
+        [attributedMessage addAttribute:NSFontAttributeName value:gothamBookFont range:NSMakeRange(0, viewModel.conversationMessage.length)];
+        [attributedMessage addAttribute:NSFontAttributeName value:gothamMediumFont range:NSMakeRange(viewModel.conversationMessage.length+2,
+                                                                                                     viewModel.conversationNote.length)];
+        [attributedMessage addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, message.length)];
+        [attributedMessage addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, message.length)];
+        
+        self.markLabel.attributedText = attributedMessage;
+
+    } else if ([viewModel.conversationMessage isEqualToString:@"0"] && viewModel.conversationNote) {
+
+        NSDictionary *textAttributes = @{
+                                         NSFontAttributeName            : gothamMediumFont,
+                                         NSParagraphStyleAttributeName  : style,
+                                         NSForegroundColorAttributeName : [UIColor blackColor],
+                                         };
+        
+        self.markLabel.attributedText = [[NSAttributedString alloc] initWithString:viewModel.conversationNote?:@""
+                                                                        attributes:textAttributes];
+
+    }
     
     self.buyerSellerLabel.text = viewModel.conversationOwner;
     self.buyerSellerLabel.layer.cornerRadius = 2;
