@@ -22,6 +22,7 @@ typedef enum
 
 #define kTKPDALERTVIEW_DATADATEPICKERKEY @"datepicker"
 #define DATA_INDEX_KEY @"index"
+#define DATA_INDEX_SECOND_KEY @"second_index"
 #define DATA_LABEL_KEY @"label"
 
 #define DATA_NAME_KEY @"name"

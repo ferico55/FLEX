@@ -151,7 +151,9 @@
         return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA||
                 [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
                 [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
-                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)])
+                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)]||
+                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]
+                )
         ?_paymentStatusView:_viewConfirmPayment;
     }
     return nil;
@@ -354,7 +356,9 @@
     }
     else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)] ||
-             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)])
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]
+             )
     {
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]) {
             self.screenName = @"Thank you Page - Mandiri eCash";
@@ -362,6 +366,8 @@
             self.screenName = @"Thank you Page - Mandiri ClickPay";
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)]) {
             self.screenName = @"Thank you Page - KlikBca";
+        }else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]) {
+            self.screenName = @"Thank you Page - Credit Card";
         }
         NSArray *detailPaymentIfUsingSaldo = @[
                                                @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,

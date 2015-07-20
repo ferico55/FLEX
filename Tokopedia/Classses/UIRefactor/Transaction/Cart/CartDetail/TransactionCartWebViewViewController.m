@@ -10,13 +10,14 @@
 
 #import "TxEmoney.h"
 #import "string_transaction.h"
+#import "RequestCart.h"
 
 #define CLICK_BCA_LOGIN_URL @"https://klikpay.klikbca.com/login.do?action=loginRequest"
 #define CLICK_BCA_LOGIN_PAYEMNET_URL @"https://klikpay.klikbca.com/purchasing/purchase.do?action=loginRequest"
 #define CLICK_BCA_SUMMARY_URL @"https://klikpay.klikbca.com/purchasing/payment.do?action=summaryRequest"
 #define CLICK_BCA_VIEW_TRANSACTION @"https://klikpay.klikbca.com/purchasing/payment.do?action=viewTransaction"
 
-@interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate>
+@interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 {
     BOOL _isSuccessBCA;
     NSOperationQueue *_operationQueue;
@@ -48,30 +49,38 @@
     [self loadRequest];
 }
 
+-(IBAction)didTapGesture:(id)sender
+{
+    [_delegate isSucessSprintAsia:_data];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
 -(void)loadRequest
 {
     requestCount++;
     
     NSInteger gateway = [_gateway integerValue];
-    self.title = (gateway == TYPE_GATEWAY_CLICK_BCA)?@"KlikPay BCA":@"Mandiri e-Cash";
     
-    NSString *urlAddress = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_url:_URLStringMandiri;
+    NSString *urlAddress = @"" ;
     _webView.scalesPageToFit = YES;
-    NSLog(@"%@", urlAddress);
     
-    NSString *clickPayCode = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_code:@"";
-    NSString *paymentID = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.payment_id:@"";
-    NSString *amount = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_amt:@"";
-    NSString *currency = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.currency:@"";
-    NSString *payType = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.payType:@"";
-    NSString *callBack = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.callback:@"";
-    NSString *date = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_date:@"";
-    NSString *MISCFee = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.miscFee:@"";
-    NSString *signature = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.signature:@"";
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    NSURL *url;
     
     if (gateway == TYPE_GATEWAY_CLICK_BCA) {
+        self. title = @"KlikPay BCA";
+        urlAddress =_BCAParam.bca_url;
+        
+        NSString *clickPayCode = _BCAParam.bca_code?:@"";
+        NSString *paymentID = _BCAParam.payment_id?:@"";
+        NSString *amount = _BCAParam.bca_amt?:@"";
+        NSString *currency = _BCAParam.currency?:@"";
+        NSString *payType = _BCAParam.payType?:@"";
+        NSString *callBack = _BCAParam.callback?:@"";
+        NSString *date = _BCAParam.bca_date?:@"";
+        NSString *MISCFee = _BCAParam.miscFee?:@"";
+        NSString *signature = _BCAParam.signature?:@"";
         NSString *postString = [NSString stringWithFormat:@"token_cart=%@&gateway=%@&step=2&klikPayCode=%@&transactionNo=%@&totalAmount=%@&currency=%@&payType=%@&callback=%@&transactionDate=%@&miscFee=%@&signature=%@",
                                 _token,
                                 _gateway,
@@ -89,16 +98,63 @@
         NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         [request setHTTPBody:postData];
         [request setHTTPMethod:@"POST"];
+        
+        url = [NSURL URLWithString:urlAddress];
         //[_delegate shouldDoRequestBCAClickPay];
     }
+    if (gateway == TYPE_GATEWAY_MANDIRI_E_CASH) {
+        urlAddress = _URLString;
+        url = [NSURL URLWithString:urlAddress];
+    }
+    if (gateway == TYPE_GATEWAY_CC && !_isVeritrans) {
+        urlAddress = _URLString;
+        
+        NSDictionary *paramEncrypt = [_CCParam encrypt];
+        
+        NSString *postString = [self encodeDictionary:paramEncrypt];
+
+        postString = [postString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        postString = [postString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSLog(@"POST String %@", postString);
+        
+        [request setHTTPBody:postData];
+        [request setHTTPMethod:@"POST"];
+
+        url = [NSURL URLWithString:urlAddress];
+    }
+    else
+    {
+        urlAddress = _URLString;
+        url = [NSURL URLWithString:urlAddress];
+    }
     
-    [request setURL:[NSURL URLWithString:urlAddress]];
+    [request setURL:url];
     [_webView loadRequest:request];
+}
+
+
+-(NSString*)encodeDictionary:(NSDictionary*)dictionary{
+    NSMutableString *bodyData = [[NSMutableString alloc]init];
+    int i = 0;
+    for (NSString *key in dictionary.allKeys) {
+        i++;
+        [bodyData appendFormat:@"%@=",key];
+        NSString *value = [dictionary valueForKey:key];
+        NSString *newString = [value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        [bodyData appendString:newString];
+        if (i < dictionary.allKeys.count) {
+            [bodyData appendString:@"&"];
+        }
+    }
+    return bodyData;
 }
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     [_act startAnimating];
+     NSLog(@"%@", webView.request.URL.absoluteString);
+
     NSInteger gateway = [_gateway integerValue];
     if ( gateway == TYPE_GATEWAY_CLICK_BCA)
     {
@@ -111,9 +167,6 @@
             [_delegate shouldDoRequestBCAClickPay];
             return NO;
         }
-        //if ([request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION]) {
-        //    _isSuccessBCA = YES;
-        //}
         
         if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]) {
             UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -149,6 +202,10 @@
         //}
 
     }
+    else if (gateway == TYPE_GATEWAY_CC && !_isVeritrans)
+    {
+        
+    }
     
     return YES;
 }
@@ -157,7 +214,37 @@
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [_act stopAnimating];
-    NSLog(@"URL String WebView %@", [webView request]);
+    NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
+    NSLog(@"html String WebView %@", html);
+    NSLog(@"%@", webView.request.URL.absoluteString);
+    
+    NSInteger gateway = [_gateway integerValue];
+    
+    if(gateway == TYPE_GATEWAY_CC)
+    {
+        if (_isVeritrans)
+        {
+            if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [_delegate doRequestCC:_data];
+            }
+        }
+        else
+        {
+            if ([webView.request.URL.absoluteString rangeOfString:@"tx-payment-cc-bca.pl"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                // get issuccess value
+                NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
+                if ([html rangeOfString:@"value=\"1\""].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                    UIButton *transparentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [transparentButton addTarget:self action:@selector(didTapGesture:) forControlEvents:(UIControlEventTouchUpInside)];
+                    transparentButton.frame = webView.frame;
+                    transparentButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+                    [self.webView addSubview:transparentButton];
+
+                }
+            }
+        }
+    }
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error

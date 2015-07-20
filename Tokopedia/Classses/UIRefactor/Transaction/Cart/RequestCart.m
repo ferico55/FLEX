@@ -12,6 +12,7 @@
 #import "TransactionSummary.h"
 #import "TransactionBuy.h"
 #import "TransactionVoucher.h"
+#import "TransactionCC.h"
 
 #import "TransactionObjectManager.h"
 #import "string_transaction.h"
@@ -26,6 +27,7 @@
     TokopediaNetworkManager *_networkManagerEditProduct;
     TokopediaNetworkManager *_networkManagerEMoney;
     TokopediaNetworkManager *_networkManagerBCAClickPay;
+    TokopediaNetworkManager *_networkManagerCC;
     
     TransactionObjectManager *_objectManager;
     
@@ -127,6 +129,17 @@
     return _networkManagerBCAClickPay;
 }
 
+-(TokopediaNetworkManager*)networkManagerCC
+{
+    if (!_networkManagerCC) {
+        _networkManagerCC = [TokopediaNetworkManager new];
+        _networkManagerCC.tagRequest = TAG_REQUEST_CC;
+        _networkManagerCC.delegate = self;
+    }
+    
+    return _networkManagerCC;
+}
+
 -(void)doRequestCart
 {
     [[self networkManager] doRequest];
@@ -167,6 +180,10 @@
     [[self networkManagerBCAClickPay]doRequest];
 }
 
+-(void)doRequestCC
+{
+    [[self networkManagerCC]doRequest];
+}
 
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
@@ -195,7 +212,10 @@
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         return [[self objectManager] objectManagerBCAClickPay];
     }
-
+    if (tag == TAG_REQUEST_CC) {
+        return [[self objectManager] objectManagerCC];
+    }
+    
     return nil;
 }
 
@@ -229,6 +249,9 @@
     }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         return API_BCA_KLICK_PAY_PATH;
+    }
+    if (tag == TAG_REQUEST_CC) {
+        return API_ACTION_CC_PATH;
     }
     return nil;
 }
@@ -274,6 +297,10 @@
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         TransactionBuy *BCAClickPay = stat;
         return BCAClickPay.status;
+    }
+    if (tag == TAG_REQUEST_CC) {
+        TransactionCC *action = stat;
+        return action.status;
     }
     return nil;
 }
@@ -394,6 +421,20 @@
         else
         {
             StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan anda tidak berhasil"] delegate:_viewController];
+            [failedAlert show];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
+    }
+    if (tag == TAG_REQUEST_CC)
+    {
+        TransactionCC *actionCC = stat;
+        
+        if (actionCC.result.data_credit.cc_agent != nil && ![actionCC.result.data_credit.cc_agent isEqualToString:@"0"] && ![actionCC.result.data_credit.cc_agent isEqualToString:@""]) {
+            [_delegate requestSuccessCC:successResult withOperation:operation];
+        }
+        else
+        {
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran Anda gagal"] delegate:_viewController];
             [failedAlert show];
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
