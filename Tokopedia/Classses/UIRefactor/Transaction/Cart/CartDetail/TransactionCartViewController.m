@@ -1108,6 +1108,7 @@
     TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     NSNumber *gatewayID = gateway.gateway;
     if ([gatewayID integerValue] == TYPE_GATEWAY_TOKOPEDIA) {
+    
         NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
         NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
         
@@ -1127,16 +1128,9 @@
             [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
         }
         
-        NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        NSString *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
         
-        NSInteger grandTotalInteger = [grandTotal integerValue] + depositAmount;
-        
-        if (grandTotalInteger < 0) {
-            grandTotalInteger = 0;
-        }
+        NSInteger grandTotalInteger = [grandTotal integerValue] + voucherUsedAmount;
         
         
         _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
@@ -2004,6 +1998,7 @@
     }
     else if (indexPath.section == _list.count+1)
     {
+        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia
         if (indexPath.row == 0 || indexPath.row == 2) {
             if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
                 [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
@@ -2012,7 +2007,10 @@
             }
         }
         if (indexPath.row == 1 ) {
-            if (!_isUsingSaldoTokopedia) {
+            if (!_isUsingSaldoTokopedia ||
+                [selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
+                [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)]||
+                ([self depositAmountUser] == 0)) {
                 return 0;
             }
         }
@@ -2296,6 +2294,7 @@
             _tableView.tableFooterView = _footerView;
             [_act startAnimating];
         }
+        _paymentMethodView.hidden = YES;
         _isLoadingRequest = YES;
     }
     
@@ -2306,7 +2305,6 @@
     
     if (tag == TAG_REQUEST_CHECKOUT) {
         _checkoutButton.enabled = NO;
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
         [_alertLoading show];
     }
     
@@ -2336,7 +2334,7 @@
 -(void)endRefreshing
 {
     if (_refreshControl.isRefreshing) {
-        [_tableView setContentOffset:CGPointMake(0, -40) animated:YES];
+        [_tableView setContentOffset:CGPointMake(0, -80) animated:YES];
         [_refreshControl endRefreshing];
     }
 }
@@ -2345,14 +2343,13 @@
     if (tag == TAG_REQUEST_CART) {
         [self endRefreshing];
         [_act stopAnimating];
+        _paymentMethodView.hidden = YES;
         _isLoadingRequest = NO;
         _tableView.tableFooterView = _loadingView.view;
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
     }
-    
     if (tag == TAG_REQUEST_CHECKOUT) {
         _checkoutButton.enabled = YES;
         _checkoutButton.layer.opacity = 1;
