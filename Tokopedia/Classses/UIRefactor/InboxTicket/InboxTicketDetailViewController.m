@@ -95,6 +95,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 @property (weak, nonatomic) IBOutlet UIButton *replyAfterCSButton;
 @property (weak, nonatomic) IBOutlet UIButton *cloesAfterCSButton;
 
+@property (strong, nonatomic) IBOutlet UIView *automaticCloseView;
+@property (weak, nonatomic) IBOutlet UILabel *automaticCloseTitleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *automaticCloseRatingNoButton;
+@property (weak, nonatomic) IBOutlet UIButton *automaticCloseRatingYesButton;
+@property (weak, nonatomic) IBOutlet UIButton *automaticCloseReopenButton;
+
 @end
 
 @implementation InboxTicketDetailViewController
@@ -153,6 +159,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     self.ticketClosedLabel.attributedText = [[NSAttributedString alloc] initWithString:self.ticketClosedLabel.text attributes:ratingTitleAttributes];
     
     self.reopenTicketAfterReplyTitle.attributedText = [[NSAttributedString alloc] initWithString:self.reopenTicketAfterReplyTitle.text attributes:ratingTitleAttributes];
+
+    self.automaticCloseTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:self.automaticCloseTitleLabel.text attributes:ratingTitleAttributes];
     
     self.replyButton.layer.cornerRadius = 2;
     self.closeTicketButton.layer.cornerRadius = 2;
@@ -164,6 +172,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     self.yesCloseButton.layer.cornerRadius = 2;
     self.replyAfterCSButton.layer.cornerRadius = 2;
     self.cloesAfterCSButton.layer.cornerRadius = 2;
+    self.automaticCloseRatingNoButton.layer.cornerRadius = 2;
+    self.automaticCloseRatingYesButton.layer.cornerRadius = 2;
+    self.automaticCloseReopenButton.layer.cornerRadius = 2;
     
     _isLoadingMore = NO;
     
@@ -246,10 +257,17 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         ticket = _messages[indexPath.row];
     }
     
+    NSString *message = ticket.ticket_detail_message;
+    if ([ticket.ticket_detail_new_rating isEqualToString:@"1"]) {
+        message = [NSString stringWithFormat:@"%@\n\nMemberikan Penilaian : Membantu", ticket.ticket_detail_message];
+    } else if ([ticket.ticket_detail_new_rating isEqualToString:@"2"]) {
+        message = [NSString stringWithFormat:@"%@\n\nMemberikan Penilaian : Tidak Membantu", ticket.ticket_detail_message];
+    }
+    
     CGSize maximumLabelSize = CGSizeMake(190,9999);
-    CGSize expectedLabelSize = [ticket.ticket_detail_message sizeWithFont:FONT_GOTHAM_BOOK_12
-                                                        constrainedToSize:maximumLabelSize
-                                                            lineBreakMode:NSLineBreakByTruncatingTail];
+    CGSize expectedLabelSize = [message sizeWithFont:FONT_GOTHAM_BOOK_12
+                                   constrainedToSize:maximumLabelSize
+                                       lineBreakMode:NSLineBreakByTruncatingTail];
 
     height = cellRowHeight + expectedLabelSize.height;
     
@@ -277,6 +295,14 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     [cell setViewModel:ticket.viewModel];
 
     cell.indexPath = indexPath;
+    
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        UIColor *orangeColor = [UIColor colorWithRed:255.f/255.f green:243.f/255.f blue:224.f/255.f alpha:1];
+        cell.buyerView.backgroundColor = orangeColor;
+    } else {
+        UIColor *lightGrayColor = [UIColor colorWithRed:249.0/255.0 green:249.0/255.0 blue:249.0/255.0 alpha:1];
+        cell.buyerView.backgroundColor = lightGrayColor;
+    }
 
     return cell;
 }
@@ -494,12 +520,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         [self.tableView reloadData];
         [self.tableView layoutIfNeeded];
 
-        self.ratingResultView.hidden = NO;
-        self.buttonsView.hidden = YES;
-        self.ratingView.hidden = YES;
-        self.ticketClosedView.hidden = YES;
-        self.reopenTicketView.hidden = YES;
-        self.reopenTicketAfterReplyView.hidden = YES;
+        [self showView:_ratingResultView];
 
         [_ratingActivityIndicator stopAnimating];
 
@@ -519,6 +540,16 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     if (!_ticketInformation) {
         _ticketInformation = response.result.ticket;
+        if ([_ticketInformation.ticket_status isEqualToString:@"2"] &&
+            ![_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
+            if ([_ticketInformation.ticket_total_message integerValue] >= 2) {
+                self.inboxTicket.ticket_show_more_messages = YES;
+            }
+        } else {
+            if ([_ticketInformation.ticket_total_message integerValue] > 2) {
+                self.inboxTicket.ticket_show_more_messages = YES;
+            }
+        }
     }
 
     self.tableView.sectionHeaderHeight = 0;
@@ -554,36 +585,14 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if ([_ticketInformation.ticket_status isEqualToString:@"1"]) {
         
         if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
-            self.buttonsView.hidden = NO;
-            self.ratingView.hidden = YES;
-            self.ticketClosedView.hidden = YES;
-            self.reopenTicketView.hidden = YES;
-            self.ratingResultView.hidden = YES;
-            self.reopenTicketAfterReplyView.hidden = YES;
-            CGFloat buttonsViewHeight = 50;
-            self.tableBottomConstraint.constant = buttonsViewHeight;
-            [self.tableView reloadData];
-            [self.tableView layoutIfNeeded];
+            [self showView:_buttonsView];
         } else {
             if ([_ticketInformation.ticket_is_replied boolValue]) {
-                self.reopenTicketAfterReplyView.hidden = NO;
-                CGFloat reopenTicketAfterReplyHeight = 150;
-                self.tableBottomConstraint.constant = reopenTicketAfterReplyHeight;
-                [self.tableView reloadData];
-                [self.tableView layoutIfNeeded];
+                [self showView:_reopenTicketAfterReplyView];
             } else {
                 // Show reopen ticket
-                self.reopenTicketView.hidden = NO;
-                self.ratingView.hidden = YES;
-                self.buttonsView.hidden = YES;
-                self.ticketClosedView.hidden = YES;
-                self.ratingResultView.hidden = YES;
-                self.reopenTicketAfterReplyView.hidden = YES;
-                CGFloat ratingViewHeight = 120;
-                self.tableBottomConstraint.constant = ratingViewHeight;
-                [self.tableView reloadData];
-                [self.tableView layoutIfNeeded];
-            }            
+                [self showView:_reopenTicketView];
+            }
         }
     }
     
@@ -596,17 +605,14 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             // Ticket closed, replied, not yet rate the ticket
             if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
                 
-                // Show rating view
-                self.ratingView.hidden = NO;
-                self.buttonsView.hidden = YES;
-                self.ticketClosedView.hidden = YES;
-                self.reopenTicketView.hidden = YES;
-                self.ratingResultView.hidden = YES;
-                self.reopenTicketAfterReplyView.hidden = YES;
-                CGFloat ratingViewHeight = 120;
-                self.tableBottomConstraint.constant = ratingViewHeight;
-                [self.tableView reloadData];
-                [self.tableView layoutIfNeeded];
+                if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
+                    // Show automatic closed ticket information
+                    [self showView:_automaticCloseView];
+                } else {
+                    // Show rating view
+                    [self showView:_ratingView];
+                }
+                
             }
             
             // Ticket closed, replied, rated the ticket
@@ -617,16 +623,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     
                     // Show reopen ticket
-                    self.reopenTicketView.hidden = NO;
-                    self.ratingView.hidden = YES;
-                    self.buttonsView.hidden = YES;
-                    self.ticketClosedView.hidden = YES;
-                    self.ratingResultView.hidden = YES;
-                    self.reopenTicketAfterReplyView.hidden = YES;
-                    CGFloat ratingViewHeight = 120;
-                    self.tableBottomConstraint.constant = ratingViewHeight;
-                    [self.tableView reloadData];
-                    [self.tableView layoutIfNeeded];
+                    [self showView:_reopenTicketView];
                     
                 } else {
                     [self showTicketRating:_ticketInformation];
@@ -641,31 +638,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     // Show reopen ticket
-                    self.reopenTicketView.hidden = NO;
-                    self.ratingView.hidden = YES;
-                    self.buttonsView.hidden = YES;
-                    self.ticketClosedView.hidden = YES;
-                    self.ratingResultView.hidden = YES;
-                    self.reopenTicketAfterReplyView.hidden = YES;
-                    CGFloat ratingViewHeight = 120;
-                    self.tableBottomConstraint.constant = ratingViewHeight;
-                    [self.tableView reloadData];
-                    [self.tableView layoutIfNeeded];
+                    [self showView:_reopenTicketView];
                 } else {
                     [self showTicketRating:_ticketInformation];
                 }
             } else {
                 // Ticket closed without cs reply the ticket
-                self.ticketClosedView.hidden = NO;
-                self.ratingView.hidden = YES;
-                self.buttonsView.hidden = YES;
-                self.reopenTicketView.hidden = YES;
-                self.ratingResultView.hidden = YES;
-                self.reopenTicketAfterReplyView.hidden = YES;
-                CGFloat ratingViewHeight = 84;
-                self.tableBottomConstraint.constant = ratingViewHeight;
-                [self.tableView reloadData];
-                [self.tableView layoutIfNeeded];
+                [self showView:_ticketClosedView];
             }
             
         }
@@ -699,17 +678,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (void)showTicketRating:(InboxTicketTicket *)ticket {
-    self.buttonsView.hidden = YES;
-    self.ratingView.hidden = YES;
-    self.ticketClosedView.hidden = YES;
-    self.reopenTicketView.hidden = YES;
-    self.reopenTicketAfterReplyView.hidden = YES;
-    self.ratingResultView.hidden = NO;
 
-    CGFloat ratingResultViewHeight = 105;
-    self.tableBottomConstraint.constant = ratingResultViewHeight;
-    [self.tableView reloadData];
-    [self.tableView layoutIfNeeded];
+    [self showView:_ratingResultView];
     
     NSString *rating;
     // rating 1 == good, 2 == bad
@@ -816,6 +786,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                             animated:YES
                                           completion:nil];
 }
+- (IBAction)didTouchReopenButton:(UIButton *)sender {
+    [self showView:_buttonsView];
+}
 
 #pragma mark - GalleryPhoto Delegate
 
@@ -841,6 +814,25 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 #pragma mark - Methods
+
+- (void)showView:(UIView *)view {
+    // Hide all buttons
+    self.buttonsView.hidden = YES;
+    self.ratingView.hidden = YES;
+    self.ticketClosedView.hidden = YES;
+    self.reopenTicketView.hidden = YES;
+    self.reopenTicketAfterReplyView.hidden = YES;
+    self.ratingResultView.hidden = YES;
+    self.automaticCloseView.hidden = YES;
+
+    // Show preferd button and update table bottom margin
+    view.hidden = NO;
+    self.tableBottomConstraint.constant = view.frame.size.height;
+    
+    // Reload table appearance
+    [self.tableView reloadData];
+    [self.tableView layoutIfNeeded];
+}
 
 - (void)refreshView {
     _isLoadingMore = NO;

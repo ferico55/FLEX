@@ -670,10 +670,15 @@ TokopediaNetworkManagerDelegate
     
     CGPoint cgpoint = CGPointMake(0, _keyboardSize.height);
     //_table.contentOffset = cgpoint;
+    
+    NSDictionary* keyboardInfo = [info userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    
+    _collectionView.contentInset = UIEdgeInsetsZero;
 }
 
 
