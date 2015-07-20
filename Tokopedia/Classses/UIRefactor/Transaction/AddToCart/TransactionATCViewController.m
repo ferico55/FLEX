@@ -801,11 +801,6 @@
     }
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_FORM) {
