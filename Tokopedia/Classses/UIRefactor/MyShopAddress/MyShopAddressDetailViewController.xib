@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -42,22 +42,26 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8aW-ZO-z6n">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="ND5-Bq-Cf1"/>
                     </connections>
                 </scrollView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="8aW-ZO-z6n" secondAttribute="bottom" id="7dF-OM-OoS"/>
-                <constraint firstAttribute="trailing" secondItem="8aW-ZO-z6n" secondAttribute="trailing" id="U1L-sE-lI8"/>
-                <constraint firstItem="8aW-ZO-z6n" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VoX-ea-yXc"/>
+                <constraint firstAttribute="trailing" secondItem="8aW-ZO-z6n" secondAttribute="trailing" id="U1L-sE-lI8">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="8aW-ZO-z6n" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VoX-ea-yXc">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstItem="8aW-ZO-z6n" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="b8e-Ix-hxh"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -436,9 +440,12 @@
                         <constraint firstAttribute="bottom" secondItem="MZZ-Uw-gKj" secondAttribute="bottom" id="h0W-hp-IVc"/>
                     </constraints>
                 </view>
-                <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Av0-lT-Pyz">
+                <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Av0-lT-Pyz">
                     <rect key="frame" x="0.0" y="545" width="320" height="44"/>
                     <color key="backgroundColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="deviceRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="pH3-gb-IVV"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <state key="normal" title="Hapus Lokasi Ini">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -453,6 +460,10 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="uIC-65-kPe" secondAttribute="trailing" id="3G6-JE-X6n"/>
                 <constraint firstItem="YfN-p7-0v0" firstAttribute="top" secondItem="OFE-fC-Qmi" secondAttribute="bottom" constant="22" id="5T7-eX-MhU"/>
+                <constraint firstAttribute="bottom" secondItem="Av0-lT-Pyz" secondAttribute="bottom" id="7Fe-rL-32E">
+                    <variation key="heightClass=regular-widthClass=regular" constant="100"/>
+                </constraint>
+                <constraint firstItem="Av0-lT-Pyz" firstAttribute="leading" secondItem="uNd-ZM-IY0" secondAttribute="leading" id="7bO-RP-BTw"/>
                 <constraint firstItem="nrX-eu-0Wf" firstAttribute="leading" secondItem="uNd-ZM-IY0" secondAttribute="leading" id="B6j-iW-vEZ"/>
                 <constraint firstItem="HbG-HG-BAz" firstAttribute="leading" secondItem="uNd-ZM-IY0" secondAttribute="leading" id="DpH-vf-AUP"/>
                 <constraint firstItem="uIC-65-kPe" firstAttribute="leading" secondItem="uNd-ZM-IY0" secondAttribute="leading" id="KMA-nj-kJx"/>
@@ -460,6 +471,8 @@
                 <constraint firstAttribute="trailing" secondItem="nrX-eu-0Wf" secondAttribute="trailing" id="NW7-2O-qPN"/>
                 <constraint firstItem="fQr-Vt-cb4" firstAttribute="leading" secondItem="uNd-ZM-IY0" secondAttribute="leading" id="UTq-Tc-x3W"/>
                 <constraint firstItem="OqX-3X-2Rr" firstAttribute="top" secondItem="YmV-TL-GXq" secondAttribute="bottom" constant="22" id="X6q-dC-csy"/>
+                <constraint firstAttribute="trailing" secondItem="Av0-lT-Pyz" secondAttribute="trailing" id="Xjw-dw-NjS"/>
+                <constraint firstItem="Av0-lT-Pyz" firstAttribute="top" secondItem="nrX-eu-0Wf" secondAttribute="bottom" constant="22" id="Yu3-rH-efc"/>
                 <constraint firstAttribute="trailing" secondItem="OqX-3X-2Rr" secondAttribute="trailing" id="ZbS-Cc-rbj"/>
                 <constraint firstItem="YmV-TL-GXq" firstAttribute="top" secondItem="HbG-HG-BAz" secondAttribute="bottom" constant="22" id="Zw8-Zy-StZ"/>
                 <constraint firstItem="OFE-fC-Qmi" firstAttribute="leading" secondItem="uNd-ZM-IY0" secondAttribute="leading" id="aTm-DC-4bx"/>
@@ -476,12 +489,23 @@
                 <constraint firstItem="HbG-HG-BAz" firstAttribute="top" secondItem="uIC-65-kPe" secondAttribute="bottom" id="us5-ji-5R8"/>
                 <constraint firstItem="YfN-p7-0v0" firstAttribute="leading" secondItem="uNd-ZM-IY0" secondAttribute="leading" id="xFV-mm-RYf"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="7Fe-rL-32E"/>
+                    <exclude reference="Yu3-rH-efc"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="Yu3-rH-efc"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="7Fe-rL-32E"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="177" y="215"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

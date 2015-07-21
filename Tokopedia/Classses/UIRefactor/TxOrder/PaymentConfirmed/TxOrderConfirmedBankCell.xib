@@ -134,7 +134,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.77000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="UpD-RD-asJ" firstAttribute="top" secondItem="wdF-rz-wbf" secondAttribute="top" id="4cW-c7-xHi"/>
                     <constraint firstItem="p8c-zx-IV4" firstAttribute="leading" secondItem="wdF-rz-wbf" secondAttribute="leading" constant="10" id="Lyu-eh-pHC"/>
@@ -144,7 +144,7 @@
                     <constraint firstItem="UpD-RD-asJ" firstAttribute="leading" secondItem="wdF-rz-wbf" secondAttribute="leading" constant="10" id="rcu-Mc-gdb"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="bankNameLabel" destination="Rpz-KL-d9U" id="DJJ-gi-T9W"/>
                 <outlet property="nomorRekLabel" destination="7DC-S1-XdR" id="beE-s0-jJh"/>

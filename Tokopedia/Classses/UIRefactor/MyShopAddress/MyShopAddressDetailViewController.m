@@ -43,7 +43,7 @@
 {
     [super viewDidLoad];
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect screenRect = _scrollView.frame;//[[UIScreen mainScreen] bounds];
     _contentView.frame = screenRect;
     
     [self setDefaultData:_data];
@@ -67,17 +67,11 @@
     [self.scrollView addSubview:_contentView];
 }
 
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    _scrollView.contentSize = _contentView.frame.size;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.scrollView.delegate = self;
-    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width,
+    [self.scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width,
                                                self.contentView.frame.size.height)];
 }
 

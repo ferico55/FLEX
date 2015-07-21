@@ -269,7 +269,7 @@
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = YES;
                 ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = YES;
                 CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
-                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralReviewCell*)cell).writeReviewButton.frame.size.width) / 2 - 10;
+                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
                 ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
             }
             
@@ -286,7 +286,7 @@
             
             if (((GeneralReviewCell*)cell).reportReviewButton.hidden && ((GeneralReviewCell*)cell).editReviewButton) {
                 CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
-                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralReviewCell*)cell).commentbutton.frame.size.width) / 2 - 10;
+                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
                 ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
             }
             else

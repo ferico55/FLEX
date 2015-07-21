@@ -142,7 +142,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.78000000000000003" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="tZf-VL-k6z" secondAttribute="bottom" id="Q4y-Tb-dh4"/>
                     <constraint firstAttribute="trailing" secondItem="tZf-VL-k6z" secondAttribute="trailing" constant="10" id="VG7-M2-kWG"/>
@@ -150,6 +150,7 @@
                     <constraint firstItem="tZf-VL-k6z" firstAttribute="leading" secondItem="4os-R9-p3X" secondAttribute="leading" constant="10" id="t1L-5J-M9b"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="dateLabel" destination="Hsl-ET-YWf" id="LUv-HX-S3q"/>
                 <outlet property="totalInvoiceButton" destination="KsD-0b-3FJ" id="nX5-Aj-4zP"/>

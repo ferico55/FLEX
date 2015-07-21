@@ -92,7 +92,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.78000000000000003" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="ico-Ep-lgm" firstAttribute="top" secondItem="dum-Rb-bHt" secondAttribute="top" id="GuF-aQ-lUk"/>
                     <constraint firstAttribute="trailing" secondItem="ico-Ep-lgm" secondAttribute="trailing" constant="10" id="rdi-pw-95m"/>
@@ -100,6 +100,7 @@
                     <constraint firstItem="ico-Ep-lgm" firstAttribute="leading" secondItem="dum-Rb-bHt" secondAttribute="leading" constant="10" id="vRj-K4-9B1"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="editButton" destination="icU-Or-HlW" id="RtR-Ru-n50"/>
                 <outlet property="uploadProofButton" destination="2k2-cH-QYH" id="EP8-y2-hF4"/>
