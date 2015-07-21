@@ -39,6 +39,7 @@
     [self isLoading:NO];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self initData];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -183,7 +184,7 @@
     }
     else {
         self.navigationItem.rightBarButtonItem.customView = nil;
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Submit" style:UIBarButtonItemStyleDone target:self action:@selector(actionSubmit:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStyleDone target:self action:@selector(actionSubmit:)];
     }
 }
 

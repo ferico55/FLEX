@@ -121,8 +121,8 @@ UIAlertViewDelegate>
     Review *_review;
     Shop *_shop;
     NoResultView *_noResult;
-    NSMutableDictionary *dictLikeDislike, *loadingLikeDislike;
 }
+@synthesize dictLikeDislike, loadingLikeDislike;
 
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -1091,9 +1091,8 @@ UIAlertViewDelegate>
     list.review_response.response_create_time = [userinfo objectForKey:@"review_comment_time"];
     
     NSIndexPath *indexPath = [userinfo objectForKey:@"indexPath"];
-//    [_table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [_table reloadData];
-    
+    [_table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [_table reloadData];
 }
 
 
@@ -1262,11 +1261,14 @@ UIAlertViewDelegate>
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.reviewList = reviewList;
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:reviewList.review_product_owner.user_id]);
+    productDetailReputationViewController.dictLikeDislike = dictLikeDislike;
+    productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     
     if([dictLikeDislike objectForKey:productDetailReputationViewController.reviewList.review_id]) {
         TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.reviewList.review_id];
         productDetailReputationViewController.strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
         productDetailReputationViewController.strTotalLike = totalLikeDislike.total_like_dislike.total_like;
+        productDetailReputationViewController.strLikeStatus = totalLikeDislike.like_status;
     }
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }

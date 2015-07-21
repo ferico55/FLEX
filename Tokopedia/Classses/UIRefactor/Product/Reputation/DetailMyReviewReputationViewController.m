@@ -11,6 +11,7 @@
 #import "DetailReputationReview.h"
 #import "DetailMyReviewReputationViewController.h"
 #import "GiveReviewViewController.h"
+#import "LoadingView.h"
 #import "MyReviewReputationViewController.h"
 #import "MyReviewReputation.h"
 #import "MyReviewReputationViewModel.h"
@@ -24,7 +25,8 @@
 #import "String_Reputation.h"
 #import "SkipReviewResult.h"
 #import "TokopediaNetworkManager.h"
-#import "LoadingView.h"
+#import "ViewLabelUser.h"
+#import "WebViewController.h"
 
 #define CCellIdentifier @"cell"
 #define CGetListReputationReview @"get_list_reputation_review"
@@ -669,6 +671,12 @@
 
 #pragma mark - MyReviewReputationCell delegate
 - (void)actionInvoice:(id)sender {
+    if(_detailMyInboxReputation.invoice_uri!=nil && _detailMyInboxReputation.invoice_uri.length>0) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strURL = _detailMyInboxReputation.invoice_uri;
+        webViewController.strTitle = @"";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    }
 }
 
 - (void)actionFooter:(id)sender {
@@ -687,6 +695,12 @@
 }
 
 - (void)actionLabelUser:(id)sender {
+    if(_detailMyInboxReputation.invoice_uri!=nil && _detailMyInboxReputation.invoice_uri.length>0) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strURL = _detailMyInboxReputation.reviewee_uri;
+        webViewController.strTitle = @"";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    }
 }
 
 - (void)actionFlagReview:(id)sender {

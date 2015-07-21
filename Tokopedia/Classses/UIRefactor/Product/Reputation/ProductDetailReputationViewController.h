@@ -20,10 +20,12 @@
 }
 
 @property (nonatomic) BOOL isMyProduct;
+@property (nonatomic, unsafe_unretained) NSMutableDictionary *dictLikeDislike, *loadingLikeDislike;
 @property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputaitonReview;
 @property (nonatomic, strong) ReviewList *reviewList;
 @property (nonatomic, strong) NSString *strTotalLike;
 @property (nonatomic, strong) NSString *strTotalDisLike;
+@property (nonatomic, strong) NSString *strLikeStatus;
 - (IBAction)actionSend:(id)sender;
 - (void)updateLikeDislike:(LikeDislike *)likeDislikeObj;
 @end
