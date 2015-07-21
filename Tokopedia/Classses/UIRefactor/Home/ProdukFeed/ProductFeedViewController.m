@@ -19,8 +19,8 @@
 #import "ProductCell.h"
 
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
-NSInteger const normalWidth = 320;
-NSInteger const normalHeight = 568;
+static NSInteger const normalWidth = 320;
+static NSInteger const normalHeight = 568;
 
 @interface ProductFeedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
