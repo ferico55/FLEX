@@ -73,9 +73,6 @@
     NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
 
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
     HPGrowingTextView *_growingtextview;
     
     NSTimeInterval _timeinterval;
@@ -169,8 +166,6 @@
     _operationSendCommentQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
     
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
     _datainput = [NSMutableDictionary new];
     _userManager = [UserAuthentificationManager new];
     _navigateController = [NavigateViewController new];
@@ -240,22 +235,11 @@
         }
 
     }
-
-    
-    NSDictionary *userinfo;
-    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
     UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userArea addGestureRecognizer:tapUserGes];
     [_userArea setUserInteractionEnabled:YES];
     
-    //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCTTALKDETAIL_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 
@@ -399,17 +383,6 @@
         cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
         cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
-    return cell;
-}
-
-
-
-#pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
@@ -422,6 +395,20 @@
             [self loadData];
         }
     }
+    
+    return cell;
+}
+
+
+
+#pragma mark - Table View Delegate
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (_isnodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
+    
+    
 }
 
 -(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -692,48 +679,12 @@
     BOOL status = [_talkcomment.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if (_page <=1 && !_isrefreshview) {
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-            [_cachecontroller connectionDidFinish:_cacheconnection];
-            //save response data
-            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        }
         [self requestprocess:object];
     }
 }
 
 -(void) requestfailure:(id)object {
-    if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1) {
-        [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stats = [result objectForKey:@""];
-            _talkcomment = stats;
-            BOOL status = [_talkcomment.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
+    [self requestprocess:object];
 }
 
 -(void)requestprocess:(id)object
