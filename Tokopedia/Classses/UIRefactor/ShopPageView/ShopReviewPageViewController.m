@@ -272,6 +272,10 @@ UIAlertViewDelegate>
 
 
 #pragma mark - Method
+- (void)reloadTable {
+    [_table reloadData];
+}
+
 - (void)showLoginView {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -582,8 +586,8 @@ UIAlertViewDelegate>
 
         
         //Set chat total
-        if([list.review_response.response_message isEqualToString:@"0"]) {
-            [cell.getBtnChat setTitle:list.review_response.response_message forState:UIControlStateNormal];
+        if(list.review_response==nil || list.review_response.response_message==nil || [list.review_response.response_message isEqualToString:@"0"]) {
+            [cell.getBtnChat setTitle:(list.review_response==nil||list.review_response.response_message==nil? @"0":list.review_response.response_message) forState:UIControlStateNormal];
         }
         else {
             [cell.getBtnChat setTitle:@"1" forState:UIControlStateNormal];

@@ -13,12 +13,12 @@
 #import "TokopediaNetworkManager.h"
 #define CStringTidakAdaPerubahan @"Tidak ada perubahan review"
 #define CStringAndaTidakDapatMenurunkanRate @"Anda tidak dapat memberi penurunan rating"
-#define CStringPleaseFillReviewRating @"Please rate akurasi dan kualitas"
+#define CStringPleaseFillReviewRating @"Rating harus diisi"
 #define CPlaceHolderTulisReview @"Tulis review disini..."
-#define CStringPleaseFillReview @"Please fill your review with min 30 character."
+#define CStringPleaseFillReview @"Pesan review harus lebih dari 30 karakter"
 #define CTagSubmitReputation 1
 
-@interface GiveReviewViewController ()<TokopediaNetworkManagerDelegate>
+@interface GiveReviewViewController ()<TokopediaNetworkManagerDelegate, UITextViewDelegate>
 
 @end
 
@@ -33,9 +33,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     txtDes.placeholder = CPlaceHolderTulisReview;
+    txtDes.delegate = self;
     nRateAkurasi = nRateKualitas = 0;
-    [self initData];
+
     [self isLoading:NO];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    [self initData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -46,6 +49,7 @@
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignKeyboard:)]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [txtDes becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -96,6 +100,7 @@
     isEdit = !(_detailReputationView.review_message==nil || [_detailReputationView.review_message isEqualToString:@"0"]);
     if(isEdit) {
         txtDes.text = _detailReputationView.review_message;
+        self.navigationItem.rightBarButtonItem.enabled = (txtDes.text.length>=5);
         
         //Set Akurasi
         nRateAkurasi = (_detailReputationView.product_accuracy_point==nil || _detailReputationView.product_accuracy_point.length==0)? 0:[_detailReputationView.product_accuracy_point intValue];
@@ -105,7 +110,7 @@
         
         
         //Set kualitas
-        nRateKualitas = (_detailReputationView.product_service_point==nil || _detailReputationView.product_service_point.length==0)? 0:[_detailReputationView.product_service_point intValue];
+        nRateKualitas = (_detailReputationView.product_rating_point==nil || _detailReputationView.product_rating_point.length==0)? 0:[_detailReputationView.product_rating_point intValue];
         if(nRateKualitas != 0) {
             [self setKualitasStar];
         }
@@ -137,7 +142,7 @@
 
 - (BOOL)successValidateRating {
     if(isEdit) {
-        if([_detailReputationView.product_accuracy_point intValue]>nRateAkurasi || [_detailReputationView.product_service_point intValue]>nRateKualitas) {
+        if([_detailReputationView.product_accuracy_point intValue]>nRateAkurasi || [_detailReputationView.product_rating_point intValue]>nRateKualitas) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringAndaTidakDapatMenurunkanRate] delegate:self];
             [stickyAlertView show];
             return NO;
@@ -194,7 +199,7 @@
         return;
     }
     else if(isEdit) {
-        if([_detailReputationView.review_message isEqualToString:txtDes.text] && [_detailReputationView.product_service_point intValue]==nRateKualitas && [_detailReputationView.product_accuracy_point intValue]==nRateAkurasi) {
+        if([_detailReputationView.review_message isEqualToString:txtDes.text] && [_detailReputationView.product_rating_point intValue]==nRateKualitas && [_detailReputationView.product_accuracy_point intValue]==nRateAkurasi) {
 
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringTidakAdaPerubahan] delegate:self];
             [stickyAlertView show];
@@ -205,9 +210,6 @@
     
     [self isLoading:YES];
     [[self getNetworkManager:CTagSubmitReputation] doRequest];
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
-    [NSThread sleepForTimeInterval:5];
-    [self isLoading:NO];
 }
 
 - (void)resignKeyboard:(id)sender {
@@ -259,7 +261,8 @@
                  @"product_id" : _detailReputationView.product_id,
                  @"review_message" : [txtDes.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]],
                  @"quality_rate" : @(nRateKualitas),
-                 @"accuracy_rate" : @(nRateAkurasi)
+                 @"accuracy_rate" : @(nRateAkurasi),
+                 @"review_id":_detailReputationView.review_id!=nil?_detailReputationView.review_id:@""
                  };
     }
     
@@ -327,8 +330,15 @@
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[isEdit? @"Anda telah berhasil mengubah review":@"Anda telah berhasil mengisi review"] delegate:self];
             [stickyAlertView show];
             
+            if(! isEdit)
+                _detailReputationView.viewModel.review_is_allow_edit = _detailReputationView.review_is_allow_edit = @"1";
+            else
+                _detailReputationView.viewModel.review_is_allow_edit = _detailReputationView.review_is_allow_edit = @"0";
+            
+            _detailReputationView.review_id = action.result.feedback_id;
+            _detailReputationView.viewModel.review_is_skipable = _detailReputationView.review_is_skipable = @"0";
             _detailReputationView.viewModel.review_message = _detailReputationView.review_message = [txtDes.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            _detailReputationView.viewModel.product_service_point = _detailReputationView.product_service_point = [NSString stringWithFormat:@"%d", nRateKualitas];
+            _detailReputationView.viewModel.product_rating_point = _detailReputationView.product_rating_point = [NSString stringWithFormat:@"%d", nRateKualitas];
             _detailReputationView.viewModel.product_accuracy_point = _detailReputationView.product_accuracy_point = [NSString stringWithFormat:@"%d", nRateAkurasi];
             [_delegate reloadTable];
             [self.navigationController popViewControllerAnimated:YES];
@@ -363,5 +373,14 @@
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal mengisi reputasi"] delegate:self];
         [stickyAlertView show];
     }
+}
+
+
+#pragma mark - UITextView Delegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    NSString *newString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    self.navigationItem.rightBarButtonItem.enabled = (newString.length>=5);
+    
+    return YES;
 }
 @end

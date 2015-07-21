@@ -42,4 +42,7 @@
 #define CTagTokopedia 6
 #define CTagSystemTracker 7
 
+
+#define CStringSuccessRemoveMessage @"Berhasil menghapus pesan"
+#define CStringFailedRemoveMessage @"Gagal menghapus pesan"
 #endif

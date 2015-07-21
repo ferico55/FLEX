@@ -227,7 +227,7 @@
                 //favorited button action
                 ShopFavoritedViewController *vc = [ShopFavoritedViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY : _shop.result.info.shop_id?:@"",
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:[NSNull null]};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -265,7 +265,7 @@
             {
                 ShopEditViewController *vc = [ShopEditViewController new];
                 vc.data = @{
-                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:@{},
                             kTKPDDETAIL_DATASHOPSKEY : _shop.result?:@{}
                             };
                 [self.navigationController pushViewController:vc animated:YES];

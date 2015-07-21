@@ -158,6 +158,12 @@ GeneralTableViewControllerDelegate
 
 @implementation MyShopShipmentTableViewController
 @synthesize createShopViewController;
+- (void)dealloc {
+    [_request cancel];
+    [_operationQueue cancelAllOperations];
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Pengiriman";
@@ -1274,6 +1280,7 @@ GeneralTableViewControllerDelegate
     [_objectManager addResponseDescriptor:responseDescriptor];
 }
 
+
 - (void)request
 {
     if (_request.isExecuting) return;
@@ -1636,6 +1643,13 @@ GeneralTableViewControllerDelegate
 
 
 #pragma mark - Method
+- (void)loadData {
+    [self.loadingView startAnimating];
+    self.loadingView.hidden = NO;
+    [self configureRestKit];
+    [self request];
+}
+
 - (BOOL)hasSelectedShipping {
     //jne
     if ([[self getAvailShipment] containsObject:[self getJne].shipment_id]) {

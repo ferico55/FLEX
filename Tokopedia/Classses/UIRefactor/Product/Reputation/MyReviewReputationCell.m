@@ -24,7 +24,7 @@
 
     [btnReview setImage:newImage forState:UIControlStateNormal];
     btnReview.layer.cornerRadius = btnReview.bounds.size.height/2.0f;
-    btnReview.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    btnReview.layer.borderColor = [UIColor colorWithRed:224/255.0f green:224/255.0f blue:224/255.0f alpha:1.0f].CGColor;
     btnReview.layer.borderWidth = 1.0f;
     btnReview.layer.masksToBounds = YES;
     

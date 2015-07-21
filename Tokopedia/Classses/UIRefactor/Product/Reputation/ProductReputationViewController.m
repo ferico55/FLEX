@@ -55,6 +55,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     page = 0;
@@ -97,6 +98,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [tokopediaNetworkManager requestCancel];
     tokopediaNetworkManager.delegate = nil;
 
@@ -961,14 +963,14 @@
 }
 
 - (void)actionMore:(id)sender {
-    if(auth) {
+//    if(auth) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:CStringLapor otherButtonTitles:nil, nil];
         actionSheet.tag = ((UIButton *) sender).tag;
         [actionSheet showInView:self.view];
-    }
-    else {
-        [self showLoginView];
-    }
+//    }
+//    else {
+//        [self showLoginView];
+//    }
 }
 
 
@@ -1017,14 +1019,19 @@
 #pragma mark - UIActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(buttonIndex == 0) {
-        ReportViewController *_reportController = [ReportViewController new];
-        _reportController.delegate = self;
-        
-        DetailReputationReview *detailReputationReview = [arrList objectAtIndex:actionSheet.tag];
-        _reportController.strProductID = _strProductID;
-        _reportController.strReviewID = detailReputationReview.review_id;
-        _reportController.strShopID = detailReputationReview.shop_id;
-        [self.navigationController pushViewController:_reportController animated:YES];
+        if(auth) {
+            ReportViewController *_reportController = [ReportViewController new];
+            _reportController.delegate = self;
+            
+            DetailReputationReview *detailReputationReview = [arrList objectAtIndex:actionSheet.tag];
+            _reportController.strProductID = _strProductID;
+            _reportController.strReviewID = detailReputationReview.review_id;
+            _reportController.strShopID = detailReputationReview.shop_id;
+            [self.navigationController pushViewController:_reportController animated:YES];
+        }
+        else {
+            [self showLoginView];
+        }
     }
 }
 
@@ -1285,6 +1292,14 @@
 
 - (NSString *)getPath {
     return @"action/review.pl";
+}
+
+- (void)userDidLogin:(NSNotification*)notification {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    auth = [_userManager getUserLoginData];
+    [dictLikeDislike removeAllObjects];
+    [loadingLikeDislike removeAllObjects];
+    [tableContent reloadData];
 }
 @end
 

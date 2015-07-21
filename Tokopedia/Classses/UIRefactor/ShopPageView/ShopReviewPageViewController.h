@@ -16,4 +16,5 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
 @property (nonatomic, strong) ShopPageHeader *shopPageHeader;
+- (void)reloadTable;
 @end

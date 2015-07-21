@@ -5,6 +5,9 @@
 //  Created by Tokopedia on 6/30/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 #import "CMPopTipView.h"
+#import "detail.h"
+#import "DetailProductViewController.h"
+#import "DetailMyReviewReputationViewController.h"
 #import "DetailReputationReview.h"
 #import "GeneralAction.h"
 #import "HPGrowingTextView.h"
@@ -16,6 +19,8 @@
 #import "ResponseCommentResult.h"
 #import "ResponseComment.h"
 #import "ReviewList.h"
+#import "ShopReviewPageViewController.h"
+#import "ShopContainerViewController.h"
 #import "string_inbox_message.h"
 #import "string_inbox_review.h"
 #import "String_Reputation.h"
@@ -93,15 +98,16 @@
     else if(_reviewList!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_message!=nil && ![_reviewList.review_response.response_message isEqualToString:@"0"]) {
         _reviewList.review_response.canDelete = YES;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     heightScreenView = self.view.bounds.size.height;
     constHeightViewContent.constant = heightScreenView;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -199,6 +205,7 @@
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
 
+
 - (void)initTable {
     NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductReputationCell" owner:nil options:0];
     productReputationCell = [tempArr objectAtIndex:0];
@@ -214,6 +221,8 @@
     if((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && ![_detailReputaitonReview.review_message isEqualToString:@"0"]) || (_reviewList!=nil && _reviewList.review_message!=nil && ![_reviewList.review_message isEqualToString:@"0"])) {
         [productReputationCell initProductCell];
         [productReputationCell setLabelProductName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name];
+        [[productReputationCell getLabelProductName] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToDetailProduct:)]];
+        [productReputationCell getLabelProductName].userInteractionEnabled = YES;
         
         
         //Set image product
@@ -255,7 +264,7 @@
         }
     }
     
-    [productReputationCell setImageKualitas:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_service_point:_reviewList.review_rate_quality) intValue]];
+    [productReputationCell setImageKualitas:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_rating_point:_reviewList.review_rate_quality) intValue]];
     [productReputationCell setImageAkurasi:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_accuracy_point:_reviewList.review_rate_accuracy) intValue]];
     [productReputationCell setDescription:[NSString convertHTML:(_detailReputaitonReview!=nil? (_detailReputaitonReview.review_message?:@""):(_reviewList.review_message?:@""))]];
     
@@ -273,6 +282,8 @@
     
     productReputationCell.getViewSeparatorKualitas.frame = CGRectMake(0, productReputationCell.getViewContent.frame.origin.y+productReputationCell.getViewContentAction.frame.origin.y, self.view.bounds.size.width, 1);
     [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorKualitas];
+    [productReputationCell.getLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToShopView:)]];
+    productReputationCell.getLabelUser.userInteractionEnabled = YES;
     
     tableReputation.tableHeaderView = productReputationCell.contentView;
     tableReputation.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
@@ -283,7 +294,29 @@
     [tableReputation addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignKeyboardView:)]];
 }
 
+
 #pragma mark - Action
+- (void)goToShopView:(id)sender {
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    
+    
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputaitonReview.shop_id,
+                       kTKPDDETAIL_APISHOPNAMEKEY:_detailReputaitonReview.shop_name,
+                       kTKPD_AUTHKEY:auth?:[NSNull null]};
+    [self.navigationController pushViewController:container animated:YES];
+}
+
+- (void)goToDetailProduct:(id)sender {
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    
+    DetailProductViewController *detailProductViewController = [DetailProductViewController new];
+    detailProductViewController.data = @{@"product_id" : _detailReputaitonReview.product_id, kTKPD_AUTHKEY:auth?:[NSNull null]};
+    [self.navigationController pushViewController:detailProductViewController animated:YES];
+}
+
 - (void)actionVote:(id)sender
 {
     [self dismissAllPopTipViews];
@@ -760,6 +793,45 @@
     }
     else if(tag == CTagHapus) {
         RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectMapping *responseCommentMapping = [RKObjectMapping mappingForClass:[ResponseComment class]];
+        [responseCommentMapping addAttributeMappingsFromArray:@[CStatus,
+                                                                CServerProcessTime,
+                                                                CMessageError]];
+        
+        RKObjectMapping *responseCommentResultMapping = [RKObjectMapping mappingForClass:[ResponseCommentResult class]];
+        [responseCommentResultMapping addAttributeMappingsFromArray:@[CIsOwner,
+                                                                      CReputationReviewCounter,
+                                                                      CIsSuccess,
+                                                                      CShowBookmark,
+                                                                      CReviewID]];
+        
+        RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
+        [productOwnerMapping addAttributeMappingsFromArray:@[CShopID,
+                                                             CUserLabelID,
+                                                             CUserURL,
+                                                             CShopImg,
+                                                             CShopUrl,
+                                                             CShopName,
+                                                             CFullName,
+                                                             CUserImg,
+                                                             CUserLabel,
+                                                             CuserID,
+                                                             CShopReputationBadge,
+                                                             CShopReputation]];
+        
+        //Relation
+        [responseCommentMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResult toKeyPath:CResult withMapping:responseCommentResultMapping]];
+        [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
+
+        // register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:responseCommentMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:[self getPath:tag]
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [objectManager addResponseDescriptor:responseDescriptorStatus];
+        
         
         return objectManager;
     }
@@ -768,18 +840,19 @@
 }
 
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag {
-    if(tag == CTagComment) {
+    if(tag==CTagComment || tag==CTagHapus) {
         ResponseComment *responseComment = [((RKMappingResult *) result).dictionary objectForKey:@""];
         
         return responseComment.status;
     }
-    
+
     return nil;
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+    ResponseComment *responseComment = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+    
     if(tag == CTagComment) {
-        ResponseComment *responseComment = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         if([responseComment.result.is_success isEqualToString:@"1"]) {
             isSuccessSentMessage = YES;
             
@@ -813,6 +886,18 @@
             
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessSentComment] delegate:self];
             [stickyAlertView show];
+            
+            //Reload data in DetailMyReviewReputationViewController
+            UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+            if([viewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+                [((DetailMyReviewReputationViewController *) viewController) reloadTable];
+            }
+            else if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
+                viewController = [((ShopContainerViewController *) viewController) getActiveViewController];
+                if([viewController isMemberOfClass:[ShopReviewPageViewController class]]) {
+                    [((ShopReviewPageViewController *) viewController) reloadTable];
+                }
+            }
         }
         else {
             if(_detailReputaitonReview != nil) {
@@ -829,14 +914,48 @@
         if(successResult) {
             if(_detailReputaitonReview != nil) {
                 _detailReputaitonReview.review_response.canDelete = NO;
-                _detailReputaitonReview.review_response.response_message = nil;
-                _detailReputaitonReview.review_response.response_create_time = nil;
+                _detailReputaitonReview.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
+                _detailReputaitonReview.review_response.response_message = responseComment.result.review_response.response_message;
+                _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
+                _detailReputaitonReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
+                _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
+                _detailReputaitonReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
+                _detailReputaitonReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
+                _detailReputaitonReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
+                _detailReputaitonReview.product_owner.full_name = responseComment.result.product_owner.full_name;
+                _detailReputaitonReview.product_owner.user_img = responseComment.result.product_owner.user_img;
+                _detailReputaitonReview.product_owner.user_label = responseComment.result.product_owner.user_label;
+                _detailReputaitonReview.product_owner.user_id = responseComment.result.product_owner.user_id;
+                _detailReputaitonReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
+                _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
             }
             else if(_reviewList != nil) {
                 _reviewList.review_response.canDelete = NO;
-                _reviewList.review_response.response_message = nil;
-                _reviewList.review_response.response_create_time = nil;
+                _reviewList.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
+                _reviewList.review_response.response_message = responseComment.result.review_response.response_message;
+                _reviewList.review_product_owner.user_image = responseComment.result.product_owner.user_img;
+                _reviewList.review_product_owner.user_name = responseComment.result.product_owner.full_name;
+                _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
             }
+            
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemoveMessage] delegate:self];
+            [stickyAlertView show];
+            
+            //Reload data in DetailMyReviewReputationViewController
+            UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+            if([viewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+                [((DetailMyReviewReputationViewController *) viewController) reloadTable];
+            }
+            else if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
+                viewController = [((ShopContainerViewController *) viewController) getActiveViewController];
+                if([viewController isMemberOfClass:[ShopReviewPageViewController class]]) {
+                    [((ShopReviewPageViewController *) viewController) reloadTable];
+                }
+            }
+            
+            //Add Text message
+            growTextView.text = @"";
+            constraintHeightViewMessage.constant = 50; //50 is default height text message
         }
         else {
             if(_detailReputaitonReview != nil) {
@@ -845,9 +964,10 @@
             else if(_reviewList != nil) {
                 _reviewList.review_response.canDelete = YES;
             }
+            
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringFailedRemoveMessage] delegate:self];
+            [stickyAlertView show];
         }
-        
-        
         
         [tableReputation reloadData];
     }

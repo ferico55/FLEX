@@ -118,7 +118,7 @@
     
     lblNegatif1.text = _detailShopResult.stats.shop_last_one_month.count_score_bad;
     lblNegatif6.text = _detailShopResult.stats.shop_last_six_months.count_score_bad;
-    lblNetral12.text = _detailShopResult.stats.shop_last_twelve_months.count_score_bad;
+    lblNegatif12.text = _detailShopResult.stats.shop_last_twelve_months.count_score_bad;
 }
 
 

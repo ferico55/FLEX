@@ -41,6 +41,7 @@
 @property (nonatomic, unsafe_unretained) id<detailMyReviewReputationCell> delegate;
 
 - (UIButton *)getBtnKomentar;
+- (UIButton *)getBtnUbah;
 - (void)setHiddenAction:(BOOL)hidden;
 - (void)setHiddenRating:(BOOL)hidden;
 - (IBAction)actionUbah:(id)sender;

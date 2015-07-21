@@ -73,6 +73,10 @@
     return btnKomentar;
 }
 
+- (UIButton *)getBtnUbah {
+    return btnUbah;
+}
+
 - (IBAction)actionBeriReview:(id)sender {
     [_delegate actionBeriReview:sender];
 }
@@ -90,13 +94,13 @@
 }
 
 - (void)setView:(DetailReviewReputaionViewModel *)viewModel {
-    lblDate.text = viewModel.review_create_time;
+    lblDate.text = viewModel.review_create_time==nil||[viewModel.review_create_time isEqualToString:@"0"]? @"":viewModel.review_create_time;
     [btnProduct setTitle:viewModel.product_name forState:UIControlStateNormal];
     
     //Set star akurasi and kualitas
     for(int i=0;i<arrImgKualitas.count;i++) {
         UIImageView *tempImage = arrImgKualitas[i];
-        tempImage.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i < [viewModel.product_service_point intValue])?@"icon_star_active":@"icon_star" ofType:@"png"]];
+        tempImage.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i < [viewModel.product_rating_point intValue])?@"icon_star_active":@"icon_star" ofType:@"png"]];
     }
     for(int i=0;i<arrImgAkurasi.count;i++) {
         UIImageView *tempImage = arrImgAkurasi[i];
@@ -123,21 +127,21 @@
     //check skipable
     if([viewModel.review_is_skipable isEqualToString:@"1"]) {
         [btnUbah setTitle:@"Lewati" forState:UIControlStateNormal];
-        [btnUbah setTitleColor:[UIColor colorWithRed:110/255.0f green:110/255.0f blue:110/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnUbah.isLewati = YES;
         btnUbah.isLapor = NO;
         btnUbah.hidden = NO;
     }
     else if(viewModel.review_message!=nil && viewModel.review_message.length>0 && ![viewModel.review_message isEqualToString:@"0"] && [viewModel.review_is_allow_edit isEqualToString:@"1"] && ![_strRole isEqualToString:@"2"]) {
         [btnUbah setTitle:@"Ubah" forState:UIControlStateNormal];
-        [btnUbah setTitleColor:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnUbah.isLewati = NO;
         btnUbah.isLapor = NO;
         btnUbah.hidden = NO;
     }
     else if([_strRole isEqualToString:@"2"]) {
         [btnUbah setTitle:@"Lapor" forState:UIControlStateNormal];
-        [btnUbah setTitleColor:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        [btnUbah setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnUbah.isLewati = NO;
         btnUbah.isLapor = YES;
         btnUbah.hidden = NO;
@@ -149,7 +153,7 @@
     }
     
     //Set description
-    [_delegate initLabelDesc:lblDesc withText:viewModel.review_message];
+    [_delegate initLabelDesc:lblDesc withText:viewModel.review_message==nil||[viewModel.review_message isEqualToString:@"0"]?@"":viewModel.review_message];
     lblDesc.frame = CGRectMake(imgProduct.frame.origin.x, CPaddingTopBottom + imgProduct.frame.origin.y+imgProduct.bounds.size.height, viewContent.bounds.size.width-(imgProduct.frame.origin.x*2), 0);
     CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
     CGRect tempLblRect = lblDesc.frame;
@@ -161,16 +165,17 @@
         [self setHiddenRating:YES];
         btnKomentar.enabled = YES;
         [btnKomentar setTitle:@"Beri Review" forState:UIControlStateNormal];
-        [btnKomentar setTitleColor:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        [btnKomentar setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
     else {
         btnKomentar.hidden = NO;
         btnKomentar.enabled = NO;
-        if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0)
+        
+        if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0 && ![viewModel.review_response.response_message isEqualToString:@"0"])
             [btnKomentar setTitle:[NSString stringWithFormat:@"1 %@", CStringKomentar] forState:UIControlStateNormal];
         else
             [btnKomentar setTitle:[NSString stringWithFormat:@"0 %@", CStringKomentar] forState:UIControlStateNormal];
-        [btnKomentar setTitleColor:[UIColor colorWithRed:110/255.0f green:110/255.0f blue:110/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        [btnKomentar setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
 }
 

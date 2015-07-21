@@ -53,6 +53,12 @@
     LoadingView *loadingView;
     NoResultView *noResultView;
 }
+
+- (void)dealloc {
+    tokopediaNetworkManager.delegate = nil;
+    [tokopediaNetworkManager requestCancel];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     page = 0;
@@ -107,6 +113,7 @@
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
     cell.getLabelDesc.tag = indexPath.row;
     cell.getBtnKomentar.tag = indexPath.row;
+    cell.getBtnUbah.tag = indexPath.row;
     cell.strRole = _detailMyInboxReputation.role;
     [cell setView:detailReputationReview.viewModel];
     
@@ -205,12 +212,23 @@
 }
 
 #pragma mark - Method
-- (void)successInsertReputation:(NSString *)reputationID {
+- (void)successInsertReputation:(NSString *)reputationID withState:(NSString *)emoticonState {
     if([_detailMyInboxReputation.reputation_id isEqualToString:reputationID]) {
         [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
         [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
 
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessInsertReputation] delegate:self];
+        NSString *strMessage = @"";
+        if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+            strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
+        }
+        else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+            strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
+        }
+        else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+            strMessage = [NSString stringWithFormat:@"Saya Puas!"];
+        }
+
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[strMessage] delegate:self];
         [stickyAlertView show];
     }
 }
@@ -268,6 +286,7 @@
 - (LoadingView *)getLoadView {
     if(loadingView == nil) {
         loadingView = [LoadingView new];
+        loadingView.delegate = self;
     }
     
     return loadingView;

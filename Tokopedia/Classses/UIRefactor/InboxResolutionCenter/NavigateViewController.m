@@ -50,7 +50,7 @@
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     container.data = @{
                        @"user_id" : userID,
-                       @"auth" : [auth getUserLoginData]
+                       @"auth" : [auth getUserLoginData]?:[NSNull null]
                        };
     
     [viewController.navigationController pushViewController:container animated:YES];

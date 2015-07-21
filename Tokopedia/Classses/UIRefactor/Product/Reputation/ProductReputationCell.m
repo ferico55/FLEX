@@ -84,6 +84,7 @@
     imageProduct = [[UIImageView alloc] initWithFrame:CGRectZero];
     labelProductName = [[UILabel alloc] initWithFrame:CGRectZero];
     labelProductName.font = [UIFont fontWithName:@"Gotham Medium" size:15.0f];
+    labelProductName.textColor = [UIColor colorWithRed:66/255.0f green:66/255.0f blue:66/255.0f alpha:1.0f];
     labelProductName.numberOfLines = 3;
     [viewContent addSubview:viewSeparatorProduct];
     [viewContent addSubview:imageProduct];
@@ -177,6 +178,10 @@
 
 - (UIButton *)getBtnMore {
     return btnMore;
+}
+
+- (UILabel *)getLabelProductName {
+    return labelProductName;
 }
 
 - (void)setPercentage:(NSString *)strPercentage

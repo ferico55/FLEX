@@ -769,6 +769,10 @@
     [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
 }
 
+- (UIViewController *)getActiveViewController {
+    return [_pageController.viewControllers lastObject];
+}
+
 - (void)setFavoriteRightButtonItem
 {
     StickyAlertView *stickyAlertView;
@@ -790,7 +794,7 @@
     if (_shop) {
         ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
         vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:@{}};
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

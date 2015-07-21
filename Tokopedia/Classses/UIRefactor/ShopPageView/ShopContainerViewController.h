@@ -17,5 +17,6 @@
 @property (strong, nonatomic) Shop *shop;
 
 - (void)showPopUp:(NSString *)strText withSender:(id)sender;
+- (UIViewController *)getActiveViewController;
 @end
 

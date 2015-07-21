@@ -346,13 +346,23 @@
         //Update ui detail reputation
         UIViewController *tempViewController = [self.navigationController.viewControllers lastObject];
         if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-            [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id];
+            [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id withState:emoticonState];
         }
         else {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessInsertReputation] delegate:self];
+            NSString *strMessage = @"";
+            if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+                strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
+            }
+            else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+                strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
+            }
+            else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+                strMessage = [NSString stringWithFormat:@"Saya Puas!"];
+            }
+            
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[strMessage] delegate:self];
             [stickyAlertView show];
         }
-        
         
         strInsertReputationRole = strRequestingInsertReputation = emoticonState = nil;
         [tableContent reloadRowsAtIndexPaths:@[indexPathInsertReputation] withRowAnimation:UITableViewRowAnimationNone];

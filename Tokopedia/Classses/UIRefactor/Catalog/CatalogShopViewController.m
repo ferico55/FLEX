@@ -108,7 +108,7 @@
 
     CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
     cell.shopNameLabel.text = shop.shop_name;
-    cell.shopLocationLabel.text = shop.shop_location;
+    cell.shopLocationLabel.text = shop.shop_location||![shop.shop_location isEqualToString:@""]?shop.shop_location:@"-";
     
     ProductList *product = [shop.product_list objectAtIndex:0];
     cell.productNameLabel.text = product.product_name;
@@ -484,7 +484,8 @@
 #pragma mark - Cell delegate
 - (void)actionContentStar:(id)sender {
     CatalogShops *shop = _catalog_shops[((UIView *)sender).tag];
-    [self initPopUp:shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+    NSString *strDesc = [NSString stringWithFormat:@"%@ %@", shop.shop_reputation.shop_reputation_score, CStringPoin];
+    [self initPopUp:strDesc withSender:sender withRangeDesc:NSMakeRange(strDesc.length-CStringPoin.length, CStringPoin.length)];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
