@@ -143,6 +143,7 @@
                         <constraints>
                             <constraint firstItem="nK0-IW-Jei" firstAttribute="top" secondItem="eqc-t5-7Uk" secondAttribute="top" id="9fY-TZ-UFx"/>
                             <constraint firstAttribute="trailing" secondItem="nK0-IW-Jei" secondAttribute="trailing" id="FGa-AW-bKa">
+                                <variation key="heightClass=regular-widthClass=compact" constant="15"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="15"/>
                             </constraint>
                             <constraint firstItem="blk-Em-YmC" firstAttribute="leading" secondItem="eqc-t5-7Uk" secondAttribute="leading" constant="15" id="YHd-Cq-wj7"/>
@@ -195,6 +196,7 @@
                             <constraint firstItem="onF-KR-WIa" firstAttribute="leading" secondItem="PCO-8K-l3q" secondAttribute="trailing" constant="10" id="415-4z-YkZ"/>
                             <constraint firstItem="PCO-8K-l3q" firstAttribute="top" secondItem="lH1-Vz-Lj2" secondAttribute="top" id="4Dw-Gq-ZfS"/>
                             <constraint firstAttribute="trailing" secondItem="onF-KR-WIa" secondAttribute="trailing" id="5Vx-6d-lOz">
+                                <variation key="heightClass=regular-widthClass=compact" constant="15"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="15"/>
                             </constraint>
                             <constraint firstAttribute="bottom" secondItem="onF-KR-WIa" secondAttribute="bottom" id="6f3-bo-5hv"/>
@@ -394,6 +396,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Ovt-Zf-f6A" secondAttribute="trailing" id="Jxx-0N-7MO">
+                                <variation key="heightClass=regular-widthClass=compact" constant="15"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="15"/>
                             </constraint>
                             <constraint firstAttribute="bottom" secondItem="Ovt-Zf-f6A" secondAttribute="bottom" id="MIw-Ad-8PG"/>
@@ -447,6 +450,7 @@
                             <constraint firstAttribute="bottom" secondItem="3ZK-1j-6eN" secondAttribute="bottom" id="PRl-67-zhw"/>
                             <constraint firstAttribute="bottom" secondItem="LyZ-Uf-Ufx" secondAttribute="bottom" id="YJZ-wR-ujw"/>
                             <constraint firstAttribute="trailing" secondItem="3ZK-1j-6eN" secondAttribute="trailing" id="Znb-4u-UAO">
+                                <variation key="heightClass=regular-widthClass=compact" constant="15"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="15"/>
                             </constraint>
                             <constraint firstItem="LyZ-Uf-Ufx" firstAttribute="top" secondItem="wn4-AT-Rm4" secondAttribute="top" id="cgQ-Bj-efA"/>
@@ -498,6 +502,7 @@
                             <constraint firstItem="dfD-b8-sMJ" firstAttribute="leading" secondItem="bPl-06-gvr" secondAttribute="trailing" constant="10" id="7Lg-ZN-P0t"/>
                             <constraint firstItem="dfD-b8-sMJ" firstAttribute="top" secondItem="fS3-7e-u5e" secondAttribute="top" id="JKN-lh-fOP"/>
                             <constraint firstAttribute="trailing" secondItem="dfD-b8-sMJ" secondAttribute="trailing" id="PAQ-WO-iE4">
+                                <variation key="heightClass=regular-widthClass=compact" constant="15"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="15"/>
                             </constraint>
                             <constraint firstItem="bPl-06-gvr" firstAttribute="leading" secondItem="fS3-7e-u5e" secondAttribute="leading" constant="15" id="Vf4-ef-GRP"/>
