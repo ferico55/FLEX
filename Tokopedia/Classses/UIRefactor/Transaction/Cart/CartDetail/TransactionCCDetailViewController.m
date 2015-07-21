@@ -447,7 +447,7 @@
         [errorMessage addObject:@"Nomor kartu kredit harus diisi."];
         isValid = NO;
     }
-    else if (_CCNumberTextField.text.length < 16) {
+    else if (_CCNumberTextField.text.length < 19) {
         [errorMessage addObject:@"Nomor kartu harus 16 karakter."];
         isValid = NO;
     }
