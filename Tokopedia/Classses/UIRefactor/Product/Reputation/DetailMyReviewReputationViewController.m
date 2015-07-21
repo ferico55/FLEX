@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "detail.h"
 #import "DetailProductViewController.h"
 #import "DetailMyReviewReputationCell.h"
 #import "DetailMyInboxReputation.h"
@@ -20,6 +21,7 @@
 #import "ProductDetailReputationViewController.h"
 #import "Paging.h"
 #import "ReportViewController.h"
+#import "ShopContainerViewController.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "SkipReview.h"
 #import "String_Reputation.h"
@@ -695,12 +697,13 @@
 }
 
 - (void)actionLabelUser:(id)sender {
-    if(_detailMyInboxReputation.invoice_uri!=nil && _detailMyInboxReputation.invoice_uri.length>0) {
-        WebViewController *webViewController = [WebViewController new];
-        webViewController.strURL = _detailMyInboxReputation.reviewee_uri;
-        webViewController.strTitle = @"";
-        [self.navigationController pushViewController:webViewController animated:YES];
-    }
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailMyInboxReputation.shop_id,
+                       kTKPD_AUTHKEY:auth?:[NSNull null]};
+    [self.navigationController pushViewController:container animated:YES];
 }
 
 - (void)actionFlagReview:(id)sender {

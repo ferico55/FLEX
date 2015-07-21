@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import "AlertRateView.h"
+#import "detail.h"
 #import "DetailMyReviewReputationViewController.h"
 #import "DetailMyInboxReputation.h"
 #import "GeneralAction.h"
@@ -17,6 +18,7 @@
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationViewController.h"
 #import "String_Reputation.h"
+#import "ShopContainerViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "ViewLabelUser.h"
 #import "WebViewController.h"
@@ -446,13 +448,13 @@
 #pragma mark - MyReviewReputation Delegate
 - (void)actionLabelUser:(id)sender {
     DetailMyInboxReputation *tempObj = arrList[((ViewLabelUser *) ((UITapGestureRecognizer *) sender).view).tag];
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
     
-    if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-        WebViewController *webViewController = [WebViewController new];
-        webViewController.strURL = tempObj.reviewee_uri;
-        webViewController.strTitle = @"";
-        [self.navigationController pushViewController:webViewController animated:YES];
-    }
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:tempObj.shop_id,
+                       kTKPD_AUTHKEY:auth?:[NSNull null]};
+    [self.navigationController pushViewController:container animated:YES];
 }
 
 - (void)actionReviewRate:(id)sender
