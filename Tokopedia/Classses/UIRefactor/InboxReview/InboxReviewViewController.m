@@ -250,6 +250,7 @@
                 [((GeneralReviewCell*)cell).unreadIcon setHidden:YES];
             }
             
+            ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
             //edit button visibility
             if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
@@ -258,11 +259,18 @@
             }
             
             
-            
             if ([list.review_is_skipable isEqualToString:@"1"]) {
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = NO;
+                ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = YES;
+                CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
+                newFrame.origin.x = 0;
+                ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
             } else {
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = YES;
+                ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = YES;
+                CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralReviewCell*)cell).writeReviewButton.frame.size.width) / 2 - 10;
+                ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
             }
             
             //report button visibility
@@ -274,6 +282,18 @@
                 ((GeneralReviewCell*)cell).reportReviewButton.hidden = NO;
             } else {
                 ((GeneralReviewCell*)cell).reportReviewButton.hidden = YES;
+            }
+            
+            if (((GeneralReviewCell*)cell).reportReviewButton.hidden && ((GeneralReviewCell*)cell).editReviewButton) {
+                CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralReviewCell*)cell).commentbutton.frame.size.width) / 2 - 10;
+                ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
+            }
+            else
+            {
+                CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
+                newFrame.origin.x = 0;
+                ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
             }
             
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
@@ -305,7 +325,6 @@
             if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
                 ((GeneralReviewCell *)cell).commentView.hidden = YES;
-                
             } else {
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
                 ((GeneralReviewCell *)cell).commentView.hidden = NO;

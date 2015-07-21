@@ -142,7 +142,7 @@
                                     <constraint firstItem="ytf-Uz-GFn" firstAttribute="top" secondItem="vha-Ji-1ch" secondAttribute="top" id="zsa-lc-wqs"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label " lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvS-lY-qVP" userLabel="Message Label">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvS-lY-qVP" userLabel="Message Label">
                                 <rect key="frame" x="10" y="81" width="280" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="qqI-Pu-0YN"/>
