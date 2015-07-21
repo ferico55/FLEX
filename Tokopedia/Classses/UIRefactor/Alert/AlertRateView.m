@@ -7,6 +7,7 @@
 //
 
 #import "AlertRateView.h"
+#define CStringSelectedEmoticon @"Rating harus dipilih"
 
 @implementation AlertRateView
 {
@@ -193,7 +194,12 @@
 
 - (void)actionSubmit:(id)sender {
     [self closeWindow];
-    [del submitWithSelected:selectedIndex];
+    if(selectedIndex > 0)
+        [del submitWithSelected:selectedIndex];
+    else {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringSelectedEmoticon] delegate:del];
+        [stickyAlertView show];
+    }
 }
 
 - (void)actionAlertVote:(UIButton *)btn
