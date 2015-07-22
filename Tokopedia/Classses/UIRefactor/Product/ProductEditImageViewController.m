@@ -12,7 +12,7 @@
 #import "ProductEditImageViewController.h"
 #import "TKPDPhotoPicker.h"
 
-@interface ProductEditImageViewController () <UIAlertViewDelegate, TKPDPhotoPickerDelegate>
+@interface ProductEditImageViewController () <UIAlertViewDelegate, UIScrollViewDelegate, TKPDPhotoPickerDelegate>
 {
     NSMutableDictionary *_dataInput;
     UITextField *_activeTextField;
@@ -187,6 +187,7 @@
     _isDefaultImage = YES;
 }
 
+
 #pragma mark - Photo picker delegate
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
@@ -224,10 +225,15 @@
     }
 }
 
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [_activeTextField resignFirstResponder];
+    _activeTextField = nil;
+}
+
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     _activeTextField = textField;
-    [textField resignFirstResponder];
     return YES;
 }
 
@@ -247,46 +253,15 @@
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        
-        _scrollviewContentSize = [_scrollView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_scrollView setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize = [_scrollView contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                                 UIEdgeInsets inset = _scrollView.contentInset;
-                             inset.top -= (_keyboardSize.height - (self.view.frame.size.height-(_keyboardPosition.y + _activeTextField.frame.origin.y + _activeTextField.frame.size.height)));
-                             [_scrollView setContentInset:inset];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
-    }
+    NSDictionary* keyboardInfo = [info userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         _scrollView.contentInset = contentInsets;
-                         _scrollView.scrollIndicatorInsets = contentInsets;
-                     }
-                     completion:^(BOOL finished){
-                     }];
+     self.scrollView.contentInset = UIEdgeInsetsZero;
 }
 
 
