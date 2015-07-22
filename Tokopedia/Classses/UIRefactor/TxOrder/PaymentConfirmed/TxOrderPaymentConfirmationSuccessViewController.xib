@@ -146,9 +146,13 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="centerX" secondItem="GZF-jR-FgY" secondAttribute="centerX" id="5I9-wD-BoF"/>
-                <constraint firstItem="XBL-Mv-7jJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Hqv-w4-hDw"/>
+                <constraint firstItem="XBL-Mv-7jJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Hqv-w4-hDw">
+                    <variation key="heightClass=regular-widthClass=regular" constant="250"/>
+                </constraint>
                 <constraint firstAttribute="centerY" secondItem="GZF-jR-FgY" secondAttribute="centerY" constant="234.5" id="TlS-gv-SPF"/>
-                <constraint firstAttribute="trailing" secondItem="XBL-Mv-7jJ" secondAttribute="trailing" id="U8J-8d-fT3"/>
+                <constraint firstAttribute="trailing" secondItem="XBL-Mv-7jJ" secondAttribute="trailing" id="U8J-8d-fT3">
+                    <variation key="heightClass=regular-widthClass=regular" constant="250"/>
+                </constraint>
                 <constraint firstAttribute="centerX" secondItem="FYh-og-O2J" secondAttribute="centerX" id="d9s-cd-6Mn"/>
                 <constraint firstAttribute="centerY" secondItem="mF2-Is-kca" secondAttribute="centerY" constant="182" id="eDJ-kT-rlJ"/>
                 <constraint firstAttribute="centerX" secondItem="wTg-F7-3Ys" secondAttribute="centerX" id="m0H-d6-QUH"/>
@@ -159,7 +163,6 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                 <constraint firstAttribute="centerY" secondItem="3SI-bg-yxa" secondAttribute="centerY" constant="-36" id="uZQ-bI-SdY"/>
                 <constraint firstAttribute="centerY" secondItem="XBL-Mv-7jJ" secondAttribute="centerY" constant="71" id="yXL-rB-zTz"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="-306" y="54"/>
         </view>
     </objects>

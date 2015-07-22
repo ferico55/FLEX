@@ -31,7 +31,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UITextField *productNameTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *defaultPictureSwitch;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *deleteImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *defaultPictLabel;
@@ -62,6 +62,13 @@
     
     [self setDefaultData:_data];
     
+    _scrollView.frame = [[UIScreen mainScreen]bounds];
+    CGRect frame = _contentView.frame;
+    frame.size.width = _scrollView.frame.size.width;
+    _contentView.frame = frame;
+    
+    _scrollView.contentSize = _contentView.frame.size;
+    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
@@ -89,7 +96,7 @@
 
 -(void)viewDidLayoutSubviews
 {
-    //_scrollView.contentSize = _contentView.frame.size;
+    _scrollView.contentSize = _contentView.frame.size;
 }
 
 - (void)didReceiveMemoryWarning

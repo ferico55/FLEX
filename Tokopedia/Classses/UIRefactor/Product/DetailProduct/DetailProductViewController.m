@@ -301,7 +301,6 @@ UIAlertViewDelegate
         }
     }
     
-    
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     

@@ -34,8 +34,8 @@
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="pqA-gy-Jgx" firstAttribute="top" secondItem="vMl-lm-ALI" secondAttribute="top" id="Pfi-t4-KbM"/>
-                    <constraint firstAttribute="trailing" secondItem="pqA-gy-Jgx" secondAttribute="trailing" constant="10" id="V2B-J5-z0b"/>
                     <constraint firstItem="pqA-gy-Jgx" firstAttribute="leading" secondItem="vMl-lm-ALI" secondAttribute="leading" constant="10" id="YTi-pl-fDw"/>
+                    <constraint firstAttribute="trailing" secondItem="pqA-gy-Jgx" secondAttribute="trailing" constant="10" id="dUt-Qx-Hzh"/>
                     <constraint firstAttribute="bottom" secondItem="pqA-gy-Jgx" secondAttribute="bottom" id="h84-gE-UON"/>
                 </constraints>
             </tableViewCellContentView>
