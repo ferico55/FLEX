@@ -80,6 +80,8 @@
 #import "WebViewController.h"
 #import "EtalaseList.h"
 
+#import "TAGDataLayer.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -180,6 +182,11 @@ UIAlertViewDelegate
     UIFont *fontDesc;
     
     RequestMoveTo *_requestMoveTo;
+    TAGContainer *_gtmContainer;
+    
+    NSString *_detailProductBaseUrl;
+    NSString *_detailProductPostUrl;
+    NSString *_detailProductFullUrl;
     
 }
 
@@ -269,6 +276,10 @@ UIAlertViewDelegate
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+    
+    // GTM
+    [self configureGTM];
+    
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
@@ -1139,9 +1150,9 @@ UIAlertViewDelegate
     if(tag == CTagPromote)
         return @"action/product.pl";
     else if(tag == CTagTokopediaNetworkManager)
-        return kTKPDDETAILPRODUCT_APIPATH;
+        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
-        return kTKPDDETAILPRODUCT_APIPATH;
+        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -1192,7 +1203,13 @@ UIAlertViewDelegate
     else if(tag == CTagTokopediaNetworkManager)
     {
         // initialize RestKit
-        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  ![_detailProductBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_detailProductBaseUrl]:[RKObjectManager sharedClient];
+        if([_detailProductBaseUrl isEqualToString:kTkpdBaseURLString] || [_detailProductBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_detailProductBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
@@ -2841,5 +2858,18 @@ UIAlertViewDelegate
 - (void)duplicate:(int)tag
 {
     [UIPasteboard generalPasteboard].string = lblDescription.text;
+}
+
+#pragma mark - Other Method
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
+    _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
+    _detailProductFullUrl = [_gtmContainer stringForKey:GTMKeyProductFull];
 }
 @end

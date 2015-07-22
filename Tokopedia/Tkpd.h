@@ -209,6 +209,25 @@ typedef enum {
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
+// GTM Value
+#define GTMKeyInboxMessageBase @"inboxmessage_base_url"
+#define GTMKeyInboxMessagePost @"inboxmessage_post_url"
+#define GTMKeyInboxMessageFull @"inboxmessage_full_url"
 
+#define GTMKeyInboxTalkBase @"inboxtalk_base_url"
+#define GTMKeyInboxTalkPost @"inboxtalk_post_url"
+#define GTMKeyInboxTalkFull @"inboxtalk_full_url"
+
+#define GTMKeyInboxReviewBase @"inboxreview_base_url"
+#define GTMKeyInboxReviewPost @"inboxreview_post_url"
+#define GTMKeyInboxReviewFull @"inboxreview_full_url"
+
+#define GTMKeyProductBase @"product_base_url"
+#define GTMKeyProductPost @"product_post_url"
+#define GTMKeyProductFull @"product_full_url"
+
+#define GTMKeySearchBase @"search_base_url"
+#define GTMKeySearchPost @"search_post_url"
+#define GTMKeySearchFull @"search_full_url"
 
 #endif
