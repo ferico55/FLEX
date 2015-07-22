@@ -25,7 +25,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNavigation];
-    [self setNavigationTitle:btnAllReview.titleLabel.text];
     selectedFilter = CTagSemuaReview;
     btnTempFilter = btnAllReview;
 }
@@ -67,6 +66,17 @@
 }
 
 - (void)setNavigationTitle:(NSString *)strTitle {
+    if([strTitle isEqualToString:CTagBelumDibaca]) {
+        strTitle = btnBelumDibaca.titleLabel.text;
+    }
+    else if([strTitle isEqualToString:CTagSemuaReview]) {
+        strTitle = btnAllReview.titleLabel.text;
+    }
+    else if([strTitle isEqualToString:CtagBelumDireviw]) {
+        strTitle = btnBelumDireview.titleLabel.text;
+    }
+    
+    
     UIImage *arrowImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_triangle_down_white" ofType:@"png"]];
     CGRect rect = CGRectMake(0, 0, 10 ,7);
     UIGraphicsBeginImageContext( rect.size );
@@ -136,7 +146,7 @@
 - (IBAction)actionReview:(id)sender {
     selectedFilter = CTagSemuaReview;
     [self hiddenShadowFilter:YES];
-    [self setNavigationTitle:((UIButton *) sender).titleLabel.text];
+    [self setNavigationTitle:selectedFilter];
     
     [btnTempFilter setImage:nil forState:UIControlStateNormal];
     btnTempFilter = btnAllReview;
@@ -162,7 +172,7 @@
 - (IBAction)actionBelumDibaca:(id)sender {
     selectedFilter = CTagBelumDibaca;
     [self hiddenShadowFilter:YES];
-    [self setNavigationTitle:((UIButton *) sender).titleLabel.text];
+    [self setNavigationTitle:selectedFilter];
     
     [btnTempFilter setImage:nil forState:UIControlStateNormal];
     btnTempFilter = btnBelumDibaca;
@@ -187,7 +197,7 @@
 - (IBAction)actionBelumDireview:(id)sender {
     selectedFilter = CtagBelumDireviw;
     [self hiddenShadowFilter:YES];
-    [self setNavigationTitle:((UIButton *) sender).titleLabel.text];
+    [self setNavigationTitle:selectedFilter];
     
     [btnTempFilter setImage:nil forState:UIControlStateNormal];
     btnTempFilter = btnBelumDireview;

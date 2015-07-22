@@ -24,8 +24,11 @@
 @property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputaitonReview;
 @property (nonatomic, strong) ReviewList *reviewList;
 @property (nonatomic, strong) NSString *strTotalLike;
+@property (nonatomic, unsafe_unretained) NSString *strProductID;
 @property (nonatomic, strong) NSString *strTotalDisLike;
 @property (nonatomic, strong) NSString *strLikeStatus;
+@property (nonatomic, strong) NSIndexPath *indexPathSelected;
 - (IBAction)actionSend:(id)sender;
+- (void)userHasLogin;
 - (void)updateLikeDislike:(LikeDislike *)likeDislikeObj;
 @end

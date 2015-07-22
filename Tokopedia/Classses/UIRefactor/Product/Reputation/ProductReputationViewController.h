@@ -26,9 +26,11 @@
 }
 
 @property (nonatomic, strong) NSString *strShopDomain, *strProductID;
+- (void)reloadTable;
 - (IBAction)actionResetFilter:(id)sender;
 - (IBAction)actionFilter6Month:(id)sender;
 - (IBAction)actionFilterAllTime:(id)sender;
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc;
 - (IBAction)actionSegmentedValueChange:(id)sender;
+- (void)requestLikeStatusAgain:(NSIndexPath *)indexPath;
 @end

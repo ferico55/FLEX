@@ -78,6 +78,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [tableContent reloadData];
+    [((SegmentedReviewReputationViewController *) self.parentViewController) setNavigationTitle:filter];
 }
 
 /*
