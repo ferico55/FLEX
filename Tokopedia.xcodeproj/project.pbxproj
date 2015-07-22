@@ -991,12 +991,6 @@
 		7A1BCE9B1B54E3A000B24AF4 /* UserProfileBiodataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1BC8A11B54E39E00B24AF4 /* UserProfileBiodataViewController.xib */; };
 		7A1BCE9C1B54E3A000B24AF4 /* CatalogModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BC8A51B54E39E00B24AF4 /* CatalogModelView.m */; };
 		7A1BCE9D1B54E3A000B24AF4 /* ProductModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BC8A81B54E39E00B24AF4 /* ProductModelView.m */; };
-		7A1BCE9E1B54E3A000B24AF4 /* ProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BC8AA1B54E39E00B24AF4 /* ProductCell.m */; };
-		7A1BCE9F1B54E3A000B24AF4 /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1BC8AB1B54E39E00B24AF4 /* ProductCell.xib */; };
-		7A1BCEA01B54E3A000B24AF4 /* ProductSingleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BC8AD1B54E39E00B24AF4 /* ProductSingleViewCell.m */; };
-		7A1BCEA11B54E3A000B24AF4 /* ProductSingleViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1BC8AE1B54E39E00B24AF4 /* ProductSingleViewCell.xib */; };
-		7A1BCEA21B54E3A000B24AF4 /* ProductThumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BC8B01B54E39E00B24AF4 /* ProductThumbCell.m */; };
-		7A1BCEA31B54E3A000B24AF4 /* ProductThumbCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1BC8B11B54E39E00B24AF4 /* ProductThumbCell.xib */; };
 		7A1BCEA41B54E3A000B24AF4 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = 7A1BC8B41B54E39E00B24AF4 /* TokopediaDB.db */; };
 		7A1BCEA51B54E3A000B24AF4 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A1BC8B61B54E39E00B24AF4 /* GothamBlack.ttf */; };
 		7A1BCEA61B54E3A000B24AF4 /* GothamBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A1BC8B71B54E39E00B24AF4 /* GothamBook.ttf */; };
@@ -1489,6 +1483,12 @@
 		7A1BD08D1B54E3A000B24AF4 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7A1BCAC61B54E39F00B24AF4 /* README.md */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AACDEF31B5FA54B00567FA5 /* ProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AACDEEB1B5FA54B00567FA5 /* ProductCell.m */; };
+		7AACDEF41B5FA54B00567FA5 /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AACDEEC1B5FA54B00567FA5 /* ProductCell.xib */; };
+		7AACDEF51B5FA54B00567FA5 /* ProductSingleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AACDEEE1B5FA54B00567FA5 /* ProductSingleViewCell.m */; };
+		7AACDEF61B5FA54B00567FA5 /* ProductSingleViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AACDEEF1B5FA54B00567FA5 /* ProductSingleViewCell.xib */; };
+		7AACDEF71B5FA54B00567FA5 /* ProductThumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AACDEF11B5FA54B00567FA5 /* ProductThumbCell.m */; };
+		7AACDEF81B5FA54B00567FA5 /* ProductThumbCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AACDEF21B5FA54B00567FA5 /* ProductThumbCell.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3264,15 +3264,6 @@
 		7A1BC8A51B54E39E00B24AF4 /* CatalogModelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogModelView.m; sourceTree = "<group>"; };
 		7A1BC8A71B54E39E00B24AF4 /* ProductModelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductModelView.h; sourceTree = "<group>"; };
 		7A1BC8A81B54E39E00B24AF4 /* ProductModelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductModelView.m; sourceTree = "<group>"; };
-		7A1BC8A91B54E39E00B24AF4 /* ProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCell.h; sourceTree = "<group>"; };
-		7A1BC8AA1B54E39E00B24AF4 /* ProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCell.m; sourceTree = "<group>"; };
-		7A1BC8AB1B54E39E00B24AF4 /* ProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductCell.xib; sourceTree = "<group>"; };
-		7A1BC8AC1B54E39E00B24AF4 /* ProductSingleViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductSingleViewCell.h; sourceTree = "<group>"; };
-		7A1BC8AD1B54E39E00B24AF4 /* ProductSingleViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductSingleViewCell.m; sourceTree = "<group>"; };
-		7A1BC8AE1B54E39E00B24AF4 /* ProductSingleViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductSingleViewCell.xib; sourceTree = "<group>"; };
-		7A1BC8AF1B54E39E00B24AF4 /* ProductThumbCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductThumbCell.h; sourceTree = "<group>"; };
-		7A1BC8B01B54E39E00B24AF4 /* ProductThumbCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductThumbCell.m; sourceTree = "<group>"; };
-		7A1BC8B11B54E39E00B24AF4 /* ProductThumbCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductThumbCell.xib; sourceTree = "<group>"; };
 		7A1BC8B41B54E39E00B24AF4 /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		7A1BC8B61B54E39E00B24AF4 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
 		7A1BC8B71B54E39E00B24AF4 /* GothamBook.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBook.ttf; sourceTree = "<group>"; };
@@ -3781,6 +3772,15 @@
 		7A1BCAC61B54E39F00B24AF4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AACDEEA1B5FA54B00567FA5 /* ProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCell.h; sourceTree = "<group>"; };
+		7AACDEEB1B5FA54B00567FA5 /* ProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCell.m; sourceTree = "<group>"; };
+		7AACDEEC1B5FA54B00567FA5 /* ProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductCell.xib; sourceTree = "<group>"; };
+		7AACDEED1B5FA54B00567FA5 /* ProductSingleViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductSingleViewCell.h; sourceTree = "<group>"; };
+		7AACDEEE1B5FA54B00567FA5 /* ProductSingleViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductSingleViewCell.m; sourceTree = "<group>"; };
+		7AACDEEF1B5FA54B00567FA5 /* ProductSingleViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductSingleViewCell.xib; sourceTree = "<group>"; };
+		7AACDEF01B5FA54B00567FA5 /* ProductThumbCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductThumbCell.h; sourceTree = "<group>"; };
+		7AACDEF11B5FA54B00567FA5 /* ProductThumbCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductThumbCell.m; sourceTree = "<group>"; };
+		7AACDEF21B5FA54B00567FA5 /* ProductThumbCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductThumbCell.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -7331,15 +7331,6 @@
 			children = (
 				7A1BC8A31B54E39E00B24AF4 /* Catalog */,
 				7A1BC8A61B54E39E00B24AF4 /* Product */,
-				7A1BC8A91B54E39E00B24AF4 /* ProductCell.h */,
-				7A1BC8AA1B54E39E00B24AF4 /* ProductCell.m */,
-				7A1BC8AB1B54E39E00B24AF4 /* ProductCell.xib */,
-				7A1BC8AC1B54E39E00B24AF4 /* ProductSingleViewCell.h */,
-				7A1BC8AD1B54E39E00B24AF4 /* ProductSingleViewCell.m */,
-				7A1BC8AE1B54E39E00B24AF4 /* ProductSingleViewCell.xib */,
-				7A1BC8AF1B54E39E00B24AF4 /* ProductThumbCell.h */,
-				7A1BC8B01B54E39E00B24AF4 /* ProductThumbCell.m */,
-				7A1BC8B11B54E39E00B24AF4 /* ProductThumbCell.xib */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -7356,6 +7347,15 @@
 		7A1BC8A61B54E39E00B24AF4 /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				7AACDEEA1B5FA54B00567FA5 /* ProductCell.h */,
+				7AACDEEB1B5FA54B00567FA5 /* ProductCell.m */,
+				7AACDEEC1B5FA54B00567FA5 /* ProductCell.xib */,
+				7AACDEED1B5FA54B00567FA5 /* ProductSingleViewCell.h */,
+				7AACDEEE1B5FA54B00567FA5 /* ProductSingleViewCell.m */,
+				7AACDEEF1B5FA54B00567FA5 /* ProductSingleViewCell.xib */,
+				7AACDEF01B5FA54B00567FA5 /* ProductThumbCell.h */,
+				7AACDEF11B5FA54B00567FA5 /* ProductThumbCell.m */,
+				7AACDEF21B5FA54B00567FA5 /* ProductThumbCell.xib */,
 				7A1BC8A71B54E39E00B24AF4 /* ProductModelView.h */,
 				7A1BC8A81B54E39E00B24AF4 /* ProductModelView.m */,
 			);
@@ -8404,7 +8404,6 @@
 				7A1BCD911B54E3A000B24AF4 /* FooterCollectionReusableView.xib in Resources */,
 				7A1BCFA01B54E3A000B24AF4 /* icon_plus_blue.png in Resources */,
 				7A1BCFE01B54E3A000B24AF4 /* icon_track_grey.png in Resources */,
-				7A1BCEA31B54E3A000B24AF4 /* ProductThumbCell.xib in Resources */,
 				7A1BCFD41B54E3A000B24AF4 /* icon_star_active@2x.png in Resources */,
 				7A1BCEB51B54E3A000B24AF4 /* icon_11.png in Resources */,
 				7A1BCE4F1B54E3A000B24AF4 /* TransactionCartShippingViewController.xib in Resources */,
@@ -8611,7 +8610,6 @@
 				7A1BCD871B54E3A000B24AF4 /* ReputationDetailViewController.xib in Resources */,
 				7A1BCF411B54E3A000B24AF4 /* icon_circle.png in Resources */,
 				7A1BCD381B54E3A000B24AF4 /* MyShopEtalaseFilterViewController.xib in Resources */,
-				7A1BCEA11B54E3A000B24AF4 /* ProductSingleViewCell.xib in Resources */,
 				7A1BCF781B54E3A000B24AF4 /* icon_login_active@2x.png in Resources */,
 				7A1BCF4A1B54E3A000B24AF4 /* icon_correct@2x.png in Resources */,
 				7A1BCFB31B54E3A000B24AF4 /* icon_share@2x.png in Resources */,
@@ -8664,6 +8662,7 @@
 				7A1BCE831B54E3A000B24AF4 /* TxOrderConfirmedViewController.xib in Resources */,
 				7A1BD0491B54E3A000B24AF4 /* ic_search.png in Resources */,
 				7A1BCFE21B54E3A000B24AF4 /* icon_triangle_down_white.png in Resources */,
+				7AACDEF61B5FA54B00567FA5 /* ProductSingleViewCell.xib in Resources */,
 				7A1BCF091B54E3A000B24AF4 /* icon_calendar@2x.png in Resources */,
 				7A1BCE631B54E3A000B24AF4 /* TxOrderStatusDetailViewController.xib in Resources */,
 				7A1BCF3D1B54E3A000B24AF4 /* icon_checkmark_1.png in Resources */,
@@ -8759,6 +8758,7 @@
 				7A1BCCB21B54E39F00B24AF4 /* DepositFormAccountBankViewController.xib in Resources */,
 				7A1BCFE81B54E3A000B24AF4 /* icon_upload_image.png in Resources */,
 				7A1BCC641B54E39F00B24AF4 /* CameraAlbumListCell.xib in Resources */,
+				7AACDEF41B5FA54B00567FA5 /* ProductCell.xib in Resources */,
 				7A1BCF8A1B54E3A000B24AF4 /* icon_move_gudang.png in Resources */,
 				7A1BCFFA1B54E3A000B24AF4 /* icon_home.png in Resources */,
 				7A1BCE041B54E3A000B24AF4 /* ShopStatView.xib in Resources */,
@@ -8889,7 +8889,6 @@
 				7A1BCFCA1B54E3A000B24AF4 /* icon_signin.png in Resources */,
 				7A1BCC761B54E39F00B24AF4 /* CatalogShopCell.xib in Resources */,
 				7A1BCFE31B54E3A000B24AF4 /* icon_triangle_down_white@2x.png in Resources */,
-				7A1BCE9F1B54E3A000B24AF4 /* ProductCell.xib in Resources */,
 				7A1BCCD71B54E39F00B24AF4 /* GeneralTalkCommentCell.xib in Resources */,
 				7A1BCCD51B54E39F00B24AF4 /* GeneralTalkCell.xib in Resources */,
 				7A1BCFAB1B54E3A000B24AF4 /* icon_search.png in Resources */,
@@ -9031,6 +9030,7 @@
 				7A1BD0641B54E3A000B24AF4 /* tabnav_bg.png in Resources */,
 				7A1BD0171B54E3A000B24AF4 /* icon_sold.png in Resources */,
 				7A1BCC451B54E39F00B24AF4 /* RegisterViewController.xib in Resources */,
+				7AACDEF81B5FA54B00567FA5 /* ProductThumbCell.xib in Resources */,
 				7A1BCFA91B54E3A000B24AF4 /* icon_retur@3x.png in Resources */,
 				7A1BCD991B54E3A000B24AF4 /* ChooseProductViewController.xib in Resources */,
 				7A1BCDBF1B54E3A000B24AF4 /* DetailShipmentStatusViewController.xib in Resources */,
@@ -9372,6 +9372,7 @@
 				7A1BCE7A1B54E3A000B24AF4 /* TxOrderConfirmedBankCell.m in Sources */,
 				7A1BD0881B54E3A000B24AF4 /* MarqueeLabel.m in Sources */,
 				7A1BCB4B1B54E39F00B24AF4 /* ResolutionBy.m in Sources */,
+				7AACDEF31B5FA54B00567FA5 /* ProductCell.m in Sources */,
 				7A1BCDBE1B54E3A000B24AF4 /* DetailShipmentStatusViewController.m in Sources */,
 				7A1BCE8F1B54E3A000B24AF4 /* ProfileBiodataShopCell.m in Sources */,
 				7A1BCC971B54E39F00B24AF4 /* TKPDTabNavigationController.m in Sources */,
@@ -9422,6 +9423,7 @@
 				7A1BCD621B54E3A000B24AF4 /* GalleryPhotoView.m in Sources */,
 				7A1BCBE81B54E39F00B24AF4 /* PosMinWeight.m in Sources */,
 				7A1BCAD91B54E39F00B24AF4 /* UIImage+ImageEffects.m in Sources */,
+				7AACDEF51B5FA54B00567FA5 /* ProductSingleViewCell.m in Sources */,
 				7A1BCB7D1B54E39F00B24AF4 /* ProductFeedResult.m in Sources */,
 				7A1BCE021B54E3A000B24AF4 /* ShopHeaderViewController.m in Sources */,
 				7A1BCD841B54E3A000B24AF4 /* ReputationDetailFormViewController.m in Sources */,
@@ -9756,9 +9758,7 @@
 				7A1BCB4A1B54E39F00B24AF4 /* ResolutionButton.m in Sources */,
 				7A1BCC9C1B54E39F00B24AF4 /* TKPDTabShopViewController.m in Sources */,
 				7A1BCE9C1B54E3A000B24AF4 /* CatalogModelView.m in Sources */,
-				7A1BCEA21B54E3A000B24AF4 /* ProductThumbCell.m in Sources */,
 				7A1BCB831B54E39F00B24AF4 /* ChangePhoneNumberResult.m in Sources */,
-				7A1BCEA01B54E3A000B24AF4 /* ProductSingleViewCell.m in Sources */,
 				7A1BCAE81B54E39F00B24AF4 /* RegisterResult.m in Sources */,
 				7A1BCC5C1B54E39F00B24AF4 /* StickyAlertView.m in Sources */,
 				7A1BCC7D1B54E39F00B24AF4 /* FilterCatalogViewController.m in Sources */,
@@ -9793,7 +9793,6 @@
 				7A1BCB5D1B54E39F00B24AF4 /* InboxTalkResult.m in Sources */,
 				7A1BCE641B54E3A000B24AF4 /* TxOrderStatusViewController.m in Sources */,
 				7A1BCE231B54E3A000B24AF4 /* ShopTalkPageViewController.m in Sources */,
-				7A1BCE9E1B54E3A000B24AF4 /* ProductCell.m in Sources */,
 				7A1BCB5A1B54E39F00B24AF4 /* InboxReviewResult.m in Sources */,
 				7A1BCC2B1B54E39F00B24AF4 /* TxOrderPaymentEditForm.m in Sources */,
 				7A1BCBCC1B54E39F00B24AF4 /* NoteDetailResult.m in Sources */,
@@ -9851,6 +9850,7 @@
 				7A1BCB661B54E39F00B24AF4 /* InboxTicketResult.m in Sources */,
 				7A1BCAD11B54E39F00B24AF4 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				7A1BCB911B54E39F00B24AF4 /* AddressForm.m in Sources */,
+				7AACDEF71B5FA54B00567FA5 /* ProductThumbCell.m in Sources */,
 				7A1BCB151B54E39F00B24AF4 /* ReviewProductOwner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
