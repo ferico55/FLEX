@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @protocol SearchResultDelegate <NSObject>
 
 - (void)pushViewController:(id)viewController animated:(BOOL)animated;
