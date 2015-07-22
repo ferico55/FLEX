@@ -489,7 +489,7 @@
             _isnodata = NO;
             _urinext =  messagelist.result.paging.uri_next;
 
-            if([_urinext isEqualToString:@"0"]) {
+            if([_urinext isEqualToString:@"0"] || !_urinext) {
                 [self hidebuttonmore:YES];
             } else {
                 [self showbuttonmore];
