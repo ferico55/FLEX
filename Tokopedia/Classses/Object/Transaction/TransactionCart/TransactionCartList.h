@@ -45,6 +45,8 @@
 @property (nonatomic, strong) NSString *cart_shipping_rate;
 @property (nonatomic, strong) NSString *cart_logistic_fee;
 
+@property (nonatomic, strong) NSString *cart_is_price_changed;
+
 @property (nonatomic, strong) ShopInfo *cart_shop;
 
 @end
