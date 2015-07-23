@@ -570,6 +570,8 @@ UIAlertViewDelegate
                 //Buy
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
+                    transactionVC.wholeSales = _product.result.wholesale_price;
+                    transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {

@@ -245,10 +245,15 @@
     //    }
     
     if ([_notification.result.total_cart integerValue]>0)
+    {
         [[_attachedViewController.tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = [_notification.result.total_cart stringValue];
+        NSLog(@"total cart:%@", [_notification.result.total_cart stringValue]);
+    }
     else
     {
         [[_attachedViewController.tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+        NSLog(@"total cart:%@", [_notification.result.total_cart stringValue]);
+
     }
 }
 

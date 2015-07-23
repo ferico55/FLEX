@@ -9,9 +9,9 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+//#define kTkpdBaseURLString @"http://www.ft-feby.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -19,8 +19,8 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-//#define kTkpdBaseURLString @"http://api.tokopedia.com/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 

@@ -25,6 +25,7 @@
 
 - (void)awakeFromNib {
     [_productNameLabel sizeToFit];
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
