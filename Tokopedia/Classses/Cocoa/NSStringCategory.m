@@ -126,4 +126,11 @@
     return timeLeft;
 }
 
+- (BOOL) isAllNonNumber
+{
+    NSCharacterSet* numbers = [NSCharacterSet decimalDigitCharacterSet];
+    NSRange r = [self rangeOfCharacterFromSet: numbers];
+    return r.location == NSNotFound;
+}
+
 @end

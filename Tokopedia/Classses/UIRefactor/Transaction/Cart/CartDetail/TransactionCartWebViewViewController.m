@@ -230,8 +230,7 @@
         if (_isVeritrans)
         {
             if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                [_delegate doRequestCC:_data];
+                [self performSelector:@selector(requestCCCallback) withObject:nil afterDelay:3.0f];
             }
         }
         else
@@ -256,6 +255,12 @@
             }
         }
     }
+}
+
+-(void)requestCCCallback
+{
+    [_delegate doRequestCC:_data];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error

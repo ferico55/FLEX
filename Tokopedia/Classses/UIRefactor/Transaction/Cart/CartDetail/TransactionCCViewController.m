@@ -99,8 +99,6 @@
     [_activeTextView resignFirstResponder];
     [_activeTextField resignFirstResponder];
     
-    _activeTextView = nil;
-    _activeTextField = nil;
     switch (indexPath.row) {
         case 1:
             [_firstNameTextField becomeFirstResponder];
@@ -132,9 +130,6 @@
 {
     [_activeTextView resignFirstResponder];
     [_activeTextField resignFirstResponder];
-
-    _activeTextView = nil;
-    _activeTextField = nil;
 }
 
 -(void)doRequestCC:(NSDictionary *)param
@@ -159,10 +154,13 @@
     _activeTextField = nil;
 }
 
--(void)textViewDidBeginEditing:(UITextView *)textView
+
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     _activeTextField = nil;
     _activeTextView = textView;
+    
+    return YES;
 }
 
 -(void)textViewDidEndEditing:(UITextView *)textView
@@ -189,9 +187,6 @@
     [_activeTextView resignFirstResponder];
     [_activeTextField resignFirstResponder];
     
-    _activeTextView = nil;
-    _activeTextField = nil;
-    
     if ([self isValidInput]) {
         TransactionCCDetailViewController *vc = [TransactionCCDetailViewController new];
         vc.data = @{API_CC_FIRST_NAME_KEY :_firstNameTextField.text,
@@ -217,9 +212,23 @@
         isValid = NO;
         [errorMessage addObject:@"Nama depan harus diisi."];
     }
+    else
+    {
+        if (![_firstNameTextField.text isAllNonNumber]) {
+            isValid = NO;
+            [errorMessage addObject:@"Nama depan tidak valid"];
+        }
+    }
     if ([_lastNameTextField.text isEqualToString:@""]) {
         isValid = NO;
         [errorMessage addObject:@"Nama belakang harus diisi."];
+    }
+    else
+    {
+        if (![_lastNameTextField.text isAllNonNumber]) {
+            isValid = NO;
+            [errorMessage addObject:@"Nama belakang tidak valid"];
+        }
     }
     if ([_phoneTextField.text isEqualToString:@""]) {
         isValid = NO;
@@ -233,9 +242,23 @@
         isValid = NO;
         [errorMessage addObject:@"Kota harus diisi."];
     }
+    else
+    {
+        if (![_cityTextField.text isAllNonNumber]) {
+            isValid = NO;
+            [errorMessage addObject:@"Kota tidak valid"];
+        }
+    }
     if ([_provinceTextField.text isEqualToString:@""]) {
         isValid = NO;
         [errorMessage addObject:@"Provinsi harus diisi."];
+    }
+    else
+    {
+        if (![_provinceTextField.text isAllNonNumber]) {
+            isValid = NO;
+            [errorMessage addObject:@"Provinsi tidak valid"];
+        }
     }
     if ([_addressTextView.text isEqualToString:@""]) {
         isValid = NO;
