@@ -497,6 +497,7 @@ typedef enum TagRequest {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
         moreNavBar = moreNavController;
+        
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 
@@ -578,6 +579,7 @@ typedef enum TagRequest {
     [self removeCacheUser];
     
     [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+    [((UINavigationController*)[_tabBarController.viewControllers objectAtIndex:3]) popToRootViewControllerAnimated:NO];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
                                                         object:nil
@@ -591,7 +593,6 @@ typedef enum TagRequest {
     }
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
-    
     
 }
 
