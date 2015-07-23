@@ -213,12 +213,12 @@
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
     vc.delegate = self;
     vc.noteList = list;
-    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
-                kTKPDNOTES_APINOTEIDKEY:list.note_id,
-                kTKPDNOTES_APINOTETITLEKEY:list.note_title,
-                kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
-                @"shop_id" : [_data objectForKey:@"shop_id"]
+    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY)?:kTKPDSETTINGEDIT_DATATYPEDEFAULTVIEWKEY,
+                kTKPDNOTES_APINOTEIDKEY:list.note_id?:@(0),
+                kTKPDNOTES_APINOTETITLEKEY:list.note_title?:@"",
+                kTKPDNOTES_APINOTESTATUSKEY:list.note_status?:@"",
+                @"shop_id" : [_data objectForKey:@"shop_id"]?:@""
                 };
     
     [self.navigationController pushViewController:vc animated:YES];

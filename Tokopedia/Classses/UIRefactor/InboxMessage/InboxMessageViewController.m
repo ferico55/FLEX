@@ -20,7 +20,7 @@
 #import "EncodeDecoderManager.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-
+#import "TAGDataLayer.h"
 
 @interface InboxMessageViewController ()
 <
@@ -87,6 +87,13 @@ typedef enum TagRequest {
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     NSString *_messageNavigationFlag;
+    
+    NSString *_inboxMessageBaseUrl;
+    NSString *_inboxMessagePostUrl;
+    NSString *_inboxMessageFullUrl;
+    
+    
+    TAGContainer *_gtmContainer;
     
     BOOL _isrefreshnav;    
     
@@ -196,9 +203,11 @@ typedef enum TagRequest {
     _table.allowsSelectionDuringEditing = YES;
     _table.allowsMultipleSelectionDuringEditing = YES;
     
+    // GTM
+    [self configureGTM];
+    
     [_networkManager doRequest];
 }
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -908,7 +917,7 @@ typedef enum TagRequest {
 
 - (NSString *)getPath:(int)tag {
     if(tag == messageListTag) {
-        return KTKPDMESSAGE_PATHURL;
+        return [_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl;
     }
     
     return nil;
@@ -928,7 +937,13 @@ typedef enum TagRequest {
 
 - (id)getObjectManager:(int)tag {
     if(tag == messageListTag) {
-        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  ![_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxMessageBaseUrl]:[RKObjectManager sharedClient];
+        if([_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxMessageBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_inboxMessageBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
@@ -968,7 +983,7 @@ typedef enum TagRequest {
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:KTKPDMESSAGE_PATHURL
+                                                                                                 pathPattern:[_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -1048,5 +1063,15 @@ typedef enum TagRequest {
 }
 
 
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _inboxMessageBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxMessageBase];
+    _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+}
 
 @end
