@@ -31,14 +31,15 @@
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"
 #import "ProductSingleViewCell.h"
+#import "ProductCell.h"
 #import "ProductThumbCell.h"
 
 #import "GeneralSingleProductCell.h"
 #import "GeneralPhotoProductCell.h"
 
 
-#define CTagGeneralProductCollectionView @"GeneralProductCollectionViewCell"
-#define CTagGeneralProductIdentifier @"GeneralProductCollectionViewIdentifier"
+#define CTagGeneralProductCollectionView @"ProductCell"
+#define CTagGeneralProductIdentifier @"ProductCellIdentifier"
 #define CTagFooterCollectionView @"FooterCollectionReusableView"
 #define CTagFooterCollectionIdentifier @"FooterView"
 #define CTagRetryCollectionView @"RetryCollectionReusableView"
@@ -1006,8 +1007,8 @@ GeneralPhotoProductDelegate
         cell = (ProductSingleViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductSingleViewIdentifier forIndexPath:indexPath];
         [(ProductSingleViewCell *)cell setViewModel:list.viewModel];
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        cell = (GeneralProductCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
-        [(GeneralProductCollectionViewCell *)cell setViewModel:list.viewModel];
+        cell = (ProductCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CTagGeneralProductIdentifier forIndexPath:indexPath];
+        [(ProductCell *)cell setViewModel:list.viewModel];
     } else {
         cell = (ProductThumbCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductThumbIdentifier forIndexPath:indexPath];
         [(ProductThumbCell *)cell setViewModel:list.viewModel];
