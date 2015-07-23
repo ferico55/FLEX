@@ -54,6 +54,7 @@
     VTToken *_token;
     
     UITextField *_activeTextField;
+    BOOL _isFailMaxRequest;
 }
 
 - (void)viewDidLoad {
@@ -91,6 +92,8 @@
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     _act = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(screenRect.size.width/2, screenRect.size.height/2,50,50)];
     _act.hidesWhenStopped = YES;
+    
+    _isFailMaxRequest = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -163,8 +166,12 @@
 #pragma mark - Request Delegate
 -(void)actionBeforeRequest:(int)tag
 {
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
-    [_alertLoading show];
+    if(!_alertLoading.visible && !_isFailMaxRequest)
+        [_alertLoading show];
+    
+    if (_isFailMaxRequest) {
+        _isFailMaxRequest = NO;
+    }
 }
 
 -(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -333,12 +340,14 @@
 
 -(void)isSucessSprintAsia:(NSDictionary *)param
 {
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     [_delegate isSucessSprintAsia:param];
     [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
+    _isFailMaxRequest = YES;
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
