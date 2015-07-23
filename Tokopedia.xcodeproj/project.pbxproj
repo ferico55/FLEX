@@ -1489,6 +1489,9 @@
 		7AACDEF61B5FA54B00567FA5 /* ProductSingleViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AACDEEF1B5FA54B00567FA5 /* ProductSingleViewCell.xib */; };
 		7AACDEF71B5FA54B00567FA5 /* ProductThumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AACDEF11B5FA54B00567FA5 /* ProductThumbCell.m */; };
 		7AACDEF81B5FA54B00567FA5 /* ProductThumbCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AACDEF21B5FA54B00567FA5 /* ProductThumbCell.xib */; };
+		7AACDEFC1B5FA5E900567FA5 /* TalkModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AACDEFB1B5FA5E900567FA5 /* TalkModelView.m */; };
+		7AACDF051B5FA9B400567FA5 /* TalkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AACDF031B5FA9B400567FA5 /* TalkCell.m */; };
+		7AACDF061B5FA9B400567FA5 /* TalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AACDF041B5FA9B400567FA5 /* TalkCell.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3781,6 +3784,11 @@
 		7AACDEF01B5FA54B00567FA5 /* ProductThumbCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductThumbCell.h; sourceTree = "<group>"; };
 		7AACDEF11B5FA54B00567FA5 /* ProductThumbCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductThumbCell.m; sourceTree = "<group>"; };
 		7AACDEF21B5FA54B00567FA5 /* ProductThumbCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductThumbCell.xib; sourceTree = "<group>"; };
+		7AACDEFA1B5FA5E900567FA5 /* TalkModelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkModelView.h; path = Talk/TalkModelView.h; sourceTree = "<group>"; };
+		7AACDEFB1B5FA5E900567FA5 /* TalkModelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkModelView.m; path = Talk/TalkModelView.m; sourceTree = "<group>"; };
+		7AACDF021B5FA9B400567FA5 /* TalkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TalkCell.h; path = Talk/TalkCell.h; sourceTree = "<group>"; };
+		7AACDF031B5FA9B400567FA5 /* TalkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TalkCell.m; path = Talk/TalkCell.m; sourceTree = "<group>"; };
+		7AACDF041B5FA9B400567FA5 /* TalkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TalkCell.xib; path = Talk/TalkCell.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -7329,6 +7337,7 @@
 		7A1BC8A21B54E39E00B24AF4 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				7AACDEF91B5FA5BC00567FA5 /* Talk */,
 				7A1BC8A31B54E39E00B24AF4 /* Catalog */,
 				7A1BC8A61B54E39E00B24AF4 /* Product */,
 			);
@@ -8083,6 +8092,18 @@
 			path = MGSwipeTableCell;
 			sourceTree = "<group>";
 		};
+		7AACDEF91B5FA5BC00567FA5 /* Talk */ = {
+			isa = PBXGroup;
+			children = (
+				7AACDEFA1B5FA5E900567FA5 /* TalkModelView.h */,
+				7AACDEFB1B5FA5E900567FA5 /* TalkModelView.m */,
+				7AACDF021B5FA9B400567FA5 /* TalkCell.h */,
+				7AACDF031B5FA9B400567FA5 /* TalkCell.m */,
+				7AACDF041B5FA9B400567FA5 /* TalkCell.xib */,
+			);
+			name = Talk;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -8445,6 +8466,7 @@
 				7A1BCF2B1B54E3A000B24AF4 /* icon_5@3x.png in Resources */,
 				7A1BCDD91B54E3A000B24AF4 /* SettingBankNameCell.xib in Resources */,
 				7A1BCF991B54E3A000B24AF4 /* icon_order_cancel@2x.png in Resources */,
+				7AACDF061B5FA9B400567FA5 /* TalkCell.xib in Resources */,
 				7A1BCCCB1B54E39F00B24AF4 /* GeneralProductCollectionViewCell.xib in Resources */,
 				7A1BD0211B54E3A000B24AF4 /* navigation-chevron.png in Resources */,
 				7A1BCD951B54E3A000B24AF4 /* RetryCollectionReusableView.xib in Resources */,
@@ -9391,6 +9413,7 @@
 				7A1BCB4F1B54E39F00B24AF4 /* ResolutionConversation.m in Sources */,
 				7A1BCD371B54E3A000B24AF4 /* MyShopEtalaseFilterViewController.m in Sources */,
 				7A1BCD9A1B54E3A000B24AF4 /* DueDateViewController.m in Sources */,
+				7AACDEFC1B5FA5E900567FA5 /* TalkModelView.m in Sources */,
 				7A1BCC4F1B54E39F00B24AF4 /* AlertInfoPaymentConfirmationView.m in Sources */,
 				7A1BCDB61B54E3A000B24AF4 /* ShipmentConfirmationViewController.m in Sources */,
 				7A1BCCE31B54E39F00B24AF4 /* HomeTabHeaderViewController.m in Sources */,
@@ -9683,6 +9706,7 @@
 				7A1BCB051B54E39F00B24AF4 /* CatalogSpecs.m in Sources */,
 				7A1BCD531B54E3A000B24AF4 /* PriceAlertViewController.m in Sources */,
 				7A1BCE701B54E3A000B24AF4 /* TxOrderConfirmationDropshipCell.m in Sources */,
+				7AACDF051B5FA9B400567FA5 /* TalkCell.m in Sources */,
 				7A1BCB821B54E39F00B24AF4 /* ChangePhoneNumber.m in Sources */,
 				7A1BCC1B1B54E39F00B24AF4 /* TxOrderConfirmed.m in Sources */,
 				7A1BCC8B1B54E39F00B24AF4 /* ContactUsViewController.m in Sources */,
