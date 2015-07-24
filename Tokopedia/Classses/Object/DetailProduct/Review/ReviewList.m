@@ -14,4 +14,7 @@
     return [_review_message kv_decodeHTMLCharacterEntities];
 }
 
+- (NSString*)review_product_name {
+    return [_review_product_name kv_decodeHTMLCharacterEntities];
+}
 @end
