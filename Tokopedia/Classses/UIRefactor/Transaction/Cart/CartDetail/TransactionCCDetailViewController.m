@@ -45,6 +45,8 @@
     NSString *_selectedMonth;
     NSString *_selectedYear;
     
+    NSDictionary *_alertPickerData;
+    
     RequestCart *_requestCart;
     UIAlertView *_alertLoading;
     
@@ -54,6 +56,7 @@
     VTToken *_token;
     
     UITextField *_activeTextField;
+    BOOL _isFailMaxRequest;
 }
 
 - (void)viewDidLoad {
@@ -91,6 +94,8 @@
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     _act = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(screenRect.size.width/2, screenRect.size.height/2,50,50)];
     _act.hidesWhenStopped = YES;
+    
+    _isFailMaxRequest = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -137,6 +142,7 @@
             AlertPickerView *picker = [AlertPickerView newview];
             picker.delegate = self;
             picker.pickerCount = 2;
+            picker.data = _alertPickerData;
             picker.pickerData = [_months copy];
             picker.secondPickerData = [_years copy];
             [picker show];
@@ -158,13 +164,18 @@
     _selectedYear = _years[[[alertData objectForKey:DATA_INDEX_SECOND_KEY] integerValue]][DATA_NAME_KEY];
     _expDateLabel.text = [NSString stringWithFormat:@"%@/%@",_selectedMonth,_selectedYear];
     _selectedMonth = [NSString stringWithFormat:@"%zd",[[alertData objectForKey:DATA_INDEX_KEY] integerValue]+1];
+    _alertPickerData = alertView.data;
 }
 
 #pragma mark - Request Delegate
 -(void)actionBeforeRequest:(int)tag
 {
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
-    [_alertLoading show];
+    if(!_alertLoading.visible && !_isFailMaxRequest)
+        [_alertLoading show];
+    
+    if (_isFailMaxRequest) {
+        _isFailMaxRequest = NO;
+    }
 }
 
 -(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -333,12 +344,14 @@
 
 -(void)isSucessSprintAsia:(NSDictionary *)param
 {
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     [_delegate isSucessSprintAsia:param];
     [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
+    _isFailMaxRequest = YES;
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
