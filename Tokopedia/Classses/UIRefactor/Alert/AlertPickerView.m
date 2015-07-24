@@ -22,6 +22,7 @@
     UITapGestureRecognizer *_newGesture;
     NSInteger index;
     NSInteger secondIndex;
+    __weak IBOutlet UIPickerView *pickerView;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -183,6 +184,12 @@
 			[_delegate didPresentAlertView:self];
 		}
 	}];
+    
+    index = [[_data objectForKey:DATA_INDEX_KEY] integerValue];
+    secondIndex = [[_data objectForKey:DATA_INDEX_SECOND_KEY] integerValue];
+    
+    [pickerView selectRow:index inComponent:0 animated:NO];
+    [pickerView selectRow:secondIndex inComponent:1 animated:NO];
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
