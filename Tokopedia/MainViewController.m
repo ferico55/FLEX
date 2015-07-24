@@ -34,6 +34,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
+#import "AlertBaseUrl.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -55,8 +56,10 @@
     __weak RKObjectManager *_objectmanager;
     
     NSString *_persistToken;
+    NSString *_persistBaseUrl;
     
     UIAlertView *_logingOutAlertView;
+    NSTimer *_containerTimer;
 }
 
 @end
@@ -117,6 +120,9 @@ typedef enum TagRequest {
     [center addObserver:self
                selector:@selector(didReceiveShowRatingNotification:)
                    name:kTKPD_SHOW_RATING_ALERT object:nil];
+
+    //refresh timer for GTM Container
+    _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -154,6 +160,10 @@ typedef enum TagRequest {
 	_auth = [auth mutableCopy];
     	
     _data = nil;
+#if DEBUG
+    AlertBaseUrl *alert = [AlertBaseUrl newview];
+    [alert show];
+#endif
     [self presentcontrollers];
 }
 
@@ -457,12 +467,7 @@ typedef enum TagRequest {
 #pragma mark - Notification observers
 
 - (void)applicationLogin:(NSNotification*)notification
-{
-    if (_logingOutAlertView) {
-        [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        _logingOutAlertView = nil;
-    }
-    
+{    
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     
@@ -529,6 +534,7 @@ typedef enum TagRequest {
 {
     _userManager = [UserAuthentificationManager new];
     _persistToken = [_userManager getMyDeviceToken]; //token device from ios
+
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar ?"
                                                         message:nil
                                                        delegate:self
@@ -564,13 +570,18 @@ typedef enum TagRequest {
 //    [_cacheController clearCache];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+    
     [storage resetKeychain];
     [_auth removeAllObjects];
     
-    [storage setKeychainWithValue:_persistToken withKey:@"device_token"];
+    [storage setKeychainWithValue:_persistToken?:@"" withKey:@"device_token"];
+    [storage setKeychainWithValue:_persistBaseUrl?:@"" withKey:@"AppBaseUrl"];
+    
     [self removeCacheUser];
     
     [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+    [((UINavigationController*)[_tabBarController.viewControllers objectAtIndex:3]) popToRootViewControllerAnimated:NO];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
                                                         object:nil
@@ -578,8 +589,12 @@ typedef enum TagRequest {
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     
-    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
+    if (_logingOutAlertView) {
+        [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        _logingOutAlertView = nil;
+    }
     
+    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
 }
 
@@ -718,10 +733,17 @@ typedef enum TagRequest {
 
 #pragma mark - Notification Observer Method
 - (void)forceLogout {
+    _persistToken = [_userManager getMyDeviceToken]; //token device from ios
     [self doApplicationLogout];
 }
 
-#pragma mark - User review
+- (void)didRefreshContainer:(NSTimer*)timer {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
+    [container refresh];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didRefreshGTM" object:nil];
+}
 
 - (void)didReceiveShowRatingNotification:(NSNotification*)notification {
     // Reviews data structure

@@ -14,4 +14,8 @@
     return [_talk_message kv_decodeHTMLCharacterEntities];
 }
 
+- (NSString*)talk_product_name {
+    return [_talk_product_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

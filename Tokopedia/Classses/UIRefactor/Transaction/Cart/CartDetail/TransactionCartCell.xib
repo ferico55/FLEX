@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -18,10 +18,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionCartCellIdentifier" rowHeight="210" id="nrB-Gb-lSt" customClass="TransactionCartCell">
+        <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionCartCellIdentifier" rowHeight="210" id="nrB-Gb-lSt" customClass="TransactionCartCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="210"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nrB-Gb-lSt" id="ObG-qm-9Xr">
+            <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nrB-Gb-lSt" id="ObG-qm-9Xr">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOu-9t-o2o">
@@ -64,9 +64,9 @@
                                 </connections>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="syi-Ey-9on">
-                                <rect key="frame" x="95" y="39" width="175" height="21"/>
+                                <rect key="frame" x="95" y="39" width="210" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="175" id="HnY-mq-wOE"/>
+                                    <constraint firstAttribute="width" constant="210" id="HnY-mq-wOE"/>
                                     <constraint firstAttribute="height" constant="21" id="brE-Cf-Fg0"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
@@ -86,8 +86,8 @@
                                     <action selector="tap:" destination="nrB-Gb-lSt" eventType="touchUpInside" id="f7P-vv-weH"/>
                                 </connections>
                             </button>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GUDANG" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ArF-vS-sw3">
-                                <rect key="frame" x="15" y="59" width="70" height="21"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="HARGA BERUBAH" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ArF-vS-sw3">
+                                <rect key="frame" x="15" y="50" width="70" height="30"/>
                                 <color key="backgroundColor" red="0.808625252016129" green="0.16059727822580644" blue="0.054845010080645018" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -111,7 +111,7 @@
                             <constraint firstItem="LJv-fK-LmM" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" constant="15" id="ZOc-6O-aPU"/>
                             <constraint firstAttribute="trailing" secondItem="VEf-5u-Ef6" secondAttribute="trailing" constant="5" id="ZQF-ni-IIi"/>
                             <constraint firstAttribute="trailing" secondItem="tiN-DT-ee1" secondAttribute="trailing" id="bnV-Dr-vjM"/>
-                            <constraint firstAttribute="trailing" secondItem="syi-Ey-9on" secondAttribute="trailing" constant="50" id="gYA-mt-Tm4"/>
+                            <constraint firstAttribute="trailing" secondItem="syi-Ey-9on" secondAttribute="trailing" constant="15" id="gYA-mt-Tm4"/>
                             <constraint firstItem="tiN-DT-ee1" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" id="mcK-xh-MIE"/>
                             <constraint firstItem="VEf-5u-Ef6" firstAttribute="leading" secondItem="9B8-Qh-nPX" secondAttribute="trailing" constant="5" id="oOd-Ei-THE"/>
                             <constraint firstItem="VEf-5u-Ef6" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" id="uoK-Hf-aF0"/>

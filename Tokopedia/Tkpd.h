@@ -9,9 +9,9 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+//#define kTkpdBaseURLString @"http://www.ft-feby.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -19,8 +19,8 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-//#define kTkpdBaseURLString @"http://api.tokopedia.com/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -214,5 +214,26 @@ typedef enum {
 #define kTKPD_USER_REVIEW_IDS           @"tokopedia.kTKPD_USER_REVIEW_IDS"
 #define kTKPD_USER_REVIEW_DUE_DATE      @"tokopedia.kTKPD_USER_REVIEW_DUE_DATE"
 #define kTKPD_ITUNES_APP_URL            @"http://itunes.apple.com/app/id1001394201"
+
+// GTM Value
+#define GTMKeyInboxMessageBase @"inboxmessage_base_url"
+#define GTMKeyInboxMessagePost @"inboxmessage_post_url"
+#define GTMKeyInboxMessageFull @"inboxmessage_full_url"
+
+#define GTMKeyInboxTalkBase @"inboxtalk_base_url"
+#define GTMKeyInboxTalkPost @"inboxtalk_post_url"
+#define GTMKeyInboxTalkFull @"inboxtalk_full_url"
+
+#define GTMKeyInboxReviewBase @"inboxreview_base_url"
+#define GTMKeyInboxReviewPost @"inboxreview_post_url"
+#define GTMKeyInboxReviewFull @"inboxreview_full_url"
+
+#define GTMKeyProductBase @"product_base_url"
+#define GTMKeyProductPost @"product_post_url"
+#define GTMKeyProductFull @"product_full_url"
+
+#define GTMKeySearchBase @"search_base_url"
+#define GTMKeySearchPost @"search_post_url"
+#define GTMKeySearchFull @"search_full_url"
 
 #endif

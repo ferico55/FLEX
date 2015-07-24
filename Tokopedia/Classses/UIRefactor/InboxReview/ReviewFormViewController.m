@@ -11,6 +11,7 @@
 #import "ReviewList.h"
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
+#import "NavigateViewController.h"
 
 #import "string_inbox_review.h"
 
@@ -471,6 +472,11 @@
         return NO;
     }
 
+}
+
+- (IBAction)tapProduct:(id)sender {
+    NavigateViewController *navigateController = [[NavigateViewController alloc] init];
+    [navigateController navigateToProductFromViewController:self withProductID:_selectedReviewDetail.review_product_id];    
 }
 
 
