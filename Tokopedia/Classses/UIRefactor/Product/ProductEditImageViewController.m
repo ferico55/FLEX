@@ -12,7 +12,7 @@
 #import "ProductEditImageViewController.h"
 #import "TKPDPhotoPicker.h"
 
-@interface ProductEditImageViewController () <UIAlertViewDelegate, UIScrollViewDelegate, TKPDPhotoPickerDelegate>
+@interface ProductEditImageViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIScrollViewDelegate, TKPDPhotoPickerDelegate>
 {
     NSMutableDictionary *_dataInput;
     UITextField *_activeTextField;
@@ -36,6 +36,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *deleteImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *defaultPictLabel;
 @property (weak, nonatomic) IBOutlet UIButton *setDefaultButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintDeleteButton;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
 
 - (IBAction)tap:(id)sender;
 
@@ -58,16 +61,11 @@
     
     self.title = @"Edit Gambar";
     
+    _section0Cells = [NSArray sortViewsWithTagInArray:_section0Cells];
+    
     _dataInput = [NSMutableDictionary new];
     
     [self setDefaultData:_data];
-    
-    _scrollView.frame = [[UIScreen mainScreen]bounds];
-    CGRect frame = _contentView.frame;
-    frame.size.width = _scrollView.frame.size.width;
-    _contentView.frame = frame;
-    
-    _scrollView.contentSize = _contentView.frame.size;
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
@@ -83,8 +81,6 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
-    
-    [_scrollView addSubview:_contentView];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -187,6 +183,67 @@
     _isDefaultImage = YES;
 }
 
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return _section0Cells.count;
+            break;
+        case 1:
+            return _section1Cells.count;
+            break;
+
+        default:
+            break;
+    }
+    return 0;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell= nil;
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0Cells[indexPath.row];
+            break;
+        case 1:
+            cell = _section1Cells[indexPath.row];
+            break;
+
+        default:
+            break;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+            return [_section0Cells[indexPath.row] frame].size.height;
+            break;
+        case 1:
+            return [_section1Cells[indexPath.row] frame].size.height;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 0;
+    }
+    return 40;
+}
 
 #pragma mark - Photo picker delegate
 
