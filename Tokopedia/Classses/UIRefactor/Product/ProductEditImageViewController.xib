@@ -18,6 +18,7 @@
                 <outlet property="deleteImageButton" destination="pHn-My-lhi" id="9Qc-EN-QgC"/>
                 <outlet property="productImageView" destination="v5M-LO-sqp" id="4fp-ue-T9S"/>
                 <outlet property="productNameTextField" destination="Dhg-U7-tPK" id="vMd-M8-wpB"/>
+                <outlet property="setDefaultButton" destination="w6a-qa-8ZA" id="zeb-v2-F07"/>
                 <outlet property="table" destination="Fig-9A-V9V" id="8qr-mx-SOH"/>
                 <outlet property="view" destination="Rsn-J7-Jnv" id="LLH-2N-FbV"/>
                 <outletCollection property="section1Cells" destination="9Qu-Ky-Qq3" id="82D-88-Ef3"/>
@@ -33,14 +34,14 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Fig-9A-V9V">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="SHx-4Y-YYv"/>
                         <outlet property="delegate" destination="-1" id="cXo-Rv-nO5"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Fig-9A-V9V" secondAttribute="bottom" id="G4p-Br-KpO"/>
@@ -60,7 +61,7 @@
                 <action selector="gesture:" destination="-1" id="8og-JU-Xcq"/>
             </connections>
         </tapGestureRecognizer>
-        <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="332" id="osX-MX-P6S">
+        <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="332" id="osX-MX-P6S">
             <rect key="frame" x="0.0" y="0.0" width="320" height="332"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="osX-MX-P6S" id="aoc-Ue-hWo">
@@ -68,8 +69,10 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v5M-LO-sqp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="331.5"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
                 </subviews>
+                <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="v5M-LO-sqp" secondAttribute="trailing" id="CDZ-0H-boM"/>
                     <constraint firstAttribute="bottom" secondItem="v5M-LO-sqp" secondAttribute="bottom" id="Cgn-yF-2JS"/>
@@ -77,9 +80,10 @@
                     <constraint firstItem="v5M-LO-sqp" firstAttribute="top" secondItem="aoc-Ue-hWo" secondAttribute="top" id="Sff-qG-EVo"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="536" y="600"/>
         </tableViewCell>
-        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uXp-di-adT">
+        <tableViewCell clipsSubviews="YES" tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uXp-di-adT">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uXp-di-adT" id="gol-HN-9eP">
@@ -135,7 +139,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="544" y="858"/>
         </tableViewCell>
-        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BtB-dk-fWz">
+        <tableViewCell clipsSubviews="YES" tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BtB-dk-fWz">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BtB-dk-fWz" id="oZx-5R-3XT">
@@ -193,7 +197,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="543" y="950"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="9Qu-Ky-Qq3">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="9Qu-Ky-Qq3">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Qu-Ky-Qq3" id="E9d-Ni-9z0">
@@ -211,6 +215,7 @@
                         </connections>
                     </button>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="pHn-My-lhi" secondAttribute="bottom" id="2w6-fD-VJr"/>
                     <constraint firstAttribute="trailing" secondItem="pHn-My-lhi" secondAttribute="trailing" id="S7v-AT-b1U"/>
@@ -218,6 +223,7 @@
                     <constraint firstItem="pHn-My-lhi" firstAttribute="leading" secondItem="E9d-Ni-9z0" secondAttribute="leading" id="v69-s9-4Nz"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="543" y="1050"/>
         </tableViewCell>
     </objects>

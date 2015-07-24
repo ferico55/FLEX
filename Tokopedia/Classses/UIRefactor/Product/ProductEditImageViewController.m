@@ -219,6 +219,9 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if (_deleteImageButton.hidden) {
+        return 1;
+    }
     return 2;
 }
 
@@ -243,6 +246,11 @@
         return 0;
     }
     return 40;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setBackgroundColor:[UIColor clearColor]];
 }
 
 #pragma mark - Photo picker delegate
