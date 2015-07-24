@@ -284,6 +284,8 @@ typedef enum TagRequest {
         if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
             //remove loadingview if there is no more item
             [_flowLayout setFooterReferenceSize:CGSizeZero];
+        } else {
+            [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
         }
     } else {
         // no data at all
