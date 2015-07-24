@@ -45,6 +45,8 @@
     NSString *_selectedMonth;
     NSString *_selectedYear;
     
+    NSDictionary *_alertPickerData;
+    
     RequestCart *_requestCart;
     UIAlertView *_alertLoading;
     
@@ -140,6 +142,7 @@
             AlertPickerView *picker = [AlertPickerView newview];
             picker.delegate = self;
             picker.pickerCount = 2;
+            picker.data = _alertPickerData;
             picker.pickerData = [_months copy];
             picker.secondPickerData = [_years copy];
             [picker show];
@@ -161,6 +164,7 @@
     _selectedYear = _years[[[alertData objectForKey:DATA_INDEX_SECOND_KEY] integerValue]][DATA_NAME_KEY];
     _expDateLabel.text = [NSString stringWithFormat:@"%@/%@",_selectedMonth,_selectedYear];
     _selectedMonth = [NSString stringWithFormat:@"%zd",[[alertData objectForKey:DATA_INDEX_KEY] integerValue]+1];
+    _alertPickerData = alertView.data;
 }
 
 #pragma mark - Request Delegate

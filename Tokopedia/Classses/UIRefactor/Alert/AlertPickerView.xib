@@ -69,6 +69,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="doneButton" destination="Cfg-p0-2AO" id="BzS-3D-WVw"/>
+                <outlet property="pickerView" destination="TqK-9C-Jge" id="R4K-Ok-vHU"/>
             </connections>
             <point key="canvasLocation" x="340" y="265"/>
         </view>
