@@ -27,7 +27,7 @@
     IBOutlet UIButton *btnInvoice, *btnFooter, *btnReview;
     IBOutlet ViewLabelUser *labelUser;
     UIActivityIndicatorView *activityRating;
-    UIImage *imageSmile, *imageSad, *imageNetral, *imageNeutral, *imageQuestionGray, *imageQuestionBlue, *imageQSmile;
+    UIImage *imageSmile, *imageSad, *imageNetral, *imageNeutral, *imageQuestionGray, *imageQuestionBlue, *imageQSmile, *imageQNetral, *imageQBad;
     IBOutlet NSLayoutConstraint *constraintLeftViewContent, *constraintRightViewContent, *constraintTopViewContent, *cosntraintBottomViewContent;
 }
 @property (nonatomic, unsafe_unretained) id<MyReviewReputationDelegate> delegate;

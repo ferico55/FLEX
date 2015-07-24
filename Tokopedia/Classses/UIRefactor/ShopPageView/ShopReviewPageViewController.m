@@ -573,6 +573,7 @@ UIAlertViewDelegate>
         [cell setPercentage:list.review_user_reputation.positive_percentage];
         cell.getBtnRateEmoji.tag = indexPath.row;
         cell.getBtnLike.tag = indexPath.row;
+        cell.getBtnChat.tag = indexPath.row;
         cell.getBtnDisLike.tag = indexPath.row;
         cell.getLabelDesc.tag = indexPath.row;
         
@@ -1201,10 +1202,18 @@ UIAlertViewDelegate>
             ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"1";
         }
         else {
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"0";
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like intValue] - 1)];
-            
-            [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+            if([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status isEqualToString:@"1"]) {
+                tagRequest = 0;
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"0";
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like intValue] - 1)];
+                [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+            }
+            else {
+                tagRequest = 1;
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"1";
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like intValue] + 1)];
+                [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
+            }
         }
         
         [btnLike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like forState:UIControlStateNormal];
@@ -1247,10 +1256,18 @@ UIAlertViewDelegate>
             ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"2";
         }
         else {
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"0";
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike intValue] - 1)];
-
-            [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+            if([((TotalLikeDislike *)[dictLikeDislike objectForKey:reviewList.review_id]).like_status isEqualToString:@"2"]) {
+                tagRequest = 0;
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"0";
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike intValue] - 1)];
+                [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+            }
+            else {
+                tagRequest = 2;
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"2";
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike intValue] + 1)];
+                [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
+            }
         }
         
         [loadingLikeDislike setObject:[NSIndexPath indexPathForRow:btnDislike.tag inSection:0] forKey:reviewList.review_id];
@@ -1258,10 +1275,6 @@ UIAlertViewDelegate>
         //Set data
         [btnLike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like forState:UIControlStateNormal];
         [btnDislike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike forState:UIControlStateNormal];
-        ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"3";
-        if([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status isEqualToString:@"0"] || [((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status isEqualToString:@"3"])
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"2";
-        
         [self doActionLikeDislike:tagRequest withView:btnDislike];
     }
     else {

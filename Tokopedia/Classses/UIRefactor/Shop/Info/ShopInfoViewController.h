@@ -12,7 +12,7 @@
 {
     IBOutlet UIButton *btnLihatDetailStat;
     IBOutlet UILabel *lblReputasi, *lblKecepatan;
-    IBOutlet UIImageView *imageSpeed;
+    IBOutlet UIImageView *imageSpeed, *imageReputasi;
 }
 
 @property (strong, nonatomic) NSDictionary *data;

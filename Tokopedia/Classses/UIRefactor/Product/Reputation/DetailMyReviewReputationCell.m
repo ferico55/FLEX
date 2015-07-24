@@ -8,6 +8,7 @@
 #import "DetailReviewReputaionViewModel.h"
 #import "DetailMyReviewReputationCell.h"
 #define CStringKomentar @"Komentar"
+#define CStringPembeliBelumBeriUlasan @"Pembeli belum memberikan ulasan"
 
 @implementation CustomBtnSkip : UIButton
 @synthesize isLewati, isLapor;
@@ -94,7 +95,13 @@
 }
 
 - (void)setView:(DetailReviewReputaionViewModel *)viewModel {
-    lblDate.text = viewModel.review_create_time==nil||[viewModel.review_create_time isEqualToString:@"0"]? @"":viewModel.review_create_time;
+    if(viewModel==nil || viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) {
+        if([_strRole isEqualToString:@"2"]) {
+            lblDate.text = CStringPembeliBelumBeriUlasan;
+        }
+    }
+    else
+        lblDate.text = viewModel.review_create_time==nil||[viewModel.review_create_time isEqualToString:@"0"]? @"":viewModel.review_create_time;
     [btnProduct setTitle:viewModel.product_name forState:UIControlStateNormal];
     
     //Set star akurasi and kualitas
@@ -113,7 +120,7 @@
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.product_uri] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     UIImageView *thumb = imgProduct;
     thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_profile_picture" ofType:@"jpeg"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         //NSLOG(@"thumb: %@", thumb);
@@ -160,7 +167,7 @@
     tempLblRect.size.height = tempSizeDesc.height;
     lblDesc.frame = tempLblRect;
     
-    if(viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) {
+    if((viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) && [_strRole isEqualToString:@"1"]) {
         btnKomentar.hidden = NO;
         [self setHiddenRating:YES];
         btnKomentar.enabled = YES;

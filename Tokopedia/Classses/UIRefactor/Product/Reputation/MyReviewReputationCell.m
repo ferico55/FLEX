@@ -12,6 +12,9 @@
 //#define CTagPembeli 1
 //#define CTagPenjual 2
 #define CFormatWaitYourReview @"%@ Produk menunggu review anda"
+#define CFormatWaitYourComment @"%@ Produk menunggu komentar anda"
+#define CFormatUlasanIsEdit @"%@ Ulasan produk telah diperbaharui"
+#define CStringLihaReview @"Lihat Review"
 
 @implementation MyReviewReputationCell
 
@@ -42,6 +45,16 @@
     UIGraphicsBeginImageContext(rect.size);
     [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] drawInRect:rect];
     imageQSmile = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    UIGraphicsBeginImageContext(rect.size);
+    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] drawInRect:rect];
+    imageQNetral = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    UIGraphicsBeginImageContext(rect.size);
+    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] drawInRect:rect];
+    imageQBad = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     
@@ -155,17 +168,28 @@
     
     [labelUser setLabelBackground:[object.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual];
     [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
-    [btnFooter setTitle:[NSString stringWithFormat:CFormatWaitYourReview, object.unassessed_reputation_review] forState:UIControlStateNormal];
+    
+    
+    if(object.unassessed_reputation_review==nil || [object.unassessed_reputation_review isEqualToString:@"0"]) {
+        if(object.updated_reputation_review==nil || [object.updated_reputation_review isEqualToString:@"0"] || [object.role isEqualToString:@"1"])//1 is buyer
+            [btnFooter setTitle:CStringLihaReview forState:UIControlStateNormal];
+        else
+            [btnFooter setTitle:[NSString stringWithFormat:CFormatUlasanIsEdit, object.updated_reputation_review] forState:UIControlStateNormal];
+    }
+    else {
+        [btnFooter setTitle:[NSString stringWithFormat:([object.role isEqualToString:@"2"]? CFormatWaitYourComment:CFormatWaitYourReview), object.unassessed_reputation_review] forState:UIControlStateNormal];
+    }
+    
     
     //Set color smile
-    btnReview.enabled = YES;
-    if([object.reviewee_score isEqualToString:CRevieweeScroreBad]) {
+    btnReview.enabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
+    if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreBad]) {
         [btnReview setImage:imageSad forState:UIControlStateNormal];
     }
-    else if([object.reviewee_score isEqualToString:CRevieweeScroreNetral]) {
+    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreNetral]) {
         [btnReview setImage:imageNetral forState:UIControlStateNormal];
     }
-    else if([object.reviewee_score isEqualToString:CRevieweeScroreGood]) {
+    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreGood]) {
         btnReview.enabled = NO;
         [btnReview setImage:imageSmile forState:UIControlStateNormal];
     }
@@ -173,22 +197,40 @@
         [btnReview setImage:imageNeutral forState:UIControlStateNormal];
     }
     
+    
+    
     //Check flag has reviewed or not
     //1&4. kedua pihak sudah kasih reputation
     //2&5. salah satu sudah kasih
     //3&6. 2 pihak belum kasih
-    if([object.reviewee_score_status isEqualToString:@"1"] || [object.reviewee_score_status isEqualToString:@"4"]) {
-        imageFlagReview.image = imageQSmile;
-        imageFlagReview.userInteractionEnabled = YES;
+    imageFlagReview.userInteractionEnabled = YES;
+
+    NSString *strScore = object.buyer_score;
+    if([object.role isEqualToString:@"2"]) {//Seller
+        strScore = object.seller_score;
     }
-    else if([object.reviewee_score_status isEqualToString:@"2"] || [object.reviewee_score_status isEqualToString:@"5"]) {
-        imageFlagReview.image = imageQuestionBlue;
-        imageFlagReview.userInteractionEnabled = YES;
+    
+    //Set icon smiley
+    if(([object.seller_score isEqualToString:CRevieweeScroreBad] || [object.seller_score isEqualToString:CRevieweeScroreNetral] || [object.seller_score isEqualToString:CRevieweeScroreGood]) && (([object.buyer_score isEqualToString:CRevieweeScroreBad] || [object.buyer_score isEqualToString:CRevieweeScroreNetral] || [object.buyer_score isEqualToString:CRevieweeScroreGood]))) {
+        if([strScore isEqualToString:CRevieweeScroreBad]) {
+            imageFlagReview.image = imageQBad;
+        }
+        else if([strScore isEqualToString:CRevieweeScroreNetral]) {
+            imageFlagReview.image = imageQNetral;
+        }
+        else if([strScore isEqualToString:CRevieweeScroreGood]) {
+            imageFlagReview.image = imageQSmile;
+        }
     }
     else {
-        imageFlagReview.image = imageQuestionGray;
-        imageFlagReview.userInteractionEnabled = YES;
+        if([strScore isEqualToString:CRevieweeScroreBad] || [strScore isEqualToString:CRevieweeScroreNetral] || [strScore isEqualToString:CRevieweeScroreGood]) {
+            imageFlagReview.image = imageQuestionBlue;
+        }
+        else {
+            imageFlagReview.image = imageQuestionGray;
+        }
     }
+    
     
     //check read unread status
     viewFlagReadUnread.hidden = [object.read_status isEqualToString:@"1"];

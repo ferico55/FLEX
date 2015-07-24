@@ -54,6 +54,7 @@
                 <outlet property="buttonitemsold" destination="8uq-Zo-ZDV" id="dSH-B6-jrU"/>
                 <outlet property="buttonofflocation" destination="NXr-90-gzo" id="EWR-Mm-kDF"/>
                 <outlet property="containerview" destination="SPN-F6-FwN" id="Ava-I5-27P"/>
+                <outlet property="imageReputasi" destination="quH-OI-aEy" id="ULe-HP-ppM"/>
                 <outlet property="imageSpeed" destination="aN1-CY-Ug6" id="G8B-Yp-muk"/>
                 <outlet property="labeletalase" destination="LKB-Ns-97P" id="U9S-tV-GqZ"/>
                 <outlet property="labellastlogin" destination="aIz-fv-w5w" id="zfM-0o-qgC"/>

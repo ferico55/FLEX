@@ -69,6 +69,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="constraintWidthMedal" destination="sYH-oW-khf" id="ijI-4u-tgd"/>
                 <outlet property="imgStatistic" destination="CI8-Xj-cWM" id="vXt-QQ-yhB"/>
                 <outlet property="locationLabel" destination="Pp2-wY-HYE" id="Gf6-to-5kE"/>
                 <outlet property="openStatusLabel" destination="TdE-Q9-Yqa" id="MJx-vr-CCU"/>
@@ -78,6 +79,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_medal_diamond.png" width="20" height="20"/>
+        <image name="icon_medal_diamond.png" width="60" height="20"/>
     </resources>
 </document>

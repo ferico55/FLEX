@@ -165,13 +165,13 @@
         return headerView;
     }
     else if(section == 1 ) {
-        if(_profile.result.shop_info) {
+//        if(_profile.result.shop_info) {
             titleLabel.text = kTKPDTITLE_SHOP_INFO;
             [headerView addSubview:titleLabel];
             return headerView;
-        } else {
-            return nil;
-        }
+//        } else {
+//            return nil;
+//        }
 
     } else if (section == 2) {
         titleLabel.text = KTKPDTITLE_BIODATA;
@@ -185,11 +185,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(!_profile.result.shop_info) {
-        if(section == 0) {
-            return 0;
-        }
-    }
+//    if(!_profile.result.shop_info) {
+//        if(section == 0) {
+//            return 0;
+//        }
+//    }
 
     return 1;
 }
@@ -208,17 +208,17 @@
                 cell = [arrCell objectAtIndex:0];
             }
             
-            [cell setPositif1:_profile.result.shop_stats.shop_last_one_month.count_score_good];
-            [cell setPositif6:_profile.result.shop_stats.shop_last_six_months.count_score_good];
-            [cell setPositif12:_profile.result.shop_stats.shop_last_twelve_months.count_score_good];
+            [cell setPositif1:_profile.result.shop_stats.shop_last_one_month.count_score_good!=nil?_profile.result.shop_stats.shop_last_one_month.count_score_good:@"0"];
+            [cell setPositif6:_profile.result.shop_stats.shop_last_six_months.count_score_good!=nil?_profile.result.shop_stats.shop_last_six_months.count_score_good:@"0"];
+            [cell setPositif12:_profile.result.shop_stats.shop_last_twelve_months.count_score_good!=nil?_profile.result.shop_stats.shop_last_twelve_months.count_score_good:@"0"];
             
-            [cell setNetral1:_profile.result.shop_stats.shop_last_one_month.count_score_neutral];
-            [cell setNetral6:_profile.result.shop_stats.shop_last_six_months.count_score_neutral];
-            [cell setNetral12:_profile.result.shop_stats.shop_last_twelve_months.count_score_neutral];
+            [cell setNetral1:_profile.result.shop_stats.shop_last_one_month.count_score_neutral!=nil?_profile.result.shop_stats.shop_last_one_month.count_score_neutral:@"0"];
+            [cell setNetral6:_profile.result.shop_stats.shop_last_six_months.count_score_neutral!=nil?_profile.result.shop_stats.shop_last_six_months.count_score_neutral:@"0"];
+            [cell setNetral12:_profile.result.shop_stats.shop_last_twelve_months.count_score_neutral!=nil?_profile.result.shop_stats.shop_last_twelve_months.count_score_neutral:@"0"];
             
-            [cell setBad1:_profile.result.shop_stats.shop_last_one_month.count_score_bad];
-            [cell setBad6:_profile.result.shop_stats.shop_last_six_months.count_score_bad];
-            [cell setBad12:_profile.result.shop_stats.shop_last_twelve_months.count_score_bad];
+            [cell setBad1:_profile.result.shop_stats.shop_last_one_month.count_score_bad!=nil?_profile.result.shop_stats.shop_last_one_month.count_score_bad:@"0"];
+            [cell setBad6:_profile.result.shop_stats.shop_last_six_months.count_score_bad!=nil?_profile.result.shop_stats.shop_last_six_months.count_score_bad:@"0"];
+            [cell setBad12:_profile.result.shop_stats.shop_last_twelve_months.count_score_bad!=nil?_profile.result.shop_stats.shop_last_twelve_months.count_score_bad:@"0"];
             
             return cell;
         }
@@ -233,6 +233,7 @@
             }
             ((ProfileBiodataShopCell*)cell).labelname.text = _profile.result.shop_info.shop_name;
             [((ProfileBiodataShopCell*)cell) setBadgeIcon:_profile.result.respond_speed.badge];
+            [((ProfileBiodataShopCell*)cell) generateMedal:_profile.result.shop_stats.shop_reputation_score];
             [((ProfileBiodataShopCell*)cell).buttonName setTitle:_profile.result.shop_info.shop_name forState:UIControlStateNormal];
             ((ProfileBiodataShopCell*)cell).labellocation.text = _profile.result.shop_info.shop_location;
             
@@ -346,11 +347,12 @@
 }
 
 - (void)actionKecepatan:(id)sender {
-    [self initPopUp:_profile.result.respond_speed.speed_level withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+    if(_profile.result.respond_speed != nil)
+        [self initPopUp:_profile.result.respond_speed.speed_level withSender:sender withRangeDesc:NSMakeRange(0, 0)];
 }
 
 - (void)actionReputasi:(id)sender {
-    NSString *strText = [NSString stringWithFormat:@"%@ %@", _profile.result.shop_stats.shop_reputation_score, CStringPoin];
+    NSString *strText = [NSString stringWithFormat:@"%@ %@", _profile.result.shop_stats.shop_reputation_score==nil?@"0":_profile.result.shop_stats.shop_reputation_score, CStringPoin];
     [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
 }
 

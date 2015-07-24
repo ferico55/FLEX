@@ -42,8 +42,10 @@
     TokopediaNetworkManager *tokopediaNetworkManager, *tokopediaNetworkInsertReputation;
     NSString *filterNav, *filter, *emoticonState, *strInsertReputationRole;
     int page;
+    BOOL isRefreshing;
     NSString *strUriNext;
     NSIndexPath *indexPathInsertReputation;
+    UIRefreshControl *refreshControl;
 }
 @synthesize strNav;
 
@@ -64,6 +66,11 @@
     page = 0;
     tableContent.allowsSelection = NO;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
+    
+    refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [tableContent addSubview:refreshControl];
     
     [self loadMoreData:YES];
     [[self getNetworkManager:CTagGetInboxReputation] doRequest];
@@ -92,6 +99,15 @@
 */
 
 #pragma mark - Method
+- (void)refreshView:(id)sender {
+    page = 0;
+    strUriNext = @"";
+    [refreshControl endRefreshing];
+    
+    isRefreshing = YES;
+    [self pressRetryButton];
+}
+
 - (void)loadMoreData:(BOOL)load {
     if(load) {
         tableContent.tableFooterView = viewFooter;
@@ -228,7 +244,9 @@
         
         RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[MyReviewReputationResult class]];
         RKObjectMapping *detailReputationMapping = [RKObjectMapping mappingForClass:[DetailMyInboxReputation class]];
-        [detailReputationMapping addAttributeMappingsFromArray:@[CRevieweeScoreStatus,
+        [detailReputationMapping addAttributeMappingsFromArray:@[CUpdatedReputationReview,
+                                                                 CScoreEditTimeFmt,
+                                                                 CRevieweeScoreStatus,
                                                                  CShopID,
                                                                  CShowBookmark,
                                                                  CBuyerScrore,
@@ -316,6 +334,7 @@
     if(tag == CTagGetInboxReputation) {
         MyReviewReputation *result = (MyReviewReputation *)stat;
         if(page == 0) {
+            isRefreshing = NO;
             arrList = [[NSMutableArray alloc] initWithArray:result.result.list];
         }
         else {
@@ -343,8 +362,14 @@
         [tableContent reloadData];
     }
     else if(tag == CTagInsertReputation) {
-        ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reviewee_score = emoticonState;
-        ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.reviewee_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reviewee_score;
+        if([((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).role isEqualToString:@"2"]) {//Seller
+            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score = emoticonState;
+            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.seller_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score;
+        }
+        else {
+            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score = emoticonState;
+            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.buyer_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score;
+        }
         
         //Update ui detail reputation
         UIViewController *tempViewController = [self.navigationController.viewControllers lastObject];
@@ -384,6 +409,8 @@
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == CTagGetInboxReputation) {
+        if(page == 0)
+            isRefreshing = NO;
         tableContent.tableFooterView = [self getLoadView].view;
     }
     else if(tag == CTagInsertReputation) {
@@ -448,34 +475,45 @@
 
 #pragma mark - MyReviewReputation Delegate
 - (void)actionLabelUser:(id)sender {
-    DetailMyInboxReputation *tempObj = arrList[((ViewLabelUser *) ((UITapGestureRecognizer *) sender).view).tag];
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    
-    container.data = @{kTKPDDETAIL_APISHOPIDKEY:tempObj.shop_id,
-                       kTKPD_AUTHKEY:auth?:[NSNull null]};
-    [self.navigationController pushViewController:container animated:YES];
+    if(! isRefreshing) {
+        DetailMyInboxReputation *tempObj = arrList[((ViewLabelUser *) ((UITapGestureRecognizer *) sender).view).tag];
+        ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *auth = [secureStorage keychainDictionary];
+        
+        container.data = @{kTKPDDETAIL_APISHOPIDKEY:tempObj.shop_id,
+                           kTKPD_AUTHKEY:auth?:[NSNull null]};
+        [self.navigationController pushViewController:container animated:YES];
+    }
 }
 
 - (void)actionReviewRate:(id)sender
 {
-    DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-    alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:tempObj.reviewee_score];
-    alertRateView.tag = ((UIButton *) sender).tag;
-    [alertRateView show];
+    if(! isRefreshing) {
+        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+        
+        alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score];
+        alertRateView.tag = ((UIButton *) sender).tag;
+        [alertRateView show];
+    }
 }
 
 - (void)actionInvoice:(id)sender
 {
-    DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-    
-    if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-        WebViewController *webViewController = [WebViewController new];
-        webViewController.strURL = tempObj.invoice_uri;
-        webViewController.strTitle = @"";
-        [self.navigationController pushViewController:webViewController animated:YES];
+    if(! isRefreshing) {
+        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+        
+        if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
+            WebViewController *webViewController = [WebViewController new];
+            webViewController.strURL = tempObj.invoice_uri;
+            webViewController.strTitle = @"";
+            [self.navigationController pushViewController:webViewController animated:YES];
+        }
     }
+}
+
+- (BOOL)anyScore:(NSString *)strScore {
+    return ([strScore isEqualToString:CRevieweeScroreBad] || [strScore isEqualToString:CRevieweeScroreNetral] || [strScore isEqualToString:CRevieweeScroreGood]);
 }
 
 - (void)actionFlagReview:(id)sender {
@@ -486,17 +524,11 @@
 //    4 seller & buyer sudah mengisi
 //    5 seller sudah mengisi
 //    6 seller belum mengisi
-
+    BOOL isSeller = [object.role isEqualToString:@"2"];
+    NSString *strPenjualOrPembeli = ([object.role isEqualToString:@"2"]? @"Pembeli":@"Penjual");
+    
     UIAlertView *alertView;
-    if([object.reviewee_score_status isEqualToString:@"6"] || [object.reviewee_score_status isEqualToString:@"3"]) {
-        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"%@ belum memberikan Feedback untuk anda", ([object.role isEqualToString:@"2"]? @"Pembeli":@"Penjual")] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [alertView show];
-    }
-    else if([object.reviewee_score_status isEqualToString:@"2"] || [object.reviewee_score_status isEqualToString:@"5"]) {
-        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Penasaran\nIsi Feedback %@ dulu ya!", ([object.role isEqualToString:@"2"]? @"pembeli":@"penjual")] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [alertView show];
-    }
-    else if([object.reviewee_score_status isEqualToString:@"1"] || [object.reviewee_score_status isEqualToString:@"4"]) {
+    if([self anyScore:object.seller_score] && [self anyScore:object.buyer_score]) {
         NSString *strRespond = @"Tidak Puas";
         NSString *score = ([object.role isEqualToString:@"2"]? object.buyer_score:object.seller_score);
         
@@ -512,20 +544,44 @@
             return;
         }
         
-        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Wow!\nReview dari %@:\"%@\"", ([object.role isEqualToString:@"2"]? @"Pembeli":@"Penjual"), strRespond] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Wow!\nReview dari %@:\"%@\"", strPenjualOrPembeli, strRespond] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [alertView show];
-    } 
+    }
+    else {
+        if(![self anyScore:object.seller_score] && ![self anyScore:object.buyer_score]) {
+            alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"%@ belum memberikan penilaian untuk anda", strPenjualOrPembeli] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alertView show];
+        }
+        else if([self anyScore:object.seller_score] && ![self anyScore:object.buyer_score]) {
+            if(! isSeller) {
+                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penjual belum memberikan penilaian untuk anda" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            }
+            else {
+                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penasaran?\n Isi penilaian untuk pembeli dulu ya!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            }
+            [alertView show];
+        }
+        else if(![self anyScore:object.seller_score] && [self anyScore:object.buyer_score]) {
+            if(! isSeller)
+                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penasaran\nIsi penilaian toko dulu ya!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            else
+                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Pembeli belum memberikan penilaian untuk anda" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alertView show];
+        }
+    }
 }
 
 - (void)actionFooter:(id)sender {
-    DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-    //Set flag to read -> From unread
-    tempObj.read_status = CValueRead;
-    tempObj.viewModel.read_status = CValueRead;
-    DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
-    detailMyReviewReputationViewController.tag = ((UIButton *) sender).tag;
-    detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
-    [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
+    if(! isRefreshing) {
+        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+        //Set flag to read -> From unread
+        tempObj.read_status = CValueRead;
+        tempObj.viewModel.read_status = CValueRead;
+        DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
+        detailMyReviewReputationViewController.tag = (int)((UIButton *) sender).tag;
+        detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
+        [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
+    }
 }
 
 

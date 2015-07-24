@@ -76,10 +76,12 @@
     style.lineSpacing = 4.0f;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
     arrList = [[NSMutableArray alloc] init];
-    
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+
     tableContent.delegate = self;
     tableContent.dataSource = self;
     [tableContent reloadData];
+    self.title = _detailMyInboxReputation.invoice_ref_num;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -121,22 +123,33 @@
     cell.strRole = _detailMyInboxReputation.role;
     [cell setView:detailReputationReview.viewModel];
     
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    if(detailReputationReview.viewModel==nil || detailReputationReview.viewModel.review_message==nil || [detailReputationReview.viewModel.review_message isEqualToString:@"0"]) {
+        if([_detailMyInboxReputation.role isEqualToString:@"2"]) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+    }
+    
+    
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
-    int height = 0;
-    
-    if(detailReputationReview.review_message!=nil && detailReputationReview.review_message.length>0 && ![detailReputationReview.review_message isEqualToString:@"0"]) {
-        height = CHeightContentStar;
+    int height = CHeightContentStar + CPaddingTopBottom;
+    CGSize tempSizeDesc = CGSizeZero;
+
+    if((detailReputationReview.review_message==nil || [detailReputationReview.review_message isEqualToString:@"0"]) && [_detailMyInboxReputation.role isEqualToString:@"1"]) {
+        height -= CHeightContentStar;
+    }
+    else if(detailReputationReview.review_message!=nil && detailReputationReview.review_message.length>0 && ![detailReputationReview.review_message isEqualToString:@"0"]) {
+        TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width-(CPaddingTopBottom*4), 0)];
+        [self setPropertyLabelDesc:tempLabel];
+        [self initLabelDesc:tempLabel withText:detailReputationReview.viewModel.review_message];
+        tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(tempLabel.bounds.size.width, 9999)];
     }
     
-    TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width-(CPaddingTopBottom*4), 0)];
-    [self setPropertyLabelDesc:tempLabel];
-    [self initLabelDesc:tempLabel withText:detailReputationReview.viewModel.review_message];
-    CGSize tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(tempLabel.bounds.size.width, 9999)];
-    return (CPaddingTopBottom*5) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
+    return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -150,6 +163,10 @@
     
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
     if(detailReputationReview.viewModel==nil || detailReputationReview.viewModel.review_message==nil || [detailReputationReview.viewModel.review_message isEqualToString:@"0"]) {
+        if([_detailMyInboxReputation.role isEqualToString:@"2"]) {
+            return;
+        }
+        
         UIView *tempView = [UIView new];
         tempView.tag = indexPath.row;
         

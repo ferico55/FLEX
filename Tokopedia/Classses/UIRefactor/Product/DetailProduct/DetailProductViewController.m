@@ -1884,6 +1884,8 @@ UIAlertViewDelegate
             [btnKecepatan setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_neutral" ofType:@"png"]] forState:UIControlStateNormal];
         }
         
+        [self generateMedal];
+        
         //Set image and title kecepatan
         CGFloat spacing = 6.0;
         CGSize imageSize = btnKecepatan.imageView.frame.size;
@@ -2182,6 +2184,62 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (void)generateMedal {
+    int valueStar = _product.result.shop_info.shop_stats.shop_reputation_score==nil||[_product.result.shop_info.shop_stats.shop_reputation_score isEqualToString:@""]?0:[_product.result.shop_info.shop_stats.shop_reputation_score intValue];
+    valueStar = valueStar>0?:0;
+    if(valueStar == 0) {
+        [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
+    }
+    else {
+        ///Set medal image
+        int n = 0;
+        if(valueStar<10 || (valueStar>250 && valueStar<=500) || (valueStar>10000 && valueStar<=20000) || (valueStar>500000 && valueStar<=1000000)) {
+            n = 1;
+        }
+        else if((valueStar>10 && valueStar<=40) || (valueStar>500 && valueStar<=1000) || (valueStar>20000 && valueStar<=50000) || (valueStar>1000000 && valueStar<=2000000)) {
+            n = 2;
+        }
+        else if((valueStar>40 && valueStar<=90) || (valueStar>1000 && valueStar<=2000) || (valueStar>50000 && valueStar<=100000) || (valueStar>2000000 && valueStar<=5000000)) {
+            n = 3;
+        }
+        else if((valueStar>90 && valueStar<=150) || (valueStar>2000 && valueStar<=5000) || (valueStar>100000 && valueStar<=200000) || (valueStar>5000000 && valueStar<=10000000)) {
+            n = 4;
+        }
+        else if((valueStar>150 && valueStar<=250) || (valueStar>5000 && valueStar<=10000) || (valueStar>200000 && valueStar<=500000) || valueStar>10000000) {
+            n = 4;
+        }
+        
+        //Check image medal
+        if(valueStar <= 250) {
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_bronze" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else if(valueStar <= 10000) {
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else if(valueStar <= 500000) {
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_gold" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else {
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_diamond_one" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+    }
+}
+
++ (UIImage *)generateImage:(UIImage *)image withCount:(int)count {
+    UIView *tempView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, image.size.width*count, image.size.height)];
+    
+    for(int i=0;i<count;i++) {
+        [tempView addSubview:[[[UIImageView alloc] initWithFrame:CGRectMake(i*image.size.width, 0, image.size.width, image.size.height)] initWithImage:image]];
+    }
+    
+    UIGraphicsBeginImageContextWithOptions(tempView.bounds.size, 0, 0.0);
+    [tempView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return img;
+}
+
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
@@ -2220,7 +2278,7 @@ UIAlertViewDelegate
 
 - (IBAction)actionKecepatan:(id)sender
 {
-    [self initPopUp:_product.result.shop_info.shop_stats.shop_speed_description withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+    [self initPopUp:_product.result.shop_info.respond_speed.speed_level withSender:sender withRangeDesc:NSMakeRange(0, 0)];
 }
 
 - (void)setBackgroundPriceAlert:(BOOL)isActive

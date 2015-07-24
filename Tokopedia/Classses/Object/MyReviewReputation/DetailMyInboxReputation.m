@@ -26,6 +26,11 @@
         viewModel.reviewee_score_status = _reviewee_score_status;
         viewModel.show_bookmark = _show_bookmark;
         viewModel.unassessed_reputation_review = _unassessed_reputation_review;
+        viewModel.role = _role;
+        viewModel.seller_score = _seller_score;
+        viewModel.buyer_score = _buyer_score;
+        viewModel.updated_reputation_review = _updated_reputation_review;
+        viewModel.score_edit_time_fmt = _score_edit_time_fmt;
         
         _viewModel = viewModel;
     }

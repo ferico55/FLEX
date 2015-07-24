@@ -32,9 +32,13 @@
 #define CShowRevieweeSCore @"show_reviewee_score"
 #define CRole @"role"
 #define CShowBookmark @"show_bookmark"
+#define CUpdatedReputationReview @"updated_reputation_review"
+#define CScoreEditTimeFmt @"score_edit_time_fmt"
 @class DetailMyInboxReputation, MyReviewReputationViewModel;
 
 @interface DetailMyInboxReputation : NSObject
+@property (nonatomic, strong) NSString *score_edit_time_fmt;
+@property (nonatomic, strong) NSString *updated_reputation_review;
 @property (nonatomic, strong) NSString *reviewee_score_status;
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *buyer_score;

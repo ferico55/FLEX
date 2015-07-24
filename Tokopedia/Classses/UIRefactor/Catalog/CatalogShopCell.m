@@ -47,6 +47,7 @@
 
 - (void)setShopRate:(NSInteger)valueStar
 {
+    valueStar = valueStar>0?:0;
     if(valueStar == 0) {
         for(int i=0;i<self.stars.count;i++) {
             UIImageView *tempImage = self.stars[i];

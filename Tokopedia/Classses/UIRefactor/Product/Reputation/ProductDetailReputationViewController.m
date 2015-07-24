@@ -30,6 +30,7 @@
 #import "TotalLikeDislike.h"
 #import "TotalLikeDislikePost.h"
 #import "TokopediaNetworkManager.h"
+#import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
 
 #define CStringLimitText @"Panjang pesan harus lebih besar dari 5 karakter"
@@ -314,18 +315,14 @@
 
 #pragma mark - Action
 - (void)goToShopView:(id)sender {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    
-    if(_detailReputaitonReview!=nil && _detailReputaitonReview.shop_name)
-        container.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputaitonReview.shop_id,
-                       kTKPDDETAIL_APISHOPNAMEKEY:_detailReputaitonReview.shop_name,
-                       kTKPD_AUTHKEY:auth?:[NSNull null]};
-    else
-        container.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputaitonReview==nil? _reviewList.review_shop_id:_detailReputaitonReview.shop_id,
-                           kTKPD_AUTHKEY:auth?:[NSNull null]};
-    
+    UserContainerViewController *container = [UserContainerViewController new];
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    NSDictionary *auth = [_userManager getUserLoginData];
+
+    container.data = @{
+                       @"user_id" : (_detailReputaitonReview==nil? _reviewList.review_user_id:_detailReputaitonReview.review_user_id),
+                       @"auth" : auth?:[NSNull null]
+                       };
     [self.navigationController pushViewController:container animated:YES];
 }
 
@@ -474,7 +471,7 @@
     cell.getBtnTryAgain.hidden = !(_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
     
     //Delete message
-    if(_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.canDelete:_reviewList.review_response.canDelete) {
+    if((_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.canDelete:_reviewList.review_response.canDelete) && _isMyProduct) {
         cell.getBtnHapus.hidden = NO;
     }
     else {
@@ -510,6 +507,9 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 
 #pragma mark - ProductReputation Delegate
@@ -553,9 +553,18 @@
             ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"1";
         }
         else {
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"0";
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like intValue] - 1)];
-            [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+            if([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"1"]) {
+                tagRequest = 0;
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"0";
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like intValue] - 1)];
+                [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+            }
+            else {
+                tagRequest = 1;
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"1";
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like intValue] + 1)];
+                [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
+            }
         }
 
         [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like forState:UIControlStateNormal];
@@ -598,9 +607,18 @@
             ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"2";
         }
         else {
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"0";
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike intValue] - 1)];
-            [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+            if([((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"2"]) {
+                tagRequest = 0;
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"0";
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike intValue] - 1)];
+                [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+            }
+            else {
+                tagRequest = 2;
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"2";
+                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike intValue] + 1)];
+                [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
+            }
         }
         
         [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like forState:UIControlStateNormal];
@@ -981,7 +999,7 @@
                      @"reputation_id":_detailReputaitonReview.reputation_id,
                      @"shop_id":_detailReputaitonReview.shop_id,
                      @"review_id":_detailReputaitonReview.review_id,
-                     @"product_id":_detailReputaitonReview.product_id
+                     @"product_id":_strProductID
                      };
         }
         else if(_reviewList != nil) {
