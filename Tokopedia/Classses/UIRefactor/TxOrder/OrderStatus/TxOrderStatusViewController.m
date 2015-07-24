@@ -1155,6 +1155,8 @@
         [nc setSelectedIndex:2];
         [nc setViewControllers:vcs];
         [self.navigationController pushViewController:nc animated:YES];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SHOW_RATING_ALERT object:nil];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {

@@ -209,6 +209,10 @@ typedef enum {
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
-
+#define kTKPD_SHOW_RATING_ALERT         @"tokopedia.kTKPD_CHECKING_USER_REVIEW"
+#define kTKPD_USER_REVIEW_DATA          @"tokopedia.kTKPD_USER_REVIEW_DATA"
+#define kTKPD_USER_REVIEW_IDS           @"tokopedia.kTKPD_USER_REVIEW_IDS"
+#define kTKPD_USER_REVIEW_DUE_DATE      @"tokopedia.kTKPD_USER_REVIEW_DUE_DATE"
+#define kTKPD_ITUNES_APP_URL            @"http://itunes.apple.com/app/id1001394201"
 
 #endif
