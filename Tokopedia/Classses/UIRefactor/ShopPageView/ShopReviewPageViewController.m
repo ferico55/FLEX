@@ -1111,6 +1111,8 @@ UIAlertViewDelegate>
 #pragma mark - Product Reputation Delegate
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription {
     NSString *strLihatSelengkapnya = @"Lihat Selengkapnya";
+    strDescription = [NSString convertHTML:strDescription];
+    
     if(strDescription.length > 100) {
         strDescription = [NSString stringWithFormat:@"%@... %@", [strDescription substringToIndex:100], strLihatSelengkapnya];
 

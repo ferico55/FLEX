@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Product/Reputation/DetailMyReviewReputationViewController.m"
-            timestampString = "459414544.023453"
+            timestampString = "459497906.456294"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "643"
-            endingLineNumber = "643"
+            startingLineNumber = "738"
+            endingLineNumber = "738"
             landmarkName = "-actionUbah:"
             landmarkType = "5">
          </BreakpointContent>
@@ -80,6 +80,22 @@
             startingLineNumber = "730"
             endingLineNumber = "730"
             landmarkName = "-gestureMoveToEtalase:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Product/Reputation/ProductDetailReputationViewController.m"
+            timestampString = "459492754.507537"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "342"
+            endingLineNumber = "342"
+            landmarkName = "-goToDetailProduct:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

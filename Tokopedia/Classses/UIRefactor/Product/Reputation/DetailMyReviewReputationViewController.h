@@ -20,6 +20,9 @@
 @property (nonatomic) int tag;
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription;
 - (void)reloadTable;
+- (void)successGiveReview;
+- (void)successGiveComment;
+- (void)successHapusComment;
 - (void)successInsertReputation:(NSString *)reputationID withState:(NSString *)emoticonState;
 - (void)failedInsertReputation:(NSString *)reputationID;
 - (void)doingActInsertReview:(NSString *)reputationID;

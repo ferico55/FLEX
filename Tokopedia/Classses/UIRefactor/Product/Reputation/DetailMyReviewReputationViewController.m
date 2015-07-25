@@ -24,9 +24,11 @@
 #import "ShopContainerViewController.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "SkipReview.h"
+#import "string_inbox_message.h"
 #import "String_Reputation.h"
 #import "SkipReviewResult.h"
 #import "TokopediaNetworkManager.h"
+#import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
 #import "WebViewController.h"
 
@@ -35,6 +37,7 @@
 #define CSkipReputationReview @"skip_reputation_review"
 #define CStringGagalLewatiReview @"Gagal lewati review"
 #define CStringSuccessLewatiReview @"Berhasil lewati review"
+#define CStringSemuaReviewDiLewati @"Semua review telah dilewati"
 #define CTagListReputationReview 1
 #define CTagSkipReputationReview 2
 
@@ -47,11 +50,14 @@
     NSMutableArray *arrList;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSString *strUriNext;
+    BOOL isRefreshing;
     int page, tempTagSkip;
+    float heightBtnFooter;
     NSMutableParagraphStyle *style;
     
     UIView *shadowBlockUI;
     UIActivityIndicatorView *activityIndicator;
+    UIRefreshControl *refreshControl;
     MyReviewReputationCell *myReviewReputationCell;
     DetailReputationReview *tempDetailReputationReview;
     LoadingView *loadingView;
@@ -82,7 +88,16 @@
     tableContent.dataSource = self;
     [tableContent reloadData];
     self.title = _detailMyInboxReputation.invoice_ref_num;
+    refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [tableContent addSubview:refreshControl];
+    
+    
+    if([_detailMyInboxReputation.role isEqualToString:@"1"])//1 is pembeli
+        _detailMyInboxReputation.updated_reputation_review = _detailMyInboxReputation.viewModel.updated_reputation_review = @"0";
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -159,7 +174,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    if(isRefreshing)
+        return;
     
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
     if(detailReputationReview.viewModel==nil || detailReputationReview.viewModel.review_message==nil || [detailReputationReview.viewModel.review_message isEqualToString:@"0"]) {
@@ -201,12 +217,39 @@
     [myReviewReputationCell setTopViewContentContraint:0];
     [myReviewReputationCell setBottomViewContentContraint:0];
     [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
-    [myReviewReputationCell.getBtnFooter removeFromSuperview];
+    myReviewReputationCell.getBtnFooter.userInteractionEnabled = NO;
+    myReviewReputationCell.getBtnFooter.hidden = YES;
+    [myReviewReputationCell.getBtnFooter setTitle:CStringSemuaReviewDiLewati forState:UIControlStateNormal];
+    heightBtnFooter = myReviewReputationCell.getConstHegithBtnFooter.constant;
+    myReviewReputationCell.getConstHegithBtnFooter.constant = 0;
     
     CGRect tempRect = myReviewReputationCell.contentView.frame;
-    tempRect.size.height -= (myReviewReputationCell.getBtnFooter.bounds.size.height+topConstraint+topConstraint);
+    tempRect.size.height -= (topConstraint+topConstraint+heightBtnFooter);
     myReviewReputationCell.contentView.frame = tempRect;
     tableContent.tableHeaderView = myReviewReputationCell.contentView;
+}
+
+- (void)setUIAllReviewNotSkipable {
+    if(! myReviewReputationCell.getBtnFooter.isHidden) {
+        myReviewReputationCell.getBtnFooter.hidden = YES;
+        myReviewReputationCell.getConstHegithBtnFooter.constant = 0;
+        
+        CGRect tempRect = myReviewReputationCell.contentView.frame;
+        tempRect.size.height -= heightBtnFooter;
+        myReviewReputationCell.contentView.frame = tempRect;
+        tableContent.tableHeaderView = myReviewReputationCell.contentView;
+    }
+}
+
+- (void)setUIAllReviewSkipable {
+    if(myReviewReputationCell.getBtnFooter.isHidden) {
+        myReviewReputationCell.getBtnFooter.hidden = NO;
+        myReviewReputationCell.getConstHegithBtnFooter.constant = heightBtnFooter;
+        CGRect tempRect = myReviewReputationCell.contentView.frame;
+        tempRect.size.height += heightBtnFooter;
+        myReviewReputationCell.contentView.frame = tempRect;
+        tableContent.tableHeaderView = myReviewReputationCell.contentView;
+    }
 }
 
 - (void)blockUI:(BOOL)block {
@@ -233,6 +276,41 @@
 }
 
 #pragma mark - Method
+- (void)successGiveReview {
+    [self reloadTable];
+    int n = [_detailMyInboxReputation.unassessed_reputation_review intValue];
+    n--;
+    
+    if(n < 0)
+        n = 0;
+    
+    _detailMyInboxReputation.unassessed_reputation_review = _detailMyInboxReputation.viewModel.unassessed_reputation_review = [NSString stringWithFormat:@"%d", n];
+}
+
+- (void)successGiveComment {
+    [self successGiveReview];
+}
+
+- (void)successHapusComment {
+    [self reloadTable];
+    int n = [_detailMyInboxReputation.unassessed_reputation_review intValue];
+    n++;
+    
+    if(n < 0)
+        n = 0;
+    
+    _detailMyInboxReputation.unassessed_reputation_review = _detailMyInboxReputation.viewModel.unassessed_reputation_review = [NSString stringWithFormat:@"%d", n];
+}
+
+- (void)refreshView:(id)sender {
+    page = 0;
+    strUriNext = @"";
+    [refreshControl endRefreshing];
+    
+    isRefreshing = YES;
+    [self pressRetryButton];
+}
+
 - (void)successInsertReputation:(NSString *)reputationID withState:(NSString *)emoticonState {
     if([_detailMyInboxReputation.reputation_id isEqualToString:reputationID]) {
         [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
@@ -289,7 +367,9 @@
     
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+    productDetailReputationViewController.strProductID = detailReputationReview.product_id;
     productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    detailReputationReview.review_user_label = [_detailMyInboxReputation.viewModel.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 
@@ -378,6 +458,7 @@
         [detailReputationMapping addAttributeMappingsFromArray:@[CShopID,
                                                                  CProductRatingPoint,
                                                                  CReviewIsSkipable,
+                                                                 CReviewIsSkiped,
                                                                  CProductStatus,
                                                                  CReviewFullName,
                                                                  CReviewMessage,
@@ -503,6 +584,7 @@
     if(tag == CTagListReputationReview) {
         MyReviewReputation *result = (MyReviewReputation *)stat;
         if(page == 0) {
+            isRefreshing = NO;
             arrList = [[NSMutableArray alloc] initWithArray:result.result.list];
         }
         else {
@@ -515,14 +597,14 @@
         
         //Check any data or not
         if(arrList.count == 0) {
-            if(noResultView == nil) {
-                noResultView = [NoResultView new];
-            }
-            
-            tableContent.tableFooterView = noResultView.view;
-        }
-        else
             [self loadMoreData:NO];
+            [self setUIAllReviewSkipable];
+        }
+        else {
+            if(page == 0)
+                [self setUIAllReviewNotSkipable];
+            [self loadMoreData:NO];
+        }
         if(tableContent.delegate == nil) {
             tableContent.delegate = self;
             tableContent.dataSource = self;
@@ -530,7 +612,7 @@
         [tableContent reloadData];
     }
     else if(tag == CTagSkipReputationReview) {
-        [self blockUI:NO];
+//        [self blockUI:NO];
         tempDetailReputationReview = nil;
         
         StickyAlertView *stickyAlertView;
@@ -570,10 +652,12 @@
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == CTagListReputationReview) {
+        if(page == 0)
+            isRefreshing = NO;
         tableContent.tableFooterView = [self getLoadView].view;
     }
     else if(tag == CTagSkipReputationReview) {
-        [self blockUI:NO];
+//        [self blockUI:NO];
         tempDetailReputationReview = nil;
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringGagalLewatiReview] delegate:self];
         [stickyAlertView show];
@@ -591,6 +675,8 @@
 #pragma mark - DetailMyReviewReputationCell Delegate
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription {
     NSString *strLihatSelengkapnya = @"Lihat Selengkapnya";
+    strDescription = [NSString convertHTML:strDescription];
+    
     if(strDescription.length > 100) {
         strDescription = [NSString stringWithFormat:@"%@... %@", [strDescription substringToIndex:100], strLihatSelengkapnya];
         
@@ -616,10 +702,16 @@
 
 - (void)actionBeriReview:(id)sender
 {
+    if(isRefreshing)
+        return;
+    
     [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
 }
 
 - (void)actionProduct:(id)sender {
+    if(isRefreshing)
+        return;
+    
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
     DetailReputationReview *detailReputationReview = arrList[((UIButton *) sender).tag];
@@ -630,8 +722,11 @@
 }
 
 - (void)actionUbah:(id)sender {
+    if(isRefreshing)
+        return;
+    
     if(((CustomBtnSkip *) sender).isLewati) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Apakah anda yakin melewati review ini?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Apakah anda yakin melewati review ini?" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
         alertView.tag = CTagSkipReputationReview;
         [alertView show];
         tempTagSkip = (int)((UIButton *) sender).tag;
@@ -653,6 +748,8 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
+    if(isRefreshing)
+        return;
     DetailReputationReview *detailReputationReview = arrList[label.tag];
     [self redirectToProductDetailReputationReview:detailReputationReview];
 }
@@ -667,7 +764,7 @@
             tempTagSkip = -1;
             [tokopediaNetworkManager requestCancel];
             [self loadMoreData:NO];
-            [self blockUI:YES];
+//            [self blockUI:YES];
             [[self getNetworkManager:CTagSkipReputationReview] doRequest];
         }
         else {
@@ -714,13 +811,29 @@
 }
 
 - (void)actionLabelUser:(id)sender {
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    
-    container.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailMyInboxReputation.shop_id,
-                       kTKPD_AUTHKEY:auth?:[NSNull null]};
-    [self.navigationController pushViewController:container animated:YES];
+    if([_detailMyInboxReputation.role isEqualToString:@"2"]) {//2 is seller
+        UserContainerViewController *container = [UserContainerViewController new];
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSDictionary *auth = [_userManager getUserLoginData];
+        
+        if(_detailMyInboxReputation.reviewee_uri!=nil && _detailMyInboxReputation.reviewee_uri.length>0) {
+            NSArray *arrUri = [_detailMyInboxReputation.reviewee_uri componentsSeparatedByString:@"/"];
+            container.data = @{
+                               @"user_id" : [arrUri lastObject],
+                               @"auth" : auth?:[NSNull null]
+                               };
+            [self.navigationController pushViewController:container animated:YES];
+        }
+    }
+    else {
+        ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *auth = [secureStorage keychainDictionary];
+        
+        container.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailMyInboxReputation.shop_id,
+                           kTKPD_AUTHKEY:auth?:[NSNull null]};
+        [self.navigationController pushViewController:container animated:YES];
+    }
 }
 
 - (void)actionFlagReview:(id)sender {

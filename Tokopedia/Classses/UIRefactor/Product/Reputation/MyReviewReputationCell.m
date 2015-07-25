@@ -15,6 +15,7 @@
 #define CFormatWaitYourComment @"%@ Produk menunggu komentar anda"
 #define CFormatUlasanIsEdit @"%@ Ulasan produk telah diperbaharui"
 #define CStringLihaReview @"Lihat Review"
+#define CFormatUlasanDiKomentari @"%@ Produk ulasan telah dikomentari"
 
 @implementation MyReviewReputationCell
 
@@ -78,6 +79,10 @@
 #pragma mark - Setter
 - (NSLayoutConstraint *)getTopViewContentConstraint {
     return constraintTopViewContent;
+}
+
+- (NSLayoutConstraint *)getConstHegithBtnFooter {
+    return constraintHeightBtnFooter;
 }
 
 - (void)setLeftViewContentContraint:(int)n {
@@ -171,8 +176,13 @@
     
     
     if(object.unassessed_reputation_review==nil || [object.unassessed_reputation_review isEqualToString:@"0"]) {
-        if(object.updated_reputation_review==nil || [object.updated_reputation_review isEqualToString:@"0"] || [object.role isEqualToString:@"1"])//1 is buyer
-            [btnFooter setTitle:CStringLihaReview forState:UIControlStateNormal];
+        if(object.updated_reputation_review==nil || [object.updated_reputation_review isEqualToString:@"0"] || [object.role isEqualToString:@"1"]) {//1 is buyer
+            if(object.updated_reputation_review!=nil && ![object.updated_reputation_review isEqualToString:@"0"]) {
+                [btnFooter setTitle:[NSString stringWithFormat:CFormatUlasanDiKomentari, object.updated_reputation_review] forState:UIControlStateNormal];
+            }
+            else
+                [btnFooter setTitle:CStringLihaReview forState:UIControlStateNormal];
+        }
         else
             [btnFooter setTitle:[NSString stringWithFormat:CFormatUlasanIsEdit, object.updated_reputation_review] forState:UIControlStateNormal];
     }

@@ -228,7 +228,8 @@
     [productReputationCell.getLabelUser setText:[UIColor colorWithRed:62/255.0f green:114/255.0f blue:9/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:14.0f]];
     
     //Set profile image
-    if((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && ![_detailReputaitonReview.review_message isEqualToString:@"0"]) || (_reviewList!=nil && _reviewList.review_message!=nil && ![_reviewList.review_message isEqualToString:@"0"])) {
+    NSString *strTempProductID = _detailReputaitonReview==nil? _reviewList.review_product_id : _detailReputaitonReview.product_id;
+    if(((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && ![_detailReputaitonReview.review_message isEqualToString:@"0"]) || (_reviewList!=nil && _reviewList.review_message!=nil && ![_reviewList.review_message isEqualToString:@"0"])) && (strTempProductID!=nil && ![strTempProductID isEqualToString:@""])) {
         [productReputationCell initProductCell];
         [productReputationCell setLabelProductName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name];
         [[productReputationCell getLabelProductName] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToDetailProduct:)]];
@@ -315,15 +316,26 @@
 
 #pragma mark - Action
 - (void)goToShopView:(id)sender {
-    UserContainerViewController *container = [UserContainerViewController new];
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    NSDictionary *auth = [_userManager getUserLoginData];
+    if([(_detailReputaitonReview!=nil?_detailReputaitonReview.review_user_label:_reviewList.review_user_label) caseInsensitiveCompare:CPembeli] == NSOrderedSame) {
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSDictionary *auth = [_userManager getUserLoginData];
 
-    container.data = @{
-                       @"user_id" : (_detailReputaitonReview==nil? _reviewList.review_user_id:_detailReputaitonReview.review_user_id),
-                       @"auth" : auth?:[NSNull null]
-                       };
-    [self.navigationController pushViewController:container animated:YES];
+        ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
+        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:(_detailReputaitonReview!=nil?_detailReputaitonReview.shop_id:_reviewList.review_shop_id),
+                                             kTKPD_AUTHKEY:auth?:@{}};
+        [self.navigationController pushViewController:shopContainerViewController animated:YES];
+    }
+    else {
+        UserContainerViewController *container = [UserContainerViewController new];
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSDictionary *auth = [_userManager getUserLoginData];
+
+        container.data = @{
+                           @"user_id" : (_detailReputaitonReview==nil? _reviewList.review_user_id:_detailReputaitonReview.review_user_id),
+                           @"auth" : auth?:[NSNull null]
+                           };
+        [self.navigationController pushViewController:container animated:YES];
+    }
 }
 
 - (void)goToDetailProduct:(id)sender {
@@ -456,6 +468,7 @@
     return height;
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ProductDetailReputationCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
@@ -463,8 +476,11 @@
         NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductDetailReputationCell" owner:nil options:0];
         cell = [tempArr objectAtIndex:0];
         cell.delegate = self;
-        [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:15.0f]];
+        cell.getViewLabelUser.userInteractionEnabled = YES;
+        [cell.getViewLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapCellLabelUser:)]];
     }
+    
+    cell.getViewLabelUser.tag = indexPath.row;
     cell.getTvDesc.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_message:_reviewList.review_response.response_message;
     cell.getLblDate.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_create_time:_reviewList.review_response.response_create_time;
     cell.getBtnTryAgain.tag = indexPath.row;
@@ -497,8 +513,8 @@
     }
     
     [cell setStar:nStar];
-    [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.full_name:_reviewList.review_product_owner.user_name];
-    [cell.getViewLabelUser setLabelBackground:(_detailReputaitonReview!=nil)?_detailReputaitonReview.review_user_label:_reviewList.review_user_label];
+    [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_product_owner.user_name];
+    [cell.getViewLabelUser setLabelBackground:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual];
     cell.getViewStar.tag = indexPath.row;
 
     [cell setNeedsUpdateConstraints];
@@ -514,6 +530,8 @@
 
 #pragma mark - ProductReputation Delegate
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription {
+    strDescription = [NSString convertHTML:strDescription];
+    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     
@@ -732,6 +750,29 @@
 
 
 #pragma mark - Method
+- (void)actionTapCellLabelUser:(UITapGestureRecognizer *)sender {
+    if([(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual caseInsensitiveCompare:CPembeli] == NSOrderedSame) {
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSDictionary *auth = [_userManager getUserLoginData];
+        
+        ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
+        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:(_detailReputaitonReview!=nil?_detailReputaitonReview.shop_id:_reviewList.review_shop_id),
+                                             kTKPD_AUTHKEY:auth?:@{}};
+        [self.navigationController pushViewController:shopContainerViewController animated:YES];
+    }
+    else {
+        UserContainerViewController *container = [UserContainerViewController new];
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSDictionary *auth = [_userManager getUserLoginData];
+        
+        container.data = @{
+                           @"user_id" : (_detailReputaitonReview==nil? _reviewList.review_user_id:_detailReputaitonReview.review_user_id),
+                           @"auth" : auth?:[NSNull null]
+                           };
+        [self.navigationController pushViewController:container animated:YES];
+    }
+}
+
 - (void)configureRestKitLikeDislike:(RKObjectManager *)objectManager {
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[LikeDislikePost class]];
@@ -970,7 +1011,8 @@
 #pragma mark - ProductDetailReputation Delegate
 - (void)actionTapStar:(UIView *)sender
 {
-    NSString *strText = @"1,000,100 Like";
+    NSString *strNReputation = _detailReputaitonReview==nil? @"0":_detailReputaitonReview.product_owner.shop_reputation_score;
+    NSString *strText = [NSString stringWithFormat:@"%@ Like", strNReputation];
     [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
 }
 
@@ -1173,7 +1215,7 @@
             //Reload data in DetailMyReviewReputationViewController
             UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
             if([viewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-                [((DetailMyReviewReputationViewController *) viewController) reloadTable];
+                [((DetailMyReviewReputationViewController *) viewController) successGiveComment];
             }
             else if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
                 viewController = [((ShopContainerViewController *) viewController) getActiveViewController];
@@ -1228,7 +1270,7 @@
             //Reload data in DetailMyReviewReputationViewController
             UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
             if([viewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-                [((DetailMyReviewReputationViewController *) viewController) reloadTable];
+                [((DetailMyReviewReputationViewController *) viewController) successHapusComment];
             }
             else if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
                 viewController = [((ShopContainerViewController *) viewController) getActiveViewController];

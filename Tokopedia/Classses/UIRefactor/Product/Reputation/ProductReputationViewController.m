@@ -219,21 +219,27 @@
     lblTotal4Rate.text = [NSString stringWithFormat:@"(%d)", nRate4];
     lblTotal5Rate.text = [NSString stringWithFormat:@"(%d)", nRate5];
     
+    
+    
     //Calculate widht total rate
-    UILabel *tempLabel = [UILabel new];
-    tempLabel.text = lblTotal1Rate.text;
-    tempLabel.font = lblTotal1Rate.font;
-    tempLabel.textColor = lblTotal1Rate.textColor;
-    tempLabel.numberOfLines = 0;
-    CGSize tempSize = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)];
-    constWidthLblRate1.constant = constWidthLblRate2.constant = constWidthLblRate3.constant = constWidthLblRate4.constant = constWidthLblRate5.constant = tempSize.width;
+    float width1 = [lblTotal1Rate sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)].width;
+    float width2 = [lblTotal2Rate sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)].width;
+    float width3 = [lblTotal3Rate sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)].width;
+    float width4 = [lblTotal4Rate sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)].width;
+    float width5 = [lblTotal5Rate sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)].width;
+    
+    width1 = width1>width2? width1: width2;
+    width1 = width1>width3? width1: width3;
+    width1 = width1>width4? width1: width4;
+    width1 = width1>width5? width1: width5;
+    constWidthLblRate1.constant = constWidthLblRate2.constant = constWidthLblRate3.constant = constWidthLblRate4.constant = constWidthLblRate5.constant = width1;
     
     
     
     //Set header rate
     for(int i=0;i<arrImageHeaderRating.count;i++) {
         UIImageView *tempImageView = arrImageHeaderRating[i];
-        tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<3)?@"icon_star_active":@"icon_star" ofType:@"png"]];
+        tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<ceilf([review.result.advance_review.product_rating_point floatValue]))?@"icon_star_active":@"icon_star" ofType:@"png"]];
     }
     
     lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f Out of %d", [review.result.advance_review.product_rating_point floatValue], 5];
@@ -307,6 +313,10 @@
     }
     
     
+    //Cek my product or not
+//    cell.getBtnMore.hidden = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+
+    
     //Set Image
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailReputationReview.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [cell.getImageProfile setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_profile_picture" ofType:@"jpeg"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -353,14 +363,14 @@
     [cell setPercentage:detailReputationReview.review_user_reputation.positive_percentage];
     [cell setLabelDate:detailReputationReview.review_create_time];
     [cell setDescription:detailReputationReview.review_message];
-    [cell setImageKualitas:[detailReputationReview.review_rate_service intValue]];
+    [cell setImageKualitas:[detailReputationReview.review_rate_product intValue]];
     [cell setImageAkurasi:[detailReputationReview.review_rate_accuracy intValue]];
     
     return cell;
 }
 
 - (void)mappingAttribute:(DetailReputationReview *)reputationReview {
-    reputationReview.product_rating_point = reputationReview.review_rate_service;
+    reputationReview.product_rating_point = reputationReview.review_rate_product;
     reputationReview.product_accuracy_point = reputationReview.review_rate_accuracy;
     reputationReview.review_full_name = reputationReview.review_user_name;
     
@@ -878,6 +888,8 @@
 #pragma mark - ProductReputation Delegate
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription {
     NSString *strLihatSelengkapnya = @"Lihat Selengkapnya";
+    
+    strDescription = [NSString convertHTML:strDescription];
     if(strDescription.length > 100) {
         strDescription = [NSString stringWithFormat:@"%@... %@", [strDescription substringToIndex:100], strLihatSelengkapnya];
         
@@ -1199,6 +1211,7 @@
                                                                 CUserLabel:CUserLabel,
                                                                 CuserID:CuserID,
                                                                 CUserImage:CUserImg,
+                                                                CUserName:CFullName,
                                                                 CFullName:CUserName}];
         
 

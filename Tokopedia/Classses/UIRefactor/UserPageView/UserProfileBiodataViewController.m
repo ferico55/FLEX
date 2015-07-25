@@ -146,9 +146,9 @@
 {
     if (!_isnodatashop) {
         if(isNotMyBiodata)
-            return 2;
+            return _profile.result.shop_info==nil?1:2;
         else
-            return 3;
+            return _profile.result.shop_info==nil?2:3;
     }
     else return 0;
 }

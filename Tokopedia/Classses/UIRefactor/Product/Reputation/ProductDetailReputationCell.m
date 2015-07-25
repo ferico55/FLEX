@@ -60,7 +60,7 @@
 
 #pragma mark - Method 
 - (void)setStar:(int)valueStar {
-    valueStar = valueStar>0?:0;
+    valueStar = valueStar>0?valueStar:0;
     if(valueStar == 0) {
         for(int i=0;i<arrImageView.count;i++) {
             UIImageView *tempImage = arrImageView[i];

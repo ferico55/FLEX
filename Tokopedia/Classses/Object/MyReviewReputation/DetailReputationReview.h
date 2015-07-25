@@ -17,6 +17,7 @@
 #define CReviewRateAccuracyDesc @"review_rate_accuracy_desc"
 #define CProductRatingPoint @"product_rating_point"
 #define CReviewIsSkipable @"review_is_skipable"
+#define CReviewIsSkiped @"review_is_skipped"
 #define CProductStatus @"product_status"
 #define CReviewFullName @"review_full_name"
 #define CReviewMessage @"review_message"
@@ -65,6 +66,7 @@
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *product_rating_point;
 @property (nonatomic, strong) NSString *review_is_skipable;
+@property (nonatomic, strong) NSString *review_is_skipped;
 @property (nonatomic, strong) NSString *product_status;
 @property (nonatomic, strong) NSString *review_full_name;
 @property (nonatomic, strong) NSString *review_message;

@@ -415,7 +415,7 @@
 #pragma mark - Methods
 - (void)generateMedal {
     int valueStar = _shop.result.stats.shop_reputation_score==nil||[_shop.result.stats.shop_reputation_score isEqualToString:@""]?0:[_shop.result.stats.shop_reputation_score intValue];
-    valueStar = valueStar>0?:0;
+    valueStar = valueStar>0?valueStar:0;
     if(valueStar == 0) {
         imageReputasi.image = [DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal" ofType:@"png"]] withCount:1];
         

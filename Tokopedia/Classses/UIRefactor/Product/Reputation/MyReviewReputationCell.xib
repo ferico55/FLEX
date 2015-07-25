@@ -135,6 +135,7 @@
                 <outlet property="btnFooter" destination="6lh-6l-5wb" id="eiD-TA-EAd"/>
                 <outlet property="btnInvoice" destination="Rn9-8e-ZGs" id="s7d-qg-nuI"/>
                 <outlet property="btnReview" destination="Orb-U7-fkv" id="Olq-1e-WLQ"/>
+                <outlet property="constraintHeightBtnFooter" destination="qA0-wk-ufF" id="w3y-qi-s8y"/>
                 <outlet property="constraintLeftViewContent" destination="ewN-Dc-8AF" id="bVJ-o1-XzL"/>
                 <outlet property="constraintRightViewContent" destination="Lsi-gr-Onb" id="Tke-Tl-Hbr"/>
                 <outlet property="constraintTopViewContent" destination="Hqu-5m-OZA" id="0FL-ka-qMK"/>

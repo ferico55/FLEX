@@ -65,7 +65,7 @@
 
 - (void)generateMedal:(NSString *)value {
     int valueStar = value==nil||[value isEqualToString:@""]?0:[value intValue];
-    valueStar = valueStar>0?:0;
+    valueStar = valueStar>0?valueStar:0;
     if(valueStar == 0) {
         [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
     }

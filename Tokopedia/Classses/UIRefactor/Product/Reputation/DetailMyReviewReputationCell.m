@@ -9,6 +9,7 @@
 #import "DetailMyReviewReputationCell.h"
 #define CStringKomentar @"Komentar"
 #define CStringPembeliBelumBeriUlasan @"Pembeli belum memberikan ulasan"
+#define CStringPembeliLewatiUlasan @"Pembeli telah melewati ulasan"
 
 @implementation CustomBtnSkip : UIButton
 @synthesize isLewati, isLapor;
@@ -95,7 +96,13 @@
 }
 
 - (void)setView:(DetailReviewReputaionViewModel *)viewModel {
-    if(viewModel==nil || viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) {
+    lblDate.text = @"";
+    
+    if([viewModel.review_is_skipped isEqualToString:@"1"]) {
+        if([_strRole isEqualToString:@"2"])
+            lblDate.text = CStringPembeliLewatiUlasan;
+    }
+    else if(viewModel==nil || viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) {
         if([_strRole isEqualToString:@"2"]) {
             lblDate.text = CStringPembeliBelumBeriUlasan;
         }

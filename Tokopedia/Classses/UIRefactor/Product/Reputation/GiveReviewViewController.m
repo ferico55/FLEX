@@ -341,7 +341,7 @@
             _detailReputationView.viewModel.review_message = _detailReputationView.review_message = [txtDes.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             _detailReputationView.viewModel.product_rating_point = _detailReputationView.product_rating_point = [NSString stringWithFormat:@"%d", nRateKualitas];
             _detailReputationView.viewModel.product_accuracy_point = _detailReputationView.product_accuracy_point = [NSString stringWithFormat:@"%d", nRateAkurasi];
-            [_delegate reloadTable];
+            [_delegate successGiveReview];
             [self.navigationController popViewControllerAnimated:YES];
         }
         else {

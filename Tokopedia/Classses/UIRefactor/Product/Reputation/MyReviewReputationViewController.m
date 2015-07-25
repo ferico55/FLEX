@@ -20,6 +20,7 @@
 #import "String_Reputation.h"
 #import "ShopContainerViewController.h"
 #import "TokopediaNetworkManager.h"
+#import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
 #import "WebViewController.h"
 #define CFailedGetData @"Process ambil data gagal"
@@ -363,12 +364,12 @@
     }
     else if(tag == CTagInsertReputation) {
         if([((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).role isEqualToString:@"2"]) {//Seller
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score = emoticonState;
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.seller_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score;
-        }
-        else {
             ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score = emoticonState;
             ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.buyer_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score;
+        }
+        else {
+            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score = emoticonState;
+            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.seller_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score;
         }
         
         //Update ui detail reputation
@@ -477,13 +478,30 @@
 - (void)actionLabelUser:(id)sender {
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[((ViewLabelUser *) ((UITapGestureRecognizer *) sender).view).tag];
-        ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary *auth = [secureStorage keychainDictionary];
         
-        container.data = @{kTKPDDETAIL_APISHOPIDKEY:tempObj.shop_id,
-                           kTKPD_AUTHKEY:auth?:[NSNull null]};
-        [self.navigationController pushViewController:container animated:YES];
+        if([tempObj.role isEqualToString:@"2"]) {//2 is seller
+            UserContainerViewController *container = [UserContainerViewController new];
+            UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+            NSDictionary *auth = [_userManager getUserLoginData];
+            
+            if(tempObj.reviewee_uri!=nil && tempObj.reviewee_uri.length>0) {
+                NSArray *arrUri = [tempObj.reviewee_uri componentsSeparatedByString:@"/"];
+                container.data = @{
+                                   @"user_id" : [arrUri lastObject],
+                                   @"auth" : auth?:[NSNull null]
+                                   };
+                [self.navigationController pushViewController:container animated:YES];
+            }
+        }
+        else {
+            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+            NSDictionary *auth = [secureStorage keychainDictionary];
+            
+            container.data = @{kTKPDDETAIL_APISHOPIDKEY:tempObj.shop_id,
+                               kTKPD_AUTHKEY:auth?:[NSNull null]};
+            [self.navigationController pushViewController:container animated:YES];
+        }
     }
 }
 
@@ -530,7 +548,7 @@
     UIAlertView *alertView;
     if([self anyScore:object.seller_score] && [self anyScore:object.buyer_score]) {
         NSString *strRespond = @"Tidak Puas";
-        NSString *score = ([object.role isEqualToString:@"2"]? object.buyer_score:object.seller_score);
+        NSString *score = ([object.role isEqualToString:@"2"]? object.seller_score:object.buyer_score);
         
         if(score!=nil && ![score isEqualToString:@""]) {
             if([score isEqualToString:CRevieweeScroreNetral]) {
