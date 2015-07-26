@@ -107,13 +107,8 @@
     _profileImage = [UIImageView circleimageview:_profileImage];
     
     //Set icon rate
-    CGRect rect = CGRectMake(0, 0, 30, 30);
-    UIGraphicsBeginImageContext(rect.size);
-    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] drawInRect:rect];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
     btnRate.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [btnRate setImage:image forState:UIControlStateNormal];
+    [btnRate setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning

@@ -15,6 +15,7 @@
 #import "string_home.h"
 #import "InboxMessageCell.h"
 #import "InboxMessageDetailViewController.h"
+#import "ReputationDetail.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "UserAuthentificationManager.h"
 #import "EncodeDecoderManager.h"
@@ -338,7 +339,7 @@ typedef enum TagRequest {
             ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
             ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
             ((InboxMessageCell*)cell).indexpath = indexPath;
-            
+            [((InboxMessageCell*)cell).btnReputasi setTitle:list.user_reputation.positive_percentage forState:UIControlStateNormal];
             
             //Set user label
 //            if([list.user_label isEqualToString:CPenjual]) {
@@ -955,6 +956,15 @@ typedef enum TagRequest {
                                                      KTKPDMESSAGE_USER_LABEL,
                                                      KTKPDMESSAGE_USER_LABEL_ID
                                                      ]];
+        
+        
+        RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+        [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                     CNegative,
+                                                                     CNeutral,
+                                                                     CPositif]];
+        RKRelationshipMapping *userReputationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:reviewUserReputationMapping];
+        [listMapping addPropertyMapping:userReputationRel];
         
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];

@@ -535,7 +535,7 @@ UIAlertViewDelegate
                 // got to talk page
                 ProductTalkViewController *vc = [ProductTalkViewController new];
                 NSArray *images = _product.result.product_images;
-                ProductImages *image = images[0];
+                ProductImages *image = images.count>0? images[0]:nil;
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
@@ -547,7 +547,8 @@ UIAlertViewDelegate
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
                 [data setObject:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null] forKey:kTKPD_AUTHKEY];
-                [data setObject:image.image_src forKey:@"talk_product_image"];
+                [data setObject:image.image_src==nil?@"":image.image_src forKey:@"talk_product_image"];
+
                 vc.data = data;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;

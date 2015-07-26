@@ -500,6 +500,10 @@
         _buttonsDividers.hidden = YES;
     }
     
+    if([data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]) {
+        [btnReputation setTitle:[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE] forState:UIControlStateNormal];
+    }
+    
     
     NSURLRequest* requestUserImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [_talkuserimage setImageWithURLRequest:requestUserImage placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {

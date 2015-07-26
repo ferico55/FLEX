@@ -17,7 +17,9 @@
 @end
 
 @interface ResolutionCenterDetailViewController : UIViewController
-
+{
+    IBOutlet UIButton *btnReputation;
+}
 
 
 @property (nonatomic, weak) IBOutlet id<ResolutionCenterDetailViewControllerDelegate> delegate;

@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#define CTalkUserReputation @"talk_user_reputation"
+@class ReputationDetail;
 @interface TalkList : NSObject
 
 // shop
@@ -31,6 +32,7 @@
 @property (nonatomic, strong) NSString *talk_total_comment;
 @property (nonatomic, strong) NSString *talk_shop_id;
 @property (nonatomic) BOOL disable_comment;
+@property (nonatomic, strong) ReputationDetail *talk_user_reputation;
 
 
 //user label

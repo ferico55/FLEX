@@ -21,6 +21,7 @@
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "detail.h"
+#import "ReputationDetail.h"
 
 #import "URLCacheController.h"
 #import "NoResultView.h"
@@ -264,7 +265,7 @@
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
-            
+            [((GeneralTalkCell*)cell).btnReputation setTitle:list.talk_user_reputation.positive_percentage forState:UIControlStateNormal];
             
             //Set user label
 //            if([list.talk_user_label isEqualToString:CPenjual]) {
@@ -404,10 +405,19 @@
                                                  TKPD_TALK_USER_LABEL_ID
                                                  ]];
     
+    
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNegative,
+                                                                 CNeutral,
+                                                                 CPositif]];
+    
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     // Relationship Mapping
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:reviewUserReputationMapping]];
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
@@ -491,6 +501,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         _isNeedToInsertCache = YES;
        
@@ -625,7 +636,8 @@
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
                 TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
                 TKPD_TALK_PRODUCT_STATUS:list.talk_product_status,
-                TKPD_TALK_USER_LABEL:list.talk_user_label
+                TKPD_TALK_USER_LABEL:list.talk_user_label,
+                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation.positive_percentage
                 };
     
 //    DetailProductViewController *vc = [DetailProductViewController new];

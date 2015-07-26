@@ -34,6 +34,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *markAttachmentLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *buyerProfileImageView;
 @property (weak, nonatomic) IBOutlet UIView *photosView;
+@property (weak, nonatomic) IBOutlet UIButton *btnReputation;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *borders;
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *attachmentImages;

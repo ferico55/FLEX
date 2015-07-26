@@ -5,6 +5,8 @@
 //  Created by IT Tkpd on 2/26/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "CMPopTipView.h"
+#import "DetailProductViewController.h"
 #import "string_inbox_message.h"
 #import "NavigateViewController.h"
 
@@ -18,10 +20,12 @@
 
 #import "GeneralTableViewController.h"
 
+#import "ReputationDetail.h"
 #import "ResolutionAction.h"
 
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "ShopReputation.h"
 
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
@@ -41,6 +45,7 @@
     ResolutionCenterDetailViewControllerDelegate,
     InboxResolutionCenterComplainCellDelegate,
     LoadingViewDelegate,
+    CMPopTipViewDelegate,
     TokopediaNetworkManagerDelegate>
 {
     NavigateViewController *_navigate;
@@ -52,7 +57,8 @@
     NSOperationQueue *_operationQueue;
     
     NSMutableDictionary *_dataInput;
-    
+
+    CMPopTipView *cmPopTitpView;
     InboxResolutionCenterObjectMapping *_mapping;
     
     __weak RKObjectManager *_objectManager;
@@ -244,6 +250,10 @@
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
     cell.viewLabelUser.text = _isMyComplain?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
     
+    //Set reputation score
+    cell.btnReputation.tag = indexPath.row;
+    [self generateMedal:resolution.resolution_shop.shop_reputation.reputation_score withButton:cell.btnReputation];
+    
     //Set user label
 //    if([resolution.resolution_by.user_label isEqualToString:CPenjual]) {
 //        [cell.viewLabelUser setColor:CTagPenjual];
@@ -415,7 +425,86 @@
     }
 }
 
+#pragma mark - Method
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+- (void)generateMedal:(NSString *)reputationScore withButton:(UIButton *)btnReputasi {
+    int valueStar = reputationScore==nil||[reputationScore isEqualToString:@""]?0:[reputationScore intValue];
+    valueStar = valueStar>0?valueStar:0;
+    if(valueStar == 0) {
+        [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
+    }
+    else {
+        ///Set medal image
+        int n = 0;
+        if(valueStar<10 || (valueStar>250 && valueStar<=500) || (valueStar>10000 && valueStar<=20000) || (valueStar>500000 && valueStar<=1000000)) {
+            n = 1;
+        }
+        else if((valueStar>10 && valueStar<=40) || (valueStar>500 && valueStar<=1000) || (valueStar>20000 && valueStar<=50000) || (valueStar>1000000 && valueStar<=2000000)) {
+            n = 2;
+        }
+        else if((valueStar>40 && valueStar<=90) || (valueStar>1000 && valueStar<=2000) || (valueStar>50000 && valueStar<=100000) || (valueStar>2000000 && valueStar<=5000000)) {
+            n = 3;
+        }
+        else if((valueStar>90 && valueStar<=150) || (valueStar>2000 && valueStar<=5000) || (valueStar>100000 && valueStar<=200000) || (valueStar>5000000 && valueStar<=10000000)) {
+            n = 4;
+        }
+        else if((valueStar>150 && valueStar<=250) || (valueStar>5000 && valueStar<=10000) || (valueStar>200000 && valueStar<=500000) || valueStar>10000000) {
+            n = 4;
+        }
+        
+        //Check image medal
+        if(valueStar <= 250) {
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_bronze" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else if(valueStar <= 10000) {
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else if(valueStar <= 500000) {
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_gold" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else {
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_diamond_one" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+    }
+}
+
+
 #pragma mark - Cell Delegate
+- (void)actionReputation:(id)sender {
+    ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[((UIView *) sender).tag]).resolution_detail;
+    
+    if(resolution.resolution_shop.shop_reputation.tooltip!=nil && resolution.resolution_shop.shop_reputation.tooltip.length>0)
+        [self initPopUp:resolution.resolution_shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+}
 
 -(void)refreshRequest
 {
@@ -703,6 +792,25 @@
     RKObjectMapping *resolutionCustomerMapping = [_mapping resolutionCustomerMapping];
     RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
     
+    
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNegative,
+                                                                 CNeutral,
+                                                                 CPositif]];
+    
+    
+    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
+    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
+                                                           CReputationBadge,
+                                                           CReputationScore,
+                                                           CScore,
+                                                           CMinBadgeScore]];
+
+    [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
+    [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
+    
+    
     RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                    toKeyPath:kTKPD_APIRESULTKEY
                                                                                  withMapping:resultMapping];
@@ -819,4 +927,16 @@
 }
 
 
+#pragma mark - CMPopTipView Delegate
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
 @end

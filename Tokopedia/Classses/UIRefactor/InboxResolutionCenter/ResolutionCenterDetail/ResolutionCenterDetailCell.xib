@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -49,18 +50,20 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4xe-3J-8jl">
-                                <rect key="frame" x="62" y="13" width="140" height="21"/>
+                                <rect key="frame" x="62" y="7" width="140" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="4Lz-bS-LVh"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="3hY-NH-3J0"/>
+                                    <constraint firstAttribute="height" constant="20" id="4Lz-bS-LVh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                 <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kf3-Hr-fSO">
-                                <rect key="frame" x="62" y="34" width="140" height="17"/>
+                                <rect key="frame" x="62" y="27" width="140" height="13"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="dyj-dR-2ZK"/>
+                                    <constraint firstAttribute="height" constant="13" id="dyj-dR-2ZK"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="rRU-UV-odc"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -84,14 +87,26 @@
                                     <constraint firstAttribute="height" constant="1" id="U5N-LV-WYQ"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n2s-b9-j3X">
+                                <rect key="frame" x="62" y="40" width="140" height="14"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <inset key="titleEdgeInsets" minX="2" minY="3" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="0" image="icon_smile_small.png">
+                                    <color key="titleColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="nWc-fE-O2J" firstAttribute="leading" secondItem="n2s-b9-j3X" secondAttribute="trailing" constant="8" id="00A-Qr-kPa"/>
                             <constraint firstItem="Wbg-nK-3fN" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" id="0LE-zM-YVX"/>
-                            <constraint firstItem="Kf3-Hr-fSO" firstAttribute="top" secondItem="4xe-3J-8jl" secondAttribute="bottom" id="4XG-5R-pN9"/>
+                            <constraint firstItem="Kf3-Hr-fSO" firstAttribute="top" secondItem="4xe-3J-8jl" secondAttribute="bottom" id="8Lu-TG-JdL"/>
+                            <constraint firstItem="n2s-b9-j3X" firstAttribute="top" secondItem="Kf3-Hr-fSO" secondAttribute="bottom" id="9xh-T0-inc"/>
                             <constraint firstItem="Wbg-nK-3fN" firstAttribute="top" secondItem="ul6-rf-nr2" secondAttribute="bottom" constant="8" id="AM2-6y-Gsq"/>
                             <constraint firstAttribute="bottom" secondItem="Wbg-nK-3fN" secondAttribute="bottom" id="ChO-dZ-KGY"/>
+                            <constraint firstItem="n2s-b9-j3X" firstAttribute="leading" secondItem="ul6-rf-nr2" secondAttribute="trailing" constant="8" id="INe-r0-miY"/>
                             <constraint firstItem="ul6-rf-nr2" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" constant="10" id="J44-E2-OtT"/>
                             <constraint firstItem="ul6-rf-nr2" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="8" id="P3J-iN-FHu"/>
                             <constraint firstItem="aiL-Ab-rOE" firstAttribute="top" secondItem="HU8-BV-kCh" secondAttribute="top" id="Rym-aq-boC"/>
@@ -102,7 +117,7 @@
                             <constraint firstItem="Kf3-Hr-fSO" firstAttribute="leading" secondItem="ul6-rf-nr2" secondAttribute="trailing" constant="8" id="foY-5w-abV"/>
                             <constraint firstItem="nWc-fE-O2J" firstAttribute="leading" secondItem="4xe-3J-8jl" secondAttribute="trailing" constant="8" id="lbJ-w1-toV"/>
                             <constraint firstAttribute="trailing" secondItem="aiL-Ab-rOE" secondAttribute="trailing" id="oJR-MX-ZHp"/>
-                            <constraint firstItem="4xe-3J-8jl" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="12" id="uly-GD-pMc"/>
+                            <constraint firstItem="4xe-3J-8jl" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="6" id="uly-GD-pMc"/>
                             <constraint firstAttribute="trailing" secondItem="Wbg-nK-3fN" secondAttribute="trailing" id="w5S-Fa-0Kp"/>
                             <constraint firstItem="Wbg-nK-3fN" firstAttribute="top" secondItem="nWc-fE-O2J" secondAttribute="bottom" constant="20" id="xLs-kz-mgy"/>
                             <constraint firstItem="aiL-Ab-rOE" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" id="xbi-UP-eld"/>
@@ -356,6 +371,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="atachmentView" destination="RCZ-ET-Qtj" id="xfe-KM-yoC"/>
+                <outlet property="btnReputation" destination="n2s-b9-j3X" id="LDm-wh-0EL"/>
                 <outlet property="buyerNameLabel" destination="4xe-3J-8jl" id="64J-ps-Bem"/>
                 <outlet property="buyerProfileImageView" destination="ul6-rf-nr2" id="kDH-tQ-H3f"/>
                 <outlet property="buyerSellerLabel" destination="nWc-fE-O2J" id="K70-bR-dZD"/>
@@ -574,6 +590,7 @@
     <resources>
         <image name="icon_edit_grey.png" width="14" height="14"/>
         <image name="icon_profile_picture.jpeg" width="200" height="200"/>
+        <image name="icon_smile_small.png" width="14" height="14"/>
         <image name="icon_track_grey.png" width="14" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

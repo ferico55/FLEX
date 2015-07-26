@@ -16,6 +16,7 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		854F7E6F1B64D95200950EBB /* ShopReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 854F7E6E1B64D95200950EBB /* ShopReputation.m */; };
 		85631CA41B622D7900B5D6CC /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 856312601B622D6E00B5D6CC /* URLCacheAlert.m */; };
 		85631CA51B622D7900B5D6CC /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 856312621B622D6E00B5D6CC /* URLCacheConnection.m */; };
 		85631CA61B622D7900B5D6CC /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 856312641B622D6E00B5D6CC /* URLCacheController.m */; };
@@ -1648,6 +1649,8 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		854F7E6D1B64D95200950EBB /* ShopReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopReputation.h; sourceTree = "<group>"; };
+		854F7E6E1B64D95200950EBB /* ShopReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopReputation.m; sourceTree = "<group>"; };
 		8563125F1B622D6E00B5D6CC /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		856312601B622D6E00B5D6CC /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		856312611B622D6E00B5D6CC /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -5133,6 +5136,8 @@
 				856314821B622D7000B5D6CC /* ReputationList.m */,
 				856314831B622D7000B5D6CC /* ReputationResult.h */,
 				856314841B622D7000B5D6CC /* ReputationResult.m */,
+				854F7E6D1B64D95200950EBB /* ShopReputation.h */,
+				854F7E6E1B64D95200950EBB /* ShopReputation.m */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -10163,6 +10168,7 @@
 				8563205F1B622D7900B5D6CC /* TransactionPaymenViewController.m in Sources */,
 				85631DD51B622D7900B5D6CC /* SettingPayment.m in Sources */,
 				8563202A1B622D7900B5D6CC /* ShopProductPageViewController.m in Sources */,
+				854F7E6F1B64D95200950EBB /* ShopReputation.m in Sources */,
 				85631DA21B622D7900B5D6CC /* OrderLast.m in Sources */,
 				856320101B622D7900B5D6CC /* ShopInfoAddressView.m in Sources */,
 				856320531B622D7900B5D6CC /* TransactionCartEditViewController.m in Sources */,

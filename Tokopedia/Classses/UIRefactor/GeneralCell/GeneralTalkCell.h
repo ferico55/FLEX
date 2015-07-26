@@ -44,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UIButton *commentbutton;
+@property (weak, nonatomic) IBOutlet UIButton *btnReputation;
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UIView *middleView;
 @property (weak, nonatomic) IBOutlet UIView *topView;
