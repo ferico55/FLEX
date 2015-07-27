@@ -1116,7 +1116,13 @@
 {
     NSDictionary *dict = [_orderInProcess objectForKey:orderId];
     if (dict) {
-        NSArray *messages = errorMessages?:@[@"Proses transaksi gagal."];
+        NSArray *messages;
+        if ([errorMessages isKindOfClass:[NSArray class]]) {
+            messages = messages?:@[@"Proses transaksi gagal."];
+        } else {
+            messages = @[@"Proses transaksi gagal."];
+        }
+        
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
         [alert show];
 
