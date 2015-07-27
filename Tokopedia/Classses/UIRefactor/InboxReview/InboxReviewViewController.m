@@ -90,6 +90,8 @@
     NSString *_inboxReviewBaseUrl;
     NSString *_inboxReviewPostUrl;
     NSString *_inboxReviewFullUrl;
+    
+    NSIndexPath *_selectedDetailIndexPath;
 }
 
 #pragma mark - Initialization
@@ -168,7 +170,8 @@
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
     _reviews = [NSMutableArray new];
     _reviewPage = 1;
@@ -217,7 +220,6 @@
             [self loadData];
         }
     }
-   
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -248,6 +250,7 @@
             
             ((GeneralReviewCell*)cell).timelabel.text = [list.review_create_time isEqualToString:@"0"] ? @"" : list.review_create_time;
             ((GeneralReviewCell*)cell).data = list;
+            ((GeneralReviewCell*)cell).detailVC = _detailViewController;
             
 //            ((GeneralReviewCell*)cell).contentReview.layer.borderColor = [UIColor lightGrayColor].CGColor;
 //            ((GeneralReviewCell*)cell).contentReview.layer.borderWidth = 1.0f;
@@ -493,7 +496,7 @@
     //TODO::change this param later
     NSDictionary* param = @{
                             ACTION_API_KEY:GET_INBOX_REVIEW,
-                            NAV_API_KEY : [_data objectForKey:@"nav"],
+                            NAV_API_KEY : [_data objectForKey:@"nav"]?:@"",
                             LIMIT_API_KEY:INBOX_REVIEW_LIMIT_VALUE,
                             PAGE_API_KEY:@(_reviewPage),
                             FILTER_API_KEY:_readStatus?_readStatus:@"",
@@ -604,6 +607,12 @@
         }
         
         if(_reviews.count > 0) {
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _reviewPage<=1) {
+                NSInteger row = _selectedDetailIndexPath.row?:0;
+                InboxReviewList *list = _reviews[row];
+                [_detailViewController replaceDataSelected:list];
+            }
+            
             _isNoData = NO;
             _uriNextPage =  reviewObject.result.paging.uri_next;
             NSURL *url = [NSURL URLWithString:_uriNextPage];
@@ -629,6 +638,7 @@
             _isNoData = YES;
             _reviewTable.tableFooterView = _noResult;
         }
+
     }
 }
 
@@ -706,21 +716,29 @@
 }
 
 -(void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    DetailReviewViewController *vc = [DetailReviewViewController new];
-    NSInteger row = indexpath.row;
+    _selectedDetailIndexPath = indexpath;
     
+    NSInteger row = indexpath.row;
     InboxReviewList *list = _reviews[row];
     list.review_read_status = @"2";
-    [_reviewTable reloadData];
     
-    vc.data = list;
-    vc.is_owner = list.review_is_owner;
-    vc.indexPath = indexpath;
-    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
-    
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [_detailViewController replaceDataSelected:list];
+    }
+    else
+    {
+        DetailReviewViewController *vc = [DetailReviewViewController new];
+        
+        [_reviewTable reloadData];
+        
+        vc.data = list;
+        vc.is_owner = list.review_is_owner;
+        vc.indexPath = indexpath;
+        vc.index = [NSString stringWithFormat:@"%zd",row];
+        
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
 }
 
@@ -738,6 +756,17 @@
     _reportedReviewId = review.review_id;
     _reportController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:_reportController animated:YES];
+}
+
+-(void)tapAtIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedDetailIndexPath = indexPath;
+    NSInteger row = indexPath.row;
+    InboxReviewList *list = _reviews[row];
+    list.review_read_status = @"2";
+    
+    [_detailViewController replaceDataSelected:list];
+    [_reviewTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 #pragma mark - Report Delegate

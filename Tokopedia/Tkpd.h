@@ -20,7 +20,6 @@
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
 //#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
-//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -204,6 +203,7 @@ typedef enum {
 #define productCollectionViewCellWidthNormal 145
 #define productCollectionViewCellHeight6plus 250
 #define productCollectionViewCellHeightNormal 205
+
 
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"

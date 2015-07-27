@@ -101,6 +101,7 @@
     NoResultView *_noResultView;
     TAGContainer *_gtmContainer;
     UserAuthentificationManager *_userManager;
+    NSIndexPath *_selectedDetailIndexPath;
 }
 
 #pragma mark - Initialization
@@ -303,9 +304,8 @@
                 [((GeneralTalkCell *)cell) setTalkFollowStatus:YES];
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 75;
+                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                 [((GeneralTalkCell *)cell) setTalkFollowStatus:NO];
@@ -328,15 +328,11 @@
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
 
-            if(! [list.talk_own isEqualToString:@"1"]) {
-                if([list.talk_product_status isEqualToString:@"0"]) {
-                    CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                    newFrame.origin.x = 75;
-                    ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
-                    ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
-                    ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                }
-            }
+//            if([list.talk_product_status isEqualToString:@"0"]) {
+//                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
+//            } else {
+//                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
+//            }
             
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
@@ -555,7 +551,30 @@
             }
             
             
-            if (_talkList.count >0) {
+            if (_talkList.count >0)
+            {
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _talkListPage<=1) {
+                    NSInteger selectedIndex = _selectedDetailIndexPath.row?:0;
+                    TalkList *list = _talkList[selectedIndex];
+                    NSDictionary *data = @{
+                                           TKPD_TALK_MESSAGE:list.talk_message?:@0,
+                                           TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
+                                           TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
+                                           TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
+                                           TKPD_TALK_ID:list.talk_id?:@0,
+                                           TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id],
+                                           TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
+                                           kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
+                                           TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
+                                           TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
+                                           kTKPDDETAIL_DATAINDEXKEY : @(selectedIndex)?:@0,
+                                           TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
+                                           TKPD_TALK_PRODUCT_STATUS:list.talk_product_status
+                                           };
+                    [_detailViewController replaceDataSelected:data];
+                }
+
+                
                 _isnodata = NO;
                 _urinext =  inboxtalk.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
@@ -578,7 +597,7 @@
                 
             } else {
                 _isnodata = YES;
-                _table.tableFooterView = _noResultView;
+                _table.tableFooterView = _noResultView.view;
             }
         }
         else{
@@ -596,13 +615,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = _noResultView;
+                    _table.tableFooterView = _noResultView.view;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = _noResultView;
+                _table.tableFooterView = _noResultView.view;
             }
         }
     }
@@ -622,17 +641,20 @@
 
 #pragma mark - General Talk Delegate
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
+    
+    _selectedDetailIndexPath
+    = indexpath;
+    
     NSInteger row = indexpath.row;
     TalkList *list = _talkList[row];
     
-    vc.data = @{
+    NSDictionary *data = @{
                 TKPD_TALK_MESSAGE:list.talk_message?:@0,
                 TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
                 TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
                 TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
                 TKPD_TALK_ID:list.talk_id?:@0,
-                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id],
+                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id],
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
@@ -647,9 +669,20 @@
     userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(row)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        if (![data isEqualToDictionary:_detailViewController.data]) {
+            [_detailViewController replaceDataSelected:data];
+        }
+    }
+    else
+    {
+        ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
+        vc.data = data;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 //    DetailProductViewController *vc = [DetailProductViewController new];
 //    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : @"11957147"};
-    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

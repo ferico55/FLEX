@@ -151,7 +151,7 @@ TokopediaNetworkManagerDelegate
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
-    
+
     BOOL _isFailRequest;
 }
 

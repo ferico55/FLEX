@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@class DetailReviewViewController;
 
 @interface InboxReviewViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
+
+@property (strong, nonatomic) DetailReviewViewController *detailViewController;
 
 @end

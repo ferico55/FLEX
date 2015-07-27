@@ -1142,23 +1142,7 @@
     }
     else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
-        InboxReviewViewController *vc = [InboxReviewViewController new];
-        vc.data=@{@"nav":@"inbox-review"};
-        
-        InboxReviewViewController *vc1 = [InboxReviewViewController new];
-        vc1.data=@{@"nav":@"inbox-review-my-product"};
-        
-        InboxReviewViewController *vc2 = [InboxReviewViewController new];
-        vc2.data=@{@"nav":@"inbox-review-my-review"};
-        
-        NSArray *vcs = @[vc,vc1, vc2];
-        
-        TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-        [nc setSelectedIndex:2];
-        [nc setViewControllers:vcs];
-        [self.navigationController pushViewController:nc animated:YES];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SHOW_RATING_ALERT object:nil];
+        [_navigate navigateToInboxReviewFromViewController:self];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {

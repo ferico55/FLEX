@@ -12,7 +12,6 @@
 #import "GeneralAction.h"
 #import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
-#import "ProductTalkCell.h"
 #import "ProductTalkDetailViewController.h"
 #import "ProductTalkFormViewController.h"
 #import "TKPDSecureStorage.h"
@@ -124,7 +123,7 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _table.tableHeaderView = _header;
     
@@ -271,7 +270,7 @@
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                 
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 75;
+                newFrame.origin.x = cell.frame.size.width/2;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             

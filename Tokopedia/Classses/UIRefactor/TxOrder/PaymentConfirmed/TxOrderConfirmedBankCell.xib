@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -23,65 +23,128 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="udP-L2-V1X" id="wdF-rz-wbf">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UpD-RD-asJ" userLabel="RekeningView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UpD-RD-asJ" userLabel="RekeningView">
                         <rect key="frame" x="10" y="0.0" width="300" height="113"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Dari Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6h6-Uh-4Yt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dari Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6h6-Uh-4Yt">
                                 <rect key="frame" x="10" y="14" width="250" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="1ET-xm-Sou"/>
+                                    <constraint firstAttribute="height" constant="21" id="FHl-mU-sq2"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpz-KL-d9U">
-                                <rect key="frame" x="10" y="40" width="272" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpz-KL-d9U">
+                                <rect key="frame" x="10" y="40" width="280" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="Jwq-DS-XAi"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdy-Ur-jLk">
-                                <rect key="frame" x="10" y="62" width="264" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdy-Ur-jLk">
+                                <rect key="frame" x="10" y="62" width="280" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="lcr-vv-a9a"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DC-S1-XdR">
-                                <rect key="frame" x="10" y="84" width="250" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DC-S1-XdR">
+                                <rect key="frame" x="10" y="84" width="280" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="tsE-M7-KR7"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h0N-WF-6Bn" userLabel="Horizontal Border">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h0N-WF-6Bn" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="112" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="5nd-Lt-oDl"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="sdy-Ur-jLk" secondAttribute="trailing" constant="10" id="2SJ-Ib-EUy"/>
+                            <constraint firstAttribute="trailing" secondItem="Rpz-KL-d9U" secondAttribute="trailing" constant="10" id="8Uo-MC-Lm4"/>
+                            <constraint firstItem="h0N-WF-6Bn" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" id="8qD-ur-sqw"/>
+                            <constraint firstItem="Rpz-KL-d9U" firstAttribute="top" secondItem="6h6-Uh-4Yt" secondAttribute="bottom" constant="5" id="Dfz-AF-1g3"/>
+                            <constraint firstItem="Rpz-KL-d9U" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="Djx-hc-p22"/>
+                            <constraint firstAttribute="trailing" secondItem="h0N-WF-6Bn" secondAttribute="trailing" id="FzQ-K3-KdC"/>
+                            <constraint firstAttribute="trailing" secondItem="7DC-S1-XdR" secondAttribute="trailing" constant="10" id="NWW-ls-7u9"/>
+                            <constraint firstItem="6h6-Uh-4Yt" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="Qzu-CQ-0qb"/>
+                            <constraint firstItem="sdy-Ur-jLk" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="THO-Me-ycE"/>
+                            <constraint firstItem="6h6-Uh-4Yt" firstAttribute="top" secondItem="UpD-RD-asJ" secondAttribute="top" constant="14" id="WuK-em-vX4"/>
+                            <constraint firstItem="sdy-Ur-jLk" firstAttribute="top" secondItem="Rpz-KL-d9U" secondAttribute="bottom" constant="8" id="cTr-eR-c5X"/>
+                            <constraint firstItem="7DC-S1-XdR" firstAttribute="top" secondItem="sdy-Ur-jLk" secondAttribute="bottom" constant="8" id="d9I-1H-euG"/>
+                            <constraint firstItem="7DC-S1-XdR" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="myo-oW-HMI"/>
+                            <constraint firstAttribute="height" constant="113" id="v8i-rg-vAy"/>
+                            <constraint firstAttribute="bottom" secondItem="h0N-WF-6Bn" secondAttribute="bottom" id="vwS-Se-rE2"/>
+                        </constraints>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p8c-zx-IV4" userLabel="User View">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p8c-zx-IV4" userLabel="User View">
                         <rect key="frame" x="10" y="113" width="300" height="70"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rekening Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVI-wH-ue5">
-                                <rect key="frame" x="10" y="12" width="250" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rekening Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVI-wH-ue5">
+                                <rect key="frame" x="10" y="12" width="280" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="ILX-V3-PeH"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hR1-af-dFo">
-                                <rect key="frame" x="10" y="37" width="282" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hR1-af-dFo">
+                                <rect key="frame" x="10" y="37" width="280" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="xb5-nf-fMt"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5nq-Wz-Ym5" userLabel="Horizontal Border">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5nq-Wz-Ym5" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="69" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="fKe-na-jmj"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hR1-af-dFo" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" constant="10" id="0iI-wC-fNh"/>
+                            <constraint firstItem="DVI-wH-ue5" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" constant="10" id="58a-Fz-3rI"/>
+                            <constraint firstAttribute="height" constant="70" id="Gbl-3Z-Cg4"/>
+                            <constraint firstItem="hR1-af-dFo" firstAttribute="top" secondItem="DVI-wH-ue5" secondAttribute="bottom" constant="4" id="HWV-ML-Nk9"/>
+                            <constraint firstAttribute="trailing" secondItem="5nq-Wz-Ym5" secondAttribute="trailing" id="OPr-O3-QyZ"/>
+                            <constraint firstAttribute="trailing" secondItem="hR1-af-dFo" secondAttribute="trailing" constant="10" id="lbO-Tz-7dr"/>
+                            <constraint firstAttribute="trailing" secondItem="DVI-wH-ue5" secondAttribute="trailing" constant="10" id="rcx-jv-3dm"/>
+                            <constraint firstItem="5nq-Wz-Ym5" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" id="xgM-wD-pY4"/>
+                            <constraint firstItem="DVI-wH-ue5" firstAttribute="top" secondItem="p8c-zx-IV4" secondAttribute="top" constant="12" id="yG9-a9-B8q"/>
+                            <constraint firstAttribute="bottom" secondItem="5nq-Wz-Ym5" secondAttribute="bottom" id="yiy-2B-D0r"/>
+                        </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="UpD-RD-asJ" firstAttribute="top" secondItem="wdF-rz-wbf" secondAttribute="top" id="4cW-c7-xHi"/>
+                    <constraint firstItem="p8c-zx-IV4" firstAttribute="leading" secondItem="wdF-rz-wbf" secondAttribute="leading" constant="10" id="Lyu-eh-pHC"/>
+                    <constraint firstItem="p8c-zx-IV4" firstAttribute="top" secondItem="UpD-RD-asJ" secondAttribute="bottom" id="SR2-s9-Aln"/>
+                    <constraint firstAttribute="trailing" secondItem="UpD-RD-asJ" secondAttribute="trailing" constant="10" id="STS-Bt-BRK"/>
+                    <constraint firstAttribute="trailing" secondItem="p8c-zx-IV4" secondAttribute="trailing" constant="10" id="ifv-ua-dO5"/>
+                    <constraint firstItem="UpD-RD-asJ" firstAttribute="leading" secondItem="wdF-rz-wbf" secondAttribute="leading" constant="10" id="rcu-Mc-gdb"/>
+                </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="bankNameLabel" destination="Rpz-KL-d9U" id="DJJ-gi-T9W"/>
                 <outlet property="nomorRekLabel" destination="7DC-S1-XdR" id="beE-s0-jJh"/>
@@ -91,4 +154,9 @@
             <point key="canvasLocation" x="256" y="355"/>
         </tableViewCell>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

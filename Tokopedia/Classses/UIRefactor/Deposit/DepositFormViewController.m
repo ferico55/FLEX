@@ -168,11 +168,6 @@
     [_imgInfo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionInfo:)]];
 }
 
--(void)viewDidLayoutSubviews
-{
-    _containerScrollView.contentSize = _contentView.frame.size;
-}
-
 #pragma mark - Request Send OTP 
 - (void)configureSendOTPRestkit {
     _objectSendOTPManager =  [RKObjectManager sharedClient];
@@ -727,6 +722,12 @@
         // commit animations
         [UIView commitAnimations];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[_contentView(==%f)]", self.view.bounds.size.width] options:0 metrics:nil views:NSDictionaryOfVariableBindings(_contentView)]];
+    _containerScrollView.contentSize = CGSizeMake(_contentView.bounds.size.width, _passwordViewArea.frame.origin.y+_passwordViewArea.bounds.size.height+10);
 }
 
 - (void)keyboardWillHide:(NSNotification *)note {

@@ -143,7 +143,7 @@ UIAlertViewDelegate>
     [self addBottomInsetWhen14inch];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];
@@ -687,7 +687,7 @@ UIAlertViewDelegate>
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (305 - _fakeStickyTab.frame.size.height);
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;

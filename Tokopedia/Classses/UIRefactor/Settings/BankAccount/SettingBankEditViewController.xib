@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -287,7 +287,7 @@
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kode OTP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qQr-tN-a0x">
                             <rect key="frame" x="15" y="0.0" width="290" height="44"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                            <textInputTraits key="textInputTraits"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="S3g-He-zfC"/>
                             </connections>

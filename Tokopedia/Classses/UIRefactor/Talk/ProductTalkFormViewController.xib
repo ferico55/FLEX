@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -26,22 +26,34 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ggp-n9-Nui">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ggp-n9-Nui">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_shop_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="ycK-e5-2Uf">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_shop_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="ycK-e5-2Uf">
                             <rect key="frame" x="8" y="8" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="CP7-rf-adX"/>
+                                <constraint firstAttribute="height" constant="20" id="Vss-8N-e7p"/>
+                            </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e9D-W1-z2Q">
-                            <rect key="frame" x="36" y="4" width="284" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e9D-W1-z2Q">
+                            <rect key="frame" x="36" y="4" width="276" height="12"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="e9D-W1-z2Q" firstAttribute="top" secondItem="Ggp-n9-Nui" secondAttribute="top" constant="4" id="9K0-1P-vyi"/>
+                        <constraint firstAttribute="height" constant="40" id="NOQ-Ch-h57"/>
+                        <constraint firstItem="ycK-e5-2Uf" firstAttribute="leading" secondItem="Ggp-n9-Nui" secondAttribute="leading" constant="8" id="eOx-v2-bHM"/>
+                        <constraint firstItem="e9D-W1-z2Q" firstAttribute="leading" secondItem="ycK-e5-2Uf" secondAttribute="trailing" constant="8" id="gLF-Ha-ohF"/>
+                        <constraint firstItem="ycK-e5-2Uf" firstAttribute="top" secondItem="Ggp-n9-Nui" secondAttribute="top" constant="8" id="gb0-rv-s3X"/>
+                        <constraint firstAttribute="trailing" secondItem="e9D-W1-z2Q" secondAttribute="trailing" constant="8" id="zjz-0y-quo"/>
+                    </constraints>
                 </view>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mSk-XT-UDA">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mSk-XT-UDA">
                     <rect key="frame" x="14" y="53" width="292" height="374"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -50,6 +62,15 @@
                 </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="mSk-XT-UDA" firstAttribute="top" secondItem="Ggp-n9-Nui" secondAttribute="bottom" constant="13" id="1tT-gn-Ebu"/>
+                <constraint firstAttribute="trailing" secondItem="Ggp-n9-Nui" secondAttribute="trailing" id="N38-tB-uBo"/>
+                <constraint firstItem="mSk-XT-UDA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="14" id="OG5-YI-Z6Q"/>
+                <constraint firstAttribute="bottom" secondItem="mSk-XT-UDA" secondAttribute="bottom" constant="53" id="hpG-oE-rLc"/>
+                <constraint firstAttribute="trailing" secondItem="mSk-XT-UDA" secondAttribute="trailing" constant="14" id="ppC-5k-UxD"/>
+                <constraint firstItem="Ggp-n9-Nui" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="u4Y-yx-9fp"/>
+                <constraint firstItem="Ggp-n9-Nui" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yJ0-RP-rGg"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="406" y="203"/>
         </view>

@@ -2459,28 +2459,19 @@ UIAlertViewDelegate
 
 -(void)setOtherProducts
 {
+    float widthOtherProductView = (_otherproductscrollview.frame.size.width-(10*3))/2.0f;
+    constraintHeightScrollOtherView.constant = widthOtherProductView + (widthOtherProductView/2.0f);
     otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/2.0f);
+    int x = 10;
     for(int i = 0; i< _otherProductObj.count; i++)
     {
         TheOtherProductList *product = _otherProductObj[i];
         
         DetailProductOtherView *v = [DetailProductOtherView newview];
+        [v setFrame:CGRectMake(x, 0, widthOtherProductView, (widthOtherProductView+(widthOtherProductView/2.0f)))];
         
-        int x;
-        if(i == 0) {
-            x = 10;
-        } else if(i == 1) {
-            x = 165;
-        } else if(i == 2) {
-            x = 330;
-        } else if(i == 3) {
-            x = 485;
-        } else if(i == 4) {
-            x = 650;
-        } else if(i == 5) {
-            x = 805;
-        }
-        [v setFrame:CGRectMake(x, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+        x += 10 + v.bounds.size.width;
+        x += (i%2==1&&i<(_otherProductObj.count-1)? 10 : 0);
         v.delegate = self;
         v.index = i;
         [v.act startAnimating];
@@ -2517,7 +2508,9 @@ UIAlertViewDelegate
     }
     
     _otherproductscrollview.pagingEnabled = YES;
-    _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
+    _otherproductscrollview.contentSize = CGSizeMake(x, 0);
+    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, _otherproductscrollview.frame.origin.y + constraintHeightScrollOtherView.constant + 6 + _pagecontrol.bounds.size.height);
+    _table.tableFooterView = _shopinformationview;
 }
 
 
@@ -2578,7 +2571,9 @@ UIAlertViewDelegate
                     _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, lblOtherProductTitle.frame.origin.y);
                     _table.tableFooterView = _shopinformationview;
                 }
-                [self setOtherProducts];
+                else {
+                    [self setOtherProducts];
+                }
             }
         }
         else{
