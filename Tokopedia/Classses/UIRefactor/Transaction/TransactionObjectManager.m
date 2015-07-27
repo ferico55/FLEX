@@ -155,9 +155,11 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"veritrans"
                                                                                   toKeyPath:@"veritrans"
                                                                                 withMapping:veritransMapping]];
+    if(_gatewayID == TYPE_GATEWAY_CC){
     [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
                                                                                        toKeyPath:@"credit_card"
                                                                                      withMapping:ccFeeMapping]];
+    }
     
     RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
                                                                                                  toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
@@ -396,9 +398,11 @@
     
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
-    [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
+    if(_gatewayID == TYPE_GATEWAY_CC){
+        [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
                                                                                        toKeyPath:@"credit_card"
                                                                                      withMapping:ccFeeMapping]];
+    }
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_BCA_KLICK_PAY_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];

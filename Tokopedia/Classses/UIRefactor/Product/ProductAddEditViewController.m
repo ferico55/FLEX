@@ -920,11 +920,6 @@
     }
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
@@ -933,9 +928,9 @@
     }
     if (tag == TAG_REQUEST_DETAIL)
     {
+        [_alertProcessing dismissWithClickedButtonIndex:0 animated:NO];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         [self enableButtonBeforeSuccessRequest:YES];
-        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
     }
 }
 
@@ -994,7 +989,7 @@
 {
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
     [alert show];
-    
+    [_alertProcessing dismissWithClickedButtonIndex:0 animated:NO];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -1161,6 +1156,7 @@
         [self requestSuccessEditProductPicture:pictureObject withOperation:operation mappingResult:mappingResult];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
         [timer invalidate];
     }];
     
@@ -1201,6 +1197,7 @@
 -(void)requestTimeoutEditProductPicture
 {
     [self cancelEditProductPicture];
+    [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 

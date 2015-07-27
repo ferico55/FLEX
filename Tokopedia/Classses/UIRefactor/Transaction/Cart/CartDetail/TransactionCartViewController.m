@@ -1532,10 +1532,11 @@
 {
     [self doClearAllData];
     
-    if (![_tableView.tableFooterView isEqual:_footerView]) {
-        _tableView.tableFooterView = _footerView;
-        [_refreshControl beginRefreshing];
-        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height-40) animated:YES];
+    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height-40) animated:YES];
+    [_refreshControl beginRefreshing];
+    
+    if ([_refreshControl isRefreshing]) {
+        [_act stopAnimating];
     }
     
     _requestCart.param = @{};
