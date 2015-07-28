@@ -55,7 +55,7 @@
 - (void)initNotificationWindow {
     _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-    _notificationWindow.clipsToBounds = YES;
+//    _notificationWindow.clipsToBounds = YES;
     
     _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
     _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -119,7 +119,8 @@
     [_notificationController.tableView beginUpdates];
     CGRect notificationTableFrame = _notificationController.tableView.frame;
     notificationTableFrame.origin.y = 64;
-    notificationTableFrame.size.height = 300;
+    notificationTableFrame.size.height = [UIScreen mainScreen].bounds.size.height;
+    
     
     UIGraphicsBeginImageContext([UIScreen mainScreen].bounds.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
