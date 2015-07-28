@@ -12,7 +12,10 @@
 
 @interface AlertPickerView : TKPDAlertView
 
+@property int pickerCount;
 @property (strong,nonatomic) NSArray *pickerData;
 @property (weak, nonatomic) IBOutlet UIButton *doneButton;
+
+@property (strong,nonatomic) NSArray *secondPickerData;
 
 @end

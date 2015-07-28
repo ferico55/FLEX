@@ -169,7 +169,10 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentDetail;
 @property (weak, nonatomic) IBOutlet UILabel *depositAmountLabel;
 @property (strong, nonatomic) IBOutlet UITableViewCell *voucherUsedCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *klikBCAUserIDCell;
+@property (weak, nonatomic) IBOutlet UITextField *userIDKlikBCATextField;
 
+@property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
 - (IBAction)tap:(id)sender;
 @end
 
@@ -281,6 +284,7 @@
 
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
 }
 
 
@@ -366,7 +370,7 @@
         rowCount = products.count+6; //ErrorMessage, Detail Pengiriman, Partial, Dropshipper, dropshipper name, dropshipper phone
     }
     else if (section == listCount+1)
-        rowCount = 4; //saldo tokopedia, textfield saldo, deposit amount, password tokopedia
+        rowCount = 5; //saldo tokopedia, textfield saldo, deposit amount, password tokopedia, userID klik BCA
     else rowCount = 2; // Biaya administrasi, total pembayaran
     
     return _isnodata?0:rowCount;
@@ -775,7 +779,7 @@
     NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        if (![gateway.gateway isEqual:@(9)] && ![gateway.gateway isEqual:@(10)]) {
+        if (![gateway.gateway isEqual:@(10)] && ![gateway.gateway isEqual:@(TYPE_GATEWAY_CC)] ) {
             [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
         }
     }
@@ -1805,7 +1809,7 @@
 
 -(UITableViewCell*)cellAdjustDepositAtIndexPath:(NSIndexPath*)indexPath
 {
-    // 0 saldo tokopedia, 1 textfield saldo, 2 password tokopedia
+    // 0 saldo tokopedia, 1 textfield saldo, 2 password tokopedia, 3 Deposit ammount, 4 userID klik BCA
     UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case 0:
@@ -1820,6 +1824,9 @@
             break;
         case 3:
             cell = _passwordCell;
+            break;
+        case 4:
+            cell = _klikBCAUserIDCell;
             break;
         default:
             break;
@@ -2067,7 +2074,7 @@
     }
     else if (indexPath.section == _list.count+1)
     {
-        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia
+        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia, 4. userID klik BCA
         if (indexPath.row == 0 || indexPath.row == 2) {
             if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
                 [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
@@ -2093,6 +2100,9 @@
                 return HEIGHT_VIEW_TOTAL_DEPOSIT;
         }
         if (indexPath.row == 3) {
+            return 0;
+        }
+        if (indexPath.row == 4) {
             return 0;
         }
     }
@@ -2168,7 +2178,7 @@
     }
     else if (indexPath.section == _list.count+1)
     {
-        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia
+        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia, 4 userID klik BCA
         if (indexPath.row == 0)
         {
             return 0;
@@ -2189,7 +2199,13 @@
                 return 0;
             }
         }
-        
+        if (indexPath.row == 4) {
+            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_PAY) {
+                return _klikBCAUserIDCell.frame.size.height;
+            }
+            else
+                return 0;
+        }
     }
     else if (indexPath.section == _list.count+2)
     {
@@ -2210,7 +2226,7 @@
     {
         NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
         CGSize maximumLabelSize = CGSizeMake(290,9999);
-        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_18
+        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
                                       constrainedToSize:maximumLabelSize
                                           lineBreakMode:NSLineBreakByTruncatingTail];
         
