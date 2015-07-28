@@ -71,8 +71,8 @@
                                                 <constraint firstAttribute="height" constant="1" id="1xr-79-7m7"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gold Merchant" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uW-Go-tJ5">
-                                            <rect key="frame" x="113" y="0.0" width="106" height="43"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Regular Merchant" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uW-Go-tJ5">
+                                            <rect key="frame" x="109" y="0.0" width="115" height="43"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="106" id="bbT-Ir-hsB"/>
                                                 <constraint firstAttribute="height" constant="43" id="rrl-jd-3Fy"/>
@@ -81,7 +81,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="4ZK-gk-Jbr">
-                                            <rect key="frame" x="90" y="12" width="20" height="20"/>
+                                            <rect key="frame" x="87" y="12" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" id="7bW-7w-tt9"/>
                                                 <constraint firstAttribute="height" constant="20" id="NbZ-oB-V99"/>
