@@ -491,11 +491,12 @@
         _buttonsDividers.hidden = NO;
     } else {
         _reportButton.hidden = YES;
-        
-        CGRect newFrame = _talktotalcommentlabel.frame;
-        newFrame.origin.x = 120;
-        _talktotalcommentlabel.frame = newFrame;
         _buttonsDividers.hidden = YES;
+        
+        _talktotalcommentlabel.translatesAutoresizingMaskIntoConstraints = YES;
+        CGRect newFrame = _talktotalcommentlabel.frame;
+        newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - (_talktotalcommentlabel.frame.size.width)) / 2;
+        _talktotalcommentlabel.frame = newFrame;
     }
     
     

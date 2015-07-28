@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -34,8 +35,8 @@
                 <outlet property="talkmessagelabel" destination="4zl-YQ-GyN" id="CnZ-eN-3c4"/>
                 <outlet property="talktotalcommentlabel" destination="V0k-hC-jae" id="H3O-Oz-gT0"/>
                 <outlet property="talkuserimage" destination="edq-d3-niV" id="Ub7-Qp-RvU"/>
-                <outlet property="talkusernamelabel" destination="QCO-lA-NPE" id="eRR-Kf-TYk"/>
                 <outlet property="userArea" destination="yKL-Fz-tBp" id="etb-9f-jTC"/>
+                <outlet property="userButton" destination="Bog-Cr-kqE" id="oDT-fp-2J7"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -115,7 +116,7 @@
                         <constraint firstAttribute="height" constant="50" id="nWN-BF-BMx"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Talk User" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCO-lA-NPE" userLabel="User Full Name">
+                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Talk User" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCO-lA-NPE" userLabel="User Full Name">
                     <rect key="frame" x="69" y="17" width="230" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="SUK-rE-t05"/>
@@ -124,6 +125,12 @@
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bog-Cr-kqE" customClass="ViewLabelUser">
+                    <rect key="frame" x="69" y="11" width="230" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Huu-Pd-sjj"/>
+                    </constraints>
+                </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Talk User" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKy-DX-y5X" userLabel="Talk Time">
                     <rect key="frame" x="69" y="34" width="230" height="21"/>
                     <constraints>
@@ -142,7 +149,7 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="B31B22D3-F9FA-436E-8F1E-978B71FC6509" translatesAutoresizingMaskIntoConstraints="NO" id="y2i-en-h5n">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BEBF5D4A-C304-437E-B750-80D6A2A1B58B" translatesAutoresizingMaskIntoConstraints="NO" id="y2i-en-h5n">
                     <rect key="frame" x="34" y="202" width="15" height="15"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="15" id="pFU-yQ-WmI"/>
@@ -238,12 +245,14 @@
                 <constraint firstItem="rKy-DX-y5X" firstAttribute="trailing" secondItem="QCO-lA-NPE" secondAttribute="trailing" id="IFW-42-G0Y"/>
                 <constraint firstItem="8YD-Dv-ceR" firstAttribute="leading" secondItem="6Ec-xH-BZu" secondAttribute="leading" constant="10" id="IJb-YT-cvJ"/>
                 <constraint firstItem="1kz-11-eaB" firstAttribute="leading" secondItem="16P-bL-SbS" secondAttribute="trailing" constant="8" id="IRf-nn-qU4"/>
+                <constraint firstItem="Bog-Cr-kqE" firstAttribute="leading" secondItem="QCO-lA-NPE" secondAttribute="leading" id="Lzx-8n-hjj"/>
                 <constraint firstItem="QCO-lA-NPE" firstAttribute="leading" secondItem="edq-d3-niV" secondAttribute="trailing" constant="8" id="M9P-Dr-2t0"/>
                 <constraint firstItem="16P-bL-SbS" firstAttribute="leading" secondItem="6Ec-xH-BZu" secondAttribute="leading" constant="11" id="O7W-gh-Wdf"/>
                 <constraint firstItem="yKL-Fz-tBp" firstAttribute="leading" secondItem="6Ec-xH-BZu" secondAttribute="leading" constant="11" id="QEU-Q4-mkx"/>
                 <constraint firstItem="16P-bL-SbS" firstAttribute="top" secondItem="8YD-Dv-ceR" secondAttribute="bottom" constant="8" id="R50-e5-Wnd"/>
                 <constraint firstAttribute="trailing" secondItem="2WB-AQ-dT3" secondAttribute="trailing" id="VI8-uC-2lH"/>
                 <constraint firstAttribute="centerX" secondItem="q20-k7-blm" secondAttribute="centerX" id="fT9-Oh-bWx"/>
+                <constraint firstItem="Bog-Cr-kqE" firstAttribute="trailing" secondItem="QCO-lA-NPE" secondAttribute="trailing" id="geF-KB-GhP"/>
                 <constraint firstItem="y2i-en-h5n" firstAttribute="top" secondItem="2WB-AQ-dT3" secondAttribute="bottom" constant="11" id="hfW-lD-idQ"/>
                 <constraint firstItem="rKy-DX-y5X" firstAttribute="leading" secondItem="QCO-lA-NPE" secondAttribute="leading" id="iRL-CM-fHZ"/>
                 <constraint firstItem="QCO-lA-NPE" firstAttribute="top" secondItem="6Ec-xH-BZu" secondAttribute="top" constant="17" id="jQR-6c-Juh"/>
@@ -254,6 +263,7 @@
                 <constraint firstAttribute="trailing" secondItem="4zl-YQ-GyN" secondAttribute="trailing" constant="18" id="mYQ-XY-ICX"/>
                 <constraint firstItem="4zl-YQ-GyN" firstAttribute="leading" secondItem="16P-bL-SbS" secondAttribute="trailing" constant="8" id="nS7-si-led"/>
                 <constraint firstAttribute="trailing" secondItem="yKL-Fz-tBp" secondAttribute="trailing" constant="18" id="nw7-ug-fPE"/>
+                <constraint firstItem="Bog-Cr-kqE" firstAttribute="top" secondItem="6Ec-xH-BZu" secondAttribute="topMargin" constant="3" id="qrA-aa-aNo"/>
                 <constraint firstItem="yCP-He-mx1" firstAttribute="top" secondItem="2WB-AQ-dT3" secondAttribute="bottom" constant="4" id="uFp-7F-ufl"/>
                 <constraint firstAttribute="trailing" secondItem="8YD-Dv-ceR" secondAttribute="trailing" constant="10" id="vO8-8D-J9a"/>
                 <constraint firstItem="q20-k7-blm" firstAttribute="top" secondItem="2WB-AQ-dT3" secondAttribute="bottom" constant="8" id="weE-gC-0lC"/>
@@ -286,7 +296,7 @@
         </view>
     </objects>
     <resources>
-        <image name="B31B22D3-F9FA-436E-8F1E-978B71FC6509" width="14" height="14">
+        <image name="BEBF5D4A-C304-437E-B750-80D6A2A1B58B" width="14" height="14">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
