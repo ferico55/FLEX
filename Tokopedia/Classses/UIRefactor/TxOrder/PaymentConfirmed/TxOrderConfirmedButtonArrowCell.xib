@@ -31,14 +31,15 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.78000000000000003" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.86666666670000003" green="0.86666666670000003" blue="0.86666666670000003" alpha="0.01" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="pqA-gy-Jgx" firstAttribute="top" secondItem="vMl-lm-ALI" secondAttribute="top" id="Pfi-t4-KbM"/>
-                    <constraint firstAttribute="trailing" secondItem="pqA-gy-Jgx" secondAttribute="trailing" constant="10" id="V2B-J5-z0b"/>
                     <constraint firstItem="pqA-gy-Jgx" firstAttribute="leading" secondItem="vMl-lm-ALI" secondAttribute="leading" constant="10" id="YTi-pl-fDw"/>
+                    <constraint firstAttribute="trailing" secondItem="pqA-gy-Jgx" secondAttribute="trailing" constant="10" id="dUt-Qx-Hzh"/>
                     <constraint firstAttribute="bottom" secondItem="pqA-gy-Jgx" secondAttribute="bottom" id="h84-gE-UON"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.86666666670000003" green="0.86666666670000003" blue="0.86666666670000003" alpha="0.01" colorSpace="custom" customColorSpace="sRGB"/>
             <point key="canvasLocation" x="357" y="253"/>
         </tableViewCell>
     </objects>

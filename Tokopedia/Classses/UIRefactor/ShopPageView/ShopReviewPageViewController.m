@@ -295,6 +295,10 @@ UIAlertViewDelegate>
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
             } else {
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = YES;
+                ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
+                CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralReviewCell*)cell).commentbutton.frame.size.width) / 2 - 10;
+                ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
             }
             
             if ([list.review_message length] > 50) {
@@ -309,6 +313,7 @@ UIAlertViewDelegate>
                 ((GeneralReviewCell *)cell).ratingView.hidden = YES;
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
                 ((GeneralReviewCell *)cell).commentView.hidden = YES;
+                
             } else {
                 ((GeneralReviewCell *)cell).ratingView.hidden = NO;
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;

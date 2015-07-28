@@ -58,6 +58,7 @@
 @property (weak, nonatomic) IBOutlet UIView *userTapView;
 @property (weak, nonatomic) IBOutlet UIView *productTapView;
 @property (weak, nonatomic) IBOutlet UIView *reviewTapView;
+@property (weak, nonatomic) IBOutlet UIButton *writeReviewButton;
 
 @property (strong,nonatomic) id data;
 @property (strong, nonatomic) NSIndexPath *indexpath;

@@ -303,7 +303,7 @@ UIAlertViewDelegate>
                 
                 ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralTalkCell*)cell).commentbutton.frame.size.width) / 2;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralTalkCell*)cell).commentbutton.frame.size.width) / 2-10;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             

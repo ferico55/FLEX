@@ -43,6 +43,8 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 
+#import "RetryCollectionReusableView.h"
+
 #import "NoResult.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -330,8 +332,8 @@ TokopediaNetworkManagerDelegate
     
     if(kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
-            _isFailRequest = !_isFailRequest;
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+            ((RetryCollectionReusableView*)reusableView).delegate = self;
         } else {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }

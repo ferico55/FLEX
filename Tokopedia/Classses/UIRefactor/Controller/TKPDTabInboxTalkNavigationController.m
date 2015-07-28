@@ -72,15 +72,17 @@
 {
     [super viewDidLoad];
     
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
-    [backButton setFrame:CGRectMake(0, 0, 25, 35)];
-    [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
     
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    
-    self.navigationItem.leftBarButtonItem = barButton;
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem = barButton;
+    }
     
     [_segmentContainer.layer setShadowOffset:CGSizeMake(0, 0.5)];
     [_segmentContainer.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
@@ -163,7 +165,12 @@
 
 -(IBAction)tapBackButton:(id)sender
 {
-    [_splitVC.navigationController popViewControllerAnimated:YES];
+    if (!_splitVC) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+        [_splitVC.navigationController popViewControllerAnimated:YES];
+
 }
 
 

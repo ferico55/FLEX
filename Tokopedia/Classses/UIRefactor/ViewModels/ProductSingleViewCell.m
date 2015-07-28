@@ -62,8 +62,9 @@
     [self.productImage setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
+        [self.productImage setContentMode:UIViewContentModeScaleAspectFit];
         [self.productImage setImage:image];
+        self.productImage.backgroundColor = [UIColor whiteColor];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];

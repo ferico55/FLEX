@@ -30,46 +30,54 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZF-jR-FgY">
-                    <rect key="frame" x="15" y="39" width="290" height="21"/>
+                    <rect key="frame" x="155" y="55" width="290" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="ek1-l9-tWa"/>
-                        <constraint firstAttribute="width" constant="290" id="px9-8E-3Lo"/>
+                        <constraint firstAttribute="width" constant="290" id="px9-8E-3Lo">
+                            <variation key="heightClass=regular-widthClass=regular" constant="346"/>
+                        </constraint>
                     </constraints>
                     <string key="text">Konfirmasi Pembayaran Sukses
 Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggunakan Saldo Tokopedia.</string>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="18"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggunakan Saldo Tokopedia." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mF2-Is-kca">
-                    <rect key="frame" x="15" y="73" width="290" height="58"/>
+                    <rect key="frame" x="155" y="89" width="290" height="58"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="58" id="54p-7E-5v0"/>
-                        <constraint firstAttribute="width" constant="290" id="ar9-oG-fe8"/>
+                        <constraint firstAttribute="height" constant="58" id="54p-7E-5v0">
+                            <variation key="heightClass=regular-widthClass=regular" constant="114"/>
+                        </constraint>
+                        <constraint firstAttribute="width" constant="290" id="ar9-oG-fe8">
+                            <variation key="heightClass=regular-widthClass=regular" constant="660"/>
+                        </constraint>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pembayaran Anda akan diverifikasi oleh Tokopedia dalam 1 x 24 jam dan akan diteruskan kepada penjual." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SI-bg-yxa">
-                    <rect key="frame" x="15" y="295" width="289" height="50"/>
+                    <rect key="frame" x="155" y="311" width="289" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="OrO-4b-pQK"/>
-                        <constraint firstAttribute="width" constant="289" id="bZo-MD-SVM"/>
+                        <constraint firstAttribute="width" constant="289" id="bZo-MD-SVM">
+                            <variation key="heightClass=regular-widthClass=regular" constant="660"/>
+                        </constraint>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XBL-Mv-7jJ">
-                    <rect key="frame" x="0.0" y="158" width="320" height="110"/>
+                    <rect key="frame" x="0.0" y="174" width="600" height="110"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 0,-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uqL-jT-XLh">
-                            <rect key="frame" x="0.0" y="59" width="320" height="21"/>
+                            <rect key="frame" x="0.0" y="59" width="600" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="wKh-r7-fRI"/>
                             </constraints>
@@ -78,23 +86,23 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah Pembayaran" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r52-tG-qtj">
-                            <rect key="frame" x="0.0" y="30" width="320" height="21"/>
+                            <rect key="frame" x="0.0" y="30" width="600" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="AiO-1S-1w5"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="osh-lu-E0y" userLabel="Horizontal Border">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="31J-mM-Q9H"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5i-Fw-6ny" userLabel="Horizontal Border">
-                            <rect key="frame" x="0.0" y="109" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="109" width="600" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="3AV-uu-H3z"/>
@@ -119,22 +127,26 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Klik disini untuk memantau status pemesanan Anda." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTg-F7-3Ys">
-                    <rect key="frame" x="26" y="368" width="267" height="50"/>
+                    <rect key="frame" x="166" y="384" width="267" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="267" id="aAV-Ny-1fd"/>
+                        <constraint firstAttribute="width" constant="267" id="aAV-Ny-1fd">
+                            <variation key="heightClass=regular-widthClass=regular" constant="660"/>
+                        </constraint>
                         <constraint firstAttribute="height" constant="50" id="zSJ-Ue-OjC"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYh-og-O2J">
-                    <rect key="frame" x="37" y="368" width="246" height="44"/>
+                    <rect key="frame" x="177" y="384" width="246" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="246" id="64V-JF-1yv"/>
+                        <constraint firstAttribute="width" constant="246" id="64V-JF-1yv">
+                            <variation key="heightClass=regular-widthClass=regular" constant="654"/>
+                        </constraint>
                         <constraint firstAttribute="height" constant="44" id="Yun-bg-HnQ"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -142,24 +154,54 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="CDo-hv-Deq"/>
                     </connections>
                 </button>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttn-nD-akB">
+                    <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular" fixedFrame="YES">
+                        <rect key="frame" x="560" y="130" width="42" height="21"/>
+                    </variation>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="centerX" secondItem="GZF-jR-FgY" secondAttribute="centerX" id="5I9-wD-BoF"/>
-                <constraint firstItem="XBL-Mv-7jJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Hqv-w4-hDw"/>
-                <constraint firstAttribute="centerY" secondItem="GZF-jR-FgY" secondAttribute="centerY" constant="234.5" id="TlS-gv-SPF"/>
-                <constraint firstAttribute="trailing" secondItem="XBL-Mv-7jJ" secondAttribute="trailing" id="U8J-8d-fT3"/>
-                <constraint firstAttribute="centerX" secondItem="FYh-og-O2J" secondAttribute="centerX" id="d9s-cd-6Mn"/>
-                <constraint firstAttribute="centerY" secondItem="mF2-Is-kca" secondAttribute="centerY" constant="182" id="eDJ-kT-rlJ"/>
+                <constraint firstItem="XBL-Mv-7jJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Hqv-w4-hDw">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="centerY" secondItem="GZF-jR-FgY" secondAttribute="centerY" constant="234.5" id="TlS-gv-SPF">
+                    <variation key="heightClass=regular-widthClass=regular" constant="298.5"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="XBL-Mv-7jJ" secondAttribute="trailing" id="U8J-8d-fT3">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="centerX" secondItem="FYh-og-O2J" secondAttribute="centerX" id="d9s-cd-6Mn">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-3"/>
+                </constraint>
+                <constraint firstAttribute="centerY" secondItem="mF2-Is-kca" secondAttribute="centerY" constant="182" id="eDJ-kT-rlJ">
+                    <variation key="heightClass=regular-widthClass=regular" constant="206"/>
+                </constraint>
                 <constraint firstAttribute="centerX" secondItem="wTg-F7-3Ys" secondAttribute="centerX" id="m0H-d6-QUH"/>
                 <constraint firstAttribute="centerX" secondItem="mF2-Is-kca" secondAttribute="centerX" id="m1b-y8-rdY"/>
-                <constraint firstAttribute="centerY" secondItem="FYh-og-O2J" secondAttribute="centerY" constant="-106" id="mxm-cS-r7n"/>
+                <constraint firstAttribute="centerY" secondItem="FYh-og-O2J" secondAttribute="centerY" constant="-106" id="mxm-cS-r7n">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-112"/>
+                </constraint>
                 <constraint firstAttribute="centerY" secondItem="wTg-F7-3Ys" secondAttribute="centerY" constant="-109" id="nTo-3A-NfH"/>
                 <constraint firstAttribute="centerX" secondItem="3SI-bg-yxa" secondAttribute="centerX" id="s4E-wl-V4u"/>
                 <constraint firstAttribute="centerY" secondItem="3SI-bg-yxa" secondAttribute="centerY" constant="-36" id="uZQ-bI-SdY"/>
                 <constraint firstAttribute="centerY" secondItem="XBL-Mv-7jJ" secondAttribute="centerY" constant="71" id="yXL-rB-zTz"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="ttn-nD-akB"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="subviews">
+                    <include reference="ttn-nD-akB"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="-306" y="54"/>
         </view>
     </objects>
