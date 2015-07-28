@@ -251,7 +251,6 @@
     UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userArea addGestureRecognizer:tapUserGes];
     [_userArea setUserInteractionEnabled:YES];
-    
 }
 
 
@@ -326,24 +325,6 @@
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
-            
-            
-            //Set user label
-//            if([list.comment_user_label isEqualToString:CPenjual]) {
-//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPenjual];
-//            }
-//            else if([list.comment_user_label isEqualToString:CPembeli]) {
-//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPembeli];
-//            }
-//            else if([list.comment_user_label isEqualToString:CAdministrator]) {
-//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagAdministrator];
-//            }
-//            else if([list.comment_user_label isEqualToString:CPengguna]) {
-//                [((GeneralTalkCommentCell*)cell).user_name setColor:CTagPengguna];
-//            }
-//            else {
-//                [((GeneralTalkCommentCell*)cell).user_name setColor:-1];//-1 is set to empty string
-//            }
             [((GeneralTalkCommentCell*)cell).user_name setLabelBackground:list.comment_user_label];
 
             
@@ -414,15 +395,6 @@
 
 
 #pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    
-    
-}
-
 -(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     [_growingtextview resignFirstResponder];
 }
@@ -563,22 +535,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _growingtextview.frame = CGRectMake(10, 10, self.view.bounds.size.width-(10*2)-_sendButton.bounds.size.width-5, 29);
-    
-    if([_userManager getUserId] && ![[_userManager getUserId] isEqualToString:@"0"]) {
-        //isbanned product
-        if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
-           ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
-           ) {
-            [_talkInputView setHidden:NO];
-        }
-    }
-
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
-        }
+    if([_userManager isLogin]) {
+        [_talkInputView setHidden:NO];
+        [_sendButton setEnabled:NO];
+    } else {
+        [_talkInputView setHidden:YES];
     }
 }
 
@@ -697,6 +658,12 @@
     BOOL status = [_talkcomment.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
+//        if (_page <=1 && !_isrefreshview) {
+//            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+//            [_cachecontroller connectionDidFinish:_cacheconnection];
+//            //save response data
+//            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+//        }
         [self requestprocess:object];
     }
 }
