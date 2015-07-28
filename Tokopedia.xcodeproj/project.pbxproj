@@ -1513,6 +1513,8 @@
 		458AB80E1B609D94001169F1 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 458AB22B1B609D93001169F1 /* README.md */; };
 		458AB8101B609D94001169F1 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 458AB22E1B609D93001169F1 /* vt-iOSlib-1.0.1.tar.gz */; };
 		458AB8111B609D94001169F1 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 458AB22F1B609D93001169F1 /* vt-iOSlib-1.0.1.zip */; };
+		7A3F67421B676D5E0052D281 /* InboxReviewAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F673F1B676D5E0052D281 /* InboxReviewAction.m */; };
+		7A3F67431B676D5E0052D281 /* InboxReviewActionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F67411B676D5E0052D281 /* InboxReviewActionResult.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
@@ -3859,6 +3861,10 @@
 		458AB22D1B609D93001169F1 /* libVTiOSAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVTiOSAPI.a; sourceTree = "<group>"; };
 		458AB22E1B609D93001169F1 /* vt-iOSlib-1.0.1.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "vt-iOSlib-1.0.1.tar.gz"; sourceTree = "<group>"; };
 		458AB22F1B609D93001169F1 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
+		7A3F673E1B676D5E0052D281 /* InboxReviewAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewAction.h; sourceTree = "<group>"; };
+		7A3F673F1B676D5E0052D281 /* InboxReviewAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewAction.m; sourceTree = "<group>"; };
+		7A3F67401B676D5E0052D281 /* InboxReviewActionResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewActionResult.h; sourceTree = "<group>"; };
+		7A3F67411B676D5E0052D281 /* InboxReviewActionResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewActionResult.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -4553,6 +4559,10 @@
 		458AA9801B609D91001169F1 /* InboxReview */ = {
 			isa = PBXGroup;
 			children = (
+				7A3F673E1B676D5E0052D281 /* InboxReviewAction.h */,
+				7A3F673F1B676D5E0052D281 /* InboxReviewAction.m */,
+				7A3F67401B676D5E0052D281 /* InboxReviewActionResult.h */,
+				7A3F67411B676D5E0052D281 /* InboxReviewActionResult.m */,
 				458AA9811B609D91001169F1 /* InboxReview.h */,
 				458AA9821B609D91001169F1 /* InboxReview.m */,
 				458AA9831B609D91001169F1 /* InboxReviewList.h */,
@@ -9343,6 +9353,7 @@
 				458AB51F1B609D94001169F1 /* BarCodeViewController.m in Sources */,
 				458AB37F1B609D94001169F1 /* TransactionSummaryResult.m in Sources */,
 				458AB5391B609D94001169F1 /* SearchResultShopCell.m in Sources */,
+				7A3F67431B676D5E0052D281 /* InboxReviewActionResult.m in Sources */,
 				458AB2D51B609D94001169F1 /* ReplyInboxTicket.m in Sources */,
 				458AB3151B609D94001169F1 /* OrderDetail.m in Sources */,
 				458AB4A61B609D94001169F1 /* MyShopEtalaseFilterViewController.m in Sources */,
@@ -9459,6 +9470,7 @@
 				458AB2831B609D93001169F1 /* Statistic.m in Sources */,
 				458AB3461B609D94001169F1 /* AddProductValidation.m in Sources */,
 				458AB46D1B609D94001169F1 /* InboxResolutionCenterComplainCell.m in Sources */,
+				7A3F67421B676D5E0052D281 /* InboxReviewAction.m in Sources */,
 				458AB5A61B609D94001169F1 /* ProductTalkDetailViewController.m in Sources */,
 				458AB42C1B609D94001169F1 /* ForgotPasswordViewController.m in Sources */,
 				458AB36D1B609D94001169F1 /* TransactionCartResult.m in Sources */,
