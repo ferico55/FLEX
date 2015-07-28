@@ -420,7 +420,6 @@
     if (tag == TAG_LIST_REQUEST) {
         [_refreshControl endRefreshing];
         [_act stopAnimating];
-        _table.tableFooterView = nil;
         [self requestprocess:successResult];
     }
 }
@@ -554,7 +553,11 @@
             
             if (_page == 1) {
                 [_list removeAllObjects];
-                [_table setContentOffset:CGPointZero animated:YES];
+                if (_refreshControl.isRefreshing) {
+                    CGPoint contentOffset = _table.contentOffset;
+                    contentOffset.y = (contentOffset.y != 0)?:-_refreshControl.frame.size.height-45;
+                    [_table setContentOffset:contentOffset animated:YES];
+                }
             }
             
             [_list addObjectsFromArray:list];
@@ -578,7 +581,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                
+                _table.tableFooterView = [UIView new];
             } else {
                 CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
                 NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];

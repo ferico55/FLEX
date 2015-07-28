@@ -214,6 +214,7 @@ typedef enum {
 #define kTKPD_USER_REVIEW_IDS           @"tokopedia.kTKPD_USER_REVIEW_IDS"
 #define kTKPD_USER_REVIEW_DUE_DATE      @"tokopedia.kTKPD_USER_REVIEW_DUE_DATE"
 #define kTKPD_ITUNES_APP_URL            @"http://itunes.apple.com/app/id1001394201"
+#define kTKPD_ALWAYS_SHOW_RATING_ALERT  @"tokopedia.kTKPD_ALWAYS_SHOW_ALERT_RATING"
 
 // GTM Value
 #define GTMKeyInboxMessageBase @"inboxmessage_base_url"

@@ -107,11 +107,11 @@
         url = [NSURL URLWithString:urlAddress];
         //[_delegate shouldDoRequestBCAClickPay];
     }
-    if (gateway == TYPE_GATEWAY_MANDIRI_E_CASH) {
+    else if (gateway == TYPE_GATEWAY_MANDIRI_E_CASH) {
         urlAddress = _URLString;
         url = [NSURL URLWithString:urlAddress];
     }
-    if (gateway == TYPE_GATEWAY_CC && !_isVeritrans) {
+    else if (gateway == TYPE_GATEWAY_CC && !_isVeritrans) {
         urlAddress = _URLString;
         
         NSDictionary *paramEncrypt = [_CCParam encrypt];
