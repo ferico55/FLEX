@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -19,7 +19,6 @@
             <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
             <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
@@ -46,15 +45,12 @@
                                             <constraint firstAttribute="height" constant="50" id="u8g-NE-TpM"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ot1-QP-SIl" userLabel="user_name">
-                                        <rect key="frame" x="74" y="17" width="214" height="18"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tin-3J-MOZ" customClass="ViewLabelUser">
+                                        <rect key="frame" x="74" y="10" width="198" height="26"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="hEB-MT-pPT"/>
+                                            <constraint firstAttribute="height" constant="26" id="nCa-5B-X9Y"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0wA-8g-UoU" userLabel="create_time">
                                         <rect key="frame" x="74" y="35" width="214" height="18"/>
                                         <constraints>
@@ -87,15 +83,15 @@
                                     <constraint firstItem="Dgi-k9-BM7" firstAttribute="leading" secondItem="0Xt-Kc-x8f" secondAttribute="leading" constant="10" id="ENm-hF-mMw"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="73" id="EUt-JO-K2q"/>
                                     <constraint firstAttribute="trailing" secondItem="fyS-kR-ocK" secondAttribute="trailing" constant="10" id="G1O-9o-4b2"/>
+                                    <constraint firstItem="fyS-kR-ocK" firstAttribute="leading" secondItem="tin-3J-MOZ" secondAttribute="trailing" constant="8" id="Jgo-60-8U4"/>
                                     <constraint firstItem="fyS-kR-ocK" firstAttribute="top" secondItem="0Xt-Kc-x8f" secondAttribute="top" constant="5" id="LMr-ao-rQa"/>
+                                    <constraint firstItem="tin-3J-MOZ" firstAttribute="leading" secondItem="0wA-8g-UoU" secondAttribute="leading" id="MjY-vm-f8g"/>
+                                    <constraint firstItem="tin-3J-MOZ" firstAttribute="top" secondItem="xp4-uU-tcG" secondAttribute="top" id="N8z-e8-lcG"/>
                                     <constraint firstAttribute="trailing" secondItem="0wA-8g-UoU" secondAttribute="trailing" constant="12" id="adD-sg-gzh"/>
                                     <constraint firstAttribute="height" constant="73" id="bi3-yG-T0Q"/>
-                                    <constraint firstItem="0wA-8g-UoU" firstAttribute="top" secondItem="Ot1-QP-SIl" secondAttribute="bottom" id="hSr-4X-rOp"/>
+                                    <constraint firstItem="Dgi-k9-BM7" firstAttribute="top" secondItem="0wA-8g-UoU" secondAttribute="bottom" constant="19" id="e5e-Zq-DOy"/>
                                     <constraint firstItem="xp4-uU-tcG" firstAttribute="top" secondItem="0Xt-Kc-x8f" secondAttribute="top" constant="10" id="j3m-hv-9Pq"/>
                                     <constraint firstItem="0wA-8g-UoU" firstAttribute="leading" secondItem="xp4-uU-tcG" secondAttribute="trailing" constant="14" id="jZE-fc-87I"/>
-                                    <constraint firstItem="Ot1-QP-SIl" firstAttribute="leading" secondItem="xp4-uU-tcG" secondAttribute="trailing" constant="14" id="kFb-fh-cgD"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ot1-QP-SIl" secondAttribute="trailing" constant="12" id="q9C-NQ-6rt"/>
-                                    <constraint firstItem="Ot1-QP-SIl" firstAttribute="top" secondItem="fyS-kR-ocK" secondAttribute="bottom" constant="2" id="qKR-Qk-Frw"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k4C-PG-kzo" userLabel="View Middle">
@@ -520,7 +516,7 @@
                 <outlet property="topContent" destination="Adz-MB-5mC" id="hso-Xu-7VU"/>
                 <outlet property="unreadIcon" destination="fyS-kR-ocK" id="4cE-g8-1Zv"/>
                 <outlet property="userImageView" destination="xp4-uU-tcG" id="qIP-xQ-mhY"/>
-                <outlet property="userNamelabel" destination="Ot1-QP-SIl" id="gMa-2V-XLd"/>
+                <outlet property="userNamelabel" destination="tin-3J-MOZ" id="EnT-4R-Dwf"/>
                 <outlet property="userTapView" destination="0Xt-Kc-x8f" id="wtB-Y2-mKf"/>
             </connections>
             <point key="canvasLocation" x="227" y="256"/>

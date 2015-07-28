@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -13,9 +13,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -38,15 +35,12 @@
                                     <constraint firstAttribute="height" constant="60" id="u5J-Yn-02N"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFC-df-PN8" userLabel="user_name">
-                                <rect key="frame" x="76" y="18" width="214" height="21"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3bl-4F-Fi6" customClass="ViewLabelUser">
+                                <rect key="frame" x="76" y="13" width="214" height="26"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="7IY-sK-q9X"/>
+                                    <constraint firstAttribute="height" constant="26" id="yEa-bU-fdm"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                                <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aw-P8-EwF" userLabel="create_time">
                                 <rect key="frame" x="76" y="36" width="214" height="21"/>
                                 <constraints>
@@ -311,14 +305,14 @@
                             <constraint firstItem="74s-oq-gaN" firstAttribute="leading" secondItem="3Xl-wK-C6H" secondAttribute="leading" constant="10" id="JmU-C1-S0P"/>
                             <constraint firstItem="kEh-bU-gCX" firstAttribute="leading" secondItem="3Xl-wK-C6H" secondAttribute="leading" id="PuG-VP-Y70"/>
                             <constraint firstItem="74s-oq-gaN" firstAttribute="top" secondItem="BF2-9t-61W" secondAttribute="bottom" constant="7" id="QKO-Gu-hvb"/>
-                            <constraint firstItem="nFC-df-PN8" firstAttribute="leading" secondItem="BF2-9t-61W" secondAttribute="trailing" constant="8" id="SVv-Fc-pbn"/>
-                            <constraint firstAttribute="trailing" secondItem="nFC-df-PN8" secondAttribute="trailing" constant="10" id="U6k-Ws-siU"/>
+                            <constraint firstItem="3bl-4F-Fi6" firstAttribute="leading" secondItem="BF2-9t-61W" secondAttribute="trailing" constant="8" id="Scx-uW-f7j"/>
                             <constraint firstAttribute="trailing" secondItem="eYA-SP-qxu" secondAttribute="trailing" id="Uvw-Oo-Isy"/>
-                            <constraint firstItem="nFC-df-PN8" firstAttribute="top" secondItem="3Xl-wK-C6H" secondAttribute="top" constant="18" id="Vri-RO-WCB"/>
                             <constraint firstItem="eYA-SP-qxu" firstAttribute="top" secondItem="74s-oq-gaN" secondAttribute="bottom" constant="8" id="XcF-n2-KcG"/>
                             <constraint firstItem="9aw-P8-EwF" firstAttribute="leading" secondItem="BF2-9t-61W" secondAttribute="trailing" constant="8" id="h0e-4Y-Eh2"/>
                             <constraint firstItem="9aw-P8-EwF" firstAttribute="top" secondItem="3Xl-wK-C6H" secondAttribute="top" constant="36" id="hGn-TL-9wk"/>
+                            <constraint firstAttribute="trailing" secondItem="3bl-4F-Fi6" secondAttribute="trailing" constant="10" id="peA-pq-wC9"/>
                             <constraint firstAttribute="bottom" secondItem="kEh-bU-gCX" secondAttribute="bottom" id="svz-0T-wQJ"/>
+                            <constraint firstItem="3bl-4F-Fi6" firstAttribute="top" secondItem="3Xl-wK-C6H" secondAttribute="top" constant="13" id="tOQ-Lh-er6"/>
                             <constraint firstItem="BF2-9t-61W" firstAttribute="leading" secondItem="3Xl-wK-C6H" secondAttribute="leading" constant="8" id="yH4-yl-IUi"/>
                         </constraints>
                     </view>
@@ -336,7 +330,7 @@
                 <outlet property="accuracyrate" destination="Mly-Fa-Wgm" id="vei-9S-cu2"/>
                 <outlet property="commentbutton" destination="SYO-33-ezC" id="tno-DY-slY"/>
                 <outlet property="commentlabel" destination="74s-oq-gaN" id="lXm-gQ-QcO"/>
-                <outlet property="namelabel" destination="nFC-df-PN8" id="hV4-JX-4ht"/>
+                <outlet property="namelabel" destination="3bl-4F-Fi6" id="X28-WN-xQe"/>
                 <outlet property="qualityrate" destination="OEY-CI-0aS" id="tXU-n1-VuJ"/>
                 <outlet property="servicerate" destination="hhY-OU-d5i" id="ucw-Gx-PHg"/>
                 <outlet property="speedrate" destination="NGX-yJ-PKV" id="ZE1-65-gDl"/>

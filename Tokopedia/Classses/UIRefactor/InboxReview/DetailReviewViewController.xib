@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -44,8 +44,8 @@
                 <outlet property="speedrate" destination="bhu-cR-wAx" id="bgq-jo-vhr"/>
                 <outlet property="talkInputView" destination="Clf-QR-SE2" id="Y9u-OD-NWa"/>
                 <outlet property="timelabel" destination="6be-sE-orR" id="9HW-fG-ZYd"/>
+                <outlet property="userButton" destination="4e1-tX-RrR" id="ht9-aO-HAR"/>
                 <outlet property="userImageView" destination="s9u-CW-HzA" id="afd-Uk-CPN"/>
-                <outlet property="userNamelabel" destination="g4z-kv-MBi" id="idf-lj-avW"/>
                 <outlet property="userView" destination="W0x-wc-Tvn" id="yGj-N0-mXo"/>
                 <outlet property="view" destination="3sB-MC-Mi0" id="SHL-5Q-Knu"/>
             </connections>
@@ -108,6 +108,13 @@
                                                 <constraint firstAttribute="height" constant="1" id="w4a-Vc-6aw"/>
                                             </constraints>
                                         </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4e1-tX-RrR" customClass="ViewLabelUser">
+                                            <rect key="frame" x="74" y="10" width="178" height="26"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="26" id="Hyw-dg-io7"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
@@ -116,13 +123,16 @@
                                         <constraint firstItem="s9u-CW-HzA" firstAttribute="top" secondItem="W0x-wc-Tvn" secondAttribute="top" constant="10" id="6UN-uD-mzE"/>
                                         <constraint firstItem="s9u-CW-HzA" firstAttribute="leading" secondItem="W0x-wc-Tvn" secondAttribute="leading" constant="8" id="D1P-MN-MEX"/>
                                         <constraint firstAttribute="trailing" secondItem="E80-yY-cPl" secondAttribute="trailing" constant="10" id="M5I-fj-meC"/>
+                                        <constraint firstItem="4e1-tX-RrR" firstAttribute="leading" secondItem="g4z-kv-MBi" secondAttribute="leading" id="NDb-Ao-Btd"/>
                                         <constraint firstItem="6be-sE-orR" firstAttribute="top" secondItem="Kxx-pW-z3B" secondAttribute="bottom" constant="11" id="Sjb-2m-ug7"/>
+                                        <constraint firstItem="4e1-tX-RrR" firstAttribute="top" secondItem="s9u-CW-HzA" secondAttribute="top" id="Yhv-7m-D3L"/>
                                         <constraint firstAttribute="trailing" secondItem="g4z-kv-MBi" secondAttribute="trailing" constant="32" id="cML-eo-9MZ"/>
                                         <constraint firstItem="g4z-kv-MBi" firstAttribute="leading" secondItem="s9u-CW-HzA" secondAttribute="trailing" constant="16" id="dtM-OQ-SnK"/>
                                         <constraint firstItem="g4z-kv-MBi" firstAttribute="top" secondItem="W0x-wc-Tvn" secondAttribute="top" constant="15" id="eG6-FH-74q"/>
                                         <constraint firstItem="Kxx-pW-z3B" firstAttribute="top" secondItem="W0x-wc-Tvn" secondAttribute="top" id="f5g-LU-XDL"/>
                                         <constraint firstAttribute="bottom" secondItem="E80-yY-cPl" secondAttribute="bottom" id="gOl-am-kvB"/>
                                         <constraint firstAttribute="trailing" secondItem="Kxx-pW-z3B" secondAttribute="trailing" constant="28" id="jcn-gf-tLg"/>
+                                        <constraint firstAttribute="trailing" secondItem="4e1-tX-RrR" secondAttribute="trailing" constant="68" id="mIF-KG-PmN"/>
                                         <constraint firstItem="E80-yY-cPl" firstAttribute="leading" secondItem="W0x-wc-Tvn" secondAttribute="leading" constant="10" id="yL6-po-tJ1"/>
                                         <constraint firstAttribute="height" constant="70" id="zE8-nu-sCq"/>
                                     </constraints>
