@@ -126,4 +126,10 @@
     return timeLeft;
 }
 
+- (BOOL) isNotAllBaseCharacter
+{
+    NSCharacterSet * set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ "]invertedSet];
+    return [self rangeOfCharacterFromSet:set].location != NSNotFound;
+}
+
 @end

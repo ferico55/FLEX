@@ -15,4 +15,6 @@
 +(NSString *)getLinkFromHTMLString:(NSString*)html;
 +(NSString*) timeLeftSinceDate:(NSDate *)dateT;
 
+- (BOOL) isNotAllBaseCharacter;
+
 @end
