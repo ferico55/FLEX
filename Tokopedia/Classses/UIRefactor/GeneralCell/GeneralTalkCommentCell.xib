@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -9,9 +9,6 @@
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
             <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -24,15 +21,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="73.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mantap" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gor-g4-QIA">
-                        <rect key="frame" x="78" y="12" width="234" height="21"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CjV-oG-P67" customClass="ViewLabelUser">
+                        <rect key="frame" x="78" y="10" width="234" height="26"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="nJr-2v-gKt"/>
+                            <constraint firstAttribute="height" constant="26" id="HsV-1n-Pqa"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="arr-7l-tfF">
                         <rect key="frame" x="15" y="10" width="50" height="50"/>
                         <constraints>
@@ -69,20 +63,26 @@
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <color key="tintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
+                    <constraint firstItem="zzK-ok-yaY" firstAttribute="leading" secondItem="CjV-oG-P67" secondAttribute="trailing" constant="8" id="3KG-Ny-7pk"/>
                     <constraint firstItem="arr-7l-tfF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="4pq-OH-muA"/>
                     <constraint firstItem="0Dn-bB-6Dv" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="58q-6v-YzV"/>
-                    <constraint firstItem="Gor-g4-QIA" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="Bbb-xe-Xqn"/>
-                    <constraint firstItem="Gor-g4-QIA" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="DDH-Bu-8Ut"/>
                     <constraint firstItem="Ju3-7W-SNy" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="GYF-Fj-RMF"/>
                     <constraint firstItem="arr-7l-tfF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="LFA-Tv-of8"/>
                     <constraint firstItem="zzK-ok-yaY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="O5k-6W-KBe"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Ju3-7W-SNy" secondAttribute="trailing" constant="17" id="PuI-ft-IbI"/>
                     <constraint firstAttribute="trailing" secondItem="zzK-ok-yaY" secondAttribute="trailing" constant="5" id="RGa-gp-kjH"/>
+                    <constraint firstItem="CjV-oG-P67" firstAttribute="leading" secondItem="0Dn-bB-6Dv" secondAttribute="leading" id="WIj-kR-iQf"/>
                     <constraint firstItem="Ju3-7W-SNy" firstAttribute="top" secondItem="0Dn-bB-6Dv" secondAttribute="bottom" constant="1" id="e8Y-2W-2qc"/>
                     <constraint firstItem="0Dn-bB-6Dv" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="p1c-GV-GOL"/>
+                    <constraint firstItem="CjV-oG-P67" firstAttribute="top" secondItem="arr-7l-tfF" secondAttribute="top" id="rST-12-Hsp"/>
                     <constraint firstItem="0Dn-bB-6Dv" firstAttribute="top" secondItem="zzK-ok-yaY" secondAttribute="bottom" constant="7" id="t9T-4r-h3U"/>
-                    <constraint firstItem="Gor-g4-QIA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="vXD-sp-uC2"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="CjV-oG-P67" secondAttribute="trailing" id="ycM-Fc-ZxT"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="3KG-Ny-7pk"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
@@ -90,7 +90,7 @@
                 <outlet property="commentlabel" destination="Ju3-7W-SNy" id="ZUu-uJ-9Cc"/>
                 <outlet property="create_time" destination="0Dn-bB-6Dv" id="el3-b8-rg0"/>
                 <outlet property="user_image" destination="arr-7l-tfF" id="99p-X6-E1B"/>
-                <outlet property="user_name" destination="Gor-g4-QIA" id="eIV-kW-Kqy"/>
+                <outlet property="user_name" destination="CjV-oG-P67" id="D3U-sV-AOD"/>
             </connections>
             <point key="canvasLocation" x="427" y="275"/>
         </tableViewCell>
