@@ -126,10 +126,10 @@
     return timeLeft;
 }
 
-- (BOOL) isAllNonNumber
+- (BOOL) isNotAllBaseCharacter
 {
-    NSCharacterSet* numbers = [NSCharacterSet decimalDigitCharacterSet];
-    NSRange r = [self rangeOfCharacterFromSet: numbers];
+    NSCharacterSet* charracters = [NSCharacterSet nonBaseCharacterSet];
+    NSRange r = [self rangeOfCharacterFromSet: charracters];
     return r.location == NSNotFound;
 }
 

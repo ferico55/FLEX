@@ -214,7 +214,7 @@
     }
     else
     {
-        if (![_firstNameTextField.text isAllNonNumber]) {
+        if ([_firstNameTextField.text isNotAllBaseCharacter]) {
             isValid = NO;
             [errorMessage addObject:@"Nama depan tidak valid"];
         }
@@ -225,7 +225,7 @@
     }
     else
     {
-        if (![_lastNameTextField.text isAllNonNumber]) {
+        if ([_lastNameTextField.text isNotAllBaseCharacter]) {
             isValid = NO;
             [errorMessage addObject:@"Nama belakang tidak valid"];
         }
@@ -244,7 +244,7 @@
     }
     else
     {
-        if (![_cityTextField.text isAllNonNumber]) {
+        if ([_cityTextField.text isNotAllBaseCharacter]) {
             isValid = NO;
             [errorMessage addObject:@"Kota tidak valid"];
         }
@@ -255,7 +255,7 @@
     }
     else
     {
-        if (![_provinceTextField.text isAllNonNumber]) {
+        if ([_provinceTextField.text isNotAllBaseCharacter]) {
             isValid = NO;
             [errorMessage addObject:@"Provinsi tidak valid"];
         }
