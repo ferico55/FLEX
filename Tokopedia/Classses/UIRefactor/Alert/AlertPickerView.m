@@ -190,7 +190,9 @@
     secondIndex = [[_data objectForKey:DATA_INDEX_SECOND_KEY] integerValue];
     
     [pickerView selectRow:index inComponent:0 animated:NO];
-    [pickerView selectRow:secondIndex inComponent:1 animated:NO];
+    if (_pickerCount==2) {
+        [pickerView selectRow:secondIndex?:0 inComponent:1 animated:NO];
+    }
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
