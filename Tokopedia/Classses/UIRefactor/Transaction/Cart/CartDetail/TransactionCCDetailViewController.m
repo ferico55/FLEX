@@ -461,6 +461,13 @@
         [errorMessage addObject:@"Nama harus diisi."];
         isValid = NO;
     }
+    else
+    {
+        if ([_nameTextField.text isNotAllBaseCharacter]) {
+            isValid = NO;
+            [errorMessage addObject:@"Nama belakang tidak valid."];
+        }
+    }
     if ([_CCNumberTextField.text isEqualToString:@""]) {
         [errorMessage addObject:@"Nomor kartu kredit harus diisi."];
         isValid = NO;

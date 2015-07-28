@@ -56,8 +56,6 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    [_informationLabel setCustomAttributedText:_informationLabel.text];
-    
     [self setTextFieldData];
 }
 
@@ -168,6 +166,32 @@
     _activeTextView = nil;
 }
 
+- (void)textViewDidChange:(UITextView *)textView
+{
+    UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
+    if (textView.text.length > 0) {
+        placeholderLabel.hidden = YES;
+    } else {
+        placeholderLabel.hidden = NO;
+    }
+}
+
+- (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
+{
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
+    placeholderLabel.text = placeholderText;
+    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+    placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+    placeholderLabel.tag = 1;
+    [textView addSubview:placeholderLabel];
+    
+    placeholderLabel = (UILabel *)[textView viewWithTag:1];
+    if (textView.text.length > 0) {
+        placeholderLabel.hidden = YES;
+    } else {
+        placeholderLabel.hidden = NO;
+    }
+}
 
 #pragma mark - Methods
 
@@ -180,6 +204,10 @@
     _cityTextField.text = _ccData.city?:@"";
     _provinceTextField.text = _ccData.state?:@"";
     _addressTextView.text = _ccData.address?:@"";
+    
+    [_informationLabel setCustomAttributedText:_informationLabel.text];
+    [self setPlaceholder:@"Harus diisi" textView:_addressTextView];
+
 }
 
 -(IBAction)nextButton:(id)sender
@@ -227,16 +255,31 @@
     {
         if ([_lastNameTextField.text isNotAllBaseCharacter]) {
             isValid = NO;
-            [errorMessage addObject:@"Nama belakang tidak valid"];
+            [errorMessage addObject:@"Nama belakang tidak valid."];
         }
     }
     if ([_phoneTextField.text isEqualToString:@""]) {
         isValid = NO;
-        [errorMessage addObject:@"Telepon harus diisi."];
+        [errorMessage addObject:@"Nomor telepon harus diisi."];
     }
+    else
+    {
+        if (_phoneTextField.text.length < 6) {
+            isValid = NO;
+            [errorMessage addObject:@"Nomor telepon harus lebih dari 6 karakter."];
+        }
+    }
+    
     if ([_postCodeTextField.text isEqualToString:@""]) {
         isValid = NO;
         [errorMessage addObject:@"Kode pos harus diisi."];
+    }
+    else
+    {
+        if (_postCodeTextField.text.length < 5) {
+            isValid = NO;
+            [errorMessage addObject:@"Kode pos harus lebih dari 5 karakter."];
+        }
     }
     if ([_cityTextField.text isEqualToString:@""]) {
         isValid = NO;
