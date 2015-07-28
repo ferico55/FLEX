@@ -21,6 +21,6 @@
     id<AlertRateDelegate> del;
 }
 
-- (instancetype)initViewWithDelegate:(id<AlertRateDelegate>)delegate withDefaultScore:(NSString *)tag;
+- (instancetype)initViewWithDelegate:(id<AlertRateDelegate>)delegate withDefaultScore:(NSString *)tag from:(NSString *)strFrom;
 - (void)show;
 @end

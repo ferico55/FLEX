@@ -15,13 +15,12 @@
 #import "LoadingView.h"
 #import "NoResultView.h"
 
-#import "GeneralProductCollectionViewCell.h"
 #import "NavigateViewController.h"
 #import "ProductCell.h"
 
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
-NSInteger const normalWidth = 320;
-NSInteger const normalHeight = 568;
+static NSInteger const normalWidth = 320;
+static NSInteger const normalHeight = 568;
 
 @interface ProductFeedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 

@@ -27,6 +27,7 @@
 #import "string_inbox_message.h"
 #import "String_Reputation.h"
 #import "SkipReviewResult.h"
+#import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
@@ -35,8 +36,8 @@
 #define CCellIdentifier @"cell"
 #define CGetListReputationReview @"get_list_reputation_review"
 #define CSkipReputationReview @"skip_reputation_review"
-#define CStringGagalLewatiReview @"Gagal lewati review"
-#define CStringSuccessLewatiReview @"Berhasil lewati review"
+#define CStringGagalLewatiReview @"Anda gagal lewati review"
+#define CStringSuccessLewatiReview @"Anda telah berhasil lewati review"
 #define CStringSemuaReviewDiLewati @"Semua review telah dilewati"
 #define CTagListReputationReview 1
 #define CTagSkipReputationReview 2
@@ -55,6 +56,9 @@
     float heightBtnFooter;
     NSMutableParagraphStyle *style;
     
+    TAGContainer *_gtmContainer;
+    NSString *baseUrl, *baseActionUrl;
+    NSString *postUrl, *postActionUrl;
     UIView *shadowBlockUI;
     UIActivityIndicatorView *activityIndicator;
     UIRefreshControl *refreshControl;
@@ -71,6 +75,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configureGTM];
     page = 0;
     tempTagSkip = -1;
     
@@ -87,7 +92,7 @@
     tableContent.delegate = self;
     tableContent.dataSource = self;
     [tableContent reloadData];
-    self.title = _detailMyInboxReputation.invoice_ref_num;
+    
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
@@ -96,6 +101,8 @@
     
     if([_detailMyInboxReputation.role isEqualToString:@"1"])//1 is pembeli
         _detailMyInboxReputation.updated_reputation_review = _detailMyInboxReputation.viewModel.updated_reputation_review = @"0";
+    
+    self.title = @"Review";
 }
 
 
@@ -162,6 +169,17 @@
         [self setPropertyLabelDesc:tempLabel];
         [self initLabelDesc:tempLabel withText:detailReputationReview.viewModel.review_message];
         tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(tempLabel.bounds.size.width, 9999)];
+    }
+    
+    if([detailReputationReview.review_is_skipped isEqualToString:@"1"]) {
+        if([_detailMyInboxReputation.role isEqualToString:@"2"]) {
+            height -= CHeightContentStar;
+        }
+    }
+    else if(detailReputationReview.review_message==nil || [detailReputationReview.review_message isEqualToString:@"0"]) {
+        if([_detailMyInboxReputation.role isEqualToString:@"2"]) {
+            height -= CHeightContentStar;
+        }
     }
     
     return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
@@ -377,7 +395,7 @@
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
     lblDesc.backgroundColor = [UIColor clearColor];
     lblDesc.textAlignment = NSTextAlignmentLeft;
-    lblDesc.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    lblDesc.font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
     lblDesc.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
     lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
     lblDesc.numberOfLines = 0;
@@ -432,10 +450,10 @@
 
 - (NSString*)getPath:(int)tag {
     if(tag == CTagListReputationReview) {
-        return @"inbox-reputation.pl";
+        return [postUrl isEqualToString:@""] ? @"inbox-reputation.pl" : postUrl;
     }
     else if(tag == CTagSkipReputationReview) {
-        return @"action/reputation.pl";
+        return [postActionUrl isEqualToString:@""] ? @"action/reputation.pl" : postActionUrl;
     }
     
     return nil;
@@ -443,7 +461,12 @@
 
 - (id)getObjectManager:(int)tag {
     if(tag == CTagListReputationReview) {
-        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectManager *objectManager;
+        if([baseUrl isEqualToString:kTkpdBaseURLString] || [baseUrl isEqualToString:@""]) {
+            objectManager = [RKObjectManager sharedClient];
+        } else {
+            objectManager = [RKObjectManager sharedClient:baseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[MyReviewReputation class]];
@@ -538,7 +561,14 @@
         return objectManager;
     }
     else if(tag == CTagSkipReputationReview) {
-        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectManager *objectManager;
+        if([baseActionUrl isEqualToString:kTkpdBaseURLString] || [baseActionUrl isEqualToString:@""]) {
+            objectManager = [RKObjectManager sharedClient];
+        } else {
+            objectManager = [RKObjectManager sharedClient:baseActionUrl];
+        }
+        
+        
         RKObjectMapping *skipReviewMapping = [RKObjectMapping mappingForClass:[SkipReview class]];
         [skipReviewMapping addAttributeMappingsFromArray:@[CStatus,
                                                           CServerProcessTime,
@@ -837,6 +867,29 @@
 }
 
 - (void)actionFlagReview:(id)sender {
-    
+    UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+    if([tempViewController isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
+        UIView *tempView = [UIView new];
+        tempView.tag = _tag;
+        [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) tempViewController) getSegmentedViewController]) actionFlagReview:tempView];
+    }
 }
+
+
+#pragma mark - GTM
+- (void)configureGTM {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    baseUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationBase];
+    postUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+    
+    baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
+    postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
+}
+
 @end

@@ -218,9 +218,13 @@
                 
                 
                 //Set Transaksi Gagal and success
+                NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+                style.lineSpacing = 4.0f;
+
                 lblTransaksiGagal.text = [NSString stringWithFormat:@"%d%% %@", (int)ceilf([_detailShopResult.stats.rate_failure floatValue]), CStringTransaksiGagal];
                 UIFont *boldFont = [UIFont boldSystemFontOfSize:lblTransaksiGagal.font.pointSize];
-                NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblTransaksiGagal.textColor, NSForegroundColorAttributeName, nil];
+                NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblTransaksiGagal.textColor, NSForegroundColorAttributeName, style, NSParagraphStyleAttributeName, nil];
+
                 NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblTransaksiGagal.font, NSFontAttributeName, [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
                 
                 NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:lblTransaksiGagal.text attributes:attrs];

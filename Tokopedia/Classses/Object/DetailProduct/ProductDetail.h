@@ -56,5 +56,6 @@
 @property (nonatomic, strong) NSString *product_cart_id;
 @property (nonatomic, strong) NSString *product_total_weight;
 @property (nonatomic, strong) NSString *product_error_msg;
+@property (nonatomic, strong) NSString *product_price_last;
 
 @end

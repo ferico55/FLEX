@@ -40,19 +40,19 @@
         viewSeparatorProduct.frame = CGRectMake(CPaddingTopBottom, imageProfile.frame.origin.y+imageProfile.bounds.size.height+CPaddingTopBottom, lineSeparatorDesc.bounds.size.width, 1);
         imageProduct.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + viewSeparatorProduct.frame.origin.y+viewSeparatorProduct.bounds.size.height, CheightImage, CheightImage);
         labelProductName.frame = CGRectMake(viewLabelUser.frame.origin.x, imageProduct.frame.origin.y, viewLabelUser.bounds.size.width, imageProduct.bounds.size.height);
-        lblDesc.frame = CGRectMake(lblDesc.frame.origin.x, CPaddingTopBottom + imageProduct.frame.origin.y+imageProduct.bounds.size.height, lblDesc.bounds.size.width, lblDesc.bounds.size.height);
+        lblDesc.frame = CGRectMake(lblDesc.frame.origin.x, CPaddingTopBottom + imageProduct.frame.origin.y+imageProduct.bounds.size.height + CPaddingTopBottom, lblDesc.bounds.size.width, lblDesc.bounds.size.height);
     }
     
     
-    lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
+    lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
     viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, viewContent.bounds.size.width-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
     lineSeparatorDesc.frame = CGRectMake(0, 0, viewContentRating.bounds.size.width, lineSeparatorDesc.bounds.size.height);
     
-    lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, lineSeparatorDesc.frame.origin.y+lineSeparatorDesc.bounds.size.height+CPaddingTopBottom, lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
-    viewStarKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width, lblKualitas.frame.origin.y, viewStarKualitas.bounds.size.width, viewStarKualitas.bounds.size.height);
+    lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, lineSeparatorDesc.frame.origin.y+lineSeparatorDesc.bounds.size.height+((viewContentRating.bounds.size.height-lblKualitas.bounds.size.height)/2.0f), lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
+    viewStarKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width+2, lblKualitas.frame.origin.y-3, viewStarKualitas.bounds.size.width, viewStarKualitas.bounds.size.height);
     
-    viewStarAkurasi.frame = CGRectMake(viewContentRating.bounds.size.width-viewStarAkurasi.bounds.size.width-lblKualitas.frame.origin.x, lblKualitas.frame.origin.y, viewStarAkurasi.bounds.size.width, viewStarAkurasi.bounds.size.height);
-    lblAkurasi.frame = CGRectMake(viewStarAkurasi.frame.origin.x-lblAkurasi.bounds.size.width, viewStarAkurasi.frame.origin.y+3, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
+    viewStarAkurasi.frame = CGRectMake(viewContentRating.bounds.size.width-viewStarAkurasi.bounds.size.width, viewStarKualitas.frame.origin.y, viewStarAkurasi.bounds.size.width, viewStarAkurasi.bounds.size.height);
+    lblAkurasi.frame = CGRectMake(viewStarAkurasi.frame.origin.x-lblAkurasi.bounds.size.width-2, lblKualitas.frame.origin.y, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
     
     
     //View content action
@@ -82,6 +82,7 @@
     if(viewSeparatorProduct == nil) {
         isProductCell = YES;        
         viewSeparatorProduct = [[UIView alloc] initWithFrame:CGRectZero];
+        viewSeparatorProduct.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
         imageProduct = [[UIImageView alloc] initWithFrame:CGRectZero];
         labelProductName = [[UILabel alloc] initWithFrame:CGRectZero];
         labelProductName.font = [UIFont fontWithName:@"Gotham Medium" size:15.0f];
@@ -139,6 +140,10 @@
 
 - (UIView *)getViewContent {
     return viewContent;
+}
+
+- (UIView *)getViewSeparatorProduct {
+    return viewSeparatorProduct;
 }
 
 - (UIView *)getViewContentAction {
@@ -217,7 +222,7 @@
 - (void)setDescription:(NSString *)strDescription
 {
     [_delegate initLabelDesc:lblDesc withText:strDescription];
-    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + (isProductCell? imageProduct.frame.origin.y+imageProduct.bounds.size.height : imageProfile.frame.origin.y+imageProfile.bounds.size.height), viewContent.bounds.size.width-(imageProfile.frame.origin.x*2), 0);
+    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + (isProductCell? imageProduct.frame.origin.y+imageProduct.bounds.size.height : imageProfile.frame.origin.y+imageProfile.bounds.size.height)+CPaddingTopBottom, viewContent.bounds.size.width-(imageProfile.frame.origin.x*2), 0);
     CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
     CGRect tempLblRect = lblDesc.frame;
     tempLblRect.size.height = tempSizeDesc.height;

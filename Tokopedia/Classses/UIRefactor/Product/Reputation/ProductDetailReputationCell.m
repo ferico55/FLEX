@@ -19,6 +19,9 @@
     tvDesc.backgroundColor = [UIColor clearColor];
     [viewStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapStar:)]];
     [viewStar setUserInteractionEnabled:YES];
+    
+    imgProfile.layer.cornerRadius = imgProfile.bounds.size.width/2.0f;
+    imgProfile.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

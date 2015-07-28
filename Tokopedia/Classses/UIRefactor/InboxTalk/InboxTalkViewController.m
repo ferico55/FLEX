@@ -26,6 +26,8 @@
 #import "URLCacheController.h"
 #import "NoResultView.h"
 #import "DetailProductViewController.h"
+#import "TAGDataLayer.h"
+
 
 @interface InboxTalkViewController ()
 <
@@ -87,6 +89,9 @@
     NSOperationQueue *_operationUnfollowQueue;
     NSOperationQueue *_operationDeleteQueue;
     
+    NSString *_inboxTalkBaseUrl;
+    NSString *_inboxTalkPostUrl;
+    NSString *_inboxTalkFullUrl;
     
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
@@ -95,7 +100,8 @@
     
     NSIndexPath *_selectedIndexPath;
     NoResultView *_noResultView;
-    
+    TAGContainer *_gtmContainer;
+    UserAuthentificationManager *_userManager;
 }
 
 #pragma mark - Initialization
@@ -153,6 +159,7 @@
     _operationDeleteQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
     _talkList = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
     _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
@@ -167,8 +174,9 @@
     if (_talkList.count > 0) {
         _isnodata = NO;
     }
+    // GTM
+    [self configureGTM];
     
-
     [self initCache];
     [self configureRestKit];
     
@@ -376,7 +384,14 @@
 #pragma mark - Request + Mapping
 - (void)configureRestKit
 {
-    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  ![_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxTalkBaseUrl]:[RKObjectManager sharedClient];
+    if([_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxTalkBaseUrl isEqualToString:@""]) {
+        _objectmanager = [RKObjectManager sharedClient];
+    } else {
+        _objectmanager = [RKObjectManager sharedClient:_inboxTalkBaseUrl];
+    }
+    
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
@@ -435,7 +450,7 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDINBOX_TALK_APIPATH
+                                                                                             pathPattern:[_inboxTalkPostUrl isEqualToString:@""] ? KTKPDMESSAGE_TALK : _inboxTalkPostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -495,7 +510,7 @@
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:KTKPDMESSAGE_TALK
+                                                                      path:[_inboxTalkPostUrl isEqualToString:@""] ? KTKPDMESSAGE_TALK : _inboxTalkPostUrl
                                                                 parameters:[param encrypt]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
@@ -639,6 +654,10 @@
                 TKPD_TALK_USER_LABEL:list.talk_user_label,
                 TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation.positive_percentage
                 };
+    
+    NSDictionary *userinfo;
+    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(row)};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
 //    DetailProductViewController *vc = [DetailProductViewController new];
 //    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : @"11957147"};
@@ -940,6 +959,17 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _inboxTalkBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkBase];
+    _inboxTalkPostUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkPost];
 }
 
 @end

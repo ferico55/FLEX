@@ -15,7 +15,7 @@
 #define CFormatWaitYourComment @"%@ Produk menunggu komentar anda"
 #define CFormatUlasanIsEdit @"%@ Ulasan produk telah diperbaharui"
 #define CStringLihaReview @"Lihat Review"
-#define CFormatUlasanDiKomentari @"%@ Produk ulasan telah dikomentari"
+#define CFormatUlasanDiKomentari @"%@ Ulasan produk telah dikomentari"
 
 @implementation MyReviewReputationCell
 
@@ -40,32 +40,21 @@
     [labelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionLabelUser:)]];
     [imageFlagReview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionFlagReview:)]];
     
-    
     //Set image
-    CGRect rect = CGRectMake(0, 0, 20 ,20);
-    UIGraphicsBeginImageContext(rect.size);
-    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] drawInRect:rect];
-    imageQSmile = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    UIGraphicsBeginImageContext(rect.size);
-    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] drawInRect:rect];
-    imageQNetral = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    UIGraphicsBeginImageContext(rect.size);
-    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] drawInRect:rect];
-    imageQBad = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    imageQSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile20" ofType:@"png"]];
+    imageQNetral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral20" ofType:@"png"]];
+    imageQBad = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad20" ofType:@"png"]];
     
     
     imageQuestionBlue = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_questionmark_blue" ofType:@"png"]];
     imageQuestionGray = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_questionmark_grey" ofType:@"png"]];
-    imageSad = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]];
-    imageNetral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]];
-    imageSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]];
-    imageNeutral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral" ofType:@"png"]];
+    imageSad = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad25" ofType:@"png"]];
+    imageNetral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral25" ofType:@"png"]];
+    imageSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile25" ofType:@"png"]];
+    imageNeutral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral25" ofType:@"png"]];
     
+    imageFlagReview.layer.cornerRadius = imageFlagReview.bounds.size.width/2.0f;
+    imageFlagReview.layer.masksToBounds = YES;
 }
 
 
@@ -169,7 +158,7 @@
 
 - (void)setView:(MyReviewReputationViewModel *)object {
     [labelUser setText:object.reviewee_name];
-    [labelUser setText:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:btnInvoice.titleLabel.font.pointSize]];
+    [labelUser setText:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:13.0f]];
     
     [labelUser setLabelBackground:[object.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual];
     [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
@@ -192,7 +181,7 @@
     
     
     //Set color smile
-    btnReview.enabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
+    btnReview.userInteractionEnabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
     if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreBad]) {
         [btnReview setImage:imageSad forState:UIControlStateNormal];
     }
@@ -200,11 +189,19 @@
         [btnReview setImage:imageNetral forState:UIControlStateNormal];
     }
     else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreGood]) {
-        btnReview.enabled = NO;
+        btnReview.userInteractionEnabled = NO;
         [btnReview setImage:imageSmile forState:UIControlStateNormal];
     }
     else {
         [btnReview setImage:imageNeutral forState:UIControlStateNormal];
+    }
+    
+    
+    if(btnReview.isUserInteractionEnabled) {
+        [btnReview setBackgroundColor:[UIColor whiteColor]];
+    }
+    else {
+        [btnReview setBackgroundColor:[UIColor colorWithRed:226/255.0f green:226/255.0f blue:226/255.0f alpha:1.0f]];
     }
     
     

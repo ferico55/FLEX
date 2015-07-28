@@ -25,6 +25,7 @@
 #import "ReviewResponse.h"
 #import "Review.h"
 #import "String_Reputation.h"
+#import "TAGDataLayer.h"
 #import "TotalLikeDislikePost.h"
 #import "TotalLikeDislike.h"
 #import "TokopediaNetworkManager.h"
@@ -36,6 +37,10 @@
 
 @implementation ProductReputationViewController
 {
+    TAGContainer *_gtmContainer;
+    NSString *productBaseUrl, *reviewActionBaseUrl;
+    NSString *productPostUrl, *reviewActionPostUrl;
+    
     NSMutableParagraphStyle *style;
     CMPopTipView *popTipView;
     UIRefreshControl *refreshControl;
@@ -55,6 +60,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configureGTM];
+    [self initNavigation];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
@@ -67,7 +74,7 @@
     operationQueueLikeDislike = [NSOperationQueue new];
     loadingLikeDislike = [NSMutableDictionary new];
     dictLikeDislike = [NSMutableDictionary new];
-    [btnFilterAllTime setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    [btnFilterAllTime setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     btnFilter6Month.tag = 0;
     btnFilterAllTime.tag = 1;
     
@@ -132,28 +139,20 @@
 #pragma mark - Method View
 - (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
 {
-    int spacing = 3;
-    
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tempBtn.frame = rectFrame;
     [tempBtn setImage:image forState:UIControlStateNormal];
     [tempBtn setTitle:strTitle forState:UIControlStateNormal];
     [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
     tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
-    
-    CGSize imageSize = tempBtn.imageView.bounds.size;
-    CGSize titleSize = tempBtn.titleLabel.bounds.size;
-    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
-    
-    tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(5.0, - imageSize.width, - (totalHeight - titleSize.height), 0.0);
+
+    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(15.0, 0.0, 0.0, 0.0);
     
     return (id)tempBtn;
 }
 
 - (void)initNavigation {
-    self.navigationController.title = @"Reputasi";
-    [self.navigationController.navigationBar sizeToFit];
+    self.title = @"Ulasan";
 }
 
 - (void)setRateStar:(int)tag withAnimate:(BOOL)isAnimate {
@@ -242,8 +241,8 @@
         tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<ceilf([review.result.advance_review.product_rating_point floatValue]))?@"icon_star_active":@"icon_star" ofType:@"png"]];
     }
     
-    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f Out of %d", [review.result.advance_review.product_rating_point floatValue], 5];
-    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"Based on %d ratings in the post %d months", [review.result.advance_review.product_rating_point intValue], 6];
+    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f dari %d", [review.result.advance_review.product_rating_point floatValue], 5];
+    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"Berdasarkan %d rating pada %d bulan terakhir", [review.result.advance_review.product_rating_point intValue], 6];
 }
 
 
@@ -272,7 +271,7 @@
     [self initLabelDesc:tempLabel withText:detailReputationReview.review_message];
 
     CGSize tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width-(CPaddingTopBottom*4), 9999)];//4 padding left and right of label description
-    return tempSizeDesc.height + (CPaddingTopBottom*6) + CHeightDate + CHeightContentRate + CHeightContentAction + CheightImage; //6 is total padding of each row component
+    return tempSizeDesc.height + (CPaddingTopBottom*8) + CHeightDate + CHeightContentRate + CHeightContentAction + CheightImage; //8 is total padding of each row component
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -313,8 +312,8 @@
     }
     
     
-    //Cek my product or not
-//    cell.getBtnMore.hidden = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+    //Chek my product or not
+    cell.getBtnMore.hidden = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.review_user_id]);
 
     
     //Set Image
@@ -471,7 +470,7 @@
     [operationQueueLikeDislike cancelAllOperations];
     [_operationQueue cancelAllOperations];
     [btnFilterAllTime setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    [btnFilter6Month setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    [btnFilter6Month setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     
     page = 0;
     strUri = nil;
@@ -488,7 +487,7 @@
     [operationQueueLikeDislike cancelAllOperations];
     [_operationQueue cancelAllOperations];
     [btnFilter6Month setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
-    [btnFilterAllTime setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    [btnFilterAllTime setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     
     
     page = 0;
@@ -547,26 +546,31 @@
         case 1:
         {
             viewStarOne.backgroundColor = [UIColor clearColor];
+            viewStarOne.layer.borderWidth = 0.0f;
         }
             break;
         case 2:
         {
             viewStarTwo.backgroundColor = [UIColor clearColor];
+            viewStarTwo.layer.borderWidth = 0.0f;
         }
             break;
         case 3:
         {
             viewStarThree.backgroundColor = [UIColor clearColor];
+            viewStarThree.layer.borderWidth = 0.0f;
         }
             break;
         case 4:
         {
             viewStarFour.backgroundColor = [UIColor clearColor];
+            viewStarFour.layer.borderWidth = 0.0f;
         }
             break;
         case 5:
         {
             viewStarFive.backgroundColor = [UIColor clearColor];
+            viewStarFive.layer.borderWidth = 0.0f;
         }
             break;
     }
@@ -576,31 +580,47 @@
         case 1:
         {
             filterStar = 1;
-            viewStarOne.backgroundColor = [UIColor greenColor];
+            viewStarOne.layer.borderColor = [[UIColor colorWithRed:255/255.0f green:152/255.0f blue:0 alpha:1.0f] CGColor];
+            viewStarOne.layer.borderWidth = 1.0f;
+            viewStarOne.layer.cornerRadius = 5.0f;
+            viewStarOne.layer.masksToBounds = YES;
+            
         }
             break;
         case 2:
         {
             filterStar = 2;
-            viewStarTwo.backgroundColor = [UIColor greenColor];
+            viewStarTwo.layer.borderColor = [[UIColor colorWithRed:255/255.0f green:152/255.0f blue:0 alpha:1.0f] CGColor];
+            viewStarTwo.layer.borderWidth = 1.0f;
+            viewStarTwo.layer.cornerRadius = 5.0f;
+            viewStarTwo.layer.masksToBounds = YES;
         }
             break;
         case 3:
         {
             filterStar = 3;
-            viewStarThree.backgroundColor = [UIColor greenColor];
+            viewStarThree.layer.borderColor = [[UIColor colorWithRed:255/255.0f green:152/255.0f blue:0 alpha:1.0f] CGColor];
+            viewStarThree.layer.borderWidth = 1.0f;
+            viewStarThree.layer.cornerRadius = 5.0f;
+            viewStarThree.layer.masksToBounds = YES;
         }
             break;
         case 4:
         {
             filterStar = 4;
-            viewStarFour.backgroundColor = [UIColor greenColor];
+            viewStarFour.layer.borderColor = [[UIColor colorWithRed:255/255.0f green:152/255.0f blue:0 alpha:1.0f] CGColor];
+            viewStarFour.layer.borderWidth = 1.0f;
+            viewStarFour.layer.cornerRadius = 5.0f;
+            viewStarFour.layer.masksToBounds = YES;
         }
             break;
         case 5:
         {
             filterStar = 5;
-            viewStarFive.backgroundColor = [UIColor greenColor];
+            viewStarFive.layer.borderColor = [[UIColor colorWithRed:255/255.0f green:152/255.0f blue:0 alpha:1.0f] CGColor];
+            viewStarFive.layer.borderWidth = 1.0f;
+            viewStarFive.layer.cornerRadius = 5.0f;
+            viewStarFive.layer.masksToBounds = YES;
         }
             break;
     }
@@ -693,7 +713,13 @@
     //1 is like
     //2 is dislike
     //3 is unlike or undislike
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    RKObjectManager *objectManager;
+    if([reviewActionBaseUrl isEqualToString:kTkpdBaseURLString] || [reviewActionBaseUrl isEqualToString:@""]) {
+        objectManager = [RKObjectManager sharedClient];
+    } else {
+        objectManager = [RKObjectManager sharedClient:reviewActionBaseUrl];
+    }
+    
     [self configureRestKitLikeDislike:objectManager];
     DetailReputationReview *detailReputationReview = arrList[btnLike.tag];
     NSDictionary* param = @{@"action":@"like_dislike_review",
@@ -701,8 +727,8 @@
                             @"like_status":@(likeDislikeTag),
                             @"shop_id":detailReputationReview.shop_id,
                             @"product_id":_strProductID};
-    
-    RKObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/review.pl" parameters:[param encrypt]];
+
+    RKObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[reviewActionPostUrl isEqualToString:@""] ? @"action/review.pl" : reviewActionPostUrl parameters:[param encrypt]];
     __block NSTimer *_timer;
     [request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"%@", operation.HTTPRequestOperation.responseString);
@@ -1049,10 +1075,10 @@
 - (void)actionRate:(id)sender {
     int paddingRightLeftContent = 10;
     DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+(paddingRightLeftContent*4), CHeightItemPopUp)];
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
+    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
     UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
     UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
     
@@ -1133,7 +1159,7 @@
 
 - (NSString*)getPath:(int)tag {
     if(tag == CTagGetProductReview) {
-        return @"product.pl";
+        return [productPostUrl isEqualToString:@""] ? @"product.pl" : productPostUrl;
     }
     
     return nil;
@@ -1141,7 +1167,12 @@
 
 - (id)getObjectManager:(int)tag {
     if(tag == CTagGetProductReview) {
-        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectManager *objectManager;
+        if([productBaseUrl isEqualToString:kTkpdBaseURLString] || [productBaseUrl isEqualToString:@""]) {
+            objectManager = [RKObjectManager sharedClient];
+        } else {
+            objectManager = [RKObjectManager sharedClient:productBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Review class]];
@@ -1284,7 +1315,7 @@
             
             segmentedControl.enabled = YES;
             btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
-            [self setRateStar:segmentedControl.selectedSegmentIndex withAnimate:YES];
+            [self setRateStar:(int)segmentedControl.selectedSegmentIndex withAnimate:YES];
         }
         else if(review.result.list != nil) {
             [arrList addObjectsFromArray:review.result.list];
@@ -1292,7 +1323,7 @@
         
         //Check next page
         strUri = review.result.paging.uri_next;
-        page = [[[self getNetworkManager:CTagGetProductReview] splitUriToPage:strUri] integerValue];
+        page = (int)[[[self getNetworkManager:CTagGetProductReview] splitUriToPage:strUri] integerValue];
         
 
         //Add delegate to talbe view
@@ -1381,5 +1412,21 @@
     [tableContent reloadData];
 }
 
+
+
+#pragma mark - GTM
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    productBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
+    productPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
+    reviewActionBaseUrl = [_gtmContainer stringForKey:GTMKeyActionReviewBase];
+    reviewActionPostUrl = [_gtmContainer stringForKey:GTMKeyActionReviewPost];
+}
 @end
 

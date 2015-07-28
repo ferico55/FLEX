@@ -177,9 +177,9 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-
-    [self updateSaldoTokopedia:nil];    
-
+    
+    [self updateSaldoTokopedia:nil];
+    
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker setAllowIDFACollection:YES];
@@ -352,7 +352,7 @@
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];
     NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];
     [_profilePictureImageView setImageWithURLRequest:request
                                     placeholderImage:nil
                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -700,9 +700,9 @@
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-//            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+            //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            //            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
             
             if([MFMailComposeViewController canSendMail]) {
                 MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
@@ -715,7 +715,7 @@
                 [emailController setMessageBody:messageBody isHTML:YES];
                 [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
                 [emailController.navigationBar setTintColor:[UIColor whiteColor]];
-                 
+                
                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
                 [self presentViewController:emailController animated:YES completion:nil];
             } else {
@@ -754,7 +754,7 @@
                                                                 object:nil
                                                               userInfo:@{}];
         }
-
+        
     }
     
     self.hidesBottomBarWhenPushed = NO;

@@ -16,7 +16,7 @@
 }
 
 - (NSString*)shop_name {
-    return [_product_name kv_decodeHTMLCharacterEntities];
+    return [_shop_name kv_decodeHTMLCharacterEntities];
 }
 
 - (ProductModelView*)viewModel {

@@ -572,6 +572,8 @@ UIAlertViewDelegate
                 //Buy
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
+                    transactionVC.wholeSales = _product.result.wholesale_price;
+                    transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
@@ -2333,7 +2335,7 @@ UIAlertViewDelegate
     style.lineSpacing = 4.0;
     style.alignment = alignment;
     NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName: color,
+                                 NSForegroundColorAttributeName: (color == nil) ? [UIColor whiteColor] : color,
                                  NSFontAttributeName:(font == nil)? fontDesc : font,
                                  NSParagraphStyleAttributeName: style,
                                  };

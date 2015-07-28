@@ -10,12 +10,13 @@
 #import "GeneralAction.h"
 #import "GiveReviewViewController.h"
 #import "TKPDTextView.h"
+#import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
-#define CStringTidakAdaPerubahan @"Tidak ada perubahan review"
+#define CStringTidakAdaPerubahan @"Tidak ada perubahan ulasan"
 #define CStringAndaTidakDapatMenurunkanRate @"Anda tidak dapat memberi penurunan rating"
 #define CStringPleaseFillReviewRating @"Rating harus diisi"
-#define CPlaceHolderTulisReview @"Tulis review disini..."
-#define CStringPleaseFillReview @"Pesan review harus lebih dari 30 karakter"
+#define CPlaceHolderTulisReview @"Tulis ulasan disini..."
+#define CStringPleaseFillReview @"Pesan ulasan harus lebih dari 30 karakter"
 #define CTagSubmitReputation 1
 
 @interface GiveReviewViewController ()<TokopediaNetworkManagerDelegate, UITextViewDelegate>
@@ -28,10 +29,15 @@
     int nRateKualitas, nRateAkurasi;
     float heightScreenView;
     TokopediaNetworkManager *tokopediaNetworkManager;
+    
+    TAGContainer *_gtmContainer;
+    NSString *baseActionUrl;
+    NSString *postActionUrl;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configureGTM];
     txtDes.placeholder = CPlaceHolderTulisReview;
     txtDes.delegate = self;
     nRateAkurasi = nRateKualitas = 0;
@@ -272,7 +278,7 @@
 
 - (NSString*)getPath:(int)tag {
     if(tag == CTagSubmitReputation) {
-        return @"action/reputation.pl";
+        return [postActionUrl isEqualToString:@""] ? @"action/reputation.pl" : postActionUrl;
     }
     
     return nil;
@@ -280,7 +286,12 @@
 
 - (id)getObjectManager:(int)tag {
     if(tag == CTagSubmitReputation) {
-        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectManager *objectManager;
+        if([baseActionUrl isEqualToString:kTkpdBaseURLString] || [baseActionUrl isEqualToString:@""]) {
+            objectManager = [RKObjectManager sharedClient];
+        } else {
+            objectManager = [RKObjectManager sharedClient:baseActionUrl];
+        }
 
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
@@ -328,7 +339,7 @@
         GeneralAction *action = stat;
         
         if([action.result.is_success isEqualToString:@"1"]) {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[isEdit? @"Anda telah berhasil mengubah review":@"Anda telah berhasil mengisi review"] delegate:self];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[isEdit? @"Anda telah berhasil mengubah ulasan":@"Anda telah berhasil mengisi ulasan"] delegate:self];
             [stickyAlertView show];
             
             if(! isEdit)
@@ -350,7 +361,7 @@
                 stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error delegate:self];
             }
             else {
-                stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[isEdit? @"Gagal memperbaharui reputasi review":@"Gagal mengisi reputasi review"] delegate:self];
+                stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[isEdit? @"Anda gagal memperbaharui ulasan":@"Anda gagal mengisi ulasan"] delegate:self];
             }
             
             [stickyAlertView show];
@@ -371,7 +382,7 @@
 - (void)actionAfterFailRequestMaxTries:(int)tag  {
     if(tag == CTagSubmitReputation) {
         [self isLoading:NO];
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal mengisi reputasi"] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[isEdit? @"Anda gagal memperbaharui ulasan":@"Anda gagal mengisi ulasan"] delegate:self];
         [stickyAlertView show];
     }
 }
@@ -383,5 +394,19 @@
     self.navigationItem.rightBarButtonItem.enabled = (newString.length>=5);
     
     return YES;
+}
+
+
+#pragma mark - GTM
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
+    postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
 }
 @end

@@ -21,4 +21,5 @@
 - (void)actionReviewRate:(id)sender;
 - (void)actionBelumDibaca:(id)sender;
 - (void)actionBelumDireview:(id)sender;
+- (void)actionFlagReview:(id)sender;
 @end

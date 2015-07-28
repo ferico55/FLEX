@@ -11,7 +11,7 @@
 #define CPaddingTopBottom 8
 #define CDiameterImage 50
 #define CHeightContentStar 35
-#define CHeightContentAction 35
+#define CHeightContentAction 40
 
 @class DetailReviewReputaionViewModel;
 @interface CustomBtnSkip : UIButton
@@ -34,7 +34,7 @@
     IBOutlet CustomBtnSkip *btnUbah;
     TTTAttributedLabel *lblDesc;
     IBOutlet UIImageView *imgProduct;
-    IBOutlet UILabel *lblKualitas, *lblAkurasi, *lblDate;
+    IBOutlet UILabel *lblKualitas, *lblAkurasi, *lblDate, *labelInfoSkip;
     IBOutletCollection(UIImageView) NSArray *arrImgKualitas, *arrImgAkurasi;
 }
 @property (nonatomic, strong) NSString *strRole;

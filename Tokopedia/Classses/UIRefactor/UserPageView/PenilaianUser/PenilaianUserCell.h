@@ -11,6 +11,10 @@
 @interface PenilaianUserCell : UITableViewCell
 {
     IBOutlet UILabel *lblPositif1, *lblPositif6, *lblPositif12, *lblNetral1, *lblNetral6, *lblNetral12, *lblBad1, *lblBad6, *lblBad12;
+    IBOutlet UIProgressView *progressSmile, *progressNetral, *progressSad;
+    IBOutlet UILabel *lblSmileCount, *lblNetralCount, *lblSadCount;
+    
+    IBOutlet NSLayoutConstraint *constLblWidthSmile, *constLblWidthSad, *constLblWidthNetral;
 }
 
 - (void)setPositif1:(NSString *)strText;
@@ -22,4 +26,10 @@
 - (void)setBad1:(NSString *)strText;
 - (void)setBad6:(NSString *)strText;
 - (void)setBad12:(NSString *)strText;
+
+
+- (void)setProgressSmileCount:(NSString *)strValue;
+- (void)setProgressSadCount:(NSString *)strValue;
+- (void)setProgressNetralCount:(NSString *)strValue;
+- (void)setWidthLabel;
 @end

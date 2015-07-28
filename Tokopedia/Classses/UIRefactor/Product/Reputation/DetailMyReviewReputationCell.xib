@@ -12,20 +12,21 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="190" id="KGk-i7-Jjw" customClass="DetailMyReviewReputationCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="198"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="203"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="197"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="202"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" id="sKQ-z8-rJJ">
-                        <rect key="frame" x="8" y="8" width="304" height="182"/>
+                        <rect key="frame" x="8" y="8" width="304" height="187"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="YEg-po-8qK">
@@ -58,7 +59,7 @@
                                     <view contentMode="scaleToFill" id="a3j-OP-0zy">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="1"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kualitas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xkh-3z-miA">
                                         <rect key="frame" x="0.0" y="11" width="50" height="15"/>
@@ -132,16 +133,11 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="XdZ-2m-URX">
-                                <rect key="frame" x="8" y="142" width="288" height="35"/>
+                                <rect key="frame" x="8" y="142" width="288" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" id="Pei-nM-ZOd">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="1"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Nm8-iL-QrH" customClass="CustomBtnSkip">
-                                        <rect key="frame" x="234" y="3" width="46" height="30"/>
+                                        <rect key="frame" x="234" y="3" width="46" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <state key="normal" title="Ubah">
@@ -153,7 +149,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9yD-gl-3np" customClass="CustomBtnSkip">
-                                        <rect key="frame" x="0.0" y="3" width="97" height="30"/>
+                                        <rect key="frame" x="0.0" y="3" width="97" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <state key="normal" title="Komentar">
@@ -164,6 +160,18 @@
                                             <action selector="actionBeriReview:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="62D-uw-oYg"/>
                                         </connections>
                                     </button>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BY8-wW-Ykr">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" id="Pei-nM-ZOd">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="1"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -179,6 +187,7 @@
                 <outlet property="btnProduct" destination="lsl-qB-e9A" id="bDl-Jy-f5G"/>
                 <outlet property="btnUbah" destination="Nm8-iL-QrH" id="EQH-Cn-jQu"/>
                 <outlet property="imgProduct" destination="YEg-po-8qK" id="ldQ-qX-N4f"/>
+                <outlet property="labelInfoSkip" destination="BY8-wW-Ykr" id="tsx-VV-VT7"/>
                 <outlet property="lblAkurasi" destination="3Wj-0h-3XU" id="0Q4-fe-cKH"/>
                 <outlet property="lblDate" destination="EdW-zY-xpD" id="fit-0L-qYe"/>
                 <outlet property="lblKualitas" destination="xkh-3z-miA" id="cp3-Mr-4tX"/>

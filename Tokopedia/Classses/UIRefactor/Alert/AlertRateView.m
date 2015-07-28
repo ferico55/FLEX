@@ -11,7 +11,7 @@
 
 @implementation AlertRateView
 {
-    UIImage *imageUnselected, *iconSad, *iconNetral, *iconGood;
+    UIImage *imageUnselected, *imageUnselectSad, *imageUnSelectSmile, *iconSad, *iconNetral, *iconGood;
     UIView *viewShadow;
     UIView *viewContentSmile;
     int defaultSelectedIndex;
@@ -47,7 +47,7 @@
     tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, - tempBtn.imageView.bounds.size.width, - ((totalHeight-titleSize.height)), 0.0);
 }
 
-- (instancetype)initViewWithDelegate:(id<AlertRateDelegate>)delegate withDefaultScore:(NSString *)tag {
+- (instancetype)initViewWithDelegate:(id<AlertRateDelegate>)delegate withDefaultScore:(NSString *)tag from:(NSString *)strFrom{
     self = [super initWithFrame:CGRectZero];
     
     if(self) {
@@ -71,43 +71,31 @@
         //Add shadow
         viewShadow = [[UIView alloc] initWithFrame:myDelegate.window.frame];
         viewShadow.backgroundColor = [UIColor blackColor];
-        viewShadow.alpha = 0.5f;
+        viewShadow.alpha = 0.3f;
         [myDelegate.window addSubview:viewShadow];
         
         //Add view smile
         int padding = 20;
         int heightContent = 190;
         viewContentSmile = [[UIView alloc] initWithFrame:CGRectMake(padding, (myDelegate.window.bounds.size.height-heightContent)/2.0f, myDelegate.window.bounds.size.width-(padding*2), heightContent)];
-        viewContentSmile.layer.cornerRadius = 20.0f;
+        viewContentSmile.layer.cornerRadius = 8.0f;
         viewContentSmile.layer.masksToBounds = YES;
         viewContentSmile.backgroundColor = [UIColor whiteColor];
         
         
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(50, 50), NO, 0.0);
-        [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 50, 50)];
-        imageUnselected = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+        imageUnselected = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral50" ofType:@"png"]];
+        imageUnselectSad = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_sad50" ofType:@"png"]];
+        imageUnSelectSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile50" ofType:@"png"]];
         
         
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(50, 50), NO, 0.0);
-        [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 50, 50)];
-        iconSad = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(50, 50), NO, 0.0);
-        [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 50, 50)];
-        iconNetral = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(50, 50), NO, 0.0);
-        [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 50, 50)];
-        iconGood = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+        iconSad = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad50" ofType:@"png"]];
+        iconNetral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral50" ofType:@"png"]];
+        iconGood = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile50" ofType:@"png"]];
         
         //Set Title
         UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewContentSmile.bounds.size.width, 45)];
         lblTitle.backgroundColor = [UIColor clearColor];
-        lblTitle.text = @"FeedBack Toko";
+        lblTitle.text = [NSString stringWithFormat:@"Nilai %@", strFrom];
         lblTitle.textColor = [UIColor blackColor];
         lblTitle.textAlignment = NSTextAlignmentCenter;
         lblTitle.font = [UIFont fontWithName:@"Gotham Medium" size:18.0f];
@@ -116,13 +104,13 @@
         
         int diameterImage = 90;
         UIButton *btnTidakPuas = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self initButtonContentPopUp:@"Tidak Puas" withImage:defaultSelectedIndex==CTagMerah? iconSad:imageUnselected withFrame:CGRectMake(10, lblTitle.bounds.size.height, (viewContentSmile.bounds.size.width-40)/3.0f, diameterImage) withTextColor:[UIColor lightGrayColor] withButton:btnTidakPuas];
+        [self initButtonContentPopUp:@"Tidak Puas" withImage:defaultSelectedIndex==CTagMerah? iconSad:imageUnselectSad withFrame:CGRectMake(10, lblTitle.bounds.size.height, (viewContentSmile.bounds.size.width-40)/3.0f, diameterImage) withTextColor:[UIColor lightGrayColor] withButton:btnTidakPuas];
         
         UIButton *btnNetral = [UIButton buttonWithType:UIButtonTypeCustom];
         [self initButtonContentPopUp:@"Netral" withImage:defaultSelectedIndex==CTagKuning? iconNetral:imageUnselected withFrame:CGRectMake(btnTidakPuas.frame.origin.x+btnTidakPuas.bounds.size.width+10, btnTidakPuas.frame.origin.y, btnTidakPuas.bounds.size.width, btnTidakPuas.bounds.size.height) withTextColor:[UIColor lightGrayColor] withButton:btnNetral];
         
         UIButton *btnPuas = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self initButtonContentPopUp:@"Puas" withImage:defaultSelectedIndex==CTagHijau? iconGood:imageUnselected withFrame:CGRectMake(btnNetral.frame.origin.x+btnNetral.bounds.size.width+10, btnTidakPuas.frame.origin.y, btnTidakPuas.bounds.size.width, btnTidakPuas.bounds.size.height) withTextColor:[UIColor lightGrayColor] withButton:btnPuas];
+        [self initButtonContentPopUp:@"Puas" withImage:defaultSelectedIndex==CTagHijau? iconGood:imageUnSelectSmile withFrame:CGRectMake(btnNetral.frame.origin.x+btnNetral.bounds.size.width+10, btnTidakPuas.frame.origin.y, btnTidakPuas.bounds.size.width, btnTidakPuas.bounds.size.height) withTextColor:[UIColor lightGrayColor] withButton:btnPuas];
         
         
         btnPuas.tag = CTagHijau;
@@ -138,9 +126,9 @@
         }
         
         //Add Separator
-        UIView *viewSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, btnPuas.frame.origin.y+btnPuas.bounds.size.height, viewContentSmile.bounds.size.width, 1)];
+        UIView *viewSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, btnPuas.frame.origin.y+btnPuas.bounds.size.height, viewContentSmile.bounds.size.width, 0.5)];
         [viewSeparator setBackgroundColor:[UIColor lightGrayColor]];
-        
+        viewSeparator.alpha = 0.5f;
         
         //Set Action Btn
         UIButton *btnBatal = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -150,12 +138,13 @@
         [btnBatal setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         btnBatal.frame = CGRectMake(0, viewSeparator.frame.origin.y+viewSeparator.bounds.size.height, viewContentSmile.bounds.size.width/2.0f, viewContentSmile.bounds.size.height-(viewSeparator.frame.origin.y+viewSeparator.bounds.size.height));
         
-        UIView *viewVerticalSeparator = [[UIView alloc] initWithFrame:CGRectMake(btnBatal.bounds.size.width, btnBatal.frame.origin.y, 1, btnBatal.bounds.size.height)];
+        UIView *viewVerticalSeparator = [[UIView alloc] initWithFrame:CGRectMake(btnBatal.bounds.size.width, btnBatal.frame.origin.y, 0.5, btnBatal.bounds.size.height)];
         viewVerticalSeparator.backgroundColor = viewSeparator.backgroundColor;
+        viewVerticalSeparator.alpha = 0.5f;
         
         UIButton *btnSubmit = [UIButton buttonWithType:UIButtonTypeCustom];
         [btnSubmit addTarget:self action:@selector(actionSubmit:) forControlEvents:UIControlEventTouchUpInside];
-        [btnSubmit setTitle:@"Submit" forState:UIControlStateNormal];
+        [btnSubmit setTitle:@"Kirim" forState:UIControlStateNormal];
         [btnSubmit setTitleColor:btnBatal.titleLabel.textColor forState:UIControlStateNormal];
         btnSubmit.titleLabel.font = btnBatal.titleLabel.font;
         btnSubmit.frame = CGRectMake(btnBatal.bounds.size.width, btnBatal.frame.origin.y, btnBatal.bounds.size.width, btnBatal.bounds.size.height);
@@ -207,7 +196,13 @@
     if(selectedIndex > 0) {//0 is not selected
         UIButton *tempBtn = (UIButton *)[btn.superview viewWithTag:selectedIndex];
         [tempBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        [tempBtn setImage:imageUnselected forState:UIControlStateNormal];
+        
+        if(tempBtn.tag == CTagHijau)
+            [tempBtn setImage:imageUnSelectSmile forState:UIControlStateNormal];
+        else if(tempBtn.tag == CTagMerah)
+            [tempBtn setImage:imageUnselectSad forState:UIControlStateNormal];
+        else
+            [tempBtn setImage:imageUnselected forState:UIControlStateNormal];
     }
     
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];

@@ -24,6 +24,7 @@
 //#import "GeneralReviewCell.h"
 
 #import "Review.h"
+#import "ReportViewController.h"
 #import "GeneralAction.h"
 #import "InboxTalk.h"
 
@@ -50,6 +51,7 @@ TTTAttributedLabelDelegate,
 CMPopTipViewDelegate,
 TokopediaNetworkManagerDelegate,
 LoginViewDelegate,
+ReportViewControllerDelegate,
 //GeneralReviewCellDelegate,
 UIActionSheetDelegate,
 productReputationDelegate,
@@ -119,6 +121,7 @@ UIAlertViewDelegate>
     URLCacheConnection *_cacheConnection;
     NSTimeInterval _timeInterval;
     Review *_review;
+    NSDictionary *_auth;
     Shop *_shop;
     NoResultView *_noResult;
 }
@@ -165,6 +168,8 @@ UIAlertViewDelegate>
     [super viewDidLoad];
     
     [self addBottomInsetWhen14inch];
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
     
     dictLikeDislike = [NSMutableDictionary new];
     loadingLikeDislike = [NSMutableDictionary new];
@@ -250,7 +255,7 @@ UIAlertViewDelegate>
 #pragma mark - Method View
 - (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
 {
-    int spacing = 3;
+//    int spacing = 3;
     
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tempBtn.frame = rectFrame;
@@ -259,12 +264,12 @@ UIAlertViewDelegate>
     [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
     tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
-    CGSize imageSize = tempBtn.imageView.bounds.size;
-    CGSize titleSize = tempBtn.titleLabel.bounds.size;
-    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
+//    CGSize imageSize = tempBtn.imageView.bounds.size;
+//    CGSize titleSize = tempBtn.titleLabel.bounds.size;
+//    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
     
-    tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(5.0, - imageSize.width, - (totalHeight - titleSize.height), 0.0);
+//    tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
+    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(15.0, 0.0, 0.0, 0.0);
     
     return (id)tempBtn;
 }
@@ -544,7 +549,7 @@ UIAlertViewDelegate>
     tempSizeDesc.height += CHeightContentAction;
     tempSizeDesc.height += CHeightContentRate;
 
-    return tempSizeDesc.height + CHeightDate + (CheightImage*2) + (CPaddingTopBottom*7); //6 is total padding of each row component
+    return tempSizeDesc.height + CHeightDate + (CheightImage*2) + (CPaddingTopBottom*9); //9 is total padding of each row component
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -585,7 +590,14 @@ UIAlertViewDelegate>
 //            [cell setHiddenRating:NO];
 //            [cell setHiddenAction:YES];
 //        }
-
+        
+        //Check can lapor or not
+        if(_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:list.review_user_id]) {
+            cell.getBtnMore.hidden = YES;
+        }
+        else {
+            cell.getBtnMore.hidden = NO;
+        }
         
         //Set chat total
         if(list.review_response==nil || list.review_response.response_message==nil || [list.review_response.response_message isEqualToString:@"0"]) {
@@ -1141,10 +1153,10 @@ UIAlertViewDelegate>
 - (void)actionRate:(id)sender {
     ReviewList *list = _list[((UIView *) sender).tag];
     int paddingRightLeftContent = 10;
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+(paddingRightLeftContent*4), CHeightItemPopUp)];
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
+    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
     UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
     UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
     
@@ -1173,8 +1185,6 @@ UIAlertViewDelegate>
 }
 
 - (void)actionLike:(id)sender {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    NSDictionary *_auth = [_userManager getUserLoginData];
     if(_auth) {
         UIButton *btnLike = (UIButton *)sender;
         ProductReputationCell *cell = [self getCell:btnLike];
@@ -1228,8 +1238,6 @@ UIAlertViewDelegate>
 }
 
 - (void)actionDisLike:(id)sender {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    NSDictionary *_auth = [_userManager getUserLoginData];
     if(_auth) {
         UIButton *btnDislike = (UIButton *)sender;
         ProductReputationCell *cell = [self getCell:btnDislike];
@@ -1289,12 +1297,9 @@ UIAlertViewDelegate>
 }
 
 - (void)redirectToProductDetailReputation:(ReviewList *)reviewList withIndexPath:(NSIndexPath *)indexPath {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    NSDictionary *auth = [_userManager getUserLoginData];
-    
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.reviewList = reviewList;
-    productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:reviewList.review_product_owner.user_id]);
+    productDetailReputationViewController.isMyProduct = (_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:reviewList.review_product_owner.user_id]);
     productDetailReputationViewController.dictLikeDislike = dictLikeDislike;
     productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     productDetailReputationViewController.indexPathSelected = indexPath;
@@ -1310,20 +1315,18 @@ UIAlertViewDelegate>
 }
 
 - (void)actionMore:(id)sender {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    NSDictionary *_auth = [_userManager getUserLoginData];
     if(_auth) {
         ReviewList *list = _list[((UIButton *)sender).tag];
         UIActionSheet *actionSheet;
         if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:@"Lapor", @"Edit", nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:@"Lapor" otherButtonTitles:nil, nil];
         }
         else {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:@"Lapor", nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:@"Lapor" otherButtonTitles:nil, nil];
         }
         
         actionSheet.tag = ((UIButton *) sender).tag;
-        [actionSheet showInView:self.view];
+        [actionSheet showInView:self.parentViewController.view];
     }
     else {
         [self showLoginView];
@@ -1457,12 +1460,15 @@ UIAlertViewDelegate>
     switch (buttonIndex) {
         case 0:
         {
-        
-        }
-            break;
-        case 1://Edit
-        {
+            ReportViewController *reportViewController = [ReportViewController new];
+            ReviewList *list = _list[actionSheet.tag];
             
+            reportViewController.delegate = self;
+            reportViewController.strProductID = list.review_product_id;
+            reportViewController.strShopID = list.review_shop_id;
+            reportViewController.strReviewID = list.review_id;
+
+            [self.navigationController pushViewController:reportViewController animated:YES];
         }
             break;
     }
@@ -1470,6 +1476,9 @@ UIAlertViewDelegate>
 
 #pragma mark - LoginView Delegate
 - (void)userDidLogin:(NSNotification*)notification {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
+    
     UIViewController *viewController = [self.navigationController.viewControllers lastObject];
     if([viewController isMemberOfClass:[ProductDetailReputationViewController class]]) {
         [((ProductDetailReputationViewController *) viewController) userHasLogin];
@@ -1486,5 +1495,15 @@ UIAlertViewDelegate>
 
 - (void)cancelLoginView {
 
+}
+
+#pragma mark - Report Delegate
+- (NSDictionary *)getParameter {
+    return nil;
+}
+
+
+- (NSString *)getPath {
+    return @"action/review.pl";
 }
 @end

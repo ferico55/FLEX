@@ -469,6 +469,7 @@
     cmPopTitpView.delegate = self;
     cmPopTitpView.backgroundColor = [UIColor blackColor];
     cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.leftPopUp = YES;
     cmPopTitpView.dismissTapAnywhere = YES;
     
     UIButton *button = (UIButton *)sender;

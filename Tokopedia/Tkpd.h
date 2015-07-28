@@ -9,7 +9,7 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+//#define kTkpdBaseURLString @"http://www.ft-feby.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
@@ -209,6 +209,33 @@ typedef enum {
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
+// GTM Value
+#define GTMKeyInboxMessageBase @"inboxmessage_base_url"
+#define GTMKeyInboxMessagePost @"inboxmessage_post_url"
+#define GTMKeyInboxMessageFull @"inboxmessage_full_url"
 
+#define GTMKeyInboxTalkBase @"inboxtalk_base_url"
+#define GTMKeyInboxTalkPost @"inboxtalk_post_url"
+#define GTMKeyInboxTalkFull @"inboxtalk_full_url"
 
+#define GTMKeyInboxReviewBase @"inboxreview_base_url"
+#define GTMKeyInboxReviewPost @"inboxreview_post_url"
+#define GTMKeyInboxReviewFull @"inboxreview_full_url"
+
+#define GTMKeyProductBase @"product_base_url"
+#define GTMKeyProductPost @"product_post_url"
+#define GTMKeyProductFull @"product_full_url"
+
+#define GTMKeySearchBase @"search_base_url"
+#define GTMKeySearchPost @"search_post_url"
+#define GTMKeySearchFull @"search_full_url"
+
+#define GTMKeyInboxReputationBase @"inbox_reputation_base_url"
+#define GTMKeyInboxReputationPost @"inbox_reputation_post_url"
+
+#define GTMKeyInboxActionReputationBase @"action_reputation_base_url"
+#define GTMKeyInboxActionReputationPost @"action_reputation_post_url"
+
+#define GTMKeyActionReviewBase @"action_review_base_url"
+#define GTMKeyActionReviewPost @"action_review_post_url"
 #endif

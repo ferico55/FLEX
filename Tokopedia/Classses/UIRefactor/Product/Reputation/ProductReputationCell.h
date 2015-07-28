@@ -12,8 +12,8 @@
 #define CPaddingTopBottom 8
 #define CHeightDate 15
 #define CheightImage 50
-#define CHeightContentRate 30
-#define CHeightContentAction 35
+#define CHeightContentRate 40
+#define CHeightContentAction 40
 
 @class ViewLabelUser;
 @protocol productReputationDelegate <NSObject>
@@ -64,6 +64,7 @@
 - (void)setDescription:(NSString *)strDescription;
 - (IBAction)actionRate:(id)sender;
 - (ViewLabelUser *)getLabelUser;
+- (UIView *)getViewSeparatorProduct;
 - (UIView *)getViewContent;
 - (UIView *)getViewContentAction;
 - (UIView *)getViewSeparatorKualitas;

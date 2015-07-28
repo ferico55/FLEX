@@ -114,13 +114,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UvD-NM-Mdf">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="705"/>
+                            <rect key="frame" x="0.0" y="0.0" width="321" height="705"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vTC-dC-z2j">
-                                    <rect key="frame" x="10" y="18" width="300" height="209"/>
+                                    <rect key="frame" x="10" y="18" width="301" height="209"/>
                                     <subviews>
                                         <segmentedControl opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="phH-3w-tab">
-                                            <rect key="frame" x="8" y="8" width="284" height="29"/>
+                                            <rect key="frame" x="8" y="8" width="285" height="29"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="3fC-dQ-iTU"/>
                                             </constraints>
@@ -133,7 +133,7 @@
                                             </connections>
                                         </segmentedControl>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUp-de-Lwf">
-                                            <rect key="frame" x="0.0" y="44" width="300" height="1"/>
+                                            <rect key="frame" x="0.0" y="44" width="301" height="1"/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="aqW-jd-4IB"/>
@@ -188,7 +188,7 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.0 Out of 6" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bq7-WS-wci">
-                                            <rect key="frame" x="116" y="53" width="176" height="21"/>
+                                            <rect key="frame" x="116" y="53" width="177" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="Fro-ej-aIf"/>
                                             </constraints>
@@ -197,7 +197,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="naj-A2-7Wy">
-                                            <rect key="frame" x="0.0" y="82" width="300" height="1"/>
+                                            <rect key="frame" x="0.0" y="82" width="301" height="1"/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="2jZ-EN-3ga"/>
@@ -436,42 +436,42 @@
                                             </constraints>
                                         </view>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TGt-7G-mvk">
-                                            <rect key="frame" x="106" y="100" width="145" height="2"/>
+                                            <rect key="frame" x="106" y="100" width="146" height="2"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="NAU-a3-7nR"/>
                                             </constraints>
                                             <color key="progressTintColor" red="1" green="0.75686274509803919" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MQP-Hx-Vow">
-                                            <rect key="frame" x="106" y="123" width="145" height="2"/>
+                                            <rect key="frame" x="106" y="123" width="146" height="2"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="HGE-RM-t1e"/>
                                             </constraints>
                                             <color key="progressTintColor" red="1" green="0.75686274509803919" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="4dO-T0-Sr6">
-                                            <rect key="frame" x="106" y="146" width="145" height="2"/>
+                                            <rect key="frame" x="106" y="146" width="146" height="2"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="tjM-Z4-neW"/>
                                             </constraints>
                                             <color key="progressTintColor" red="1" green="0.75686274509803919" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zfA-QI-kx5">
-                                            <rect key="frame" x="106" y="169" width="145" height="2"/>
+                                            <rect key="frame" x="106" y="169" width="146" height="2"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="4by-FL-QMM"/>
                                             </constraints>
                                             <color key="progressTintColor" red="1" green="0.75686274509803919" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GNQ-6K-F30">
-                                            <rect key="frame" x="106" y="192" width="145" height="2"/>
+                                            <rect key="frame" x="106" y="192" width="146" height="2"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="UTf-EB-e48"/>
                                             </constraints>
                                             <color key="progressTintColor" red="1" green="0.75686274509803919" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3We-ek-UA6">
-                                            <rect key="frame" x="259" y="88" width="33" height="21"/>
+                                            <rect key="frame" x="260" y="88" width="33" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="ON7-kP-J0m"/>
                                                 <constraint firstAttribute="width" constant="33" id="uNg-35-nRi"/>
@@ -481,7 +481,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hp7-rG-6GO">
-                                            <rect key="frame" x="259" y="112" width="33" height="21"/>
+                                            <rect key="frame" x="260" y="112" width="33" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="33" id="08H-oo-8QI"/>
                                                 <constraint firstAttribute="height" constant="21" id="rJl-Yp-dc9"/>
@@ -491,7 +491,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FoK-IB-xdj">
-                                            <rect key="frame" x="259" y="135" width="33" height="21"/>
+                                            <rect key="frame" x="260" y="135" width="33" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="gqe-82-onT"/>
                                                 <constraint firstAttribute="width" constant="33" id="k3p-SK-WWp"/>
@@ -501,7 +501,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qht-HX-AJI">
-                                            <rect key="frame" x="259" y="160" width="33" height="21"/>
+                                            <rect key="frame" x="260" y="160" width="33" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="f0u-AK-jQ8"/>
                                                 <constraint firstAttribute="width" constant="33" id="x7s-tg-dpR"/>
@@ -511,7 +511,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMG-ik-wBK">
-                                            <rect key="frame" x="259" y="183" width="33" height="21"/>
+                                            <rect key="frame" x="260" y="183" width="33" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="PnR-6X-1Rv"/>
                                                 <constraint firstAttribute="width" constant="33" id="dnC-qI-F9z"/>
@@ -584,10 +584,10 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZNz-XN-0RW">
-                                    <rect key="frame" x="10" y="235" width="300" height="227"/>
+                                    <rect key="frame" x="10" y="235" width="301" height="232"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Kepuasan Toko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pei-j7-KnL">
-                                            <rect key="frame" x="8" y="8" width="284" height="21"/>
+                                            <rect key="frame" x="8" y="8" width="285" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="y9u-fA-Ydj"/>
                                             </constraints>
@@ -605,32 +605,32 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Bulan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghd-7a-Otb">
-                                            <rect key="frame" x="75" y="35" width="75" height="21"/>
+                                            <rect key="frame" x="75" y="35" width="76" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6 Bulan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q65-Kf-Ne4">
-                                            <rect key="frame" x="150" y="35" width="75" height="21"/>
+                                            <rect key="frame" x="151" y="35" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 Bulan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYZ-bg-4W7">
-                                            <rect key="frame" x="225" y="35" width="75" height="21"/>
+                                            <rect key="frame" x="226" y="35" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ck9-28-tdH">
-                                            <rect key="frame" x="0.0" y="53" width="300" height="1"/>
+                                            <rect key="frame" x="0.0" y="58" width="301" height="1"/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="rFs-vS-uUD"/>
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJI-O5-aJc">
-                                            <rect key="frame" x="0.0" y="53" width="75" height="50"/>
+                                            <rect key="frame" x="0.0" y="63" width="75" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="y5T-sA-edk"/>
                                             </constraints>
@@ -643,14 +643,14 @@
                                             </state>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="43B-Eh-SPj">
-                                            <rect key="frame" x="75" y="106" width="217" height="1"/>
+                                            <rect key="frame" x="75" y="113" width="218" height="1"/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="7zf-Od-fD2"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hL3-wz-1sx">
-                                            <rect key="frame" x="75" y="67" width="75" height="21"/>
+                                            <rect key="frame" x="75" y="74" width="76" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="oVq-D5-FQB"/>
                                             </constraints>
@@ -659,19 +659,19 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2e-0S-037">
-                                            <rect key="frame" x="150" y="67" width="75" height="21"/>
+                                            <rect key="frame" x="151" y="74" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MT9-zf-YnG">
-                                            <rect key="frame" x="225" y="67" width="75" height="21"/>
+                                            <rect key="frame" x="226" y="74" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKZ-7e-E5B">
-                                            <rect key="frame" x="0.0" y="111" width="75" height="50"/>
+                                            <rect key="frame" x="0.0" y="118" width="75" height="50"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
@@ -681,32 +681,32 @@
                                             </state>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VL4-XT-GWg">
-                                            <rect key="frame" x="75" y="164" width="217" height="1"/>
+                                            <rect key="frame" x="75" y="171" width="218" height="1"/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="aYX-0T-QGg"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="asU-wt-S6X">
-                                            <rect key="frame" x="75" y="125" width="75" height="21"/>
+                                            <rect key="frame" x="75" y="132" width="76" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.79087534530386738" green="0.72248119503358921" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wz0-Fx-DWl">
-                                            <rect key="frame" x="150" y="125" width="75" height="21"/>
+                                            <rect key="frame" x="151" y="132" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.79087534530386738" green="0.72248119503358921" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7T-Z8-LSb">
-                                            <rect key="frame" x="225" y="125" width="75" height="21"/>
+                                            <rect key="frame" x="226" y="132" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.79087534530386738" green="0.72248119503358921" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jg-Qb-qaX">
-                                            <rect key="frame" x="0.0" y="169" width="75" height="50"/>
+                                            <rect key="frame" x="0.0" y="176" width="75" height="50"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
@@ -716,19 +716,19 @@
                                             </state>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="54i-99-lVN">
-                                            <rect key="frame" x="75" y="183" width="75" height="21"/>
+                                            <rect key="frame" x="75" y="190" width="76" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.9613569426801104" green="0.1004593398804098" blue="0.080186771294239692" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jMr-gf-cVt">
-                                            <rect key="frame" x="225" y="183" width="75" height="21"/>
+                                            <rect key="frame" x="226" y="190" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.9613569426801104" green="0.1004593398804098" blue="0.080186771294239692" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gLh-MQ-ZeQ">
-                                            <rect key="frame" x="150" y="183" width="75" height="21"/>
+                                            <rect key="frame" x="151" y="190" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.9613569426801104" green="0.1004593398804098" blue="0.080186771294239692" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -746,7 +746,7 @@
                                         <constraint firstItem="q65-Kf-Ne4" firstAttribute="leading" secondItem="Ghd-7a-Otb" secondAttribute="trailing" id="AWS-hb-Y17"/>
                                         <constraint firstItem="VL4-XT-GWg" firstAttribute="leading" secondItem="OKZ-7e-E5B" secondAttribute="trailing" id="CmO-GT-2Mr"/>
                                         <constraint firstItem="gYZ-bg-4W7" firstAttribute="height" secondItem="Ghd-7a-Otb" secondAttribute="height" id="DQt-Bo-s2e"/>
-                                        <constraint firstItem="Ck9-28-tdH" firstAttribute="top" secondItem="krw-2t-ptt" secondAttribute="bottom" constant="-3" id="Df3-4P-CkQ"/>
+                                        <constraint firstItem="Ck9-28-tdH" firstAttribute="top" secondItem="krw-2t-ptt" secondAttribute="bottom" constant="2" id="Df3-4P-CkQ"/>
                                         <constraint firstItem="54i-99-lVN" firstAttribute="leading" secondItem="9Jg-Qb-qaX" secondAttribute="trailing" id="EdD-gZ-lCs"/>
                                         <constraint firstItem="asU-wt-S6X" firstAttribute="width" secondItem="jMr-gf-cVt" secondAttribute="width" id="FZb-nt-zgS"/>
                                         <constraint firstItem="C7T-Z8-LSb" firstAttribute="height" secondItem="asU-wt-S6X" secondAttribute="height" id="GD2-qE-ZVm"/>
@@ -755,7 +755,7 @@
                                         <constraint firstItem="gLh-MQ-ZeQ" firstAttribute="top" secondItem="VL4-XT-GWg" secondAttribute="bottom" constant="18" id="ICh-gt-rB1"/>
                                         <constraint firstItem="gYZ-bg-4W7" firstAttribute="width" secondItem="Ghd-7a-Otb" secondAttribute="width" id="Iyv-No-OzY"/>
                                         <constraint firstItem="Ck9-28-tdH" firstAttribute="leading" secondItem="ZNz-XN-0RW" secondAttribute="leading" id="JNn-yp-FKF"/>
-                                        <constraint firstItem="p2e-0S-037" firstAttribute="top" secondItem="Ck9-28-tdH" secondAttribute="bottom" constant="13" id="KAj-iX-jKB"/>
+                                        <constraint firstItem="p2e-0S-037" firstAttribute="top" secondItem="Ck9-28-tdH" secondAttribute="bottom" constant="15" id="KAj-iX-jKB"/>
                                         <constraint firstItem="asU-wt-S6X" firstAttribute="width" secondItem="9Jg-Qb-qaX" secondAttribute="width" id="L0o-PO-vab"/>
                                         <constraint firstItem="asU-wt-S6X" firstAttribute="width" secondItem="gLh-MQ-ZeQ" secondAttribute="width" id="LC3-5o-Wqu"/>
                                         <constraint firstItem="OKZ-7e-E5B" firstAttribute="leading" secondItem="ZNz-XN-0RW" secondAttribute="leading" id="Mcl-Aa-9kw"/>
@@ -763,7 +763,7 @@
                                         <constraint firstAttribute="trailing" secondItem="C7T-Z8-LSb" secondAttribute="trailing" id="OHK-Fu-7jY"/>
                                         <constraint firstItem="p2e-0S-037" firstAttribute="leading" secondItem="hL3-wz-1sx" secondAttribute="trailing" id="OyJ-5n-XMc"/>
                                         <constraint firstItem="gYZ-bg-4W7" firstAttribute="height" secondItem="q65-Kf-Ne4" secondAttribute="height" id="PAk-Pd-xBe"/>
-                                        <constraint firstItem="hL3-wz-1sx" firstAttribute="top" secondItem="Ck9-28-tdH" secondAttribute="bottom" constant="13" id="QyY-wZ-vfI"/>
+                                        <constraint firstItem="hL3-wz-1sx" firstAttribute="top" secondItem="Ck9-28-tdH" secondAttribute="bottom" constant="15" id="QyY-wZ-vfI"/>
                                         <constraint firstItem="asU-wt-S6X" firstAttribute="width" secondItem="lJI-O5-aJc" secondAttribute="width" id="SiI-Wq-I5B"/>
                                         <constraint firstItem="C7T-Z8-LSb" firstAttribute="height" secondItem="p2e-0S-037" secondAttribute="height" id="SoN-eU-sPG"/>
                                         <constraint firstItem="C7T-Z8-LSb" firstAttribute="height" secondItem="hL3-wz-1sx" secondAttribute="height" id="TEJ-ak-hWn"/>
@@ -778,16 +778,16 @@
                                         <constraint firstItem="43B-Eh-SPj" firstAttribute="top" secondItem="hL3-wz-1sx" secondAttribute="bottom" constant="18" id="cBN-Qm-hit"/>
                                         <constraint firstItem="Wz0-Fx-DWl" firstAttribute="top" secondItem="43B-Eh-SPj" secondAttribute="bottom" constant="18" id="dxz-o3-tlJ"/>
                                         <constraint firstAttribute="trailing" secondItem="Ck9-28-tdH" secondAttribute="trailing" id="epe-Ox-HGI"/>
-                                        <constraint firstItem="MT9-zf-YnG" firstAttribute="top" secondItem="Ck9-28-tdH" secondAttribute="bottom" constant="13" id="epu-oo-La6"/>
+                                        <constraint firstItem="MT9-zf-YnG" firstAttribute="top" secondItem="Ck9-28-tdH" secondAttribute="bottom" constant="15" id="epu-oo-La6"/>
                                         <constraint firstItem="krw-2t-ptt" firstAttribute="leading" secondItem="ZNz-XN-0RW" secondAttribute="leading" id="fVS-9v-wpu"/>
                                         <constraint firstItem="C7T-Z8-LSb" firstAttribute="height" secondItem="gLh-MQ-ZeQ" secondAttribute="height" id="gOz-b9-OyU"/>
-                                        <constraint firstItem="lJI-O5-aJc" firstAttribute="top" secondItem="Ck9-28-tdH" secondAttribute="bottom" constant="-1" id="hMb-yf-k7n"/>
+                                        <constraint firstItem="lJI-O5-aJc" firstAttribute="top" secondItem="Ck9-28-tdH" secondAttribute="bottom" constant="4" id="hMb-yf-k7n"/>
                                         <constraint firstItem="lJI-O5-aJc" firstAttribute="height" secondItem="9Jg-Qb-qaX" secondAttribute="height" id="hcm-PA-jyD"/>
                                         <constraint firstItem="asU-wt-S6X" firstAttribute="width" secondItem="p2e-0S-037" secondAttribute="width" id="hin-2D-Mkd"/>
                                         <constraint firstItem="Ghd-7a-Otb" firstAttribute="leading" secondItem="krw-2t-ptt" secondAttribute="trailing" id="iQT-Ot-zHI"/>
                                         <constraint firstItem="gYZ-bg-4W7" firstAttribute="height" secondItem="krw-2t-ptt" secondAttribute="height" id="ibU-Uu-wv3"/>
                                         <constraint firstItem="gLh-MQ-ZeQ" firstAttribute="leading" secondItem="54i-99-lVN" secondAttribute="trailing" id="igc-ow-yfr"/>
-                                        <constraint firstAttribute="height" constant="227" id="ip9-Aw-pTY"/>
+                                        <constraint firstAttribute="height" constant="232" id="ip9-Aw-pTY"/>
                                         <constraint firstItem="asU-wt-S6X" firstAttribute="width" secondItem="hL3-wz-1sx" secondAttribute="width" id="ixa-L6-DoF"/>
                                         <constraint firstItem="OKZ-7e-E5B" firstAttribute="top" secondItem="43B-Eh-SPj" secondAttribute="bottom" constant="4" id="jnG-Ek-U8O"/>
                                         <constraint firstItem="54i-99-lVN" firstAttribute="top" secondItem="VL4-XT-GWg" secondAttribute="bottom" constant="18" id="mQZ-l2-zLM"/>
@@ -815,23 +815,23 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EPs-tX-no8">
-                                    <rect key="frame" x="10" y="470" width="300" height="215"/>
+                                    <rect key="frame" x="10" y="475" width="301" height="215"/>
                                     <subviews>
                                         <segmentedControl opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FsQ-ax-DlM">
-                                            <rect key="frame" x="8" y="8" width="284" height="29"/>
+                                            <rect key="frame" x="8" y="8" width="285" height="29"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="X6T-G4-bfa"/>
                                             </constraints>
                                             <segments>
-                                                <segment title="Kualitas Produk"/>
-                                                <segment title="Akurasi Produk"/>
+                                                <segment title="Kecepatan Respon"/>
+                                                <segment title="Persentase Transaksi"/>
                                             </segments>
                                             <connections>
                                                 <action selector="actionSegmented:" destination="-1" eventType="valueChanged" id="Fyt-LD-qBm"/>
                                             </connections>
                                         </segmentedControl>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wwl-Op-p94">
-                                            <rect key="frame" x="0.0" y="44" width="300" height="1"/>
+                                            <rect key="frame" x="0.0" y="44" width="301" height="1"/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="Ppq-Jq-YZR"/>
@@ -897,11 +897,11 @@
                                             </state>
                                         </button>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2P2-2l-PuI">
-                                            <rect key="frame" x="144" y="78" width="118" height="2"/>
+                                            <rect key="frame" x="144" y="78" width="119" height="2"/>
                                             <color key="progressTintColor" red="0.0" green="0.50196078431372548" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9h-Ky-l8N">
-                                            <rect key="frame" x="270" y="68" width="24" height="21"/>
+                                            <rect key="frame" x="271" y="68" width="24" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="g2x-qH-1Ok"/>
                                                 <constraint firstAttribute="height" constant="21" id="j79-Jz-cCI"/>
@@ -921,11 +921,11 @@
                                             </state>
                                         </button>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eUh-nS-lEY">
-                                            <rect key="frame" x="146" y="129" width="116" height="2"/>
+                                            <rect key="frame" x="146" y="129" width="117" height="2"/>
                                             <color key="progressTintColor" red="1" green="0.75686274509803919" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oGH-Ky-O86">
-                                            <rect key="frame" x="270" y="119" width="24" height="21"/>
+                                            <rect key="frame" x="271" y="119" width="24" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="J5j-sZ-Gew"/>
                                             </constraints>
@@ -944,11 +944,11 @@
                                             </state>
                                         </button>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oOq-7j-4rT">
-                                            <rect key="frame" x="146" y="180" width="116" height="2"/>
+                                            <rect key="frame" x="146" y="180" width="117" height="2"/>
                                             <color key="progressTintColor" red="0.95686274509803915" green="0.2627450980392157" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewR-5y-L3I">
-                                            <rect key="frame" x="270" y="170" width="24" height="21"/>
+                                            <rect key="frame" x="271" y="170" width="24" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="TYP-Il-bb0"/>
                                             </constraints>
@@ -957,7 +957,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i9T-PC-lwx">
-                                            <rect key="frame" x="0.0" y="45" width="300" height="170"/>
+                                            <rect key="frame" x="0.0" y="45" width="301" height="170"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PsQ-IT-uiC" customClass="XYPieChart">
                                                     <rect key="frame" x="8" y="25" width="120" height="120"/>
@@ -987,7 +987,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Sukses" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l84-Ni-8CO">
-                                                    <rect key="frame" x="154" y="55" width="130" height="20"/>
+                                                    <rect key="frame" x="154" y="55" width="131" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="XmL-m4-lrG"/>
                                                     </constraints>
@@ -1003,7 +1003,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Gagal / Ditolak" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XD2-3U-TtX">
-                                                    <rect key="frame" x="154" y="75" width="130" height="40"/>
+                                                    <rect key="frame" x="154" y="75" width="131" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="dOH-cb-sIw"/>
                                                     </constraints>

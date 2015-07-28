@@ -11,6 +11,7 @@
 #import "ProductReputationViewController.h"
 #import "ProductTalkViewController.h"
 #import "string.h"
+#import "ShopReviewPageViewController.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "GeneralAction.h"
@@ -152,7 +153,7 @@
     if(_request.isExecuting)return;
     
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+    if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]] || [_delegate isMemberOfClass:[ShopReviewPageViewController class]]) {
         [param setObject:@"report_review" forKey:@"action"];
         [param setObject:_strReviewID forKey:@"review_id"];
         [param setObject:_strShopID forKey:@"shop_id"];

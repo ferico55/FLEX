@@ -127,7 +127,7 @@
     if (!_isnodatashop) {
         if(indexPath.section == 0) {
             //height penilaian user
-            return 200;
+            return 166;
         }
         else if (indexPath.section == 1) {
             //height shop
@@ -147,8 +147,9 @@
     if (!_isnodatashop) {
         if(isNotMyBiodata)
             return _profile.result.shop_info==nil?1:2;
-        else
-            return _profile.result.shop_info==nil?2:3;
+        else {
+            return _profile.result.shop_info==nil?1:3;
+        }
     }
     else return 0;
 }
@@ -208,17 +209,10 @@
                 cell = [arrCell objectAtIndex:0];
             }
             
-            [cell setPositif1:_profile.result.shop_stats.shop_last_one_month.count_score_good!=nil?_profile.result.shop_stats.shop_last_one_month.count_score_good:@"0"];
-            [cell setPositif6:_profile.result.shop_stats.shop_last_six_months.count_score_good!=nil?_profile.result.shop_stats.shop_last_six_months.count_score_good:@"0"];
-            [cell setPositif12:_profile.result.shop_stats.shop_last_twelve_months.count_score_good!=nil?_profile.result.shop_stats.shop_last_twelve_months.count_score_good:@"0"];
-            
-            [cell setNetral1:_profile.result.shop_stats.shop_last_one_month.count_score_neutral!=nil?_profile.result.shop_stats.shop_last_one_month.count_score_neutral:@"0"];
-            [cell setNetral6:_profile.result.shop_stats.shop_last_six_months.count_score_neutral!=nil?_profile.result.shop_stats.shop_last_six_months.count_score_neutral:@"0"];
-            [cell setNetral12:_profile.result.shop_stats.shop_last_twelve_months.count_score_neutral!=nil?_profile.result.shop_stats.shop_last_twelve_months.count_score_neutral:@"0"];
-            
-            [cell setBad1:_profile.result.shop_stats.shop_last_one_month.count_score_bad!=nil?_profile.result.shop_stats.shop_last_one_month.count_score_bad:@"0"];
-            [cell setBad6:_profile.result.shop_stats.shop_last_six_months.count_score_bad!=nil?_profile.result.shop_stats.shop_last_six_months.count_score_bad:@"0"];
-            [cell setBad12:_profile.result.shop_stats.shop_last_twelve_months.count_score_bad!=nil?_profile.result.shop_stats.shop_last_twelve_months.count_score_bad:@"0"];
+            [cell setProgressSmileCount:_profile.result.user_info.user_reputation.positive];
+            [cell setProgressNetralCount:_profile.result.user_info.user_reputation.neutral];
+            [cell setProgressSadCount:_profile.result.user_info.user_reputation.negative];
+            [cell setWidthLabel];
             
             return cell;
         }

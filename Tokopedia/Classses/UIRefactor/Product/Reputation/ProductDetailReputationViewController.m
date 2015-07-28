@@ -27,6 +27,7 @@
 #import "string_inbox_message.h"
 #import "string_inbox_review.h"
 #import "String_Reputation.h"
+#import "TAGDataLayer.h"
 #import "TotalLikeDislike.h"
 #import "TotalLikeDislikePost.h"
 #import "TokopediaNetworkManager.h"
@@ -50,6 +51,11 @@
     NSOperationQueue *operationQueueLikeDislike;
     CMPopTipView *popTipView;
     
+    TAGContainer *_gtmContainer;
+    NSString *baseActionUrl;
+    NSString *postActionUrl;
+
+    
     __block NSTimer *_timer;
     BOOL isSuccessSentMessage, isDeletingMessage;
     NSMutableDictionary *dictCell, *dictRequestLikeDislike;
@@ -59,6 +65,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configureGTM];
     [self initTable];
     [self initNavigation];
     btnSend.layer.cornerRadius = 5.0f;
@@ -176,20 +183,18 @@
     lblShow.backgroundColor = [UIColor clearColor];
     
     //Init pop up
+    UIButton *button = (UIButton *)sender;
     popTipView = [[CMPopTipView alloc] initWithCustomView:lblShow];
     popTipView.delegate = self;
     popTipView.backgroundColor = [UIColor blackColor];
     popTipView.animation = CMPopTipAnimationSlide;
     popTipView.dismissTapAnywhere = YES;
-    
-    UIButton *button = (UIButton *)sender;
+    popTipView.leftPopUp = YES;
     [popTipView presentPointingAtView:button inView:self.view animated:YES];
 }
 
 - (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
 {
-    int spacing = 3;
-    
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tempBtn.frame = rectFrame;
     [tempBtn setImage:image forState:UIControlStateNormal];
@@ -197,12 +202,7 @@
     [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
     tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
-    CGSize imageSize = tempBtn.imageView.bounds.size;
-    CGSize titleSize = tempBtn.titleLabel.bounds.size;
-    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
-    
-    tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(5.0, - imageSize.width, - (totalHeight - titleSize.height), 0.0);
+    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(15.0f, 0.0, 0.0, 0.0);
     
     return (id)tempBtn;
 }
@@ -213,6 +213,7 @@
 
 - (void)initNavigation {
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+    self.title = @"Detil Ulasan";
 }
 
 
@@ -228,13 +229,16 @@
     [productReputationCell.getLabelUser setText:[UIColor colorWithRed:62/255.0f green:114/255.0f blue:9/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:14.0f]];
     
     //Set profile image
+    BOOL isResizeSeparatorProduct;
     NSString *strTempProductID = _detailReputaitonReview==nil? _reviewList.review_product_id : _detailReputaitonReview.product_id;
     if(((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && ![_detailReputaitonReview.review_message isEqualToString:@"0"]) || (_reviewList!=nil && _reviewList.review_message!=nil && ![_reviewList.review_message isEqualToString:@"0"])) && (strTempProductID!=nil && ![strTempProductID isEqualToString:@""])) {
         [productReputationCell initProductCell];
         [productReputationCell setLabelProductName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name];
         [[productReputationCell getLabelProductName] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToDetailProduct:)]];
         [productReputationCell getLabelProductName].userInteractionEnabled = YES;
-        
+        [productReputationCell.getViewSeparatorProduct removeFromSuperview];
+        isResizeSeparatorProduct = YES;
+        [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorProduct];
         
         //Set image product
         NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_uri : _reviewList.product_images] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -292,11 +296,15 @@
         [self setLikeDislikeActive:_strLikeStatus];
     }
     [productReputationCell layoutSubviews];
-    productReputationCell.contentView.frame = CGRectMake(0, 0, productReputationCell.contentView.bounds.size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom);
+    productReputationCell.contentView.frame = CGRectMake(0, 0, productReputationCell.contentView.bounds.size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom-CPaddingTopBottom);
+    productReputationCell.getViewContent.frame = CGRectMake(productReputationCell.getViewContent.frame.origin.x, 0, productReputationCell.getViewContent.bounds.size.width, productReputationCell.getViewContent.bounds.size.height-CPaddingTopBottom);
+    
+    if(isResizeSeparatorProduct)
+        [productReputationCell.getViewSeparatorProduct setFrame:CGRectMake(0, productReputationCell.getViewSeparatorProduct.frame.origin.y+productReputationCell.getViewContent.frame.origin.y, self.view.bounds.size.width, productReputationCell.getViewSeparatorProduct.bounds.size.height)];
     
     //Add separator
     UIView *viewSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, productReputationCell.contentView.bounds.size.height-1, self.view.bounds.size.width, 1.0f)];
-    viewSeparator.backgroundColor = [UIColor lightGrayColor];
+    viewSeparator.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
     [productReputationCell.contentView addSubview:viewSeparator];
     
     productReputationCell.getViewSeparatorKualitas.frame = CGRectMake(0, productReputationCell.getViewContent.frame.origin.y+productReputationCell.getViewContentAction.frame.origin.y, self.view.bounds.size.width, 1);
@@ -316,7 +324,7 @@
 
 #pragma mark - Action
 - (void)goToShopView:(id)sender {
-    if([(_detailReputaitonReview!=nil?_detailReputaitonReview.review_user_label:_reviewList.review_user_label) caseInsensitiveCompare:CPembeli] == NSOrderedSame) {
+    if([(_detailReputaitonReview!=nil?_detailReputaitonReview.review_user_label:_reviewList.review_user_label) caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *auth = [_userManager getUserLoginData];
 
@@ -443,14 +451,14 @@
 
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    productReputationCell.getProductImage.image = nil;
-    [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [productReputationCell.getProductImage setImage:image];
-#pragma clang diagnostic pop
-    } failure:nil];
+//    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+//    productReputationCell.getProductImage.image = nil;
+//    [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Warc-retain-cycles"
+//        [productReputationCell.getProductImage setImage:image];
+//#pragma clang diagnostic pop
+//    } failure:nil];
     
     
     [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.full_name:_reviewList.review_product_owner.user_name];
@@ -496,7 +504,7 @@
     
     //Set image
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [productReputationCell.getImageProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_profile_picture" ofType:@"jpeg"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [productReputationCell.getImageProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [productReputationCell.getImageProfile setImage:image];
@@ -537,6 +545,9 @@
     
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
     [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
+    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamBook" size:lblDesc.font.pointSize] range:NSMakeRange(0, strDescription.length)];
+    
+    
     lblDesc.attributedText = str;
     lblDesc.delegate = nil;
     [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
@@ -659,10 +670,10 @@
 
 - (void)actionRate:(id)sender {
     int paddingRightLeftContent = 10;
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+(paddingRightLeftContent*4), CHeightItemPopUp)];
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
+    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
     UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
     UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
     
@@ -751,7 +762,7 @@
 
 #pragma mark - Method
 - (void)actionTapCellLabelUser:(UITapGestureRecognizer *)sender {
-    if([(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual caseInsensitiveCompare:CPembeli] == NSOrderedSame) {
+    if([(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *auth = [_userManager getUserLoginData];
         
@@ -1060,7 +1071,7 @@
 
 - (NSString*)getPath:(int)tag {
     if(tag==CTagComment || tag==CTagHapus) {
-        return @"action/reputation.pl";
+        return [postActionUrl isEqualToString:@""] ? @"action/reputation.pl" : postActionUrl;
     }
     
     return nil;
@@ -1068,7 +1079,14 @@
 
 - (id)getObjectManager:(int)tag {
     if(tag == CTagComment) {
-        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectManager *objectManager;
+        if([baseActionUrl isEqualToString:kTkpdBaseURLString] || [baseActionUrl isEqualToString:@""]) {
+            objectManager = [RKObjectManager sharedClient];
+        } else {
+            objectManager = [RKObjectManager sharedClient:baseActionUrl];
+        }
+        
+        
         RKObjectMapping *responseCommentMapping = [RKObjectMapping mappingForClass:[ResponseComment class]];
         [responseCommentMapping addAttributeMappingsFromArray:@[CStatus,
                                                                 CServerProcessTime,
@@ -1117,7 +1135,13 @@
         return objectManager;
     }
     else if(tag == CTagHapus) {
-        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectManager *objectManager;
+        if([baseActionUrl isEqualToString:kTkpdBaseURLString] || [baseActionUrl isEqualToString:@""]) {
+            objectManager = [RKObjectManager sharedClient];
+        } else {
+            objectManager = [RKObjectManager sharedClient:baseActionUrl];
+        }
+        
         RKObjectMapping *responseCommentMapping = [RKObjectMapping mappingForClass:[ResponseComment class]];
         [responseCommentMapping addAttributeMappingsFromArray:@[CStatus,
                                                                 CServerProcessTime,
@@ -1337,5 +1361,19 @@
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController {
 
+}
+
+
+#pragma mark - GTM
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
+    postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
 }
 @end

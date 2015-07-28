@@ -17,7 +17,7 @@
 #define CBadgeSpeedNeutral @"badge-speed-neutral"
 #define CStringPoin @"Poin"
 #define CWidthItemPopUp 50
-#define CHeightItemPopUp 40
+#define CHeightItemPopUp 30
 #define CRevieweeScroreBad @"-1"
 #define CRevieweeScroreNetral @"1"
 #define CRevieweeScroreGood @"2"

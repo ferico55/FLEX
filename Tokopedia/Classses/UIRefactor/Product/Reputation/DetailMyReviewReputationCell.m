@@ -37,7 +37,7 @@
 - (void)layoutSubviews
 {
     imgProduct.frame = CGRectMake(imgProduct.frame.origin.x, imgProduct.frame.origin.y, CDiameterImage, CDiameterImage);
-    btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, imgProduct.frame.origin.y, self.bounds.size.width-(CPaddingTopBottom*5)-CDiameterImage, (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
+    btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, (labelInfoSkip.isHidden? imgProduct.frame.origin.y:(imgProduct.frame.origin.y+((imgProduct.bounds.size.height-lblDate.bounds.size.height)/2.0f))), self.bounds.size.width-(CPaddingTopBottom*5)-CDiameterImage, (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
     
     
     //Set content star
@@ -53,7 +53,9 @@
     viewContentAction.frame = CGRectMake(0, viewContentStar.frame.origin.y+viewContentStar.bounds.size.height, viewContentStar.bounds.size.width+(viewContentStar.frame.origin.x*2), viewContentAction.isHidden?0:CHeightContentAction);
     viewSeparatorContentAction.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewSeparatorContentAction.bounds.size.height);
     btnKomentar.frame = CGRectMake(CPaddingTopBottom, 0, 100, viewContentAction.bounds.size.height);
-    btnUbah.frame = CGRectMake(viewContentStar.bounds.size.width-100-CPaddingTopBottom, 0, 100, viewContentAction.bounds.size.height);
+    btnUbah.frame = CGRectMake(viewContentStar.bounds.size.width-100, 0, 100, viewContentAction.bounds.size.height);
+    
+    labelInfoSkip.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewContentAction.bounds.size.height);
     
     viewContent.frame = CGRectMake(CPaddingTopBottom, CPaddingTopBottom, self.contentView.bounds.size.width-(CPaddingTopBottom*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
     self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, 0, self.contentView.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
@@ -97,18 +99,6 @@
 
 - (void)setView:(DetailReviewReputaionViewModel *)viewModel {
     lblDate.text = @"";
-    
-    if([viewModel.review_is_skipped isEqualToString:@"1"]) {
-        if([_strRole isEqualToString:@"2"])
-            lblDate.text = CStringPembeliLewatiUlasan;
-    }
-    else if(viewModel==nil || viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) {
-        if([_strRole isEqualToString:@"2"]) {
-            lblDate.text = CStringPembeliBelumBeriUlasan;
-        }
-    }
-    else
-        lblDate.text = viewModel.review_create_time==nil||[viewModel.review_create_time isEqualToString:@"0"]? @"":viewModel.review_create_time;
     [btnProduct setTitle:viewModel.product_name forState:UIControlStateNormal];
     
     //Set star akurasi and kualitas
@@ -191,6 +181,34 @@
             [btnKomentar setTitle:[NSString stringWithFormat:@"0 %@", CStringKomentar] forState:UIControlStateNormal];
         [btnKomentar setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
+    
+    
+    
+    
+    //Set date
+    labelInfoSkip.hidden = YES;
+    if([viewModel.review_is_skipped isEqualToString:@"1"]) {
+        if([_strRole isEqualToString:@"2"]) {
+            btnUbah.hidden = btnKomentar.hidden = YES;
+            lblDate.text = @"";
+            
+            labelInfoSkip.text = CStringPembeliLewatiUlasan;
+            viewContentStar.hidden = YES;
+            labelInfoSkip.hidden = NO;
+        }
+    }
+    else if(viewModel==nil || viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) {
+        if([_strRole isEqualToString:@"2"]) {
+            btnUbah.hidden = btnKomentar.hidden = YES;
+            lblDate.text = @"";
+
+            labelInfoSkip.text = CStringPembeliBelumBeriUlasan;
+            viewContentStar.hidden = YES;
+            labelInfoSkip.hidden = NO;
+        }
+    }
+    else
+        lblDate.text = viewModel.review_create_time==nil||[viewModel.review_create_time isEqualToString:@"0"]? @"":viewModel.review_create_time;
 }
 
 #pragma mark - TTTAttributedLabel delegate

@@ -17,8 +17,10 @@
 #import "MyReviewReputationCell.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationViewController.h"
+#import "string_inbox_message.h"
 #import "String_Reputation.h"
 #import "ShopContainerViewController.h"
+#import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
@@ -47,6 +49,11 @@
     NSString *strUriNext;
     NSIndexPath *indexPathInsertReputation;
     UIRefreshControl *refreshControl;
+    
+    //GTM
+    TAGContainer *_gtmContainer;
+    NSString *baseUrl, *baseActionUrl;
+    NSString *postUrl, *postActionUrl;
 }
 @synthesize strNav;
 
@@ -63,6 +70,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configureGTM];
     filter = CTagSemuaReview;
     page = 0;
     tableContent.allowsSelection = NO;
@@ -222,10 +230,10 @@
 
 - (NSString*)getPath:(int)tag {
     if(tag == CTagGetInboxReputation) {
-        return @"inbox-reputation.pl";
+        return [postUrl isEqualToString:@""] ? @"inbox-reputation.pl" : postUrl;
     }
     else if(tag == CTagInsertReputation) {
-        return @"action/reputation.pl";
+        return [postActionUrl isEqualToString:@""] ? @"action/reputation.pl" : postActionUrl;
     }
     
     return nil;
@@ -233,7 +241,12 @@
 
 - (id)getObjectManager:(int)tag {
     if(tag == CTagGetInboxReputation) {
-        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectManager *objectManager;
+        if([baseUrl isEqualToString:kTkpdBaseURLString] || [baseUrl isEqualToString:@""]) {
+            objectManager = [RKObjectManager sharedClient];
+        } else {
+            objectManager = [RKObjectManager sharedClient:baseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[MyReviewReputation class]];
@@ -285,7 +298,12 @@
         return objectManager;
     }
     else if(tag == CTagInsertReputation) {
-        RKObjectManager *objectManager = [RKObjectManager sharedClient];
+        RKObjectManager *objectManager;
+        if([baseActionUrl isEqualToString:kTkpdBaseURLString] || [baseActionUrl isEqualToString:@""]) {
+            objectManager = [RKObjectManager sharedClient];
+        } else {
+            objectManager = [RKObjectManager sharedClient:baseActionUrl];
+        }
 
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
         [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -510,7 +528,7 @@
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
         
-        alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score];
+        alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
         alertRateView.tag = ((UIButton *) sender).tag;
         [alertRateView show];
     }
@@ -562,7 +580,7 @@
             return;
         }
         
-        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Wow!\nReview dari %@:\"%@\"", strPenjualOrPembeli, strRespond] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Review dari %@:\"%@\"", strPenjualOrPembeli, strRespond] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [alertView show];
     }
     else {
@@ -650,5 +668,23 @@
     
     //Request to server
     [[self getNetworkManager:CTagInsertReputation] doRequest];
+}
+
+
+#pragma mark - GTM
+- (void)configureGTM {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    
+    baseUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationBase];
+    postUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+    
+    baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
+    postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
 }
 @end
