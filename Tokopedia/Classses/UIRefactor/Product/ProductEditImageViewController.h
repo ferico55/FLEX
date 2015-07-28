@@ -27,10 +27,13 @@
 
 @property (nonatomic, weak) IBOutlet id<ProductEditImageViewControllerDelegate> delegate;
 
+@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintVerticalScrollview;
 
 @property (nonatomic,strong) NSDictionary *data;
 @property (nonatomic, strong) UIImage *uploadedImage;
 @property (nonatomic) BOOL isDefaultFromWS;
 @property (nonatomic) NSInteger type;
+@property (weak, nonatomic) IBOutlet UIView *setDefaultView;
 
 @end

@@ -14,6 +14,10 @@
 #pragma mark - Setting Location Detail View Controller
 @interface MyShopAddressDetailViewController () <UIScrollViewDelegate, ShopAddressEditViewControllerDelegate>
 
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdressname;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdress;
 @property (weak, nonatomic) IBOutlet UILabel *labelemail;
@@ -22,8 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelcity;
 @property (weak, nonatomic) IBOutlet UILabel *labelprovince;
 @property (weak, nonatomic) IBOutlet UILabel *labelphonenumber;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section4Cells;
 
 @end
 
@@ -43,8 +46,8 @@
 {
     [super viewDidLoad];
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    _contentView.frame = screenRect;
+    _section1Cells = [NSArray sortViewsWithTagInArray:_section1Cells];
+    _section3Cells = [NSArray sortViewsWithTagInArray:_section3Cells];
     
     [self setDefaultData:_data];
     
@@ -64,21 +67,11 @@
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;
 
-    [self.scrollView addSubview:_contentView];
-}
-
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    _scrollView.contentSize = _contentView.frame.size;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.scrollView.delegate = self;
-    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width,
-                                               self.contentView.frame.size.height)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -129,6 +122,86 @@
         }
     }
 }
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return _section0Cells.count;
+            break;
+        case 1:
+            return _section1Cells.count;
+            break;
+        case 2:
+            return _section2Cells.count;
+            break;
+        case 3:
+            return _section3Cells.count;
+            break;
+        case 4:
+            return _section4Cells.count;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell= nil;
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0Cells[indexPath.row];
+            break;
+        case 1:
+            cell = _section1Cells[indexPath.row];
+            break;
+        case 2:
+            cell = _section2Cells[indexPath.row];
+            break;
+        case 3:
+            cell = _section3Cells[indexPath.row];
+            break;
+        case 4:
+            cell = _section4Cells[indexPath.row];
+            break;
+        default:
+            break;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 5;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+            return [_section0Cells[indexPath.row] frame].size.height;
+            break;
+        case 1:
+            return [_section1Cells[indexPath.row] frame].size.height;
+            break;
+        case 2:
+            return [_section2Cells[indexPath.row] frame].size.height;
+            break;
+        case 3:
+            return [_section3Cells[indexPath.row] frame].size.height;
+            break;
+        case 4:
+            return [_section4Cells[indexPath.row] frame].size.height;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
 
 #pragma mark - Methods
 -(void)setDefaultData:(NSDictionary*)data

@@ -179,7 +179,6 @@
                 <constraint firstItem="Az8-b2-vuG" firstAttribute="top" secondItem="56G-bC-GIm" secondAttribute="top" id="lS4-gr-eOM"/>
                 <constraint firstItem="Az8-b2-vuG" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="mlD-WM-MxZ"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="140" y="154"/>
         </view>
         <view contentMode="scaleToFill" id="6N7-Wf-YM3" userLabel="FooterView">
