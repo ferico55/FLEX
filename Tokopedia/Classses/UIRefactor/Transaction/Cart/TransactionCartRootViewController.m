@@ -120,13 +120,12 @@
             
             if(_isShouldRefreshingCart) {
                 [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-                ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
+                [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
                 _isShouldRefreshingCart = NO;
             } else {
                 if (_cartViewController == nil) {
                     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
                 }
-                else ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
             }
             
             [_noLoginView setHidden:YES];
@@ -186,12 +185,8 @@
             if(!_cartViewController)
             {
                 _cartViewController = [TransactionCartViewController new];
-                _cartViewController.firstInit = YES;
             }
-            else
-            {
-                _cartViewController.firstInit = NO;
-            }
+
             _cartViewController.delegate = self;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartViewController;
@@ -242,6 +237,7 @@
             
             UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+            
             [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
             [backButton setFrame:CGRectMake(0, 0, 25, 35)];
             [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
@@ -355,17 +351,9 @@
 -(void)shouldBackToFirstPage
 {
     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
     ((TransactionCartViewController*)[self viewControllerAtIndex:0]).indexPage = 0;
+    [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
     _isShouldRefreshingCart = YES;
-}
-
--(void)shouldBackToFirstPageRefresh:(BOOL)isRefresh
-{
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = isRefresh;
-    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).indexPage = 0;
-    _isShouldRefreshingCart = isRefresh;
 }
 
 - (IBAction)tap:(id)sender {
@@ -384,11 +372,10 @@
         else if (_index == 1)
         {
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
         }
         else{
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
+            [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
         }
         
     }
@@ -410,6 +397,8 @@
     if (self.navigationController.viewControllers.count > 1 && _index!=1) {
         UIViewController *destinationVC;
         if (_index == 0) {
+            TransactionCartRootViewController *vc= [((UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:3]).viewControllers firstObject];
+            [vc shouldBackToFirstPage];
             destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
         }
         else
@@ -421,7 +410,6 @@
     else if (_index == 1)
     {
         [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-        ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
     }
 }
 
