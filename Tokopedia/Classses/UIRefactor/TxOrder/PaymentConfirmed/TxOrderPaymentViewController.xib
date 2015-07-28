@@ -93,11 +93,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="JT9-xt-M2G">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="DOQ-8g-oz7">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="jfA-Ev-joU"/>
@@ -108,11 +108,14 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="DOQ-8g-oz7" firstAttribute="top" secondItem="JT9-xt-M2G" secondAttribute="top" id="2zg-dD-AwQ"/>
-                <constraint firstItem="DOQ-8g-oz7" firstAttribute="leading" secondItem="JT9-xt-M2G" secondAttribute="leading" id="RLu-Pu-TYh"/>
-                <constraint firstAttribute="trailing" secondItem="DOQ-8g-oz7" secondAttribute="trailing" id="mD3-tK-ucd"/>
+                <constraint firstItem="DOQ-8g-oz7" firstAttribute="leading" secondItem="JT9-xt-M2G" secondAttribute="leading" id="RLu-Pu-TYh">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="DOQ-8g-oz7" secondAttribute="trailing" id="mD3-tK-ucd">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstAttribute="bottom" secondItem="DOQ-8g-oz7" secondAttribute="bottom" id="yhK-ma-6O3"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="337" y="569"/>
         </view>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="gCE-qJ-3Mo" detailTextLabel="ywi-yJ-7tR" style="IBUITableViewCellStyleValue1" id="qAD-Ic-SI9">

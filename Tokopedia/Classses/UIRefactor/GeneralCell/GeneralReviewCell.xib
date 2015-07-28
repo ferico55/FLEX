@@ -522,6 +522,7 @@
                 <outlet property="userImageView" destination="xp4-uU-tcG" id="qIP-xQ-mhY"/>
                 <outlet property="userNamelabel" destination="Ot1-QP-SIl" id="gMa-2V-XLd"/>
                 <outlet property="userTapView" destination="0Xt-Kc-x8f" id="wtB-Y2-mKf"/>
+                <outlet property="writeReviewButton" destination="cNq-27-RVs" id="Z0q-E6-PVi"/>
             </connections>
             <point key="canvasLocation" x="227" y="256"/>
         </tableViewCell>

@@ -202,8 +202,9 @@
         _reportButton.hidden = YES;
         _buttonsDividers.hidden = YES;
         
+        _talktotalcommentlabel.translatesAutoresizingMaskIntoConstraints = YES;
         CGRect newFrame = _talktotalcommentlabel.frame;
-        newFrame.origin.x = 120;
+        newFrame.origin.x = _header.frame.size.width/2;
         _talktotalcommentlabel.frame = newFrame;
     }
     
@@ -474,9 +475,11 @@
     } else {
         _reportButton.hidden = YES;
         
+        _talktotalcommentlabel.translatesAutoresizingMaskIntoConstraints = YES;
         CGRect newFrame = _talktotalcommentlabel.frame;
-        newFrame.origin.x = 120;
+        newFrame.origin.x = _header.frame.size.width/2;
         _talktotalcommentlabel.frame = newFrame;
+        
         _buttonsDividers.hidden = YES;
     }
     
@@ -545,13 +548,15 @@
     [super viewWillAppear:animated];
     _growingtextview.frame = CGRectMake(10, 10, self.view.bounds.size.width-(10*2)-_sendButton.bounds.size.width-5, 29);
     
-    if([_userManager isLogin]) {
-        [_talkInputView setHidden:NO];
-        [_sendButton setEnabled:NO];
-    } else {
-        [_talkInputView setHidden:YES];
+    if([_userManager getUserId] && ![[_userManager getUserId] isEqualToString:@"0"]) {
+        //isbanned product
+        if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
+           ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
+           ) {
+            [_talkInputView setHidden:NO];
+        }
     }
-    
+
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {

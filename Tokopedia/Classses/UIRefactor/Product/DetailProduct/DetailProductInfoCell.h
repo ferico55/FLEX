@@ -23,6 +23,7 @@
 @interface DetailProductInfoCell : UITableViewCell
 {
     IBOutlet NSLayoutConstraint *constraintHeightViewRetur;
+    IBOutlet NSLayoutConstraint *constraintWidthViewRetur;
     TTTAttributedLabel *lblMessageRetur;
     IBOutlet UIView *viewRetur;
     IBOutlet UIImageView *imgRetur;

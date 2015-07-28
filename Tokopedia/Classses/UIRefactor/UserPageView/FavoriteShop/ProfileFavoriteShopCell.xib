@@ -62,15 +62,9 @@
                 <outlet property="label" destination="TMJ-xp-oCg" id="jRh-YX-QZG"/>
                 <outlet property="thumb" destination="nx5-T4-FTa" id="Bat-4c-nOu"/>
                 <outlet property="thumbfav" destination="k2N-aq-yUJ" id="umz-c0-Mhy"/>
-                <outletCollection property="gestureRecognizers" destination="Qam-rN-wdj" appends="YES" id="l1n-UH-aOD"/>
             </connections>
             <point key="canvasLocation" x="140" y="146.5"/>
         </tableViewCell>
-        <tapGestureRecognizer id="Qam-rN-wdj">
-            <connections>
-                <action selector="gesture:" destination="GL1-5k-0bA" id="QME-X9-zzA"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_love_active.png" width="20" height="20"/>

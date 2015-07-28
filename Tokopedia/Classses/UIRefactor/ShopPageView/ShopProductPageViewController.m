@@ -42,6 +42,8 @@
 
 #import "NavigateViewController.h"
 
+#import "RetryCollectionReusableView.h"
+
 #import "NoResult.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -330,8 +332,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     if(kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
-            _isFailRequest = !_isFailRequest;
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+            ((RetryCollectionReusableView*)reusableView).delegate = self;
         } else {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }
@@ -433,10 +435,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     return cellSize;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    return CGSizeMake(60.0f, 40.0f);
+}
+
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
+
 
 
 #pragma mark - TableView Delegate
@@ -827,6 +834,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         [_timer invalidate];
         _timer = nil;
         _isrefreshview = NO;
+        _isFailRequest = NO;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         if(_product==nil || _product.count==0) {
             loadingView = [LoadingView new];
@@ -841,6 +849,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         [_timer invalidate];
         _timer = nil;
         _isrefreshview = NO;
+        _isFailRequest = YES;
+        [_collectionView reloadData];
     }];
     
     [_operationQueue addOperation:_request];
@@ -1230,19 +1240,13 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
  
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
-#pragma mark - LoadingView Delegate
-- (void)pressRetryButton
-{
+#pragma mark - Delegate LoadingView
+- (void)pressRetryButton {
+    _isFailRequest = NO;
+    [_collectionView reloadData];
     [self configureRestKit];
     [self loadData];
 }
+
+
 @end

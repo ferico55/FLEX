@@ -66,7 +66,7 @@
 {
     if(lblMessageRetur == nil) {
         lblMessageRetur = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-        lblMessageRetur.textAlignment = NSTextAlignmentCenter;
+        lblMessageRetur.textAlignment = NSTextAlignmentLeft;
         lblMessageRetur.font = [UIFont fontWithName:CFont_Gotham_Book size:11.0f];
         lblMessageRetur.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
         lblMessageRetur.lineBreakMode = NSLineBreakByWordWrapping;
@@ -76,8 +76,22 @@
     }
     
     
-    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
-    lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5, CPaddingTopDescToko, viewRetur.bounds.size.width-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15, height);
+    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText withColor:[UIColor whiteColor] withFont:FONT_GOTHAM_BOOK_14 withAlignment:NSTextAlignmentLeft];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5,
+                                       CPaddingTopDescToko,
+                                       ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-155,
+                                       height);
+    }
+    else
+    {
+        lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5,
+                                           CPaddingTopDescToko,
+                                           ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15,
+                                           height);
+    }
+    
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
 }
 
