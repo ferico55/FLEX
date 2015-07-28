@@ -745,7 +745,17 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didRefreshGTM" object:nil];
 }
 
-- (void)didReceiveShowRatingNotification:(NSNotification*)notification {
+- (void)didReceiveShowRatingNotification:(NSNotification *)notification {
+    if ([[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT]) {
+        if ([[[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT] boolValue]) {
+            [self showRatingAlertFromNotification:notification];
+        }
+    } else {
+        [self checkUserRating:notification];
+    }
+}
+
+- (void)checkUserRating:(NSNotification *)notification {
     // Reviews data structure
     // ReviewData (Dictionary containing belows data)
     //   -> UserIds (Array containing user ids that already rated the app)
@@ -765,15 +775,15 @@ typedef enum TagRequest {
                     if (userDueDate) {
                         NSDate *today = [NSDate new];
                         if (today.timeIntervalSince1970 >= userDueDate.timeIntervalSince1970) {
-                            [self showRatingAlert];
+                            [self showRatingAlertFromNotification:notification];
                         }
                     } else {
-                        [self showRatingAlert];
+                        [self showRatingAlertFromNotification:notification];
                     }
                 } else {
                     NSMutableDictionary *newUsersDueDates = [NSMutableDictionary new];
                     [reviewData setObject:newUsersDueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
-                    [self showRatingAlert];
+                    [self showRatingAlertFromNotification:notification];
                 }
             }
         } else {
@@ -783,7 +793,7 @@ typedef enum TagRequest {
                 NSMutableDictionary *dueDates = [NSMutableDictionary new];
                 [reviewData setObject:dueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
             }
-            [self showRatingAlert];
+            [self showRatingAlertFromNotification:notification];
         }
     } else {
         NSMutableDictionary *newReviewData = [NSMutableDictionary new];
@@ -792,13 +802,13 @@ typedef enum TagRequest {
         [newReviewData setObject:newUserIds forKey:kTKPD_USER_REVIEW_IDS];
         [newReviewData setObject:newUsersDueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
         reviewData = newReviewData;
-        [self showRatingAlert];
+        [self showRatingAlertFromNotification:notification];
     }
     [defaults setObject:reviewData forKey:kTKPD_USER_REVIEW_DATA];
     [defaults synchronize];
 }
 
-- (void)showRatingAlert {
+- (void)showRatingAlertFromNotification:(NSNotification *)notification {
     NSString *title = @"Suka dengan aplikasi iOS Tokopedia?";
     NSString *message = @"Rate 5 bintang untuk aplikasi ini. Setiap rating yang kalian berikan adalah semangat bagi kami! Terima kasih Toppers.";
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
@@ -806,30 +816,41 @@ typedef enum TagRequest {
                                                    delegate:self
                                           cancelButtonTitle:@"Tidak"
                                           otherButtonTitles:@"Ya", nil];
-    alert.tag = 2;
+
+    if ([[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT]) {
+        if ([[[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT] boolValue]) {
+            alert.tag = 1;
+        }
+    } else {
+        alert.tag = 2;
+    }
     alert.delegate = self;
     [alert show];
 }
 
 - (void)ratingAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *reviewData = [[defaults objectForKey:kTKPD_USER_REVIEW_DATA] mutableCopy];
-    if (buttonIndex == 0) {
-        NSMutableDictionary *dueDates = [[reviewData objectForKey:kTKPD_USER_REVIEW_DUE_DATE] mutableCopy];
-        NSDate *today = [NSDate date];
-        //        int daysInterval = 7;
-        //        NSDate *nextWeek = [today dateByAddingTimeInterval:60*60*24*daysInterval];
-        NSDate *nextWeek = [today dateByAddingTimeInterval:300];
-        [dueDates setObject:nextWeek forKey:_userManager.getUserId];
-        [reviewData setObject:dueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
-    } else if (buttonIndex == 1) {
-        NSMutableArray *userids = [[reviewData objectForKey:kTKPD_USER_REVIEW_IDS] mutableCopy];
-        [userids addObject:_userManager.getUserId];
-        [reviewData setObject:userids forKey:kTKPD_USER_REVIEW_IDS];
+    if (alertView.tag == 1) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kTKPD_ITUNES_APP_URL]];
     }
-    [defaults setObject:reviewData forKey:kTKPD_USER_REVIEW_DATA];
-    [defaults synchronize];
+    else if (alertView.tag == 2) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSMutableDictionary *reviewData = [[defaults objectForKey:kTKPD_USER_REVIEW_DATA] mutableCopy];
+        if (buttonIndex == 0) {
+            NSMutableDictionary *dueDates = [[reviewData objectForKey:kTKPD_USER_REVIEW_DUE_DATE] mutableCopy];
+            NSDate *today = [NSDate date];
+            int daysInterval = 7;
+            NSDate *nextWeek = [today dateByAddingTimeInterval:60*60*24*daysInterval];
+            [dueDates setObject:nextWeek forKey:_userManager.getUserId];
+            [reviewData setObject:dueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
+        } else if (buttonIndex == 1) {
+            NSMutableArray *userids = [[reviewData objectForKey:kTKPD_USER_REVIEW_IDS] mutableCopy];
+            [userids addObject:_userManager.getUserId];
+            [reviewData setObject:userids forKey:kTKPD_USER_REVIEW_IDS];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kTKPD_ITUNES_APP_URL]];
+        }
+        [defaults setObject:reviewData forKey:kTKPD_USER_REVIEW_DATA];
+        [defaults synchronize];
+    }
 }
 
 @end
