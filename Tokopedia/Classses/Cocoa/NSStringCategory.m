@@ -126,11 +126,22 @@
     return timeLeft;
 }
 
-- (BOOL) isAllNonNumber
+-(BOOL)isAllNonNumber
 {
     NSCharacterSet* numbers = [NSCharacterSet decimalDigitCharacterSet];
-    NSRange r = [self rangeOfCharacterFromSet: numbers];
-    return r.location == NSNotFound;
+    NSRange rnumbers = [self rangeOfCharacterFromSet: numbers];
+    
+    return rnumbers.location == NSNotFound;
+}
+
+- (BOOL) isNotAllBaseCharacter
+{
+    //    NSCharacterSet* symbols = [NSCharacterSet symbolCharacterSet];
+    //    NSRange r = [self rangeOfCharacterFromSet: symbols];
+    //    NSCharacterSet* numbers = [NSCharacterSet decimalDigitCharacterSet];
+    //    NSRange rnumbers = [self rangeOfCharacterFromSet: numbers];
+    NSCharacterSet * set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ "]invertedSet];
+    return [self rangeOfCharacterFromSet:set].location != NSNotFound;
 }
 
 @end
