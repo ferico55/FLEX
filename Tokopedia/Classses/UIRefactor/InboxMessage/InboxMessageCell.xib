@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -8,9 +8,6 @@
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
             <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -42,12 +39,9 @@
                                     <constraint firstAttribute="height" constant="51" id="h4q-rj-XqI"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZM-UR-E6t">
-                                <rect key="frame" x="64" y="3" width="230" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0S3-yh-4JG" customClass="ViewLabelUser">
+                                <rect key="frame" x="63" y="0.0" width="210" height="21"/>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vmQ-ds-6vr">
                                 <rect key="frame" x="64" y="35" width="230" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
@@ -75,7 +69,7 @@
                 <outlet property="is_unread" destination="rD6-FP-ZPL" id="gdc-B8-ayE"/>
                 <outlet property="message_create_time" destination="PPG-Zx-wp8" id="tvL-aB-WXq"/>
                 <outlet property="message_reply" destination="vmQ-ds-6vr" id="IAQ-PI-Egp"/>
-                <outlet property="message_title" destination="WZM-UR-E6t" id="3Re-VH-7MU"/>
+                <outlet property="message_title" destination="0S3-yh-4JG" id="Gmd-Pw-SMd"/>
                 <outlet property="movingview" destination="rYu-on-PC9" id="2iL-Nu-MFs"/>
                 <outlet property="userimageview" destination="pKq-no-j9h" id="tkv-5W-eGo"/>
             </connections>
