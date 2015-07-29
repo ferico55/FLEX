@@ -563,8 +563,6 @@
 		7A3F63731B6759950052D281 /* ProductFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F5BCF1B6759910052D281 /* ProductFeedViewController.m */; };
 		7A3F63741B6759950052D281 /* ProductFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F5BD01B6759910052D281 /* ProductFeedViewController.xib */; };
 		7A3F63751B6759950052D281 /* ProductInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F5BD21B6759910052D281 /* ProductInfoTableViewController.m */; };
-		7A3F63761B6759950052D281 /* WishListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F5BD61B6759910052D281 /* WishListViewController.m */; };
-		7A3F63771B6759950052D281 /* WishListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F5BD71B6759910052D281 /* WishListViewController.xib */; };
 		7A3F63781B6759950052D281 /* HomeFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F5BDB1B6759910052D281 /* HomeFlowLayout.m */; };
 		7A3F63791B6759950052D281 /* HotlistCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F5BDD1B6759910052D281 /* HotlistCell.m */; };
 		7A3F637A1B6759950052D281 /* HotlistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F5BDE1B6759910052D281 /* HotlistCell.xib */; };
@@ -2625,9 +2623,6 @@
 		7A3F5BD11B6759910052D281 /* ProductInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductInfoTableViewController.h; sourceTree = "<group>"; };
 		7A3F5BD21B6759910052D281 /* ProductInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductInfoTableViewController.m; sourceTree = "<group>"; };
 		7A3F5BD31B6759910052D281 /* string_home.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_home.h; sourceTree = "<group>"; };
-		7A3F5BD51B6759910052D281 /* WishListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListViewController.h; sourceTree = "<group>"; };
-		7A3F5BD61B6759910052D281 /* WishListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListViewController.m; sourceTree = "<group>"; };
-		7A3F5BD71B6759910052D281 /* WishListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WishListViewController.xib; sourceTree = "<group>"; };
 		7A3F5BDA1B6759910052D281 /* HomeFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeFlowLayout.h; sourceTree = "<group>"; };
 		7A3F5BDB1B6759910052D281 /* HomeFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeFlowLayout.m; sourceTree = "<group>"; };
 		7A3F5BDC1B6759910052D281 /* HotlistCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistCell.h; sourceTree = "<group>"; };
@@ -6078,7 +6073,6 @@
 				7A3F5BC91B6759910052D281 /* MyWishlist */,
 				7A3F5BCD1B6759910052D281 /* ProdukFeed */,
 				7A3F5BD31B6759910052D281 /* string_home.h */,
-				7A3F5BD41B6759910052D281 /* WishList */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -6139,16 +6133,6 @@
 				7A3F5BD21B6759910052D281 /* ProductInfoTableViewController.m */,
 			);
 			path = ProdukFeed;
-			sourceTree = "<group>";
-		};
-		7A3F5BD41B6759910052D281 /* WishList */ = {
-			isa = PBXGroup;
-			children = (
-				7A3F5BD51B6759910052D281 /* WishListViewController.h */,
-				7A3F5BD61B6759910052D281 /* WishListViewController.m */,
-				7A3F5BD71B6759910052D281 /* WishListViewController.xib */,
-			);
-			path = WishList;
 			sourceTree = "<group>";
 		};
 		7A3F5BD81B6759910052D281 /* Hotlist */ = {
@@ -8828,7 +8812,6 @@
 				7A3F66D71B6759950052D281 /* icon_filter@3x.png in Resources */,
 				7A3F64B11B6759950052D281 /* ShopTalkViewController.xib in Resources */,
 				7A3F64F71B6759950052D281 /* TransactionCartResultViewController.xib in Resources */,
-				7A3F63771B6759950052D281 /* WishListViewController.xib in Resources */,
 				7A3F665A1B6759950052D281 /* icon_search_active (deleted 9049b8eae695cf9632f6f1691fc7f40b).png in Resources */,
 				7A3F66EA1B6759950052D281 /* icon_signin_active@3x.png in Resources */,
 				7A3F63081B6759940052D281 /* CatalogSellerCell.xib in Resources */,
@@ -9594,7 +9577,6 @@
 				7A3F63451B6759950052D281 /* DepositSummaryViewController.m in Sources */,
 				7A3F65211B6759950052D281 /* TxOrderConfirmedViewController.m in Sources */,
 				7A3F61ED1B6759940052D281 /* InboxTicketUserInvolve.m in Sources */,
-				7A3F63761B6759950052D281 /* WishListViewController.m in Sources */,
 				7A3F630D1B6759940052D281 /* CategoryViewController.m in Sources */,
 				7A3F617F1B6759940052D281 /* DepositSummaryList.m in Sources */,
 				7A3F61F71B6759940052D281 /* NotificationInbox.m in Sources */,
