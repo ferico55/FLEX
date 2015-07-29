@@ -15,7 +15,6 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -122,12 +121,9 @@
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="05e-hS-4nA">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bmd-7s-liE" customClass="ViewLabelUser">
                                 <rect key="frame" x="62" y="29" width="158" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                                <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dhi-OU-DAJ" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="61" width="300" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
@@ -149,17 +145,17 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="dhi-OU-DAJ" firstAttribute="top" secondItem="05e-hS-4nA" secondAttribute="bottom" constant="11" id="3xG-qH-Umx"/>
-                            <constraint firstItem="05e-hS-4nA" firstAttribute="top" secondItem="5QU-W0-oEF" secondAttribute="top" constant="29" id="46A-XY-WaU"/>
                             <constraint firstAttribute="height" constant="62" id="6BW-QR-gYc"/>
-                            <constraint firstItem="8KS-26-HFG" firstAttribute="leading" secondItem="05e-hS-4nA" secondAttribute="trailing" constant="8" id="Tt8-CW-mgu"/>
+                            <constraint firstItem="Bmd-7s-liE" firstAttribute="top" secondItem="5QU-W0-oEF" secondAttribute="top" constant="29" id="HhD-jN-B6Q"/>
+                            <constraint firstItem="8KS-26-HFG" firstAttribute="leading" secondItem="Bmd-7s-liE" secondAttribute="trailing" constant="8" symbolic="YES" id="JkC-0i-5Ci"/>
                             <constraint firstItem="kzr-BZ-Moe" firstAttribute="leading" secondItem="5QU-W0-oEF" secondAttribute="leading" constant="10" id="Wop-c7-yaX"/>
+                            <constraint firstItem="Bmd-7s-liE" firstAttribute="leading" secondItem="PaP-wX-LL2" secondAttribute="leading" id="awb-77-GH6"/>
                             <constraint firstAttribute="trailing" secondItem="8KS-26-HFG" secondAttribute="trailing" constant="12" id="fkj-dB-k8b"/>
                             <constraint firstItem="dhi-OU-DAJ" firstAttribute="leading" secondItem="5QU-W0-oEF" secondAttribute="leading" id="fuT-PE-Xcq"/>
                             <constraint firstAttribute="bottom" secondItem="dhi-OU-DAJ" secondAttribute="bottom" id="gxf-Sz-lBe"/>
-                            <constraint firstItem="05e-hS-4nA" firstAttribute="leading" secondItem="kzr-BZ-Moe" secondAttribute="trailing" constant="8" id="inm-ju-jKC"/>
                             <constraint firstAttribute="centerY" secondItem="8KS-26-HFG" secondAttribute="centerY" id="md5-Ld-9yP"/>
                             <constraint firstAttribute="centerY" secondItem="kzr-BZ-Moe" secondAttribute="centerY" id="ntV-nE-QL8"/>
+                            <constraint firstItem="dhi-OU-DAJ" firstAttribute="top" secondItem="Bmd-7s-liE" secondAttribute="bottom" constant="11" id="qsz-5j-bno"/>
                             <constraint firstAttribute="trailing" secondItem="dhi-OU-DAJ" secondAttribute="trailing" id="tAa-K4-DeI"/>
                             <constraint firstItem="PaP-wX-LL2" firstAttribute="top" secondItem="5QU-W0-oEF" secondAttribute="top" constant="14" id="wic-2M-4ER"/>
                             <constraint firstItem="PaP-wX-LL2" firstAttribute="leading" secondItem="kzr-BZ-Moe" secondAttribute="trailing" constant="8" id="zgX-Ng-Ztd"/>
@@ -242,13 +238,13 @@
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-                <outlet property="buyerNameLabel" destination="05e-hS-4nA" id="E3Q-bz-vDK"/>
                 <outlet property="buyerOrSellerLabel" destination="PaP-wX-LL2" id="dnT-ZS-nAS"/>
                 <outlet property="buyerProfileImageView" destination="kzr-BZ-Moe" id="VVr-U9-vOF"/>
                 <outlet property="invoiceDateLabel" destination="q12-uK-cRI" id="DEZ-If-GZF"/>
                 <outlet property="invoiceNumberLabel" destination="S27-Xw-i9v" id="N4Y-lF-nVS"/>
                 <outlet property="lastStatusLabel" destination="HFY-UP-0R7" id="m3W-Ur-XgD"/>
                 <outlet property="statusLabel" destination="zGG-vR-15B" id="fAI-xW-G5x"/>
+                <outlet property="viewLabelUser" destination="Bmd-7s-liE" id="Dyt-Ai-bIQ"/>
                 <outlet property="warningLabel" destination="8KS-26-HFG" id="xsG-pH-QMe"/>
             </connections>
             <point key="canvasLocation" x="436" y="327.5"/>
