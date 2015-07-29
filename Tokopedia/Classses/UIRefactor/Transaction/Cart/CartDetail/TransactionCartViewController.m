@@ -838,7 +838,9 @@
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if ([product.product_error_msg isEqualToString:@""] ||
+        [product.product_error_msg isEqualToString:@"0"] ||
+        product.product_error_msg == nil ) {
         [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
     }
 }
@@ -1127,7 +1129,10 @@
         }
         case 1:
         {
-            if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+            if ([product.product_error_msg isEqualToString:@""] ||
+                [product.product_error_msg isEqualToString:@"0"] ||
+                product.product_error_msg == nil ||
+                [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
                 TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 editViewController.data = _dataInput;
