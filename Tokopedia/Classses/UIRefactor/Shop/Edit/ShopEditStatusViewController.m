@@ -222,19 +222,24 @@
                 ((UIImageView*)_thumbicon[0]).hidden = YES;
                 ((UIImageView*)_thumbicon[1]).hidden = NO;
                 
-                NSDateComponents* deltaComps = [NSDateComponents new];
-                [deltaComps setDay:7];
-                NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
-                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:tomorrow];
-                NSInteger year = [components year];
-                NSInteger month = [components month];
-                NSInteger day = [components day];
-                NSString *datestring = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
+                NSString *closedUntil;
+                if ([[_data objectForKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY] isEqualToString:@"0"]) {
+                    NSDateComponents* deltaComps = [NSDateComponents new];
+                    [deltaComps setDay:7];
+                    NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
+                    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:tomorrow];
+                    NSInteger year = [components year];
+                    NSInteger month = [components month];
+                    NSInteger day = [components day];
+                    NSString *dateString = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
+                    closedUntil = dateString;
+                } else {
+                    closedUntil = [_data objectForKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
+                }
                 
-                NSString *closedUntil = [_data objectForKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY]?:datestring;
                 [_datainput setObject:closedUntil forKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
-                NSString *until = [closedUntil isEqualToString:@"0"]?datestring:closedUntil;
-                [_buttondate setTitle:until forState:UIControlStateNormal];
+                [_buttondate setTitle:closedUntil forState:UIControlStateNormal];
+                
                 break;
             }
             default:
