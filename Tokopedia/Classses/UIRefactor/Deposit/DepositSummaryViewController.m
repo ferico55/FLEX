@@ -194,7 +194,7 @@
         cell = (DepositSummaryCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if (cell == nil) {
             cell = [DepositSummaryCell newcell];
-            ((DepositSummaryCell *) cell).contentView.backgroundColor = [UIColor redColor];
+//            ((DepositSummaryCell *) cell).contentView.backgroundColor = [UIColor redColor];
         }
         
         if (_depositSummary.count > indexPath.row) {
@@ -236,6 +236,10 @@
     }
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 150;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
