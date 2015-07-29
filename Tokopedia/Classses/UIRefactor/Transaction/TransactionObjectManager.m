@@ -134,7 +134,7 @@
     RKObjectMapping *veritransMapping   = [[self mapping] veritransDataMapping];
     RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
     
-    if(_gatewayID == TYPE_GATEWAY_CLICK_BCA){
+    if(_gatewayID == TYPE_GATEWAY_BCA_CLICK_PAY){
         RKObjectMapping *BCAParamMapping = [[self mapping] BCAParamMapping];
         RKRelationshipMapping *bcaParamRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_BCA_PARAM_KEY
                                                                                          toKeyPath:API_BCA_PARAM_KEY

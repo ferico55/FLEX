@@ -642,6 +642,7 @@
             switch ([_cartSummary.gateway integerValue]) {
                 case TYPE_GATEWAY_TOKOPEDIA:
                 case TYPE_GATEWAY_TRANSFER_BANK:
+                case TYPE_GATEWAY_BCA_KLIK_BCA:
                     if ([self isValidInput]) {
                         _requestCart.param = [self paramBuy];
                         [_requestCart dorequestBuy];
@@ -657,12 +658,12 @@
                     }
                 }
                     break;
-                case TYPE_GATEWAY_CLICK_BCA:
+                case TYPE_GATEWAY_BCA_CLICK_PAY:
                 {
                     if ([self isValidInput]) {
                         TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
                         vc.BCAParam = _cartSummary.bca_param;
-                        vc.gateway = @(TYPE_GATEWAY_CLICK_BCA);
+                        vc.gateway = @(TYPE_GATEWAY_BCA_CLICK_PAY);
                         vc.token = _cartSummary.token;
                         vc.cartDetail = _cartSummary;
                         vc.delegate = self;
@@ -696,6 +697,23 @@
 }
 
 -(BOOL)isValidInputCC
+{
+    BOOL isvalid = YES;
+    NSMutableArray *errorMessage = [NSMutableArray new];
+    if ([_cart.grand_total integerValue] <50000) {
+        [errorMessage addObject:@"Minimum pembayaran untuk kartu kredit adalah Rp 50.000,00."];
+        isvalid = NO;
+    }
+    
+    if (!isvalid) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
+    }
+    
+    return isvalid;
+}
+
+-(BOOL)isValidInputKlikBCA
 {
     BOOL isvalid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
@@ -911,6 +929,9 @@
         if (gateway == TYPE_GATEWAY_CC) {
             return [self isValidInputCC];
         }
+        if (gateway == TYPE_GATEWAY_BCA_KLIK_BCA) {
+            return [self isValidInputKlikBCA];
+        }
         if (_isUsingSaldoTokopedia)
         {
             NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
@@ -926,11 +947,21 @@
             }
         }
     }
-    else if (_indexPage == 1 && [_cartSummary.deposit_amount integerValue]>0) {
-        NSString *password = _passwordTextField.text;
-        if ([password isEqualToString:@""] || password == nil) {
-            isValid = NO;
-            [messageError addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
+    
+    if (_indexPage == 1) {
+        if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
+            NSString *userID = _userIDKlikBCATextField.text;
+            if ([userID isEqualToString:@""] || userID == nil) {
+                isValid = NO;
+                [messageError addObject:ERRORMESSAGE_NULL_CART_USERID];
+            }
+        }
+        if ([_cartSummary.deposit_amount integerValue]>0) {
+            NSString *password = _passwordTextField.text;
+            if ([password isEqualToString:@""] || password == nil) {
+                isValid = NO;
+                [messageError addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
+            }
         }
     }
     
@@ -1576,6 +1607,7 @@
     
     _tableView.tableFooterView = nil;
     _saldoTokopediaAmountTextField.text = @"";
+    _userIDKlikBCATextField.text = @"";
     
     [_tableView reloadData];
 }
@@ -2200,7 +2232,7 @@
             }
         }
         if (indexPath.row == 4) {
-            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_PAY) {
+            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
                 return _klikBCAUserIDCell.frame.size.height;
             }
             else
@@ -2335,6 +2367,7 @@
     NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
     NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
     NSString *password = _passwordTextField.text?:@"";
+    NSString *userIDKlikBCA = _userIDKlikBCATextField.text?:@"";
     
     NSString *CCToken = [_dataInput objectForKey:API_CC_TOKEN_ID_KEY]?:@"";
     NSString *CCEditFlag =[_dataInput objectForKey:API_CC_EDIT_FLAG_KEY]?:@"1";
@@ -2365,7 +2398,8 @@
                             API_CC_ADDRESS_KEY : CCAddress,
                             API_CC_PHONE_KEY : CCPhone,
                             API_CC_STATE_KEY : CCState,
-                            API_CC_CARD_NUMBER_KEY : CCNumber
+                            API_CC_CARD_NUMBER_KEY : CCNumber,
+                            API_BCA_USER_ID_KEY : userIDKlikBCA
                             };
     return param;
 }
@@ -2440,7 +2474,9 @@
         
     }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+        
     }
+    
     if (tag == TAG_REQUEST_EMONEY) {
         [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
         [_alertLoading show];
@@ -2725,7 +2761,7 @@
             break;
         default:
         {
-            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
+            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result,@"UserID":_userIDKlikBCATextField.text};
             [_delegate didFinishRequestBuyData:userInfo];
             [_dataInput removeAllObjects];
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];

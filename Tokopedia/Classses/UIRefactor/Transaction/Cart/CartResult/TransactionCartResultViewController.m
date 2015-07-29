@@ -42,6 +42,8 @@
 @property (strong, nonatomic) IBOutlet UIView *paymentStatusView;
 @property (weak, nonatomic) IBOutlet UIButton *paymentStatusButton;
 @property (weak, nonatomic) IBOutlet UILabel *contactUsLabel;
+@property (strong, nonatomic) IBOutlet UIView *paymentConfirmationKlikBCAView;
+@property (weak, nonatomic) IBOutlet UITextView *klikBCASteps;
 
 @end
 
@@ -73,6 +75,7 @@
     paragraphStyle.lineSpacing = 6.0;
     
     NSString *string1 = _footerLabel1.text;
+
     NSMutableAttributedString *title1 = [[NSMutableAttributedString alloc]initWithString:string1];
     [title1 addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_11 range:NSMakeRange(0, title1.length)];
     
@@ -100,6 +103,27 @@
     [title addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title.length)];
     
     _contactUsLabel.attributedText = title;
+    
+    NSString *htmlString = @"<h3><strong>Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran :</strong></h3><ol><li>Masuk ke situs<strong> www.klikbca.com</strong>, masukkan User ID dan Password Anda.</li><li>Pilih menu Pembayaran e-Commerce, lalu pilih kategori Marketlace, pilih pilihan &nbsp;Tokopedia, dan klik Lanjutkan.</li><li>Pada halaman berikutnya, akan tampil transaksi pembelian yang Anda lakukan di situs Tokopedia. Cek kembali dan pilih transaksi yang ingin Anda Bayar, lalu klik Lanjutkan.</li><li>&nbsp;Masukkan kode Otorisasi KeyBCA untuk memproses transaksi.</li><li>&nbsp;Apabila transaksi Anda berhasil, sistem Tokopedia akan langsung memverifikasi pembayaran Anda.</li>";
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding]
+                                                                            options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil
+                                                                              error:nil];
+    [attributedString addAttribute:NSFontAttributeName
+                             value:FONT_GOTHAM_BOOK_11
+                   range:NSMakeRange(0, attributedString.length)];
+//[attributedString addAttribute:NSForegroundColorAttributeName
+//                         value:[UIColor colorWithRed:97.0/255.0 green:97.0/255.0 blue:97.0/255.0 alpha:1]
+//                         range:NSMakeRange(0, attributedString.length)];
+    [attributedString addAttribute:NSFontAttributeName
+                             value:FONT_GOTHAM_MEDIUM_12
+                             range:[htmlString rangeOfString:@"Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran :"]];
+    [attributedString addAttribute:NSFontAttributeName
+                             value:FONT_GOTHAM_MEDIUM_12
+                             range:[htmlString rangeOfString:@"www.klikbca.com"]];
+
+    
+    _klikBCASteps.attributedText = attributedString;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -148,13 +172,17 @@
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == _listTotalPayment.count + _listSystemBank.count-1) {
-        return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA||
-                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
-                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
-                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)]||
-                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]
-                )
-        ?_paymentStatusView:_viewConfirmPayment;
+        if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA||
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)] ||
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)]){
+            return _paymentStatusView;
+        }
+        else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
+            return _paymentConfirmationKlikBCAView;
+        }
+        else
+            return _viewConfirmPayment;
     }
     return nil;
 }
@@ -186,12 +214,17 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == _listTotalPayment.count + _listSystemBank.count-1) {
-        return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA||
-                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
-                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
-                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)])
-        ?_paymentStatusView.frame.size.height:
-        _viewConfirmPayment.frame.size.height;
+        if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA||
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)] ||
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)]){
+                return _paymentStatusView.frame.size.height;
+        }
+        else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
+            return _paymentConfirmationKlikBCAView.frame.size.height;
+        }
+        else
+            return _viewConfirmPayment.frame.size.height;
     }
     return 10;
 }
@@ -327,9 +360,9 @@
              [_listTotalPayment addObjectsFromArray:detailPayment];
          }
      }
-    else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)])
+    else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]||
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)])
     {
-        self.screenName = @"Thank you Page - Transfer Bank";
         if ([_cartBuy.transaction.voucher_amount integerValue]>0) {
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
@@ -347,16 +380,28 @@
                                                    ];
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
         }
-        NSArray *detailPayment = @[
-                                   @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
-                                     DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
-                                     },
-                                   ];
-        [_listTotalPayment addObjectsFromArray:detailPayment];
+        
+        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
+            self.screenName = @"Thank you Page - Transfer Bank";
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]) {
+            self.screenName = @"Thank you Page - BCA KlikBCA";
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
     }
     else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)] ||
-             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)] ||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]
              )
     {
@@ -364,7 +409,7 @@
             self.screenName = @"Thank you Page - Mandiri eCash";
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)]) {
             self.screenName = @"Thank you Page - Mandiri ClickPay";
-        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)]) {
+        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)]) {
             self.screenName = @"Thank you Page - KlikBca";
         }else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]) {
             self.screenName = @"Thank you Page - Credit Card";
@@ -396,14 +441,18 @@
     }
     
     
-    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
-                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
-                                                                              }];
+//    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
+//                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
+//                                                                              }];
     
     [_footerLabel setCustomAttributedText:_footerLabel.text];
     [_listPaymentTitleLabel setCustomAttributedText:_listPaymentTitleLabel.text];
     
     NSString *tableTitleLabel = [NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
+    if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
+        tableTitleLabel = [NSString stringWithFormat:@"Terima kasih, Transaksi Anda telah berhasil menggunakan pembayaran Klik BCA.\nSilahkan selesaikan pembayaran Anda pada halaman Klik  BCA.\nUser ID KlikBCA Anda: %@\n",[_data objectForKey:@"UserID"]];
+    }
+
     [_tableTitleLabel setCustomAttributedText:tableTitleLabel];
     
     _tableView.tableHeaderView = _tableHeaderView;
