@@ -1040,7 +1040,10 @@
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if ([product.product_error_msg isEqualToString:@""] ||
+        [product.product_error_msg isEqualToString:@"0"] ||
+        product.product_error_msg == nil ||
+        [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
         UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
                                 @"Hapus",
                                 @"Edit",
@@ -2014,6 +2017,10 @@
         else if ([product.product_error_msg isEqualToString:@"Produk ini dalam moderasi"])
         {
             cell.errorProductLabel.text = @"MODERASI";
+        }
+        else if ([product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
+        {
+            [cell.errorProductLabel setCustomAttributedText:@"Maks\n999 item"];
         }
         else if ([list.cart_is_price_changed integerValue] == 1)
         {
