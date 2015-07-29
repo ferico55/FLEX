@@ -251,6 +251,9 @@
     UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userArea addGestureRecognizer:tapUserGes];
     [_userArea setUserInteractionEnabled:YES];
+    
+    [self configureRestKit];
+    [self loadData];
 }
 
 
@@ -504,7 +507,7 @@
 }
 
 - (void) initTalkInputView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectZero];
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240.0/320.0 * [UIScreen mainScreen].bounds.size.width, 45)];
     //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
