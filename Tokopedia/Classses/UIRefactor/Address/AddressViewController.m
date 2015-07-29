@@ -23,6 +23,7 @@
     AddressObj *_addressObj;
     
     RequestAddress *_requestAddress;
+    UIBarButtonItem *_doneBarButton;
 }
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -52,12 +53,13 @@
     
     [self.navigationController.navigationBar setTranslucent:NO];
     
-    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
+    _doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
                                                                       style:UIBarButtonItemStyleDone
                                                                      target:self
                                                                      action:@selector(tap:)];
-    doneBarButton.tag = 11;
-    self.navigationItem.rightBarButtonItem = doneBarButton;
+    _doneBarButton.tag = 11;
+    _doneBarButton.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _doneBarButton;
     
     _type =[[_data objectForKey:kTKPDLOCATION_DATALOCATIONTYPEKEY] integerValue];
     switch (_type) {
@@ -270,6 +272,7 @@
 #pragma mark - Cell Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    _doneBarButton.enabled = YES;
     AddressCell *cell = (AddressCell*)[tableView cellForRowAtIndexPath:indexPath];
     _selectedlocation = cell.data;
     [_table reloadData];

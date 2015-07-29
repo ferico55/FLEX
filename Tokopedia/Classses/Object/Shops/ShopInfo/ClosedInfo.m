@@ -10,4 +10,12 @@
 
 @implementation ClosedInfo
 
+- (NSString *)reason {
+    return [_reason kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString *)note {
+    return [_note kv_decodeHTMLCharacterEntities];
+}
+
 @end

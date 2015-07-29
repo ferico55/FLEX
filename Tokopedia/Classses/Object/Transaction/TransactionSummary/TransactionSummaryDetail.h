@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TransactionCartList.h"
 #import "TransactionSummaryBCAParam.h"
+#import "CCFee.h"
 
 @interface TransactionSummaryDetail : NSObject
 
@@ -52,5 +53,8 @@
 @property (nonatomic,strong) NSString *grand_total_before_fee;
 @property (nonatomic,strong) NSString *conf_code_idr;
 @property (nonatomic,strong) NSString *payment_left;
+
+@property (nonatomic,strong) CCFee *credit_card;
+
 
 @end

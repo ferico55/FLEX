@@ -10,16 +10,20 @@
 
 #import "TxEmoney.h"
 #import "string_transaction.h"
+#import "RequestCart.h"
 
 #define CLICK_BCA_LOGIN_URL @"https://klikpay.klikbca.com/login.do?action=loginRequest"
 #define CLICK_BCA_LOGIN_PAYEMNET_URL @"https://klikpay.klikbca.com/purchasing/purchase.do?action=loginRequest"
 #define CLICK_BCA_SUMMARY_URL @"https://klikpay.klikbca.com/purchasing/payment.do?action=summaryRequest"
 #define CLICK_BCA_VIEW_TRANSACTION @"https://klikpay.klikbca.com/purchasing/payment.do?action=viewTransaction"
 
-@interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate>
+@interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 {
     BOOL _isSuccessBCA;
     NSOperationQueue *_operationQueue;
+    
+    NSInteger requestCount;
+    BOOL _isAlertShow ;
 }
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
@@ -34,28 +38,54 @@
     
     _operationQueue = [NSOperationQueue new];
     
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [backBarButtonItem setTintColor:[UIColor whiteColor]];
+    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
+    _isSuccessBCA = NO;
+    
+    _isAlertShow = NO;
+    [self loadRequest];
+}
+
+-(IBAction)didTapSuccess:(id)sender
+{
+    [_delegate isSucessSprintAsia:_data];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(IBAction)didTapRetry:(id)sender
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)loadRequest
+{
+    requestCount++;
     
     NSInteger gateway = [_gateway integerValue];
     
-    self.title = (gateway == TYPE_GATEWAY_CLICK_BCA)?@"KlikPay BCA":@"Mandiri e-Cash";
-    
-    NSString *urlAddress = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_url:_URLStringMandiri;
+    NSString *urlAddress = @"" ;
     _webView.scalesPageToFit = YES;
-    NSLog(@"%@", urlAddress);
     
-    NSString *clickPayCode = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_code:@"";
-    NSString *paymentID = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.payment_id:@"";
-    NSString *amount = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_amt:@"";
-    NSString *currency = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.currency:@"";
-    NSString *payType = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.payType:@"";
-    NSString *callBack = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.callback:@"";
-    NSString *date = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.bca_date:@"";
-    NSString *MISCFee = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.miscFee:@"";
-    NSString *signature = (gateway == TYPE_GATEWAY_CLICK_BCA)?_BCAParam.signature:@"";
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    NSURL *url;
     
     if (gateway == TYPE_GATEWAY_CLICK_BCA) {
+        self. title = @"KlikPay BCA";
+        urlAddress =_BCAParam.bca_url;
+        
+        NSString *clickPayCode = _BCAParam.bca_code?:@"";
+        NSString *paymentID = _BCAParam.payment_id?:@"";
+        NSString *amount = _BCAParam.bca_amt?:@"";
+        NSString *currency = _BCAParam.currency?:@"";
+        NSString *payType = _BCAParam.payType?:@"";
+        NSString *callBack = _BCAParam.callback?:@"";
+        NSString *date = _BCAParam.bca_date?:@"";
+        NSString *MISCFee = _BCAParam.miscFee?:@"";
+        NSString *signature = _BCAParam.signature?:@"";
         NSString *postString = [NSString stringWithFormat:@"token_cart=%@&gateway=%@&step=2&klikPayCode=%@&transactionNo=%@&totalAmount=%@&currency=%@&payType=%@&callback=%@&transactionDate=%@&miscFee=%@&signature=%@",
                                 _token,
                                 _gateway,
@@ -73,27 +103,66 @@
         NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         [request setHTTPBody:postData];
         [request setHTTPMethod:@"POST"];
+        
+        url = [NSURL URLWithString:urlAddress];
         //[_delegate shouldDoRequestBCAClickPay];
     }
+    else if (gateway == TYPE_GATEWAY_MANDIRI_E_CASH) {
+        urlAddress = _URLString;
+        url = [NSURL URLWithString:urlAddress];
+    }
+    else if (gateway == TYPE_GATEWAY_CC && !_isVeritrans) {
+        urlAddress = _URLString;
+        
+        NSDictionary *paramEncrypt = [_CCParam encrypt];
+        
+        NSString *postString = [self encodeDictionary:paramEncrypt];
+
+        postString = [postString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        postString = [postString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSLog(@"POST String %@", postString);
+        
+        [request setHTTPBody:postData];
+        [request setHTTPMethod:@"POST"];
+
+        url = [NSURL URLWithString:urlAddress];
+    }
+    else
+    {
+        urlAddress = _URLString;
+        url = [NSURL URLWithString:urlAddress];
+    }
     
-    [request setURL:[NSURL URLWithString:urlAddress]];
+    [request setURL:url];
     [_webView loadRequest:request];
-    
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
-    backBarButtonItem.tag = 20;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
-    
-    _isSuccessBCA = NO;
+}
+
+
+-(NSString*)encodeDictionary:(NSDictionary*)dictionary{
+    NSMutableString *bodyData = [[NSMutableString alloc]init];
+    int i = 0;
+    for (NSString *key in dictionary.allKeys) {
+        i++;
+        [bodyData appendFormat:@"%@=",key];
+        NSString *value = [dictionary valueForKey:key];
+        NSString *newString = [value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        [bodyData appendString:newString];
+        if (i < dictionary.allKeys.count) {
+            [bodyData appendString:@"&"];
+        }
+    }
+    return bodyData;
 }
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    [_act startAnimating];
+     NSLog(@"%@", webView.request.URL.absoluteString);
+
     NSInteger gateway = [_gateway integerValue];
     if ( gateway == TYPE_GATEWAY_CLICK_BCA)
     {
-        [_act startAnimating];
         if ([request.URL.absoluteString isEqualToString:_BCAParam.callback] ||
             [request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION] ||
             [webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]
@@ -103,9 +172,6 @@
             [_delegate shouldDoRequestBCAClickPay];
             return NO;
         }
-        //if ([request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION]) {
-        //    _isSuccessBCA = YES;
-        //}
         
         if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]) {
             UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -125,8 +191,12 @@
     {
         //if ([request.URL.absoluteString rangeOfString:@"ws-new"].location != NSNotFound) {
             if ([request.URL.absoluteString rangeOfString:@"http://www.tokopedia.com/ws-new/tx-payment-emoney.pl?id="].location != NSNotFound) {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                [_delegate shouldDoRequestEMoney:YES];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    [_delegate shouldDoRequestEMoney:YES];
+                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+                [backBarButtonItem setTintColor:[UIColor whiteColor]];
+                backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+                self.navigationItem.leftBarButtonItem = backBarButtonItem;
             }
         //}
         //if ([request.URL.absoluteString rangeOfString:@"ws"].location != NSNotFound) {
@@ -137,6 +207,10 @@
         //}
 
     }
+    else if (gateway == TYPE_GATEWAY_CC && !_isVeritrans)
+    {
+        
+    }
     
     return YES;
 }
@@ -145,19 +219,82 @@
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [_act stopAnimating];
-    NSLog(@"URL String WebView %@", [webView request]);
+    NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
+    NSLog(@"html String WebView %@", html);
+    NSLog(@"%@", webView.request.URL.absoluteString);
+    
+    NSInteger gateway = [_gateway integerValue];
+    
+    if(gateway == TYPE_GATEWAY_CC)
+    {
+        if (_isVeritrans)
+        {
+            if ([webView.request.URL.absoluteString rangeOfString:@"callback"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                [self performSelector:@selector(requestCCCallback) withObject:nil afterDelay:3.0f];
+            }
+        }
+        else
+        {
+            if ([webView.request.URL.absoluteString rangeOfString:@"tx-payment-cc-bca.pl"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                // get issuccess value
+                NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
+                if ([html rangeOfString:@"value=\"1\""].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                    UIButton *transparentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [transparentButton addTarget:self action:@selector(didTapSuccess:) forControlEvents:(UIControlEventTouchUpInside)];
+                    transparentButton.frame = webView.frame;
+                    transparentButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+                    [self.webView addSubview:transparentButton];
+                }
+                if ([html rangeOfString:@"Ulangi"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                    UIButton *transparentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [transparentButton addTarget:self action:@selector(didTapRetry:) forControlEvents:(UIControlEventTouchUpInside)];
+                    transparentButton.frame = webView.frame;
+                    transparentButton.layer.backgroundColor = [[UIColor clearColor] CGColor];
+                    [self.webView addSubview:transparentButton];
+                }
+            }
+        }
+    }
+}
+
+-(void)requestCCCallback
+{
+    [_delegate doRequestCC:_data];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [webView stopLoading];
-    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:@"ERROR" message:error.localizedDescription delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [errorAlert show];
-    NSData *jsonData = webView.request.HTTPBody;
-    id jsonObj = [NSJSONSerialization JSONObjectWithData: jsonData options: NSJSONReadingMutableContainers error: nil];
-    NSLog(@"JSON %@", jsonObj);
+    [_act stopAnimating];
+    NSString *errorMessage ;
+
+    if (error.code==-1009) {
+        errorMessage = @"Tidak ada koneksi internet";
+    } else {
+        errorMessage = @"Mohon maaf, terjadi kendala pada server. Mohon coba beberapa saat lagi.";
+    }
     
-    
+    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:nil message:errorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    if (!_isAlertShow) {
+        _isAlertShow = YES;
+        errorAlert.tag = 11;
+        [errorAlert show];
+    }
+}
+
+- (BOOL)checkAlertExist {
+    for (UIWindow* window in [UIApplication sharedApplication].windows) {
+        NSArray* subviews = window.subviews;
+        if ([subviews count] > 0) {
+            for (id cc in subviews) {
+                if ([cc isKindOfClass:[UIAlertView class]]) {
+                    return YES;
+                }
+            }
+        }
+    }
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -172,14 +309,23 @@
         UIAlertView *alertCancel = [[UIAlertView alloc]initWithTitle:nil message:@"Apakah Anda yakin ingin membatalkan transaksi pembayaran Anda?" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
         [alertCancel show];
     }
+    
 }
 
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        [_delegate refreshCartAfterCancelPayment];
+    if (alertView.tag == 11) {
+        [_webView stopLoading];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        if (buttonIndex == 1) {
+            [_delegate refreshCartAfterCancelPayment];
+            [_webView stopLoading];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
     }
 }
 

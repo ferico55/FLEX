@@ -33,6 +33,8 @@
 #import "GeneralPhotoProductCell.h"
 #import "GeneralSingleProductCell.h"
 
+#import "TAGDataLayer.h"
+
 #import "ProductCell.h"
 #import "ProductSingleViewCell.h"
 #import "ProductThumbCell.h"
@@ -114,6 +116,13 @@ UICollectionViewDelegateFlowLayout
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    UserAuthentificationManager *_userManager;
+    TAGContainer *_gtmContainer;
+    NoResultView *_noResultView;
+    
+    NSString *_searchBaseUrl;
+    NSString *_searchPostUrl;
+    NSString *_searchFullUrl;
     
     BOOL _isFailRequest;
 }
@@ -135,6 +144,7 @@ UICollectionViewDelegateFlowLayout
     [super viewDidDisappear:animated];
     [tokopediaNetworkManager requestCancel];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -142,6 +152,9 @@ UICollectionViewDelegateFlowLayout
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
+    
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -163,6 +176,8 @@ UICollectionViewDelegateFlowLayout
         [_params addEntriesFromDictionary:_data];
     }
     
+    //GTM
+    [self configureGTM];
     
     [_act startAnimating];
     
@@ -176,6 +191,8 @@ UICollectionViewDelegateFlowLayout
     [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
+    [_collectionView setDelegate:self];
+    [_collectionView setDataSource:self];
     
     [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     _catalogproductview.hidden = YES;
@@ -277,7 +294,7 @@ UICollectionViewDelegateFlowLayout
 
 #pragma mark - Collection Delegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _product.count;
+    return (_product.count != 0)?_product.count:0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -478,20 +495,27 @@ UICollectionViewDelegateFlowLayout
                     NSDictionary *userInfo = @{@"count":@(2)};
                     [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
                 }
+                
+                //if filter, then remove all object
                 if (_page == 1) {
                     [_product removeAllObjects];
                     [_collectionView setContentOffset:CGPointZero animated:YES];
+                    [_collectionView reloadData];
                 }
                 [_product addObjectsFromArray: _searchitem.result.list];
                 
+                
+                //if no data 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+
                     [_flowLayout setFooterReferenceSize:CGSizeZero];
-                    [_collectionView addSubview:noResultView];
+                    [_collectionView addSubview:_noResultView];
                 }
                 
                 if (_product.count >0) {
+                    [_noResultView removeFromSuperview];
+                    [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
                     _urinext = _searchitem.result.paging.uri_next;
                     
                     NSURL *url = [NSURL URLWithString:_urinext];
@@ -737,7 +761,10 @@ UICollectionViewDelegateFlowLayout
     [_refreshControl beginRefreshing];
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
-    [_collectionView reloadData];
+//    [_noResultView removeFromSuperview];
+//    [_product removeAllObjects];
+//    [_collectionView reloadData];
+    
     [self request];
 }
 
@@ -827,13 +854,19 @@ UICollectionViewDelegateFlowLayout
 
 - (NSString*)getPath:(int)tag
 {
-    return kTKPDSEARCH_APIPATH;
+    return [_searchPostUrl isEqualToString:@""] ? kTKPDSEARCH_APIPATH : _searchPostUrl;
 }
 
 - (id)getObjectManager:(int)tag
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  ![_searchBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_searchBaseUrl]:[RKObjectManager sharedClient];
+    if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
+        _objectmanager = [RKObjectManager sharedClient];
+    } else {
+        _objectmanager = [RKObjectManager sharedClient:_searchBaseUrl];
+    }
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];
@@ -887,7 +920,7 @@ UICollectionViewDelegateFlowLayout
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDSEARCH_APIPATH
+                                                                                       pathPattern:[_searchPostUrl isEqualToString:@""] ? kTKPDSEARCH_APIPATH : _searchPostUrl
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -933,6 +966,19 @@ UICollectionViewDelegateFlowLayout
     [_collectionView reloadData];
     [_refreshControl endRefreshing];
     //_table.tableFooterView = [self getLoadView].view;
+}
+
+#pragma mark - Other Method 
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _searchBaseUrl = [_gtmContainer stringForKey:GTMKeySearchBase];
+    _searchPostUrl = [_gtmContainer stringForKey:GTMKeySearchPost];
+    _searchFullUrl = [_gtmContainer stringForKey:GTMKeySearchFull];
 }
 
 @end

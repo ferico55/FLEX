@@ -21,8 +21,8 @@
 #import "ProductCell.h"
 
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
-static NSInteger const normalWidth = 320;
-static NSInteger const normalHeight = 568;
+#define normalWidth 320
+#define normalHeight 568
 
 @interface HistoryProductViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
