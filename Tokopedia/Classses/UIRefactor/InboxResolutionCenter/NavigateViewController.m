@@ -165,13 +165,13 @@
         
     } else {
         InboxReviewViewController *vc = [InboxReviewViewController new];
-        vc.data=@{@"nav":@"inbox-talk"};
+        vc.data=@{@"nav":@"inbox-review"};
         
         InboxReviewViewController *vc1 = [InboxReviewViewController new];
-        vc1.data=@{@"nav":@"inbox-talk-my-product"};
+        vc1.data=@{@"nav":@"inbox-review-my-product"};
         
         InboxReviewViewController *vc2 = [InboxReviewViewController new];
-        vc2.data=@{@"nav":@"inbox-talk-following"};
+        vc2.data=@{@"nav":@"inbox-review-following"};
         
         NSArray *vcs = @[vc,vc1, vc2];
         
