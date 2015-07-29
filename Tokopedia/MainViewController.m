@@ -756,6 +756,7 @@ typedef enum TagRequest {
 }
 
 - (void)checkUserRating:(NSNotification *)notification {
+    _userManager = [UserAuthentificationManager new];
     // Reviews data structure
     // ReviewData (Dictionary containing belows data)
     //   -> UserIds (Array containing user ids that already rated the app)
