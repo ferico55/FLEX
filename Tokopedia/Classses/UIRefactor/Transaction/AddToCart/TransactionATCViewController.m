@@ -365,7 +365,10 @@
                         if (wholesalePrice.count>0) {
                             for (int i = 0; i<wholesalePrice.count; i++) {
                                 WholesalePrice *price = wholesalePrice[i];
-                                if (i == wholesalePrice.count-1) {
+                                if (i == 0 && _productQuantityStepper.value < [price.wholesale_min integerValue]) {
+                                    break;
+                                }
+                                if (i == wholesalePrice.count-1 && _productQuantityStepper.value >= [price.wholesale_max integerValue]) {
                                     priceString = price.wholesale_price;
                                     break;
                                 }
