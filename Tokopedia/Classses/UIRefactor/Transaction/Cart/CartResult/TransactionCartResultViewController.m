@@ -28,6 +28,7 @@
     BOOL _isnodata;
     TransactionBuyResult *_cartBuy;
     NavigateViewController *_navigate;
+    NSMutableParagraphStyle *paragraphStyle;
     
     BOOL _isWillApearFromGallery;
 }
@@ -81,98 +82,14 @@
     _listSystemBank = [NSMutableArray new];
     _listTotalPayment = [NSMutableArray new];
     
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setAlignment:NSTextAlignmentLeft];
     paragraphStyle.lineSpacing = 6.0;
     
-    NSString *string1 = _footerLabel1.text;
-
-    NSMutableAttributedString *title1 = [[NSMutableAttributedString alloc]initWithString:string1];
-    [title1 addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_11 range:NSMakeRange(0, title1.length)];
-    
-    //add color
-    [title1 addAttribute:NSForegroundColorAttributeName
-                   value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
-                   range:[string1 rangeOfString:@"Konfirmasi Pembayaran"]];
-    
-    //add alignment
-    [title1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title1.length)];
-    
-    _footerLabel1.attributedText = title1;
-    
-    NSString *string = @"Silahkan menghubungi kami apabila Anda mengalami kesulitan.";
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc]initWithString:string];
-    UIFont *font = FONT_GOTHAM_BOOK_11;
-    [title addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, title.length)];
-    
-    //add color
-    [title addAttribute:NSForegroundColorAttributeName
-                  value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
-                  range:[string rangeOfString:@"menghubungi kami"]];
-    
-    //add alignment
-    [title addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title.length)];
-    
-    _contactUsLabel.attributedText = title;
-    
-    NSString *htmlStringIndomaret = @"<p><strong>Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran:</strong></p><ol><li>Catat dan simpan <strong>kode pembayaran Indomaret</strong> Anda, yaitu <strong>0017</strong>.</li><li><strong>Tunjukkan kode pembayaran </strong>ke kasir Indomaret terdekat, dan lakukan pembayaran senilai <span style='color:#ff0000;'>Rp 26.050</span>.</li><li>Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia.</li><li>Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi.</li></ol><p>&nbsp;</p><p><strong>Catatan</strong></p><ul><li>Jumlah yang harus Anda bayar sudah termasuk biaya administrasi Indomaret sebesar <span style='color:#ff0000;'>Rp 2.500</span>.</li><li>Pesanan akan <span style='color:#ff0000;'>otomatis</span> dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan.</li></ul>";
-    
-    NSString *htmlString;
-
-    if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_INDOMARET)
-    {
-        htmlString = htmlStringIndomaret;
-        _footerNoteTitle.text = @"CARA PEMBAYARAN INDOMARET";
-    }
-    
-    
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding]
-                                                                            options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil
-                                                                              error:nil];
-    
-    _footerNoteTitle.attributedText = attributedString;
-    
-    
-    for (UILabel *label in _klikBCAStepsLabels) {
-        
-        NSMutableAttributedString *attibutestring = [[NSMutableAttributedString alloc]initWithString:label.text];
-        
-        // font
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_BOOK_11
-                               range:NSMakeRange(0, attibutestring.length)];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"www.klikbca.com"]];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"e-Commerce"]];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"Marketplace"]];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"Tokopedia"]];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"KeyBCA Token"]];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"Tokopedia otomatis memverifikasi pembayaran Anda"]];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"disini"]];
-        
-        //add color
-        [attibutestring addAttribute:NSForegroundColorAttributeName
-                      value:[UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1]
-                      range:[label.text rangeOfString:@"disini"]];
-        
-        //add alignment
-        [attibutestring addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attibutestring.length)];
-        
-        label.attributedText = attibutestring;
-    }
+    [self adjustFooterPaymentConfirmation];
+    [self adjustFooterPurchaseStatus];
+    [self adjustFooterIndomaret];
+    [self adjustFooterKlikBCA];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -575,9 +492,6 @@
                                value:FONT_GOTHAM_MEDIUM_12
                                range:[tableTitleLabel rangeOfString:[NSString stringWithFormat:@"User ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user ]]];
         
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle setAlignment:NSTextAlignmentLeft];
-        paragraphStyle.lineSpacing = 6.0;
         [attibutestring addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attibutestring.length)];
         
         _tableTitleLabel.attributedText = attibutestring;
@@ -595,4 +509,107 @@
     
     [_totalPaymentLabel setText:_cartBuy.transaction.payment_left_idr?:@"" animated:YES];
 }
+
+#pragma mark - Footer View Methods
+-(void)adjustFooterPurchaseStatus
+{
+    NSString *string = @"Silahkan menghubungi kami apabila Anda mengalami kesulitan.";
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc]initWithString:string];
+    UIFont *font = FONT_GOTHAM_BOOK_11;
+    [title addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, title.length)];
+    
+    //add color
+    [title addAttribute:NSForegroundColorAttributeName
+                  value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
+                  range:[string rangeOfString:@"menghubungi kami"]];
+    
+    //add alignment
+    [title addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title.length)];
+    
+    _contactUsLabel.attributedText = title;
+    
+}
+
+-(void)adjustFooterPaymentConfirmation
+{
+    NSString *string1 = _footerLabel1.text;
+    
+    NSMutableAttributedString *title1 = [[NSMutableAttributedString alloc]initWithString:string1];
+    [title1 addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_11 range:NSMakeRange(0, title1.length)];
+    
+    //add color
+    [title1 addAttribute:NSForegroundColorAttributeName
+                   value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
+                   range:[string1 rangeOfString:@"Konfirmasi Pembayaran"]];
+    
+    //add alignment
+    [title1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title1.length)];
+    
+    _footerLabel1.attributedText = title1;
+}
+
+-(void)adjustFooterIndomaret
+{
+    NSString *htmlStringIndomaret = @"<p><strong>Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran:</strong></p><ol><li>Catat dan simpan <strong>kode pembayaran Indomaret</strong> Anda, yaitu <strong>0017</strong>.</li><li><strong>Tunjukkan kode pembayaran </strong>ke kasir Indomaret terdekat, dan lakukan pembayaran senilai <span style='color:#ff0000;'>Rp 26.050</span>.</li><li>Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia.</li><li>Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi.</li></ol><p>&nbsp;</p><p><strong>Catatan</strong></p><ul><li>Jumlah yang harus Anda bayar sudah termasuk biaya administrasi Indomaret sebesar <span style='color:#ff0000;'>Rp 2.500</span>.</li><li>Pesanan akan <span style='color:#ff0000;'>otomatis</span> dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan.</li></ul>";
+    
+    NSString *htmlString;
+    
+    if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_INDOMARET)
+    {
+        htmlString = htmlStringIndomaret;
+        _footerNoteTitle.text = @"CARA PEMBAYARAN INDOMARET";
+    }
+    
+    
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding]
+                                                                            options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil
+                                                                              error:nil];
+    
+    _footerNoteTitle.attributedText = attributedString;
+}
+
+-(void)adjustFooterKlikBCA
+{
+    for (UILabel *label in _klikBCAStepsLabels) {
+        
+        NSMutableAttributedString *attibutestring = [[NSMutableAttributedString alloc]initWithString:label.text];
+        
+        // font
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_BOOK_11
+                               range:NSMakeRange(0, attibutestring.length)];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_11
+                               range:[label.text rangeOfString:@"www.klikbca.com"]];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_11
+                               range:[label.text rangeOfString:@"e-Commerce"]];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_11
+                               range:[label.text rangeOfString:@"Marketplace"]];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_11
+                               range:[label.text rangeOfString:@"Tokopedia"]];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_11
+                               range:[label.text rangeOfString:@"KeyBCA Token"]];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_11
+                               range:[label.text rangeOfString:@"Tokopedia otomatis memverifikasi pembayaran Anda"]];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_11
+                               range:[label.text rangeOfString:@"disini"]];
+        
+        //add color
+        [attibutestring addAttribute:NSForegroundColorAttributeName
+                               value:[UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1]
+                               range:[label.text rangeOfString:@"disini"]];
+        
+        //add alignment
+        [attibutestring addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attibutestring.length)];
+        
+        label.attributedText = attibutestring;
+    }
+}
+
 @end
