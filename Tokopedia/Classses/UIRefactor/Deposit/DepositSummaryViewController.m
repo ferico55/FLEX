@@ -346,8 +346,7 @@
                     newFrame4.size.width = self.view.bounds.size.width;
                     newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
                     _infoReviewSaldo.frame = newFrame4;
-                    constraintHeightHeader.constant += 47;
-                    constraintHeightSuperHeader.constant += 47;
+                    
                 }
             }
             
