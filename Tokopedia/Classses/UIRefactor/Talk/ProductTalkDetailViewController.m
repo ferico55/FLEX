@@ -99,7 +99,7 @@
 @property (weak, nonatomic) IBOutlet UIView *userArea;
 @property (weak, nonatomic) IBOutlet UIView *buttonsDividers;
 
-@property (strong, nonatomic) IBOutlet UIView *header;
+@property (weak, nonatomic) IBOutlet UIView *header;
 
 -(void)cancel;
 -(void)configureRestKit;
