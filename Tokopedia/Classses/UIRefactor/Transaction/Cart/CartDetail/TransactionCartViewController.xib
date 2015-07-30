@@ -302,7 +302,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="117" y="336"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="1Oa-Pn-t5D" detailTextLabel="duK-WS-3V1" style="IBUITableViewCellStyleValue1" id="oQo-sj-Ytv">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="1Oa-Pn-t5D" detailTextLabel="duK-WS-3V1" style="IBUITableViewCellStyleValue1" id="oQo-sj-Ytv" userLabel="Administrasi Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oQo-sj-Ytv" id="FrT-Ye-UGi">
@@ -416,7 +416,7 @@
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="968" y="69"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v13-pk-jca">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v13-pk-jca" userLabel="Voucher Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v13-pk-jca" id="pFk-He-4KN">
@@ -521,7 +521,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="567" y="85"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="u1p-Qm-vqC" detailTextLabel="6yM-Im-p4G" style="IBUITableViewCellStyleValue1" id="hTf-We-spw">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="u1p-Qm-vqC" detailTextLabel="6yM-Im-p4G" style="IBUITableViewCellStyleValue1" id="hTf-We-spw" userLabel="Total payment 1Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hTf-We-spw" id="Fl9-xG-6va">
@@ -541,7 +541,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="496" y="417"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="GgZ-h3-Niu" detailTextLabel="w7L-kM-nnc" style="IBUITableViewCellStyleValue1" id="XiX-Jr-HT9">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="GgZ-h3-Niu" detailTextLabel="w7L-kM-nnc" style="IBUITableViewCellStyleValue1" id="XiX-Jr-HT9" userLabel="Total payment 2Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XiX-Jr-HT9" id="UFN-Wi-MCI">
@@ -564,7 +564,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="504" y="531"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Lfk-xl-Rbu">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Lfk-xl-Rbu" userLabel="Saldo switch Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lfk-xl-Rbu" id="9r9-kM-wgv">
@@ -690,7 +690,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="166" y="442"/>
         </view>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="tTs-1N-0vt">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="tTs-1N-0vt" userLabel="Saldo textfield Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tTs-1N-0vt" id="dU1-08-Srw">
@@ -852,7 +852,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="161" y="997.5"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Mbe-do-c9y">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Mbe-do-c9y" userLabel="Password Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mbe-do-c9y" id="cbv-gu-2yJ">

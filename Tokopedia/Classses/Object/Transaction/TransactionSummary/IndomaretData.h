@@ -10,4 +10,13 @@
 
 @interface IndomaretData : NSObject
 
+@property (nonatomic, strong) NSString *charge_idr;
+@property (nonatomic, strong) NSString *total_charge_real_idr;
+@property (nonatomic, strong) NSString *total;
+@property (nonatomic, strong) NSString *charge_real;
+@property (nonatomic, strong) NSString *charge;
+@property (nonatomic, strong) NSString *payment_code;
+@property (nonatomic, strong) NSString *charge_real_idr;
+@property (nonatomic, strong) NSString *total_idr;
+
 @end

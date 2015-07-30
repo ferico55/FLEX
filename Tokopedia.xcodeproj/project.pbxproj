@@ -1510,6 +1510,13 @@
 		454B7D0D1B676910006AF4FE /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 454B7D001B676910006AF4FE /* VTItemDetails.m */; };
 		454B7D0E1B676910006AF4FE /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 454B7D021B676910006AF4FE /* VTToken.m */; };
 		454B7D0F1B676910006AF4FE /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 454B7D041B676910006AF4FE /* VTTransactionDetails.m */; };
+		45AF4C401B69D96B0092EDC3 /* indomaret.png in Resources */ = {isa = PBXBuildFile; fileRef = 45AF4C3F1B69D96B0092EDC3 /* indomaret.png */; };
+		45AF4C421B69DAC90092EDC3 /* logo_indomaret.png in Resources */ = {isa = PBXBuildFile; fileRef = 45AF4C411B69DAC90092EDC3 /* logo_indomaret.png */; };
+		45AF4C451B69DE250092EDC3 /* IndomaretData.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AF4C441B69DE250092EDC3 /* IndomaretData.m */; };
+		45AF4C501B69FF680092EDC3 /* klikbca_guide_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 45AF4C4C1B69FF680092EDC3 /* klikbca_guide_1.png */; };
+		45AF4C511B69FF680092EDC3 /* klikbca_guide_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 45AF4C4D1B69FF680092EDC3 /* klikbca_guide_2.png */; };
+		45AF4C521B69FF680092EDC3 /* klikbca_guide_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 45AF4C4E1B69FF680092EDC3 /* klikbca_guide_3.png */; };
+		45AF4C531B69FF680092EDC3 /* klikbca_guide_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 45AF4C4F1B69FF680092EDC3 /* klikbca_guide_4.png */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
@@ -3846,6 +3853,14 @@
 		454B7D021B676910006AF4FE /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
 		454B7D031B676910006AF4FE /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
 		454B7D041B676910006AF4FE /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
+		45AF4C3F1B69D96B0092EDC3 /* indomaret.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = indomaret.png; sourceTree = "<group>"; };
+		45AF4C411B69DAC90092EDC3 /* logo_indomaret.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_indomaret.png; sourceTree = "<group>"; };
+		45AF4C431B69DE250092EDC3 /* IndomaretData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndomaretData.h; sourceTree = "<group>"; };
+		45AF4C441B69DE250092EDC3 /* IndomaretData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndomaretData.m; sourceTree = "<group>"; };
+		45AF4C4C1B69FF680092EDC3 /* klikbca_guide_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = klikbca_guide_1.png; sourceTree = "<group>"; };
+		45AF4C4D1B69FF680092EDC3 /* klikbca_guide_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = klikbca_guide_2.png; sourceTree = "<group>"; };
+		45AF4C4E1B69FF680092EDC3 /* klikbca_guide_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = klikbca_guide_3.png; sourceTree = "<group>"; };
+		45AF4C4F1B69FF680092EDC3 /* klikbca_guide_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = klikbca_guide_4.png; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -5326,6 +5341,8 @@
 				454B70461B6768AD006AF4FE /* TransactionSummaryResult.m */,
 				454B70471B6768AD006AF4FE /* Veritrans.h */,
 				454B70481B6768AD006AF4FE /* Veritrans.m */,
+				45AF4C431B69DE250092EDC3 /* IndomaretData.h */,
+				45AF4C441B69DE250092EDC3 /* IndomaretData.m */,
 			);
 			path = TransactionSummary;
 			sourceTree = "<group>";
@@ -7476,6 +7493,8 @@
 		454B750F1B6768AE006AF4FE /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				45AF4C411B69DAC90092EDC3 /* logo_indomaret.png */,
+				45AF4C3F1B69D96B0092EDC3 /* indomaret.png */,
 				454B75101B6768AE006AF4FE /* badges_gold_merchant.png */,
 				454B75111B6768AE006AF4FE /* balloon_read_left.png */,
 				454B75121B6768AE006AF4FE /* balloon_read_right.png */,
@@ -8064,6 +8083,7 @@
 		454B76DC1B6768AF006AF4FE /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
+				45AF4C4B1B69FF680092EDC3 /* KlikBCA Steps */,
 				454B76DD1B6768AF006AF4FE /* icon_arrow_down_grey.png */,
 				454B76DE1B6768AF006AF4FE /* icon_arrow_down_grey@2x.png */,
 				454B76DF1B6768AF006AF4FE /* icon_camera_grey_active.png */,
@@ -8197,6 +8217,17 @@
 				454B7D041B676910006AF4FE /* VTTransactionDetails.m */,
 			);
 			path = VTiOSAPI;
+			sourceTree = "<group>";
+		};
+		45AF4C4B1B69FF680092EDC3 /* KlikBCA Steps */ = {
+			isa = PBXGroup;
+			children = (
+				45AF4C4C1B69FF680092EDC3 /* klikbca_guide_1.png */,
+				45AF4C4D1B69FF680092EDC3 /* klikbca_guide_2.png */,
+				45AF4C4E1B69FF680092EDC3 /* klikbca_guide_3.png */,
+				45AF4C4F1B69FF680092EDC3 /* klikbca_guide_4.png */,
+			);
+			path = "KlikBCA Steps";
 			sourceTree = "<group>";
 		};
 		53AC970CF2132927344A64C3 /* Pods */ = {
@@ -8422,6 +8453,7 @@
 				454B7CB01B6768AF006AF4FE /* icon_category@2x.png in Resources */,
 				454B7B681B6768AF006AF4FE /* icon_calendar.png in Resources */,
 				454B7CE21B6768AF006AF4FE /* transparent_navigationbar.png in Resources */,
+				45AF4C401B69D96B0092EDC3 /* indomaret.png in Resources */,
 				454B7C5E1B6768AF006AF4FE /* icon_more.png in Resources */,
 				454B79C31B6768AF006AF4FE /* ProductReviewDetailViewController.xib in Resources */,
 				454B79C61B6768AF006AF4FE /* ProductTalkCell.xib in Resources */,
@@ -8665,6 +8697,7 @@
 				454B7B521B6768AF006AF4FE /* icon_arrow_white_up@3x.png in Resources */,
 				454B7C211B6768AF006AF4FE /* icon_shop_info.png in Resources */,
 				454B7BF01B6768AF006AF4FE /* icon_no_data.png in Resources */,
+				45AF4C521B69FF680092EDC3 /* klikbca_guide_3.png in Resources */,
 				454B7C671B6768AF006AF4FE /* icon_signin@2x.png in Resources */,
 				454B78D81B6768AF006AF4FE /* CatalogSellerCell.xib in Resources */,
 				454B7CB81B6768AF006AF4FE /* icon_more.png in Resources */,
@@ -8756,6 +8789,7 @@
 				454B7BAE1B6768AF006AF4FE /* icon_diskusi_comment_grey@2x.png in Resources */,
 				454B7B561B6768AF006AF4FE /* icon_button_favorite_nonactive.png in Resources */,
 				454B7A1F1B6768AF006AF4FE /* ShipmentStatusViewController.xib in Resources */,
+				45AF4C531B69FF680092EDC3 /* klikbca_guide_4.png in Resources */,
 				454B7B701B6768AF006AF4FE /* icon_cart@2x (deleted 7bac05209d0760a038a7038ebfb068e1).png in Resources */,
 				454B7C311B6768AF006AF4FE /* icon_star.png in Resources */,
 				454B7A1D1B6768AF006AF4FE /* ShipmentStatusCell.xib in Resources */,
@@ -8823,6 +8857,7 @@
 				454B78DC1B6768AF006AF4FE /* CategoryViewCell.xib in Resources */,
 				454B7BE71B6768AF006AF4FE /* icon_more_active@2x.png in Resources */,
 				454B7BC81B6768AF006AF4FE /* icon_home_active (deleted fda4f3a6d03a49df4fc141672e840c4a).png in Resources */,
+				45AF4C511B69FF680092EDC3 /* klikbca_guide_2.png in Resources */,
 				454B7AD71B6768AF006AF4FE /* TxOrderConfirmationViewController.xib in Resources */,
 				454B7A7A1B6768AF006AF4FE /* ShopProductPageViewController.xib in Resources */,
 				454B7B491B6768AF006AF4FE /* icon_arrow_up.png in Resources */,
@@ -8962,6 +8997,8 @@
 				454B7AAF1B6768AF006AF4FE /* TransactionCCDetailViewController.xib in Resources */,
 				454B79B21B6768AF006AF4FE /* DetailProductInfoCell.xib in Resources */,
 				454B7C3C1B6768AF006AF4FE /* icon_toped_loading_grey-02.png in Resources */,
+				45AF4C421B69DAC90092EDC3 /* logo_indomaret.png in Resources */,
+				45AF4C501B69FF680092EDC3 /* klikbca_guide_1.png in Resources */,
 				454B7C911B6768AF006AF4FE /* icon_urutkan_alt@3x.png in Resources */,
 				454B7B641B6768AF006AF4FE /* icon_button_wishlist_active@3x.png in Resources */,
 				454B7AAD1B6768AF006AF4FE /* TransactionCartWebViewViewController.xib in Resources */,
@@ -9797,6 +9834,7 @@
 				454B77611B6768AF006AF4FE /* Product.m in Sources */,
 				454B78441B6768AF006AF4FE /* TrackOrder.m in Sources */,
 				454B78FA1B6768AF006AF4FE /* CollectionScrollAndSwipe.m in Sources */,
+				45AF4C451B69DE250092EDC3 /* IndomaretData.m in Sources */,
 				454B787A1B6768AF006AF4FE /* TxOrderConfirmedDetailOrder.m in Sources */,
 				454B7A8D1B6768AF006AF4FE /* SortViewController.m in Sources */,
 				454B78801B6768AF006AF4FE /* TxOrderConfirmPaymentForm.m in Sources */,
