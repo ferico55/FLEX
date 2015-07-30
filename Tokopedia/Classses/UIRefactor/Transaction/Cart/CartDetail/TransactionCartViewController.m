@@ -838,7 +838,9 @@
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if ([product.product_error_msg isEqualToString:@""] ||
+        [product.product_error_msg isEqualToString:@"0"] ||
+        product.product_error_msg == nil ) {
         [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
     }
 }
@@ -1040,7 +1042,10 @@
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if ([product.product_error_msg isEqualToString:@""] ||
+        [product.product_error_msg isEqualToString:@"0"] ||
+        product.product_error_msg == nil ||
+        [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
         UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
                                 @"Hapus",
                                 @"Edit",
@@ -1124,7 +1129,10 @@
         }
         case 1:
         {
-            if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+            if ([product.product_error_msg isEqualToString:@""] ||
+                [product.product_error_msg isEqualToString:@"0"] ||
+                product.product_error_msg == nil ||
+                [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
                 TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 editViewController.data = _dataInput;
@@ -2014,6 +2022,10 @@
         else if ([product.product_error_msg isEqualToString:@"Produk ini dalam moderasi"])
         {
             cell.errorProductLabel.text = @"MODERASI";
+        }
+        else if ([product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
+        {
+            [cell.errorProductLabel setCustomAttributedText:@"Maks\n999 item"];
         }
         else if ([list.cart_is_price_changed integerValue] == 1)
         {
