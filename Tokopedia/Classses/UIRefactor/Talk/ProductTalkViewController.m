@@ -861,6 +861,7 @@
 -(void) updateTotalComment:(NSNotification*)notification{
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    if(index > _list.count) return;
     
     TalkList *list = _list[index];
     list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];

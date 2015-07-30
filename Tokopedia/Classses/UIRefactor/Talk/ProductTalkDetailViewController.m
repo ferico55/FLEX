@@ -244,13 +244,14 @@
 
     }
     
-    NSDictionary *userinfo;
-    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]?:@"0"};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
+//    NSDictionary *userinfo;
+//    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]?:@"0"};
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
     UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userArea addGestureRecognizer:tapUserGes];
     [_userArea setUserInteractionEnabled:YES];
+    
     
     [self configureRestKit];
     [self loadData];
@@ -407,6 +408,20 @@
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
+    
+    if(!data) {
+        [_talkInputView setHidden:YES];
+        [_header setHidden:YES];
+        return;
+    } else {
+        [_header setHidden:NO];
+        if([_userManager isLogin]) {
+            [_talkInputView setHidden:NO];
+            [_sendButton setEnabled:NO];
+        } else {
+            [_talkInputView setHidden:YES];
+        }
+    }
 //    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
 //    
 //    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -507,7 +522,8 @@
 }
 
 - (void) initTalkInputView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240.0/320.0 * [UIScreen mainScreen].bounds.size.width, 45)];
+    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10 - ((UIViewController*)_masterViewController).view.frame.size.width;
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
     //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -538,12 +554,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if([_userManager isLogin]) {
-        [_talkInputView setHidden:NO];
-        [_sendButton setEnabled:NO];
-    } else {
-        [_talkInputView setHidden:YES];
-    }
 }
 
 
