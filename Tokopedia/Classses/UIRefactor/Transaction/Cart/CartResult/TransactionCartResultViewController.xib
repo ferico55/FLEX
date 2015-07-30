@@ -23,8 +23,12 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -36,6 +40,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartResultViewController">
             <connections>
+                <outlet property="IndomaretCodeLabel" destination="FUd-5a-lvQ" id="50k-fT-OX6"/>
                 <outlet property="confirmPaymentButton" destination="e70-yU-41l" id="As7-tv-XDk"/>
                 <outlet property="contactUsLabel" destination="wYq-D9-MRs" id="SwC-Vo-rM8"/>
                 <outlet property="footerLabel" destination="8zj-kU-VAf" id="jDB-3X-ZnX"/>
@@ -65,6 +70,9 @@
                 <outletCollection property="klikBCAImagesSteps" destination="7aO-mc-Iak" id="ATY-JY-51o"/>
                 <outletCollection property="klikBCAImagesSteps" destination="hLi-by-1NY" id="kE1-y0-EKj"/>
                 <outletCollection property="klikBCAImagesSteps" destination="rjG-SP-sID" id="EXf-bM-bIf"/>
+                <outletCollection property="indomaretNotes" destination="IBA-O8-b2e" id="1yc-0h-g8R"/>
+                <outletCollection property="indomaretNotes" destination="Qjf-z8-Ug2" id="D7A-XU-4j6"/>
+                <outletCollection property="indomaretNotes" destination="b7X-3H-U2M" id="46V-du-cTa"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -227,43 +235,80 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="573"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9CT-9i-7Ii" userLabel="ContactUs Button">
-                    <rect key="frame" x="15" y="136" width="196" height="21"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="P54-7N-exa"/>
-                    </connections>
-                </button>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CwO-RT-xjc">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="573"/>
-                    <subviews>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2B8-at-lhg">
-                            <rect key="frame" x="15" y="7" width="290" height="462"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <string key="text">Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran :- Masuk ke situs *www.klikbca.com*, masukkan User ID dan Password Anda.
-- Pilih menu Pembayaran e-Commerce, lalu pilih kategori Marketlace, pilih pilihan  Tokopedia, dan klik Lanjutkan.
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2B8-at-lhg">
+                    <rect key="frame" x="15" y="165" width="290" height="400"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <attributedString key="attributedText">
+                        <fragment>
+                            <string key="content">Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran :- Masuk ke situs *www.klikbca.com*, masukkan User ID dan Password Anda.
+</string>
+                            <attributes>
+                                <color key="NSColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="17" name="Helvetica"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                            </attributes>
+                        </fragment>
+                        <fragment>
+                            <string key="content">- Pilih menu Pembayaran e-Commerce, lalu pilih kategori Marketlace, pilih pilihan  Tokopedia, dan klik Lanjutkan.
 - Pada halaman berikutnya, akan tampil transaksi pembelian yang Anda lakukan di situs Tokopedia. Cek kembali dan pilih transaksi yang ingin Anda Bayar, lalu klik Lanjutkan.
 - Masukkan kode Otorisasi KeyBCA untuk memproses transaksi.
 - Apabila transaksi Anda berhasil, sistem Tokopedia akan langsung memverifikasi pembayaran Anda.</string>
-                            <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            <variation key="heightClass=regular-widthClass=regular">
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            </variation>
-                            <connections>
-                                <outlet property="delegate" destination="-1" id="Cwd-rp-3ed"/>
-                            </connections>
-                        </textView>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
+                            <attributes>
+                                <color key="NSColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="17" name="HelveticaNeue"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    </variation>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Cwd-rp-3ed"/>
+                    </connections>
+                </textView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBA-O8-b2e">
+                    <rect key="frame" x="15" y="10" width="290" height="42"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="Ic2-4k-un1"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNb-sJ-xAW">
+                    <rect key="frame" x="19" y="54" width="15" height="21"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Catat dan simpan kode pembayaran Indomaret Anda, yaitu 0001" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qjf-z8-Ug2">
+                    <rect key="frame" x="38" y="50" width="274" height="44"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kpm-F8-NAa">
+                    <rect key="frame" x="19" y="95" width="15" height="21"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Catat dan simpan kode pembayaran Indomaret Anda, yaitu 0001" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7X-3H-U2M">
+                    <rect key="frame" x="38" y="88" width="274" height="69"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="IBA-O8-b2e" firstAttribute="top" secondItem="rNQ-kw-j6D" secondAttribute="top" constant="10" id="ZGn-EZ-oIh"/>
+                <constraint firstItem="IBA-O8-b2e" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="15" id="fJC-SM-The"/>
+                <constraint firstAttribute="trailing" secondItem="IBA-O8-b2e" secondAttribute="trailing" constant="15" id="pAF-GW-WlL"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="106" y="913.5"/>
+            <point key="canvasLocation" x="144" y="913.5"/>
         </view>
         <view contentMode="scaleToFill" id="jm2-5f-obq" userLabel="Footer Klik BCA Steps View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="1169"/>
