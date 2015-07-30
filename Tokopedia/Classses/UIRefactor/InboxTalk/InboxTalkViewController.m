@@ -293,6 +293,7 @@
 //            }
 //            
             [((GeneralTalkCell*)cell).userButton setLabelBackground:list.talk_user_label];
+
             
             if(list.talk_follow_status == 1 && ![list.talk_own isEqualToString:@"1"]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
@@ -304,11 +305,16 @@
                 [((GeneralTalkCell *)cell) setTalkFollowStatus:YES];
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
-                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                 [((GeneralTalkCell *)cell) setTalkFollowStatus:NO];
+                
+
+                
+                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                newFrame.origin.x = (((GeneralTalkCell*)cell).frame.size.width-newFrame.size.width)/2;
+                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
+
             }
             
             if([list.talk_read_status isEqualToString:@"1"]) {
@@ -555,6 +561,7 @@
             {
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _talkListPage<=1) {
                     NSInteger selectedIndex = _selectedDetailIndexPath.row?:0;
+                    if(selectedIndex >= _talkList.count)return;
                     TalkList *list = _talkList[selectedIndex];
                     NSDictionary *data = @{
                                            TKPD_TALK_MESSAGE:list.talk_message?:@0,
@@ -935,7 +942,7 @@
 - (void)updateUnreadTalk : (NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-    
+    if(index >= _talkList.count) return;
     TalkList *list = _talkList[index];
     list.talk_read_status = @"2";
     [_table reloadData];
