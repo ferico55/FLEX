@@ -135,7 +135,7 @@
         [btnBatal addTarget:self action:@selector(actionBatal:) forControlEvents:UIControlEventTouchUpInside];
         [btnBatal setTitle:@"Batal" forState:UIControlStateNormal];
         btnBatal.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:16.0f];
-        [btnBatal setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [btnBatal setTitleColor:[UIColor colorWithRed:0 green:122/255.0f blue:255/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnBatal.frame = CGRectMake(0, viewSeparator.frame.origin.y+viewSeparator.bounds.size.height, viewContentSmile.bounds.size.width/2.0f, viewContentSmile.bounds.size.height-(viewSeparator.frame.origin.y+viewSeparator.bounds.size.height));
         
         UIView *viewVerticalSeparator = [[UIView alloc] initWithFrame:CGRectMake(btnBatal.bounds.size.width, btnBatal.frame.origin.y, 0.5, btnBatal.bounds.size.height)];
@@ -145,8 +145,8 @@
         UIButton *btnSubmit = [UIButton buttonWithType:UIButtonTypeCustom];
         [btnSubmit addTarget:self action:@selector(actionSubmit:) forControlEvents:UIControlEventTouchUpInside];
         [btnSubmit setTitle:@"Kirim" forState:UIControlStateNormal];
-        [btnSubmit setTitleColor:btnBatal.titleLabel.textColor forState:UIControlStateNormal];
-        btnSubmit.titleLabel.font = btnBatal.titleLabel.font;
+        btnSubmit.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:16.0f];
+        [btnSubmit setTitleColor:[UIColor colorWithRed:0 green:122/255.0f blue:255/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnSubmit.frame = CGRectMake(btnBatal.bounds.size.width, btnBatal.frame.origin.y, btnBatal.bounds.size.width, btnBatal.bounds.size.height);
         
         [viewContentSmile addSubview:viewSeparator];

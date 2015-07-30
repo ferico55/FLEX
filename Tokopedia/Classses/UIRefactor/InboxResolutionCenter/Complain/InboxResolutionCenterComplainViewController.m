@@ -450,6 +450,7 @@
     cmPopTitpView.delegate = self;
     cmPopTitpView.backgroundColor = [UIColor blackColor];
     cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.leftPopUp = YES;
     cmPopTitpView.dismissTapAnywhere = YES;
     
     UIButton *button = (UIButton *)sender;
@@ -460,7 +461,7 @@
     int valueStar = reputationScore==nil||[reputationScore isEqualToString:@""]?0:[reputationScore intValue];
     valueStar = valueStar>0?valueStar:0;
     if(valueStar == 0) {
-        [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
+        [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal14" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
     }
     else {
         ///Set medal image
@@ -478,21 +479,21 @@
             n = 4;
         }
         else if((valueStar>150 && valueStar<=250) || (valueStar>5000 && valueStar<=10000) || (valueStar>200000 && valueStar<=500000) || valueStar>10000000) {
-            n = 4;
+            n = 5;
         }
         
         //Check image medal
         if(valueStar <= 250) {
-            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_bronze" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_bronze14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
         }
         else if(valueStar <= 10000) {
-            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
         }
         else if(valueStar <= 500000) {
-            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_gold" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_gold14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
         }
         else {
-            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_diamond_one" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_diamond_one14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
         }
     }
 }

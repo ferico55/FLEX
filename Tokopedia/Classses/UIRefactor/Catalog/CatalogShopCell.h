@@ -26,7 +26,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *containerHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *shopLocationLabel;
+@property (weak, nonatomic) IBOutlet UIButton *btnLocation;
 @property (weak, nonatomic) IBOutlet UIImageView *shopImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;

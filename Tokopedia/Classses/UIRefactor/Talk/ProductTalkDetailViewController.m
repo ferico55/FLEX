@@ -7,6 +7,7 @@
 //
 
 #define CHeightUserLabel 21
+#import "ReputationDetail.h"
 #import "ProductTalkDetailViewController.h"
 #import "TalkComment.h"
 #import "detail.h"
@@ -222,7 +223,8 @@
     [_talkProductImage setUserInteractionEnabled:YES];
 
 
-    
+    _talkuserimage.layer.cornerRadius = _talkuserimage.bounds.size.width/2.0f;
+    _talkuserimage.layer.masksToBounds = YES;
     [self setHeaderData:_data];
     
     //islogin
@@ -270,12 +272,12 @@
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    TalkCommentList *list = _list[indexPath.row];
-    CGSize messageSize = [GeneralTalkCommentCell messageSize:list.comment_message];
-    return messageSize.height + 2 * [GeneralTalkCommentCell textMarginVertical];
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    TalkCommentList *list = _list[indexPath.row];
+//    CGSize messageSize = [GeneralTalkCommentCell messageSize:list.comment_message];
+//    return messageSize.height + 2 * [GeneralTalkCommentCell textMarginVertical];
+//}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -314,7 +316,17 @@
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
+            ((GeneralTalkCommentCell*)cell).btnReputation.tag = indexPath.row;
             
+            
+            if([list.comment_user_label caseInsensitiveCompare:CPembeli] == NSOrderedSame) {//Buyer
+                [self generateMedal:list.comment_shop_reputation withButton:((GeneralTalkCommentCell*)cell).btnReputation];
+                [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
+            }
+            else {
+                [((GeneralTalkCommentCell*)cell).btnReputation setImage:[UIImage imageNamed:@"icon_smile_small.png"] forState:UIControlStateNormal];
+                [((GeneralTalkCommentCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (list.comment_user_reputation==nil? @"0":list.comment_user_reputation.positive_percentage)] forState:UIControlStateNormal];
+            }
             
             //Set user label
 //            if([list.comment_user_label isEqualToString:CPenjual]) {
@@ -418,6 +430,47 @@
 
 
 #pragma mark - Methods
+- (void)generateMedal:(NSString *)strValue withButton:(UIButton *)tempBtn {
+    int valueStar = strValue==nil||[strValue isEqualToString:@""]?0:[strValue intValue];
+    valueStar = valueStar>0?valueStar:0;
+    if(valueStar == 0) {
+        [tempBtn setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal14" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
+    }
+    else {
+        ///Set medal image
+        int n = 0;
+        if(valueStar<10 || (valueStar>250 && valueStar<=500) || (valueStar>10000 && valueStar<=20000) || (valueStar>500000 && valueStar<=1000000)) {
+            n = 1;
+        }
+        else if((valueStar>10 && valueStar<=40) || (valueStar>500 && valueStar<=1000) || (valueStar>20000 && valueStar<=50000) || (valueStar>1000000 && valueStar<=2000000)) {
+            n = 2;
+        }
+        else if((valueStar>40 && valueStar<=90) || (valueStar>1000 && valueStar<=2000) || (valueStar>50000 && valueStar<=100000) || (valueStar>2000000 && valueStar<=5000000)) {
+            n = 3;
+        }
+        else if((valueStar>90 && valueStar<=150) || (valueStar>2000 && valueStar<=5000) || (valueStar>100000 && valueStar<=200000) || (valueStar>5000000 && valueStar<=10000000)) {
+            n = 4;
+        }
+        else if((valueStar>150 && valueStar<=250) || (valueStar>5000 && valueStar<=10000) || (valueStar>200000 && valueStar<=500000) || valueStar>10000000) {
+            n = 5;
+        }
+        
+        //Check image medal
+        if(valueStar <= 250) {
+            [tempBtn setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_bronze14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else if(valueStar <= 10000) {
+            [tempBtn setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else if(valueStar <= 500000) {
+            [tempBtn setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_gold14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else {
+            [tempBtn setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_diamond_one14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+    }
+}
+
 -(void)setHeaderData:(NSDictionary*)data
 {
 //    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
@@ -603,13 +656,21 @@
                                                  TKPD_TALK_COMMENT_USERNAME,
                                                  TKPD_TALK_COMMENT_USERID,
                                                  TKPD_TALK_COMMENT_USER_LABEL,
-                                                 TKPD_TALK_COMMENT_USER_LABEL_ID
+                                                 TKPD_TALK_COMMENT_USER_LABEL_ID,
+                                                 CCommentShopReputation
                                                  ]];
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNegative,
+                                                                 CNeutral,
+                                                                 CPositif]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     // Relationship Mapping
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCommentUserReputation toKeyPath:CCommentUserReputation withMapping:reviewUserReputationMapping]];
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];

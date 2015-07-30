@@ -108,7 +108,7 @@
 
     CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
     cell.shopNameLabel.text = shop.shop_name;
-    cell.shopLocationLabel.text = shop.shop_location||![shop.shop_location isEqualToString:@""]?shop.shop_location:@"-";
+    [cell.btnLocation setTitle:shop.shop_location||![shop.shop_location isEqualToString:@""]?shop.shop_location:@"-" forState:UIControlStateNormal];
     
     ProductList *product = [shop.product_list objectAtIndex:0];
     cell.productNameLabel.text = product.product_name;

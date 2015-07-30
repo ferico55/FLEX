@@ -15,7 +15,7 @@
 #import "ProfileBiodataCell.h"
 
 #import "detail.h"
-#define CStringPenilaianUser @"Data Penilaian User"
+#define CStringPenilaianUser @"DATA PENILAIAN USER"
 
 @interface UserProfileBiodataViewController () <UserPageHeaderDelegate, ProfileBiodataShopCellDelegate, UIScrollViewDelegate, UITableViewDelegate, CMPopTipViewDelegate>
 

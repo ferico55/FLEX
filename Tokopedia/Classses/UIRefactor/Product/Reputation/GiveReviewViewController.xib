@@ -4,6 +4,16 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GiveReviewViewController">
             <connections>
@@ -34,12 +44,19 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView autoresizesSubviews="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n0e-OQ-9sF">
+                <scrollView autoresizesSubviews="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n0e-OQ-9sF">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gfa-da-sz9">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GL3-JT-WN8">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
+                                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="67" id="ePx-UN-Igi"/>
+                                    </constraints>
+                                </view>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0K8-hz-wA7">
                                     <rect key="frame" x="8" y="8" width="50" height="50"/>
                                     <constraints>
@@ -49,7 +66,10 @@
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eQY-NZ-SZx">
                                     <rect key="frame" x="66" y="22" width="246" height="21"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="21" id="pYn-aL-7Bk"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
                                     <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -66,11 +86,11 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="99" id="S55-qq-1Js"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 </textView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UMp-fT-Zyg">
-                                    <rect key="frame" x="0.0" y="182" width="320" height="141"/>
+                                    <rect key="frame" x="0.0" y="182" width="320" height="95"/>
                                     <subviews>
                                         <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="24I-gk-UqQ">
                                             <rect key="frame" x="8" y="0.0" width="45" height="45"/>
@@ -121,7 +141,7 @@
                                                 <constraint firstAttribute="height" constant="21" id="VbG-TN-FWV"/>
                                                 <constraint firstAttribute="width" constant="61" id="mvc-2m-93F"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                             <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -148,7 +168,6 @@
                                                     <rect key="frame" x="120" y="0.0" width="30" height="30"/>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="G9a-Bi-NaM" firstAttribute="top" secondItem="zFa-Jn-02j" secondAttribute="top" id="0av-xL-Pjj"/>
                                                 <constraint firstAttribute="bottom" secondItem="A43-W1-qrf" secondAttribute="bottom" id="13J-bN-qhj"/>
@@ -250,7 +269,7 @@
                                                 <constraint firstAttribute="width" constant="57" id="pMi-qe-tGC"/>
                                                 <constraint firstAttribute="height" constant="21" id="plX-V6-uBR"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                             <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -277,7 +296,6 @@
                                                     <rect key="frame" x="120" y="0.0" width="30" height="30"/>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="0B2-lc-gnJ" firstAttribute="leading" secondItem="l6M-df-48S" secondAttribute="trailing" id="0cn-eY-lx7"/>
                                                 <constraint firstItem="xcw-sa-tHT" firstAttribute="top" secondItem="7rn-LF-CEZ" secondAttribute="top" id="1nE-yA-Mj6"/>
@@ -367,7 +385,6 @@
                                             </constraints>
                                         </view>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="20r-BN-BWk" firstAttribute="height" secondItem="24I-gk-UqQ" secondAttribute="height" id="0Jw-X6-PEd"/>
                                         <constraint firstItem="2Lg-sf-0qZ" firstAttribute="leading" secondItem="UMp-fT-Zyg" secondAttribute="leading" id="4xD-t5-TAQ"/>
@@ -395,7 +412,7 @@
                                         <constraint firstItem="20r-BN-BWk" firstAttribute="width" secondItem="24I-gk-UqQ" secondAttribute="width" id="fdW-4i-E65"/>
                                         <constraint firstItem="KTd-O6-LIw" firstAttribute="leading" secondItem="UMp-fT-Zyg" secondAttribute="leading" constant="8" id="fxr-4n-tZt"/>
                                         <constraint firstItem="Ulc-sy-aXj" firstAttribute="leading" secondItem="UJ1-HZ-Uhq" secondAttribute="trailing" constant="3" id="g9t-rS-Zkn"/>
-                                        <constraint firstAttribute="height" constant="141" id="gdB-dR-Bvo"/>
+                                        <constraint firstAttribute="height" constant="95" id="gdB-dR-Bvo"/>
                                         <constraint firstItem="20r-BN-BWk" firstAttribute="height" secondItem="jgq-XC-rfQ" secondAttribute="height" id="hV3-YB-Oga"/>
                                         <constraint firstItem="Ulc-sy-aXj" firstAttribute="top" secondItem="UMp-fT-Zyg" secondAttribute="top" constant="20" id="lzJ-qC-N0N"/>
                                         <constraint firstAttribute="trailing" secondItem="2Lg-sf-0qZ" secondAttribute="trailing" id="oln-MR-cr5"/>
@@ -411,16 +428,19 @@
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
+                                <constraint firstItem="GL3-JT-WN8" firstAttribute="top" secondItem="Gfa-da-sz9" secondAttribute="top" id="2KA-pc-xFV"/>
                                 <constraint firstItem="UMp-fT-Zyg" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" id="469-Qg-MWH"/>
                                 <constraint firstAttribute="trailing" secondItem="UMp-fT-Zyg" secondAttribute="trailing" id="4D3-II-5CE"/>
                                 <constraint firstItem="eQY-NZ-SZx" firstAttribute="leading" secondItem="0K8-hz-wA7" secondAttribute="trailing" constant="8" id="6JK-aM-xOS"/>
                                 <constraint firstItem="UMp-fT-Zyg" firstAttribute="top" secondItem="rcB-NB-gSS" secondAttribute="bottom" constant="8" id="Fh7-4f-Vob"/>
                                 <constraint firstItem="lNq-1Y-VpO" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" id="K1Y-sP-bwb"/>
+                                <constraint firstItem="GL3-JT-WN8" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" id="K59-lX-5O8"/>
                                 <constraint firstAttribute="trailing" secondItem="rcB-NB-gSS" secondAttribute="trailing" constant="8" id="Wgv-i6-5Dk"/>
                                 <constraint firstItem="0K8-hz-wA7" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" constant="8" id="Wy1-rz-b8b"/>
                                 <constraint firstItem="0K8-hz-wA7" firstAttribute="top" secondItem="Gfa-da-sz9" secondAttribute="top" constant="8" id="ZCm-Oy-y6C"/>
                                 <constraint firstAttribute="trailing" secondItem="eQY-NZ-SZx" secondAttribute="trailing" constant="8" id="Zc7-Ik-D5K"/>
                                 <constraint firstItem="eQY-NZ-SZx" firstAttribute="top" secondItem="Gfa-da-sz9" secondAttribute="top" constant="22" id="ZfJ-HS-gOd"/>
+                                <constraint firstAttribute="trailing" secondItem="GL3-JT-WN8" secondAttribute="trailing" id="dAp-kT-nm8"/>
                                 <constraint firstItem="rcB-NB-gSS" firstAttribute="top" secondItem="lNq-1Y-VpO" secondAttribute="bottom" constant="8" id="oFo-6V-3Nd"/>
                                 <constraint firstAttribute="height" constant="568" id="q4k-aG-Uad"/>
                                 <constraint firstItem="rcB-NB-gSS" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" constant="8" id="tCh-Jy-KdU"/>

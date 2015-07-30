@@ -26,6 +26,8 @@
         tempViewModel.review_status = _review_status;
         tempViewModel.review_is_allow_edit = _review_is_allow_edit;
         tempViewModel.review_is_skipped = _review_is_skipped;
+        tempViewModel.review_update_time = _review_update_time;
+        tempViewModel.product_status = _product_status;
 
         _viewModel = tempViewModel;
     }

@@ -60,10 +60,7 @@
     viewSeparatorKualitas.frame = CGRectMake(0, 0, viewContent.bounds.size.width, viewSeparatorKualitas.bounds.size.height);
     btnLike.frame = CGRectMake(viewContentRating.frame.origin.x, viewSeparatorKualitas.frame.origin.y+viewSeparatorKualitas.bounds.size.height, btnLike.bounds.size.width, viewContentAction.bounds.size.height);
     btnDislike.frame = CGRectMake(btnLike.frame.origin.x+btnLike.bounds.size.width+3, btnLike.frame.origin.y, btnDislike.bounds.size.width, btnLike.bounds.size.height);
-    btnMore.frame = CGRectMake(viewContent.bounds.size.width-btnMore.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y, btnMore.bounds.size.width, btnLike.bounds.size.height);
-    btnChat.frame = CGRectMake(btnMore.frame.origin.x-8-btnMore.bounds.size.width, btnMore.frame.origin.y, btnMore.bounds.size.width, btnLike.bounds.size.height);
-    
-    
+    btnChat.frame = CGRectMake(viewContent.bounds.size.width-btnChat.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y+5, btnChat.bounds.size.width, btnChat.bounds.size.height);
     viewContent.frame = CGRectMake(viewContent.frame.origin.x, viewContent.frame.origin.y, self.contentView.bounds.size.width-(viewContent.frame.origin.x*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
     self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
 }

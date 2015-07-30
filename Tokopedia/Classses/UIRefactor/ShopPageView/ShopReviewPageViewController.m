@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "ViewLabelUser.h"
 #import "LikeDislikePostResult.h"
 #import "LikeDislikePost.h"
 #import "TotalLikeDislike.h"
@@ -491,7 +492,7 @@ UIAlertViewDelegate>
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
     lblDesc.backgroundColor = [UIColor clearColor];
     lblDesc.textAlignment = NSTextAlignmentLeft;
-    lblDesc.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    lblDesc.font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
     lblDesc.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
     lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
     lblDesc.numberOfLines = 0;
@@ -572,6 +573,7 @@ UIAlertViewDelegate>
         }
         
         ReviewList *list = _list[indexPath.row];
+        [cell.getLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
         [cell setLabelUser:list.review_user_name withUserLabel:list.review_user_label];
         [cell setLabelDate:list.review_create_time?:@""];
         [cell setLabelProductName:list.review_product_name];
@@ -601,10 +603,10 @@ UIAlertViewDelegate>
         
         //Set chat total
         if(list.review_response==nil || list.review_response.response_message==nil || [list.review_response.response_message isEqualToString:@"0"]) {
-            [cell.getBtnChat setTitle:(list.review_response==nil||list.review_response.response_message==nil? @"0":list.review_response.response_message) forState:UIControlStateNormal];
+            [cell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", (list.review_response==nil||list.review_response.response_message==nil? @"0":list.review_response.response_message)] forState:UIControlStateNormal];
         }
         else {
-            [cell.getBtnChat setTitle:@"1" forState:UIControlStateNormal];
+            [cell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
         }
         
         
@@ -1138,12 +1140,14 @@ UIAlertViewDelegate>
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
+        [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Gotham Book" size:lblDesc.font.pointSize] range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
     }
     else {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Gotham Book" size:lblDesc.font.pointSize] range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
         lblDesc.delegate = nil;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];

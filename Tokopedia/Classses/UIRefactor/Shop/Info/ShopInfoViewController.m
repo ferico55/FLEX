@@ -436,7 +436,7 @@
             n = 4;
         }
         else if((valueStar>150 && valueStar<=250) || (valueStar>5000 && valueStar<=10000) || (valueStar>200000 && valueStar<=500000) || valueStar>10000000) {
-            n = 4;
+            n = 5;
         }
         
         //Check image medal

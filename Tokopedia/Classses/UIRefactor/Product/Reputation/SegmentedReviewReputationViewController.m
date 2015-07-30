@@ -18,7 +18,7 @@
 @implementation SegmentedReviewReputationViewController
 {
     MyReviewReputationViewController *allReviewViewController, *myProductViewController, *myReviewViewController;
-    UIButton *btnTitle, *btnTempFilter;
+    UIButton *btnTitle;
     NSString *selectedFilter;
 }
 
@@ -26,7 +26,6 @@
     [super viewDidLoad];
     [self initNavigation];
     selectedFilter = CTagSemuaReview;
-    btnTempFilter = btnAllReview;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -58,6 +57,7 @@
 {
     btnTitle = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnTitle setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnTitle.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
     btnTitle.backgroundColor = [UIColor clearColor];
     [btnTitle addTarget:self action:@selector(actionChangeFilter:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -68,12 +68,15 @@
 - (void)setNavigationTitle:(NSString *)strTitle {
     if([strTitle isEqualToString:CTagBelumDibaca]) {
         strTitle = btnBelumDibaca.titleLabel.text;
+        selectedFilter = CTagBelumDibaca;
     }
     else if([strTitle isEqualToString:CTagSemuaReview]) {
         strTitle = btnAllReview.titleLabel.text;
+        selectedFilter = CTagSemuaReview;
     }
     else if([strTitle isEqualToString:CtagBelumDireviw]) {
         strTitle = btnBelumDireview.titleLabel.text;
+        selectedFilter = CtagBelumDireviw;
     }
     
     
@@ -138,9 +141,16 @@
 #pragma mark - Action 
 - (void)actionChangeFilter:(id)sender {
     [self hiddenShadowFilter:!viewShadow.isHidden];
-    [btnTempFilter setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_check_orange" ofType:@"png"]] forState:UIControlStateNormal];
-//    btnTempFilter.titleEdgeInsets = UIEdgeInsetsMake(0, -btnTempFilter.imageView.frame.size.width-5, 0, btnTempFilter.imageView.frame.size.width+5);
-    btnTempFilter.imageEdgeInsets = UIEdgeInsetsMake(0, btnTempFilter.bounds.size.width-50, 0, -btnTempFilter.titleLabel.frame.size.width);
+    
+    if([selectedFilter isEqualToString:CTagBelumDibaca]) {
+        constTopCheckList.constant = btnBelumDibaca.frame.origin.y+5;
+    }
+    else if([selectedFilter isEqualToString:CTagSemuaReview]) {
+        constTopCheckList.constant = btnAllReview.frame.origin.y+5;
+    }
+    else if([selectedFilter isEqualToString:CtagBelumDireviw]) {
+        constTopCheckList.constant = btnBelumDireview.frame.origin.y+5;
+    }
 }
 
 - (IBAction)actionReview:(id)sender {
@@ -148,8 +158,6 @@
     [self hiddenShadowFilter:YES];
     [self setNavigationTitle:selectedFilter];
     
-    [btnTempFilter setImage:nil forState:UIControlStateNormal];
-    btnTempFilter = btnAllReview;
     switch (segmentedControl.selectedSegmentIndex) {
         case CTagSemua:
         {
@@ -174,8 +182,6 @@
     [self hiddenShadowFilter:YES];
     [self setNavigationTitle:selectedFilter];
     
-    [btnTempFilter setImage:nil forState:UIControlStateNormal];
-    btnTempFilter = btnBelumDibaca;
     switch (segmentedControl.selectedSegmentIndex) {
         case CTagSemua:
         {
@@ -199,8 +205,6 @@
     [self hiddenShadowFilter:YES];
     [self setNavigationTitle:selectedFilter];
     
-    [btnTempFilter setImage:nil forState:UIControlStateNormal];
-    btnTempFilter = btnBelumDireview;
     switch (segmentedControl.selectedSegmentIndex) {
         case CTagSemua:
         {

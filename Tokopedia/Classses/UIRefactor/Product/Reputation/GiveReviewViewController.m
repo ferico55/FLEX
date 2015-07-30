@@ -38,6 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
+    self.title = @"Tulis Ulasan";
     txtDes.placeholder = CPlaceHolderTulisReview;
     txtDes.delegate = self;
     nRateAkurasi = nRateKualitas = 0;
@@ -190,7 +191,7 @@
     }
     else {
         self.navigationItem.rightBarButtonItem.customView = nil;
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStyleDone target:self action:@selector(actionSubmit:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:self action:@selector(actionSubmit:)];
     }
 }
 
@@ -230,6 +231,12 @@
     CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
     constraintHeightScrollView.constant = heightScreenView-keyboardFrame.size.height;
     constHeightContentView.constant = viewContentRating.frame.origin.y+viewContentRating.bounds.size.height;
+    
+    
+    
+    if(keyboardFrame.origin.y < viewContentRating.frame.origin.y+viewContentRating.bounds.size.height) {
+        scrollView.scrollEnabled = YES;
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)note {
@@ -342,10 +349,17 @@
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[isEdit? @"Anda telah berhasil mengubah ulasan":@"Anda telah berhasil mengisi ulasan"] delegate:self];
             [stickyAlertView show];
             
-            if(! isEdit)
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            formatter.dateFormat = @"d MMMM yyyy, HH:mm";
+            
+            if(! isEdit) {
                 _detailReputationView.viewModel.review_is_allow_edit = _detailReputationView.review_is_allow_edit = @"1";
-            else
+                _detailReputationView.viewModel.review_create_time = _detailReputationView.review_create_time = [formatter stringFromDate:[NSDate new]];
+            }
+            else {
                 _detailReputationView.viewModel.review_is_allow_edit = _detailReputationView.review_is_allow_edit = @"0";
+                _detailReputationView.viewModel.review_update_time = _detailReputationView.review_update_time = [formatter stringFromDate:[NSDate new]];
+            }
             
             _detailReputationView.review_id = action.result.feedback_id;
             _detailReputationView.viewModel.review_is_skipable = _detailReputationView.review_is_skipable = @"0";

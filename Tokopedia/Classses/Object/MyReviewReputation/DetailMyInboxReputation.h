@@ -32,15 +32,19 @@
 #define CShowRevieweeSCore @"show_reviewee_score"
 #define CRole @"role"
 #define CShowBookmark @"show_bookmark"
+#define CReputationScore @"reputation_score"
 #define CUpdatedReputationReview @"updated_reputation_review"
 #define CScoreEditTimeFmt @"score_edit_time_fmt"
-@class DetailMyInboxReputation, MyReviewReputationViewModel;
+#define CReputationInboxID @"reputation_inbox_id"
+#define CUserReputation @"user_reputation"
+@class DetailMyInboxReputation, MyReviewReputationViewModel, ReputationDetail;
 
 @interface DetailMyInboxReputation : NSObject
 @property (nonatomic, strong) NSString *score_edit_time_fmt;
 @property (nonatomic, strong) NSString *updated_reputation_review;
 @property (nonatomic, strong) NSString *reviewee_score_status;
 @property (nonatomic, strong) NSString *shop_id;
+@property (nonatomic, strong) NSString *reputation_score;
 @property (nonatomic, strong) NSString *buyer_score;
 @property (nonatomic, strong) NSString *reviewee_picture;
 @property (nonatomic, strong) NSString *reviewee_name;
@@ -60,7 +64,8 @@
 @property (nonatomic, strong) NSString *unassessed_reputation_review;
 @property (nonatomic, strong) NSString *show_reviewee_score;
 @property (nonatomic, strong) NSString *role;
+@property (nonatomic, strong) NSString *reputation_inbox_id;
 
-
+@property (nonatomic, strong) ReputationDetail *user_reputation;
 @property (nonatomic, strong) MyReviewReputationViewModel *viewModel;
 @end

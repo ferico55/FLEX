@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import "AlertRateView.h"
+#import "CMPopTipView.h"
 #import "detail.h"
 #import "DetailMyReviewReputationViewController.h"
 #import "DetailMyInboxReputation.h"
@@ -32,13 +33,14 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate>
 @end
 
 @implementation MyReviewReputationViewController
 {
     AlertRateView *alertRateView;
     NoResultView *noResultView;
+    CMPopTipView *cmPopTitpView;
     LoadingView *loadingView;
     NSMutableArray *arrList;
     NSString *strRequestingInsertReputation;
@@ -108,6 +110,37 @@
 */
 
 #pragma mark - Method
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    cmPopTitpView.leftPopUp = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
 - (void)refreshView:(id)sender {
     page = 0;
     strUriNext = @"";
@@ -194,6 +227,7 @@
     cell.getBtnReview.tag = indexPath.row;
     cell.getLabelUser.tag = indexPath.row;
     cell.getImageFlagReview.tag = indexPath.row;
+    cell.getBtnReputation.tag = indexPath.row;
     DetailMyInboxReputation *tempReputation = arrList[indexPath.row];
 
     //Check is request give rating or not
@@ -259,6 +293,8 @@
         RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[MyReviewReputationResult class]];
         RKObjectMapping *detailReputationMapping = [RKObjectMapping mappingForClass:[DetailMyInboxReputation class]];
         [detailReputationMapping addAttributeMappingsFromArray:@[CUpdatedReputationReview,
+                                                                 CReputationInboxID,
+                                                                 CReputationScore,
                                                                  CScoreEditTimeFmt,
                                                                  CRevieweeScoreStatus,
                                                                  CShopID,
@@ -286,7 +322,15 @@
                                                             CUriPrevious:CUriPrevious}];
  
         
+        
+        RKObjectMapping *reputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+        [reputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                     CNegative,
+                                                                     CNeutral,
+                                                                     CPositif]];
         //relation
+        [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:reputationMapping]];
+        
         [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
         [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CList toKeyPath:CList withMapping:detailReputationMapping]];
         [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping]];
@@ -493,6 +537,18 @@
 
 
 #pragma mark - MyReviewReputation Delegate
+- (void)actionReputasi:(id)sender {
+    if(((UIButton *) sender).titleLabel.text.length == 0) { //Badge
+        DetailMyInboxReputation *tempReputation = arrList[((UIButton *) sender).tag];
+        
+        NSString *strText = [NSString stringWithFormat:@"%@ %@", tempReputation.reputation_score, CStringPoin];
+        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+    }
+    else {
+        
+    }
+}
+
 - (void)actionLabelUser:(id)sender {
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[((ViewLabelUser *) ((UITapGestureRecognizer *) sender).view).tag];
@@ -599,7 +655,7 @@
         }
         else if(![self anyScore:object.seller_score] && [self anyScore:object.buyer_score]) {
             if(! isSeller)
-                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penasaran\nIsi penilaian toko dulu ya!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penasaran\nIsi penilaian penjual dulu ya!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
             else
                 alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Pembeli belum memberikan penilaian untuk anda" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
             [alertView show];
@@ -686,5 +742,19 @@
     
     baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
     postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
+}
+
+
+#pragma mark - CMPopTipView Delegate
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
 }
 @end

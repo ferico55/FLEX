@@ -31,6 +31,8 @@
         viewModel.buyer_score = _buyer_score;
         viewModel.updated_reputation_review = _updated_reputation_review;
         viewModel.score_edit_time_fmt = _score_edit_time_fmt;
+        viewModel.reputation_score = _reputation_score;
+        viewModel.user_reputation = _user_reputation;
         
         _viewModel = viewModel;
     }

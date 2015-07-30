@@ -5,16 +5,18 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "DetailProductViewController.h"
 #import "string_inbox_message.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationCell.h"
+#import "ReputationDetail.h"
 #import "ViewLabelUser.h"
 //#define CTagPembeli 1
 //#define CTagPenjual 2
-#define CFormatWaitYourReview @"%@ Produk menunggu review anda"
+#define CFormatWaitYourReview @"%@ Produk menunggu ulasan anda"
 #define CFormatWaitYourComment @"%@ Produk menunggu komentar anda"
 #define CFormatUlasanIsEdit @"%@ Ulasan produk telah diperbaharui"
-#define CStringLihaReview @"Lihat Review"
+#define CStringLihaReview @"Lihat Ulasan"
 #define CFormatUlasanDiKomentari @"%@ Ulasan produk telah dikomentari"
 
 @implementation MyReviewReputationCell
@@ -70,6 +72,10 @@
     return constraintTopViewContent;
 }
 
+- (NSLayoutConstraint *)getConstHeightBtnInvoce {
+    return constHeightBtnInvoce;
+}
+
 - (NSLayoutConstraint *)getConstHegithBtnFooter {
     return constraintHeightBtnFooter;
 }
@@ -111,11 +117,23 @@
     return btnFooter;
 }
 
+- (UIButton *)getBtnReputation {
+    return btnReputation;
+}
+
+- (UIView *)getViewFlagReadUnread {
+    return viewFlagReadUnread;
+}
+
 - (UIButton *)getBtnReview {
     return btnReview;
 }
 
 #pragma mark - Action
+- (IBAction)actionPopUp:(id)sender {
+    [_delegate actionReputasi:sender];
+}
+
 - (void)actionFlagReview:(id)sender {
     [_delegate actionFlagReview:((UITapGestureRecognizer *) sender).view];
 }
@@ -158,7 +176,7 @@
 
 - (void)setView:(MyReviewReputationViewModel *)object {
     [labelUser setText:object.reviewee_name];
-    [labelUser setText:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:13.0f]];
+    [labelUser setText:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
     
     [labelUser setLabelBackground:[object.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual];
     [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
@@ -240,7 +258,18 @@
     
     
     //check read unread status
-    viewFlagReadUnread.hidden = [object.read_status isEqualToString:@"1"];
+    BOOL removeFlag;
+    if([object.role isEqualToString:@"2"]) {//Seller
+        removeFlag = !(object.buyer_score==nil || [object.buyer_score isEqualToString:@"0"] || [object.buyer_score isEqualToString:@""]);
+    }
+    else {
+        removeFlag = (object.seller_score==nil || [object.seller_score isEqualToString:@"0"] || [object.seller_score isEqualToString:@""]);
+    }
+        
+        
+    viewFlagReadUnread.hidden = [object.unassessed_reputation_review isEqualToString:@"0"] && [object.updated_reputation_review isEqualToString:@"0"] && removeFlag;
+
+        
     
 
     //Set image profile
@@ -255,5 +284,60 @@
         [thumb setContentMode:UIViewContentModeScaleAspectFill];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
+    
+    
+    //Set reputation
+    if([object.role isEqualToString:@"1"]) {//Buyer
+        [self generateMedal:object.reputation_score];
+        [btnReputation setTitle:@"" forState:UIControlStateNormal];
+    }
+    else {
+        [btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (object.user_reputation==nil? @"0":object.user_reputation.positive_percentage)] forState:UIControlStateNormal];
+    }
+}
+
+
+
+
+- (void)generateMedal:(NSString *)strValue {
+    int valueStar = strValue==nil||[strValue isEqualToString:@""]?0:[strValue intValue];
+    valueStar = valueStar>0?valueStar:0;
+    if(valueStar == 0) {
+        [btnReputation setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal14" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
+    }
+    else {
+        ///Set medal image
+        int n = 0;
+        if(valueStar<10 || (valueStar>250 && valueStar<=500) || (valueStar>10000 && valueStar<=20000) || (valueStar>500000 && valueStar<=1000000)) {
+            n = 1;
+        }
+        else if((valueStar>10 && valueStar<=40) || (valueStar>500 && valueStar<=1000) || (valueStar>20000 && valueStar<=50000) || (valueStar>1000000 && valueStar<=2000000)) {
+            n = 2;
+        }
+        else if((valueStar>40 && valueStar<=90) || (valueStar>1000 && valueStar<=2000) || (valueStar>50000 && valueStar<=100000) || (valueStar>2000000 && valueStar<=5000000)) {
+            n = 3;
+        }
+        else if((valueStar>90 && valueStar<=150) || (valueStar>2000 && valueStar<=5000) || (valueStar>100000 && valueStar<=200000) || (valueStar>5000000 && valueStar<=10000000)) {
+            n = 4;
+        }
+        else if((valueStar>150 && valueStar<=250) || (valueStar>5000 && valueStar<=10000) || (valueStar>200000 && valueStar<=500000) || valueStar>10000000) {
+            n = 5;
+        }
+        
+        //Check image medal
+        if(valueStar <= 250) {
+            [btnReputation setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_bronze14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else if(valueStar <= 10000) {
+            [btnReputation setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else if(valueStar <= 500000) {
+            [btnReputation setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_gold14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+        else {
+            [btnReputation setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_diamond_one14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
+        }
+    }
 }
 @end

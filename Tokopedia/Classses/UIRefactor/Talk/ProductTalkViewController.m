@@ -593,6 +593,7 @@
         }
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
             [_timer invalidate];
             _timer = nil;
             [_act stopAnimating];

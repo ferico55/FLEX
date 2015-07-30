@@ -301,10 +301,10 @@
     if(auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]) {
         [cell.getBtnChat setHidden:NO];
         if([detailReputationReview.review_response.response_message isEqualToString:@"0"]) {
-            [cell.getBtnChat setTitle:detailReputationReview.review_response.response_message forState:UIControlStateNormal];
+            [cell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", detailReputationReview.review_response.response_message] forState:UIControlStateNormal];
         }
         else {
-            [cell.getBtnChat setTitle:@"1" forState:UIControlStateNormal];
+            [cell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
         }
     }
     else {
@@ -430,27 +430,27 @@
     switch (filterStar) {
         case 1:
         {
-            viewStarOne.backgroundColor = [UIColor clearColor];
+            viewStarOne.layer.borderWidth = 0.0f;
         }
             break;
         case 2:
         {
-            viewStarTwo.backgroundColor = [UIColor clearColor];
+            viewStarTwo.layer.borderWidth = 0.0f;
         }
             break;
         case 3:
         {
-            viewStarThree.backgroundColor = [UIColor clearColor];
+            viewStarThree.layer.borderWidth = 0.0f;
         }
             break;
         case 4:
         {
-            viewStarFour.backgroundColor = [UIColor clearColor];
+            viewStarFour.layer.borderWidth = 0.0f;
         }
             break;
         case 5:
         {
-            viewStarFive.backgroundColor = [UIColor clearColor];
+            viewStarFive.layer.borderWidth = 0.0f;
         }
             break;
     }
@@ -545,31 +545,26 @@
     switch (filterStar) {
         case 1:
         {
-            viewStarOne.backgroundColor = [UIColor clearColor];
             viewStarOne.layer.borderWidth = 0.0f;
         }
             break;
         case 2:
         {
-            viewStarTwo.backgroundColor = [UIColor clearColor];
             viewStarTwo.layer.borderWidth = 0.0f;
         }
             break;
         case 3:
         {
-            viewStarThree.backgroundColor = [UIColor clearColor];
             viewStarThree.layer.borderWidth = 0.0f;
         }
             break;
         case 4:
         {
-            viewStarFour.backgroundColor = [UIColor clearColor];
             viewStarFour.layer.borderWidth = 0.0f;
         }
             break;
         case 5:
         {
-            viewStarFive.backgroundColor = [UIColor clearColor];
             viewStarFive.layer.borderWidth = 0.0f;
         }
             break;
@@ -928,12 +923,14 @@
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
+        [str addAttribute:NSFontAttributeName value:lblDesc.font range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
     }
     else {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSFontAttributeName value:lblDesc.font range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
         lblDesc.delegate = nil;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
@@ -1079,8 +1076,8 @@
     viewContentPopUp.backgroundColor = [UIColor clearColor];
     
     UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width+paddingRightLeftContent, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
+    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
+    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
     
     btnMerah.tag = CTagMerah;
     btnKuning.tag = CTagKuning;

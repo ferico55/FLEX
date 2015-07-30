@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "CMPopTipView.h"
 #import "detail.h"
 #import "DetailProductViewController.h"
 #import "DetailMyReviewReputationCell.h"
@@ -36,19 +37,20 @@
 #define CCellIdentifier @"cell"
 #define CGetListReputationReview @"get_list_reputation_review"
 #define CSkipReputationReview @"skip_reputation_review"
-#define CStringGagalLewatiReview @"Anda gagal lewati review"
-#define CStringSuccessLewatiReview @"Anda telah berhasil lewati review"
-#define CStringSemuaReviewDiLewati @"Semua review telah dilewati"
+#define CStringGagalLewatiReview @"Anda gagal lewati ulasan"
+#define CStringSuccessLewatiReview @"Anda telah berhasil lewati ulasan"
+#define CStringSemuaReviewDiLewati @"Semua ulasan telah dilewati"
 #define CTagListReputationReview 1
 #define CTagSkipReputationReview 2
 
-@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate>
+@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate, CMPopTipViewDelegate>
 
 @end
 
 @implementation DetailMyReviewReputationViewController
 {
     NSMutableArray *arrList;
+    CMPopTipView *cmPopTitpView;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSString *strUriNext;
     BOOL isRefreshing;
@@ -101,8 +103,12 @@
     
     if([_detailMyInboxReputation.role isEqualToString:@"1"])//1 is pembeli
         _detailMyInboxReputation.updated_reputation_review = _detailMyInboxReputation.viewModel.updated_reputation_review = @"0";
-    
-    self.title = @"Review";
+
+    lblSubTitle.text = _detailMyInboxReputation.invoice_ref_num;
+    viewContentTitle.frame = CGRectMake(0, 0, self.view.bounds.size.width-(72*2), self.navigationController.navigationBar.bounds.size.height);
+    viewContentTitle.userInteractionEnabled = YES;
+    [viewContentTitle addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionInvoice:)]];
+    self.navigationItem.titleView = viewContentTitle;
 }
 
 
@@ -181,6 +187,9 @@
             height -= CHeightContentStar;
         }
     }
+    else {
+        height += CPaddingTopBottom + CPaddingTopBottom;
+    }
     
     return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
 }
@@ -230,19 +239,24 @@
     myReviewReputationCell.delegate = self;
     
     int topConstraint = [myReviewReputationCell getTopViewContentConstraint].constant;
+    int heightBtnInvoce = [myReviewReputationCell getConstHeightBtnInvoce].constant;
     [myReviewReputationCell setLeftViewContentContraint:0];
     [myReviewReputationCell setRightViewContentContraint:0];
     [myReviewReputationCell setTopViewContentContraint:0];
     [myReviewReputationCell setBottomViewContentContraint:0];
     [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
+    myReviewReputationCell.getBtnInvoice.hidden = YES;
+    myReviewReputationCell.getConstHeightBtnInvoce.constant = 0;
+    
+    
     myReviewReputationCell.getBtnFooter.userInteractionEnabled = NO;
-    myReviewReputationCell.getBtnFooter.hidden = YES;
+    myReviewReputationCell.getViewFlagReadUnread.hidden = myReviewReputationCell.getBtnFooter.hidden = YES;
     [myReviewReputationCell.getBtnFooter setTitle:CStringSemuaReviewDiLewati forState:UIControlStateNormal];
     heightBtnFooter = myReviewReputationCell.getConstHegithBtnFooter.constant;
     myReviewReputationCell.getConstHegithBtnFooter.constant = 0;
     
     CGRect tempRect = myReviewReputationCell.contentView.frame;
-    tempRect.size.height -= (topConstraint+topConstraint+heightBtnFooter);
+    tempRect.size.height -= (topConstraint+topConstraint+heightBtnFooter+heightBtnInvoce+3);
     myReviewReputationCell.contentView.frame = tempRect;
     tableContent.tableHeaderView = myReviewReputationCell.contentView;
 }
@@ -294,6 +308,38 @@
 }
 
 #pragma mark - Method
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    cmPopTitpView.leftPopUp = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+
 - (void)successGiveReview {
     [self reloadTable];
     int n = [_detailMyInboxReputation.unassessed_reputation_review intValue];
@@ -389,6 +435,15 @@
     productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
     detailReputationReview.review_user_label = [_detailMyInboxReputation.viewModel.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
+    
+    if(_detailMyInboxReputation.updated_reputation_review!=nil && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@""] && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@"0"]) {
+        int n = [_detailMyInboxReputation.updated_reputation_review intValue];
+        _detailMyInboxReputation.updated_reputation_review = _detailMyInboxReputation.viewModel.updated_reputation_review = [NSString stringWithFormat:@"%d", --n];
+        
+        if(n == 0) {
+            [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
+        }
+    }
 }
 
 
@@ -437,6 +492,7 @@
 - (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagListReputationReview) {
         return @{@"action":CGetListReputationReview,
+                 @"reputation_inbox_id":_detailMyInboxReputation.reputation_inbox_id,
                  @"reputation_id":_detailMyInboxReputation.reputation_id};
     }
     else if(tag == CTagSkipReputationReview)
@@ -719,11 +775,13 @@
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
+        [str addAttribute:NSFontAttributeName value:lblDesc.font range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
     }
     else {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSFontAttributeName value:lblDesc.font range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
         lblDesc.delegate = nil;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
@@ -756,7 +814,7 @@
         return;
     
     if(((CustomBtnSkip *) sender).isLewati) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Apakah anda yakin melewati review ini?" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Apakah anda yakin melewati ulasan ini?" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
         alertView.tag = CTagSkipReputationReview;
         [alertView show];
         tempTagSkip = (int)((UIButton *) sender).tag;
@@ -822,6 +880,17 @@
         webViewController.strURL = _detailMyInboxReputation.invoice_uri;
         webViewController.strTitle = @"";
         [self.navigationController pushViewController:webViewController animated:YES];
+    }
+}
+
+- (void)actionReputasi:(id)sender {
+    if(((UIButton *) sender).titleLabel.text.length == 0) { //Badge
+        
+        NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
+        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+    }
+    else {
+        
     }
 }
 
@@ -892,4 +961,17 @@
     postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
 }
 
+
+#pragma mark - CMPopTipView Delegate
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
 @end

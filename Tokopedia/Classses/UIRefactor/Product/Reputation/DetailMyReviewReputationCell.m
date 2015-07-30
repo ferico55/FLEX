@@ -37,7 +37,7 @@
 - (void)layoutSubviews
 {
     imgProduct.frame = CGRectMake(imgProduct.frame.origin.x, imgProduct.frame.origin.y, CDiameterImage, CDiameterImage);
-    btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, (labelInfoSkip.isHidden? imgProduct.frame.origin.y:(imgProduct.frame.origin.y+((imgProduct.bounds.size.height-lblDate.bounds.size.height)/2.0f))), self.bounds.size.width-(CPaddingTopBottom*5)-CDiameterImage, (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
+    btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, ((labelInfoSkip.isHidden && lblDate.text.length>0)? imgProduct.frame.origin.y:(imgProduct.frame.origin.y+((imgProduct.bounds.size.height-lblDate.bounds.size.height)/2.0f))), self.bounds.size.width-(CPaddingTopBottom*5)-CDiameterImage, (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
     
     
     //Set content star
@@ -101,6 +101,16 @@
     lblDate.text = @"";
     [btnProduct setTitle:viewModel.product_name forState:UIControlStateNormal];
     
+    //Check deleted product status
+    if([viewModel.product_status isEqualToString:@"1"]) {
+        btnProduct.userInteractionEnabled = YES;
+        [btnProduct.titleLabel setTextColor:[UIColor colorWithRed:66/255.0f green:66/255.0f blue:66/255.0f alpha:1.0f]];
+    }
+    else {
+        btnProduct.userInteractionEnabled = NO;
+        [btnProduct.titleLabel setTextColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f]];
+    }
+    
     //Set star akurasi and kualitas
     for(int i=0;i<arrImgKualitas.count;i++) {
         UIImageView *tempImage = arrImgKualitas[i];
@@ -158,23 +168,30 @@
     
     //Set description
     [_delegate initLabelDesc:lblDesc withText:viewModel.review_message==nil||[viewModel.review_message isEqualToString:@"0"]?@"":viewModel.review_message];
-    lblDesc.frame = CGRectMake(imgProduct.frame.origin.x, CPaddingTopBottom + imgProduct.frame.origin.y+imgProduct.bounds.size.height, viewContent.bounds.size.width-(imgProduct.frame.origin.x*2), 0);
+    lblDesc.frame = CGRectMake(imgProduct.frame.origin.x, CPaddingTopBottom+CPaddingTopBottom+ imgProduct.frame.origin.y+imgProduct.bounds.size.height, viewContent.bounds.size.width-(imgProduct.frame.origin.x*2), 0);
     CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
     CGRect tempLblRect = lblDesc.frame;
     tempLblRect.size.height = tempSizeDesc.height;
+    if(viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"] || btnUbah.isLewati) {
+        tempLblRect.origin.y -= CPaddingTopBottom;
+        tempLblRect.size.height = 0;
+    }
+    else {
+        tempLblRect.size.height += CPaddingTopBottom;
+    }
+    
     lblDesc.frame = tempLblRect;
     
     if((viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) && [_strRole isEqualToString:@"1"]) {
         btnKomentar.hidden = NO;
         [self setHiddenRating:YES];
-        btnKomentar.enabled = YES;
+        btnKomentar.userInteractionEnabled = YES;
         [btnKomentar setTitle:@"Beri Review" forState:UIControlStateNormal];
         [btnKomentar setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
     else {
         btnKomentar.hidden = NO;
-        btnKomentar.enabled = NO;
-        
+        btnKomentar.userInteractionEnabled = NO;
         if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0 && ![viewModel.review_response.response_message isEqualToString:@"0"])
             [btnKomentar setTitle:[NSString stringWithFormat:@"1 %@", CStringKomentar] forState:UIControlStateNormal];
         else
@@ -207,8 +224,10 @@
             labelInfoSkip.hidden = NO;
         }
     }
-    else
-        lblDate.text = viewModel.review_create_time==nil||[viewModel.review_create_time isEqualToString:@"0"]? @"":viewModel.review_create_time;
+    else {
+        BOOL isEdit = !((viewModel.review_message==nil||[viewModel.review_message isEqualToString:@"0"]) || (viewModel.review_update_time==nil||[viewModel.review_update_time isEqualToString:@"0"]));
+        lblDate.text = isEdit? (viewModel.review_update_time==nil||[viewModel.review_update_time isEqualToString:@"0"]? @"":viewModel.review_update_time):(viewModel.review_create_time==nil||[viewModel.review_create_time isEqualToString:@"0"]? @"":viewModel.review_create_time);
+    }
 }
 
 #pragma mark - TTTAttributedLabel delegate

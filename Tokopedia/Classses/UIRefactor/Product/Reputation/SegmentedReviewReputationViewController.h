@@ -21,6 +21,7 @@
     IBOutlet UISegmentedControl *segmentedControl;
     IBOutlet UIView *viewContent, *viewContentAction, *viewShadow;
     IBOutlet UIButton *btnAllReview, *btnBelumDibaca, *btnBelumDireview;
+    IBOutlet NSLayoutConstraint *constTopCheckList;
 }
 
 - (NSString *)getSelectedFilter;

@@ -4,12 +4,23 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailMyReviewReputationViewController">
             <connections>
                 <outlet property="actIndicator" destination="YY0-xm-dgY" id="Nno-SO-Pe2"/>
+                <outlet property="lblSubTitle" destination="6K1-cm-XJI" id="8K2-Rl-5vh"/>
+                <outlet property="lblTitle" destination="fPz-k9-pXD" id="LXU-KB-4nD"/>
                 <outlet property="tableContent" destination="HkK-Lv-Srv" id="EX4-tE-m9R"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewContentTitle" destination="G3H-iA-jBT" id="lj9-ln-SvX"/>
                 <outlet property="viewFooter" destination="rWv-VA-Kne" id="Lbo-y5-lDG"/>
             </connections>
         </placeholder>
@@ -53,6 +64,43 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="822" y="231"/>
+        </view>
+        <view contentMode="scaleToFill" id="G3H-iA-jBT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6K1-cm-XJI">
+                    <rect key="frame" x="0.0" y="26" width="320" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="EnM-Kk-bZw"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPz-k9-pXD">
+                    <rect key="frame" x="0.0" y="8" width="320" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="Nw1-MZ-VJ5"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="fPz-k9-pXD" firstAttribute="top" secondItem="G3H-iA-jBT" secondAttribute="top" constant="8" id="FMr-am-kNg"/>
+                <constraint firstItem="6K1-cm-XJI" firstAttribute="top" secondItem="fPz-k9-pXD" secondAttribute="bottom" constant="4" id="Gbf-Ev-Mec"/>
+                <constraint firstAttribute="trailing" secondItem="fPz-k9-pXD" secondAttribute="trailing" id="VZh-Fj-Phz"/>
+                <constraint firstItem="fPz-k9-pXD" firstAttribute="leading" secondItem="G3H-iA-jBT" secondAttribute="leading" id="Wst-U0-ZL6"/>
+                <constraint firstItem="6K1-cm-XJI" firstAttribute="leading" secondItem="G3H-iA-jBT" secondAttribute="leading" id="X3O-YE-kYi"/>
+                <constraint firstAttribute="trailing" secondItem="6K1-cm-XJI" secondAttribute="trailing" id="acA-e0-1Az"/>
+                <constraint firstAttribute="bottom" secondItem="6K1-cm-XJI" secondAttribute="bottom" constant="4" id="oRZ-bv-SYX"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="901" y="205"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

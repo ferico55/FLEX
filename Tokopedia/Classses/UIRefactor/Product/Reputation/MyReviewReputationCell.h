@@ -16,6 +16,7 @@
 - (void)actionReviewRate:(id)sender;
 - (void)actionLabelUser:(id)sender;
 - (void)actionFlagReview:(id)sender;
+- (IBAction)actionReputasi:(id)sender;
 @end
 
 
@@ -24,14 +25,16 @@
 {
     IBOutlet UIView *viewContent, *viewFlagReadUnread;
     IBOutlet UIImageView *imageProfile, *imageFlagReview;
-    IBOutlet UIButton *btnInvoice, *btnFooter, *btnReview;
+    IBOutlet UIButton *btnInvoice, *btnFooter, *btnReview, *btnReputation;
     IBOutlet ViewLabelUser *labelUser;
     UIActivityIndicatorView *activityRating;
     UIImage *imageSmile, *imageSad, *imageNetral, *imageNeutral, *imageQuestionGray, *imageQuestionBlue, *imageQSmile, *imageQNetral, *imageQBad;
-    IBOutlet NSLayoutConstraint *constraintLeftViewContent, *constraintRightViewContent, *constraintTopViewContent, *cosntraintBottomViewContent, *constraintHeightBtnFooter;
+    IBOutlet NSLayoutConstraint *constraintLeftViewContent, *constraintRightViewContent, *constraintTopViewContent, *cosntraintBottomViewContent, *constraintHeightBtnFooter, *constHeightBtnInvoce;
 }
 @property (nonatomic, unsafe_unretained) id<MyReviewReputationDelegate> delegate;
 
+- (IBAction)actionPopUp:(id)sender;
+- (UIView *)getViewFlagReadUnread;
 - (void)setLeftViewContentContraint:(int)n;
 - (void)setBottomViewContentContraint:(int)n;
 - (void)setTopViewContentContraint:(int)n;
@@ -39,12 +42,14 @@
 - (void)isLoadInView:(BOOL)isLoad withView:(UIView *)view;
 - (ViewLabelUser *)getLabelUser;
 - (UIView *)getViewContent;
+- (UIButton *)getBtnReputation;
 - (UIButton *)getBtnInvoice;
 - (UIButton *)getBtnFooter;
 - (UIButton *)getBtnReview;
 - (UIImageView *)getImageFlagReview;
 - (NSLayoutConstraint *)getConstHegithBtnFooter;
 - (NSLayoutConstraint *)getTopViewContentConstraint;
+- (NSLayoutConstraint *)getConstHeightBtnInvoce;
 - (IBAction)actionInvoice:(id)sender;
 - (IBAction)actionFooter:(id)sender;
 - (IBAction)actionReview:(id)sender;

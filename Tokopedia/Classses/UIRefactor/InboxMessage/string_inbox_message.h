@@ -43,6 +43,6 @@
 #define CTagSystemTracker 7
 
 
-#define CStringSuccessRemoveMessage @"Berhasil menghapus pesan"
-#define CStringFailedRemoveMessage @"Gagal menghapus pesan"
+#define CStringSuccessRemoveMessage @"Anda telah berhasil menghapus komentar"
+#define CStringFailedRemoveMessage @"Anda gagal menghapus komentar"
 #endif

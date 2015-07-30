@@ -634,7 +634,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="y5T-sA-edk"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Positif" image="icon_smile.png">
@@ -672,7 +672,7 @@
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKZ-7e-E5B">
                                             <rect key="frame" x="0.0" y="118" width="75" height="50"/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Netral" image="icon_netral.png">
@@ -707,7 +707,7 @@
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jg-Qb-qaX">
                                             <rect key="frame" x="0.0" y="176" width="75" height="50"/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Negatif" image="icon_sad.png">

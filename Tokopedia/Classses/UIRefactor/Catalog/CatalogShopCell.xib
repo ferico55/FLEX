@@ -113,50 +113,27 @@
                                             <constraint firstAttribute="trailing" secondItem="Dyr-lx-HEF" secondAttribute="trailing" id="zzH-Xy-Geg"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81H-Uk-YsE">
-                                        <rect key="frame" x="200" y="37" width="100" height="12"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="12" id="Afj-Iv-Vkd"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="GAW-zz-2mc"/>
-                                            <constraint firstAttribute="height" constant="12" id="ZTt-Os-bCE"/>
-                                            <constraint firstAttribute="width" constant="100" id="iIJ-zp-6dx"/>
-                                        </constraints>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aAd-Lg-sdc">
+                                        <rect key="frame" x="207" y="36" width="74" height="22"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                        <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_location_grey" translatesAutoresizingMaskIntoConstraints="NO" id="bu6-bZ-ndD">
-                                        <rect key="frame" x="183" y="36" width="14" height="14"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="OdJ-qc-TiF"/>
-                                            <constraint firstAttribute="height" constant="14" id="QmV-gg-AWM"/>
-                                            <constraint firstAttribute="width" constant="14" id="pIZ-zE-xP9"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="14" id="uvg-KR-b00"/>
-                                        </constraints>
-                                    </imageView>
+                                        <state key="normal" title="Jakarta" image="icon_location.png">
+                                            <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="81H-Uk-YsE" firstAttribute="leading" secondItem="bu6-bZ-ndD" secondAttribute="trailing" constant="3" id="1js-y0-AaR"/>
                                     <constraint firstAttribute="bottom" secondItem="XZa-rX-g75" secondAttribute="bottom" id="2sL-J5-KrL"/>
                                     <constraint firstAttribute="trailing" secondItem="XZa-rX-g75" secondAttribute="trailing" constant="10" id="6Rr-es-l6m"/>
-                                    <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="bu6-bZ-ndD" secondAttribute="bottom" constant="19" id="8Q5-FT-XHU"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="gtP-EX-b5j" secondAttribute="bottom" constant="9" id="8nd-Ht-BOW"/>
-                                    <constraint firstItem="81H-Uk-YsE" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" constant="1" id="8uV-q6-tfl"/>
-                                    <constraint firstItem="81H-Uk-YsE" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" constant="1" id="GhP-de-o0l"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="KoK-Sg-dzi"/>
                                     <constraint firstAttribute="height" constant="70" id="LKR-zX-qiE"/>
                                     <constraint firstAttribute="trailing" secondItem="YPx-vr-edZ" secondAttribute="trailing" constant="20" id="RSO-ie-m83"/>
                                     <constraint firstItem="gtP-EX-b5j" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="10" id="S7q-Fa-pco"/>
                                     <constraint firstItem="gtP-EX-b5j" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="SdP-UN-Zvl"/>
                                     <constraint firstItem="YPx-vr-edZ" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="U2p-se-lS2"/>
-                                    <constraint firstItem="81H-Uk-YsE" firstAttribute="leading" secondItem="bu6-bZ-ndD" secondAttribute="trailing" constant="3" id="VuC-DC-yUJ"/>
-                                    <constraint firstAttribute="trailing" secondItem="81H-Uk-YsE" secondAttribute="trailing" id="agd-4n-Lmm"/>
-                                    <constraint firstAttribute="trailing" secondItem="81H-Uk-YsE" secondAttribute="trailing" id="dow-iK-TJi"/>
-                                    <constraint firstItem="bu6-bZ-ndD" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="36" id="nFw-oH-cFJ"/>
                                     <constraint firstItem="J4b-sz-bsl" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" id="o2D-Mu-C4j"/>
-                                    <constraint firstItem="81H-Uk-YsE" firstAttribute="leading" secondItem="bu6-bZ-ndD" secondAttribute="trailing" constant="3" id="oPR-7v-qwF"/>
-                                    <constraint firstItem="bu6-bZ-ndD" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" id="qEj-y9-BYF"/>
                                     <constraint firstItem="J4b-sz-bsl" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="vZs-aS-eUu"/>
                                     <constraint firstItem="YPx-vr-edZ" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="15" id="zU9-FM-plW"/>
                                 </constraints>
@@ -271,6 +248,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <connections>
+                <outlet property="btnLocation" destination="aAd-Lg-sdc" id="wxF-7m-EFR"/>
                 <outlet property="buyButton" destination="5A0-aT-MsB" id="cor-eS-RFW"/>
                 <outlet property="containerView" destination="hrF-rD-JaS" id="k70-do-fR2"/>
                 <outlet property="masking" destination="Gpw-rT-PUR" id="6hY-f8-uqC"/>
@@ -279,7 +257,6 @@
                 <outlet property="productPriceLabel" destination="yaO-Zj-7nA" id="DBg-9n-wgU"/>
                 <outlet property="seeOtherProducts" destination="TUy-cG-4oA" id="asQ-u3-DLx"/>
                 <outlet property="shopImageView" destination="gtP-EX-b5j" id="A1D-Y4-CIn"/>
-                <outlet property="shopLocationLabel" destination="81H-Uk-YsE" id="BlW-Kx-Got"/>
                 <outlet property="shopNameLabel" destination="YPx-vr-edZ" id="RKH-Zc-fhf"/>
                 <outlet property="viewContentStar" destination="J4b-sz-bsl" id="DyL-HY-PzL"/>
                 <outletCollection property="stars" destination="pfg-i9-2S3" id="1Sm-oq-9z7"/>
@@ -288,7 +265,7 @@
                 <outletCollection property="stars" destination="Hc6-yH-FB0" id="FSE-hD-5td"/>
                 <outletCollection property="stars" destination="Dyr-lx-HEF" id="udR-4V-tjR"/>
             </connections>
-            <point key="canvasLocation" x="181" y="297"/>
+            <point key="canvasLocation" x="181" y="296.5"/>
         </tableViewCell>
         <tapGestureRecognizer id="0ys-W8-mYU" userLabel="Shop Tap Gesture Recognizer">
             <connections>
@@ -316,7 +293,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="icon_location_grey" width="14" height="14"/>
+        <image name="icon_location.png" width="14" height="14"/>
         <image name="icon_star.png" width="20" height="20"/>
         <image name="icon_toped_loading_grey-02.png" width="30" height="30"/>
     </resources>

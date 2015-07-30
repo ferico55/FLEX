@@ -12,7 +12,8 @@
 @interface DetailMyReviewReputationViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 {
     IBOutlet UIActivityIndicatorView *actIndicator;
-    IBOutlet UIView *viewFooter;
+    IBOutlet UIView *viewFooter, *viewContentTitle;
+    IBOutlet UILabel *lblTitle, *lblSubTitle;
     IBOutlet UITableView *tableContent;
 }
 
