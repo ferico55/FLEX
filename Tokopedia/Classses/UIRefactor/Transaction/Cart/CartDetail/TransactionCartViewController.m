@@ -643,6 +643,7 @@
                 case TYPE_GATEWAY_TOKOPEDIA:
                 case TYPE_GATEWAY_TRANSFER_BANK:
                 case TYPE_GATEWAY_BCA_KLIK_BCA:
+                case TYPE_GATEWAY_INDOMARET:
                     if ([self isValidInput]) {
                         _requestCart.param = [self paramBuy];
                         [_requestCart dorequestBuy];
@@ -797,7 +798,7 @@
     NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        if (![gateway.gateway isEqual:@(10)] && ![gateway.gateway isEqual:@(TYPE_GATEWAY_CC)] ) {
+        if (![gateway.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)] && ![gateway.gateway isEqual:@(TYPE_GATEWAY_CC)] ) {
             [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
         }
     }

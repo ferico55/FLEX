@@ -202,7 +202,7 @@
             <point key="canvasLocation" x="506" y="439.5"/>
         </view>
         <view contentMode="scaleToFill" id="rNQ-kw-j6D">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="502"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="587"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZsD-XE-L0L">
@@ -229,16 +229,16 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="P54-7N-exa"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CARA PEMBAYARAN KLIK BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0F2-Qe-Pfc">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CARA PEMBAYARAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0F2-Qe-Pfc">
                     <rect key="frame" x="15" y="81" width="234" height="21"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CwO-RT-xjc">
-                    <rect key="frame" x="0.0" y="104" width="320" height="377"/>
+                    <rect key="frame" x="0.0" y="104" width="320" height="483"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2B8-at-lhg">
-                            <rect key="frame" x="15" y="7" width="290" height="383"/>
+                            <rect key="frame" x="15" y="7" width="290" height="462"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <string key="text">Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran :- Masuk ke situs *www.klikbca.com*, masukkan User ID dan Password Anda.
 - Pilih menu Pembayaran e-Commerce, lalu pilih kategori Marketlace, pilih pilihan  Tokopedia, dan klik Lanjutkan.
@@ -266,7 +266,7 @@
                 <constraint firstAttribute="trailing" secondItem="ZsD-XE-L0L" secondAttribute="trailing" constant="15" id="egj-RM-zQN"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="106" y="878"/>
+            <point key="canvasLocation" x="106" y="920.5"/>
         </view>
         <view contentMode="scaleToFill" id="EEG-XL-95d">
             <rect key="frame" x="0.0" y="0.0" width="320" height="183"/>
@@ -326,7 +326,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                     <rect key="frame" x="15" y="0.0" width="290" height="120"/>
                     <string key="text">Terima kasih, Transaksi Anda telah berhasil menggunakan pembayaran Klik BCA.\nSilahkan selesaikan pembayaran Anda pada halaman Klik  BCA.\n\nUser ID KlikBCA Anda:%@\n</string>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

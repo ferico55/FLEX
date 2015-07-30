@@ -55,6 +55,7 @@ typedef enum
     TYPE_GATEWAY_BCA_CLICK_PAY = 7,
     TYPE_GATEWAY_BCA_KLIK_BCA = 9,
     TYPE_GATEWAY_CC = 8,
+    TYPE_GATEWAY_INDOMARET = 10
 }TYPE_GATEWAY;
 
 typedef enum
@@ -79,6 +80,7 @@ typedef enum
 #define STRING_SALDO_TOKOPEDIA_TERPAKAI @"Saldo Tokopedia terpakai"
 #define STRING_SALDO_TOKOPEDIA_TERSISA @"Saldo Tokopedia yang tersisa"
 #define STRING_JUMLAH_YANG_HARUS_DIBAYAR @"Jumlah yang harus dibayar"
+#define STRING_BIAYA_ADMINISTRASI_INDOMARET @"Biaya Administrasi Indomaret"
 #define STRING_TOTAL_TAGIHAN @"Total Tagihan"
 #define STRING_PENGGUNAAN_KUPON @"Penggunaan Kupon"
 #define STRING_PAYMENT

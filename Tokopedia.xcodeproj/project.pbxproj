@@ -3197,7 +3197,7 @@
 		454B747D1B6768AE006AF4FE /* TransactionCartResultPaymentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartResultPaymentCell.m; sourceTree = "<group>"; };
 		454B747E1B6768AE006AF4FE /* TransactionCartResultPaymentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartResultPaymentCell.xib; sourceTree = "<group>"; };
 		454B747F1B6768AE006AF4FE /* TransactionCartResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartResultViewController.h; sourceTree = "<group>"; };
-		454B74801B6768AE006AF4FE /* TransactionCartResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartResultViewController.m; sourceTree = "<group>"; };
+		454B74801B6768AE006AF4FE /* TransactionCartResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartResultViewController.m; sourceTree = "<group>"; tabWidth = 3; };
 		454B74811B6768AE006AF4FE /* TransactionCartResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartResultViewController.xib; sourceTree = "<group>"; };
 		454B74821B6768AE006AF4FE /* RequestCart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCart.h; sourceTree = "<group>"; };
 		454B74831B6768AE006AF4FE /* RequestCart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCart.m; sourceTree = "<group>"; };

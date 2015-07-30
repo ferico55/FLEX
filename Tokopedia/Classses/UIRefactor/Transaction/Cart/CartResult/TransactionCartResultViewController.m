@@ -104,26 +104,16 @@
     
     _contactUsLabel.attributedText = title;
     
-    NSString *htmlString = @"<h3><strong>Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran :</strong></h3><ol><li>Masuk ke situs<strong> www.klikbca.com</strong>, masukkan User ID dan Password Anda.</li><li>Pilih menu Pembayaran e-Commerce, lalu pilih kategori Marketlace, pilih pilihan &nbsp;Tokopedia, dan klik Lanjutkan.</li><li>Pada halaman berikutnya, akan tampil transaksi pembelian yang Anda lakukan di situs Tokopedia. Cek kembali dan pilih transaksi yang ingin Anda Bayar, lalu klik Lanjutkan.</li><li>&nbsp;Masukkan kode Otorisasi KeyBCA untuk memproses transaksi.</li><li>&nbsp;Apabila transaksi Anda berhasil, sistem Tokopedia akan langsung memverifikasi pembayaran Anda.</li>";
+    NSString *htmlStringIndomaret = @"<p><strong>Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran:</strong></p><ol><li>Catat dan simpan <strong>kode pembayaran Indomaret</strong> Anda, yaitu <strong>0017</strong>.</li><li><strong>Tunjukkan kode pembayaran </strong>ke kasir Indomaret terdekat, dan lakukan pembayaran senilai <span style='color:#ff0000;'>Rp 26.050</span>.</li><li>Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia.</li><li>Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi.</li></ol><p>&nbsp;</p><p><strong>Catatan</strong></p><ul><li>Jumlah yang harus Anda bayar sudah termasuk biaya administrasi Indomaret sebesar <span style='color:#ff0000;'>Rp 2.500</span>.</li><li>Pesanan akan <span style='color:#ff0000;'>otomatis</span> dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan.</li></ul>";
     
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding]
+    
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlStringIndomaret dataUsingEncoding:NSUnicodeStringEncoding]
                                                                             options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil
                                                                               error:nil];
-    [attributedString addAttribute:NSFontAttributeName
-                             value:FONT_GOTHAM_BOOK_11
-                   range:NSMakeRange(0, attributedString.length)];
-//[attributedString addAttribute:NSForegroundColorAttributeName
-//                         value:[UIColor colorWithRed:97.0/255.0 green:97.0/255.0 blue:97.0/255.0 alpha:1]
-//                         range:NSMakeRange(0, attributedString.length)];
-    [attributedString addAttribute:NSFontAttributeName
-                             value:FONT_GOTHAM_MEDIUM_12
-                             range:[htmlString rangeOfString:@"Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran :"]];
-    [attributedString addAttribute:NSFontAttributeName
-                             value:FONT_GOTHAM_MEDIUM_12
-                             range:[htmlString rangeOfString:@"www.klikbca.com"]];
-
     
     _klikBCASteps.attributedText = attributedString;
+    
+    _tableView.tableFooterView = _paymentConfirmationKlikBCAView;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -361,8 +351,18 @@
          }
      }
     else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]||
-             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)])
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]||
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]
+             )
     {
+        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
+            self.screenName = @"Thank you Page - Transfer Bank";
+        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]) {
+            self.screenName = @"Thank you Page - klikBCA";
+        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
+            self.screenName = @"Thank you Page - Indomaret";
+        }
+        
         if ([_cartBuy.transaction.voucher_amount integerValue]>0) {
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
@@ -381,23 +381,30 @@
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
         }
         
-        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
-            self.screenName = @"Thank you Page - Transfer Bank";
+        if(![_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]) {
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
                                          DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
                                          },
                                        ];
             [_listTotalPayment addObjectsFromArray:detailPayment];
-        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]) {
-            self.screenName = @"Thank you Page - BCA KlikBCA";
+        }
+        
+        if(![_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_BIAYA_ADMINISTRASI_INDOMARET,
+                                         DATA_VALUE_KEY : @"Rp. 2.500"
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+        
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN,
                                          DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
                                          },
                                        ];
             [_listTotalPayment addObjectsFromArray:detailPayment];
-        }
     }
     else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)] ||
