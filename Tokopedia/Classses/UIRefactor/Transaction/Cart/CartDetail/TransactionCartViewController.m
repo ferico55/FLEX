@@ -798,7 +798,7 @@
     NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        if (![gateway.gateway isEqual:@(TYPE_GATEWAY_CC)] ) {
+        if (![gateway.gateway isEqual:@(11)] ) {
             [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
         }
     }
