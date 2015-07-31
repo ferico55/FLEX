@@ -228,7 +228,7 @@
         [_coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            
+            _coverImageView.contentMode = UIViewContentModeScaleToFill;
             _coverImageView.image = image;
             _coverImageView.hidden = NO;
             

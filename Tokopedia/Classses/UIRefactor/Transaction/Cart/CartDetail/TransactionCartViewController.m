@@ -2762,7 +2762,7 @@
             break;
         default:
         {
-            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result,@"UserID":_userIDKlikBCATextField.text};
+            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
             [_delegate didFinishRequestBuyData:userInfo];
             [_dataInput removeAllObjects];
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];

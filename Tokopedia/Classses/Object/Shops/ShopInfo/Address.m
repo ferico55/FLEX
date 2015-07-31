@@ -18,4 +18,12 @@
     }
 }
 
+- (NSString *)location_address {
+    return [_location_address kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString *)location_address_name {
+    return [_location_address_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

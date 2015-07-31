@@ -14,6 +14,8 @@
 +(NSString *)convertHTML:(NSString *)html;
 +(NSString *)getLinkFromHTMLString:(NSString*)html;
 +(NSString*) timeLeftSinceDate:(NSDate *)dateT;
+- (BOOL) isNotAllBaseCharacter;
+-(BOOL)isAllNonNumber;
 
 - (BOOL) isNotAllBaseCharacter;
 

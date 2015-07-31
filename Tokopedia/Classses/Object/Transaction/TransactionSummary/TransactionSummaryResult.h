@@ -18,5 +18,4 @@
 @property (nonatomic, strong) NSString *year_now;
 @property (nonatomic, strong) Veritrans *veritrans;
 
-
 @end
