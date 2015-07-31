@@ -525,8 +525,6 @@
     [self adjustFooterIndomaret];
     [self adjustFooterKlikBCA];
     
-    _tableView.tableFooterView = _paymentConfirmationWithTextView;
-
 }
 
 #pragma mark - Footer View Methods
