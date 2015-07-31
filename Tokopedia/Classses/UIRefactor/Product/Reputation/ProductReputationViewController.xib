@@ -609,19 +609,6 @@
                         <constraint firstItem="TA8-3T-vYB" firstAttribute="leading" secondItem="yft-rq-6df" secondAttribute="trailing" constant="8" id="uAJ-3A-HqZ"/>
                     </constraints>
                 </view>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="vIy-jH-9ag">
-                    <rect key="frame" x="8" y="8" width="304" height="29"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="28" id="KQr-CF-pfG"/>
-                    </constraints>
-                    <segments>
-                        <segment title="Kualitas Produk"/>
-                        <segment title="Akurasi Produk"/>
-                    </segments>
-                    <connections>
-                        <action selector="actionSegmentedValueChange:" destination="-1" eventType="valueChanged" id="xHX-x1-LU7"/>
-                    </connections>
-                </segmentedControl>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="caX-9z-Jwf">
                     <rect key="frame" x="197" y="286" width="115" height="18"/>
                     <constraints>
@@ -637,6 +624,19 @@
                         <action selector="actionResetFilter:" destination="-1" eventType="touchUpInside" id="CTi-gK-FhU"/>
                     </connections>
                 </button>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="vIy-jH-9ag">
+                    <rect key="frame" x="38" y="8" width="244" height="29"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="28" id="KQr-CF-pfG"/>
+                    </constraints>
+                    <segments>
+                        <segment title="Kualitas Produk"/>
+                        <segment title="Akurasi Produk"/>
+                    </segments>
+                    <connections>
+                        <action selector="actionSegmentedValueChange:" destination="-1" eventType="valueChanged" id="xHX-x1-LU7"/>
+                    </connections>
+                </segmentedControl>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -653,12 +653,11 @@
                 <constraint firstItem="vhF-qB-sjk" firstAttribute="leading" secondItem="MVB-TT-Dqo" secondAttribute="leading" constant="8" id="7vG-EN-ITQ"/>
                 <constraint firstItem="qeH-KY-KJD" firstAttribute="leading" secondItem="MVB-TT-Dqo" secondAttribute="leading" constant="8" id="8Ac-rb-Qe7"/>
                 <constraint firstItem="caX-9z-Jwf" firstAttribute="top" secondItem="vhF-qB-sjk" secondAttribute="bottom" constant="4" id="8Mx-jl-pK8"/>
-                <constraint firstItem="vIy-jH-9ag" firstAttribute="leading" secondItem="MVB-TT-Dqo" secondAttribute="leading" constant="8" id="8lZ-N3-4Pw"/>
                 <constraint firstItem="Ats-Qo-YGC" firstAttribute="top" secondItem="qeH-KY-KJD" secondAttribute="bottom" constant="5" id="DzU-9M-lJf"/>
                 <constraint firstAttribute="trailing" secondItem="cWG-7z-X1c" secondAttribute="trailing" id="JML-Pr-TZP"/>
+                <constraint firstAttribute="trailing" secondItem="vIy-jH-9ag" secondAttribute="trailing" constant="38" id="Mwf-y3-iju"/>
                 <constraint firstItem="qeH-KY-KJD" firstAttribute="height" secondItem="vhF-qB-sjk" secondAttribute="height" id="NSj-RT-117"/>
                 <constraint firstAttribute="centerX" secondItem="ULS-Wt-L84" secondAttribute="centerX" id="Prb-xp-Uue"/>
-                <constraint firstAttribute="trailing" secondItem="vIy-jH-9ag" secondAttribute="trailing" constant="8" id="Psb-nQ-b8M"/>
                 <constraint firstItem="m5Q-Di-6St" firstAttribute="top" secondItem="Ats-Qo-YGC" secondAttribute="bottom" constant="5" id="QRF-yA-7YD"/>
                 <constraint firstItem="qeH-KY-KJD" firstAttribute="height" secondItem="m5Q-Di-6St" secondAttribute="height" id="Rdu-yj-E8S"/>
                 <constraint firstItem="dz7-Fp-eCW" firstAttribute="top" secondItem="zEq-7U-cFz" secondAttribute="bottom" constant="8" id="Sx3-db-gvC"/>
@@ -678,6 +677,7 @@
                 <constraint firstAttribute="trailing" secondItem="Ats-Qo-YGC" secondAttribute="trailing" constant="13" id="re0-9q-MW8"/>
                 <constraint firstAttribute="trailing" secondItem="BL3-Q4-kSv" secondAttribute="trailing" constant="62" id="wey-e2-IGl"/>
                 <constraint firstAttribute="trailing" secondItem="qeH-KY-KJD" secondAttribute="trailing" constant="13" id="yQB-1R-m8f"/>
+                <constraint firstItem="vIy-jH-9ag" firstAttribute="leading" secondItem="MVB-TT-Dqo" secondAttribute="leading" constant="38" id="zMU-VU-3nJ"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
