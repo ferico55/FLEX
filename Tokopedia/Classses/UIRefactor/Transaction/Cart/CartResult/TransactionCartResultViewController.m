@@ -89,10 +89,8 @@
     
     [self adjustFooterPaymentConfirmation];
     [self adjustFooterPurchaseStatus];
-    [self adjustFooterIndomaret];
-    [self adjustFooterKlikBCA];
     
-    _tableView.tableFooterView = _paymentConfirmationWithTextView;
+//    _tableView.tableFooterView = _paymentConfirmationWithTextView;
     
 }
 
@@ -402,16 +400,8 @@
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
         }
         
-        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
-            NSArray *detailPayment = @[
-                                       @{DATA_NAME_KEY : STRING_BIAYA_ADMINISTRASI_INDOMARET,
-                                         DATA_VALUE_KEY : _cartBuy.transaction.indomaret.charge_real_idr?:@""
-                                         },
-                                       ];
-            [_listTotalPayment addObjectsFromArray:detailPayment];
-        }
-        
-        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)])
+        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]||
+           [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)])
         {
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN,
@@ -421,7 +411,19 @@
             [_listTotalPayment addObjectsFromArray:detailPayment];
         }
         
+        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_BIAYA_ADMINISTRASI_INDOMARET,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.indomaret.charge_real_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+        
         if(![_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]) {
+            if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
+                _cartBuy.transaction.payment_left_idr = _cartBuy.transaction.indomaret.total_charge_real_idr;
+            }
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
                                          DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
@@ -501,7 +503,7 @@
         _tableTitleLabel.attributedText = attibutestring;
     }
     
-    if ([_cartBuy.transaction.gateway_name integerValue] == TYPE_GATEWAY_INDOMARET) {
+    if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
         _IndomaretCodeLabel.text = _cartBuy.transaction.indomaret.payment_code;
         _tableView.tableHeaderView = _headerViewIndomaret;
     }
@@ -513,6 +515,10 @@
     _paymentStatusButton.layer.cornerRadius = 2;
     
     [_totalPaymentLabel setText:_cartBuy.transaction.payment_left_idr?:@"" animated:YES];
+    
+    [self adjustFooterIndomaret];
+    [self adjustFooterKlikBCA];
+
 }
 
 #pragma mark - Footer View Methods
@@ -564,6 +570,9 @@
             case 2:
                 label.text = [NSString stringWithFormat:@"Tunjukkan kode pembayaran ke kasir Indomaret terdekat, dan lakukan pembayaran senilai %@",_cartBuy.transaction.indomaret.total_charge_real_idr];
                 break;
+            case 5:
+                label.text = [NSString stringWithFormat:@"Jumlah yang harus Anda bayar sudah termasuk biaya administrasi Indomaret sebesar %@",_cartBuy.transaction.indomaret.charge_real_idr];
+                break;
             default:
                 break;
         }
@@ -575,30 +584,30 @@
                                range:NSMakeRange(0, attibutestring.length)];
         [attibutestring addAttribute:NSFontAttributeName
                                value:FONT_GOTHAM_MEDIUM_12
-                               range:[label.text rangeOfString:@"Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran:"]];
+                               range:[label.text rangeOfString:@"Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran"]];
         [attibutestring addAttribute:NSFontAttributeName
                                value:FONT_GOTHAM_MEDIUM_12
                                range:[label.text rangeOfString:[NSString stringWithFormat:@"%@",_cartBuy.transaction.indomaret.payment_code]]];
         [attibutestring addAttribute:NSFontAttributeName
                                value:FONT_GOTHAM_MEDIUM_12
+                               range:[label.text rangeOfString:[NSString stringWithFormat:@"%@",_cartBuy.transaction.indomaret.charge_real_idr]]];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_12
                                range:[label.text rangeOfString:@"kode pembayaran Indomaret"]];
+        [attibutestring addAttribute:NSFontAttributeName
+                               value:FONT_GOTHAM_MEDIUM_12
+                               range:[label.text rangeOfString:@"Tunjukkan kode pembayaran"]];
         [attibutestring addAttribute:NSForegroundColorAttributeName
                                value:[UIColor colorWithRed:200.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1]
                                range:[label.text rangeOfString:[NSString stringWithFormat:@"%@",_cartBuy.transaction.indomaret.total_charge_real_idr]]];
+        if (label.tag != 3) {
+            [attibutestring addAttribute:NSForegroundColorAttributeName
+                                   value:[UIColor colorWithRed:200.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1]
+                                   range:[label.text rangeOfString:@"otomatis"]];
+        }
         [attibutestring addAttribute:NSFontAttributeName
                                value:FONT_GOTHAM_MEDIUM_11
                                range:[label.text rangeOfString:@"KeyBCA Token"]];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"Tokopedia otomatis memverifikasi pembayaran Anda"]];
-        [attibutestring addAttribute:NSFontAttributeName
-                               value:FONT_GOTHAM_MEDIUM_11
-                               range:[label.text rangeOfString:@"disini"]];
-        
-        //add color
-        [attibutestring addAttribute:NSForegroundColorAttributeName
-                               value:[UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1]
-                               range:[label.text rangeOfString:@"disini"]];
         
         //add alignment
         [attibutestring addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attibutestring.length)];
@@ -606,13 +615,13 @@
         label.attributedText = attibutestring;
     }
     
-    NSString *htmlString = [NSString stringWithFormat: @"<h1><strong>Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran:</strong></h1><ol><li>Catat dan simpan <strong>kode pembayaran Indomaret</strong> Anda, yaitu <strong>%@</strong>.</li><li><strong>Tunjukkan kode pembayaran </strong>ke kasir Indomaret terdekat, dan lakukan pembayaran senilai <span style='color:#ff0000;'>%@</span>.</li><li>Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia.</li><li>Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi.</li></ol><p>&nbsp;</p><p><strong>Catatan</strong></p><ul><li>Jumlah yang harus Anda bayar sudah termasuk biaya administrasi Indomaret sebesar <span style='color:#ff0000;'>%@</span>.</li><li>Pesanan akan <span style='color:#ff0000;'>otomatis</span> dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan.</li></ul>",_cartBuy.transaction.indomaret.payment_code,_cartBuy.transaction.indomaret.total_charge_real_idr,_cartBuy.transaction.indomaret.charge_real_idr];
-    
-    
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-
-    
-    _footerNotes.attributedText = attributedString;
+//    NSString *htmlString = [NSString stringWithFormat: @"<h1><strong>Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran:</strong></h1><ol><li>Catat dan simpan <strong>kode pembayaran Indomaret</strong> Anda, yaitu <strong>%@</strong>.</li><li><strong>Tunjukkan kode pembayaran </strong>ke kasir Indomaret terdekat, dan lakukan pembayaran senilai <span style='color:#ff0000;'>%@</span>.</li><li>Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia.</li><li>Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi.</li></ol><p>&nbsp;</p><p><strong>Catatan</strong></p><ul><li>Jumlah yang harus Anda bayar sudah termasuk biaya administrasi Indomaret sebesar <span style='color:#ff0000;'>%@</span>.</li><li>Pesanan akan <span style='color:#ff0000;'>otomatis</span> dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan.</li></ul>",_cartBuy.transaction.indomaret.payment_code,_cartBuy.transaction.indomaret.total_charge_real_idr,_cartBuy.transaction.indomaret.charge_real_idr];
+//    
+//    
+//    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//
+//    
+//    _footerNotes.attributedText = attributedString;
 }
 
 -(void)adjustFooterKlikBCA

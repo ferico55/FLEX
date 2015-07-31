@@ -102,10 +102,10 @@
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]]
-                              direction:UIPageViewControllerNavigationDirectionForward
-                               animated:YES
-                             completion:nil];
+//    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]]
+//                              direction:UIPageViewControllerNavigationDirectionForward
+//                               animated:YES
+//                             completion:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
