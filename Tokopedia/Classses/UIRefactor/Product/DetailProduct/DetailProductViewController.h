@@ -19,7 +19,6 @@
 }
 @property (strong,nonatomic) NSDictionary *data;
 
-+ (UIImage *)generateImage:(UIImage *)image withCount:(int)count;
 - (void)setButtonFav;
 - (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)textAlignment;
 - (void)setBackgroundPriceAlert:(BOOL)isActive;

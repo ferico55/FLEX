@@ -32,7 +32,7 @@
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, SmileyDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -106,25 +106,8 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager.delegate = nil;
-
-    for(id obj in [loadingLikeDislike allValues]) {
-        if([obj isMemberOfClass:[NSArray class]]) {
-            NSArray *tempArr = (NSArray *)obj;
-            RKManagedObjectRequestOperation *operation = [tempArr firstObject];
-            [operation cancel];
-            
-            NSTimer *timer = [tempArr lastObject];
-            [timer invalidate];
-        }
-    }
-    
-    
-    
-    [operationQueueLikeDislike cancelAllOperations];
+    [self unloadRequesting];
 }
-
 
 /*
 #pragma mark - Navigation
@@ -137,20 +120,6 @@
 */
 
 #pragma mark - Method View
-- (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
-{
-    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    tempBtn.frame = rectFrame;
-    [tempBtn setImage:image forState:UIControlStateNormal];
-    [tempBtn setTitle:strTitle forState:UIControlStateNormal];
-    [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
-    tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
-
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(15.0, 0.0, 0.0, 0.0);
-    
-    return (id)tempBtn;
-}
-
 - (void)initNavigation {
     self.title = @"Ulasan";
 }
@@ -165,31 +134,31 @@
         switch ([tempRatingList.rating_rating_star_point intValue]) {
             case 5:
             {
-                nRate5 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                nRate5 = [[(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
                 totalCount += nRate5;
             }
                 break;
             case 4:
             {
-                nRate4 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                nRate4 = [[(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
                 totalCount += nRate4;
             }
                 break;
             case 3:
             {
-                nRate3 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                nRate3 = [[(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
                 totalCount += nRate3;
             }
                 break;
             case 2:
             {
-                nRate2 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                nRate2 = [[(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
                 totalCount += nRate2;
             }
                 break;
             case 1:
             {
-                nRate1 = [(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) intValue];
+                nRate1 = [[(tag==0? tempRatingList.rating_rating:tempRatingList.rating_rate_accuracy) stringByReplacingOccurrencesOfString:@"." withString:@""] intValue];
                 totalCount += nRate1;
             }
                 break;
@@ -241,8 +210,8 @@
         tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<ceilf([review.result.advance_review.product_rating_point floatValue]))?@"icon_star_active":@"icon_star" ofType:@"png"]];
     }
     
-    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f dari %d", [review.result.advance_review.product_rating_point floatValue], 5];
-    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"Berdasarkan %d rating pada %d bulan terakhir", [review.result.advance_review.product_rating_point intValue], 6];
+    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f", [review.result.advance_review.product_rating_point floatValue]];
+    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"%@ Review", review.result.advance_review.product_rating_point];
 }
 
 
@@ -415,6 +384,10 @@
     [arrList removeAllObjects];
     [tableContent reloadData];
     
+    [self unloadRequesting];
+    [loadingLikeDislike removeAllObjects];
+    [dictLikeDislike removeAllObjects];
+    
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
@@ -522,6 +495,26 @@
 
 
 #pragma mark - Method
+- (void)unloadRequesting {
+    [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager.delegate = nil;
+    tokopediaNetworkManager = nil;
+    
+    for(id obj in [loadingLikeDislike allValues]) {
+        if([obj isMemberOfClass:[NSArray class]]) {
+            NSArray *tempArr = (NSArray *)obj;
+            RKManagedObjectRequestOperation *operation = [tempArr firstObject];
+            [operation cancel];
+            
+            NSTimer *timer = [tempArr lastObject];
+            [timer invalidate];
+        }
+    }
+    
+    [operationQueueLikeDislike cancelAllOperations];
+}
+
+
 - (void)requestLikeStatusAgain:(NSIndexPath *)indexPath {
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
     [loadingLikeDislike setObject:detailReputationReview.review_id forKey:detailReputationReview.review_id];
@@ -830,6 +823,7 @@
         
         
         [tempRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
             NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:list.review_id] lastObject];
             [temporaryTimer invalidate];
             
@@ -968,7 +962,7 @@
         }
         else {
             if([((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"1"]) {
-                tagRequest = 0;
+                tagRequest = 3;
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status = @"0";
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).total_like_dislike.total_like intValue] - 1)];
                 [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
@@ -1029,7 +1023,7 @@
         }
         else {
             if([((TotalLikeDislike *)[dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status isEqualToString:@"2"]) {
-                tagRequest = 0;
+                tagRequest = 3;
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).like_status = @"0";
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:detailReputationReview.review_id]).total_like_dislike.total_dislike intValue] - 1)];
                 [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
@@ -1073,23 +1067,8 @@
     int paddingRightLeftContent = 10;
     DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    viewContentPopUp.backgroundColor = [UIColor clearColor];
-    
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:tempDetailReputationView.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
-    
-    btnMerah.tag = CTagMerah;
-    btnKuning.tag = CTagKuning;
-    btnHijau.tag = CTagHijau;
-    
-    [btnMerah addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    [btnKuning addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    [btnHijau addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [viewContentPopUp addSubview:btnMerah];
-    [viewContentPopUp addSubview:btnKuning];
-    [viewContentPopUp addSubview:btnHijau];
+
+    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:tempDetailReputationView.review_user_reputation.neutral withRepSmile:tempDetailReputationView.review_user_reputation.positive withRepSad:tempDetailReputationView.review_user_reputation.negative withDelegate:self];
     
     
     //Init pop up

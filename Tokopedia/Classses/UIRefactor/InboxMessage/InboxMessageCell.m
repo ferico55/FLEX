@@ -34,4 +34,8 @@
     
     // Configure the view for the selected state
 }
+
+- (IBAction)actionSmile:(id)sender {
+    [_del actionSmile:sender];
+}
 @end

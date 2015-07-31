@@ -17,7 +17,7 @@
 @protocol GeneralTalkCellDelegate <NSObject>
 @required
 - (void)GeneralTalkCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
-
+- (void)actionSmile:(id)sender;
 @optional
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 - (void)unfollowTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withButton:(UIButton *)buttonUnfollow;
@@ -65,5 +65,6 @@
 
 + (id)newcell;
 -(IBAction)tap:(id)sender;
+- (IBAction)actionSmile:(id)sender;
 
 @end

@@ -229,7 +229,7 @@
         TalkList *talkList = (TalkList *)_data;
         
         UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
-        NSString *userId = [NSString stringWithFormat:@"%d", talkList.talk_user_id];
+        NSString *userId = [NSString stringWithFormat:@"%d", (int)talkList.talk_user_id];
         [_navigateController navigateToProfileFromViewController:nav withUserID:userId];
     }
 }
@@ -264,5 +264,7 @@
 
 }
 
-
+- (IBAction)actionSmile:(id)sender {
+    [_delegate actionSmile:sender];
+}
 @end

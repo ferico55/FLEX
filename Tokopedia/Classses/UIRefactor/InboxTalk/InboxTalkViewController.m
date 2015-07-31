@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "CMPopTipView.h"
 #import "string_inbox_message.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
@@ -33,8 +34,10 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
+    CMPopTipViewDelegate,
     TKPDTabInboxTalkNavigationControllerDelegate,
     GeneralTalkCellDelegate,
+    SmileyDelegate,
     UIAlertViewDelegate,
     ReportViewControllerDelegate
 >
@@ -101,6 +104,7 @@
     NSIndexPath *_selectedIndexPath;
     NoResultView *_noResultView;
     TAGContainer *_gtmContainer;
+    CMPopTipView *popTipView;
     UserAuthentificationManager *_userManager;
 }
 
@@ -267,13 +271,14 @@
         if (_talkList.count > indexPath.row) {
             TalkList *list = _talkList[indexPath.row];
             
+            ((GeneralTalkCell*)cell).btnReputation.tag = indexPath.row;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             ((GeneralTalkCell *)cell).data = list;
             ((GeneralTalkCell*)cell).userButton.text = list.talk_user_name;
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
-            [((GeneralTalkCell*)cell).btnReputation setTitle:list.talk_user_reputation.positive_percentage forState:UIControlStateNormal];
+            [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
             
             //Set user label
 //            if([list.talk_user_label isEqualToString:CPenjual]) {
@@ -632,6 +637,25 @@
 }
 
 #pragma mark - General Talk Delegate
+- (void)actionSmile:(id)sender {
+    int paddingRightLeftContent = 10;
+    
+    TalkList *list = _talkList[((UIView *) sender).tag];
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.talk_user_reputation.neutral withRepSmile:list.talk_user_reputation.positive withRepSad:list.talk_user_reputation.negative withDelegate:self];
+    
+    //Init pop up
+    popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+    popTipView.delegate = self;
+    popTipView.backgroundColor = [UIColor whiteColor];
+    popTipView.animation = CMPopTipAnimationSlide;
+    popTipView.dismissTapAnywhere = YES;
+    popTipView.leftPopUp = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [popTipView presentPointingAtView:button inView:self.view animated:YES];
+}
+
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
     NSInteger row = indexpath.row;
@@ -652,7 +676,7 @@
                 TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
                 TKPD_TALK_PRODUCT_STATUS:list.talk_product_status,
                 TKPD_TALK_USER_LABEL:list.talk_user_label,
-                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation.positive_percentage
+                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation
                 };
     
     NSDictionary *userinfo;
@@ -972,4 +996,23 @@
     _inboxTalkPostUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkPost];
 }
 
+
+
+#pragma mark - ToolTip Delegate
+- (void)dismissAllPopTipViews
+{
+    [popTipView dismissAnimated:YES];
+    popTipView = nil;
+}
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
+    [self dismissAllPopTipViews];
+}
 @end

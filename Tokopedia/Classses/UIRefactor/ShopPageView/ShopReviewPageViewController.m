@@ -57,6 +57,7 @@ ReportViewControllerDelegate,
 UIActionSheetDelegate,
 productReputationDelegate,
 ShopPageHeaderDelegate,
+SmileyDelegate,
 UIScrollViewDelegate,
 UIAlertViewDelegate>
 
@@ -253,31 +254,26 @@ UIAlertViewDelegate>
 }
 
 
-#pragma mark - Method View
-- (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
-{
-//    int spacing = 3;
+#pragma mark - Method
+- (void)unloadRequesting {
+    for(id obj in [loadingLikeDislike allValues]) {
+        if([obj isMemberOfClass:[NSArray class]]) {
+            NSArray *tempArr = obj;
+            RKManagedObjectRequestOperation *operation = [tempArr firstObject];
+            [operation cancel];
+            
+            NSTimer *timer = [tempArr lastObject];
+            [timer invalidate];
+        }
+    }
     
-    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    tempBtn.frame = rectFrame;
-    [tempBtn setImage:image forState:UIControlStateNormal];
-    [tempBtn setTitle:strTitle forState:UIControlStateNormal];
-    [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
-    tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
-    
-//    CGSize imageSize = tempBtn.imageView.bounds.size;
-//    CGSize titleSize = tempBtn.titleLabel.bounds.size;
-//    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
-    
-//    tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(15.0, 0.0, 0.0, 0.0);
-    
-    return (id)tempBtn;
+    [_operationQueue cancelAllOperations];
+    [_operationUnfollowQueue cancelAllOperations];
+    [_operationDeleteQueue cancelAllOperations];
+    [operationQueueLikeDislike cancelAllOperations];
 }
 
 
-
-#pragma mark - Method
 - (void)reloadTable {
     [_table reloadData];
 }
@@ -1012,6 +1008,10 @@ UIAlertViewDelegate>
     _isRefreshView = YES;
     
     [_table reloadData];
+    [self unloadRequesting];
+    [dictLikeDislike removeAllObjects];
+    [loadingLikeDislike removeAllObjects];
+    
     /** request data **/
     [self configureRestKit];
     [self loadData];
@@ -1024,21 +1024,7 @@ UIAlertViewDelegate>
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     
-    for(id obj in [loadingLikeDislike allValues]) {
-		if([obj isMemberOfClass:[NSArray class]]) {
-			NSArray *tempArr = obj;
-	        RKManagedObjectRequestOperation *operation = [tempArr firstObject];
-    	    [operation cancel];
-        
-        	NSTimer *timer = [tempArr lastObject];
-	        [timer invalidate];
-		}
-    }
-
-    [_operationQueue cancelAllOperations];
-	[_operationUnfollowQueue cancelAllOperations];
-	[_operationDeleteQueue cancelAllOperations];
-	[operationQueueLikeDislike cancelAllOperations];
+    [self unloadRequesting];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -1158,23 +1144,7 @@ UIAlertViewDelegate>
     ReviewList *list = _list[((UIView *) sender).tag];
     int paddingRightLeftContent = 10;
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    viewContentPopUp.backgroundColor = [UIColor clearColor];
-    
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.negative withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.neutral withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:list.review_user_reputation.positive withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
-    
-    btnMerah.tag = CTagMerah;
-    btnKuning.tag = CTagKuning;
-    btnHijau.tag = CTagHijau;
-    
-    [btnMerah addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    [btnKuning addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    [btnHijau addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [viewContentPopUp addSubview:btnMerah];
-    [viewContentPopUp addSubview:btnKuning];
-    [viewContentPopUp addSubview:btnHijau];
+    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.review_user_reputation.neutral withRepSmile:list.review_user_reputation.positive withRepSad:list.review_user_reputation.negative withDelegate:self];
     
     
     //Init pop up
@@ -1219,7 +1189,7 @@ UIAlertViewDelegate>
         }
         else {
             if([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status isEqualToString:@"1"]) {
-                tagRequest = 0;
+                tagRequest = 3;
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"0";
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_like intValue] - 1)];
                 [btnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
@@ -1271,7 +1241,7 @@ UIAlertViewDelegate>
         }
         else {
             if([((TotalLikeDislike *)[dictLikeDislike objectForKey:reviewList.review_id]).like_status isEqualToString:@"2"]) {
-                tagRequest = 0;
+                tagRequest = 3;
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).like_status = @"0";
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:reviewList.review_id]).total_like_dislike.total_dislike intValue] - 1)];
                 [btnDislike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];

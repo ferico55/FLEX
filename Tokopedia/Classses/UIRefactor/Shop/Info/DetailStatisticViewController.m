@@ -79,15 +79,7 @@
 #pragma mark - Init Data
 - (void)initSpeedData {
     lblTransaksiCepat.text = _detailShopResult.respond_speed.speed_level;
-    if([_detailShopResult.respond_speed.badge isEqualToString:CBadgeSpeedGood]) {
-        imgSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_fast" ofType:@"png"]];
-    }
-    else if([_detailShopResult.respond_speed.badge isEqualToString:CBadgeSpeedBad]) {
-        imgSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_bad" ofType:@"png"]];
-    }
-    else if([_detailShopResult.respond_speed.badge isEqualToString:CBadgeSpeedNeutral]) {
-        imgSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_neutral" ofType:@"png"]];
-    }
+    [AppDelegate setIconResponseSpeed:_detailShopResult.respond_speed.badge withImage:imgSpeed largeImage:YES];
     
     progressFooter1.progress = _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0? 0:([[_detailShopResult.respond_speed.one_day objectForKey:CCount] intValue]/[_detailShopResult.respond_speed.count_total floatValue]);
     progressFooter2.progress = _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0? 0:([[_detailShopResult.respond_speed.two_days objectForKey:CCount] intValue]/[_detailShopResult.respond_speed.count_total floatValue]);
@@ -152,12 +144,12 @@
     
     
     //Set Progress
-    float totalCount = [tempQuality.count_total floatValue];
-    [progress1 setProgress:((int)[tempQuality.one_star_rank intValue]/totalCount) animated:isAnimate];
-    [progress2 setProgress:((int)[tempQuality.two_star_rank intValue]/totalCount) animated:isAnimate];
-    [progress3 setProgress:((int)[tempQuality.three_star_rank intValue]/totalCount) animated:isAnimate];
-    [progress4 setProgress:((int)[tempQuality.four_star_rank intValue]/totalCount) animated:isAnimate];
-    [progress5 setProgress:((int)[tempQuality.five_star_rank intValue]/totalCount) animated:isAnimate];
+    float totalCount = [[tempQuality.count_total stringByReplacingOccurrencesOfString:@"." withString:@""] floatValue];
+    [progress1 setProgress:((int)[[tempQuality.one_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
+    [progress2 setProgress:((int)[[tempQuality.two_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
+    [progress3 setProgress:((int)[[tempQuality.three_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
+    [progress4 setProgress:((int)[[tempQuality.four_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
+    [progress5 setProgress:((int)[[tempQuality.five_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
     
     lblRate1.text = [NSString stringWithFormat:@"(%@)", tempQuality.one_star_rank];
     lblRate2.text = [NSString stringWithFormat:@"(%@)", tempQuality.two_star_rank];
@@ -178,15 +170,15 @@
     width1 = width1>width5? width1: width5;
     constWidthLblRate1.constant = constWidthLblRate2.constant = constWidthLblRate3.constant = constWidthLblRate4.constant = constWidthLblRate5.constant = width1;
     
-    
-    lblTotalRateHeader.text = [NSString stringWithFormat:@"%@ Out of %d", tempQuality.average, 5];
+    lblAverage.text = tempQuality.average;
+    NSString *strReview = @"Review";
+    lblTotalRateHeader.text = [NSString stringWithFormat:@"%@ %@", tempQuality.count_total, strReview];
     UIFont *boldFont = [UIFont boldSystemFontOfSize:lblTotalRateHeader.font.pointSize];
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblTotalRateHeader.textColor, NSForegroundColorAttributeName, nil];
     NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblTotalRateHeader.font, NSFontAttributeName, lblTotalRateHeader.textColor, NSForegroundColorAttributeName, nil];
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:lblTotalRateHeader.text attributes:attrs];
-    [attributedText setAttributes:subAttrs range:NSMakeRange(0, tempQuality.average.length)];
-    [attributedText setAttributes:subAttrs range:NSMakeRange(lblTotalRateHeader.text.length-1, 1)];
+    [attributedText setAttributes:subAttrs range:NSMakeRange(lblTotalRateHeader.text.length-strReview.length, strReview.length)];
     [lblTotalRateHeader setAttributedText:attributedText];
     
     //Set star

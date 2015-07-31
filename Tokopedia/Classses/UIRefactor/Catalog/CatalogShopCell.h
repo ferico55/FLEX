@@ -43,6 +43,6 @@
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *stars;
 
-- (void)setShopRate:(NSInteger)valueStar;
+
 - (void)setTagContentStar:(int)tag;
 @end

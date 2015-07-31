@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 11/5/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "CMPopTipView.h"
 #import "InboxMessageViewController.h"
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
@@ -28,6 +28,9 @@
     UITableViewDataSource,
     UITableViewDelegate,
     UISearchBarDelegate,
+    SmileyDelegate,
+    CMPopTipViewDelegate,
+    InboxMessageDelegate,
     UISearchDisplayDelegate,
     MGSwipeTableCellDelegate,
     TKPDTabInboxMessageNavigationControllerDelegate,
@@ -66,6 +69,7 @@ typedef enum TagRequest {
     BOOL _isnodata;
     BOOL _isrefreshview;
     BOOL _iseditmode;
+    CMPopTipView *popTipView;
     
     NSInteger _page;
     NSInteger _limit;
@@ -339,16 +343,18 @@ typedef enum TagRequest {
         if (cell == nil) {
             cell = [InboxMessageCell newcell];
             ((InboxMessageCell*)cell).delegate = self;
+            ((InboxMessageCell*) cell).del = self;
         }
 
         if (_messages.count > indexPath.row ) {
             InboxMessageList *list = _messages[indexPath.row];
             
+            ((InboxMessageCell*)cell).btnReputasi.tag = indexPath.row;
             ((InboxMessageCell*)cell).message_title.text = list.user_full_name;
             ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
             ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
             ((InboxMessageCell*)cell).indexpath = indexPath;
-            [((InboxMessageCell*)cell).btnReputasi setTitle:list.user_reputation.positive_percentage forState:UIControlStateNormal];
+            [((InboxMessageCell*)cell).btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
             
             //Set user label
 //            if([list.user_label isEqualToString:CPenjual]) {
@@ -1084,4 +1090,43 @@ typedef enum TagRequest {
     _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
 }
 
+
+#pragma mark - ToolTip Delegate
+- (void)dismissAllPopTipViews
+{
+    [popTipView dismissAnimated:YES];
+    popTipView = nil;
+}
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
+    [self dismissAllPopTipViews];
+}
+
+
+#pragma mark - InboxMessage Delegate
+- (void)actionSmile:(id)sender {
+    InboxMessageList *list = _messages[((UIView *) sender).tag];
+    int paddingRightLeftContent = 10;
+
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.user_reputation.neutral withRepSmile:list.user_reputation.positive withRepSad:list.user_reputation.negative withDelegate:self];
+    
+    //Init pop up
+    popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+    popTipView.delegate = self;
+    popTipView.backgroundColor = [UIColor whiteColor];
+    popTipView.animation = CMPopTipAnimationSlide;
+    popTipView.dismissTapAnywhere = YES;
+    popTipView.leftPopUp = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [popTipView presentPointingAtView:button inView:self.view animated:YES];
+}
 @end

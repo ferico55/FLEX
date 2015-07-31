@@ -11,10 +11,17 @@
 #import "MGSwipeButton.h"
 #import "ViewLabelUser.h"
 #define kTKPDINBOXMESSAGECELL_IDENTIFIER @"InboxMessageCellIdentifier"
+@protocol InboxMessageDelegate
+- (void)actionSmile:(id)sender;
+@end
+
+
 @interface InboxMessageCell : MGSwipeTableCell
 @property (strong,nonatomic) NSDictionary *data;
+@property (nonatomic, unsafe_unretained) id<InboxMessageDelegate> del;
 
 +(id)newcell;
+- (IBAction)actionSmile:(id)sender;
 
 @property (weak, nonatomic) IBOutlet ViewLabelUser *message_title;
 @property (weak, nonatomic) IBOutlet UILabel *message_create_time;

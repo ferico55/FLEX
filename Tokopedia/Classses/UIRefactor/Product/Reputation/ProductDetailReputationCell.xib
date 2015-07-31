@@ -115,20 +115,6 @@
                             <action selector="actionTryAgain:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="TOZ-CB-DQi"/>
                         </connections>
                     </button>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oiP-7X-LSX">
-                        <rect key="frame" x="235" y="115" width="77" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="77" id="Cvg-GZ-CC3"/>
-                            <constraint firstAttribute="height" constant="21" id="Z7N-cW-Hsk"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <state key="normal" title="Hapus">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="actionHapus:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Sm4-zs-yL2"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="b5A-at-UYZ" secondAttribute="trailing" constant="8" id="9GU-vY-ztr"/>
@@ -144,15 +130,12 @@
                     <constraint firstItem="ego-e9-4y8" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="Vo9-WW-x2R"/>
                     <constraint firstItem="vm7-Hd-qNV" firstAttribute="top" secondItem="b5A-at-UYZ" secondAttribute="bottom" constant="5" id="Vwy-Ix-wWn"/>
                     <constraint firstItem="ego-e9-4y8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="WCK-Up-6Kv"/>
-                    <constraint firstAttribute="bottom" secondItem="oiP-7X-LSX" secondAttribute="bottom" constant="3" id="XDs-sp-tLK"/>
-                    <constraint firstAttribute="trailing" secondItem="oiP-7X-LSX" secondAttribute="trailing" constant="8" id="mlC-VA-zUo"/>
                     <constraint firstAttribute="trailing" secondItem="Ren-ZO-Oll" secondAttribute="trailing" constant="5" id="wU4-iH-Jzu"/>
                     <constraint firstAttribute="trailing" secondItem="4Jg-qE-n04" secondAttribute="trailing" constant="8" id="x3g-1u-0Wz"/>
                     <constraint firstItem="Ren-ZO-Oll" firstAttribute="top" secondItem="ego-e9-4y8" secondAttribute="bottom" constant="10" id="xgI-Nx-rau"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="btnHapus" destination="oiP-7X-LSX" id="bXY-52-Gkj"/>
                 <outlet property="btnRetry" destination="hry-mr-LIy" id="LNc-A1-Ul4"/>
                 <outlet property="constraintHeightDesc" destination="PVC-T9-lZv" id="KNZ-gC-We1"/>
                 <outlet property="imgProfile" destination="ego-e9-4y8" id="HFx-QD-CCZ"/>

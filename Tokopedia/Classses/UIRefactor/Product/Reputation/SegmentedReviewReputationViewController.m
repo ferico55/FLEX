@@ -20,6 +20,7 @@
     MyReviewReputationViewController *allReviewViewController, *myProductViewController, *myReviewViewController;
     UIButton *btnTitle;
     NSString *selectedFilter;
+    UIImage *arrowImage;
 }
 
 - (void)viewDidLoad {
@@ -79,24 +80,25 @@
         selectedFilter = CtagBelumDireviw;
     }
     
+    if(arrowImage == nil) {
+        arrowImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_triangle_down_white" ofType:@"png"]];
+        CGRect rect = CGRectMake(0, 0, 10 ,7);
+        UIGraphicsBeginImageContext( rect.size );
+        [arrowImage drawInRect:rect];
+        arrowImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+        UILabel *lblTemp = [[UILabel alloc] initWithFrame:CGRectZero];
+        lblTemp.textColor = btnTitle.titleLabel.textColor;
+        lblTemp.font = btnTitle.titleLabel.font;
+        lblTemp.text = strTitle;
+        CGSize tempSize = [lblTemp sizeThatFits:CGSizeMake(320, 999)];
+        btnTitle.frame = CGRectMake(0, 0, tempSize.width+30, self.navigationController.navigationBar.bounds.size.height);
+    }
     
-    UIImage *arrowImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_triangle_down_white" ofType:@"png"]];
-    CGRect rect = CGRectMake(0, 0, 10 ,7);
-    UIGraphicsBeginImageContext( rect.size );
-    [arrowImage drawInRect:rect];
-    arrowImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
     
     [btnTitle setTitle:strTitle forState:UIControlStateNormal];
     [btnTitle setImage:arrowImage forState:UIControlStateNormal];
-    
-    UILabel *lblTemp = [[UILabel alloc] initWithFrame:CGRectZero];
-    lblTemp.textColor = btnTitle.titleLabel.textColor;
-    lblTemp.font = btnTitle.titleLabel.font;
-    lblTemp.text = strTitle;
-    CGSize tempSize = [lblTemp sizeThatFits:CGSizeMake(320, 999)];
-    btnTitle.frame = CGRectMake(0, 0, tempSize.width+30, self.navigationController.navigationBar.bounds.size.height);
-    
     btnTitle.titleEdgeInsets = UIEdgeInsetsMake(0, -btnTitle.imageView.frame.size.width-5, 0, btnTitle.imageView.frame.size.width+5);
     btnTitle.imageEdgeInsets = UIEdgeInsetsMake(0, btnTitle.titleLabel.frame.size.width, 0, -btnTitle.titleLabel.frame.size.width);
 

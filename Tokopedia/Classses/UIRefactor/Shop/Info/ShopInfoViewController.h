@@ -16,6 +16,5 @@
 }
 
 @property (strong, nonatomic) NSDictionary *data;
-
 - (IBAction)actionLihatDetailStatistik:(id)sender;
 @end

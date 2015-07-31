@@ -15,6 +15,7 @@
 #import "LikeDislikePost.h"
 #import "LikeDislikePostResult.h"
 #import "LoginViewController.h"
+#import "MGSwipeButton.h"
 #import "ProductReputationCell.h"
 #import "ProductDetailReputationCell.h"
 #import "ProductReputationViewController.h"
@@ -41,7 +42,7 @@
 #define CTagComment 2
 #define CTagHapus 3
 
-@interface ProductDetailReputationViewController ()<productReputationDelegate, TokopediaNetworkManagerDelegate, CMPopTipViewDelegate, HPGrowingTextViewDelegate, ProductDetailReputationDelegate, LoginViewDelegate>
+@interface ProductDetailReputationViewController ()<productReputationDelegate, TokopediaNetworkManagerDelegate, CMPopTipViewDelegate, HPGrowingTextViewDelegate, ProductDetailReputationDelegate, LoginViewDelegate, SmileyDelegate, MGSwipeTableCellDelegate>
 
 @end
 
@@ -193,20 +194,6 @@
     [popTipView presentPointingAtView:button inView:self.view animated:YES];
 }
 
-- (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
-{
-    UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    tempBtn.frame = rectFrame;
-    [tempBtn setImage:image forState:UIControlStateNormal];
-    [tempBtn setTitle:strTitle forState:UIControlStateNormal];
-    [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
-    tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
-    
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(15.0f, 0.0, 0.0, 0.0);
-    
-    return (id)tempBtn;
-}
-
 - (void)resignKeyboardView:(id)sender {
     [growTextView resignFirstResponder];
 }
@@ -256,7 +243,7 @@
         //Set image product
         NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_uri : _reviewList.product_images] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         productReputationCell.getProductImage.image = nil;
-        [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey" ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             [productReputationCell.getProductImage setImage:image];
@@ -506,6 +493,7 @@
     if(cell == nil) {
         NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductDetailReputationCell" owner:nil options:0];
         cell = [tempArr objectAtIndex:0];
+        cell.del = self;
         cell.delegate = self;
         cell.getViewLabelUser.userInteractionEnabled = YES;
         [cell.getViewLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapCellLabelUser:)]];
@@ -517,14 +505,6 @@
     cell.getBtnTryAgain.tag = indexPath.row;
     cell.getBtnTryAgain.hidden = !(_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
     
-    //Delete message
-    if((_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.canDelete:_reviewList.review_response.canDelete) && _isMyProduct) {
-        cell.getBtnHapus.hidden = NO;
-    }
-    else {
-        cell.getBtnHapus.hidden = YES;
-    }
-    
     //Set image
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [productReputationCell.getImageProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -535,12 +515,12 @@
     } failure:nil];
     
     
-    int nStar = 0;
+    NSString *nStar;
     if(_detailReputaitonReview != nil) {
-        nStar = (_detailReputaitonReview.product_owner.shop_reputation_score==nil||_detailReputaitonReview.product_owner.shop_reputation_score.length==0? 0 : [_detailReputaitonReview.product_owner.shop_reputation_score intValue]);
+        nStar = _detailReputaitonReview.product_owner.shop_reputation_score;
     }
     else {
-        nStar = 0;//(_reviewList.review_product_owner.shop_reputation_score==nil||_reviewList.review_product_owner.shop_reputation_score.length==0? 0 : [_reviewList.review_product_owner.shop_reputation_score intValue]);
+        nStar = @"0";//(_reviewList.review_product_owner.shop_reputation_score==nil||_reviewList.review_product_owner.shop_reputation_score.length==0? 0 : [_reviewList.review_product_owner.shop_reputation_score intValue]);
     }
     
     [cell setStar:nStar];
@@ -607,7 +587,7 @@
         }
         else {
             if([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"1"]) {
-                tagRequest = 0;
+                tagRequest = 3;
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"0";
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like intValue] - 1)];
                 [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
@@ -661,7 +641,7 @@
         }
         else {
             if([((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"2"]) {
-                tagRequest = 0;
+                tagRequest = 3;
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"0";
                 ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike intValue] - 1)];
                 [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
@@ -691,28 +671,10 @@
 
 }
 
-
 - (void)actionRate:(id)sender {
     int paddingRightLeftContent = 10;
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    viewContentPopUp.backgroundColor = [UIColor clearColor];
-    
-    UIButton *btnMerah = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad" ofType:@"png"]] withFrame:CGRectMake(paddingRightLeftContent/2.0f, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:244/255.0f green:67/255.0f blue:54/255.0f alpha:1.0f]];
-    UIButton *btnKuning = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral" ofType:@"png"]] withFrame:CGRectMake(btnMerah.frame.origin.x+btnMerah.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:255/255.0f green:193/255.0f blue:7/255.0f alpha:1.0f]];
-    UIButton *btnHijau = (UIButton *)[self initButtonContentPopUp:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile" ofType:@"png"]] withFrame:CGRectMake(btnKuning.frame.origin.x+btnKuning.bounds.size.width, 0, CWidthItemPopUp, CHeightItemPopUp) withTextColor:[UIColor colorWithRed:0 green:128/255.0f blue:0 alpha:1.0f]];
-    
-    btnMerah.tag = CTagMerah;
-    btnKuning.tag = CTagKuning;
-    btnHijau.tag = CTagHijau;
-    
-    [btnMerah addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    [btnKuning addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    [btnHijau addTarget:self action:@selector(actionVote:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [viewContentPopUp addSubview:btnMerah];
-    [viewContentPopUp addSubview:btnKuning];
-    [viewContentPopUp addSubview:btnHijau];
-    
+    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withRepSmile:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withRepSad:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withDelegate:self];
     
     //Init pop up
     popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
@@ -723,19 +685,6 @@
     
     UIButton *button = (UIButton *)sender;
     [popTipView presentPointingAtView:button inView:self.view animated:YES];
-}
-
-- (void)actionHapus:(id)sender {
-    if(_detailReputaitonReview != nil) {
-        _detailReputaitonReview.review_response.canDelete = NO;
-    }
-    else {
-        _reviewList.review_response.canDelete = NO;
-    }
-    
-    isDeletingMessage = YES;
-    [tableReputation reloadData];
-    [[self getNetworkManager:CTagHapus] doRequest];
 }
 
 - (void)actionTryAgain:(id)sender {
@@ -1047,7 +996,7 @@
 - (void)actionTapStar:(UIView *)sender
 {
     NSString *strNReputation = _detailReputaitonReview==nil? @"0":_detailReputaitonReview.product_owner.shop_reputation_score;
-    NSString *strText = [NSString stringWithFormat:@"%@ Like", strNReputation];
+    NSString *strText = [NSString stringWithFormat:@"%@ Poin", strNReputation];
     [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
 }
 
@@ -1399,5 +1348,52 @@
     
     baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
     postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
+}
+
+#pragma mark - Swipe Delegate
+-(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
+{
+    //Delete message
+    if((_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.canDelete:_reviewList.review_response.canDelete) && _isMyProduct) {
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
+
+- (NSArray*)swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
+{
+    [growTextView resignFirstResponder];
+    
+    swipeSettings.transition = MGSwipeTransitionStatic;
+    expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
+    
+    
+    if (direction == MGSwipeDirectionRightToLeft) {
+        expansionSettings.fillOnTrigger = YES;
+        expansionSettings.threshold = 1.1;
+        
+        CGFloat padding = 15;
+        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            if(_detailReputaitonReview != nil) {
+                _detailReputaitonReview.review_response.canDelete = NO;
+            }
+            else {
+                _reviewList.review_response.canDelete = NO;
+            }
+            
+            isDeletingMessage = YES;
+            [tableReputation reloadData];
+            [[self getNetworkManager:CTagHapus] doRequest];
+            
+            return YES;
+        }];
+
+        return @[trash];
+    }
+    
+    return nil;
 }
 @end

@@ -16,7 +16,7 @@
     IBOutlet UIButton *btnFilter6Month, *btnFilterAllTime;
     IBOutlet UIActivityIndicatorView *footerActIndicator;
     IBOutlet UISegmentedControl *segmentedControl;
-    IBOutletCollection(UIImageView) NSArray *arrImageHeaderRating, *arrImage5Rating, *arrImage4Rating, *arrImage3Rating, *arrImage2Rating, *arrImage1Rating;
+    IBOutletCollection(UIImageView) NSArray *arrImageHeaderRating;
     IBOutlet UILabel *lblTotalHeaderRating, *lblDescTotalHeaderRating, *lblTotal5Rate, *lblTotal4Rate, *lblTotal3Rate, *lblTotal2Rate, *lblTotal1Rate;
     IBOutlet UIProgressView *progress5, *progress4, *progress3, *progress2, *progress1;
     IBOutlet NSLayoutConstraint *constWidthLblRate5, *constWidthLblRate4, *constWidthLblRate3, *constWidthLblRate2, *constWidthLblRate1;

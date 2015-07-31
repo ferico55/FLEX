@@ -252,7 +252,7 @@
     
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
-    [self generateMedal:resolution.resolution_shop.shop_reputation.reputation_score withButton:cell.btnReputation];
+    [AppDelegate generateMedal:resolution.resolution_shop.shop_reputation.reputation_score withImage:cell.btnReputation isLarge:NO];
     
     //Set user label
 //    if([resolution.resolution_by.user_label isEqualToString:CPenjual]) {
@@ -456,48 +456,6 @@
     UIButton *button = (UIButton *)sender;
     [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
 }
-
-- (void)generateMedal:(NSString *)reputationScore withButton:(UIButton *)btnReputasi {
-    int valueStar = reputationScore==nil||[reputationScore isEqualToString:@""]?0:[reputationScore intValue];
-    valueStar = valueStar>0?valueStar:0;
-    if(valueStar == 0) {
-        [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal14" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
-    }
-    else {
-        ///Set medal image
-        int n = 0;
-        if(valueStar<10 || (valueStar>250 && valueStar<=500) || (valueStar>10000 && valueStar<=20000) || (valueStar>500000 && valueStar<=1000000)) {
-            n = 1;
-        }
-        else if((valueStar>10 && valueStar<=40) || (valueStar>500 && valueStar<=1000) || (valueStar>20000 && valueStar<=50000) || (valueStar>1000000 && valueStar<=2000000)) {
-            n = 2;
-        }
-        else if((valueStar>40 && valueStar<=90) || (valueStar>1000 && valueStar<=2000) || (valueStar>50000 && valueStar<=100000) || (valueStar>2000000 && valueStar<=5000000)) {
-            n = 3;
-        }
-        else if((valueStar>90 && valueStar<=150) || (valueStar>2000 && valueStar<=5000) || (valueStar>100000 && valueStar<=200000) || (valueStar>5000000 && valueStar<=10000000)) {
-            n = 4;
-        }
-        else if((valueStar>150 && valueStar<=250) || (valueStar>5000 && valueStar<=10000) || (valueStar>200000 && valueStar<=500000) || valueStar>10000000) {
-            n = 5;
-        }
-        
-        //Check image medal
-        if(valueStar <= 250) {
-            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_bronze14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
-        }
-        else if(valueStar <= 10000) {
-            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
-        }
-        else if(valueStar <= 500000) {
-            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_gold14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
-        }
-        else {
-            [btnReputasi setImage:[DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_diamond_one14" ofType:@"png"]] withCount:n] forState:UIControlStateNormal];
-        }
-    }
-}
-
 
 #pragma mark - Cell Delegate
 - (void)actionReputation:(id)sender {

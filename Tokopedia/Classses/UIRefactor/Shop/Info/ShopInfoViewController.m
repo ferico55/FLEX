@@ -147,18 +147,10 @@
     lblKecepatan.text = [_shop.result.respond_speed.speed_level stringByReplacingOccurrencesOfString:@"Respon" withString:@"Transaksi"];
     
     //Set image speed
-    if([_shop.result.respond_speed.badge isEqualToString:CBadgeSpeedGood]) {
-        imageSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_fast" ofType:@"png"]];
-    }
-    else if([_shop.result.respond_speed.badge isEqualToString:CBadgeSpeedBad]) {
-        imageSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_bad" ofType:@"png"]];
-    }
-    else if([_shop.result.respond_speed.badge isEqualToString:CBadgeSpeedNeutral]) {
-        imageSpeed.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_speed_neutral" ofType:@"png"]];
-    }
+    [AppDelegate setIconResponseSpeed:_shop.result.respond_speed.badge withImage:imageSpeed largeImage:NO];
     
     //Generate Medal Reputasi
-    [self generateMedal];
+    [AppDelegate generateMedal:_shop.result.stats.shop_reputation_score withImage:imageReputasi isLarge:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -166,6 +158,7 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
 }
+
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -413,48 +406,6 @@
 }
 
 #pragma mark - Methods
-- (void)generateMedal {
-    int valueStar = _shop.result.stats.shop_reputation_score==nil||[_shop.result.stats.shop_reputation_score isEqualToString:@""]?0:[_shop.result.stats.shop_reputation_score intValue];
-    valueStar = valueStar>0?valueStar:0;
-    if(valueStar == 0) {
-        imageReputasi.image = [DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal" ofType:@"png"]] withCount:1];
-        
-    }
-    else {
-        ///Set medal image
-        int n = 0;
-        if(valueStar<10 || (valueStar>250 && valueStar<=500) || (valueStar>10000 && valueStar<=20000) || (valueStar>500000 && valueStar<=1000000)) {
-            n = 1;
-        }
-        else if((valueStar>10 && valueStar<=40) || (valueStar>500 && valueStar<=1000) || (valueStar>20000 && valueStar<=50000) || (valueStar>1000000 && valueStar<=2000000)) {
-            n = 2;
-        }
-        else if((valueStar>40 && valueStar<=90) || (valueStar>1000 && valueStar<=2000) || (valueStar>50000 && valueStar<=100000) || (valueStar>2000000 && valueStar<=5000000)) {
-            n = 3;
-        }
-        else if((valueStar>90 && valueStar<=150) || (valueStar>2000 && valueStar<=5000) || (valueStar>100000 && valueStar<=200000) || (valueStar>5000000 && valueStar<=10000000)) {
-            n = 4;
-        }
-        else if((valueStar>150 && valueStar<=250) || (valueStar>5000 && valueStar<=10000) || (valueStar>200000 && valueStar<=500000) || valueStar>10000000) {
-            n = 5;
-        }
-        
-        //Check image medal
-        if(valueStar <= 250) {
-            imageReputasi.image = [DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_bronze" ofType:@"png"]] withCount:n];
-        }
-        else if(valueStar <= 10000) {
-            imageReputasi.image = [DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_silver" ofType:@"png"]] withCount:n];
-        }
-        else if(valueStar <= 500000) {
-            imageReputasi.image = [DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_gold" ofType:@"png"]] withCount:n];
-        }
-        else {
-            imageReputasi.image = [DetailProductViewController generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_medal_diamond_one" ofType:@"png"]] withCount:n];
-        }
-    }
-}
-
 -(void)updateShopPicture:(NSNotification*)notif
 {
     NSDictionary *userInfo = notif.userInfo;

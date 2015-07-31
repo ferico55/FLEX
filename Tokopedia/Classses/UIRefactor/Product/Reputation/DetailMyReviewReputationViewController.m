@@ -43,7 +43,7 @@
 #define CTagListReputationReview 1
 #define CTagSkipReputationReview 2
 
-@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate, CMPopTipViewDelegate>
+@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate, CMPopTipViewDelegate, SmileyDelegate>
 
 @end
 
@@ -890,7 +890,20 @@
         [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
     }
     else {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_detailMyInboxReputation.user_reputation.neutral withRepSmile:_detailMyInboxReputation.user_reputation.positive withRepSad:_detailMyInboxReputation.user_reputation.negative withDelegate:self];
         
+        //Init pop up
+        cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        cmPopTitpView.delegate = self;
+        cmPopTitpView.backgroundColor = [UIColor whiteColor];
+        cmPopTitpView.animation = CMPopTipAnimationSlide;
+        cmPopTitpView.dismissTapAnywhere = YES;
+        cmPopTitpView.leftPopUp = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
     }
 }
 
@@ -972,6 +985,11 @@
 
 - (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
 {
+    [self dismissAllPopTipViews];
+}
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
 @end

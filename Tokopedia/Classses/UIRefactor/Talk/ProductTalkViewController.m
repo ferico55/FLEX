@@ -238,7 +238,7 @@
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             ((GeneralTalkCell*)cell).data = list;
-            [((GeneralTalkCell*)cell).btnReputation setTitle:list.talk_user_reputation.positive_percentage forState:UIControlStateNormal];
+            [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
             
             //Set user label
 //            if([list.talk_user_label isEqualToString:CPenjual]) {
@@ -795,7 +795,7 @@
                 //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
                 TKPD_TALK_USER_LABEL:list.talk_user_label,
-                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation.positive_percentage
+                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation
                 };
     [self.navigationController pushViewController:vc animated:YES];
     

@@ -33,7 +33,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -538,14 +538,27 @@
 
 #pragma mark - MyReviewReputation Delegate
 - (void)actionReputasi:(id)sender {
+    DetailMyInboxReputation *tempReputation = arrList[((UIButton *) sender).tag];
+    
     if(((UIButton *) sender).titleLabel.text.length == 0) { //Badge
-        DetailMyInboxReputation *tempReputation = arrList[((UIButton *) sender).tag];
-        
         NSString *strText = [NSString stringWithFormat:@"%@ %@", tempReputation.reputation_score, CStringPoin];
         [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
     }
     else {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:tempReputation.user_reputation.neutral withRepSmile:tempReputation.user_reputation.positive withRepSad:tempReputation.user_reputation.negative withDelegate:self];
         
+        //Init pop up
+        cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        cmPopTitpView.delegate = self;
+        cmPopTitpView.backgroundColor = [UIColor whiteColor];
+        cmPopTitpView.animation = CMPopTipAnimationSlide;
+        cmPopTitpView.dismissTapAnywhere = YES;
+        cmPopTitpView.leftPopUp = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
     }
 }
 
@@ -755,6 +768,12 @@
 
 - (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
 {
+    [self dismissAllPopTipViews];
+}
+
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
 @end

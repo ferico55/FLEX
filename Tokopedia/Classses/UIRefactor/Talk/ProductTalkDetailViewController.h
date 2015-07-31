@@ -14,6 +14,7 @@
     IBOutlet UIButton *btnReputation;
 }
 
+- (IBAction)actionSmiley:(id)sender;
 @property (strong,nonatomic) NSDictionary *data;
 
 @end

@@ -115,7 +115,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                                 <inset key="titleEdgeInsets" minX="3" minY="3" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="0" image="icon_smile_small.png">
+                                <state key="normal" title="0%" image="icon_smile_small.png">
                                     <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
