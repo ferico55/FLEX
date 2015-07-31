@@ -382,6 +382,17 @@
             self.screenName = @"Thank you Page - Indomaret";
         }
         
+        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]||
+           [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)])
+        {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.grand_total_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+        
         if ([_cartBuy.transaction.voucher_amount integerValue]>0) {
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
@@ -400,16 +411,6 @@
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
         }
         
-        if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]||
-           [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)])
-        {
-            NSArray *detailPayment = @[
-                                       @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN,
-                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
-                                         },
-                                       ];
-            [_listTotalPayment addObjectsFromArray:detailPayment];
-        }
         
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
             NSArray *detailPayment = @[
@@ -420,10 +421,15 @@
             [_listTotalPayment addObjectsFromArray:detailPayment];
         }
         
-        if(![_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]) {
-            if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
-                _cartBuy.transaction.payment_left_idr = _cartBuy.transaction.indomaret.total_charge_real_idr;
-            }
+        if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
+            _cartBuy.transaction.payment_left_idr = _cartBuy.transaction.indomaret.total_charge_real_idr;
+        }
+        if(![_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)] ||
+           ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)] &&
+            ([_cartBuy.transaction.deposit_amount integerValue]>0 ||
+             [_cartBuy.transaction.voucher_amount integerValue]>0)
+            )
+           ) {
             NSArray *detailPayment = @[
                                        @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
                                          DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
@@ -518,6 +524,8 @@
     
     [self adjustFooterIndomaret];
     [self adjustFooterKlikBCA];
+    
+    _tableView.tableFooterView = _paymentConfirmationWithTextView;
 
 }
 

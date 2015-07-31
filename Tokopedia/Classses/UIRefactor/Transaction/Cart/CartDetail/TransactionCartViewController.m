@@ -702,7 +702,7 @@
     BOOL isvalid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     if ([_cart.grand_total integerValue] <50000) {
-        [errorMessage addObject:@"Minimum pembayaran untuk kartu kredit adalah Rp 50.000,00."];
+        [errorMessage addObject:@"Minimum pembayaran untuk kartu kredit adalah Rp 50.000."];
         isvalid = NO;
     }
     
@@ -719,7 +719,24 @@
     BOOL isvalid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     if ([_cart.grand_total integerValue] <50000) {
-        [errorMessage addObject:@"Minimum pembayaran untuk kartu kredit adalah Rp 50.000,00."];
+        [errorMessage addObject:@"Minimum pembayaran untuk KlikBCA adalah Rp 50.000."];
+        isvalid = NO;
+    }
+    
+    if (!isvalid) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
+    }
+    
+    return isvalid;
+}
+
+-(BOOL)isValidInputIndomaret
+{
+    BOOL isvalid = YES;
+    NSMutableArray *errorMessage = [NSMutableArray new];
+    if ([_cart.grand_total integerValue] <10000) {
+        [errorMessage addObject:@"Minimum pembayaran untuk Indomaret adalah Rp 10.000."];
         isvalid = NO;
     }
     
@@ -933,9 +950,12 @@
         if (gateway == TYPE_GATEWAY_BCA_KLIK_BCA) {
             return [self isValidInputKlikBCA];
         }
+        if (gateway == TYPE_GATEWAY_INDOMARET) {
+            return  [self isValidInputIndomaret];
+        }
         if (_isUsingSaldoTokopedia)
         {
-            NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+            NSString *grandTotal = _cart.grand_total;
             NSNumber *deposit = [_dataInput objectForKey:DATA_USED_SALDO_KEY];
             if ([deposit integerValue]> [grandTotal integerValue])
             {
@@ -2234,7 +2254,7 @@
         }
         if (indexPath.row == 4) {
             if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
-                return _klikBCAUserIDCell.frame.size.height;
+                return 145;
             }
             else
                 return 0;

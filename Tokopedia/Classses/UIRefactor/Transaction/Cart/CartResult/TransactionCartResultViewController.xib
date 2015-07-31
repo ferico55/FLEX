@@ -189,7 +189,7 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="FPU-4B-Nq1"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V33-g9-JWw">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V33-g9-JWw">
                     <rect key="frame" x="15" y="70" width="290" height="46"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="JQy-EO-S4t"/>
@@ -244,7 +244,7 @@
             <point key="canvasLocation" x="506" y="439.5"/>
         </view>
         <view contentMode="scaleToFill" id="rNQ-kw-j6D" userLabel="Footer with textviewView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="498"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="496"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBA-O8-b2e">
@@ -256,79 +256,138 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNb-sJ-xAW">
-                    <rect key="frame" x="19" y="79" width="15" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PNb-sJ-xAW">
+                    <rect key="frame" x="20" y="79" width="15" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="StP-Rb-SwF">
+                            <variation key="heightClass=regular-widthClass=regular" constant="36"/>
+                        </constraint>
+                        <constraint firstAttribute="width" constant="15" id="WkF-Hl-IsX"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Catat dan simpan kode pembayaran Indomaret Anda, yaitu 0001" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qjf-z8-Ug2">
-                    <rect key="frame" x="38" y="75" width="274" height="44"/>
+                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Catat dan simpan kode pembayaran Indomaret Anda, yaitu 0001" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qjf-z8-Ug2">
+                    <rect key="frame" x="39" y="75" width="266" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Di7-DQ-ECV"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kpm-F8-NAa">
-                    <rect key="frame" x="19" y="123" width="15" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kpm-F8-NAa">
+                    <rect key="frame" x="20" y="123" width="15" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Y19-Cr-u6y">
+                            <variation key="heightClass=regular-widthClass=regular" constant="52"/>
+                        </constraint>
+                        <constraint firstAttribute="width" constant="15" id="yJ3-xe-Fqi"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Catat dan simpan kode pembayaran Indomaret Anda, yaitu 0001" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7X-3H-U2M">
-                    <rect key="frame" x="38" y="115" width="274" height="69"/>
+                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Catat dan simpan kode pembayaran Indomaret Anda, yaitu 0001" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7X-3H-U2M">
+                    <rect key="frame" x="39" y="115" width="266" height="69"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="69" id="5ME-CP-dp9"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="3." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZo-oG-dkS">
-                    <rect key="frame" x="19" y="188" width="15" height="21"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ogm-g0-kvh">
-                    <rect key="frame" x="38" y="184" width="274" height="61"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="4." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tHg-g5-aNZ">
-                    <rect key="frame" x="19" y="249" width="15" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZo-oG-dkS">
+                    <rect key="frame" x="20" y="188" width="15" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Vqe-D4-Emw">
+                            <variation key="heightClass=regular-widthClass=regular" constant="29"/>
+                        </constraint>
+                        <constraint firstAttribute="width" constant="15" id="z6y-pm-X3M"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qj5-Ls-vmT">
-                    <rect key="frame" x="38" y="245" width="274" height="61"/>
+                <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ogm-g0-kvh">
+                    <rect key="frame" x="39" y="184" width="266" height="61"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="61" id="IiT-ab-Qqh">
+                            <variation key="heightClass=regular-widthClass=regular" constant="38"/>
+                        </constraint>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Catatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cc1-qL-M6W">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tHg-g5-aNZ">
+                    <rect key="frame" x="20" y="249" width="15" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="15" id="0nc-vs-56g"/>
+                        <constraint firstAttribute="height" constant="21" id="j5r-ZP-Fax"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qj5-Ls-vmT">
+                    <rect key="frame" x="39" y="245" width="266" height="61"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="61" id="dFH-ot-UeL">
+                            <variation key="heightClass=regular-widthClass=regular" constant="31"/>
+                        </constraint>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Catatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cc1-qL-M6W">
                     <rect key="frame" x="15" y="312" width="290" height="42"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="Snt-zQ-BRf"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6T-On-o0w">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6T-On-o0w">
                     <rect key="frame" x="19" y="349" width="15" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="1cC-q4-hbm">
+                            <variation key="heightClass=regular-widthClass=regular" constant="53"/>
+                        </constraint>
+                        <constraint firstAttribute="width" constant="15" id="vov-VC-Ikm"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLP-7N-5Vr">
-                    <rect key="frame" x="38" y="346" width="274" height="61"/>
+                <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLP-7N-5Vr">
+                    <rect key="frame" x="39" y="346" width="274" height="61"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="61" id="jeu-JW-FXo"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tRv-we-kG8">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tRv-we-kG8">
                     <rect key="frame" x="19" y="410" width="15" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="15" id="ARH-7E-FyI"/>
+                        <constraint firstAttribute="height" constant="21" id="hpm-gJ-8m1">
+                            <variation key="heightClass=regular-widthClass=regular" constant="51"/>
+                        </constraint>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pesanan akan otomatis dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pah-kZ-2gx">
-                    <rect key="frame" x="38" y="407" width="274" height="61"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pesanan akan otomatis dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pah-kZ-2gx">
+                    <rect key="frame" x="39" y="407" width="274" height="61"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="61" id="mLR-sq-emI"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
@@ -336,12 +395,61 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstItem="PNb-sJ-xAW" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="20" id="1Z6-yQ-tiC"/>
+                <constraint firstItem="bZo-oG-dkS" firstAttribute="top" secondItem="Kpm-F8-NAa" secondAttribute="bottom" constant="44" id="1ch-um-ZmF">
+                    <variation key="heightClass=regular-widthClass=regular" constant="13"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="Ogm-g0-kvh" secondAttribute="trailing" constant="15" id="2Nu-a1-hqr"/>
+                <constraint firstItem="Ogm-g0-kvh" firstAttribute="leading" secondItem="bZo-oG-dkS" secondAttribute="trailing" constant="4" id="3Oh-8f-hMG"/>
+                <constraint firstAttribute="trailing" secondItem="Cc1-qL-M6W" secondAttribute="trailing" constant="15" id="533-pf-O0C"/>
+                <constraint firstItem="b7X-3H-U2M" firstAttribute="top" secondItem="IBA-O8-b2e" secondAttribute="bottom" constant="43" id="5rU-K5-I97"/>
+                <constraint firstItem="Qj5-Ls-vmT" firstAttribute="top" secondItem="Ogm-g0-kvh" secondAttribute="bottom" id="AOI-Zh-9lM">
+                    <variation key="heightClass=regular-widthClass=regular" constant="21"/>
+                </constraint>
+                <constraint firstItem="Kpm-F8-NAa" firstAttribute="top" secondItem="PNb-sJ-xAW" secondAttribute="bottom" constant="23" id="FBN-Xb-Jgm">
+                    <variation key="heightClass=regular-widthClass=regular" constant="8"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="Qj5-Ls-vmT" secondAttribute="trailing" constant="15" id="I08-mG-yHt"/>
+                <constraint firstItem="bZo-oG-dkS" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="20" id="KXQ-AA-VqN"/>
+                <constraint firstItem="F6T-On-o0w" firstAttribute="top" secondItem="tHg-g5-aNZ" secondAttribute="bottom" constant="79" id="LdI-kv-1b4">
+                    <variation key="heightClass=regular-widthClass=regular" constant="81"/>
+                </constraint>
+                <constraint firstItem="Qj5-Ls-vmT" firstAttribute="leading" secondItem="tHg-g5-aNZ" secondAttribute="trailing" constant="4" id="NBb-vZ-lgC"/>
+                <constraint firstItem="OLP-7N-5Vr" firstAttribute="leading" secondItem="F6T-On-o0w" secondAttribute="trailing" constant="5" id="NLw-Az-5fy"/>
+                <constraint firstItem="tHg-g5-aNZ" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="20" id="PbG-mk-ict"/>
+                <constraint firstItem="b7X-3H-U2M" firstAttribute="leading" secondItem="Kpm-F8-NAa" secondAttribute="trailing" constant="4" id="SzQ-Jv-OGs"/>
+                <constraint firstItem="tRv-we-kG8" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="19" id="WM9-fe-nV8"/>
+                <constraint firstAttribute="trailing" secondItem="b7X-3H-U2M" secondAttribute="trailing" constant="15" id="WdZ-qN-GtK"/>
+                <constraint firstItem="tRv-we-kG8" firstAttribute="top" secondItem="F6T-On-o0w" secondAttribute="bottom" constant="40" id="XJM-E0-SzV">
+                    <variation key="heightClass=regular-widthClass=regular" constant="8"/>
+                </constraint>
                 <constraint firstItem="IBA-O8-b2e" firstAttribute="top" secondItem="rNQ-kw-j6D" secondAttribute="top" constant="30" id="ZGn-EZ-oIh"/>
+                <constraint firstItem="tHg-g5-aNZ" firstAttribute="top" secondItem="bZo-oG-dkS" secondAttribute="bottom" constant="40" id="agA-RM-hoa">
+                    <variation key="heightClass=regular-widthClass=regular" constant="30"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="pah-kZ-2gx" secondAttribute="trailing" constant="7" id="c8E-8p-d7g"/>
+                <constraint firstItem="pah-kZ-2gx" firstAttribute="top" secondItem="OLP-7N-5Vr" secondAttribute="bottom" id="eHj-o1-krg"/>
+                <constraint firstAttribute="trailing" secondItem="OLP-7N-5Vr" secondAttribute="trailing" constant="7" id="f2I-br-NUj"/>
+                <constraint firstItem="Qjf-z8-Ug2" firstAttribute="leading" secondItem="PNb-sJ-xAW" secondAttribute="trailing" constant="4" id="f9G-uU-to0"/>
                 <constraint firstItem="IBA-O8-b2e" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="15" id="fJC-SM-The"/>
+                <constraint firstItem="F6T-On-o0w" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="19" id="gC8-BF-Jku"/>
+                <constraint firstItem="Ogm-g0-kvh" firstAttribute="top" secondItem="b7X-3H-U2M" secondAttribute="bottom" id="iEF-5I-58l"/>
+                <constraint firstItem="Qjf-z8-Ug2" firstAttribute="top" secondItem="IBA-O8-b2e" secondAttribute="bottom" constant="3" id="li0-eJ-jOF"/>
+                <constraint firstItem="PNb-sJ-xAW" firstAttribute="top" secondItem="IBA-O8-b2e" secondAttribute="bottom" constant="7" id="m41-uf-DmC"/>
+                <constraint firstItem="Kpm-F8-NAa" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="20" id="nXZ-wj-IDc"/>
+                <constraint firstItem="OLP-7N-5Vr" firstAttribute="top" secondItem="Qj5-Ls-vmT" secondAttribute="bottom" constant="40" id="oQi-dm-KeC">
+                    <variation key="heightClass=regular-widthClass=regular" constant="72"/>
+                </constraint>
                 <constraint firstAttribute="trailing" secondItem="IBA-O8-b2e" secondAttribute="trailing" constant="15" id="pAF-GW-WlL"/>
+                <constraint firstItem="pah-kZ-2gx" firstAttribute="leading" secondItem="tRv-we-kG8" secondAttribute="trailing" constant="5" id="rXh-0B-LZX"/>
+                <constraint firstItem="Cc1-qL-M6W" firstAttribute="top" secondItem="Qj5-Ls-vmT" secondAttribute="bottom" constant="6" id="wNW-jz-Ga6">
+                    <variation key="heightClass=regular-widthClass=regular" constant="38"/>
+                </constraint>
+                <constraint firstItem="Cc1-qL-M6W" firstAttribute="leading" secondItem="rNQ-kw-j6D" secondAttribute="leading" constant="15" id="zKK-B3-WAP"/>
+                <constraint firstAttribute="trailing" secondItem="Qjf-z8-Ug2" secondAttribute="trailing" constant="15" id="zud-cT-rss"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="183" y="613"/>
+            <point key="canvasLocation" x="183" y="311"/>
         </view>
         <view contentMode="scaleToFill" id="jm2-5f-obq" userLabel="Footer Klik BCA Steps View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="1169"/>
@@ -577,7 +685,7 @@ Pilih Tokopedia</string>
             <rect key="frame" x="0.0" y="0.0" width="320" height="183"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zj-kU-VAf">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zj-kU-VAf">
                     <rect key="frame" x="15" y="15" width="290" height="58"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="3Bp-Xi-Dob"/>
@@ -592,7 +700,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                         <rect key="frame" x="15" y="15" width="290" height="64.5"/>
                     </variation>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rt-3a-lHR">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rt-3a-lHR">
                     <rect key="frame" x="15" y="94" width="290" height="40"/>
                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -654,8 +762,12 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo_indomaret.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ph6-9i-fpk">
-                    <rect key="frame" x="95" y="8" width="130" height="49"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_indomaret.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ph6-9i-fpk">
+                    <rect key="frame" x="97" y="8" width="127" height="47"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="127" id="Pqx-aE-scR"/>
+                        <constraint firstAttribute="height" constant="47" id="hmX-pD-xbG"/>
+                    </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kode Indomaret Anda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZb-7m-n7U">
                     <rect key="frame" x="15" y="52" width="290" height="32"/>
@@ -667,10 +779,12 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="FUd-5a-lvQ" secondAttribute="trailing" id="5ZH-Uu-ebg"/>
+                <constraint firstItem="Ph6-9i-fpk" firstAttribute="top" secondItem="PI7-O1-Z1J" secondAttribute="top" constant="8" id="7t8-dU-ini"/>
                 <constraint firstItem="WZb-7m-n7U" firstAttribute="leading" secondItem="PI7-O1-Z1J" secondAttribute="leading" constant="15" id="Rx8-CO-q1F"/>
                 <constraint firstAttribute="trailing" secondItem="WZb-7m-n7U" secondAttribute="trailing" constant="15" id="Vv5-X1-PSz"/>
                 <constraint firstItem="WZb-7m-n7U" firstAttribute="top" secondItem="PI7-O1-Z1J" secondAttribute="top" constant="52" id="cyj-Qd-rPe"/>
                 <constraint firstAttribute="bottom" secondItem="WZb-7m-n7U" secondAttribute="bottom" constant="27" id="lHd-Ff-z0w"/>
+                <constraint firstAttribute="centerX" secondItem="Ph6-9i-fpk" secondAttribute="centerX" id="qT1-Ky-Nqg"/>
                 <constraint firstItem="FUd-5a-lvQ" firstAttribute="leading" secondItem="PI7-O1-Z1J" secondAttribute="leading" id="qwB-IM-QGu"/>
                 <constraint firstItem="FUd-5a-lvQ" firstAttribute="top" secondItem="PI7-O1-Z1J" secondAttribute="top" constant="72" id="t3c-k7-zLr"/>
                 <constraint firstAttribute="bottom" secondItem="FUd-5a-lvQ" secondAttribute="bottom" constant="8" id="zuT-hz-U6S"/>
