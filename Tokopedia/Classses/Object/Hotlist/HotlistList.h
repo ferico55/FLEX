@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HotlistViewModel.h"
 
 @interface HotlistList: NSObject
 
@@ -16,7 +17,6 @@
 @property (nonatomic, strong) NSString *image_url_600;
 @property (nonatomic, strong) NSString *title;
 
-- (void) encodeWithCoder:(NSCoder *)encoder;
-- (id)initWithCoder:(NSCoder *)decoder;
+@property (nonatomic, strong) HotlistViewModel *viewModel;
 
 @end

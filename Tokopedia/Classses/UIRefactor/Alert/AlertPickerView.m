@@ -22,6 +22,7 @@
     UITapGestureRecognizer *_newGesture;
     NSInteger index;
     NSInteger secondIndex;
+    __weak IBOutlet UIPickerView *pickerView;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -169,6 +170,7 @@
     _newGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
     [_background addGestureRecognizer:_newGesture];
     
+    self.frame = CGRectMake(0, self.frame.origin.y, _window.bounds.size.width, self.bounds.size.height);
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	
@@ -183,6 +185,14 @@
 			[_delegate didPresentAlertView:self];
 		}
 	}];
+    
+    index = [[_data objectForKey:DATA_INDEX_KEY] integerValue];
+    secondIndex = [[_data objectForKey:DATA_INDEX_SECOND_KEY] integerValue];
+    
+    [pickerView selectRow:index inComponent:0 animated:NO];
+    if (_pickerCount==2) {
+        [pickerView selectRow:secondIndex?:0 inComponent:1 animated:NO];
+    }
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {

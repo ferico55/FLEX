@@ -16,5 +16,8 @@
 
 - (IBAction)actionSmiley:(id)sender;
 @property (strong,nonatomic) NSDictionary *data;
+@property (strong, nonatomic) UIViewController *masterViewController;
+
+-(void)replaceDataSelected:(NSDictionary *)data;
 
 @end

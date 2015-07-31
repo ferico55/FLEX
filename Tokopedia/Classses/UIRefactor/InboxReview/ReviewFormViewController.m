@@ -12,6 +12,7 @@
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
 #import "NavigateViewController.h"
+#import "InboxReviewAction.h"
 
 #import "string_inbox_review.h"
 
@@ -246,13 +247,15 @@
     _objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxReviewAction class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxReviewActionResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY,
+                                                   REVIEW_ID_API_KEY,
+                                                   SHOW_DIALOG_RATE_API_KEY]];
     
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
@@ -279,7 +282,7 @@
         [self requestSuccess:mappingResult withOperation:operation];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:_isEditForm?@[CStringGagalMemperbaharuiUlasan]:@[CStringGagalMenambahUlasan] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:_isEditForm?@[CStringGagalMemperbaharuiUlasan]:@[CStringGagalMenambahUlasan] delegate:self];
         [stickyAlertView show];
         [self.navigationController popViewControllerAnimated:YES];
     }];
@@ -290,7 +293,7 @@
 - (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id info = [result objectForKey:@""];
-    GeneralAction *generalaction = info;
+    InboxReviewAction *generalaction = info;
     BOOL status = [generalaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if(status) {
@@ -305,6 +308,10 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
             } else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterWriteReview" object:nil userInfo:userinfo];
+                if ([generalaction.result.show_dialog_rate boolValue]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SHOW_RATING_ALERT
+                                                                        object:@{kTKPD_ALWAYS_SHOW_RATING_ALERT:@"1"}];
+                }
             }
             
             [self.navigationController popViewControllerAnimated:YES];

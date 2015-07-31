@@ -315,8 +315,7 @@ UIAlertViewDelegate
         }
     }
     
-    
-    _table.tableHeaderView = _header;
+    //_table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
     _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
@@ -2077,6 +2076,7 @@ UIAlertViewDelegate
             }
             
             // UIView below table view (View More Product button)
+            //TODO::
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
             backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
@@ -2438,14 +2438,14 @@ UIAlertViewDelegate
     
     for(int i = 0; i< images.count; i++)
     {
-        CGFloat y = i * self.view.frame.size.width;
+        CGFloat y = i * _table.frame.size.width;
         
         ProductImages *image = images[i];
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
         
-        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
+        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _table.frame.size.width, _imagescrollview.frame.size.height)];
         
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
@@ -2538,28 +2538,31 @@ UIAlertViewDelegate
 
 -(void)setOtherProducts
 {
-    otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/2.0f);
+    float count;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        count = 3.0f;
+    }
+    else
+    {
+        count = 2.0f;
+    }
+    
+    float widthOtherProductView = (_otherproductscrollview.frame.size.width-(10*3))/count;
+    constraintHeightScrollOtherView.constant = widthOtherProductView + (widthOtherProductView/count);
+    otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/count);
+    int x = ([UIScreen mainScreen].bounds.size.width/320 * 10);
     for(int i = 0; i< _otherProductObj.count; i++)
     {
         TheOtherProductList *product = _otherProductObj[i];
         
         DetailProductOtherView *v = [DetailProductOtherView newview];
         
-        int x;
-        if(i == 0) {
-            x = 10;
-        } else if(i == 1) {
-            x = 165;
-        } else if(i == 2) {
-            x = 330;
-        } else if(i == 3) {
-            x = 485;
-        } else if(i == 4) {
-            x = 650;
-        } else if(i == 5) {
-            x = 805;
-        }
-        [v setFrame:CGRectMake(x, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+//        x += 10 + v.bounds.size.width;
+        [v setFrame:CGRectMake(x, 0, widthOtherProductView, (widthOtherProductView+(widthOtherProductView/count)))];
+        x += widthOtherProductView+([UIScreen mainScreen].bounds.size.width/320 * 10);
+//        NSInteger countInt = (int)count;
+//        x += (i%countInt==1&&i<(_otherProductObj.count-1)? 10 : 0);
         v.delegate = self;
         v.index = i;
         [v.act startAnimating];
@@ -2596,7 +2599,9 @@ UIAlertViewDelegate
     }
     
     _otherproductscrollview.pagingEnabled = YES;
-    _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
+    _otherproductscrollview.contentSize = CGSizeMake(x, 0);
+    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, _otherproductscrollview.frame.origin.y + constraintHeightScrollOtherView.constant + 6 + _pagecontrol.bounds.size.height);
+    _table.tableFooterView = _shopinformationview;
 }
 
 
@@ -2657,7 +2662,9 @@ UIAlertViewDelegate
                     _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, lblOtherProductTitle.frame.origin.y);
                     _table.tableFooterView = _shopinformationview;
                 }
-                [self setOtherProducts];
+                else {
+                    [self setOtherProducts];
+                }
             }
         }
         else{

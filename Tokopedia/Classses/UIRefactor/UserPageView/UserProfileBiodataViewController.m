@@ -62,7 +62,7 @@
 
     
     _header = _userHeader.view;
-    _table.tableHeaderView = _header;
+    //_table.tableHeaderView = _header;
     _table.tableFooterView = _footer;
     _table.delegate = self;
     
@@ -329,9 +329,9 @@
 
 - (void)actionGoToUserProfile:(id)sender
 {
-    //    if(self.navigationController.viewControllers.count > 1) {
-    //        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3] animated:YES];
-    //    }
+//        if(self.navigationController.viewControllers.count > 1) {
+//            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3] animated:YES];
+//        }
 }
 
 #pragma mark - Cell Delegate

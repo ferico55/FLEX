@@ -120,7 +120,7 @@
     _ratingviews = [NSArray sortViewsWithTagInArray:_ratingviews];
     _labelstars = [NSArray sortViewsWithTagInArray:_labelstars];
     _progressviews = [NSArray sortViewsWithTagInArray:_progressviews];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _list = [NSMutableArray new];
     _param = [NSMutableDictionary new];

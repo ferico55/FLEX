@@ -179,7 +179,7 @@ UIAlertViewDelegate>
     style.lineSpacing = 4.0;
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];

@@ -234,9 +234,23 @@
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
-    [_delegate failedRequestAddress:errorResult];
+    NSError *error = errorResult;
+    NSArray *errors;
+    if(error.code == -1011) {
+        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    } else if (error.code==-1009 || error.code==-999) {
+        errors = @[@"Tidak ada koneksi internet"];
+    } else {
+        errors = @[error.localizedDescription];
+    }
+    
+    [_delegate failedRequestAddress:errors];
 }
 
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+
+}
 
 
 - (id)getFromCache {

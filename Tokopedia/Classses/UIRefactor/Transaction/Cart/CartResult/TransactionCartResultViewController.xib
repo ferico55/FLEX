@@ -42,11 +42,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="5" sectionFooterHeight="5" translatesAutoresizingMaskIntoConstraints="NO" id="45P-yq-ogx">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="70u-kn-ubL"/>
@@ -58,10 +58,13 @@
             <constraints>
                 <constraint firstItem="45P-yq-ogx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BMO-wp-sXy"/>
                 <constraint firstAttribute="bottom" secondItem="45P-yq-ogx" secondAttribute="bottom" id="NGr-NM-aNA"/>
-                <constraint firstAttribute="trailing" secondItem="45P-yq-ogx" secondAttribute="trailing" id="U3K-Xt-xZb"/>
-                <constraint firstItem="45P-yq-ogx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ozi-nu-7RH"/>
+                <constraint firstAttribute="trailing" secondItem="45P-yq-ogx" secondAttribute="trailing" id="U3K-Xt-xZb">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="45P-yq-ogx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ozi-nu-7RH">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="49" y="150"/>
         </view>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="120" id="fMn-xg-Fit">
@@ -155,8 +158,11 @@
                         <rect key="frame" x="15" y="70" width="290" height="51.5"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Silahkan menghubungi kami apabila Anda mengalami kesulitan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYq-D9-MRs">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silahkan menghubungi kami apabila Anda mengalami kesulitan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYq-D9-MRs">
                     <rect key="frame" x="15" y="129" width="290" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="ZhO-9X-VqY"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -183,17 +189,38 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="e70-yU-41l" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="2b2-n1-3Ys"/>
-                <constraint firstAttribute="trailing" secondItem="V33-g9-JWw" secondAttribute="trailing" constant="15" id="83n-ya-J9Z"/>
+                <constraint firstItem="e70-yU-41l" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="2b2-n1-3Ys">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstItem="wYq-D9-MRs" firstAttribute="top" secondItem="V33-g9-JWw" secondAttribute="bottom" constant="13" id="3UJ-Kv-MLH"/>
+                <constraint firstAttribute="trailing" secondItem="V33-g9-JWw" secondAttribute="trailing" constant="15" id="83n-ya-J9Z">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
                 <constraint firstItem="e70-yU-41l" firstAttribute="top" relation="greaterThanOrEqual" secondItem="QEA-BO-1aG" secondAttribute="top" constant="20" id="DWK-Rz-7ca"/>
-                <constraint firstAttribute="trailing" secondItem="e70-yU-41l" secondAttribute="trailing" constant="15" id="H6I-DI-EhI"/>
+                <constraint firstAttribute="trailing" secondItem="e70-yU-41l" secondAttribute="trailing" constant="15" id="H6I-DI-EhI">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="wYq-D9-MRs" secondAttribute="trailing" constant="15" id="Lyk-h1-ZCi">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstItem="wYq-D9-MRs" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="MRo-2C-g8W">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="e70-yU-41l" secondAttribute="trailing" constant="15" id="cbb-cS-Brn"/>
                 <constraint firstItem="e70-yU-41l" firstAttribute="top" secondItem="QEA-BO-1aG" secondAttribute="top" constant="20" id="o8J-3m-3nl"/>
                 <constraint firstItem="e70-yU-41l" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="sWq-lc-u7U"/>
-                <constraint firstItem="V33-g9-JWw" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="tig-Fj-GGO"/>
+                <constraint firstItem="V33-g9-JWw" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="tig-Fj-GGO">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
                 <constraint firstItem="V33-g9-JWw" firstAttribute="top" secondItem="e70-yU-41l" secondAttribute="bottom" constant="10" id="yRG-Ks-CVh"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="cbb-cS-Brn"/>
+                    <exclude reference="sWq-lc-u7U"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="437" y="370.5"/>
         </view>
         <view contentMode="scaleToFill" id="EEG-XL-95d">
@@ -236,12 +263,20 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="5Rt-3a-lHR" firstAttribute="leading" secondItem="EEG-XL-95d" secondAttribute="leading" constant="15" id="FXA-of-Shc"/>
-                <constraint firstItem="8zj-kU-VAf" firstAttribute="leading" secondItem="EEG-XL-95d" secondAttribute="leading" constant="15" id="It9-7B-ZIm"/>
-                <constraint firstAttribute="trailing" secondItem="5Rt-3a-lHR" secondAttribute="trailing" constant="15" id="Nff-fh-Tk5"/>
+                <constraint firstItem="5Rt-3a-lHR" firstAttribute="leading" secondItem="EEG-XL-95d" secondAttribute="leading" constant="15" id="FXA-of-Shc">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstItem="8zj-kU-VAf" firstAttribute="leading" secondItem="EEG-XL-95d" secondAttribute="leading" constant="15" id="It9-7B-ZIm">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="5Rt-3a-lHR" secondAttribute="trailing" constant="15" id="Nff-fh-Tk5">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
                 <constraint firstItem="5Rt-3a-lHR" firstAttribute="top" secondItem="8zj-kU-VAf" secondAttribute="bottom" constant="21" id="cgE-RQ-OC8"/>
                 <constraint firstItem="8zj-kU-VAf" firstAttribute="top" secondItem="EEG-XL-95d" secondAttribute="top" constant="15" id="nNW-2h-OW2"/>
-                <constraint firstAttribute="trailing" secondItem="8zj-kU-VAf" secondAttribute="trailing" constant="15" id="w7w-wb-2fh"/>
+                <constraint firstAttribute="trailing" secondItem="8zj-kU-VAf" secondAttribute="trailing" constant="15" id="w7w-wb-2fh">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="802" y="323.5"/>
@@ -253,7 +288,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran transfer manual." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZH-Og-jzx">
                     <rect key="frame" x="15" y="0.0" width="290" height="89"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

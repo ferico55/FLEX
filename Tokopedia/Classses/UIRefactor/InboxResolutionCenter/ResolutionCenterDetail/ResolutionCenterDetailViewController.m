@@ -55,7 +55,8 @@
     ResolutionCenterInputViewControllerDelegate,
     ResolutionInputReceiptViewControllerDelegate,
     InboxResolutionCenterOpenViewControllerDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    UISplitViewControllerDelegate
 >
 {
     BOOL _isNodata;
@@ -131,8 +132,10 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
-    [self configureRestKit];
-    [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        [self configureRestKit];
+        [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
+    }
     
     _inputConversation.layer.cornerRadius = 2;
     
@@ -1884,6 +1887,21 @@
             
         }
     }
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
+}
+
+-(void)replaceDataSelected:(InboxResolutionCenterList*)resolution indexPath:(NSIndexPath*)indexPath resolutionID:(NSString*)resolutionID
+{
+    _resolution = resolution;
+    _indexPath = indexPath;
+    _resolutionID = resolutionID;
+    
+    [self configureRestKit];
+    [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
 }
 
 @end

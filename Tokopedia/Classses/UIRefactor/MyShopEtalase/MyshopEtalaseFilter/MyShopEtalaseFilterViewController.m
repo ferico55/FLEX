@@ -249,11 +249,11 @@
         if (_etalaseList.count > indexPath.row) {
             EtalaseList *list =_etalaseList[indexPath.row];
 
-            if(!_selectedEtalase) {
+            if(!_selectedEtalase || _selectedEtalase == @0) {
                 if ([list.etalase_name isEqualToString:[_data objectForKey:@"product_etalase_name"]]) {
                     ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
                 } else {
-                    if([[_data objectForKey:@"product_etalase_name"] isEqualToString:@""] && [list.etalase_name isEqualToString:@"Semua Etalase"]) {
+                    if([list.etalase_name isEqualToString:@"Semua Etalase"]) {
                         ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
                     } else {
                         ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
@@ -432,8 +432,11 @@
             NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
             
-            EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
-            _selectedEtalase = selectedEtalase;
+            if([_data objectForKey:ETALASE_OBJECT_SELECTED_KEY]) {
+                EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+                _selectedEtalase = selectedEtalase;
+            }
+
             
             _uriNext = _etalase.result.paging.uri_next;
             if (_uriNext) {
