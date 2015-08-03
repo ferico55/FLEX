@@ -337,6 +337,7 @@
                     newFrame4.origin.y += 47;
                     newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
                     _infoReviewSaldo.frame = newFrame4;
+                    
                 }
             }
             
