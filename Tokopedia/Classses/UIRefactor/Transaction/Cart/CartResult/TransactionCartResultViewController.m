@@ -48,13 +48,14 @@
 @property (strong, nonatomic) IBOutlet UIView *paymentStatusView;
 @property (weak, nonatomic) IBOutlet UIButton *paymentStatusButton;
 @property (weak, nonatomic) IBOutlet UILabel *contactUsLabel;
-@property (strong, nonatomic) IBOutlet UIView *paymentConfirmationWithTextView;
+@property (strong, nonatomic) IBOutlet UIView *indomaretStepsView;
 @property (weak, nonatomic) IBOutlet UITextView *footerNotes;
 @property (strong, nonatomic) IBOutlet UIView *headerViewIndomaret;
 @property (strong, nonatomic) IBOutlet UIView *klikBCAStepsView;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *klikBCAStepsLabels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *indomaretNotes;
 @property (weak, nonatomic) IBOutlet UILabel *IndomaretCodeLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *klikBCAAditionalConstraint;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *klikBCAImagesSteps;
 @end
 
@@ -90,8 +91,8 @@
     [self adjustFooterPaymentConfirmation];
     [self adjustFooterPurchaseStatus];
     
-//    _tableView.tableFooterView = _paymentConfirmationWithTextView;
-    
+//    _tableView.tableFooterView = _klikBCAStepsView;
+    //_tableView.tableFooterView = _indomaretStepsView;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -157,7 +158,7 @@
             return _klikBCAStepsView;
         }
         else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
-            return _paymentConfirmationWithTextView;
+            return _indomaretStepsView;
         }
         else
             return _viewConfirmPayment;
@@ -199,10 +200,10 @@
                 return _paymentStatusView.frame.size.height;
         }
         else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
-            return _klikBCAStepsView.frame.size.height;
+            return _klikBCAStepsView.frame.size.height - _klikBCAAditionalConstraint.constant;
         }
         else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
-            return _paymentConfirmationWithTextView.frame.size.height;
+            return _indomaretStepsView.frame.size.height;
         }
         else
             return _viewConfirmPayment.frame.size.height;
@@ -569,6 +570,8 @@
 {
     for (UILabel *label in _indomaretNotes) {
         
+        label.numberOfLines = 0;
+        
         switch (label.tag) {
             case 1:
                 label.text = [NSString stringWithFormat:@"Catat dan simpan kode pembayaran Indomaret Anda, yaitu %@",_cartBuy.transaction.indomaret.payment_code];
@@ -616,9 +619,12 @@
                                range:[label.text rangeOfString:@"KeyBCA Token"]];
         
         //add alignment
-        [attibutestring addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attibutestring.length)];
+        [attibutestring addAttribute:NSParagraphStyleAttributeName
+                               value:paragraphStyle
+                               range:NSMakeRange(0, attibutestring.length)];
         
         label.attributedText = attibutestring;
+        
     }
     
 //    NSString *htmlString = [NSString stringWithFormat: @"<h1><strong>Silahkan ikuti langkah-langkah berikut untuk menyelesaikan pembayaran:</strong></h1><ol><li>Catat dan simpan <strong>kode pembayaran Indomaret</strong> Anda, yaitu <strong>%@</strong>.</li><li><strong>Tunjukkan kode pembayaran </strong>ke kasir Indomaret terdekat, dan lakukan pembayaran senilai <span style='color:#ff0000;'>%@</span>.</li><li>Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia.</li><li>Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi.</li></ol><p>&nbsp;</p><p><strong>Catatan</strong></p><ul><li>Jumlah yang harus Anda bayar sudah termasuk biaya administrasi Indomaret sebesar <span style='color:#ff0000;'>%@</span>.</li><li>Pesanan akan <span style='color:#ff0000;'>otomatis</span> dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan.</li></ul>",_cartBuy.transaction.indomaret.payment_code,_cartBuy.transaction.indomaret.total_charge_real_idr,_cartBuy.transaction.indomaret.charge_real_idr];
@@ -629,6 +635,8 @@
 //    
 //    _footerNotes.attributedText = attributedString;
 }
+
+
 
 -(void)adjustFooterKlikBCA
 {

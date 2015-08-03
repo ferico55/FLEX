@@ -1522,6 +1522,7 @@
 		457A98901B6B1C3F006C71CF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 457A92A41B6B1C3E006C71CF /* README.md */; };
 		457A98921B6B1C3F006C71CF /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 457A92A71B6B1C3E006C71CF /* vt-iOSlib-1.0.1.tar.gz */; };
 		457A98931B6B1C3F006C71CF /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 457A92A81B6B1C3E006C71CF /* vt-iOSlib-1.0.1.zip */; };
+		45A74C711B6F26B900779C2D /* TopAlignedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A74C701B6F26B900779C2D /* TopAlignedLabel.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
@@ -3880,6 +3881,8 @@
 		457A92A61B6B1C3E006C71CF /* libVTiOSAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVTiOSAPI.a; sourceTree = "<group>"; };
 		457A92A71B6B1C3E006C71CF /* vt-iOSlib-1.0.1.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "vt-iOSlib-1.0.1.tar.gz"; sourceTree = "<group>"; };
 		457A92A81B6B1C3E006C71CF /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
+		45A74C6F1B6F26B900779C2D /* TopAlignedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopAlignedLabel.h; sourceTree = "<group>"; };
+		45A74C701B6F26B900779C2D /* TopAlignedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopAlignedLabel.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -4048,6 +4051,8 @@
 				457A88D71B6B1C3C006C71CF /* UITextView+UITextView_Placeholder.m */,
 				457A88D81B6B1C3C006C71CF /* ViewLabelUser.h */,
 				457A88D91B6B1C3C006C71CF /* ViewLabelUser.m */,
+				45A74C6F1B6F26B900779C2D /* TopAlignedLabel.h */,
+				45A74C701B6F26B900779C2D /* TopAlignedLabel.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -9784,6 +9789,7 @@
 				457A96211B6B1C3F006C71CF /* ProductTalkCell.m in Sources */,
 				457A92AE1B6B1C3E006C71CF /* LabelMenu.m in Sources */,
 				457A93321B6B1C3E006C71CF /* ResolutionCustomer.m in Sources */,
+				45A74C711B6F26B900779C2D /* TopAlignedLabel.m in Sources */,
 				457A93A31B6B1C3E006C71CF /* SendMessageResult.m in Sources */,
 				457A938D1B6B1C3E006C71CF /* OrderCustomer.m in Sources */,
 				457A93D61B6B1C3E006C71CF /* TrackOrderHistory.m in Sources */,
@@ -10246,7 +10252,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -10285,7 +10291,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "82997e9a-08da-4207-a480-e6382d70b55a";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

@@ -75,7 +75,7 @@
                 <outlet property="editButton" destination="icU-Or-HlW" id="RtR-Ru-n50"/>
                 <outlet property="uploadProofButton" destination="2k2-cH-QYH" id="EP8-y2-hF4"/>
             </connections>
-            <point key="canvasLocation" x="285" y="222"/>
+            <point key="canvasLocation" x="285" y="232"/>
         </tableViewCell>
     </objects>
     <resources>
