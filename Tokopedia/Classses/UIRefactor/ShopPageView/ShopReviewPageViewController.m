@@ -564,6 +564,8 @@ UIAlertViewDelegate>
             NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductReputationCell" owner:nil options:0];
             cell = [tempArr objectAtIndex:0];
             cell.delegate = self;
+            
+            cell.frame = CGRectMake(0, 0, self.view.bounds.size.width, cell.bounds.size.height);
             [cell initProductCell];
             [self setPropertyLabelDesc:cell.getLabelDesc];
         }

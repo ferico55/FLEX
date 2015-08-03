@@ -40,7 +40,7 @@ static CGFloat rowHeight = 40;
     NSMutableArray *_specificationValues;
     NSMutableArray *_specificationKeys;
     
-    BOOL _hideTableRows;
+    BOOL _hideTableRows, doActionPriceAlert;
     
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -86,6 +86,7 @@ static CGFloat rowHeight = 40;
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(tap:)];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     self.navigationItem.backBarButtonItem = backButton;
 
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
@@ -621,9 +622,27 @@ static CGFloat rowHeight = 40;
 - (void)actionAddNotificationPriceCatalog:(id)sender
 {
     if(_catalog!=nil && _catalog.result.catalog_info!=nil) {
-        PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
-        priceAlertViewController.catalogInfo = _catalog.result.catalog_info;
-        [self.navigationController pushViewController:priceAlertViewController animated:YES];
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSDictionary *auth = [_userManager getUserLoginData];
+        if(auth) {
+            PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+            priceAlertViewController.catalogInfo = _catalog.result.catalog_info;
+            [self.navigationController pushViewController:priceAlertViewController animated:YES];
+        }
+        else {
+            doActionPriceAlert = YES;
+            UINavigationController *navigationController = [[UINavigationController alloc] init];
+            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+            navigationController.navigationBar.translucent = NO;
+            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
+            
+            LoginViewController *controller = [LoginViewController new];
+            controller.delegate = self;
+            controller.isPresentedViewController = YES;
+            navigationController.viewControllers = @[controller];
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        }
     }
 }
 
@@ -687,10 +706,20 @@ static CGFloat rowHeight = 40;
 }
 
 #pragma mark - Login view delegate
+- (void)cancelLoginView {
+    doActionPriceAlert = NO;
+}
+
+- (void)userDidLogin:(id)sender {
+    if(doActionPriceAlert) {
+        doActionPriceAlert = NO;
+        [self actionAddNotificationPriceCatalog:nil];
+    }
+}
 
 - (void)redirectViewController:(id)viewController
 {
-    [self.navigationController pushViewController:viewController animated:YES];
+//    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Scroll view delegate

@@ -23,7 +23,8 @@
     lblDesc = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
     [viewContent addSubview:lblDesc];
     
-    
+    [viewContentRating addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)]];
+    [viewContentAction addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nothing:)]];
     imageProfile.layer.cornerRadius = imageProfile.bounds.size.height/2.0f;
     imageProfile.layer.masksToBounds = YES;
 }
@@ -37,7 +38,7 @@
 - (void)layoutSubviews
 {
     if(isProductCell) {
-        viewSeparatorProduct.frame = CGRectMake(CPaddingTopBottom, imageProfile.frame.origin.y+imageProfile.bounds.size.height+CPaddingTopBottom, lineSeparatorDesc.bounds.size.width, 1);
+        viewSeparatorProduct.frame = CGRectMake(CPaddingTopBottom, imageProfile.frame.origin.y+imageProfile.bounds.size.height+CPaddingTopBottom, self.bounds.size.width, 1);
         imageProduct.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + viewSeparatorProduct.frame.origin.y+viewSeparatorProduct.bounds.size.height, CheightImage, CheightImage);
         labelProductName.frame = CGRectMake(viewLabelUser.frame.origin.x, imageProduct.frame.origin.y, viewLabelUser.bounds.size.width, imageProduct.bounds.size.height);
         lblDesc.frame = CGRectMake(lblDesc.frame.origin.x, CPaddingTopBottom + imageProduct.frame.origin.y+imageProduct.bounds.size.height + CPaddingTopBottom, lblDesc.bounds.size.width, lblDesc.bounds.size.height);
@@ -45,7 +46,7 @@
     
     
     lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
-    viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, viewContent.bounds.size.width-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
+    viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
     lineSeparatorDesc.frame = CGRectMake(0, 0, viewContentRating.bounds.size.width, lineSeparatorDesc.bounds.size.height);
     
     lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, lineSeparatorDesc.frame.origin.y+lineSeparatorDesc.bounds.size.height+((viewContentRating.bounds.size.height-lblKualitas.bounds.size.height)/2.0f), lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
@@ -56,13 +57,19 @@
     
     
     //View content action
-    viewContentAction.frame = CGRectMake(0, viewContentRating.frame.origin.y+viewContentRating.bounds.size.height, viewContent.bounds.size.width, viewContentAction.isHidden?0:CHeightContentAction);
-    viewSeparatorKualitas.frame = CGRectMake(0, 0, viewContent.bounds.size.width, viewSeparatorKualitas.bounds.size.height);
+    viewContentAction.frame = CGRectMake(0, viewContentRating.frame.origin.y+viewContentRating.bounds.size.height, (self.bounds.size.width-(viewContent.frame.origin.x*2)), viewContentAction.isHidden?0:CHeightContentAction);
+    viewSeparatorKualitas.frame = CGRectMake(0, 0, (self.bounds.size.width-(viewContent.frame.origin.x*2)), viewSeparatorKualitas.bounds.size.height);
     btnLike.frame = CGRectMake(viewContentRating.frame.origin.x, viewSeparatorKualitas.frame.origin.y+viewSeparatorKualitas.bounds.size.height, btnLike.bounds.size.width, viewContentAction.bounds.size.height);
     btnDislike.frame = CGRectMake(btnLike.frame.origin.x+btnLike.bounds.size.width+3, btnLike.frame.origin.y, btnDislike.bounds.size.width, btnLike.bounds.size.height);
-    btnChat.frame = CGRectMake(viewContent.bounds.size.width-btnChat.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y+5, btnChat.bounds.size.width, btnChat.bounds.size.height);
+    btnChat.frame = CGRectMake((self.bounds.size.width-(viewContent.frame.origin.x*2))-btnChat.bounds.size.width-viewContentRating.frame.origin.x, btnLike.frame.origin.y+5, btnChat.bounds.size.width, btnChat.bounds.size.height);
     viewContent.frame = CGRectMake(viewContent.frame.origin.x, viewContent.frame.origin.y, self.contentView.bounds.size.width-(viewContent.frame.origin.x*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
     self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
+    
+    
+    if(! viewContentLoad.isHidden) {
+        viewContentLoad.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewContentLoad.bounds.size.height);
+        actLoading.frame = CGRectMake((viewContentLoad.bounds.size.width-actLoading.bounds.size.width)/2.0f, (viewContentLoad.bounds.size.height-actLoading.bounds.size.height)/2.0f, actLoading.bounds.size.width, actLoading.bounds.size.height);
+    }
 }
 
 
@@ -219,10 +226,14 @@
 - (void)setDescription:(NSString *)strDescription
 {
     [_delegate initLabelDesc:lblDesc withText:strDescription];
-    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + (isProductCell? imageProduct.frame.origin.y+imageProduct.bounds.size.height : imageProfile.frame.origin.y+imageProfile.bounds.size.height)+CPaddingTopBottom, viewContent.bounds.size.width-(imageProfile.frame.origin.x*2), 0);
+    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + (isProductCell? imageProduct.frame.origin.y+imageProduct.bounds.size.height : imageProfile.frame.origin.y+imageProfile.bounds.size.height)+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), 0);
     CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
     CGRect tempLblRect = lblDesc.frame;
     tempLblRect.size.height = tempSizeDesc.height;
     lblDesc.frame = tempLblRect;
+}
+
+- (void)nothing:(id)sender {
+
 }
 @end

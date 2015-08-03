@@ -545,7 +545,7 @@
         if (self.animation == CMPopTipAnimationSlide) {
             self.alpha = 0.0;
             if(_leftPopUp)
-                finalFrame.origin.x -= (targetView.bounds.size.width/2.5f);
+                finalFrame.origin.x -= (targetView.bounds.size.width/2.15f);
 
             CGRect startFrame = finalFrame;
             startFrame.origin.y += 10;

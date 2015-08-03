@@ -168,7 +168,6 @@ typedef enum TagRequest {
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
     _encodeDecodeManager = [EncodeDecoderManager new];
-    _noresult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
@@ -236,6 +235,15 @@ typedef enum TagRequest {
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Method
+- (NoResultView *)getNoResult {
+    if(_noresult == nil) {
+        _noresult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
+    }
+    
+    return _noresult;
 }
 
 #pragma mark - IBAction
@@ -314,7 +322,7 @@ typedef enum TagRequest {
     [_messages_selected removeAllObjects];
     if(_messages==nil || _messages.count==0) {
         _isnodata = YES;
-        _table.tableFooterView = _noresult;
+        _table.tableFooterView = [self getNoResult];
     }
     [_table endUpdates];
     
@@ -1052,7 +1060,7 @@ typedef enum TagRequest {
             _page = [[_networkManager splitUriToPage:_urinext] integerValue];
         } else {
             _isnodata = YES;
-            _table.tableFooterView = _noresult;
+            _table.tableFooterView = [self getNoResult];
         }
         
         if(_refreshControl.isRefreshing) {

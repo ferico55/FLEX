@@ -211,7 +211,17 @@
     }
     
     lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f", [review.result.advance_review.product_rating_point floatValue]];
-    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"%@ Review", review.result.advance_review.product_rating_point];
+    
+    
+    NSString *strReview = @"Review";
+    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"%d Review", [review.result.advance_review.product_rating_point intValue]];
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:lblDescTotalHeaderRating.font.pointSize];
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblDescTotalHeaderRating.textColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblDescTotalHeaderRating.font, NSFontAttributeName, lblDescTotalHeaderRating.textColor, NSForegroundColorAttributeName, nil];
+    
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:lblDescTotalHeaderRating.text attributes:attrs];
+    [attributedText setAttributes:subAttrs range:NSMakeRange(lblDescTotalHeaderRating.text.length-strReview.length, strReview.length)];
+    [lblDescTotalHeaderRating setAttributedText:attributedText];
 }
 
 
@@ -260,6 +270,7 @@
         NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductReputationCell" owner:nil options:0];
         cell = [tempArr objectAtIndex:0];
         cell.delegate = self;
+        cell.frame = CGRectMake(0, 0, self.view.bounds.size.width, cell.bounds.size.height);
         [self setPropertyLabelDesc:cell.getLabelDesc];
     }
     
@@ -737,7 +748,8 @@
                 totalLikeDislike.like_status = [NSString stringWithFormat:@"%d", likeDislikeTag];
 
                 //Reload UI
-                [tableContent reloadRowsAtIndexPaths:@[[loadingLikeDislike objectForKey:detailReputationReview.review_id]] withRowAnimation:UITableViewRowAnimationNone];
+                if([loadingLikeDislike objectForKey:detailReputationReview.review_id])
+                    [tableContent reloadRowsAtIndexPaths:@[[loadingLikeDislike objectForKey:detailReputationReview.review_id]] withRowAnimation:UITableViewRowAnimationNone];
             }
         }
         else {

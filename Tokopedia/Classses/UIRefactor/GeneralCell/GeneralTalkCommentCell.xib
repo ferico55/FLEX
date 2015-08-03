@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -21,29 +21,32 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="107"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="arr-7l-tfF">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="arr-7l-tfF">
                         <rect key="frame" x="15" y="10" width="50" height="50"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="O5U-3J-uQd"/>
+                            <constraint firstAttribute="height" constant="50" id="Wm5-lL-BK4"/>
+                        </constraints>
                     </imageView>
-                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_diskusi_report_grey.png" id="zzK-ok-yaY">
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_diskusi_report_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="zzK-ok-yaY">
                         <rect key="frame" x="300" y="8" width="15" height="15"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="KsI-Ar-FIO"/>
+                            <constraint firstAttribute="width" constant="15" id="p7l-S3-uRj"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ju3-7W-SNy">
-                        <rect key="frame" x="78" y="77" width="217" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <view contentMode="scaleToFill" id="Kqz-k7-A62" customClass="ViewLabelUser">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kqz-k7-A62" customClass="ViewLabelUser">
                         <rect key="frame" x="78" y="12" width="234" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="u2y-UN-RSE"/>
+                        </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="2sC-nI-h7Y">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2sC-nI-h7Y">
                         <rect key="frame" x="78" y="35" width="90" height="14"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="xPd-dO-vVQ"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <inset key="titleEdgeInsets" minX="3" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <state key="normal" title="0">
@@ -54,16 +57,42 @@
                             <action selector="actionSmile:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="cNg-Rx-zYH"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Dn-bB-6Dv">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Dn-bB-6Dv">
                         <rect key="frame" x="78" y="53" width="234" height="14"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="k6D-uz-sop"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ju3-7W-SNy">
+                        <rect key="frame" x="78" y="77" width="217" height="13"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <color key="tintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="Ju3-7W-SNy" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="00Z-18-0pP"/>
+                    <constraint firstItem="2sC-nI-h7Y" firstAttribute="top" secondItem="Kqz-k7-A62" secondAttribute="bottom" constant="2" id="5rq-tr-czw"/>
+                    <constraint firstItem="2sC-nI-h7Y" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="Bno-hZ-CTl"/>
+                    <constraint firstItem="Kqz-k7-A62" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="GK6-Bo-eUl"/>
+                    <constraint firstAttribute="trailing" secondItem="0Dn-bB-6Dv" secondAttribute="trailing" constant="8" id="Kil-Pu-4WM"/>
+                    <constraint firstItem="arr-7l-tfF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="OKi-h0-OA2"/>
+                    <constraint firstAttribute="trailing" secondItem="Kqz-k7-A62" secondAttribute="trailing" constant="8" id="QUz-qR-RW4"/>
+                    <constraint firstItem="zzK-ok-yaY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="UAE-wd-S3w"/>
+                    <constraint firstItem="0Dn-bB-6Dv" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="UjO-PY-iUF"/>
+                    <constraint firstAttribute="trailing" secondItem="2sC-nI-h7Y" secondAttribute="trailing" constant="152" id="VCI-ig-hqs"/>
+                    <constraint firstItem="Kqz-k7-A62" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="Wga-5U-aTh"/>
+                    <constraint firstAttribute="trailing" secondItem="Ju3-7W-SNy" secondAttribute="trailing" constant="25" id="Xxl-G7-KjL"/>
+                    <constraint firstItem="arr-7l-tfF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="hic-6u-o0E"/>
+                    <constraint firstItem="0Dn-bB-6Dv" firstAttribute="top" secondItem="2sC-nI-h7Y" secondAttribute="bottom" constant="4" id="ld1-WN-54j"/>
+                    <constraint firstItem="Ju3-7W-SNy" firstAttribute="top" secondItem="0Dn-bB-6Dv" secondAttribute="bottom" constant="10" id="mcs-xC-swV"/>
+                    <constraint firstAttribute="trailing" secondItem="zzK-ok-yaY" secondAttribute="trailing" constant="5" id="yQJ-eC-TXS"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>

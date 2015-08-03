@@ -17,11 +17,6 @@
 @implementation DetailStatisticViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [pieChart setStartPieAngle:M_PI_2];
-    [pieChart setAnimationSpeed:1.0];
-    [pieChart setLabelRadius:160];
-    [pieChart setPieBackgroundColor:[UIColor colorWithWhite:0.95 alpha:1]];
-    [pieChart setUserInteractionEnabled:NO];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
     
@@ -31,30 +26,6 @@
     [self resizeButtonContent:btn1Hari];
     [self resizeButtonContent:btn2Hari];
     [self resizeButtonContent:btn3Hari];
-    
-    CGRect rect = CGRectMake(0.0f, 0.0f, imgDescTrGagal.bounds.size.width, imgDescTrGagal.bounds.size.height);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[self pieChart:nil colorForSliceAtIndex:1] CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    imgDescTrGagal.image = image;
-    [imgDescTrGagal.layer setCornerRadius:imgDescTrGagal.bounds.size.width/2.0f];
-    imgDescTrGagal.layer.masksToBounds = YES;
-    
-    rect = CGRectMake(0.0f, 0.0f, imgDescTrGagal.bounds.size.width, imgDescTrGagal.bounds.size.height);
-    UIGraphicsBeginImageContext(rect.size);
-    context = UIGraphicsGetCurrentContext();
-    
-    
-    CGContextSetFillColorWithColor(context, [[self pieChart:nil colorForSliceAtIndex:0] CGColor]);
-    CGContextFillRect(context, rect);
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    imgDescTrSukses.image = image;
-    [imgDescTrSukses.layer setCornerRadius:imgDescTrSukses.bounds.size.width/2.0f];
-    imgDescTrSukses.layer.masksToBounds = YES;
     
     self.title = @"Statistik";
     [self setProgressHeader:0 withAnimate:NO];
@@ -203,63 +174,22 @@
                 viewPlot.hidden = YES;
             }
             else {
-                pieChart.delegate = self;
-                pieChart.dataSource = self;
-                [viewCenterPieChart.layer setCornerRadius:viewCenterPieChart.bounds.size.width/2.0f];
                 viewPlot.hidden = NO;
-                
-                
-                //Set Transaksi Gagal and success
-                NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
-                style.lineSpacing = 4.0f;
+                lblPercentageFooter.text = [NSString stringWithFormat:@"%.1f%%", _detailShopResult.stats.rate_success==nil||[_detailShopResult.stats.rate_success isEqualToString:@""]? 0:[_detailShopResult.stats.rate_success floatValue]];
 
-                lblTransaksiGagal.text = [NSString stringWithFormat:@"%d%% %@", (int)ceilf([_detailShopResult.stats.rate_failure floatValue]), CStringTransaksiGagal];
-                UIFont *boldFont = [UIFont boldSystemFontOfSize:lblTransaksiGagal.font.pointSize];
-                NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblTransaksiGagal.textColor, NSForegroundColorAttributeName, style, NSParagraphStyleAttributeName, nil];
-
-                NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblTransaksiGagal.font, NSFontAttributeName, [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
+                NSString *strDari = @"Dari ";
+                NSString *strTransaksi = @" Transaksi";
+                lblDescPercentageFooter.text = [NSString stringWithFormat:@"%@%@%@", strDari, _detailShopResult.stats.shop_total_transaction, strTransaksi];
                 
-                NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:lblTransaksiGagal.text attributes:attrs];
-                [attributedText setAttributes:subAttrs range:NSMakeRange(lblTransaksiGagal.text.length-CStringTransaksiGagal.length, CStringTransaksiGagal.length)];
-                [lblTransaksiGagal setAttributedText:attributedText];
-                
-                
-                lblTransaksiSukses.text = [NSString stringWithFormat:@"%d%% %@", (int)ceilf([_detailShopResult.stats.rate_success floatValue]), CStringTransaksiSuccess];
-                NSDictionary *attrss = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblTransaksiSukses.textColor, NSForegroundColorAttributeName, nil];
-                NSDictionary *subAttrss = [NSDictionary dictionaryWithObjectsAndKeys:lblTransaksiSukses.font, NSFontAttributeName, [UIColor lightGrayColor], NSForegroundColorAttributeName, nil];
-                
-                NSMutableAttributedString *attributedTexts = [[NSMutableAttributedString alloc] initWithString:lblTransaksiSukses.text attributes:attrss];
-                [attributedTexts setAttributes:subAttrss range:NSMakeRange(lblTransaksiSukses.text.length-CStringTransaksiSuccess.length, CStringTransaksiSuccess.length)];
-                [lblTransaksiSukses setAttributedText:attributedTexts];
-                [pieChart reloadData];
+                NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: lblDescPercentageFooter.font, NSFontAttributeName, lblDescPercentageFooter.textColor, NSForegroundColorAttributeName, nil];
+                UIFont *boldFont = [UIFont fontWithName:@"Gotham Medium" size:lblDescPercentageFooter.font.pointSize];
+                NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:boldFont, NSFontAttributeName, nil];
+                NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:lblDescPercentageFooter.text attributes:attrs];
+                [attributedText setAttributes:subAttrs range:NSMakeRange(strDari.length, lblDescPercentageFooter.text.length-strDari.length-strTransaksi.length)];
+                [lblDescPercentageFooter setAttributedText:attributedText];
             }
         }
             break;
     }
-}
-
-
-#pragma mark - PieChart Delegate
-- (NSUInteger)numberOfSlicesInPieChart:(XYPieChart *)pieChart {
-    return 2;
-}
-
-- (CGFloat)pieChart:(XYPieChart *)pieChart valueForSliceAtIndex:(NSUInteger)index {
-    if(index == 0)
-        return ceilf([_detailShopResult.stats.rate_success floatValue]);
-    else
-        return ceilf([_detailShopResult.stats.rate_failure floatValue]);
-}
-
-//Optional
-- (UIColor *)pieChart:(XYPieChart *)pieChart colorForSliceAtIndex:(NSUInteger)index {
-    if(index == 0)
-        return [UIColor colorWithRed:107/255.0f green:189/255.0f blue:44/255.0f alpha:1.0f];
-    else
-        return [UIColor colorWithRed:204/255.0f green:204/255.0f blue:204/255.0f alpha:1.0f];
-}
-
-- (NSString *)pieChart:(XYPieChart *)pieChart textForSliceAtIndex:(NSUInteger)index {
-    return @"";
 }
 @end

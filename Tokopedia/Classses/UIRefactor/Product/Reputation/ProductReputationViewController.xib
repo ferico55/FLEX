@@ -70,6 +70,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="clF-yT-74i">
                     <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yFq-R3-8ri">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="rns-Rt-Wp3"/>
+                            </constraints>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xj3-Ys-iZb">
                             <rect key="frame" x="0.0" y="0.0" width="160" height="50"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
@@ -108,13 +115,16 @@
                         <constraint firstItem="qq1-Gt-a3T" firstAttribute="height" secondItem="xj3-Ys-iZb" secondAttribute="height" id="3jD-Y5-gew"/>
                         <constraint firstItem="qq1-Gt-a3T" firstAttribute="top" secondItem="clF-yT-74i" secondAttribute="top" id="4FC-tG-C8E"/>
                         <constraint firstAttribute="bottom" secondItem="qq1-Gt-a3T" secondAttribute="bottom" id="7vE-y6-kNc"/>
+                        <constraint firstAttribute="trailing" secondItem="yFq-R3-8ri" secondAttribute="trailing" id="GDb-yb-len"/>
                         <constraint firstAttribute="height" constant="50" id="GqE-Gb-BO3"/>
                         <constraint firstItem="qq1-Gt-a3T" firstAttribute="leading" secondItem="f6x-pg-cag" secondAttribute="trailing" constant="-1" id="L51-ch-HsR"/>
                         <constraint firstAttribute="bottom" secondItem="xj3-Ys-iZb" secondAttribute="bottom" id="LoL-Re-tK9"/>
                         <constraint firstAttribute="trailing" secondItem="qq1-Gt-a3T" secondAttribute="trailing" id="P2o-Ft-c03"/>
                         <constraint firstItem="qq1-Gt-a3T" firstAttribute="width" secondItem="xj3-Ys-iZb" secondAttribute="width" id="WpJ-kT-N2r"/>
+                        <constraint firstItem="yFq-R3-8ri" firstAttribute="leading" secondItem="clF-yT-74i" secondAttribute="leading" id="f6s-cA-1Ri"/>
                         <constraint firstItem="f6x-pg-cag" firstAttribute="top" secondItem="clF-yT-74i" secondAttribute="top" constant="10" id="uiv-JK-one"/>
                         <constraint firstItem="xj3-Ys-iZb" firstAttribute="top" secondItem="clF-yT-74i" secondAttribute="top" id="w6d-N8-2Ht"/>
+                        <constraint firstItem="yFq-R3-8ri" firstAttribute="top" secondItem="clF-yT-74i" secondAttribute="top" id="wka-B9-bWg"/>
                     </constraints>
                 </view>
             </subviews>
@@ -203,7 +213,7 @@
                         <constraint firstAttribute="height" constant="16" id="2tB-q6-i3P"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dz7-Fp-eCW">

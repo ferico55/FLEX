@@ -49,6 +49,7 @@
                 <outlet property="btnShare" destination="Qan-1S-e2b" id="d6q-QY-yhy"/>
                 <outlet property="btnWishList" destination="NZQ-y3-gDO" id="gAx-eL-vnD"/>
                 <outlet property="buyButton" destination="WIw-3J-tyi" id="TUX-zM-sxE"/>
+                <outlet property="constraintHeightScrollOtherView" destination="Om9-tO-DpT" id="tId-Ev-rjA"/>
                 <outlet property="constraintHeightWarehouse" destination="2Ni-Wu-pXy" id="XMg-fu-nGS"/>
                 <outlet property="countsoldlabel" destination="O6i-hV-fyZ" id="9HR-2B-nKs"/>
                 <outlet property="countviewlabel" destination="Y8i-ea-qzA" id="WoE-BC-n3Y"/>
@@ -247,7 +248,6 @@
                             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="249" id="MrQ-UH-87W"/>
-                                <constraint firstAttribute="width" constant="320" id="y1O-rm-fQx"/>
                             </constraints>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="Y0n-ii-TgK"/>
@@ -611,7 +611,6 @@
                         <constraint firstItem="hsX-QI-9sF" firstAttribute="leading" secondItem="7az-US-WYX" secondAttribute="leading" constant="1" id="Gw8-om-aO5"/>
                         <constraint firstItem="H1h-3a-FsP" firstAttribute="bottom" secondItem="DQy-5R-3v9" secondAttribute="bottom" id="LDO-wb-Dqg"/>
                         <constraint firstItem="DQy-5R-3v9" firstAttribute="leading" secondItem="7az-US-WYX" secondAttribute="leading" id="Q6g-Mx-pT4"/>
-                        <constraint firstItem="DQy-5R-3v9" firstAttribute="leading" secondItem="7az-US-WYX" secondAttribute="leading" id="Qxb-Nf-AhV"/>
                         <constraint firstItem="klK-p8-rjh" firstAttribute="leading" secondItem="7az-US-WYX" secondAttribute="leading" constant="15" id="Uz7-Wd-Y4X"/>
                         <constraint firstItem="SRB-JI-Dmb" firstAttribute="leading" secondItem="O6i-hV-fyZ" secondAttribute="trailing" constant="5" id="a0n-YA-zVK"/>
                         <constraint firstItem="APb-x3-lmz" firstAttribute="centerY" secondItem="DQy-5R-3v9" secondAttribute="centerY" id="ayo-ht-imx"/>
@@ -821,6 +820,7 @@
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="8vh-UP-jfQ" secondAttribute="centerY" id="8AT-kp-6zX"/>
                         <constraint firstAttribute="centerX" secondItem="8vh-UP-jfQ" secondAttribute="centerX" id="Bio-F2-NPu"/>
+                        <constraint firstAttribute="height" constant="190" id="Om9-tO-DpT"/>
                         <constraint firstAttribute="bottom" secondItem="8vh-UP-jfQ" secondAttribute="bottom" id="UVL-fC-iSN"/>
                         <constraint firstAttribute="trailing" secondItem="8vh-UP-jfQ" secondAttribute="trailing" id="tjL-FS-ueM"/>
                     </constraints>
@@ -861,26 +861,52 @@
         <view contentMode="scaleToFill" id="P75-Lv-uni" userLabel="OtherProductView" customClass="DetailProductOtherView">
             <rect key="frame" x="0.0" y="0.0" width="148" height="181"/>
             <subviews>
-                <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thumb_product.png" translatesAutoresizingMaskIntoConstraints="NO" id="Whf-o7-mYJ">
+                <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumb_product.png" translatesAutoresizingMaskIntoConstraints="NO" id="Whf-o7-mYJ">
                     <rect key="frame" x="0.0" y="0.0" width="148" height="145"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="145" id="dtW-fB-7nV"/>
+                    </constraints>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Va7-Ts-UVQ">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5e-TV-sDK">
+                    <rect key="frame" x="6" y="148" width="133" height="19"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="19" id="HoB-iz-hAh"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Va7-Ts-UVQ">
                     <rect key="frame" x="6" y="164" width="103" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="mSO-u3-z7Z"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5e-TV-sDK">
-                    <rect key="frame" x="6" y="148" width="133" height="19"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <activityIndicatorView opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oaW-ZO-G2a">
-                    <rect key="frame" x="62" y="51" width="20" height="20"/>
+                <activityIndicatorView opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oaW-ZO-G2a">
+                    <rect key="frame" x="64" y="63" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="B7d-RN-k72"/>
+                        <constraint firstAttribute="height" constant="20" id="WZG-GG-ZMu"/>
+                    </constraints>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="Va7-Ts-UVQ" firstAttribute="leading" secondItem="P75-Lv-uni" secondAttribute="leading" constant="6" id="80Z-nU-Zy7"/>
+                <constraint firstAttribute="trailing" secondItem="Whf-o7-mYJ" secondAttribute="trailing" id="9fS-y6-M9a"/>
+                <constraint firstItem="Q5e-TV-sDK" firstAttribute="top" secondItem="Whf-o7-mYJ" secondAttribute="bottom" constant="3" id="FCZ-oX-n44"/>
+                <constraint firstItem="Va7-Ts-UVQ" firstAttribute="top" secondItem="Q5e-TV-sDK" secondAttribute="bottom" constant="-3" id="Thw-eZ-uv0"/>
+                <constraint firstAttribute="trailing" secondItem="Va7-Ts-UVQ" secondAttribute="trailing" constant="39" id="bAx-4r-WQc"/>
+                <constraint firstItem="oaW-ZO-G2a" firstAttribute="centerX" secondItem="Whf-o7-mYJ" secondAttribute="centerX" id="bd1-Rk-zXp"/>
+                <constraint firstItem="oaW-ZO-G2a" firstAttribute="centerY" secondItem="Whf-o7-mYJ" secondAttribute="centerY" id="h5z-Gk-RcO"/>
+                <constraint firstItem="Q5e-TV-sDK" firstAttribute="leading" secondItem="P75-Lv-uni" secondAttribute="leading" constant="6" id="j2n-su-NGy"/>
+                <constraint firstItem="Whf-o7-mYJ" firstAttribute="top" secondItem="P75-Lv-uni" secondAttribute="top" id="l1K-2S-lNH"/>
+                <constraint firstAttribute="trailing" secondItem="Q5e-TV-sDK" secondAttribute="trailing" constant="9" id="ndB-If-dQf"/>
+                <constraint firstItem="Whf-o7-mYJ" firstAttribute="leading" secondItem="P75-Lv-uni" secondAttribute="leading" id="xFj-1m-I6m"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

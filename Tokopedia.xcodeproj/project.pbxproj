@@ -45,7 +45,6 @@
 		85C82AED1B6B6B8C00E40481 /* UIKitCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C820171B6B6B8100E40481 /* UIKitCategory.m */; };
 		85C82AEE1B6B6B8C00E40481 /* UITextView+UITextView_Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C820191B6B6B8100E40481 /* UITextView+UITextView_Placeholder.m */; };
 		85C82AEF1B6B6B8C00E40481 /* ViewLabelUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C8201B1B6B6B8100E40481 /* ViewLabelUser.m */; };
-		85C82AF01B6B6B8C00E40481 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C8201D1B6B6B8100E40481 /* XYPieChart.m */; };
 		85C82AF11B6B6B8C00E40481 /* EncodeDecoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C820201B6B6B8100E40481 /* EncodeDecoderManager.m */; };
 		85C82AF21B6B6B8C00E40481 /* public_key.der in Resources */ = {isa = PBXBuildFile; fileRef = 85C820211B6B6B8100E40481 /* public_key.der */; };
 		85C82AF31B6B6B8C00E40481 /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C820231B6B6B8100E40481 /* RSA.m */; };
@@ -1822,8 +1821,6 @@
 		85C820191B6B6B8100E40481 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
 		85C8201A1B6B6B8100E40481 /* ViewLabelUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewLabelUser.h; sourceTree = "<group>"; };
 		85C8201B1B6B6B8100E40481 /* ViewLabelUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewLabelUser.m; sourceTree = "<group>"; };
-		85C8201C1B6B6B8100E40481 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
-		85C8201D1B6B6B8100E40481 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		85C8201F1B6B6B8100E40481 /* EncodeDecoderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncodeDecoderManager.h; sourceTree = "<group>"; };
 		85C820201B6B6B8100E40481 /* EncodeDecoderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncodeDecoderManager.m; sourceTree = "<group>"; };
 		85C820211B6B6B8100E40481 /* public_key.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = public_key.der; sourceTree = "<group>"; };
@@ -4487,8 +4484,6 @@
 				85C820191B6B6B8100E40481 /* UITextView+UITextView_Placeholder.m */,
 				85C8201A1B6B6B8100E40481 /* ViewLabelUser.h */,
 				85C8201B1B6B6B8100E40481 /* ViewLabelUser.m */,
-				85C8201C1B6B6B8100E40481 /* XYPieChart.h */,
-				85C8201D1B6B6B8100E40481 /* XYPieChart.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -10657,7 +10652,6 @@
 				85C82C2C1B6B6B8D00E40481 /* TransactionCalculatePriceResult.m in Sources */,
 				85C82D0F1B6B6B8D00E40481 /* RedirectHandler.m in Sources */,
 				85C82CA41B6B6B8D00E40481 /* CatalogProductViewController.m in Sources */,
-				85C82AF01B6B6B8C00E40481 /* XYPieChart.m in Sources */,
 				85C82E021B6B6B8D00E40481 /* BarCodeViewController.m in Sources */,
 				85C82C0F1B6B6B8C00E40481 /* ShopSettings.m in Sources */,
 				85C82B581B6B6B8C00E40481 /* InboxMessageResult.m in Sources */,
