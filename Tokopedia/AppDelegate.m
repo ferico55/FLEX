@@ -33,6 +33,21 @@
     [_window makeKeyAndVisible];
     
     dispatch_async(dispatch_get_main_queue(), ^{
+        //GTM init
+        _tagManager = [TAGManager instance];
+        [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
+        
+        NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+        if(url != nil) {
+            [_tagManager previewWithUrl:url];
+        }
+        
+        [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
+                                     tagManager:self.tagManager
+                                       openType:kTAGOpenTypePreferFresh
+                                        timeout:nil
+                                       notifier:self];
+        
         //appsflyer init
         [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
         [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
@@ -98,8 +113,13 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
+    if([sourceApplication isEqualToString:@"com.facebook.Facebook"]) {
+        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    } else if ([self.tagManager previewWithUrl:url]) {
+        return YES;
+    }
     
-    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    return NO;
 }
 
 
@@ -120,4 +140,9 @@
     }
 }
 
+- (void)containerAvailable:(TAGContainer *)container {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.container = container;
+    });
+}
 @end

@@ -24,6 +24,8 @@
 #import "ReportViewController.h"
 #import "NoResultView.h"
 
+#import "TAGDataLayer.h"
+
 @interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate, ReportViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *reviewFooter;
@@ -82,6 +84,14 @@
     ReportViewController *_reportController;
     NSString *_reportedReviewId;
     NoResultView *_noResult;
+    TAGContainer *_gtmContainer;
+    
+    //GTM
+    NSString *_inboxReviewBaseUrl;
+    NSString *_inboxReviewPostUrl;
+    NSString *_inboxReviewFullUrl;
+    
+    NSIndexPath *_selectedDetailIndexPath;
 }
 
 #pragma mark - Initialization
@@ -160,7 +170,8 @@
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
     _reviews = [NSMutableArray new];
     _reviewPage = 1;
@@ -175,11 +186,16 @@
         _isNoData = NO;
     }
     
+    //GTM
+    [self configureGTM];
+    
     [self initNavigationBar];
     [self initRefreshControl];
     [self initNotificationCenter];
     [self initCache];
     [self configureRestkit];
+    
+
     
     if(_reviewPage == 1) {
         _isLoadFromCache = YES;
@@ -204,7 +220,6 @@
             [self loadData];
         }
     }
-   
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -235,6 +250,7 @@
             
             ((GeneralReviewCell*)cell).timelabel.text = [list.review_create_time isEqualToString:@"0"] ? @"" : list.review_create_time;
             ((GeneralReviewCell*)cell).data = list;
+            ((GeneralReviewCell*)cell).detailVC = _detailViewController;
             
 //            ((GeneralReviewCell*)cell).contentReview.layer.borderColor = [UIColor lightGrayColor].CGColor;
 //            ((GeneralReviewCell*)cell).contentReview.layer.borderWidth = 1.0f;
@@ -251,6 +267,7 @@
                 [((GeneralReviewCell*)cell).unreadIcon setHidden:YES];
             }
             
+            ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
             //edit button visibility
             if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
@@ -259,11 +276,18 @@
             }
             
             
-            
             if ([list.review_is_skipable isEqualToString:@"1"]) {
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = NO;
+                ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = YES;
+                CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
+                newFrame.origin.x = 0;
+                ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
             } else {
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = YES;
+                ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = YES;
+                CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
+                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
+                ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
             }
             
             //report button visibility
@@ -275,6 +299,18 @@
                 ((GeneralReviewCell*)cell).reportReviewButton.hidden = NO;
             } else {
                 ((GeneralReviewCell*)cell).reportReviewButton.hidden = YES;
+            }
+            
+            if (((GeneralReviewCell*)cell).reportReviewButton.hidden && ((GeneralReviewCell*)cell).editReviewButton) {
+                CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
+                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
+                ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
+            }
+            else
+            {
+                CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
+                newFrame.origin.x = 0;
+                ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
             }
             
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
@@ -308,7 +344,6 @@
             if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
                 ((GeneralReviewCell *)cell).commentView.hidden = YES;
-                
             } else {
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
                 ((GeneralReviewCell *)cell).commentView.hidden = NO;
@@ -389,8 +424,13 @@
 
 #pragma mark - Request + Restkit Init
 - (void)configureRestkit {
-    _objectManager = [RKObjectManager sharedClient];
-    
+//    _objectManager = [RKObjectManager sharedClient];
+    if([_inboxReviewBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxReviewBaseUrl isEqualToString:@""]) {
+        _objectManager = [RKObjectManager sharedClient];
+    } else {
+        _objectManager = [RKObjectManager sharedClient:_inboxReviewBaseUrl];
+    }
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxReview class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -461,7 +501,7 @@
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:INBOX_REVIEW_API_PATH
+                                                                                             pathPattern:[_inboxReviewPostUrl isEqualToString:@""] ? INBOX_REVIEW_API_PATH : _inboxReviewPostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
@@ -475,7 +515,7 @@
     //TODO::change this param later
     NSDictionary* param = @{
                             ACTION_API_KEY:GET_INBOX_REVIEW,
-                            NAV_API_KEY : [_data objectForKey:@"nav"],
+                            NAV_API_KEY : [_data objectForKey:@"nav"]?:@"",
                             LIMIT_API_KEY:INBOX_REVIEW_LIMIT_VALUE,
                             PAGE_API_KEY:@(_reviewPage),
                             FILTER_API_KEY:_readStatus?_readStatus:@"",
@@ -485,7 +525,7 @@
     _requestCount++;
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:INBOX_REVIEW_API_PATH
+                                                                      path:[_inboxReviewPostUrl isEqualToString:@""] ? INBOX_REVIEW_API_PATH : _inboxReviewPostUrl
                                                                 parameters:[param encrypt]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
@@ -586,6 +626,12 @@
         }
         
         if(_reviews.count > 0) {
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _reviewPage<=1) {
+                NSInteger row = _selectedDetailIndexPath.row?:0;
+                InboxReviewList *list = _reviews[row];
+                [_detailViewController replaceDataSelected:list];
+            }
+            
             _isNoData = NO;
             _uriNextPage =  reviewObject.result.paging.uri_next;
             NSURL *url = [NSURL URLWithString:_uriNextPage];
@@ -611,6 +657,7 @@
             _isNoData = YES;
             _reviewTable.tableFooterView = _noResult;
         }
+
     }
 }
 
@@ -688,21 +735,29 @@
 }
 
 -(void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    DetailReviewViewController *vc = [DetailReviewViewController new];
-    NSInteger row = indexpath.row;
+    _selectedDetailIndexPath = indexpath;
     
+    NSInteger row = indexpath.row;
     InboxReviewList *list = _reviews[row];
     list.review_read_status = @"2";
-    [_reviewTable reloadData];
     
-    vc.data = list;
-    vc.is_owner = list.review_is_owner;
-    vc.indexPath = indexpath;
-    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
-    
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [_detailViewController replaceDataSelected:list];
+    }
+    else
+    {
+        DetailReviewViewController *vc = [DetailReviewViewController new];
+        
+        [_reviewTable reloadData];
+        
+        vc.data = list;
+        vc.is_owner = list.review_is_owner;
+        vc.indexPath = indexpath;
+        vc.index = [NSString stringWithFormat:@"%zd",row];
+        
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
 }
 
@@ -720,6 +775,17 @@
     _reportedReviewId = review.review_id;
     _reportController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:_reportController animated:YES];
+}
+
+-(void)tapAtIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedDetailIndexPath = indexPath;
+    NSInteger row = indexPath.row;
+    InboxReviewList *list = _reviews[row];
+    list.review_read_status = @"2";
+    
+    [_detailViewController replaceDataSelected:list];
+    [_reviewTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 #pragma mark - Report Delegate
@@ -882,6 +948,18 @@
 
 - (void)cancel {
     
+}
+
+//GTM
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _inboxReviewBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxReviewBase];
+    _inboxReviewPostUrl = [_gtmContainer stringForKey:GTMKeyInboxReviewPost];
 }
 
 @end

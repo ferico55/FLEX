@@ -20,7 +20,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
 @property (strong, nonatomic) IBOutlet UIView *stickyTab;
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UITableView *table;
 
 @end
 
@@ -38,9 +38,8 @@
     _userHeader.delegate = self;
     _userHeader.data = _data;
 
-    
     _header = _userHeader.view;
-    _table.tableHeaderView = _header;
+    //_table.tableHeaderView = _header;
     _table.tableFooterView = _footer;
     _table.delegate = self;
     
@@ -89,6 +88,9 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return 205;
+    }
     return 40;
 }
 
@@ -101,7 +103,7 @@
     if (!_isnodatashop) {
         if (indexPath.section == 0) {
             //height shop
-            return 130;
+            return 170;
         }
         else
             //height biodata
@@ -130,6 +132,7 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width, 40)];
     titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
     if(section == 0 ) {
+        return _header;
         if(_profile.result.shop_info) {
             titleLabel.text = kTKPDTITLE_SHOP_INFO;
             [headerView addSubview:titleLabel];
@@ -245,9 +248,9 @@
 #pragma mark - Method
 - (void)actionGoToUserProfile:(id)sender
 {
-    //    if(self.navigationController.viewControllers.count > 1) {
-    //        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3] animated:YES];
-    //    }
+//        if(self.navigationController.viewControllers.count > 1) {
+//            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3] animated:YES];
+//        }
 }
 
 #pragma mark - Cell Delegate

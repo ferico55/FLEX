@@ -25,6 +25,8 @@
 #import "URLCacheController.h"
 #import "NoResultView.h"
 #import "DetailProductViewController.h"
+#import "TAGDataLayer.h"
+
 
 @interface InboxTalkViewController ()
 <
@@ -86,6 +88,9 @@
     NSOperationQueue *_operationUnfollowQueue;
     NSOperationQueue *_operationDeleteQueue;
     
+    NSString *_inboxTalkBaseUrl;
+    NSString *_inboxTalkPostUrl;
+    NSString *_inboxTalkFullUrl;
     
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
@@ -94,7 +99,9 @@
     
     NSIndexPath *_selectedIndexPath;
     NoResultView *_noResultView;
-    
+    TAGContainer *_gtmContainer;
+    UserAuthentificationManager *_userManager;
+    NSIndexPath *_selectedDetailIndexPath;
 }
 
 #pragma mark - Initialization
@@ -152,6 +159,7 @@
     _operationDeleteQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
     _talkList = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
     _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
@@ -166,8 +174,9 @@
     if (_talkList.count > 0) {
         _isnodata = NO;
     }
+    // GTM
+    [self configureGTM];
     
-
     [self initCache];
     [self configureRestKit];
     
@@ -267,6 +276,7 @@
             
           
             [((GeneralTalkCell*)cell).userButton setLabelBackground:list.talk_user_label];
+
             
             if(list.talk_follow_status == 1 && ![list.talk_own isEqualToString:@"1"]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
@@ -278,12 +288,16 @@
                 [((GeneralTalkCell *)cell) setTalkFollowStatus:YES];
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                
-                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 75;
-                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                 [((GeneralTalkCell *)cell) setTalkFollowStatus:NO];
+                
+
+                
+                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                newFrame.origin.x = (((GeneralTalkCell*)cell).frame.size.width-newFrame.size.width)/2;
+                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
+
             }
             
             if([list.talk_read_status isEqualToString:@"1"]) {
@@ -303,15 +317,11 @@
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
 
-            if(! [list.talk_own isEqualToString:@"1"]) {
-                if([list.talk_product_status isEqualToString:@"0"]) {
-                    CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                    newFrame.origin.x = 75;
-                    ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
-                    ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
-                    ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                }
-            }
+//            if([list.talk_product_status isEqualToString:@"0"]) {
+//                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
+//            } else {
+//                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
+//            }
             
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
@@ -358,7 +368,14 @@
 #pragma mark - Request + Mapping
 - (void)configureRestKit
 {
-    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  ![_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxTalkBaseUrl]:[RKObjectManager sharedClient];
+    if([_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxTalkBaseUrl isEqualToString:@""]) {
+        _objectmanager = [RKObjectManager sharedClient];
+    } else {
+        _objectmanager = [RKObjectManager sharedClient:_inboxTalkBaseUrl];
+    }
+    
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
@@ -408,7 +425,7 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDINBOX_TALK_APIPATH
+                                                                                             pathPattern:[_inboxTalkPostUrl isEqualToString:@""] ? KTKPDMESSAGE_TALK : _inboxTalkPostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -468,7 +485,7 @@
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:KTKPDMESSAGE_TALK
+                                                                      path:[_inboxTalkPostUrl isEqualToString:@""] ? KTKPDMESSAGE_TALK : _inboxTalkPostUrl
                                                                 parameters:[param encrypt]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
@@ -523,7 +540,31 @@
             }
             
             
-            if (_talkList.count >0) {
+            if (_talkList.count >0)
+            {
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _talkListPage<=1) {
+                    NSInteger selectedIndex = _selectedDetailIndexPath.row?:0;
+                    if(selectedIndex >= _talkList.count)return;
+                    TalkList *list = _talkList[selectedIndex];
+                    NSDictionary *data = @{
+                                           TKPD_TALK_MESSAGE:list.talk_message?:@0,
+                                           TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
+                                           TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
+                                           TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
+                                           TKPD_TALK_ID:list.talk_id?:@0,
+                                           TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id],
+                                           TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
+                                           kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
+                                           TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
+                                           TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
+                                           kTKPDDETAIL_DATAINDEXKEY : @(selectedIndex)?:@0,
+                                           TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
+                                           TKPD_TALK_PRODUCT_STATUS:list.talk_product_status
+                                           };
+                    [_detailViewController replaceDataSelected:data];
+                }
+
+                
                 _isnodata = NO;
                 _urinext =  inboxtalk.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
@@ -546,7 +587,7 @@
                 
             } else {
                 _isnodata = YES;
-                _table.tableFooterView = _noResultView;
+                _table.tableFooterView = _noResultView.view;
             }
         }
         else{
@@ -564,13 +605,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = _noResultView;
+                    _table.tableFooterView = _noResultView.view;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = _noResultView;
+                _table.tableFooterView = _noResultView.view;
             }
         }
     }
@@ -590,17 +631,20 @@
 
 #pragma mark - General Talk Delegate
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
+    
+    _selectedDetailIndexPath
+    = indexpath;
+    
     NSInteger row = indexpath.row;
     TalkList *list = _talkList[row];
     
-    vc.data = @{
+    NSDictionary *data = @{
                 TKPD_TALK_MESSAGE:list.talk_message?:@0,
                 TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
                 TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
                 TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
                 TKPD_TALK_ID:list.talk_id?:@0,
-                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id],
+                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id],
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
@@ -615,9 +659,20 @@
     userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(row)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        if (![data isEqualToDictionary:_detailViewController.data]) {
+            [_detailViewController replaceDataSelected:data];
+        }
+    }
+    else
+    {
+        ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
+        vc.data = data;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 //    DetailProductViewController *vc = [DetailProductViewController new];
 //    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : @"11957147"};
-    [self.navigationController pushViewController:vc animated:YES];
     
 }
 
@@ -870,7 +925,7 @@
 - (void)updateUnreadTalk : (NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-    
+    if(index >= _talkList.count) return;
     TalkList *list = _talkList[index];
     list.talk_read_status = @"2";
     [_table reloadData];
@@ -915,6 +970,17 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _inboxTalkBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkBase];
+    _inboxTalkPostUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkPost];
 }
 
 @end

@@ -43,6 +43,8 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 
+#import "RetryCollectionReusableView.h"
+
 #import "NoResult.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -96,6 +98,7 @@ TokopediaNetworkManagerDelegate
     BOOL _iseditmode;
     
     NSInteger _page;
+    NSInteger _tmpPage;
     NSInteger _limit;
     NSInteger _viewposition;
     
@@ -103,17 +106,14 @@ TokopediaNetworkManagerDelegate
     NSMutableDictionary *_detailfilter;
     NSMutableArray *_departmenttree;
     
-    NSString *_uriNext;
     NSString *_talkNavigationFlag;
     
     UIRefreshControl *_refreshControl;
-    NSInteger _requestCount;
     NSInteger _requestUnfollowCount;
     NSInteger _requestDeleteCount;
     
     NSTimer *_timer;
     UISearchBar *_searchbar;
-    NSString *_keyword;
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     SearchItem *_searchitem;
@@ -143,15 +143,17 @@ TokopediaNetworkManagerDelegate
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     NSMutableArray *_product;
+    NSArray *_tmpProduct;
     Shop *_shop;
     NoResultView *_noResult;
-        NSString *_nextPageUri;
+    NSString *_nextPageUri;
+    NSString *_tmpNextPageUri;
     
     BOOL _navigationBarIsAnimating;
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
-    
+
     BOOL _isFailRequest;
 }
 
@@ -330,8 +332,8 @@ TokopediaNetworkManagerDelegate
     
     if(kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
-            _isFailRequest = !_isFailRequest;
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+            ((RetryCollectionReusableView*)reusableView).delegate = self;
         } else {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }
@@ -448,6 +450,9 @@ TokopediaNetworkManagerDelegate
     /** clear object **/
     _page = 1;
     _isrefreshview = YES;
+    [_refreshControl beginRefreshing];
+    [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    
     [_networkManager doRequest];
 }
 
@@ -497,8 +502,7 @@ TokopediaNetworkManagerDelegate
     }
     
     CGPoint cgpoint = CGPointMake(0, ypos);
-    //_table.contentOffset = cgpoint;
-    
+    _collectionView.contentOffset = cgpoint;
 }
 
 #pragma mark - SearchBar Delegate
@@ -515,18 +519,32 @@ TokopediaNetworkManagerDelegate
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
     [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
-    
+
+    _tmpProduct = [NSArray arrayWithArray:_product];
     [_product removeAllObjects];
+
     [_collectionView reloadData];
+
+    _tmpNextPageUri = _nextPageUri;
+    _tmpPage = _page;
+    
     _page = 1;
-    _requestCount = 0;
+    
     _isrefreshview = YES;
+    
     [_networkManager doRequest];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
     searchBar.showsCancelButton = NO;
+    [_noResult removeFromSuperview];
+    _product = [NSMutableArray arrayWithArray:_tmpProduct];
+    _nextPageUri = _tmpNextPageUri;
+    _page = _tmpPage;
+    _isrefreshview = YES;
+    [_detailfilter setObject:@"" forKey:kTKPDDETAIL_DATAQUERYKEY];
+    [self.collectionView reloadData];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -562,6 +580,7 @@ TokopediaNetworkManagerDelegate
                 MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
                 //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
@@ -667,10 +686,6 @@ TokopediaNetworkManagerDelegate
 - (void)keyboardWillShow:(NSNotification *)info {
     _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
     _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-    
-    CGPoint cgpoint = CGPointMake(0, _keyboardSize.height);
-    //_table.contentOffset = cgpoint;
-    
     NSDictionary* keyboardInfo = [info userInfo];
     NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
@@ -828,7 +843,7 @@ TokopediaNetworkManagerDelegate
         _nextPageUri =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
-        if(_nextPageUri!=nil && [_nextPageUri isEqualToString:@"0"]) {
+        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
             //remove loadingview if there is no more item
             [_flowLayout setFooterReferenceSize:CGSizeZero];
         }

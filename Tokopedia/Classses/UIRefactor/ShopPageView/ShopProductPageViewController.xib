@@ -19,7 +19,7 @@
                 <outlet property="changeGridButton" destination="XQ1-7n-awT" id="ahx-mh-YgO"/>
                 <outlet property="collectionView" destination="5EI-FS-xn5" id="DA3-bh-aLB"/>
                 <outlet property="fakeStickyTab" destination="MRz-8B-iSx" id="yxf-Or-Mcx"/>
-                <outlet property="flowLayout" destination="O0b-PL-j9s" id="ecr-mj-oCE"/>
+                <outlet property="flowLayout" destination="O0b-PL-j9s" id="1nn-db-p20"/>
                 <outlet property="footer" destination="6N7-Wf-YM3" id="NGF-gE-l5z"/>
                 <outlet property="header" destination="GPk-s2-Kf1" id="je3-HS-vso"/>
                 <outlet property="view" destination="56G-bC-GIm" id="XbP-S1-RtX"/>

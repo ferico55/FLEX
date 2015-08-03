@@ -42,16 +42,12 @@
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="lI5-xt-RJP">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="52J-MN-RDd"/>
-                        <constraint firstAttribute="width" constant="20" id="bvB-wy-TYr"/>
-                    </constraints>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="lI5-xt-RJP" secondAttribute="centerX" id="PNx-iT-jEa"/>
-                <constraint firstItem="lI5-xt-RJP" firstAttribute="top" secondItem="SPu-YJ-oxh" secondAttribute="top" constant="7" id="xvC-fa-nKE"/>
+                <constraint firstAttribute="centerX" secondItem="lI5-xt-RJP" secondAttribute="centerX" id="Mjp-mg-pOr"/>
+                <constraint firstAttribute="centerY" secondItem="lI5-xt-RJP" secondAttribute="centerY" id="RgK-w6-MVx"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

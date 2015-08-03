@@ -12,7 +12,6 @@
 #import "GeneralAction.h"
 #import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
-#import "ProductTalkCell.h"
 #import "ProductTalkDetailViewController.h"
 #import "ProductTalkFormViewController.h"
 #import "TKPDSecureStorage.h"
@@ -124,7 +123,7 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _table.tableHeaderView = _header;
     
@@ -270,8 +269,9 @@
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                 
+                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 75;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralTalkCell*)cell).commentbutton.frame.size.width) / 2;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             
@@ -861,6 +861,7 @@
 -(void) updateTotalComment:(NSNotification*)notification{
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    if(index > _list.count) return;
     
     TalkList *list = _list[index];
     list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];

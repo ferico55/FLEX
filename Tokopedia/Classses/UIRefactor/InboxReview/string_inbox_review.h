@@ -50,4 +50,7 @@
 #define STATE_PRODUCT_DELETED @"0"
 #define STATE_PRODUCT_BANNED @"-2"
 
+#define REVIEW_ID_API_KEY       @"review_id"
+#define SHOW_DIALOG_RATE_API_KEY    @"show_dialog_rate"
+
 #endif

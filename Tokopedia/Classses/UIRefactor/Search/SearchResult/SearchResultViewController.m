@@ -13,8 +13,9 @@
 
 #import "SearchItem.h"
 #import "SearchRedirect.h"
-#import "DepartmentTree.h"
+#import "List.h"
 #import "Paging.h"
+#import "DepartmentTree.h"
 
 #import "DetailProductViewController.h"
 #import "CatalogViewController.h"
@@ -23,11 +24,16 @@
 #import "SearchResultViewController.h"
 #import "SortViewController.h"
 #import "FilterViewController.h"
-
 #import "HotlistResultViewController.h"
 #import "TKPDTabNavigationController.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+
+#import "URLCacheController.h"
+#import "GeneralPhotoProductCell.h"
+#import "GeneralSingleProductCell.h"
+
+#import "TAGDataLayer.h"
 
 #import "ProductCell.h"
 #import "ProductSingleViewCell.h"
@@ -37,18 +43,24 @@
 
 #pragma mark - Search Result View Controller
 
-typedef NS_ENUM(NSInteger, TKPTableCellType) {
-    TKPTableCellTypeOneColumn,
-    TKPTableCellTypeTwoColumn,
-    TKPTableCellTypeThreeColumn,
+typedef NS_ENUM(NSInteger, UITableViewCellType) {
+    UITableViewCellTypeOneColumn,
+    UITableViewCellTypeTwoColumn,
+    UITableViewCellTypeThreeColumn,
 };
 
 @interface SearchResultViewController ()
 <
+UITableViewDataSource,
+UITableViewDelegate,
+GeneralProductCellDelegate,
 TKPDTabNavigationControllerDelegate,
 SortViewControllerDelegate,
 FilterViewControllerDelegate,
+GeneralPhotoProductDelegate,
+GeneralSingleProductDelegate,
 TokopediaNetworkManagerDelegate,
+LoadingViewDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout
@@ -56,15 +68,23 @@ UICollectionViewDelegateFlowLayout
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIView *catalogproductview;
 
 @property (strong, nonatomic) NSMutableArray *product;
-@property (nonatomic) TKPTableCellType cellType;
+@property (nonatomic) UITableViewCellType cellType;
 
+//toolbar view without share button
 @property (weak, nonatomic) IBOutlet UIView *toolbarView;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
+-(void)cancel;
+-(void)request;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
 
 @end
 
@@ -96,6 +116,13 @@ UICollectionViewDelegateFlowLayout
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    UserAuthentificationManager *_userManager;
+    TAGContainer *_gtmContainer;
+    NoResultView *_noResultView;
+    
+    NSString *_searchBaseUrl;
+    NSString *_searchPostUrl;
+    NSString *_searchFullUrl;
     
     BOOL _isFailRequest;
 }
@@ -117,6 +144,7 @@ UICollectionViewDelegateFlowLayout
     [super viewDidDisappear:animated];
     [tokopediaNetworkManager requestCancel];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -124,6 +152,9 @@ UICollectionViewDelegateFlowLayout
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
+    
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -145,6 +176,8 @@ UICollectionViewDelegateFlowLayout
         [_params addEntriesFromDictionary:_data];
     }
     
+    //GTM
+    [self configureGTM];
     
     [_act startAnimating];
     
@@ -158,8 +191,11 @@ UICollectionViewDelegateFlowLayout
     [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
+    [_collectionView setDelegate:self];
+    [_collectionView setDataSource:self];
     
     [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    _catalogproductview.hidden = YES;
     
     //cache
     NSString* path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDSEARCH_CACHEFILEPATH];
@@ -187,18 +223,18 @@ UICollectionViewDelegateFlowLayout
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
         self.cellType = [[data objectForKey:USER_LAYOUT_PREFERENCES] integerValue];
-        if (self.cellType == TKPTableCellTypeOneColumn) {
+        if (self.cellType == UITableViewCellTypeOneColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                    forState:UIControlStateNormal];
-        } else if (self.cellType == TKPTableCellTypeTwoColumn) {
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                    forState:UIControlStateNormal];
-        } else if (self.cellType == TKPTableCellTypeThreeColumn) {
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                    forState:UIControlStateNormal];
         }
     } else {
-        self.cellType = TKPTableCellTypeTwoColumn;
+        self.cellType = UITableViewCellTypeTwoColumn;
         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                forState:UIControlStateNormal];
     }
@@ -258,7 +294,7 @@ UICollectionViewDelegateFlowLayout
 
 #pragma mark - Collection Delegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _product.count;
+    return (_product.count != 0)?_product.count:0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -266,7 +302,7 @@ UICollectionViewDelegateFlowLayout
     UICollectionViewCell *cell = nil;
     
     List *list = [_product objectAtIndex:indexPath.row];
-    if (self.cellType == TKPTableCellTypeOneColumn) {
+    if (self.cellType == UITableViewCellTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
 
@@ -278,7 +314,7 @@ UICollectionViewDelegateFlowLayout
             [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
             ((ProductSingleViewCell*)cell).infoContraint.constant = 19;
         }
-    } else if (self.cellType == TKPTableCellTypeTwoColumn) {
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
@@ -354,7 +390,7 @@ UICollectionViewDelegateFlowLayout
     
     CGFloat screenWidth = screenRect.size.width;
     
-    if (self.cellType == TKPTableCellTypeOneColumn) {
+    if (self.cellType == UITableViewCellTypeOneColumn) {
         cellCount = 1;
         heightRatio = 390;
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
@@ -362,7 +398,7 @@ UICollectionViewDelegateFlowLayout
         }
         widhtRatio = 300;
         inset = 15;
-    } else if (self.cellType == TKPTableCellTypeTwoColumn) {
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellCount = 2;
         heightRatio = 41;
         widhtRatio = 29;
@@ -459,20 +495,27 @@ UICollectionViewDelegateFlowLayout
                     NSDictionary *userInfo = @{@"count":@(2)};
                     [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
                 }
+                
+                //if filter, then remove all object
                 if (_page == 1) {
                     [_product removeAllObjects];
                     [_collectionView setContentOffset:CGPointZero animated:YES];
+                    [_collectionView reloadData];
                 }
                 [_product addObjectsFromArray: _searchitem.result.list];
                 
+                
+                //if no data 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+
                     [_flowLayout setFooterReferenceSize:CGSizeZero];
-                    [_collectionView addSubview:noResultView];
+                    [_collectionView addSubview:_noResultView];
                 }
                 
                 if (_product.count >0) {
+                    [_noResultView removeFromSuperview];
+                    [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
                     _urinext = _searchitem.result.paging.uri_next;
                     
                     NSURL *url = [NSURL URLWithString:_urinext];
@@ -526,6 +569,7 @@ UICollectionViewDelegateFlowLayout
                     [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
                 }
             }
+            _catalogproductview.hidden = NO;
         }
     }
     
@@ -645,18 +689,18 @@ UICollectionViewDelegateFlowLayout
         {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             
-            if (self.cellType == TKPTableCellTypeOneColumn) {
-                self.cellType = TKPTableCellTypeTwoColumn;
+            if (self.cellType == UITableViewCellTypeOneColumn) {
+                self.cellType = UITableViewCellTypeTwoColumn;
                 [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                        forState:UIControlStateNormal];
                 
-            } else if (self.cellType == TKPTableCellTypeTwoColumn) {
-                self.cellType = TKPTableCellTypeThreeColumn;
+            } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+                self.cellType = UITableViewCellTypeThreeColumn;
                 [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                        forState:UIControlStateNormal];
                 
-            } else if (self.cellType == TKPTableCellTypeThreeColumn) {
-                self.cellType = TKPTableCellTypeOneColumn;
+            } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+                self.cellType = UITableViewCellTypeOneColumn;
                 [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                        forState:UIControlStateNormal];
                 
@@ -717,7 +761,10 @@ UICollectionViewDelegateFlowLayout
     [_refreshControl beginRefreshing];
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
-    [_collectionView reloadData];
+//    [_noResultView removeFromSuperview];
+//    [_product removeAllObjects];
+//    [_collectionView reloadData];
+    
     [self request];
 }
 
@@ -763,20 +810,20 @@ UICollectionViewDelegateFlowLayout
     BOOL isredirect = [[_params objectForKey:kTKPDSEARCH_DATAISREDIRECTKEY] boolValue];
     
     NSMutableDictionary *param = [NSMutableDictionary dictionaryWithDictionary:@{
-                                     kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
-                                     kTKPDSEARCH_APIPAGEKEY          :   @(_page),
-                                     kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
-                                     kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                                     kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                                     kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                                     kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                                     kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
-                                     kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
-                                     
-                                     kTKPDSEARCH_APIDEPARTMENT_1     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]?:@"",
-                                     kTKPDSEARCH_APIDEPARTMENT_2     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_2]?:@"",
-                                     kTKPDSEARCH_APIDEPARTMENT_3     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_3]?:@"",
-                                 }];
+                                                                                 kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
+                                                                                 kTKPDSEARCH_APIPAGEKEY          :   @(_page),
+                                                                                 kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
+                                                                                 kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                                                                                 kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                                                                                 kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
+                                                                                 
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_1     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_2     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_2]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_3     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_3]?:@"",
+                                                                                 }];
     
     if (query != nil && ![query isEqualToString:@""] && !isredirect) {
         [param setObject:query forKey:kTKPDSEARCH_APIQUERYKEY];
@@ -807,13 +854,19 @@ UICollectionViewDelegateFlowLayout
 
 - (NSString*)getPath:(int)tag
 {
-    return kTKPDSEARCH_APIPATH;
+    return [_searchPostUrl isEqualToString:@""] ? kTKPDSEARCH_APIPATH : _searchPostUrl;
 }
 
 - (id)getObjectManager:(int)tag
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  [RKObjectManager sharedClient];
+//    _objectmanager =  ![_searchBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_searchBaseUrl]:[RKObjectManager sharedClient];
+    if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
+        _objectmanager = [RKObjectManager sharedClient];
+    } else {
+        _objectmanager = [RKObjectManager sharedClient:_searchBaseUrl];
+    }
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];
@@ -867,7 +920,7 @@ UICollectionViewDelegateFlowLayout
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDSEARCH_APIPATH
+                                                                                       pathPattern:[_searchPostUrl isEqualToString:@""] ? kTKPDSEARCH_APIPATH : _searchPostUrl
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -913,6 +966,19 @@ UICollectionViewDelegateFlowLayout
     [_collectionView reloadData];
     [_refreshControl endRefreshing];
     //_table.tableFooterView = [self getLoadView].view;
+}
+
+#pragma mark - Other Method 
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _searchBaseUrl = [_gtmContainer stringForKey:GTMKeySearchBase];
+    _searchPostUrl = [_gtmContainer stringForKey:GTMKeySearchPost];
+    _searchFullUrl = [_gtmContainer stringForKey:GTMKeySearchFull];
 }
 
 @end

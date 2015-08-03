@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -20,24 +21,44 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="346"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lg8-hH-4Gt">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lg8-hH-4Gt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hobiku" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="og0-66-aQc">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hobiku" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="og0-66-aQc">
                                 <rect key="frame" x="10" y="8" width="300" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="dQ3-ZK-dAN"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDg-TD-amR">
-                                <rect key="frame" x="10" y="28" width="300" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDg-TD-amR">
+                                <rect key="frame" x="10" y="30" width="300" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="BVH-vD-M93"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="og0-66-aQc" firstAttribute="leading" secondItem="Lg8-hH-4Gt" secondAttribute="leading" constant="10" id="56n-4O-tK4"/>
+                            <constraint firstItem="GDg-TD-amR" firstAttribute="top" secondItem="og0-66-aQc" secondAttribute="bottom" constant="1" id="AOE-Vq-4EX"/>
+                            <constraint firstAttribute="trailing" secondItem="og0-66-aQc" secondAttribute="trailing" constant="10" id="Hfj-pU-BTH"/>
+                            <constraint firstAttribute="trailing" secondItem="GDg-TD-amR" secondAttribute="trailing" constant="10" id="QTJ-7b-eUX"/>
+                            <constraint firstItem="GDg-TD-amR" firstAttribute="leading" secondItem="Lg8-hH-4Gt" secondAttribute="leading" constant="10" id="WUS-gD-Elw"/>
+                            <constraint firstItem="og0-66-aQc" firstAttribute="top" secondItem="Lg8-hH-4Gt" secondAttribute="top" constant="8" id="zgA-FD-14d"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottomMargin" secondItem="Lg8-hH-4Gt" secondAttribute="bottom" constant="-69.5" id="EAH-BF-TQD"/>
+                    <constraint firstItem="Lg8-hH-4Gt" firstAttribute="leading" secondItem="4jR-za-fuB" secondAttribute="leading" id="a1b-AB-Vde"/>
+                    <constraint firstItem="Lg8-hH-4Gt" firstAttribute="top" secondItem="4jR-za-fuB" secondAttribute="top" id="rNf-mS-7NJ"/>
+                    <constraint firstAttribute="trailing" secondItem="Lg8-hH-4Gt" secondAttribute="trailing" id="tWj-aq-1sL"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="labelhobbies" destination="GDg-TD-amR" id="HCe-2m-0L4"/>

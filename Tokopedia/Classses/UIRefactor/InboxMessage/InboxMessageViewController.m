@@ -20,7 +20,7 @@
 #import "EncodeDecoderManager.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-
+#import "TAGDataLayer.h"
 
 @interface InboxMessageViewController ()
 <
@@ -88,6 +88,13 @@ typedef enum TagRequest {
     NSString *_navthatwillrefresh;
     NSString *_messageNavigationFlag;
     
+    NSString *_inboxMessageBaseUrl;
+    NSString *_inboxMessagePostUrl;
+    NSString *_inboxMessageFullUrl;
+    
+    
+    TAGContainer *_gtmContainer;
+    
     BOOL _isrefreshnav;    
     
     __weak RKObjectManager *_objectmanager;
@@ -101,6 +108,8 @@ typedef enum TagRequest {
     EncodeDecoderManager *_encodeDecodeManager;
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
+    
+    NSIndexPath *_selectedIndexPath;
 }
 
 
@@ -196,9 +205,11 @@ typedef enum TagRequest {
     _table.allowsSelectionDuringEditing = YES;
     _table.allowsMultipleSelectionDuringEditing = YES;
     
+    // GTM
+    [self configureGTM];
+    
     [_networkManager doRequest];
 }
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -425,15 +436,28 @@ typedef enum TagRequest {
         
         NSInteger index = indexPath.row;
         InboxMessageList *list = _messages[index];
-        InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-        list.message_read_status = @"1";
-        vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id,
-                    KTKPDMESSAGE_TITLEKEY : list.message_title,
-                    KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"],
-                    MESSAGE_INDEX_PATH : indexPath
-                    };
-        [_table reloadData];
-        [self.navigationController pushViewController:vc animated:YES];
+
+        NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                               KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                               KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                               MESSAGE_INDEX_PATH : indexPath?:[NSIndexPath indexPathForRow:0 inSection:0]
+                               };
+
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            if (![data isEqualToDictionary:_detailViewController.data]) {
+                [_detailViewController replaceDataSelected:data];
+                [_table selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                _selectedIndexPath = indexPath;
+            }
+        }
+        else
+        {
+            InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+            list.message_read_status = @"1";
+            vc.data = data;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 
@@ -898,7 +922,7 @@ typedef enum TagRequest {
                                 kTKPDHOME_APIPAGEKEY:@(_page),
                                 KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
                                 KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
+                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
                                 };
         return param;
     }
@@ -908,7 +932,7 @@ typedef enum TagRequest {
 
 - (NSString *)getPath:(int)tag {
     if(tag == messageListTag) {
-        return KTKPDMESSAGE_PATHURL;
+        return [_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl;
     }
     
     return nil;
@@ -928,7 +952,13 @@ typedef enum TagRequest {
 
 - (id)getObjectManager:(int)tag {
     if(tag == messageListTag) {
-        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  ![_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxMessageBaseUrl]:[RKObjectManager sharedClient];
+        if([_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxMessageBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_inboxMessageBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
@@ -968,7 +998,7 @@ typedef enum TagRequest {
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:KTKPDMESSAGE_PATHURL
+                                                                                                 pathPattern:[_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -1022,6 +1052,22 @@ typedef enum TagRequest {
             }
             
         }
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            NSIndexPath *indexpath = _selectedIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+            InboxMessageList *list = _messages[indexpath.row];
+            
+            NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                                   KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                                   KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                                   MESSAGE_INDEX_PATH : indexpath
+                                   };
+            if (![data isEqualToDictionary:_detailViewController.data]) {
+                [_detailViewController replaceDataSelected:data];
+            }
+            [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
     }
 }
 
@@ -1048,5 +1094,15 @@ typedef enum TagRequest {
 }
 
 
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _inboxMessageBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxMessageBase];
+    _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+}
 
 @end

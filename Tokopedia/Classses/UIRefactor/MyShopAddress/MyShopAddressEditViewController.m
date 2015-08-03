@@ -19,6 +19,8 @@
 <
     SettingAddressLocationViewDelegate,
     UIScrollViewDelegate,
+    UITableViewDataSource,
+    UITableViewDelegate,
     UITextFieldDelegate,
     UITextViewDelegate
 >
@@ -51,9 +53,14 @@
     NSDictionary *_selectedProvince;
     NSDictionary *_selectedDistrict;
     NSDictionary *_selectedCity;
+    
+    UITextField *_activeTextField;
 }
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldaddressname;
 @property (weak, nonatomic) IBOutlet TKPDTextView *textviewaddress;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpostcode;
@@ -61,9 +68,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttoncity;
 @property (weak, nonatomic) IBOutlet UIButton *buttonprovince;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldphonenumber;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldfax;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 -(void)cancelActionAddAddress;
 -(void)configureRestKitActionAddAddress;
@@ -81,6 +89,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _section2Cells = [NSArray sortViewsWithTagInArray:_section2Cells];
+    _section3Cells = [NSArray sortViewsWithTagInArray:_section3Cells];
     
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -125,14 +136,6 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
-
-    CGRect frame = self.container.frame;
-    frame.size = CGSizeMake(self.view.frame.size.height,
-                            _contentView.frame.size.height);
-    frame.origin = CGPointZero;
-    self.container.frame = frame;
-    
-    [self.container addSubview:_contentView];
     
     _textviewaddress.placeholder = @"Alamat";
     
@@ -146,7 +149,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.container.contentSize = _contentView.frame.size;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = barButtonItem;
 }
 
 #pragma mark - Memory Management
@@ -488,6 +501,76 @@
     [self cancelActionAddAddress];
 }
 
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return _section0Cells.count;
+            break;
+        case 1:
+            return _section1Cell.count;
+            break;
+        case 2:
+            return _section2Cells.count;
+            break;
+        case 3:
+            return _section3Cells.count;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell= nil;
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0Cells[indexPath.row];
+            break;
+        case 1:
+            cell = _section1Cell[indexPath.row];
+            break;
+        case 2:
+            cell = _section2Cells[indexPath.row];
+            break;
+        case 3:
+            cell = _section3Cells[indexPath.row];
+            break;
+        default:
+            break;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 4;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+            return [_section0Cells[indexPath.row] frame].size.height;
+            break;
+        case 1:
+            return [_section1Cell[indexPath.row] frame].size.height;
+            break;
+        case 2:
+            return [_section2Cells[indexPath.row] frame].size.height;
+            break;
+        case 3:
+            return [_section3Cells[indexPath.row] frame].size.height;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
 #pragma mark - Methods
 -(void)setDefaultData:(NSDictionary*)data
 {
@@ -576,6 +659,8 @@
 
 - (void)textFieldValueChanged:(UITextField *)textField
 {
+    _activetextview = nil;
+    _activeTextField = textField;
     if (textField == _textfieldaddressname) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIADDRESSNAMEKEY];
     } else if (textField == _textfieldpostcode) {
@@ -596,6 +681,8 @@
 
 #pragma mark - Text View Delegate
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+    _activeTextField = nil;
+    _activetextview = textView;
     [textView resignFirstResponder];
     Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
     if (!list.location_address_name) {
@@ -625,17 +712,46 @@
 }
 
 #pragma mark - Keyboard Notification
-
-- (void)keyboardWillShow:(NSNotification *)notification {
-    NSDictionary* keyboardInfo = [notification userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    self.container.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _tableView.contentInset = contentInsets;
+    _tableView.scrollIndicatorInsets = contentInsets;
+    
+    if (_activeTextField == _textfieldaddressname) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextField == _textfieldpostcode) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextField == _textfieldemail) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextField == _textfieldphonenumber) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextField == _textfieldfax) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activetextview == _textviewaddress) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    self.container.contentInset = UIEdgeInsetsZero;
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                          delay:0
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         _tableView.contentInset = contentInsets;
+                         _tableView.scrollIndicatorInsets = contentInsets;
+                     }
+                     completion:^(BOOL finished){
+                     }];
 }
 
 @end

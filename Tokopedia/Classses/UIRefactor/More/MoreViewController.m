@@ -54,6 +54,8 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 
+#import "NavigateViewController.h"
+
 #import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
@@ -72,6 +74,8 @@
     NotificationManager *_notifManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSTimer *_requestTimer;
+    
+    NavigateViewController *_navigate;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -114,7 +118,7 @@
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
-        
+         
     }
     return self;
 }
@@ -133,6 +137,8 @@
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
+    
+    _navigate = [NavigateViewController new];
     
     _isNoDataDeposit  = YES;
     _depositRequestCount = 0;
@@ -175,9 +181,9 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-
-    [self updateSaldoTokopedia:nil];    
-
+    
+    [self updateSaldoTokopedia:nil];
+    
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker setAllowIDFACollection:YES];
@@ -350,7 +356,7 @@
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];
     NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];
     [_profilePictureImageView setImageWithURLRequest:request
                                     placeholderImage:nil
                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -496,7 +502,7 @@
             break;
             
         case 5:
-            return 3;
+            return 4;
             break;
             
         case 6:
@@ -596,59 +602,11 @@
     
     else if (indexPath.section == 4) {
         if(indexPath.row == 0) {
-            InboxMessageViewController *vc = [InboxMessageViewController new];
-            vc.data=@{@"nav":@"inbox-message"};
-            
-            InboxMessageViewController *vc1 = [InboxMessageViewController new];
-            vc1.data=@{@"nav":@"inbox-message-sent"};
-            
-            InboxMessageViewController *vc2 = [InboxMessageViewController new];
-            vc2.data=@{@"nav":@"inbox-message-archive"};
-            
-            InboxMessageViewController *vc3 = [InboxMessageViewController new];
-            vc3.data=@{@"nav":@"inbox-message-trash"};
-            NSArray *vcs = @[vc,vc1, vc2, vc3];
-            
-            TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-            [inboxController setSelectedIndex:2];
-            [inboxController setViewControllers:vcs];
-            inboxController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:inboxController animated:YES];
+            [_navigate navigateToInboxMessageFromViewController:self];
         } else if(indexPath.row == 1) {
-            InboxTalkViewController *vc = [InboxTalkViewController new];
-            vc.data=@{@"nav":@"inbox-talk"};
-            
-            InboxTalkViewController *vc1 = [InboxTalkViewController new];
-            vc1.data=@{@"nav":@"inbox-talk-my-product"};
-            
-            InboxTalkViewController *vc2 = [InboxTalkViewController new];
-            vc2.data=@{@"nav":@"inbox-talk-following"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            nc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:nc animated:YES];
+            [_navigate navigateToInboxTalkFromViewController:self];
         } else if (indexPath.row == 2) {
-            InboxReviewViewController *vc = [InboxReviewViewController new];
-            vc.data=@{@"nav":@"inbox-review"};
-            
-            InboxReviewViewController *vc1 = [InboxReviewViewController new];
-            vc1.data=@{@"nav":@"inbox-review-my-product"};
-            
-            InboxReviewViewController *vc2 = [InboxReviewViewController new];
-            vc2.data=@{@"nav":@"inbox-review-my-review"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            nc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:nc animated:YES];
-            
+            [_navigate navigateToInboxReviewFromViewController:self];
         } else if (indexPath.row == 3) {
             AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
             alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
@@ -690,9 +648,9 @@
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-//            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+            //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            //            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
             
             if([MFMailComposeViewController canSendMail]) {
                 MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
@@ -705,7 +663,7 @@
                 [emailController setMessageBody:messageBody isHTML:YES];
                 [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
                 [emailController.navigationBar setTintColor:[UIColor whiteColor]];
-                 
+                
                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
                 [self presentViewController:emailController animated:YES completion:nil];
             } else {
@@ -734,6 +692,18 @@
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [self.navigationController pushViewController:webViewController animated:YES];
+        } else if(indexPath.row == 3) {
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:kGAIScreenName value:@"Share App"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            
+            NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
+            NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
+            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                             applicationActivities:nil];
+            activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+            [self presentViewController:activityController animated:YES completion:nil];
         }
     }
     
@@ -744,7 +714,7 @@
                                                                 object:nil
                                                               userInfo:@{}];
         }
-
+        
     }
     
     self.hidesBottomBarWhenPushed = NO;

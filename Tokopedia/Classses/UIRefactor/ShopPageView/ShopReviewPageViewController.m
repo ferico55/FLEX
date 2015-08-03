@@ -143,7 +143,7 @@ UIAlertViewDelegate>
     [self addBottomInsetWhen14inch];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];
@@ -295,6 +295,10 @@ UIAlertViewDelegate>
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
             } else {
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = YES;
+                ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
+                CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralReviewCell*)cell).commentbutton.frame.size.width) / 2 - 10;
+                ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
             }
             
             if ([list.review_message length] > 50) {
@@ -309,6 +313,7 @@ UIAlertViewDelegate>
                 ((GeneralReviewCell *)cell).ratingView.hidden = YES;
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
                 ((GeneralReviewCell *)cell).commentView.hidden = YES;
+                
             } else {
                 ((GeneralReviewCell *)cell).ratingView.hidden = NO;
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
@@ -687,7 +692,7 @@ UIAlertViewDelegate>
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (305 - _fakeStickyTab.frame.size.height);
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;

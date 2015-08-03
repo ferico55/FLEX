@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -79,6 +79,7 @@
                         <constraint firstAttribute="trailing" secondItem="Qvn-cj-7k8" secondAttribute="trailing" id="3FH-wv-Ot8"/>
                         <constraint firstItem="MUA-up-IPS" firstAttribute="top" secondItem="q30-yM-9go" secondAttribute="top" id="C0F-JB-c9W"/>
                         <constraint firstAttribute="trailing" secondItem="MUA-up-IPS" secondAttribute="trailing" id="NUP-x3-M5c"/>
+                        <constraint firstItem="Qvn-cj-7k8" firstAttribute="leading" secondItem="q30-yM-9go" secondAttribute="leading" id="aWd-KC-5hJ"/>
                         <constraint firstAttribute="bottom" secondItem="Qvn-cj-7k8" secondAttribute="bottom" id="gQf-kf-WtH"/>
                         <constraint firstItem="Qvn-cj-7k8" firstAttribute="top" secondItem="q30-yM-9go" secondAttribute="top" id="lCY-W0-nlv"/>
                         <constraint firstItem="MUA-up-IPS" firstAttribute="leading" secondItem="q30-yM-9go" secondAttribute="leading" id="rxa-HK-5yV"/>
@@ -108,7 +109,7 @@
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Xiz-a7-LSZ"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -183,9 +184,12 @@
                                 <outlet property="delegate" destination="-1" id="5WP-ZB-JTq"/>
                             </connections>
                         </scrollView>
-                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ysy-Qc-Zlg">
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ysy-Qc-Zlg">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="320" id="t66-UM-Vla"/>
+                            </constraints>
                         </imageView>
                         <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="SjO-qn-qp8">
                             <rect key="frame" x="141" y="283" width="39" height="37"/>
@@ -199,9 +203,12 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="vQi-oX-aMR" secondAttribute="trailing" id="0ox-Cj-mIp"/>
+                        <constraint firstAttribute="trailing" secondItem="Ysy-Qc-Zlg" secondAttribute="trailing" id="JIM-MF-wfO"/>
                         <constraint firstAttribute="trailing" secondItem="SjO-qn-qp8" secondAttribute="trailing" constant="140" id="Ow3-q5-myE"/>
+                        <constraint firstItem="Ysy-Qc-Zlg" firstAttribute="top" secondItem="mTL-UV-LYU" secondAttribute="top" id="Rkc-Gm-S1O"/>
                         <constraint firstAttribute="bottom" secondItem="vQi-oX-aMR" secondAttribute="bottom" id="Rvy-yb-930"/>
                         <constraint firstAttribute="height" constant="320" id="dgs-OW-kKD"/>
+                        <constraint firstItem="Ysy-Qc-Zlg" firstAttribute="leading" secondItem="mTL-UV-LYU" secondAttribute="leading" id="mQp-cB-B4u"/>
                         <constraint firstItem="SjO-qn-qp8" firstAttribute="leading" secondItem="mTL-UV-LYU" secondAttribute="leading" constant="141" id="nXO-Oz-DPQ"/>
                         <constraint firstAttribute="bottom" secondItem="SjO-qn-qp8" secondAttribute="bottom" id="oYU-Wq-J2G"/>
                         <constraint firstItem="vQi-oX-aMR" firstAttribute="leading" secondItem="mTL-UV-LYU" secondAttribute="leading" id="qgc-WT-tot"/>

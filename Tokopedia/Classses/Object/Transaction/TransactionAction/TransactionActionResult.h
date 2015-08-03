@@ -11,5 +11,6 @@
 @interface TransactionActionResult : NSObject
 
 @property (nonatomic) NSInteger is_success;
+@property (strong, nonatomic) NSString *cc_agent;
 
 @end

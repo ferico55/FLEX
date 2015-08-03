@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -57,12 +57,16 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="e8M-rD-BhU" secondAttribute="trailing" id="8xa-Xr-Q3v"/>
                 <constraint firstAttribute="bottom" secondItem="e8M-rD-BhU" secondAttribute="bottom" constant="16" id="BCi-08-KnK"/>
                 <constraint firstItem="tjd-mJ-44j" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Jf8-ZB-GfU"/>
                 <constraint firstItem="e8M-rD-BhU" firstAttribute="leading" secondItem="tjd-mJ-44j" secondAttribute="leading" id="QdQ-7c-Nbh"/>
                 <constraint firstItem="tjd-mJ-44j" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Uz3-Ha-807"/>
                 <constraint firstItem="e8M-rD-BhU" firstAttribute="top" secondItem="tjd-mJ-44j" secondAttribute="bottom" id="VNq-bc-w9K"/>
                 <constraint firstAttribute="trailing" secondItem="tjd-mJ-44j" secondAttribute="trailing" id="kzr-sv-yfp"/>
+                <constraint firstItem="e8M-rD-BhU" firstAttribute="top" secondItem="tjd-mJ-44j" secondAttribute="bottom" id="ukb-Ui-mzb"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="e8M-rD-BhU" secondAttribute="bottom" id="wgV-Mi-ARN"/>
+                <constraint firstItem="e8M-rD-BhU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ypf-Zn-03e"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

@@ -21,8 +21,8 @@
 #import "ProductCell.h"
 
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
-static NSInteger const normalWidth = 320;
-static NSInteger const normalHeight = 568;
+#define normalWidth 320
+#define normalHeight 568
 
 @interface HistoryProductViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
@@ -346,7 +346,7 @@ typedef enum TagRequest {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
     
-    if(tag == 3) {
+    if(tag == 1) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];

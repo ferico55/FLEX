@@ -89,6 +89,13 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGRect frame = _contentView.frame;
+    frame.size.width = screenWidth;
+    _contentView.frame = frame;
+    
     _sendOTPButton.layer.cornerRadius = 2;
     
     _datainput = [NSMutableDictionary new];
