@@ -140,6 +140,10 @@
     if(cell == nil) {
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DetailMyReviewReputationCell" owner:self options:nil];
         cell = [topLevelObjects objectAtIndex:0];
+        CGRect rectCell = cell.frame;
+        rectCell.size.width = tableView.bounds.size.width;
+        cell.frame = rectCell;
+        
         cell.delegate = self;
         [self setPropertyLabelDesc:cell.getLabelDesc];
     }

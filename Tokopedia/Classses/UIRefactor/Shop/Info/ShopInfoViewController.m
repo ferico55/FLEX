@@ -123,9 +123,7 @@
     UIGraphicsEndImageContext();
     
     [btnLihatDetailStat setImage:tempImage forState:UIControlStateNormal];
-    btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width-btnLihatDetailStat.imageView.bounds.size.width-15, 0, 0);
-    btnLihatDetailStat.titleEdgeInsets = UIEdgeInsetsMake(0, -btnLihatDetailStat.imageView.bounds.size.width+15, 0, 0);
-    
+    btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width+20, 0, -btnLihatDetailStat.titleLabel.frame.size.width);
     
     
     //set reputasi and akurasi

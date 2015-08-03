@@ -62,7 +62,7 @@
 
     
     _header = _userHeader.view;
-    //_table.tableHeaderView = _header;
+    _table.tableHeaderView = _header;
     _table.tableFooterView = _footer;
     _table.delegate = self;
     

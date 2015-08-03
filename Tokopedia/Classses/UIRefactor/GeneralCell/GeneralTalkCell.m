@@ -60,8 +60,8 @@
     [self.commentlabel addGestureRecognizer:messageGesture];
     [self.commentlabel setUserInteractionEnabled:YES];
     
-    [self.messageLabel addGestureRecognizer:messageGesture];
-    [self.messageLabel setUserInteractionEnabled:YES];
+//    [self.messageLabel addGestureRecognizer:messageGesture];
+//    [self.messageLabel setUserInteractionEnabled:YES];
     
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [self.thumb addGestureRecognizer:userGesture];
@@ -268,5 +268,9 @@
 
 - (IBAction)actionSmile:(id)sender {
     [_delegate actionSmile:sender];
+}
+
+- (void)hiddenViewProduct {
+    constHeightProduct.constant = 0;
 }
 @end

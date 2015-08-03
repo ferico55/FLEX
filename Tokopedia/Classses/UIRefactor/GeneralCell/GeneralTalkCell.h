@@ -30,6 +30,9 @@
 
 #pragma mark - General Talk Cell
 @interface GeneralTalkCell : UITableViewCell
+{
+    IBOutlet NSLayoutConstraint *constHeightProduct;
+}
 
 
 @property (nonatomic, weak) IBOutlet id<GeneralTalkCellDelegate> delegate;
@@ -66,5 +69,5 @@
 + (id)newcell;
 -(IBAction)tap:(id)sender;
 - (IBAction)actionSmile:(id)sender;
-
+- (void)hiddenViewProduct;
 @end

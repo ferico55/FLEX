@@ -142,6 +142,7 @@
     [self.scrollView addSubview:_descriptionView];
     
     _statView = [ShopStatView newView];
+    _statView.frame = CGRectMake(0, _statView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);
     id pageController = ((UIViewController *) _delegate).parentViewController;
     if([pageController isMemberOfClass:[UIPageViewController class]]) {
         if([((UIPageViewController *) pageController).delegate isMemberOfClass:[ShopContainerViewController class]]) {

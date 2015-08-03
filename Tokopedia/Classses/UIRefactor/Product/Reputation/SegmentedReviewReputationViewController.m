@@ -251,10 +251,10 @@
             [viewContent addConstraint:[NSLayoutConstraint constraintWithItem:tempView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:viewContent attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
             [viewContent addConstraint:[NSLayoutConstraint constraintWithItem:tempView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:viewContent attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
             
-            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
-            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+//            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+//            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
             
-            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
+//            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
                 tempView.frame = CGRectMake(0, 0, self.view.bounds.size.width, viewContent.bounds.size.height);
         }
             break;
@@ -273,10 +273,10 @@
             [viewContent addConstraint:[NSLayoutConstraint constraintWithItem:tempView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:viewContent attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
             [viewContent addConstraint:[NSLayoutConstraint constraintWithItem:tempView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:viewContent attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
             
-            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
-            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
-            
-            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
+//            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+//            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+//            
+//            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
                 tempView.frame = CGRectMake(0, 0, self.view.bounds.size.width, viewContent.bounds.size.height);
         }
             break;
@@ -295,11 +295,11 @@
             [viewContent addConstraint:[NSLayoutConstraint constraintWithItem:tempView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:viewContent attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
             [viewContent addConstraint:[NSLayoutConstraint constraintWithItem:tempView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:viewContent attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
             
-            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
-            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
-            
-            
-            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
+//            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[tempView(==%f)]", viewContent.bounds.size.height] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+//            [tempView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[tempView(==%f)]", viewContent.bounds.size.width] options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempView)]];
+//            
+//            
+//            if(SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.1.2"))
                 tempView.frame = CGRectMake(0, 0, self.view.bounds.size.width, viewContent.bounds.size.height);
         }
             break;

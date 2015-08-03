@@ -229,6 +229,7 @@
             [((GeneralTalkCell*)cell).userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
             ((GeneralTalkCell*)cell).userButton.userInteractionEnabled = YES;
             [((GeneralTalkCell*)cell).userButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(tap:)]];
+            [((GeneralTalkCell*)cell) hiddenViewProduct];
 		}
         
         if (_list.count > indexPath.row) {
@@ -593,7 +594,6 @@
         }
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
             [_timer invalidate];
             _timer = nil;
             [_act stopAnimating];

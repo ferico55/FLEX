@@ -41,13 +41,12 @@
     
     
     //Set content star
-    viewContentStar.frame = CGRectMake(imgProduct.frame.origin.x, lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, viewContent.bounds.size.width-(imgProduct.frame.origin.x*2), (viewContentStar.isHidden)?0:CHeightContentStar);
+    viewContentStar.frame = CGRectMake(imgProduct.frame.origin.x, lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(CPaddingTopBottom*2))-(imgProduct.frame.origin.x*2), (viewContentStar.isHidden)?0:CHeightContentStar);
     lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, 0, lblKualitas.bounds.size.width, viewContentStar.bounds.size.height);
     viewKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width, (viewContentStar.bounds.size.height-viewKualitas.bounds.size.height)/2.0f, viewKualitas.bounds.size.width, viewKualitas.bounds.size.height);
     
     viewAkurasi.frame = CGRectMake(viewContentStar.bounds.size.width-viewAkurasi.bounds.size.width-lblKualitas.frame.origin.x, viewKualitas.frame.origin.y, viewAkurasi.bounds.size.width, viewAkurasi.bounds.size.height);
     lblAkurasi.frame = CGRectMake(viewAkurasi.frame.origin.x-lblAkurasi.bounds.size.width, viewAkurasi.frame.origin.y+3, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
-    
     
     //set content action
     viewContentAction.frame = CGRectMake(0, viewContentStar.frame.origin.y+viewContentStar.bounds.size.height, viewContentStar.bounds.size.width+(viewContentStar.frame.origin.x*2), viewContentAction.isHidden?0:CHeightContentAction);
@@ -57,8 +56,8 @@
     
     labelInfoSkip.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewContentAction.bounds.size.height);
     
-    viewContent.frame = CGRectMake(CPaddingTopBottom, CPaddingTopBottom, self.contentView.bounds.size.width-(CPaddingTopBottom*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
-    self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, 0, self.contentView.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
+    viewContent.frame = CGRectMake(CPaddingTopBottom, CPaddingTopBottom, self.bounds.size.width-(CPaddingTopBottom*2), viewContentAction.frame.origin.y+viewContentAction.bounds.size.height);
+    self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, 0, self.bounds.size.width, viewContent.frame.origin.y+viewContent.bounds.size.height+CPaddingTopBottom);
 }
 
 
@@ -168,7 +167,7 @@
     
     //Set description
     [_delegate initLabelDesc:lblDesc withText:viewModel.review_message==nil||[viewModel.review_message isEqualToString:@"0"]?@"":viewModel.review_message];
-    lblDesc.frame = CGRectMake(imgProduct.frame.origin.x, CPaddingTopBottom+CPaddingTopBottom+ imgProduct.frame.origin.y+imgProduct.bounds.size.height, viewContent.bounds.size.width-(imgProduct.frame.origin.x*2), 0);
+    lblDesc.frame = CGRectMake(imgProduct.frame.origin.x, CPaddingTopBottom+CPaddingTopBottom+ imgProduct.frame.origin.y+imgProduct.bounds.size.height, (self.bounds.size.width-(CPaddingTopBottom*2))-(imgProduct.frame.origin.x*2), 0);
     CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
     CGRect tempLblRect = lblDesc.frame;
     tempLblRect.size.height = tempSizeDesc.height;
