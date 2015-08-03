@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Catalog/CatalogViewController.m"
-            timestampString = "460283084.721735"
+            timestampString = "460292929.390641"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "654"
-            endingLineNumber = "654"
+            startingLineNumber = "678"
+            endingLineNumber = "678"
             landmarkName = "-tap:"
             landmarkType = "5">
          </BreakpointContent>
