@@ -500,6 +500,9 @@ TokopediaNetworkManagerDelegate
     } else {
         ypos = [[userinfo objectForKey:@"y_position"] floatValue];
     }
+    
+    CGPoint cgpoint = CGPointMake(0, ypos);
+    _collectionView.contentOffset = cgpoint;
 }
 
 #pragma mark - SearchBar Delegate

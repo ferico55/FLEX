@@ -13,7 +13,7 @@
 #import "TransactionAction.h"
 #import "TransactionCartEditViewController.h"
 
-@interface TransactionCartEditViewController ()<UITextViewDelegate>
+@interface TransactionCartEditViewController ()<UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSOperationQueue *_operationQueue;
@@ -23,6 +23,7 @@
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
     CGSize _scrollviewContentSize;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
@@ -34,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelCounter;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
+@property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
 
 @end
 
@@ -105,6 +107,7 @@
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     [_activeTextView resignFirstResponder];
+    [_quantityTextField resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
@@ -112,6 +115,8 @@
             {
                 ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
                 product.product_notes = _remarkTextView.text;
+                [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+                product.product_quantity = _quantityTextField.text;
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 [_delegate shouldEditCartWithUserInfo:_dataInput];
             }
@@ -154,6 +159,7 @@
         _productPriceLabel.text = product.product_price_idr;
         _quantityStepper.value = [product.product_quantity integerValue];
         _quantityLabel.text = [NSString stringWithFormat:@"%zd",(NSInteger)_quantityStepper.value];
+        _quantityTextField.text = product.product_quantity;
         _quantityStepper.minimumValue= [product.product_min_order integerValue];
         _remarkTextView.text = product.product_notes;
         NSInteger counter = 144 - _remarkTextView.text.length;
@@ -173,8 +179,34 @@
     }
 }
 
-#pragma mark - TextView Delegate
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [_quantityTextField resignFirstResponder];
+}
 
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+
+    if ([_quantityTextField.text integerValue] < 1)
+        _quantityTextField.text = product.product_min_order;
+}
+
+- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString*)string
+{
+    NSString* newText;
+    
+    newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    return [newText intValue] < 1000;
+}
+
+#pragma mark - TextView Delegate
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [_quantityTextField resignFirstResponder];
+}
 
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
 {

@@ -176,7 +176,7 @@
 #define TAG_ALERT_PARTIAL 13
 #define DATA_PARTIAL_SECTION @"data_partial"
 #define DATA_CART_GRAND_TOTAL @"cart_grand_total"
-#define DATA_CART_GRAND_TOTAL_BEFORE_DECREASE @"data_grand_total"
+#define DATA_UPDATED_GRAND_TOTAL@"data_grand_total"
 #define DATA_VOUCHER_AMOUNT @"data_voucher_amount"
 #define DATA_CART_USED_VOUCHER_AMOUNT @"data_used_voucher_amount"
 #define DATA_DETAIL_CART_FOR_SHIPMENT @"data_detail_cart_fort_shipment"
@@ -616,7 +616,7 @@
                     _cart.grand_total = [NSString stringWithFormat:@"%zd", totalInteger];
                     _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
                     
-                    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+                    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
                     
                     [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
                     [_dataInput setObject:@(0) forKey:DATA_VOUCHER_AMOUNT];
@@ -838,7 +838,9 @@
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if ([product.product_error_msg isEqualToString:@""] ||
+        [product.product_error_msg isEqualToString:@"0"] ||
+        product.product_error_msg == nil ) {
         [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
     }
 }
@@ -909,9 +911,9 @@
         }
         if (_isUsingSaldoTokopedia)
         {
-            NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+            NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL];
             NSNumber *deposit = [_dataInput objectForKey:DATA_USED_SALDO_KEY];
-            if ([deposit integerValue]> [grandTotal integerValue])
+            if ([deposit integerValue] >= [grandTotal integerValue])
             {
                 isValid = NO;
                 [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
@@ -1040,7 +1042,10 @@
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if ([product.product_error_msg isEqualToString:@""] ||
+        [product.product_error_msg isEqualToString:@"0"] ||
+        product.product_error_msg == nil ||
+        [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
         UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
                                 @"Hapus",
                                 @"Edit",
@@ -1124,7 +1129,10 @@
         }
         case 1:
         {
-            if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+            if ([product.product_error_msg isEqualToString:@""] ||
+                [product.product_error_msg isEqualToString:@"0"] ||
+                product.product_error_msg == nil ||
+                [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
                 TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 editViewController.data = _dataInput;
@@ -1171,7 +1179,7 @@
             [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
         }
         
-        NSString *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+        NSString *grandTotal = [_dataInput objectForKey:DATA_UPDATED_GRAND_TOTAL];
         
         NSInteger grandTotalInteger = [grandTotal integerValue] + voucherUsedAmount;
         
@@ -1303,7 +1311,7 @@
         grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
         grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
         grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        [_dataInput setObject:grandTotal forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+        [_dataInput setObject:grandTotal forKey:DATA_UPDATED_GRAND_TOTAL];
     }
 
     return YES;
@@ -2015,6 +2023,10 @@
         {
             cell.errorProductLabel.text = @"MODERASI";
         }
+        else if ([product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
+        {
+            [cell.errorProductLabel setCustomAttributedText:@"Maks\n999 item"];
+        }
         else if ([list.cart_is_price_changed integerValue] == 1)
         {
             [cell.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
@@ -2567,12 +2579,12 @@
         }
     }
     
-    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
         
     [self adjustDropshipperListParam];
     [self adjustPartialListParam];
     
-    NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    NSNumber *grandTotal = [_dataInput objectForKey:DATA_UPDATED_GRAND_TOTAL];
     
     NSString *deposit = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
@@ -2603,7 +2615,7 @@
     
     
     
-    [_dataInput setObject:@(grandTotalCartFromWS) forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    [_dataInput setObject:@(grandTotalCartFromWS) forKey:DATA_UPDATED_GRAND_TOTAL];
     
     [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
     
@@ -2766,7 +2778,7 @@
     _cart.grand_total = [NSString stringWithFormat:@"%zd",totalInteger];
     _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
     [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
-    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
     [_tableView reloadData];
     
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
