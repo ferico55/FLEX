@@ -64,7 +64,7 @@
         if (button.tag == 1) {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
-            if (_textField.text.length >=8 && _textField.text.length <=17) {
+            if (_textField.text.length >=7 && _textField.text.length <=17) {
                 if ([self.delegate respondsToSelector:@selector(changeReceiptNumber:orderHistory:)]) {
                     
                     NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
@@ -92,7 +92,7 @@
                 }
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 8 - 17 karakter"]
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 7 - 17 karakter"]
                                                                                delegate:self];
                 [alert show];
             }
