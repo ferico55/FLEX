@@ -426,6 +426,7 @@
                                                  kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
                                                  kTKPDREVIEW_APIREVIEWRATEQUALITY,
                                                  kTKPDREVIEW_APIREVIEWRATESPEEDKEY,
+                                                 CReviewReputationID,
                                                  kTKPDREVIEW_APIREVIEWRATESERVICEKEY,
                                                  kTKPDREVIEW_APIREVIEWRATEACCURACYKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,

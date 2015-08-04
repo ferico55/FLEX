@@ -358,7 +358,14 @@
 {
     _detailPriceAlert.pricealert_price = [self getPrice:strPrice];
     [priceAlertCell setPriceNotification:_detailPriceAlert.pricealert_price];
+    
+    //Load data again from server
+    [catalogList removeAllObjects];
+    [tblDetailPriceAlert reloadData];
+    [self isGettingCatalogList:YES];
+    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
 }
+
 
 - (void)setContentValue
 {

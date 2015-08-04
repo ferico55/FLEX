@@ -5,6 +5,8 @@
 //  Created by IT Tkpd on 2/26/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "CMPopTipView.h"
+#import "DetailProductViewController.h"
 #import "string_inbox_message.h"
 #import "NavigateViewController.h"
 
@@ -18,10 +20,12 @@
 
 #import "GeneralTableViewController.h"
 
+#import "ReputationDetail.h"
 #import "ResolutionAction.h"
 
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "ShopReputation.h"
 
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
@@ -41,6 +45,7 @@
     ResolutionCenterDetailViewControllerDelegate,
     InboxResolutionCenterComplainCellDelegate,
     LoadingViewDelegate,
+    CMPopTipViewDelegate,
     TokopediaNetworkManagerDelegate>
 {
     NavigateViewController *_navigate;
@@ -52,7 +57,8 @@
     NSOperationQueue *_operationQueue;
     
     NSMutableDictionary *_dataInput;
-    
+
+    CMPopTipView *cmPopTitpView;
     InboxResolutionCenterObjectMapping *_mapping;
     
     __weak RKObjectManager *_objectManager;
@@ -246,6 +252,10 @@
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
     cell.viewLabelUser.text = _isMyComplain?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
     
+    //Set reputation score
+    cell.btnReputation.tag = indexPath.row;
+    [AppDelegate generateMedal:resolution.resolution_shop.shop_reputation.reputation_score withImage:cell.btnReputation isLarge:NO];
+    
     //Set user label
 //    if([resolution.resolution_by.user_label isEqualToString:CPenjual]) {
 //        [cell.viewLabelUser setColor:CTagPenjual];
@@ -413,7 +423,45 @@
     }
 }
 
+#pragma mark - Method
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.leftPopUp = YES;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
 #pragma mark - Cell Delegate
+- (void)actionReputation:(id)sender {
+    ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[((UIView *) sender).tag]).resolution_detail;
+    
+    if(resolution.resolution_shop.shop_reputation.tooltip!=nil && resolution.resolution_shop.shop_reputation.tooltip.length>0)
+        [self initPopUp:resolution.resolution_shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+}
 
 -(void)refreshRequest
 {
@@ -710,6 +758,25 @@
     RKObjectMapping *resolutionCustomerMapping = [_mapping resolutionCustomerMapping];
     RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
     
+    
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNegative,
+                                                                 CNeutral,
+                                                                 CPositif]];
+    
+    
+    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
+    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
+                                                           CReputationBadge,
+                                                           CReputationScore,
+                                                           CScore,
+                                                           CMinBadgeScore]];
+
+    [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
+    [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
+    
+    
     RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                    toKeyPath:kTKPD_APIRESULTKEY
                                                                                  withMapping:resultMapping];
@@ -826,4 +893,16 @@
 }
 
 
+#pragma mark - CMPopTipView Delegate
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
 @end

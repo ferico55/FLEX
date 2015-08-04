@@ -38,7 +38,6 @@
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="511" id="1PE-o4-H4B"/>
-                        <constraint firstAttribute="width" constant="320" id="VOE-gJ-7GB"/>
                     </constraints>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gf-HE-U4k">

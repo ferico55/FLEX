@@ -31,11 +31,11 @@
 #define BUTTON_CANCEL @"Tidak"
 #define CStringFailedDeleteMessage @"Failed delete message"
 #define BUTTON_OK @"Ya"
-#define CStringFillDescLaporan @"Isi deskripsi"
+#define CStringFillDescLaporan @"Deskripsi harus diisi"
 #define CStringErrorKirimLaporan @"Gagal kirim laporan"
 
 #define STATE_TALK_PRODUCT_DELETED @"0"
 #define STATE_TALK_PRODUCT_BANNED @"-2"
-
+#define CStringFailedSendReport @"Gagal kirim report"
 
 #endif

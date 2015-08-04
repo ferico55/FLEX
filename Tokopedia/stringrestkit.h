@@ -25,6 +25,7 @@
 #define TKPD_TALK_PRODUCT_STATUS @"talk_product_status"
 #define TKPD_TALK_CREATE_TIME @"talk_create_time"
 #define TKPD_TALK_MESSAGE @"talk_message"
+#define TKPD_TALK_REPUTATION_PERCENTAGE @"reputation_percentage"
 #define TKPD_TALK_FOLLOW_STATUS @"talk_follow_status"
 #define TKPD_TALK_READ_STATUS @"talk_read_status"
 #define TKPD_TALK_TOTAL_COMMENT @"talk_total_comment"

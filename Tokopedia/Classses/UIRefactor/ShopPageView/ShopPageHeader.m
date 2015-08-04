@@ -5,7 +5,8 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
-
+#import "DetailProductViewController.h"
+#import "ShopContainerViewController.h"
 #import "ShopPageHeader.h"
 #import "ShopDescriptionView.h"
 #import "ShopStatView.h"
@@ -141,7 +142,14 @@
     [self.scrollView addSubview:_descriptionView];
     
     _statView = [ShopStatView newView];
-    _statView.frame = CGRectMake(0, _descriptionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);
+    _statView.frame = CGRectMake(0, _statView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);
+    id pageController = ((UIViewController *) _delegate).parentViewController;
+    if([pageController isMemberOfClass:[UIPageViewController class]]) {
+        if([((UIPageViewController *) pageController).delegate isMemberOfClass:[ShopContainerViewController class]]) {
+            [_statView.imgStatistic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPopUp:)]];
+        }
+    }
+    
     [self.scrollView addSubview:_statView];
     
  
@@ -156,6 +164,11 @@
     
     [self.scrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width*2, 77)];
     
+}
+
+- (void)showPopUp:(id)sender {
+    id pageController = ((UIViewController *) _delegate).parentViewController;
+    [((ShopContainerViewController *) ((UIPageViewController *) pageController).delegate) showPopUp:[NSString stringWithFormat:@"%@ %@", _shop.result.stats.shop_reputation_score, CStringPoin] withSender:((UITapGestureRecognizer *) sender).view];
 }
 
 - (void)didReceiveMemoryWarning
@@ -259,6 +272,7 @@
     [self.delegate didReceiveShop:_shop];
     if(_shop) {
         [self setHeaderData];
+        [self generateMedal];
     }
 }
 
@@ -279,6 +293,13 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
 }
+
+#pragma mark - Method
+- (void)generateMedal {
+    [AppDelegate generateMedal:_shop.result.stats.shop_reputation_score withImage:_statView.imgStatistic isLarge:YES];
+    _statView.constraintWidthMedal.constant = _statView.imgStatistic.image.size.width;
+}
+
 
 #pragma mark - Actions
 

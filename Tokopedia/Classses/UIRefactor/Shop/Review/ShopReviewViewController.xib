@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopReviewViewController">
             <connections>
-                <outlet property="act" destination="Gzh-VE-h4x" id="tQi-v4-p2Q"/>
+                <outlet property="activityIndicator" destination="Gzh-VE-h4x" id="6G3-Of-Hzg"/>
                 <outlet property="footer" destination="d3p-cz-3cT" id="XOT-wJ-S6t"/>
                 <outlet property="table" destination="TVd-jj-Fdv" id="fnK-1p-4hz"/>
                 <outlet property="view" destination="iN0-l3-epB" id="STD-WD-I9d"/>
@@ -22,8 +22,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="Phz-Ut-TRm"/>
-                        <outlet property="delegate" destination="-1" id="Neg-Ya-yLL"/>
+                        <outlet property="dataSource" destination="-1" id="AtA-ic-rHN"/>
+                        <outlet property="delegate" destination="-1" id="Uyn-in-S5O"/>
                     </connections>
                 </tableView>
             </subviews>
