@@ -188,6 +188,58 @@
     return img;
 }
 
++ (void)generateMedalWithLevel:(NSString *)level withSet:(NSString *)set withImage:(id)image isLarge:(BOOL)isLarge {
+    int intLevel = level==nil || [level isEqualToString:@""]? 0:[level intValue];
+    int intSet = set==nil || [set isEqualToString:@""]? 0:[set intValue];
+    UIImage *tempImage = nil;
+    BOOL isArrayObject = ([image isKindOfClass:[NSArray class]] || [image isKindOfClass:[NSMutableArray class]]);
+    
+    switch (intSet) {
+        case 0:
+        {
+            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal":@"icon_medal14" ofType:@"png"]] : [AppDelegate generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal":@"icon_medal14" ofType:@"png"]] withCount:1];
+        }
+            break;
+        case 1:
+        {
+            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_bronze":@"icon_medal_bronze14" ofType:@"png"]] : [AppDelegate generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_bronze":@"icon_medal_bronze14" ofType:@"png"]] withCount:intLevel];
+        }
+            break;
+        case 2:
+        {
+            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_silver":@"icon_medal_silver14" ofType:@"png"]] : [AppDelegate generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_silver":@"icon_medal_silver14" ofType:@"png"]] withCount:intLevel];
+        }
+            break;
+        case 3:
+        {
+            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_gold":@"icon_medal_gold14" ofType:@"png"]] : [AppDelegate generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_gold":@"icon_medal_gold14" ofType:@"png"]] withCount:intLevel];
+        }
+            break;
+        default:
+        {
+            tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_diamond_one":@"icon_medal_diamond_one14" ofType:@"png"]] : [AppDelegate generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal_diamond_one":@"icon_medal_diamond_one14" ofType:@"png"]] withCount:intLevel];
+        }
+            break;
+    }
+    
+    
+    if([image isMemberOfClass:[UIButton class]]) {
+        [((UIButton *) image) setImage:tempImage forState:UIControlStateNormal];
+    }
+    else if(isArrayObject) {
+        for(int i=0;i<((NSArray *) image).count;i++) {
+            UIImageView *temporaryImage = ((NSArray *) image)[i];
+            if(i < intLevel) {
+                temporaryImage.image = tempImage;
+            }
+            else
+                temporaryImage.image = nil;
+        }
+    }
+    else if([image isMemberOfClass:[UIImageView class]]){
+        ((UIImageView *) image).image = tempImage;
+    }
+}
 
 + (void)generateMedal:(NSString *)value withImage:(id)image isLarge:(BOOL)isLarge {
     value = [value stringByReplacingOccurrencesOfString:@"." withString:@""];
@@ -197,7 +249,7 @@
     int n = 0;
     BOOL isArrayObject = ([image isKindOfClass:[NSArray class]] || [image isKindOfClass:[NSMutableArray class]]);
     
-    if(valueStar == 0) {
+    if(valueStar < 5) {
         n = 1;
         tempImage = isArrayObject? [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal":@"icon_medal14" ofType:@"png"]] : [AppDelegate generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:isLarge? @"icon_medal":@"icon_medal14" ofType:@"png"]] withCount:1];
     }

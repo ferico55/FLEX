@@ -28,6 +28,7 @@
 #import "detail.h"
 #import "string_product.h"
 
+#import "ShopBadgeLevel.h"
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
 
@@ -377,6 +378,9 @@
                                                            CRateSuccess:CRateSuccess
                                                            }];
     
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
     
     RKObjectMapping *countScoreMapping = [RKObjectMapping mappingForClass:[CountRatingResult class]];
     [countScoreMapping addAttributeMappingsFromDictionary:@{CCountScoreBad:CCountScoreBad,
@@ -441,6 +445,7 @@
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastOneMonth toKeyPath:CShopLastOneMonth withMapping:countScoreMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastSixMonth toKeyPath:CShopLastSixMonth withMapping:countScoreMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastTwelveMonth toKeyPath:CShopLastTwelveMonth withMapping:countScoreMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -510,7 +515,6 @@
                                                                     parameters:[param encrypt]];
         
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
             app.networkActivityIndicatorVisible = NO;
             [self requestSuccess:mappingResult withOperation:operation];
             [_timer invalidate];

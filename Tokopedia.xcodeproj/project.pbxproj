@@ -16,6 +16,7 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		857B51301B7061BB00AF052B /* ShopBadgeLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 857B512F1B7061BB00AF052B /* ShopBadgeLevel.m */; };
 		8598D40D1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8598D40C1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
@@ -1769,6 +1770,8 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		857B512E1B7061BB00AF052B /* ShopBadgeLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopBadgeLevel.h; sourceTree = "<group>"; };
+		857B512F1B7061BB00AF052B /* ShopBadgeLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopBadgeLevel.m; sourceTree = "<group>"; };
 		8598D40C1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkDetailViewController.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -5419,6 +5422,8 @@
 				85C822161B6B6B8300E40481 /* ReputationResult.m */,
 				85C822171B6B6B8300E40481 /* ShopReputation.h */,
 				85C822181B6B6B8300E40481 /* ShopReputation.m */,
+				857B512E1B7061BB00AF052B /* ShopBadgeLevel.h */,
+				857B512F1B7061BB00AF052B /* ShopBadgeLevel.m */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -10883,6 +10888,7 @@
 				85C82BCB1B6B6B8C00E40481 /* Reputation.m in Sources */,
 				85C82D801B6B6B8D00E40481 /* MyShopPaymentViewController.m in Sources */,
 				85C82BBA1B6B6B8C00E40481 /* AddressForm.m in Sources */,
+				857B51301B7061BB00AF052B /* ShopBadgeLevel.m in Sources */,
 				85C82B291B6B6B8C00E40481 /* ReviewList.m in Sources */,
 				85C82C0C1B6B6B8C00E40481 /* SettingLocationResult.m in Sources */,
 				85C82D201B6B6B8D00E40481 /* HotlistCell.m in Sources */,

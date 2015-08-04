@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "CountRatingResult.h"
+@class ShopBadgeLevel;
+
 #define CShopLastOneMonth @"shop_last_one_month"
 #define CShopLastSixMonth @"shop_last_six_months"
 #define CShopLastTwelveMonth @"shop_last_twelve_months"
@@ -18,8 +20,9 @@
 #define CShopSpeedDesc @"shop_speed_description"
 #define CRateSuccess @"rate_success"
 #define CToolTip @"tooltip"
+#define CShopBadgeLevel @"shop_badge_level"
 @interface ShopStats : NSObject
-
+@property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;
 @property (nonatomic) NSInteger shop_service_rate;
 @property (nonatomic, strong) NSString *shop_service_description;
 @property (nonatomic) NSInteger shop_speed_rate;

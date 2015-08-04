@@ -5,6 +5,7 @@
 ////  Created by IT Tkpd on 10/6/14.
 ////  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 ////
+#import "ShopBadgeLevel.h"
 #import "DetailProductViewController.h"
 #import "DetailStatisticViewController.h"
 #import "detail.h"
@@ -140,7 +141,7 @@
     [AppDelegate setIconResponseSpeed:_shop.result.respond_speed.badge withImage:imageSpeed largeImage:NO];
     
     //Generate Medal Reputasi
-    [AppDelegate generateMedal:_shop.result.stats.shop_reputation_score withImage:imageReputasi isLarge:YES];
+    [AppDelegate generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
