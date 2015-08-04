@@ -901,6 +901,8 @@
         }
     }
     
+    NSString *productPhotoDesc = [[[_data objectForKey:@"Image_desc_array"] valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+    
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action,
                                       API_PRODUCT_ID_KEY: productID,
                                       API_SERVER_ID_KEY : @(serverID)?:@(0),
@@ -924,6 +926,7 @@
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
                                       API_UNIQUE_ID_KEY:uniqueID,
                                       API_IS_DUPLICATE_KEY : @(duplicate),
+                                      API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc
                                       };
     NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
     [paramMutableDict addEntriesFromDictionary:paramDictionary];
@@ -931,8 +934,8 @@
     for (NSDictionary *wholesale in wholesaleList) {
         [paramMutableDict addEntriesFromDictionary:wholesale];
     }
-    NSString *productImageDesc = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
-    [paramMutableDict setObject:productImageDesc forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
+    //NSString *productImageDesc = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
+    //[paramMutableDict setObject:productImageDesc forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
     
     NSDictionary *param = [paramMutableDict copy];
     
@@ -1024,6 +1027,8 @@
 
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
+    
+    productPhotoDesc = [[[_data objectForKey:@"Image_desc_array"] valueForKey:@"description"] componentsJoinedByString:@"~"];
     
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     NSString *userID = [auth getUserId]?:@"";
