@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -18,8 +18,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopEditStatusViewController">
             <connections>
                 <outlet property="buttondate" destination="SYN-E2-kBG" id="Qlg-Gw-4Hu"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="GSr-3o-q2C"/>
+                <outlet property="scrollView" destination="e7U-r9-h1U" id="1AT-Dk-Y5R"/>
                 <outlet property="textviewnote" destination="CnW-hK-nMf" id="owG-id-pSb"/>
-                <outlet property="view" destination="iN0-l3-epB" id="oS6-J8-Wa9"/>
+                <outlet property="view" destination="TBh-23-9cO" id="gi5-6u-4kJ"/>
                 <outlet property="viewcontentclose" destination="CDD-FM-O5a" id="hkz-Wg-0uo"/>
                 <outletCollection property="thumbicon" destination="LxJ-v4-ZR2" id="11G-vQ-jCZ"/>
                 <outletCollection property="thumbicon" destination="9kC-5j-b79" id="YlD-Yl-Ien"/>
@@ -169,6 +171,27 @@
                 <action selector="gesture:" destination="-1" id="UlQ-pQ-UTB"/>
             </connections>
         </tapGestureRecognizer>
+        <view contentMode="scaleToFill" id="TBh-23-9cO">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7U-r9-h1U">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Obn-ac-xwQ"/>
+                    </connections>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="e7U-r9-h1U" secondAttribute="bottom" id="14r-d2-vSA"/>
+                <constraint firstItem="e7U-r9-h1U" firstAttribute="top" secondItem="TBh-23-9cO" secondAttribute="top" id="X84-ef-eyg"/>
+                <constraint firstAttribute="trailing" secondItem="e7U-r9-h1U" secondAttribute="trailing" id="cET-IN-Pe0"/>
+                <constraint firstItem="e7U-r9-h1U" firstAttribute="leading" secondItem="TBh-23-9cO" secondAttribute="leading" id="p4i-Am-49v"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="346" y="159"/>
+        </view>
     </objects>
     <resources>
         <image name="icon_check_orange.png" width="14" height="14"/>
