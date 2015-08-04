@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol ShopEditStatusViewControllerDelegate <NSObject>
+
 @required
 -(void)ShopEditStatusViewController:(UIViewController*)vc withData:(NSDictionary*)data;
 
@@ -16,10 +17,7 @@
 
 @interface ShopEditStatusViewController : UIViewController
 
-
-@property (nonatomic, weak) IBOutlet id<ShopEditStatusViewControllerDelegate> delegate;
-
-
+@property (nonatomic, weak) id<ShopEditStatusViewControllerDelegate> delegate;
 @property (strong, nonatomic) NSDictionary *data;
 
 @end
