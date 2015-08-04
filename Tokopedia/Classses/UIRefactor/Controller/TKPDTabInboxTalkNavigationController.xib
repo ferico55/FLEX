@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabInboxTalkNavigationController">
             <connections>
@@ -67,9 +73,9 @@
                             <subviews>
                                 <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Kb-ol-9H9">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                     <state key="normal" title="Semua Diskusi">
-                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
                                     <connections>
                                         <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="WP0-n9-Z8M"/>
@@ -78,18 +84,21 @@
                                 <button opaque="NO" tag="17" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IdI-k9-kXu">
                                     <rect key="frame" x="0.0" y="45" width="320" height="44"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                     <state key="normal" title="Belum dibaca">
-                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
                                         <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="lOi-2M-eHH"/>
                                     </connections>
                                 </button>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FNA-zV-bF9" userLabel="Border">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZ2-Fe-lMX" userLabel="Border">
                                     <rect key="frame" x="0.0" y="44" width="320" height="1"/>
-                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="dCN-WA-oIV"/>
+                                    </constraints>
                                 </view>
                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_check_orange.png" translatesAutoresizingMaskIntoConstraints="NO" id="27B-Gn-6Mz">
                                     <rect key="frame" x="281" y="14" width="15" height="15"/>
@@ -104,22 +113,21 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="FNA-zV-bF9" firstAttribute="top" secondItem="27B-Gn-6Mz" secondAttribute="bottom" constant="15" id="0vk-Ul-x69"/>
-                                <constraint firstItem="ksq-HM-AhP" firstAttribute="leading" secondItem="27B-Gn-6Mz" secondAttribute="leading" id="4ad-xg-mDi"/>
+                                <constraint firstItem="hZ2-Fe-lMX" firstAttribute="trailing" secondItem="IdI-k9-kXu" secondAttribute="trailing" id="43s-Op-eTA"/>
                                 <constraint firstItem="27B-Gn-6Mz" firstAttribute="top" secondItem="g1f-Zp-dRH" secondAttribute="top" constant="14" id="76o-UA-iYW"/>
-                                <constraint firstItem="IdI-k9-kXu" firstAttribute="leading" secondItem="FNA-zV-bF9" secondAttribute="leading" id="ANd-Xn-YOT"/>
-                                <constraint firstItem="IdI-k9-kXu" firstAttribute="trailing" secondItem="FNA-zV-bF9" secondAttribute="trailing" id="KI4-Yv-PrG"/>
-                                <constraint firstItem="FNA-zV-bF9" firstAttribute="top" secondItem="0Kb-ol-9H9" secondAttribute="bottom" id="KOn-0w-rWi"/>
+                                <constraint firstItem="ksq-HM-AhP" firstAttribute="leading" secondItem="27B-Gn-6Mz" secondAttribute="leading" id="DaQ-yr-mRp"/>
+                                <constraint firstItem="ksq-HM-AhP" firstAttribute="top" secondItem="hZ2-Fe-lMX" secondAttribute="bottom" constant="14" id="Hhj-oe-FSN"/>
                                 <constraint firstAttribute="trailing" secondItem="27B-Gn-6Mz" secondAttribute="trailing" constant="24" id="N6Z-7A-oMZ"/>
-                                <constraint firstItem="ksq-HM-AhP" firstAttribute="trailing" secondItem="27B-Gn-6Mz" secondAttribute="trailing" id="OCo-LA-9xg"/>
-                                <constraint firstItem="ksq-HM-AhP" firstAttribute="top" secondItem="FNA-zV-bF9" secondAttribute="bottom" constant="14" id="Uik-c7-JZR"/>
+                                <constraint firstItem="hZ2-Fe-lMX" firstAttribute="top" secondItem="0Kb-ol-9H9" secondAttribute="bottom" id="TbH-pJ-O0x"/>
+                                <constraint firstItem="hZ2-Fe-lMX" firstAttribute="leading" secondItem="0Kb-ol-9H9" secondAttribute="leading" id="Ues-lk-jzL"/>
+                                <constraint firstAttribute="bottom" secondItem="ksq-HM-AhP" secondAttribute="bottom" constant="15" id="VrS-04-1wf"/>
                                 <constraint firstItem="IdI-k9-kXu" firstAttribute="leading" secondItem="g1f-Zp-dRH" secondAttribute="leading" id="Wyl-zx-HCp"/>
-                                <constraint firstItem="IdI-k9-kXu" firstAttribute="top" secondItem="FNA-zV-bF9" secondAttribute="bottom" id="ZAt-mA-VPh"/>
-                                <constraint firstItem="FNA-zV-bF9" firstAttribute="centerY" secondItem="g1f-Zp-dRH" secondAttribute="centerY" id="ao7-IL-jby"/>
-                                <constraint firstAttribute="bottom" secondItem="ksq-HM-AhP" secondAttribute="bottom" constant="15" id="cbp-7l-bPT"/>
-                                <constraint firstItem="0Kb-ol-9H9" firstAttribute="trailing" secondItem="FNA-zV-bF9" secondAttribute="trailing" id="kGs-XK-6f6"/>
+                                <constraint firstItem="ksq-HM-AhP" firstAttribute="trailing" secondItem="27B-Gn-6Mz" secondAttribute="trailing" id="aED-NA-PLV"/>
+                                <constraint firstItem="hZ2-Fe-lMX" firstAttribute="leading" secondItem="IdI-k9-kXu" secondAttribute="leading" id="cNF-nJ-GYs"/>
+                                <constraint firstItem="hZ2-Fe-lMX" firstAttribute="trailing" secondItem="0Kb-ol-9H9" secondAttribute="trailing" id="fmH-Rf-kff"/>
+                                <constraint firstItem="IdI-k9-kXu" firstAttribute="top" secondItem="hZ2-Fe-lMX" secondAttribute="bottom" id="lR4-Op-Q0X"/>
                                 <constraint firstAttribute="trailing" secondItem="IdI-k9-kXu" secondAttribute="trailing" id="nVH-yd-d7q"/>
-                                <constraint firstItem="0Kb-ol-9H9" firstAttribute="leading" secondItem="FNA-zV-bF9" secondAttribute="leading" id="xOt-fn-uCc"/>
+                                <constraint firstItem="hZ2-Fe-lMX" firstAttribute="centerY" secondItem="g1f-Zp-dRH" secondAttribute="centerY" id="vLt-RC-IQP"/>
                                 <constraint firstAttribute="bottom" secondItem="IdI-k9-kXu" secondAttribute="bottom" id="xW4-BV-Q8B"/>
                                 <constraint firstItem="0Kb-ol-9H9" firstAttribute="top" secondItem="g1f-Zp-dRH" secondAttribute="top" id="zG3-Mj-9O3"/>
                             </constraints>

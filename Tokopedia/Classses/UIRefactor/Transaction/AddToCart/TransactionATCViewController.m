@@ -906,7 +906,7 @@
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if (![package.price isEqualToString:@"0"]) {
+                    if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
                     }
                 }
@@ -1064,7 +1064,7 @@
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if (![package.price isEqualToString:@"0"]) {
+                    if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
                     }
                 }
@@ -1109,7 +1109,7 @@
         NSMutableArray *availablePackage = [NSMutableArray new];
         
         for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-            if (![package.price isEqualToString:@"0"]) {
+            if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                 [availablePackage addObject:package];
             }
         }
@@ -1121,7 +1121,7 @@
         {
             _selectedShipment = shipmentObject;
             for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-                if (![package.price isEqualToString:@"0"]) {
+                if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                     _selectedShipmentPackage = package;
                 }
             }
