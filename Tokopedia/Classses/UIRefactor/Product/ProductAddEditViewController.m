@@ -374,7 +374,8 @@
                                            DATA_INPUT_KEY : _dataInput?:@{},
                                            DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
                                            DATA_PRODUCT_DETAIL_KEY: productDetail,
-                                           DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0"
+                                           DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0",
+                                           @"Image_desc_array":_productImageDesc?:@[]
                                             };
                         _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
                         _detailVC.generateHost = _generateHost;
@@ -1122,7 +1123,8 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"pic_id":@"pic_id"}];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"pic_id":@"pic_id",
+                                                        @"is_success":@"is_success"}];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -1176,7 +1178,7 @@
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-         if (_setting.result.is_success == 1) {
+         if ([_images.result.is_success integerValue] == 1) {
             UIImageView *thumbProductImage = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
             thumbProductImage.alpha = 1.0;
             
@@ -1363,7 +1365,10 @@
     RequestUploadImage *uploadImage = [RequestUploadImage new];
     uploadImage.imageObject = object;
     uploadImage.delegate = self;
-    uploadImage.productID = _product.result.product.product_id;
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    if (type != TYPE_ADD_EDIT_PRODUCT_COPY) {
+        uploadImage.productID = _product.result.product.product_id;
+    }
     uploadImage.generateHost = _generateHost;
     uploadImage.action = ACTION_UPLOAD_PRODUCT_IMAGE;
     uploadImage.fieldName = @"fileToUpload";
