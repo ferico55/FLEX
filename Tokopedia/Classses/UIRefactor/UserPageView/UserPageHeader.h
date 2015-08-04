@@ -18,7 +18,9 @@
 @end
 
 @interface UserPageHeader : UIViewController
-
+{
+    IBOutlet UIButton *btnRate;
+}
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) NSDictionary *data;
 @property CGPoint contentOffset;

@@ -11,6 +11,9 @@
 #import "AdvanceReview.h"
 #import "ReviewList.h"
 #import "Paging.h"
+#define CPaging @"paging"
+#define CAdvanceReview @"advance_review"
+#define CList @"list"
 
 @interface ReviewResult : NSObject
 

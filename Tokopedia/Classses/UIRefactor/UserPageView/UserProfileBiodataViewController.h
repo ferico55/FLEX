@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface UserProfileBiodataViewController : GAITrackedViewController
-
+{
+    IBOutlet NSLayoutConstraint *constraintHeightTableView;
+}
 @property (nonatomic, strong) NSDictionary *data;
 
 @end

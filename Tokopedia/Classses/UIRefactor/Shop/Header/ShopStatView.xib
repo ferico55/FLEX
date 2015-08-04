@@ -26,40 +26,51 @@
                         <constraint firstAttribute="height" constant="21" id="Mtu-JT-dv6"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="keP-TI-Hke">
-                    <rect key="frame" x="10" y="53" width="300" height="21"/>
+                    <rect key="frame" x="10" y="78" width="300" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="NIx-c7-dNu"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TdE-Q9-Yqa">
-                    <rect key="frame" x="10" y="82" width="300" height="25"/>
+                    <rect key="frame" x="10" y="100" width="300" height="21"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_diamond.png" translatesAutoresizingMaskIntoConstraints="NO" id="CI8-Xj-cWM">
+                    <rect key="frame" x="120" y="53" width="80" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="ppE-Il-VqM"/>
+                        <constraint firstAttribute="width" constant="80" id="sYH-oW-khf"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="TdE-Q9-Yqa" secondAttribute="bottom" constant="24" id="0gw-Kt-1HS"/>
+                <constraint firstItem="TdE-Q9-Yqa" firstAttribute="centerX" secondItem="nIy-Cq-MHn" secondAttribute="centerX" id="0eT-WA-dgN"/>
                 <constraint firstItem="keP-TI-Hke" firstAttribute="leading" secondItem="Pp2-wY-HYE" secondAttribute="leading" id="FCJ-jL-pYL"/>
-                <constraint firstItem="TdE-Q9-Yqa" firstAttribute="top" secondItem="keP-TI-Hke" secondAttribute="bottom" constant="8" symbolic="YES" id="Fy1-eh-Fdu"/>
                 <constraint firstItem="Pp2-wY-HYE" firstAttribute="top" secondItem="nIy-Cq-MHn" secondAttribute="top" constant="26" id="Gd1-2G-LNg"/>
-                <constraint firstItem="TdE-Q9-Yqa" firstAttribute="trailing" secondItem="keP-TI-Hke" secondAttribute="trailing" id="Gxe-vz-ssx"/>
-                <constraint firstItem="TdE-Q9-Yqa" firstAttribute="leading" secondItem="keP-TI-Hke" secondAttribute="leading" id="dUB-me-dKt"/>
-                <constraint firstItem="keP-TI-Hke" firstAttribute="top" secondItem="Pp2-wY-HYE" secondAttribute="bottom" constant="6" id="mxa-1S-5bZ"/>
-                <constraint firstItem="TdE-Q9-Yqa" firstAttribute="centerX" secondItem="nIy-Cq-MHn" secondAttribute="centerX" id="uEm-yR-97m"/>
+                <constraint firstItem="TdE-Q9-Yqa" firstAttribute="top" secondItem="keP-TI-Hke" secondAttribute="bottom" constant="1" id="NEJ-uW-hD1"/>
+                <constraint firstItem="CI8-Xj-cWM" firstAttribute="top" secondItem="Pp2-wY-HYE" secondAttribute="bottom" constant="6" id="PKM-ik-1Fq"/>
+                <constraint firstItem="keP-TI-Hke" firstAttribute="leading" secondItem="TdE-Q9-Yqa" secondAttribute="leading" id="TaI-xl-hA3"/>
+                <constraint firstItem="keP-TI-Hke" firstAttribute="trailing" secondItem="TdE-Q9-Yqa" secondAttribute="trailing" id="X9V-Ms-1rU"/>
+                <constraint firstAttribute="bottom" secondItem="TdE-Q9-Yqa" secondAttribute="bottom" constant="10" id="aZ7-XJ-mJu"/>
+                <constraint firstItem="keP-TI-Hke" firstAttribute="top" secondItem="CI8-Xj-cWM" secondAttribute="bottom" id="amp-dU-CFU"/>
+                <constraint firstAttribute="centerX" secondItem="CI8-Xj-cWM" secondAttribute="centerX" id="qYy-5U-HCM"/>
                 <constraint firstItem="Pp2-wY-HYE" firstAttribute="leading" secondItem="nIy-Cq-MHn" secondAttribute="leading" constant="10" id="v6l-W3-tiJ"/>
                 <constraint firstItem="Pp2-wY-HYE" firstAttribute="trailing" secondItem="keP-TI-Hke" secondAttribute="trailing" id="z64-nG-1vW"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="constraintWidthMedal" destination="sYH-oW-khf" id="ijI-4u-tgd"/>
+                <outlet property="imgStatistic" destination="CI8-Xj-cWM" id="vXt-QQ-yhB"/>
                 <outlet property="locationLabel" destination="Pp2-wY-HYE" id="Gf6-to-5kE"/>
                 <outlet property="openStatusLabel" destination="TdE-Q9-Yqa" id="MJx-vr-CCU"/>
                 <outlet property="statLabel" destination="keP-TI-Hke" id="8WU-wk-jIU"/>
@@ -67,4 +78,7 @@
             <point key="canvasLocation" x="1402" y="162.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="icon_medal_diamond.png" width="60" height="20"/>
+    </resources>
 </document>

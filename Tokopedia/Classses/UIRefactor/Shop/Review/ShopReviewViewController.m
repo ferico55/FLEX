@@ -478,6 +478,7 @@
                                                  kTKPDREVIEW_APIREVIEWUSERIMAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWCREATETIMEKEY,
                                                  kTKPDREVIEW_APIREVIEWIDKEY,
+                                                 CReviewReputationID,
                                                  kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,

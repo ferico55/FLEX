@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#define CUserReputation @"user_reputation"
+@class ReputationDetail;
 
 @interface InboxMessageList : NSObject
 
@@ -23,4 +25,5 @@
 @property (nonatomic, strong) NSString *user_label;
 @property (nonatomic, strong) NSString *user_label_id;
 
+@property (nonatomic, strong) ReputationDetail *user_reputation;
 @end

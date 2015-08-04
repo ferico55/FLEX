@@ -9,7 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface ShopInfoViewController : UIViewController
+{
+    IBOutlet UIButton *btnLihatDetailStat;
+    IBOutlet UILabel *lblReputasi, *lblKecepatan;
+    IBOutlet UIImageView *imageSpeed, *imageReputasi;
+}
 
 @property (strong, nonatomic) NSDictionary *data;
-
+- (IBAction)actionLihatDetailStatistik:(id)sender;
 @end
