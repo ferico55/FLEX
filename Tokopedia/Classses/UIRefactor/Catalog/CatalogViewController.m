@@ -620,7 +620,7 @@ static CGFloat rowHeight = 40;
 
 - (void)setBackgroundPriceAlert:(BOOL)isActive
 {
-    if(isActive) {
+    if(! isActive) {
         if(! imgPriceAlert) {
             UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
             [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_pricealert_active" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
