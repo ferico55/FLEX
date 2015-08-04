@@ -265,7 +265,7 @@
                         </constraints>
                     </view>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YBU-6k-Lh7">
-                        <rect key="frame" x="110" y="7" width="195" height="30"/>
+                        <rect key="frame" x="0.0" y="0.0" width="305" height="44"/>
                         <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -275,12 +275,12 @@
                     </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="YBU-6k-Lh7" firstAttribute="top" secondItem="xRH-wE-zn0" secondAttribute="top" constant="7" id="05n-26-rYY"/>
+                    <constraint firstItem="YBU-6k-Lh7" firstAttribute="top" secondItem="xRH-wE-zn0" secondAttribute="top" id="05n-26-rYY"/>
                     <constraint firstAttribute="bottom" secondItem="5E9-EX-haC" secondAttribute="bottom" constant="-1" id="6V1-Ma-sl7"/>
                     <constraint firstAttribute="trailing" secondItem="YBU-6k-Lh7" secondAttribute="trailing" constant="15" id="7Mj-hs-rFK"/>
-                    <constraint firstItem="YBU-6k-Lh7" firstAttribute="leading" secondItem="5E9-EX-haC" secondAttribute="trailing" id="B01-nM-vfT"/>
+                    <constraint firstItem="YBU-6k-Lh7" firstAttribute="leading" secondItem="5E9-EX-haC" secondAttribute="trailing" constant="-110" id="B01-nM-vfT"/>
                     <constraint firstAttribute="bottom" secondItem="b6x-JR-f9O" secondAttribute="bottom" id="Eoc-rz-739"/>
-                    <constraint firstItem="b6x-JR-f9O" firstAttribute="top" secondItem="YBU-6k-Lh7" secondAttribute="bottom" constant="5" id="Rrq-Py-pqV"/>
+                    <constraint firstItem="b6x-JR-f9O" firstAttribute="top" secondItem="YBU-6k-Lh7" secondAttribute="bottom" constant="-2" id="Rrq-Py-pqV"/>
                     <constraint firstItem="b6x-JR-f9O" firstAttribute="leading" secondItem="xRH-wE-zn0" secondAttribute="leading" id="ZYO-fo-L2F"/>
                     <constraint firstItem="5E9-EX-haC" firstAttribute="leading" secondItem="xRH-wE-zn0" secondAttribute="leading" constant="15" id="eR4-6f-e9b"/>
                     <constraint firstItem="5E9-EX-haC" firstAttribute="top" secondItem="xRH-wE-zn0" secondAttribute="top" id="w08-DX-fdn"/>
