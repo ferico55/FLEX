@@ -1019,6 +1019,13 @@
         [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.pic_id?:@""];
         
         NSArray *objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
+        NSMutableArray *photos = [NSMutableArray new];
+        for (NSString *photo in objectProductPhoto) {
+            if (![photo isEqualToString:@""]) {
+                [photos addObject:photo];
+            }
+        }
+        objectProductPhoto = [photos copy];
         NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
         [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
         NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
@@ -1101,6 +1108,13 @@
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
             [alert show];
             NSArray *objectProductPhoto = _productImageIDs;
+            NSMutableArray *photos = [NSMutableArray new];
+            for (NSString *photo in objectProductPhoto) {
+                if (![photo isEqualToString:@""]) {
+                    [photos addObject:photo];
+                }
+            }
+            objectProductPhoto = [photos copy];
             NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
             [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
@@ -1186,11 +1200,17 @@
             
             [_productImageURLs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.file_path?:@""];
             [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.pic_id?:@""];
-            
-            NSArray *objectProductPhoto = _productImageIDs;
-            NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
+             
+             NSMutableArray *photos = [NSMutableArray new];
+             for (NSString *photo in _productImageIDs) {
+                 if (![photo isEqualToString:@""]) {
+                     [photos addObject:photo];
+                 }
+             }
+             
+            NSString *stringImageURLs = [[photos valueForKey:@"description"] componentsJoinedByString:@"~"];
             [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-            NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
+            NSLog(@" Product image URL %@ with string %@ ", photos, stringImageURLs);
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
          }
     }
@@ -1459,7 +1479,13 @@
     
     NSArray *objectProductPhoto;
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        objectProductPhoto = _productImageURLs;
+        NSMutableArray *photos = [NSMutableArray new];
+        for (NSString *photo in _productImageURLs) {
+            if (![photo isEqualToString:@""]) {
+                [photos addObject:photo];
+            }
+        }
+        objectProductPhoto = [photos copy];
         NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
         [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
     }
@@ -1477,6 +1503,7 @@
     NSString *imagePath = _productImageURLs[index];
     NSString *imageID = _productImageIDs[index];
     NSString *defaultImage = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?imagePath:imageID;
+    NSArray *photosAll = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
     [_dataInput setObject:defaultImage forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
     [_dataInput setObject:[NSString stringWithFormat:@"%ld", (long)index] forKey:API_PRODUCT_IMAGE_DEFAULT_INDEX];
 }
@@ -1486,7 +1513,13 @@
     [_productImageDesc replaceObjectAtIndex:index withObject:name];
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        NSString *stringImageName = [[_productImageDesc valueForKey:@"description"] componentsJoinedByString:@"~"];
+        NSMutableArray *photos = [NSMutableArray new];
+        for (NSString *photo in _productImageDesc) {
+            if (![photo isEqualToString:@""]) {
+                [photos addObject:photo];
+            }
+        }
+        NSString *stringImageName = [[photos valueForKey:@"description"] componentsJoinedByString:@"~"];
         [_dataInput setObject:stringImageName forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
     }
     else
@@ -1808,7 +1841,7 @@
             ProductImages *image = images[i];
             ((UIButton*)_addImageButtons[i]).hidden = YES;
             [_productImageURLs replaceObjectAtIndex:i withObject:image.image_src];
-            [_productImageIDs replaceObjectAtIndex:i withObject:@(image.image_id)];
+            [_productImageIDs replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%zd",image.image_id]];
             [_productImageDesc replaceObjectAtIndex:i withObject:image.image_description];
 
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -1836,6 +1869,13 @@
         [_dataInput setObject:productImageDescription forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
 
         NSArray *objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
+        NSMutableArray *photos = [NSMutableArray new];
+        for (NSString *photo in objectProductPhoto) {
+            if (![photo isEqualToString:@""]) {
+                [photos addObject:photo];
+            }
+        }
+        objectProductPhoto = [photos copy];
         NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
         [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
         NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
@@ -2029,7 +2069,7 @@
     ((UIImageView*)_thumbProductImageViews[index]).image = image;
     ((UIImageView*)_thumbProductImageViews[index]).hidden = NO;
     [_productImageURLs replaceObjectAtIndex:index withObject:deletedImagePath];
-    [_productImageIDs replaceObjectAtIndex:index withObject:@(deletedImageID)];
+    [_productImageIDs replaceObjectAtIndex:index withObject:[NSString stringWithFormat:@"%zd",deletedImageID]];
 }
 
 #pragma mark - Keyboard Notification
