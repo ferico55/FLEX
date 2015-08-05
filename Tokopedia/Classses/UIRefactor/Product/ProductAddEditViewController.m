@@ -1818,6 +1818,7 @@
             NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[indexMoveTo] objectForKey:DATA_VALUE_KEY];
             product.product_move_to = value;
             product.product_etalase_id = product.product_etalase_id?:@(0);
+            product.product_short_desc = [product.product_short_desc stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
             product.product_description = product.product_short_desc?:@"";
             product.product_returnable = _product.result.info.product_returnable?:@"";
             product.product_min_order = _product.result.product.product_min_order?:@"1";
