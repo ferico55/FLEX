@@ -26,6 +26,7 @@
 #import "NoResultView.h"
 #import "DetailProductViewController.h"
 #import "TAGDataLayer.h"
+#import "TalkCell.h"
 
 
 @interface InboxTalkViewController ()
@@ -168,6 +169,9 @@
     _table.dataSource = self;
     _table.tableFooterView = _footer;
     
+    UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
+    [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
+    
     [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
@@ -225,141 +229,24 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - TableView Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            [self configureRestKit];
-            [self loadData];
-        } else {
-            _table.tableFooterView = nil;
-            [_act stopAnimating];
-        }
-    }
-}
-
 #pragma mark - TableView Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _isnodata ? 0 : _talkList.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        
-        NSString *cellid = kTKPDGENERALTALKCELL_IDENTIFIER;
-        
-        cell = (GeneralTalkCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [GeneralTalkCell newcell];
-            ((GeneralTalkCell*)cell).delegate = self;
-            [((GeneralTalkCell*)cell).userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
-            ((GeneralTalkCell*)cell).userButton.userInteractionEnabled = YES;
-            [((GeneralTalkCell*)cell).userButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(tap:)]];
+    TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
+    
+    TalkList *list = [_talkList objectAtIndex:indexPath.row];
+    [cell setTalkViewModel:list.viewModel];
+    
+    //next page if already last cell
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+            [self configureRestKit];
+            [self loadData];
         }
-        
-        if (_talkList.count > indexPath.row) {
-            TalkList *list = _talkList[indexPath.row];
-            
-            ((GeneralTalkCell*)cell).indexpath = indexPath;
-            ((GeneralTalkCell *)cell).data = list;
-            ((GeneralTalkCell*)cell).userButton.text = list.talk_user_name;
-            [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
-            ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
-            [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
-            
-          
-            [((GeneralTalkCell*)cell).userButton setLabelBackground:list.talk_user_label];
-
-            
-            if(list.talk_follow_status == 1 && ![list.talk_own isEqualToString:@"1"]) {
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
-                
-                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 0;
-                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
-                ((GeneralTalkCell*)cell).buttonsDividers.hidden = NO;
-                [((GeneralTalkCell *)cell) setTalkFollowStatus:YES];
-            } else {
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
-                [((GeneralTalkCell *)cell) setTalkFollowStatus:NO];
-                
-
-                
-                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = (((GeneralTalkCell*)cell).frame.size.width-newFrame.size.width)/2;
-                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
-                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
-
-            }
-            
-            if([list.talk_read_status isEqualToString:@"1"]) {
-                ((GeneralTalkCell*)cell).subContentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                ((GeneralTalkCell*)cell).subContentView.layer.borderWidth = 1.0;
-                ((GeneralTalkCell*)cell).unreadIcon.hidden = NO;
-            } else {
-                ((GeneralTalkCell*)cell).subContentView.layer.borderWidth = 0;
-                ((GeneralTalkCell*)cell).unreadIcon.hidden = YES;
-            }
-            
-            if ([list.talk_message length] > 30) {
-                NSRange stringRange = {0, MIN([list.talk_message length], 30)};
-                stringRange = [list.talk_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                ((GeneralTalkCell*)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.talk_message substringWithRange:stringRange]];
-            } else {
-                ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
-            }
-
-//            if([list.talk_product_status isEqualToString:@"0"]) {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
-//            } else {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
-//            }
-            
-            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
-            userImageView.image = nil;
-            [userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [userImageView setImage:image];
-                userImageView.layer.cornerRadius = userImageView.frame.size.width/2;
-#pragma clang diagnostic pop
-            } failure:nil];
-            
-            NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *productImageView = ((GeneralTalkCell*)cell).productImageView;
-            productImageView.image = nil;
-            [productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [productImageView setImage:image];
-                productImageView.layer.cornerRadius = productImageView.frame.size.width/2;
-#pragma clang diagnostic pop
-            } failure:nil];
-            
-        }
-        
-        return cell;
-        
-    } else {
-        static NSString *cellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
     
     return cell;
@@ -368,8 +255,6 @@
 #pragma mark - Request + Mapping
 - (void)configureRestKit
 {
-//    _objectmanager =  [RKObjectManager sharedClient];
-//    _objectmanager =  ![_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxTalkBaseUrl]:[RKObjectManager sharedClient];
     if([_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxTalkBaseUrl isEqualToString:@""]) {
         _objectmanager = [RKObjectManager sharedClient];
     } else {

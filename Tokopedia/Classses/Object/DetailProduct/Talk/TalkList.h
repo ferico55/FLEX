@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class TalkModelView;
 @interface TalkList : NSObject
 
 // shop
@@ -36,4 +37,6 @@
 //user label
 @property (nonatomic, strong) NSString *talk_user_label;
 @property (nonatomic, strong) NSString *talk_user_label_id;
+
+@property (nonatomic, strong) TalkModelView *viewModel;
 @end

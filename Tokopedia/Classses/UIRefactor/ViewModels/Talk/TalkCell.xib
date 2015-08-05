@@ -143,12 +143,9 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="buttonsDividers" destination="rzN-JK-IWj" id="tP5-tr-5TW"/>
                 <outlet property="buttonsView" destination="c9j-wd-E2h" id="gPL-N6-GAL"/>
-                <outlet property="commentlabel" destination="U2x-t9-LPv" id="5F1-hb-Gzt"/>
                 <outlet property="createTimeLabel" destination="12e-9c-aU9" id="gN7-ie-OAL"/>
                 <outlet property="middleView" destination="LoO-oE-hpb" id="uer-AW-jzy"/>
-                <outlet property="moreActionButton" destination="cnH-U2-BqD" id="oOW-1f-vAp"/>
                 <outlet property="productButton" destination="mAW-TB-q5Y" id="mrB-Gg-qXG"/>
                 <outlet property="productImageView" destination="3yf-dZ-AHO" id="bz1-OU-NtO"/>
                 <outlet property="topView" destination="MgD-xe-ng1" id="ewV-1H-qbk"/>
@@ -258,13 +255,10 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="buttonsDividers" destination="TU1-kY-SgG" id="8M9-W6-csf"/>
                 <outlet property="buttonsView" destination="Hbv-0z-dzq" id="0GD-ra-slL"/>
-                <outlet property="commentbutton" destination="7dl-lA-sbT" id="gda-mb-H3T"/>
                 <outlet property="createTimeLabel" destination="91f-5e-1NU" id="R3W-0Z-HaG"/>
                 <outlet property="messageLabel" destination="C5y-at-xVT" id="Er5-CV-tyt"/>
                 <outlet property="moreActionButton" destination="fac-HN-u1V" id="BVu-R7-fN7"/>
-                <outlet property="subContentView" destination="szh-l1-qgX" id="hH9-yt-y8U"/>
                 <outlet property="topView" destination="95x-oj-ICJ" id="2P8-M6-Hr1"/>
                 <outlet property="totalCommentButton" destination="7dl-lA-sbT" id="Mh9-IU-w3B"/>
                 <outlet property="unfollowButton" destination="Ofr-ox-cID" id="jH0-u7-aDP"/>

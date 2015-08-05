@@ -11,6 +11,7 @@
 @interface TalkModelView : NSObject
 
 @property (strong, nonatomic) NSString *userName;
+@property (strong, nonatomic) NSString *userLabel;
 @property (strong, nonatomic) NSString *userImage;
 @property (strong, nonatomic) NSString *productName;
 @property (strong, nonatomic) NSString *productImage;
