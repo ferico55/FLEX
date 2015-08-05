@@ -39,6 +39,7 @@
 #import "ShopSettings.h"
 #import "RKObjectManager.h"
 #import "TTTAttributedLabel.h"
+#import "ShopBadgeLevel.h"
 
 #import "StarsRateView.h"
 #import "MarqueeLabel.h"
@@ -1288,6 +1289,10 @@ UIAlertViewDelegate
                                                                kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
                                                                }];
         
+        
+        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+        
         RKObjectMapping *wholesaleMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
         [wholesaleMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIWHOLESALEMINKEY,kTKPDDETAILPRODUCT_APIWHOLESALEPRICEKEY,kTKPDDETAILPRODUCT_APIWHOLESALEMAXKEY]];
         
@@ -1310,6 +1315,7 @@ UIAlertViewDelegate
                                                                    CCountTotal:CCountTotal}];
         
         // Relationship Mapping
+        [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
         [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseFast toKeyPath:CResponseFast withMapping:responseSpeedMapping]];
         
         [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
@@ -1876,8 +1882,8 @@ UIAlertViewDelegate
         
         //Set icon speed
 //        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
-        [AppDelegate setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];        
-        [AppDelegate generateMedal:_product.result.shop_info.shop_stats.shop_reputation_score withImage:btnReputasi isLarge:YES];
+        [AppDelegate setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
+        [AppDelegate generateMedalWithLevel:_product.result.shop_info.shop_stats.shop_badge_level.level withSet:_product.result.shop_info.shop_stats.shop_badge_level.set withImage:btnReputasi isLarge:YES];
         
         //Set image and title kecepatan
         CGFloat spacing = 6.0;

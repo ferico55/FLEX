@@ -58,7 +58,7 @@
 {
     btnTitle = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnTitle setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btnTitle.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
+    btnTitle.titleLabel.font = [self.navigationController.navigationBar.titleTextAttributes objectForKey:NSFontAttributeName];
     btnTitle.backgroundColor = [UIColor clearColor];
     [btnTitle addTarget:self action:@selector(actionChangeFilter:) forControlEvents:UIControlEventTouchUpInside];
 

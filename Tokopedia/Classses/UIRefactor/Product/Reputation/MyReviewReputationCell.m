@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import "DetailProductViewController.h"
+#import "ShopBadgeLevel.h"
 #import "string_inbox_message.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationCell.h"
@@ -164,6 +165,7 @@
         
         view.hidden = YES;
         activityRating.frame = view.frame;
+        activityRating.center = view.center;
         [activityRating startAnimating];
         [view.superview addSubview:activityRating];
     }
@@ -288,7 +290,7 @@
     
     //Set reputation
     if([object.role isEqualToString:@"1"]) {//Buyer
-        [AppDelegate generateMedal:object.reputation_score withImage:btnReputation isLarge:NO];
+        [AppDelegate generateMedalWithLevel:object.shop_badge_level.level withSet:object.shop_badge_level.set withImage:btnReputation isLarge:NO];
         [btnReputation setTitle:@"" forState:UIControlStateNormal];
     }
     else {

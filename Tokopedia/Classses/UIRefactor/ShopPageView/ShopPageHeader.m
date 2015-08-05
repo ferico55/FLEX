@@ -10,6 +10,7 @@
 #import "ShopPageHeader.h"
 #import "ShopDescriptionView.h"
 #import "ShopStatView.h"
+#import "ShopBadgeLevel.h"
 #import "detail.h"
 #import "string_product.h"
 #import "UserAuthentificationManager.h"
@@ -296,7 +297,7 @@
 
 #pragma mark - Method
 - (void)generateMedal {
-    [AppDelegate generateMedal:_shop.result.stats.shop_reputation_score withImage:_statView.imgStatistic isLarge:YES];
+    [AppDelegate generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:_statView.imgStatistic isLarge:YES];
     _statView.constraintWidthMedal.constant = _statView.imgStatistic.image.size.width;
 }
 

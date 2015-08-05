@@ -116,17 +116,6 @@
                                                  name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                object:nil];
     
-    //Set Position Btn Lihat Detail Statistic
-    CGSize newSize = CGSizeMake(15, 15);
-    UIGraphicsBeginImageContext(newSize);
-    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_arrow_right_gray" ofType:@"png"]] drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *tempImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    [btnLihatDetailStat setImage:tempImage forState:UIControlStateNormal];
-    btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width+20, 0, -btnLihatDetailStat.titleLabel.frame.size.width);
-    
-    
     //set reputasi and akurasi
     UIFont *boldFont = [UIFont boldSystemFontOfSize:lblReputasi.font.pointSize];
     

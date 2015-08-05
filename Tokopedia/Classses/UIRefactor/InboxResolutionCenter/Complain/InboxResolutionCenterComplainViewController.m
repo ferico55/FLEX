@@ -5,6 +5,7 @@
 //  Created by IT Tkpd on 2/26/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "ShopBadgeLevel.h"
 #import "CMPopTipView.h"
 #import "DetailProductViewController.h"
 #import "string_inbox_message.h"
@@ -254,7 +255,7 @@
     
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
-    [AppDelegate generateMedal:resolution.resolution_shop.shop_reputation.reputation_score withImage:cell.btnReputation isLarge:NO];
+    [AppDelegate generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge_object.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge_object.set withImage:cell.btnReputation isLarge:NO];
     
     //Set user label
 //    if([resolution.resolution_by.user_label isEqualToString:CPenjual]) {
@@ -772,6 +773,9 @@
                                                            CReputationScore,
                                                            CScore,
                                                            CMinBadgeScore]];
+    
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
 
     [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
     [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
@@ -818,6 +822,7 @@
                                                                                             withMapping:resolutionDisputeMapping];
     
     
+    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
     [statusMapping addPropertyMapping:resultRel];
     
     [resultMapping addPropertyMapping:listRel];

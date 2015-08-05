@@ -676,6 +676,7 @@
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:_urlPath parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
             [_timer invalidate];
             [_sendButton setEnabled:YES];
             _timer = nil;

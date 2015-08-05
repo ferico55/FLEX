@@ -13,6 +13,7 @@
 #import "ShopNotesPageViewController.h"
 #import "ShopInfoViewController.h"
 #import "SendMessageViewController.h"
+#import "ShopBadgeLevel.h"
 #import "ShopSettingViewController.h"
 #import "ProductAddEditViewController.h"
 #import "UserProfileBiodataViewController.h"
@@ -486,6 +487,9 @@
                                                            CShopReputationScore:CShopReputationScore
                                                            }];
     
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
     RKObjectMapping *countRatingMapping = [RKObjectMapping mappingForClass:[CountRatingResult class]];
     [countRatingMapping addAttributeMappingsFromDictionary:@{CCountScoreGood:CCountScoreGood,
                                                              CCountScoreNeutral:CCountScoreNeutral,
@@ -500,6 +504,7 @@
                                                                CCountTotal:CCountTotal}];
     
     // Relationship Mapping
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastOneMonth toKeyPath:CShopLastOneMonth withMapping:countRatingMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastSixMonth toKeyPath:CShopLastSixMonth withMapping:countRatingMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastTwelveMonth toKeyPath:CShopLastTwelveMonth withMapping:countRatingMapping]];

@@ -20,6 +20,7 @@
 #import "MyReviewReputationViewController.h"
 #import "string_inbox_message.h"
 #import "String_Reputation.h"
+#import "ShopBadgeLevel.h"
 #import "ShopContainerViewController.h"
 #import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
@@ -321,7 +322,8 @@
         [pagingMapping addAttributeMappingsFromDictionary:@{CUriNext:CUriNext,
                                                             CUriPrevious:CUriPrevious}];
  
-        
+        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
         
         RKObjectMapping *reputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
         [reputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
@@ -329,6 +331,7 @@
                                                                      CNeutral,
                                                                      CPositif]];
         //relation
+        [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
         [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:reputationMapping]];
         
         [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -425,11 +428,21 @@
         [tableContent reloadData];
     }
     else if(tag == CTagInsertReputation) {
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"d MMMM yyyy, HH:mm";
+        
         if([((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).role isEqualToString:@"2"]) {//Seller
+            if(((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score!=nil && ![((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score isEqualToString:@""])
+                ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).score_edit_time_fmt = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
+            
             ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score = emoticonState;
             ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.buyer_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score;
         }
         else {
+            if(((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score!=nil && ![((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score isEqualToString:@""])
+                ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).score_edit_time_fmt = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
+
+            
             ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score = emoticonState;
             ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.seller_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score;
         }

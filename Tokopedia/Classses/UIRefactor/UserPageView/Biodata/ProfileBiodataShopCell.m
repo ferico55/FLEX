@@ -7,6 +7,7 @@
 //
 #import "DetailProductViewController.h"
 #import "ProfileBiodataShopCell.h"
+#import "ShopBadgeLevel.h"
 
 @implementation ProfileBiodataShopCell
 
@@ -55,8 +56,8 @@
     [AppDelegate setIconResponseSpeed:badge withImage:btnKecepatan largeImage:NO];
 }
 
-- (void)generateMedal:(NSString *)value {
-    [AppDelegate generateMedal:value withImage:btnReputasi isLarge:YES];
+- (void)generateMedal:(ShopBadgeLevel *)shopBadgeLevel {
+    [AppDelegate generateMedalWithLevel:shopBadgeLevel.level withSet:shopBadgeLevel.set withImage:btnReputasi isLarge:YES];
     
     //Set image and title reputasi
     CGFloat spacing = 6.0;
