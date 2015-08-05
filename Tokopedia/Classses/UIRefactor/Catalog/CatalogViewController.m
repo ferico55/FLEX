@@ -703,17 +703,30 @@ static CGFloat rowHeight = 40;
         }
         [_tableView reloadData];
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        NSInteger startingIndex = _productPhotoPageControl.currentPage;
-//        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
-//        controller.canDownload = NO;
-        GalleryViewController *gallery = [GalleryViewController new];
-        gallery.canDownload = YES;
-        [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
-        
-        
+        UIView *view = ((UITapGestureRecognizer *) sender).view;
+        if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {
+            if (_catalog) {
+                NSString *title = _catalog.result.catalog_info.catalog_name;
+                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
+                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                         applicationActivities:nil];
+                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:controller animated:YES completion:nil];
+            }
+        }
+        else {
+            NSInteger startingIndex = _productPhotoPageControl.currentPage;
+    //        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
+    //        controller.canDownload = NO;
+            GalleryViewController *gallery = [GalleryViewController new];
+            gallery.canDownload = YES;
+            [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
+            
+            
 
-        gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:gallery animated:YES completion:nil];
+            gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self.navigationController presentViewController:gallery animated:YES completion:nil];
+        }
     } else{
         UIView *view = ((UIGestureRecognizer*)sender).view;
         if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {

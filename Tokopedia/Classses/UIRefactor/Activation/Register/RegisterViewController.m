@@ -20,6 +20,7 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 #import "AppsFlyerTracker.h"
+#import "WebViewController.h"
 
 #pragma mark - Register View Controller
 @interface RegisterViewController ()
@@ -73,6 +74,8 @@
 @property (weak, nonatomic) IBOutlet UIView *facebookLoginView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
+@property (weak, nonatomic) IBOutlet UIButton *termsButton;
+@property (weak, nonatomic) IBOutlet UIButton *privacyButton;
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *facebookLoginActivityIndicator;
@@ -154,9 +157,9 @@
                                  NSForegroundColorAttributeName : [UIColor lightGrayColor],
                                  };
     
-    NSString *aggreementText = @"Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi.";
-    _agreementLabel.attributedText = [[NSAttributedString alloc] initWithString:aggreementText
-                                                                     attributes:attributes];
+//    NSString *aggreementText = @"Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi.";
+//    _agreementLabel.attributedText = [[NSAttributedString alloc] initWithString:aggreementText
+//                                                                     attributes:attributes];
     _agreementLabel.userInteractionEnabled = YES;
 
     _loginView = [[FBLoginView alloc] init];
@@ -176,6 +179,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Register Page";
+    self.title = kTKPDREGISTER_NEW_TITLE;
     
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;
@@ -198,6 +202,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    self.title = @"";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillShowNotification
                                                   object:nil];
@@ -935,6 +940,20 @@
         [alert show];
         [self cancel];
     }
+}
+
+- (IBAction)tapTerms:(id)sender {
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strTitle = @"Syarat & Ketentuan";
+    webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+- (IBAction)tapPrivacy:(id)sender {
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strTitle = @"Kebijakan Privasi";
+    webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 

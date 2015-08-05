@@ -475,7 +475,7 @@
                                                 <constraint firstAttribute="height" constant="1" id="3Gk-np-lbp"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i76-Ui-sSn">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kata Sandi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i76-Ui-sSn">
                                             <rect key="frame" x="15" y="0.0" width="120" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="120" id="q1v-oW-SkM"/>

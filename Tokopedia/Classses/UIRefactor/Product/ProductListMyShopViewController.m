@@ -83,6 +83,8 @@
     TokopediaNetworkManager *_networkManager;
     
     LoadingView *_loadingView;
+    
+    BOOL _isNeedToSearch;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -110,6 +112,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _isNeedToSearch = YES;
     
     _list= [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
@@ -248,6 +252,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     
     ManageProductList *list = _list[indexPath.row];
@@ -285,11 +290,13 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
 }
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         if ([sender tag] == 11) {
@@ -776,6 +783,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    _searchbar.text = @"";
     [_searchbar resignFirstResponder];
 }
 
@@ -790,10 +798,14 @@
     [searchBar setShowsCancelButton:NO animated:YES];
     
     NSString *searchBarBefore = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
-    [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
     
-    if (![searchBarBefore isEqualToString:searchBar.text]) {
+    if (![searchBarBefore isEqualToString:searchBar.text] && _isNeedToSearch) {
+        [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
         [self refreshView:nil];
+    }
+    
+    if (!_isNeedToSearch) {
+        _isNeedToSearch = YES;
     }
     
     return YES;
@@ -850,6 +862,7 @@
 
 -(NSArray*)swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     
     swipeSettings.transition = MGSwipeTransitionStatic;
