@@ -5,45 +5,38 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import "string_inbox_message.h"
+
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
 #import "GeneralTalkCell.h"
-
 #import "ReportViewController.h"
 #import "Talk.h"
 #import "GeneralAction.h"
 #import "InboxTalk.h"
-
-#import "inbox.h"
-#import "string_home.h"
-#import "stringrestkit.h"
-#import "string_inbox_talk.h"
-#import "detail.h"
-
 #import "URLCacheController.h"
 #import "NoResultView.h"
 #import "DetailProductViewController.h"
 #import "TAGDataLayer.h"
 #import "TalkCell.h"
 
+#import "inbox.h"
+#import "string_inbox_message.h"
+#import "string_home.h"
+#import "stringrestkit.h"
+#import "string_inbox_talk.h"
+#import "detail.h"
 
-@interface InboxTalkViewController ()
-<
-    UITableViewDataSource,
-    UITableViewDelegate,
-    TKPDTabInboxTalkNavigationControllerDelegate,
-    GeneralTalkCellDelegate,
-    UIAlertViewDelegate,
-    ReportViewControllerDelegate
->
 
-@property (strong, nonatomic) IBOutlet UIView *footer;
+
+@interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabInboxTalkNavigationControllerDelegate, UIAlertViewDelegate, ReportViewControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+
 @property (nonatomic, strong) NSDictionary *userinfo;
 @property (nonatomic, strong) NSMutableArray *talkList;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @end
 
@@ -51,28 +44,24 @@
 {
     BOOL _isnodata;
     BOOL _isrefreshview;
-    BOOL _iseditmode;
     
-    NSInteger _talkListPage;
-    NSInteger _limit;
-    NSInteger _viewposition;
-    
-    NSMutableDictionary *_paging;
-    
-    NSString *_urinext;
+    NSInteger _page;
+    NSString *_nextPageURL;
     NSString *_talkNavigationFlag;
     
     UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
+    NSInteger _requestTalklistCount;
     NSInteger _requestUnfollowCount;
     NSInteger _requestDeleteCount;
 
     NSTimer *_timer;
-    UISearchBar *_searchbar;
+    UISearchBar *_searchBar;
+    
     NSString *_keyword;
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     BOOL _isrefreshnav;
+    
     BOOL _isNeedToInsertCache;
     BOOL _isLoadFromCache;
     
@@ -152,7 +141,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
-    _talkListPage = 1;
+    _page = 1;
     
     [self initNotification];
     _operationQueue = [NSOperationQueue new];
@@ -184,10 +173,7 @@
     [self initCache];
     [self configureRestKit];
     
-    //TODO::
-    //gimana kalo di balikin sama server data kosong
-    //gimana kalo di balikin error sama server
-    if(_talkListPage == 1) {
+    if(_page == 1) {
         _isLoadFromCache = YES;
         [self loadDataFromCache];
     }
@@ -211,7 +197,7 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         
-        if (_isnodata && _talkListPage < 1) {
+        if (_isnodata && _page < 1) {
             [self loadData];
         }
     }
@@ -243,7 +229,7 @@
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+        if (_nextPageURL != NULL && ![_nextPageURL isEqualToString:@"0"] && _nextPageURL != 0) {
             [self configureRestKit];
             [self loadData];
         }
@@ -361,13 +347,13 @@
     
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDTALK_ACTIONGET,
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                            kTKPDHOME_APIPAGEKEY:@(_talkListPage),
+                            kTKPDHOME_APIPAGEKEY:@(_page),
                             KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
                             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
                             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
                             };
     
-    _requestcount ++;
+    _requestTalklistCount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:[_inboxTalkPostUrl isEqualToString:@""] ? KTKPDMESSAGE_TALK : _inboxTalkPostUrl
@@ -387,7 +373,6 @@
         _timer = nil;
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
         [self requestfailure:error];
         
         _isrefreshview = NO;
@@ -416,7 +401,7 @@
             
             [_talkList addObjectsFromArray: inboxtalk.result.list];
 
-            if(_talkListPage == PAGE_TO_CACHE && _isNeedToInsertCache) {
+            if(_page == PAGE_TO_CACHE && _isNeedToInsertCache) {
                 [_cacheconnection connection:operation.HTTPRequestOperation.request
                           didReceiveResponse:operation.HTTPRequestOperation.response];
                 [_cachecontroller connectionDidFinish:_cacheconnection];
@@ -427,7 +412,7 @@
             
             if (_talkList.count >0)
             {
-                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _talkListPage<=1) {
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _page<=1) {
                     NSInteger selectedIndex = _selectedDetailIndexPath.row?:0;
                     if(selectedIndex >= _talkList.count)return;
                     TalkList *list = _talkList[selectedIndex];
@@ -451,8 +436,8 @@
 
                 
                 _isnodata = NO;
-                _urinext =  inboxtalk.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
+                _nextPageURL =  inboxtalk.result.paging.uri_next;
+                NSURL *url = [NSURL URLWithString:_nextPageURL];
                 NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                 
                 NSMutableDictionary *queries = [NSMutableDictionary new];
@@ -467,7 +452,7 @@
                 }
 
                 if(!_isLoadFromCache) {
-                    _talkListPage = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+                    _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
                 }
                 
             } else {
@@ -480,8 +465,8 @@
             [self cancel];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                if (_requestTalklistCount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestTalklistCount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -555,17 +540,12 @@
         vc.data = data;
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
-//    DetailProductViewController *vc = [DetailProductViewController new];
-//    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : @"11957147"};
-    
 }
 
 #pragma mark - action
 -(void) configureUnfollowRestkit {
     _objectUnfollowmanager =  [RKObjectManager sharedClient];
     
-    // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
@@ -745,7 +725,6 @@
 }
 
 #pragma mark - ReportViewController Delegate
-#pragma mark - Report Delegate
 - (NSDictionary *)getParameter {
     return @{
              @"action" : @"report_product_talk",
@@ -784,15 +763,12 @@
 #pragma mark - Refresh View 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    /** clear object **/
     [self cancel];
-    _requestcount = 0;
-//    [_talks removeAllObjects];
-    _talkListPage = 1;
+    _requestTalklistCount = 0;
+    _page = 1;
     _isrefreshview = YES;
     
     [_table reloadData];
-    /** request data **/
     [self configureRestKit];
     [self loadData];
 }
@@ -829,7 +805,7 @@
     }
     
     [self cancel];
-    _talkListPage = 1;
+    _page = 1;
     
     
     /**init view*/
@@ -837,7 +813,7 @@
     [self initCache];
     
     NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-    if(_talkListPage == 1 && data.length) {
+    if(_page == 1 && data.length) {
         _isLoadFromCache = YES;
         [self loadDataFromCache];
         [_table reloadData];
