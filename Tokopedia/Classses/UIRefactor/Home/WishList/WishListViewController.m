@@ -255,7 +255,7 @@ typedef enum TagRequest {
         _nextPageUri =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
-        if(_nextPageUri!=nil && [_nextPageUri isEqualToString:@"0"]) {
+        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
             //remove loadingview if there is no more item
             [_flowLayout setFooterReferenceSize:CGSizeZero];
         }

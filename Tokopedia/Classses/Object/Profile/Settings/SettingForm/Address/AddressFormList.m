@@ -10,8 +10,17 @@
 
 @implementation AddressFormList
 
-- (NSString*) address_street {
+- (NSString *)address_name {
+    return [_address_name kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString *)receiver_name {
+    return [_receiver_name kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString *)address_street {
     return [_address_street kv_decodeHTMLCharacterEntities];
 }
+
 
 @end

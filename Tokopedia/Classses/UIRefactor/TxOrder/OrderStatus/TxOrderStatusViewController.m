@@ -834,12 +834,6 @@
     BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(order.message_error)
-        {
-            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-            [alert show];
-        }
         if (order.result.is_success == 1) {
             UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertSuccess show];
@@ -850,23 +844,32 @@
         else
         {
             [self failedConfirmDelivery:object];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
+            [alert show];
         }
     }
     else
     {
         [self failedConfirmDelivery:object];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
+        [alert show];
     }
 }
 
 -(void)requestFailureFinishOrder:(id)object
 {
-    [self cancelFinishOrder];
     NSError *error = object;
-    if ([error code] != NSURLErrorCancelled) {
-        NSString *errorDescription = error.localizedDescription;
-        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-        [errorAlert show];
+
+    NSArray *errors;
+    if(error.code == -1011) {
+        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    } else if (error.code==-1009 || error.code==-999) {
+        errors = @[@"Tidak ada koneksi internet"];
+    } else {
+        errors = @[error.localizedDescription];
     }
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
+    [alert show];
 }
 
 -(void)requestProcessFinishOrder
@@ -1156,9 +1159,7 @@
         TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
         [nc setSelectedIndex:2];
         [nc setViewControllers:vcs];
-        [self.navigationController pushViewController:nc animated:YES];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SHOW_RATING_ALERT object:nil];
+        [self.navigationController pushViewController:nc animated:YES];        
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {

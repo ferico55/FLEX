@@ -112,8 +112,8 @@
             [errorMessages addObject:@"Nomor resi tidak valid"];
         }
         
-        if (_nomorReceiptTextField.text.length < 8 || _nomorReceiptTextField.text.length > 17) {
-            [errorMessages addObject:@"Nomor resi antara 8 - 17 karakter"];
+        if (_nomorReceiptTextField.text.length < 7 || _nomorReceiptTextField.text.length > 17) {
+            [errorMessages addObject:@"Nomor resi antara 7 - 17 karakter"];
         }
     }
     

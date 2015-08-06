@@ -83,6 +83,8 @@
     TokopediaNetworkManager *_networkManager;
     
     LoadingView *_loadingView;
+    
+    BOOL _isNeedToSearch;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -110,6 +112,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _isNeedToSearch = YES;
     
     _list= [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
@@ -248,6 +252,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     
     ManageProductList *list = _list[indexPath.row];
@@ -285,11 +290,13 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
 }
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         if ([sender tag] == 11) {
@@ -420,7 +427,6 @@
     if (tag == TAG_LIST_REQUEST) {
         [_refreshControl endRefreshing];
         [_act stopAnimating];
-        _table.tableFooterView = nil;
         [self requestprocess:successResult];
     }
 }
@@ -554,7 +560,11 @@
             
             if (_page == 1) {
                 [_list removeAllObjects];
-                [_table setContentOffset:CGPointZero animated:YES];
+                if (_refreshControl.isRefreshing) {
+                    CGPoint contentOffset = _table.contentOffset;
+                    contentOffset.y = (contentOffset.y != 0)?:-_refreshControl.frame.size.height-45;
+                    [_table setContentOffset:contentOffset animated:YES];
+                }
             }
             
             [_list addObjectsFromArray:list];
@@ -578,7 +588,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                
+                _table.tableFooterView = [UIView new];
             } else {
                 CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
                 NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
@@ -773,6 +783,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    _searchbar.text = @"";
     [_searchbar resignFirstResponder];
 }
 
@@ -787,10 +798,14 @@
     [searchBar setShowsCancelButton:NO animated:YES];
     
     NSString *searchBarBefore = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
-    [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
     
-    if (![searchBarBefore isEqualToString:searchBar.text]) {
+    if (![searchBarBefore isEqualToString:searchBar.text] && _isNeedToSearch) {
+        [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
         [self refreshView:nil];
+    }
+    
+    if (!_isNeedToSearch) {
+        _isNeedToSearch = YES;
     }
     
     return YES;
@@ -847,6 +862,7 @@
 
 -(NSArray*)swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     
     swipeSettings.transition = MGSwipeTransitionStatic;

@@ -254,7 +254,12 @@
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     
-    NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",kTraktBaseURLString];
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *data = [secureStorage keychainDictionary];
+    
+    NSString *baseURL = [data objectForKey:@"AppBaseUrl"];
+    
+    NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",baseURL];
     
     NSString *CCFirstName=[_data objectForKey:API_CC_FIRST_NAME_KEY]?:@"";
     NSString *CCLastName =[_data objectForKey:API_CC_LAST_NAME_KEY]?:@"";
@@ -455,6 +460,13 @@
     if ([_nameTextField.text isEqualToString:@""]) {
         [errorMessage addObject:@"Nama harus diisi."];
         isValid = NO;
+    }
+    else
+    {
+        if ([_nameTextField.text isNotAllBaseCharacter]) {
+            isValid = NO;
+            [errorMessage addObject:@"Nama belakang tidak valid."];
+        }
     }
     if ([_CCNumberTextField.text isEqualToString:@""]) {
         [errorMessage addObject:@"Nomor kartu kredit harus diisi."];

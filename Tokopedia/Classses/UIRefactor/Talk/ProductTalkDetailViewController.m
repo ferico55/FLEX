@@ -837,27 +837,34 @@
                     commentlist.is_just_sent = YES;
                     commentlist.comment_user_label = [_userManager isMyShopWithShopId:[_data objectForKey:TKPD_TALK_SHOP_ID]] ? @"Penjual" : @"Pengguna";
                     
-                    [_list insertObject:commentlist atIndex:lastindexpathrow];
-                    NSArray *insertIndexPaths = [NSArray arrayWithObjects:
-                                                 [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
-                                                 ];
+                    if(![_act isAnimating]) {
+                        [_list insertObject:commentlist atIndex:lastindexpathrow];
+                        NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                     [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
+                                                     ];
+                        
+                        [_table beginUpdates];
+                        [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                        [_table endUpdates];
+                        
+                        NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
+                        [_table scrollToRowAtIndexPath:indexpath
+                                      atScrollPosition:UITableViewScrollPositionTop
+                                              animated:YES];
+                        
+                        //connect action to web service
+                        _savedComment = _growingtextview.text;
+                        [self configureSendCommentRestkit];
+                        [self addProductCommentTalk];
+                        
+                        _growingtextview.text = nil;
+                        [_growingtextview resignFirstResponder];
+                    } else {
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sedang memuat komentar.."]
+                                                                                       delegate:self];
+                        [alert show];
+                    }
                     
-                    [_table beginUpdates];
-                    [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-                    [_table endUpdates];
-                    
-                    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
-                    [_table scrollToRowAtIndexPath:indexpath
-                                  atScrollPosition:UITableViewScrollPositionTop
-                                          animated:YES];
-                    
-                    //connect action to web service
-                    _savedComment = _growingtextview.text;
-                    [self configureSendCommentRestkit];
-                    [self addProductCommentTalk];
-                    
-                    _growingtextview.text = nil;
-                    [_growingtextview resignFirstResponder];
                 }
                 else
                 {
