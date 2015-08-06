@@ -106,7 +106,7 @@
     if (!label)
     {
         label = [[UILabel alloc] init];
-        label.font = [UIFont fontWithName:@"GothamBook" size:16];
+        label.font = [UIFont fontWithName:@"Gotham Book" size:16];
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
     }

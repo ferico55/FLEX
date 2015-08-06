@@ -18,6 +18,7 @@
 - (NSString *)getPostalCode;
 - (int)getCourirOrigin;
 
+- (void)loadData;
 - (NSArray *)getAvailShipment;
 - (ShippingInfoResult *)getShipment;
 - (ShippingInfoShipments *)getJne;

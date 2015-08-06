@@ -5,10 +5,13 @@
 //  Created by Tonito Acen on 3/31/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "DetailMyReviewReputationViewController.h"
 #import "InboxTalkViewController.h"
 #import "ReportViewController.h"
+#import "ProductReputationViewController.h"
 #import "ProductTalkViewController.h"
 #import "string.h"
+#import "ShopReviewPageViewController.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "GeneralAction.h"
@@ -150,16 +153,24 @@
     if(_request.isExecuting)return;
     
     NSMutableDictionary *param = [NSMutableDictionary new];
-    [param addEntriesFromDictionary:(_strCommentTalkID==nil? [_delegate getParameter] :
+    if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]] || [_delegate isMemberOfClass:[ShopReviewPageViewController class]]) {
+        [param setObject:@"report_review" forKey:@"action"];
+        [param setObject:_strReviewID forKey:@"review_id"];
+        [param setObject:_strShopID forKey:@"shop_id"];
+    }
+    else {
+        [param addEntriesFromDictionary:(_strCommentTalkID==nil? [_delegate getParameter] :
                                      @{@"action" : @"report_product_talk",
                                        @"talk_id" : _strCommentTalkID?:@(0),
                                        @"shop_id" : _strShopID? :@(0)
                                        })];
+    }
+    
     [param setObject:_messageTextView.text forKey:@"text_message"];
     
-    if([_delegate isMemberOfClass:[ProductTalkViewController class]] || [_delegate isMemberOfClass:[InboxTalkViewController class]]) {
+    if([_delegate isMemberOfClass:[ProductTalkViewController class]] || [_delegate isMemberOfClass:[InboxTalkViewController class]] || [_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
         NSString *tempProductID = strProductID;
-        if(tempProductID == nil)
+        if(tempProductID==nil || [_delegate isMemberOfClass:[ProductTalkViewController class]])
             tempProductID = [((ProductTalkViewController *) _delegate).data objectForKey:kTKPD_PRODUCTIDKEY];
         [param setObject:tempProductID forKey:kTKPD_PRODUCTIDKEY];
     }
@@ -167,6 +178,7 @@
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_delegate getPath] parameters:[param encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [self requestSuccess:mappingResult withOperation:operation];
         [_timer invalidate];
         _timer = nil;
@@ -222,6 +234,13 @@
                             UINavigationController *nav = (UINavigationController *)_delegate;
                             [nav.navigationController popViewControllerAnimated:YES];
                         }
+                        else if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
+                    }
+                    else {
+                        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedSendReport] delegate:self];
+                        [stickyAlertView show];
                     }
                 }
             }

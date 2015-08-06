@@ -5,7 +5,9 @@
 ////  Created by IT Tkpd on 10/6/14.
 ////  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 ////
-
+#import "ShopBadgeLevel.h"
+#import "DetailProductViewController.h"
+#import "DetailStatisticViewController.h"
 #import "detail.h"
 #import "Shop.h"
 #import "Payment.h"
@@ -54,9 +56,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelshopdescription;
 @property (weak, nonatomic) IBOutlet UIButton *buttonfav;
 @property (weak, nonatomic) IBOutlet UIButton *buttonitemsold;
-@property (weak, nonatomic) IBOutlet StarsRateView *speedrate;
-@property (weak, nonatomic) IBOutlet StarsRateView *accuracyrate;
-@property (weak, nonatomic) IBOutlet StarsRateView *servicerate;
 @property (weak, nonatomic) IBOutlet UILabel *labellocation;
 @property (weak, nonatomic) IBOutlet UILabel *labellastlogin;
 @property (weak, nonatomic) IBOutlet UILabel *labelopensince;
@@ -90,7 +89,6 @@
 
 
 #pragma mark - Life Cycle
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -117,6 +115,33 @@
                                              selector:@selector(updateShopPicture:)
                                                  name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                object:nil];
+    
+    //Set Position Btn Lihat Detail Statistic
+    CGSize newSize = CGSizeMake(15, 15);
+    UIGraphicsBeginImageContext(newSize);
+    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_arrow_right_gray" ofType:@"png"]] drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *tempImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [btnLihatDetailStat setImage:tempImage forState:UIControlStateNormal];
+    btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width+20, 0, -btnLihatDetailStat.titleLabel.frame.size.width);
+    
+    
+    //set reputasi and akurasi
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:lblReputasi.font.pointSize];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblKecepatan.textColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblReputasi.font, NSFontAttributeName, lblKecepatan.textColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", _shop.result.stats.shop_reputation_score, CStringPoin] attributes:attrs];
+    [attributedText setAttributes:subAttrs range:NSMakeRange(attributedText.string.length-CStringPoin.length, CStringPoin.length)];
+    [lblReputasi setAttributedText:attributedText];
+    lblKecepatan.text = [_shop.result.respond_speed.speed_level stringByReplacingOccurrencesOfString:@"Respon" withString:@"Transaksi"];
+    
+    //Set image speed
+    [AppDelegate setIconResponseSpeed:_shop.result.respond_speed.badge withImage:imageSpeed largeImage:NO];
+    
+    //Generate Medal Reputasi
+    [AppDelegate generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -191,7 +216,7 @@
                 //favorited button action
                 ShopFavoritedViewController *vc = [ShopFavoritedViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY : _shop.result.info.shop_id?:@"",
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:[NSNull null]};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -229,7 +254,7 @@
             {
                 ShopEditViewController *vc = [ShopEditViewController new];
                 vc.data = @{
-                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:@{},
                             kTKPDDETAIL_DATASHOPSKEY : _shop.result?:@{}
                             };
                 [self.navigationController pushViewController:vc animated:YES];
@@ -433,7 +458,6 @@
 }
 
 #pragma mark - Methods
-
 -(void)updateShopPicture:(NSNotification*)notif
 {
     NSDictionary *userInfo = notif.userInfo;
@@ -476,9 +500,9 @@
     _labelshopdescription.text = _shop.result.info.shop_description;
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
     [_buttonitemsold setTitle:_shop.result.stats.shop_item_sold forState:UIControlStateNormal];
-    _speedrate.starscount = _shop.result.stats.shop_service_rate;
-    _accuracyrate.starscount = _shop.result.stats.shop_accuracy_rate;
-    _servicerate.starscount = _shop.result.stats.shop_service_rate;
+//    _speedrate.starscount = _shop.result.stats.shop_service_rate;
+//    _accuracyrate.starscount = _shop.result.stats.shop_accuracy_rate;
+//    _servicerate.starscount = _shop.result.stats.shop_service_rate;
     _labellocation.text = _shop.result.info.shop_location;
     _labellastlogin.text = _shop.result.info.shop_owner_last_login;
     _labelopensince.text = _shop.result.info.shop_open_since;
@@ -572,4 +596,12 @@
     }
 }
 
+
+
+#pragma mark - Method
+- (IBAction)actionLihatDetailStatistik:(id)sender {
+    DetailStatisticViewController *detailStatisticViewController = [DetailStatisticViewController new];
+    detailStatisticViewController.detailShopResult = _shop.result;
+    [self.navigationController pushViewController:detailStatisticViewController animated:YES];
+}
 @end

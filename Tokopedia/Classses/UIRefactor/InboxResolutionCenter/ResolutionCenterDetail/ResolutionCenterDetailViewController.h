@@ -19,6 +19,9 @@
 @end
 
 @interface ResolutionCenterDetailViewController : UIViewController
+{
+    IBOutlet UIButton *btnReputation;
+}
 
 @property (strong, nonatomic) InboxResolutionCenterTabViewController*masterViewController;
 

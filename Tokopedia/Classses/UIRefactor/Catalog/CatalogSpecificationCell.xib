@@ -124,7 +124,7 @@
             <connections>
                 <outlet property="borderTop" destination="HHh-6Z-9c7" id="bFV-Sr-RLn"/>
                 <outlet property="bottomBorder" destination="geb-bK-L5G" id="1J2-6r-qqa"/>
-                <outlet property="titleLabel" destination="Vpi-HP-TLf" id="Joq-zC-TLA"/>
+                <outlet property="titleLabel" destination="Vpi-HP-TLf" id="t56-hS-EvH"/>
                 <outlet property="valueLabel" destination="fet-eB-8BW" id="W1H-br-22p"/>
             </connections>
         </tableViewCell>

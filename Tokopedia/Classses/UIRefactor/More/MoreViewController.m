@@ -5,6 +5,8 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "MyReviewReputationViewController.h"
+#import "SegmentedReviewReputationViewController.h"
 #import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
@@ -390,16 +392,16 @@
         if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
             imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-                                         _shopIsGoldLabel.frame.origin.y - 3,
+                                         _shopIsGoldLabel.frame.origin.y,
                                          22, 22);
             [_shopCell addSubview:imageView];
             _shopIsGoldLabel.text = @"        Gold Merchant";
-                        
         } else {
             _shopIsGoldLabel.text = @"Regular Merchant";
             CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
             shopIsGoldLabelFrame.origin.x = 83;
             _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            _shopIsGoldLabel.text = @"";
         }
     }
 }
@@ -448,17 +450,18 @@
                                        } failure: nil];
         
         if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-//            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
-//            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-//                                         _shopIsGoldLabel.frame.origin.y,
-//                                         22, 22);
-//            [_shopCell addSubview:imageView];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
+            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
+                                         _shopIsGoldLabel.frame.origin.y,
+                                         22, 22);
+            [_shopCell addSubview:imageView];
             _shopIsGoldLabel.text = @"        Gold Merchant";
         } else {
             _shopIsGoldLabel.text = @"Regular Merchant";
-//            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
-//            shopIsGoldLabelFrame.origin.x = 83;
-//            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
+            shopIsGoldLabelFrame.origin.x = 83;
+            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            _shopIsGoldLabel.text = @"";
         }
         
         [self.tableView reloadData];
@@ -606,7 +609,30 @@
         } else if(indexPath.row == 1) {
             [_navigate navigateToInboxTalkFromViewController:self];
         } else if (indexPath.row == 2) {
-            [_navigate navigateToInboxReviewFromViewController:self];
+            SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+            segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:segmentedReputationViewController animated:YES];
+            
+            
+            
+            /*
+            InboxReviewViewController *vc = [InboxReviewViewController new];
+            vc.data=@{@"nav":@"inbox-review"};
+            
+            InboxReviewViewController *vc1 = [InboxReviewViewController new];
+            vc1.data=@{@"nav":@"inbox-review-my-product"};
+            
+            InboxReviewViewController *vc2 = [InboxReviewViewController new];
+            vc2.data=@{@"nav":@"inbox-review-my-review"};
+            
+            NSArray *vcs = @[vc,vc1, vc2];
+            
+            TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+            [nc setSelectedIndex:2];
+            [nc setViewControllers:vcs];
+            nc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:nc animated:YES];
+            */
         } else if (indexPath.row == 3) {
             AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
             alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;

@@ -46,7 +46,7 @@
     
     lblUser.layer.cornerRadius = 2.0f;
     lblUser.layer.masksToBounds = YES;
-    lblUser.font = [UIFont fontWithName:@"Gotham Medium" size:10.0f];
+    lblUser.font = [UIFont fontWithName:@"Gotham Medium" size:11.0f];
     lblUser.layer.masksToBounds = YES;
     lblUser.textAlignment = NSTextAlignmentCenter;
     

@@ -15,6 +15,7 @@
 #import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
+#import "SegmentedReviewReputationViewController.h"
 
 #import "SalesNewOrderViewController.h"
 #import "ShipmentStatusViewController.h"
@@ -366,22 +367,9 @@
                     [self.delegate pushViewController:controller];
                     
                 } else {
-                    InboxReviewViewController *vc = [InboxReviewViewController new];
-                    vc.data=@{@"nav":@"inbox-review"};
-                    
-                    InboxReviewViewController *vc1 = [InboxReviewViewController new];
-                    vc1.data=@{@"nav":@"inbox-review-my-product"};
-                    
-                    InboxReviewViewController *vc2 = [InboxReviewViewController new];
-                    vc2.data=@{@"nav":@"inbox-review-my-review"};
-                    
-                    NSArray *vcs = @[vc,vc1, vc2];
-                    
-                    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-                    [nc setSelectedIndex:2];
-                    [nc setViewControllers:vcs];
-                    nc.hidesBottomBarWhenPushed = YES;
-                    [self.delegate pushViewController:nc];
+                    SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+	                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+    	            [self.delegate pushViewController:segmentedReputationViewController];
                 }
                 break;
             }

@@ -10,7 +10,11 @@
 
 #pragma mark - Detail Product Talk Detail View Controller
 @interface ProductTalkDetailViewController : UIViewController
+{
+    IBOutlet UIButton *btnReputation;
+}
 
+- (IBAction)actionSmiley:(id)sender;
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) UIViewController *masterViewController;
 

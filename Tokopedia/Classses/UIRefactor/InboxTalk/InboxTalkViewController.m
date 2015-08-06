@@ -5,7 +5,8 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "CMPopTipView.h"
+#import "string_inbox_message.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
@@ -26,10 +27,21 @@
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "detail.h"
+#import "ReputationDetail.h"
 
 
 
-@interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabInboxTalkNavigationControllerDelegate, UIAlertViewDelegate, ReportViewControllerDelegate>
+@interface InboxTalkViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    CMPopTipViewDelegate,
+    TKPDTabInboxTalkNavigationControllerDelegate,
+    GeneralTalkCellDelegate,
+    SmileyDelegate,
+    UIAlertViewDelegate,
+    ReportViewControllerDelegate
+>
 
 @property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -90,6 +102,7 @@
     NSIndexPath *_selectedIndexPath;
     NoResultView *_noResultView;
     TAGContainer *_gtmContainer;
+    CMPopTipView *popTipView;
     UserAuthentificationManager *_userManager;
     NSIndexPath *_selectedDetailIndexPath;
 }
@@ -275,10 +288,19 @@
                                                  TKPD_TALK_USER_LABEL_ID
                                                  ]];
     
+    
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNegative,
+                                                                 CNeutral,
+                                                                 CPositif]];
+    
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     // Relationship Mapping
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:reviewUserReputationMapping]];
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
@@ -500,6 +522,25 @@
 }
 
 #pragma mark - General Talk Delegate
+- (void)actionSmile:(id)sender {
+    int paddingRightLeftContent = 10;
+    
+    TalkList *list = _talkList[((UIView *) sender).tag];
+    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.talk_user_reputation.neutral withRepSmile:list.talk_user_reputation.positive withRepSad:list.talk_user_reputation.negative withDelegate:self];
+    
+    //Init pop up
+    popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+    popTipView.delegate = self;
+    popTipView.backgroundColor = [UIColor whiteColor];
+    popTipView.animation = CMPopTipAnimationSlide;
+    popTipView.dismissTapAnywhere = YES;
+    popTipView.leftPopUp = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [popTipView presentPointingAtView:button inView:self.view animated:YES];
+}
+
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     
     _selectedDetailIndexPath
@@ -522,7 +563,8 @@
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
                 TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
                 TKPD_TALK_PRODUCT_STATUS:list.talk_product_status,
-                TKPD_TALK_USER_LABEL:list.talk_user_label
+                TKPD_TALK_USER_LABEL:list.talk_user_label,
+                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation
                 };
     
     NSDictionary *userinfo;
@@ -844,4 +886,23 @@
     _inboxTalkPostUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkPost];
 }
 
+
+
+#pragma mark - ToolTip Delegate
+- (void)dismissAllPopTipViews
+{
+    [popTipView dismissAnimated:YES];
+    popTipView = nil;
+}
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
+    [self dismissAllPopTipViews];
+}
 @end
