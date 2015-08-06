@@ -24,6 +24,7 @@
                 <outlet property="loginButton" destination="BjJ-ah-R04" id="dvv-2B-Ufl"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
                 <outlet property="screenLogin" destination="tu9-kn-elL" id="oKK-HZ-puV"/>
+                <outlet property="signInButton" destination="msd-qS-aYm" id="gck-UD-kXj"/>
                 <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
             </connections>
         </placeholder>
@@ -79,13 +80,22 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="qhs-2n-8Kv"/>
                     </connections>
                 </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gxv-a7-Kso">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gxv-a7-Kso" userLabel="Facebook View">
                     <rect key="frame" x="15" y="262" width="290" height="44"/>
-                    <color key="backgroundColor" red="0.23137254900000001" green="0.34901960780000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="cAc-Vd-kLC"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="msd-qS-aYm" customClass="GPPSignInButton">
+                    <rect key="frame" x="15" y="315" width="290" height="100"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="4xI-wE-ml9"/>
+                    </constraints>
+                    <state key="normal" title="dsfsdf">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <subviews>
@@ -126,6 +136,8 @@
                 <constraint firstAttribute="bottom" secondItem="QfQ-ON-DwI" secondAttribute="bottom" id="5Hl-WU-Sz4"/>
                 <constraint firstItem="TaY-hL-DlK" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="5xp-aM-8rS"/>
                 <constraint firstAttribute="trailing" secondItem="tu9-kn-elL" secondAttribute="trailing" id="CYC-T2-Wkq"/>
+                <constraint firstItem="msd-qS-aYm" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="DTd-cT-VuC"/>
+                <constraint firstItem="msd-qS-aYm" firstAttribute="top" secondItem="Gxv-a7-Kso" secondAttribute="bottom" constant="9" id="Fg6-pG-z5X"/>
                 <constraint firstAttribute="trailing" secondItem="Gxv-a7-Kso" secondAttribute="trailing" constant="15" id="H9r-Lb-Mc1"/>
                 <constraint firstItem="QfQ-ON-DwI" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="IMU-Db-7zd"/>
                 <constraint firstItem="tu9-kn-elL" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="IfZ-Ls-Ypu"/>
@@ -139,6 +151,7 @@
                 <constraint firstItem="Meb-uf-Mbe" firstAttribute="top" secondItem="BjJ-ah-R04" secondAttribute="bottom" constant="9" id="TyD-49-EMi"/>
                 <constraint firstAttribute="trailing" secondItem="TaY-hL-DlK" secondAttribute="trailing" constant="15" id="UJh-9a-PeT"/>
                 <constraint firstItem="Meb-uf-Mbe" firstAttribute="centerX" secondItem="BjJ-ah-R04" secondAttribute="centerX" id="UfZ-QY-pzC"/>
+                <constraint firstAttribute="trailing" secondItem="msd-qS-aYm" secondAttribute="trailing" constant="15" id="jYU-Vi-2Xt"/>
                 <constraint firstAttribute="bottom" secondItem="tu9-kn-elL" secondAttribute="bottom" id="jq6-4S-nOC"/>
                 <constraint firstItem="BjJ-ah-R04" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="ke6-yh-EoE"/>
                 <constraint firstItem="QfQ-ON-DwI" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="mUf-2O-BzJ"/>

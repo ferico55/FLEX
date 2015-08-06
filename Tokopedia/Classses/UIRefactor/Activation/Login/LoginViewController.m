@@ -25,8 +25,17 @@
 #import "GAIDictionaryBuilder.h"
 #import "AppsFlyerTracker.h"
 
-@interface LoginViewController () <FBLoginViewDelegate, LoginViewDelegate, CreatePasswordDelegate> {
-    
+#import <GoogleOpenSource/GoogleOpenSource.h>
+
+static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
+
+@interface LoginViewController ()
+<
+    FBLoginViewDelegate,
+    LoginViewDelegate,
+    CreatePasswordDelegate
+>
+{
     UITextField *_activetextfield;
     
     NSMutableDictionary *_activation;
@@ -79,6 +88,7 @@
 @synthesize data = _data;
 @synthesize emailTextField = _emailTextField;
 @synthesize passwordTextField = _passwordTextField;
+@synthesize signInButton;
 
 #pragma mark - Initialization
 
@@ -132,6 +142,13 @@
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _operationQueueFacebookLogin = [NSOperationQueue new];
+    
+    GPPSignIn *signIn = [GPPSignIn sharedInstance];
+    signIn.shouldFetchGooglePlusUser = YES;
+    signIn.shouldFetchGoogleUserEmail = YES;
+    signIn.clientID = kClientId;
+    signIn.scopes = @[ kGTLAuthScopePlusLogin ];
+    signIn.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -818,5 +835,13 @@
     _emailTextField.text = @"orangkeren@yahoo.com";
     _passwordTextField.text = @"kambinglu";
 }
+
+#pragma mark - Google plus sign in delegate
+
+- (void)finishedWithAuth: (GTMOAuth2Authentication *)auth
+                   error: (NSError *) error {
+    NSLog(@"Received error %@ and auth object %@",error, auth);
+}
+
 
 @end
