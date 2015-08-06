@@ -496,7 +496,7 @@
             break;
             
         case 5:
-            return 3;
+            return 4;
             break;
             
         case 6:
@@ -734,6 +734,18 @@
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [self.navigationController pushViewController:webViewController animated:YES];
+        } else if(indexPath.row == 3) {
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:kGAIScreenName value:@"Share App"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            
+            NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
+            NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
+            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                             applicationActivities:nil];
+            activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+            [self presentViewController:activityController animated:YES completion:nil];
         }
     }
     

@@ -106,6 +106,7 @@
     _data = data;
     if (data) {
         NSArray *wholesales = [_data objectForKey:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY];
+        [_wholesales removeAllObjects];
         [_wholesales addObjectsFromArray:wholesales];
         
         if (_wholesales.count > 0) {

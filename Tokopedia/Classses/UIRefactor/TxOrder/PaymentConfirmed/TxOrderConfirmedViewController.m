@@ -346,7 +346,7 @@
 -(UITableViewCell*)cellConfirmedBankAtIndexPath:(NSIndexPath*)indexPath
 {
     NSString *cellid = BANK_CELL_IDENTIFIER;
- 
+    
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
     
     TxOrderConfirmedBankCell *cell = (TxOrderConfirmedBankCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];

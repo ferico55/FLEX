@@ -303,7 +303,7 @@
             
             NSDictionary *userinfo;
             _editedParam = [self getEditedParam];
-            userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex)};
+            userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex), @"review_id" : generalaction.result.review_id?:@0};
             if(_isEditForm) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
             } else {
