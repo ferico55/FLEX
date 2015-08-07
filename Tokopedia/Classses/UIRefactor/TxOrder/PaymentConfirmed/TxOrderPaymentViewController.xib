@@ -93,26 +93,29 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="JT9-xt-M2G">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="DOQ-8g-oz7">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="jfA-Ev-joU"/>
                         <outlet property="delegate" destination="-1" id="pwR-ga-w0D"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="DOQ-8g-oz7" firstAttribute="top" secondItem="JT9-xt-M2G" secondAttribute="top" id="2zg-dD-AwQ"/>
-                <constraint firstItem="DOQ-8g-oz7" firstAttribute="leading" secondItem="JT9-xt-M2G" secondAttribute="leading" id="RLu-Pu-TYh"/>
-                <constraint firstAttribute="trailing" secondItem="DOQ-8g-oz7" secondAttribute="trailing" id="mD3-tK-ucd"/>
+                <constraint firstItem="DOQ-8g-oz7" firstAttribute="leading" secondItem="JT9-xt-M2G" secondAttribute="leading" id="RLu-Pu-TYh">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="DOQ-8g-oz7" secondAttribute="trailing" id="mD3-tK-ucd">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstAttribute="bottom" secondItem="DOQ-8g-oz7" secondAttribute="bottom" id="yhK-ma-6O3"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="337" y="569"/>
         </view>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="gCE-qJ-3Mo" detailTextLabel="ywi-yJ-7tR" style="IBUITableViewCellStyleValue1" id="qAD-Ic-SI9">
@@ -332,8 +335,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-nH-uUR">
-                    <rect key="frame" x="15" y="10" width="295" height="70"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-nH-uUR">
+                    <rect key="frame" x="15" y="10" width="290" height="70"/>
                     <string key="text">Inputlah sesuai dengan jumlah uang yang Anda transfer. Masukkan jumlah pembayaran tanpa tanda titik koma.
 Contoh : 157500</string>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
@@ -342,6 +345,12 @@ Contoh : 157500</string>
                 </label>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="3Ba-nH-uUR" firstAttribute="top" secondItem="al4-EX-gmr" secondAttribute="top" constant="10" id="04N-yL-h9u"/>
+                <constraint firstAttribute="bottom" secondItem="3Ba-nH-uUR" secondAttribute="bottom" id="1oF-Uf-Y2l"/>
+                <constraint firstAttribute="trailing" secondItem="3Ba-nH-uUR" secondAttribute="trailing" constant="15" id="RWm-1y-Jah"/>
+                <constraint firstItem="3Ba-nH-uUR" firstAttribute="leading" secondItem="al4-EX-gmr" secondAttribute="leading" constant="15" id="whG-Fr-oLk"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="657" y="596"/>
         </view>
@@ -364,14 +373,20 @@ Contoh : 157500</string>
             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Produk yang sudah dipesan dan dikonfirmasikan pembayarannya tidak dapat dibatalkan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zEh-Hq-Rti">
-                    <rect key="frame" x="15" y="15" width="295" height="40"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Produk yang sudah dipesan dan dikonfirmasikan pembayarannya tidak dapat dibatalkan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zEh-Hq-Rti">
+                    <rect key="frame" x="15" y="15" width="290" height="40"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="zEh-Hq-Rti" secondAttribute="bottom" constant="15" id="Fuh-84-Wvw"/>
+                <constraint firstAttribute="trailing" secondItem="zEh-Hq-Rti" secondAttribute="trailing" constant="15" id="d9I-JT-DcQ"/>
+                <constraint firstItem="zEh-Hq-Rti" firstAttribute="top" secondItem="W18-Sf-aBh" secondAttribute="top" constant="15" id="uUs-aF-SQp"/>
+                <constraint firstItem="zEh-Hq-Rti" firstAttribute="leading" secondItem="W18-Sf-aBh" secondAttribute="leading" constant="15" id="xMf-rK-ojG"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="862" y="562.5"/>
         </view>
@@ -379,7 +394,7 @@ Contoh : 157500</string>
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZc-IQ-bwc">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZc-IQ-bwc">
                     <rect key="frame" x="15" y="15" width="290" height="40"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
@@ -393,8 +408,34 @@ Contoh : 157500</string>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="dZc-IQ-bwc" secondAttribute="bottom" constant="5" id="1Wq-tL-17s"/>
+                <constraint firstItem="dZc-IQ-bwc" firstAttribute="leading" secondItem="DVt-aE-RbC" secondAttribute="leading" constant="15" id="Bzz-tB-lJU"/>
+                <constraint firstAttribute="trailing" secondItem="dZc-IQ-bwc" secondAttribute="trailing" constant="15" id="FyD-7S-BFQ"/>
+                <constraint firstItem="dZc-IQ-bwc" firstAttribute="top" secondItem="DVt-aE-RbC" secondAttribute="top" constant="15" id="ShU-fl-hGH"/>
+                <constraint firstAttribute="bottom" secondItem="dZc-IQ-bwc" secondAttribute="bottom" constant="5" id="Zi1-va-lge"/>
+                <constraint firstItem="dZc-IQ-bwc" firstAttribute="top" secondItem="DVt-aE-RbC" secondAttribute="top" constant="15" id="eEP-pI-dur"/>
+                <constraint firstItem="dZc-IQ-bwc" firstAttribute="leading" secondItem="DVt-aE-RbC" secondAttribute="leading" constant="15" id="fks-EX-Il7"/>
+                <constraint firstAttribute="trailing" secondItem="dZc-IQ-bwc" secondAttribute="trailing" constant="15" id="ovu-o9-0on"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="967" y="646"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="1Wq-tL-17s"/>
+                    <exclude reference="Bzz-tB-lJU"/>
+                    <exclude reference="FyD-7S-BFQ"/>
+                    <exclude reference="ShU-fl-hGH"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="1Wq-tL-17s"/>
+                    <include reference="Bzz-tB-lJU"/>
+                    <include reference="FyD-7S-BFQ"/>
+                    <include reference="ShU-fl-hGH"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="844" y="695"/>
         </view>
         <view contentMode="scaleToFill" id="E1A-D9-ct6" userLabel="password View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
