@@ -71,8 +71,6 @@
     _noLoginView.frame = frame;
     
     _isShouldRefreshingCart = NO;
-//    [self initNotification];
-    
     
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
 
@@ -106,21 +104,6 @@
     
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
-    
-    //[self adjustViewConstraint];
-}
-
--(void)adjustViewConstraint
-{
-    _pageController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_pageController.view
-                                                          attribute:NSLayoutAttributeTopMargin
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:44.0f]];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -150,6 +133,9 @@
             }
             
             [_noLoginView setHidden:YES];
+        }
+        if (_isLogin && self.navigationController.viewControllers.count<=1) {
+            [self initNotificationManager];
         }
     }
 }
@@ -210,10 +196,6 @@
             if(!_cartViewController)
             {
                 _cartViewController = [TransactionCartViewController new];
-                
-                if (_isLogin && self.navigationController.viewControllers.count<=1) {
-                    [self initNotificationManager];
-                }
             }
 
             _cartViewController.delegate = self;
@@ -303,7 +285,6 @@
             [barbutton1 setTintColor:[UIColor whiteColor]];
             [barbutton1 setTag:11];
             if (_isLogin) {
-//                [self initNotificationManager];
                 self.navigationItem.rightBarButtonItem = barbutton1;
             }
             else
@@ -467,7 +448,7 @@
 
 - (void)reloadNotification
 {
-//    [self initNotificationManager];
+    [self initNotificationManager];
 }
 
 - (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
@@ -495,7 +476,7 @@
     _auth = [secureStorage keychainDictionary];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
-//        [self initNotificationManager];
+        self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
     }
     else
     {
@@ -521,7 +502,7 @@
         }
     }
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
-//        [self initNotificationManager];
+        self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
     }
     else
     {
