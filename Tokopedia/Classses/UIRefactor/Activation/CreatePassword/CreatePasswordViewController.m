@@ -109,13 +109,42 @@
     _operationQueue = [NSOperationQueue new];
     _requestCount = 0;
     
-    _fullNameTextField.text = [_facebookUser objectForKey:@"name"];
+    NSString *name;
+    if (_facebookUser) {
+        name = [_facebookUser objectForKey:@"name"];
+    } else if (_googleUser) {
+        name = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+    }
+    _fullNameTextField.text = name;
     
-    _emailTextField.text = [_facebookUser objectForKey:@"email"];
+    
+    NSString *email;
+    if (_facebookUser) {
+        email = [_facebookUser objectForKey:@"email"];
+    } else if (_googleUser) {
+        GPPSignIn *signIn = [GPPSignIn sharedInstance];
+        email = signIn.userEmail;
+    }
+    _emailTextField.text = email;
     _emailTextField.enabled = NO;
     _emailTextField.layer.opacity = 0.7;
     
-    _dateOfBirthTextField.text = [_facebookUser objectForKey:@"birthday"];
+    NSString *birthday = @"";
+    if (_facebookUser) {
+        birthday = [_facebookUser objectForKey:@"birthday"];
+    } else if (_googleUser) {
+        if (_googleUser.birthday) {
+            NSArray *birthdayComponents = [_googleUser.birthday componentsSeparatedByString:@"-"];
+            NSString *year = [birthdayComponents objectAtIndex:0];
+            if (![year isEqualToString:@"0000"]) {
+                NSString *day = [birthdayComponents objectAtIndex:2];
+                NSString *month = [birthdayComponents objectAtIndex:1];
+                birthday = [NSString stringWithFormat:@"%@/%@/%@", day, month, year];
+            }
+        }
+    }
+    
+    _dateOfBirthTextField.text = birthday;
     _dateOfBirthTextField.delegate = self;
     
     _activityIndicatorView.hidden = YES;
@@ -295,9 +324,11 @@
     NSArray *dataComponents = [_dateOfBirthTextField.text componentsSeparatedByString:@"/"];
     
     NSString *gender = @"";
-    if ([[_facebookUser objectForKey:@"gender"] isEqualToString:@"male"]) {
+    if ([[_facebookUser objectForKey:@"gender"] isEqualToString:@"male"] ||
+        [_googleUser.gender isEqualToString:@"male"]) {
         gender = @"1";
-    } else if ([[_facebookUser objectForKey:@"gender"] isEqualToString:@"female"]) {
+    } else if ([[_facebookUser objectForKey:@"gender"] isEqualToString:@"female"] ||
+               [_googleUser.gender isEqualToString:@"female"]) {
         gender = @"2";
     }
     

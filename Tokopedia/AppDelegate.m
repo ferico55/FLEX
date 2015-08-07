@@ -113,18 +113,15 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    if([sourceApplication isEqualToString:@"com.facebook.Facebook"]) {
-        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
-    } else if ([sourceApplication isEqualToString:@"com.google.GooglePlus"]) {
-        return [GPPURLHandler handleURL:url
-                      sourceApplication:sourceApplication
-                             annotation:annotation];
+    if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
+        return YES;
+    } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
+        return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;
     }
     return NO;
 }
-
 
 #pragma mark - reset persist data if freshly installed
 - (void)preparePersistData
