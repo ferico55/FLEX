@@ -698,7 +698,7 @@ TokopediaNetworkManagerDelegate
 
 
 #pragma mark - LoadingView Delegate
-- (IBAction)pressRetryButton:(id)sender {
+- (void)pressRetryButton {
     [_networkManager doRequest];
     _isFailRequest = NO;
     [_collectionView reloadData];
