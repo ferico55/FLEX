@@ -52,8 +52,10 @@ typedef enum
     TYPE_GATEWAY_TRANSFER_BANK = 1,
     TYPE_GATEWAY_MANDIRI_CLICK_PAY = 4,
     TYPE_GATEWAY_MANDIRI_E_CASH = 6,
-    TYPE_GATEWAY_CLICK_BCA = 7,
+    TYPE_GATEWAY_BCA_CLICK_PAY = 7,
+    TYPE_GATEWAY_BCA_KLIK_BCA = 9,
     TYPE_GATEWAY_CC = 8,
+    TYPE_GATEWAY_INDOMARET = 10
 }TYPE_GATEWAY;
 
 typedef enum
@@ -78,6 +80,8 @@ typedef enum
 #define STRING_SALDO_TOKOPEDIA_TERPAKAI @"Saldo Tokopedia terpakai"
 #define STRING_SALDO_TOKOPEDIA_TERSISA @"Saldo Tokopedia yang tersisa"
 #define STRING_JUMLAH_YANG_HARUS_DIBAYAR @"Jumlah yang harus dibayar"
+#define STRING_BIAYA_ADMINISTRASI_INDOMARET @"Biaya Administrasi Indomaret"
+#define STRING_TOTAL_TAGIHAN @"Total Tagihan"
 #define STRING_PENGGUNAAN_KUPON @"Penggunaan Kupon"
 #define STRING_PAYMENT
 
@@ -248,6 +252,8 @@ typedef enum
 
 #define API_PASSWORD_KEY @"password"
 
+#define API_BCA_USER_ID_KEY @"bca_user_id"
+
 #define API_VOUCHER_AMOUNT_IDR_KEY @"voucher_amount_idr"
 #define API_DEPOSIT_AFTER_KEY @"deposit_after"
 #define API_DEPOSIT_IDR_KEY @"deposit_idr"
@@ -365,6 +371,8 @@ typedef enum
 #define ERRORMESSAGE_NULL_CART_SHIPPING_AGENT @"Agen kurir harus diisi."
 #define ERRORMESSAGE_NULL_CART_PAYMENT @"Pilih Metode Pembayaran yang ingin digunakan terlebih dahulu."
 #define ERRORMESSAGE_NULL_CART_PASSWORD @"Kata Sandi harus diisi."
+#define ERRORMESSAGE_NULL_CART_USERID @"User ID harus diisi."
+
 #define ERRORMESSAGE_NULL_VOUCHER_CODE @"Masukkan kode kupon terlebih dahulu."
 #define ERRORMESSAGE_VOUCHER_CODE_LENGHT @"Kode kupon harus 12 karakter."
 

@@ -211,9 +211,6 @@
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="274" y="7" width="46" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="infoCVC:" destination="-1" eventType="touchUpInside" id="rYi-Wi-2zb"/>
                                 </connections>
@@ -224,7 +221,11 @@
                             <constraint firstItem="7t8-Yf-1cY" firstAttribute="top" secondItem="BfP-5i-eWP" secondAttribute="top" id="0cR-aT-z9a"/>
                             <constraint firstItem="gZQ-ra-g9R" firstAttribute="leading" secondItem="7t8-Yf-1cY" secondAttribute="trailing" constant="15" id="198-80-KHd"/>
                             <constraint firstAttribute="trailing" secondItem="gZQ-ra-g9R" secondAttribute="trailing" constant="15" id="2PS-6I-c8p"/>
+                            <constraint firstAttribute="trailing" secondItem="516-QG-BRk" secondAttribute="trailing" id="3c6-Q7-Hz8"/>
                             <constraint firstAttribute="bottom" secondItem="7t8-Yf-1cY" secondAttribute="bottom" id="NKw-Je-b7d"/>
+                            <constraint firstAttribute="bottom" secondItem="516-QG-BRk" secondAttribute="bottom" constant="7" id="Rl6-pi-0Bp"/>
+                            <constraint firstItem="516-QG-BRk" firstAttribute="top" secondItem="BfP-5i-eWP" secondAttribute="top" constant="7" id="Xvl-iB-2i2"/>
+                            <constraint firstItem="516-QG-BRk" firstAttribute="leading" secondItem="7t8-Yf-1cY" secondAttribute="trailing" constant="4" id="deN-Tg-HYN"/>
                             <constraint firstAttribute="centerY" secondItem="gZQ-ra-g9R" secondAttribute="centerY" id="em8-ff-FXh"/>
                             <constraint firstItem="7t8-Yf-1cY" firstAttribute="leading" secondItem="BfP-5i-eWP" secondAttribute="leading" constant="15" id="v7z-vd-And"/>
                         </constraints>
@@ -232,10 +233,22 @@
                             <mask key="subviews">
                                 <exclude reference="516-QG-BRk"/>
                             </mask>
+                            <mask key="constraints">
+                                <exclude reference="3c6-Q7-Hz8"/>
+                                <exclude reference="Rl6-pi-0Bp"/>
+                                <exclude reference="Xvl-iB-2i2"/>
+                                <exclude reference="deN-Tg-HYN"/>
+                            </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="516-QG-BRk"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="3c6-Q7-Hz8"/>
+                                <include reference="Rl6-pi-0Bp"/>
+                                <include reference="Xvl-iB-2i2"/>
+                                <include reference="deN-Tg-HYN"/>
                             </mask>
                         </variation>
                     </view>

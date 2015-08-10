@@ -73,8 +73,9 @@
 
 #define FONT_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:13.0f]
 #define FONT_DETAIL_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:12.0f]
-
+#define FONT_GOTHAM_MEDIUM_11 [UIFont fontWithName:@"GothamMedium" size:11.0f]
 #define FONT_GOTHAM_MEDIUM_12 [UIFont fontWithName:@"GothamMedium" size:12.0f]
+#define FONT_GOTHAM_MEDIUM_13 [UIFont fontWithName:@"GothamMedium" size:13.0f]
 #define FONT_GOTHAM_BOOK_10 [UIFont fontWithName:@"GothamBook" size:10.0f]
 #define FONT_GOTHAM_BOOK_11 [UIFont fontWithName:@"GothamBook" size:11.0f]
 #define FONT_GOTHAM_BOOK_12 [UIFont fontWithName:@"GothamBook" size:12.0f]

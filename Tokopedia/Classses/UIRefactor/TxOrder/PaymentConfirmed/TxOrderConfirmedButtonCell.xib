@@ -13,8 +13,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TxOrderConfirmedButtonCellIdentifier" rowHeight="50" id="rKc-oc-Xam" customClass="TxOrderConfirmedButtonCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TxOrderConfirmedButtonCellIdentifier" rowHeight="40" id="rKc-oc-Xam" customClass="TxOrderConfirmedButtonCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rKc-oc-Xam" id="dum-Rb-bHt">
                 <autoresizingMask key="autoresizingMask"/>
@@ -105,7 +105,7 @@
                 <outlet property="editButton" destination="icU-Or-HlW" id="RtR-Ru-n50"/>
                 <outlet property="uploadProofButton" destination="2k2-cH-QYH" id="EP8-y2-hF4"/>
             </connections>
-            <point key="canvasLocation" x="285" y="222"/>
+            <point key="canvasLocation" x="285" y="232"/>
         </tableViewCell>
     </objects>
     <resources>
