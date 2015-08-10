@@ -829,9 +829,12 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ajr-Kh-eil" id="7vs-gx-FjG">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojV-HK-y8A">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojV-HK-y8A">
                                                     <rect key="frame" x="15" y="46" width="290" height="41"/>
                                                     <color key="backgroundColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="41" id="Kbm-73-P9D"/>
+                                                    </constraints>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <state key="normal" title="Buka Toko">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -841,13 +844,24 @@
                                                         <action selector="actionCreateShop:" destination="zwO-iX-RIY" eventType="touchUpInside" id="xxn-Wa-Xjw"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anda belum memiliki Toko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JCD-Wi-qkn">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda belum memiliki Toko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JCD-Wi-qkn">
                                                     <rect key="frame" x="15" y="18" width="290" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="YkK-7y-ZqU"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ojV-HK-y8A" firstAttribute="leading" secondItem="7vs-gx-FjG" secondAttribute="leading" constant="15" id="Dju-pN-Hek"/>
+                                                <constraint firstAttribute="trailing" secondItem="ojV-HK-y8A" secondAttribute="trailing" constant="15" id="L0q-OY-mL7"/>
+                                                <constraint firstItem="JCD-Wi-qkn" firstAttribute="leading" secondItem="7vs-gx-FjG" secondAttribute="leading" constant="15" id="QiU-aj-5Wq"/>
+                                                <constraint firstAttribute="trailing" secondItem="JCD-Wi-qkn" secondAttribute="trailing" constant="15" id="Rji-vF-PvJ"/>
+                                                <constraint firstItem="ojV-HK-y8A" firstAttribute="top" secondItem="JCD-Wi-qkn" secondAttribute="bottom" constant="7" id="agy-nw-04s"/>
+                                                <constraint firstItem="JCD-Wi-qkn" firstAttribute="top" secondItem="7vs-gx-FjG" secondAttribute="top" constant="18" id="fZ4-xK-k4K"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
