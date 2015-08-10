@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -19,7 +19,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartRootViewController">
             <connections>
-                <outlet property="containerView" destination="uXr-F6-eiV" id="Rwb-vR-CAG"/>
                 <outlet property="noLoginView" destination="43p-Yg-N4d" id="OhK-JS-LZx"/>
                 <outlet property="pageControlView" destination="Udz-dt-e2a" id="Oox-rG-PNd"/>
                 <outlet property="progressView" destination="jGJ-QC-MGX" id="dBh-Sf-EQq"/>
