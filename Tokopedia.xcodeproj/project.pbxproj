@@ -18,6 +18,10 @@
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		857B51301B7061BB00AF052B /* ShopBadgeLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 857B512F1B7061BB00AF052B /* ShopBadgeLevel.m */; };
 		8598D40D1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8598D40C1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib */; };
+		85A5BCB11B749FD200CB2C68 /* SmileyAndMedal.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A5BCB01B749FD200CB2C68 /* SmileyAndMedal.m */; };
+		85A5BCB51B74B6CB00CB2C68 /* icon_neutral_smile_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A5BCB21B74B6CB00CB2C68 /* icon_neutral_smile_small.png */; };
+		85A5BCB61B74B6CB00CB2C68 /* icon_neutral_smile_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A5BCB31B74B6CB00CB2C68 /* icon_neutral_smile_small@2x.png */; };
+		85A5BCB71B74B6CB00CB2C68 /* icon_neutral_smile_small@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A5BCB41B74B6CB00CB2C68 /* icon_neutral_smile_small@3x.png */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1773,6 +1777,12 @@
 		857B512E1B7061BB00AF052B /* ShopBadgeLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopBadgeLevel.h; sourceTree = "<group>"; };
 		857B512F1B7061BB00AF052B /* ShopBadgeLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopBadgeLevel.m; sourceTree = "<group>"; };
 		8598D40C1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkDetailViewController.xib; sourceTree = "<group>"; };
+		85A5BCAE1B749F7200CB2C68 /* SmileyDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmileyDelegate.h; sourceTree = "<group>"; };
+		85A5BCAF1B749FD200CB2C68 /* SmileyAndMedal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmileyAndMedal.h; sourceTree = "<group>"; };
+		85A5BCB01B749FD200CB2C68 /* SmileyAndMedal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmileyAndMedal.m; sourceTree = "<group>"; };
+		85A5BCB21B74B6CB00CB2C68 /* icon_neutral_smile_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_neutral_smile_small.png; sourceTree = "<group>"; };
+		85A5BCB31B74B6CB00CB2C68 /* icon_neutral_smile_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_neutral_smile_small@2x.png"; sourceTree = "<group>"; };
+		85A5BCB41B74B6CB00CB2C68 /* icon_neutral_smile_small@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_neutral_smile_small@3x.png"; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -4418,6 +4428,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		85A5BCAD1B749F3C00CB2C68 /* Smiley */ = {
+			isa = PBXGroup;
+			children = (
+				85A5BCAE1B749F7200CB2C68 /* SmileyDelegate.h */,
+				85A5BCAF1B749FD200CB2C68 /* SmileyAndMedal.h */,
+				85A5BCB01B749FD200CB2C68 /* SmileyAndMedal.m */,
+			);
+			path = Smiley;
+			sourceTree = "<group>";
+		};
 		85C81FEB1B6B6B8100E40481 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -6056,6 +6076,7 @@
 		85C823841B6B6B8400E40481 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				85A5BCAD1B749F3C00CB2C68 /* Smiley */,
 				85C823851B6B6B8400E40481 /* Activation */,
 				85C823971B6B6B8400E40481 /* Address */,
 				85C823A11B6B6B8400E40481 /* Alert */,
@@ -8356,6 +8377,9 @@
 				85C829551B6B6B8A00E40481 /* icon_netral25.png */,
 				85C829561B6B6B8A00E40481 /* icon_netral25@2x.png */,
 				85C829571B6B6B8A00E40481 /* icon_netral25@3x.png */,
+				85A5BCB21B74B6CB00CB2C68 /* icon_neutral_smile_small.png */,
+				85A5BCB31B74B6CB00CB2C68 /* icon_neutral_smile_small@2x.png */,
+				85A5BCB41B74B6CB00CB2C68 /* icon_neutral_smile_small@3x.png */,
 				85C829581B6B6B8A00E40481 /* icon_netral50.png */,
 				85C829591B6B6B8A00E40481 /* icon_netral50@2x.png */,
 				85C8295A1B6B6B8A00E40481 /* icon_netral50@3x.png */,
@@ -9799,6 +9823,7 @@
 				85C82D461B6B6B8D00E40481 /* ResolutionCenterDetailCell.xib in Resources */,
 				85C830A21B6B6B8D00E40481 /* icon_smile@3x.png in Resources */,
 				85C82F121B6B6B8D00E40481 /* GothamLight.ttf in Resources */,
+				85A5BCB51B74B6CB00CB2C68 /* icon_neutral_smile_small.png in Resources */,
 				85C82F3C1B6B6B8D00E40481 /* icon_4@2x.png in Resources */,
 				85C830491B6B6B8D00E40481 /* icon_no_data_grey.png in Resources */,
 				85C82FFE1B6B6B8D00E40481 /* icon_medal_bronze@2x.png in Resources */,
@@ -9926,6 +9951,7 @@
 				85C82D8A1B6B6B8D00E40481 /* AlertPriceNotificationViewController.xib in Resources */,
 				85C830981B6B6B8D00E40481 /* icon_smile20.png in Resources */,
 				85C8302D1B6B6B8D00E40481 /* icon_netral@2x.png in Resources */,
+				85A5BCB61B74B6CB00CB2C68 /* icon_neutral_smile_small@2x.png in Resources */,
 				85C82EFF1B6B6B8D00E40481 /* ProductCell.xib in Resources */,
 				85C82F651B6B6B8D00E40481 /* icon_button_favorite_nonactive@2x.png in Resources */,
 				85C830551B6B6B8D00E40481 /* icon_people_grey.png in Resources */,
@@ -10097,6 +10123,7 @@
 				85C82DDB1B6B6B8D00E40481 /* ReputationShopHeader.xib in Resources */,
 				85C830151B6B6B8D00E40481 /* icon_message.png in Resources */,
 				85C82F471B6B6B8D00E40481 /* icon_house.png in Resources */,
+				85A5BCB71B74B6CB00CB2C68 /* icon_neutral_smile_small@3x.png in Resources */,
 				85C82F6C1B6B6B8D00E40481 /* icon_button_pricealert_nonactive@3x.png in Resources */,
 				85C8308B1B6B6B8D00E40481 /* icon_shop_info@2x.png in Resources */,
 				85C82F741B6B6B8D00E40481 /* icon_button_wishlist_nonactive@2x.png in Resources */,
@@ -10823,6 +10850,7 @@
 				85C82AF81B6B6B8C00E40481 /* LoginResult.m in Sources */,
 				85C82D861B6B6B8D00E40481 /* NotificationManager.m in Sources */,
 				85C82EE71B6B6B8D00E40481 /* TxOrderTabViewController.m in Sources */,
+				85A5BCB11B749FD200CB2C68 /* SmileyAndMedal.m in Sources */,
 				85C82C191B6B6B8C00E40481 /* ShopShipping.m in Sources */,
 				85C82AF31B6B6B8C00E40481 /* RSA.m in Sources */,
 				85C82ADC1B6B6B8C00E40481 /* CMPopTipView.m in Sources */,

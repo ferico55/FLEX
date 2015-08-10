@@ -44,7 +44,7 @@
         lblDesc.frame = CGRectMake(lblDesc.frame.origin.x, CPaddingTopBottom + imageProduct.frame.origin.y+imageProduct.bounds.size.height + CPaddingTopBottom, lblDesc.bounds.size.width, lblDesc.bounds.size.height);
     }
     
-    btnMore.frame = CGRectMake(viewContent.bounds.size.width-10-btnMore.bounds.size.width, 5, btnMore.bounds.size.width, btnMore.bounds.size.height);
+    btnMore.frame = CGRectMake((self.bounds.size.width-(viewContent.frame.origin.x*2))-10-btnMore.bounds.size.width, 5, btnMore.bounds.size.width, btnMore.bounds.size.height);
     lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
     viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
     lineSeparatorDesc.frame = CGRectMake(0, 0, viewContentRating.bounds.size.width, lineSeparatorDesc.bounds.size.height);
@@ -195,9 +195,16 @@
     return labelProductName;
 }
 
+- (UILabel *)getLabelPercentageRate {
+    return lblPercentageRage;
+}
+
 - (void)setPercentage:(NSString *)strPercentage
 {
-    lblPercentageRage.text = [NSString stringWithFormat:@"%@%%", strPercentage];
+    if(strPercentage.length==0 || [strPercentage isEqualToString:@"0"])
+        lblPercentageRage.text = @"";
+    else
+        lblPercentageRage.text = [NSString stringWithFormat:@"%@%%", strPercentage];
 }
 
 - (void)setLabelUser:(NSString *)strUser withUserLabel:(NSString *)strUserLabel

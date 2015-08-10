@@ -12,6 +12,7 @@
 #import "ShopStatView.h"
 #import "ShopBadgeLevel.h"
 #import "detail.h"
+#import "SmileyAndMedal.h"
 #import "string_product.h"
 #import "UserAuthentificationManager.h"
 #import "ShopSettingViewController.h"
@@ -297,7 +298,7 @@
 
 #pragma mark - Method
 - (void)generateMedal {
-    [AppDelegate generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:_statView.imgStatistic isLarge:YES];
+    [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:_statView.imgStatistic isLarge:YES];
     _statView.constraintWidthMedal.constant = _statView.imgStatistic.image.size.width;
 }
 

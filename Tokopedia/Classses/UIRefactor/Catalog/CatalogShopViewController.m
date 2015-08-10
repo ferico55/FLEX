@@ -17,6 +17,7 @@
 #import "CatalogProductViewController.h"
 #import "DetailProductViewController.h"
 #import "ShopBadgeLevel.h"
+#import "SmileyAndMedal.h"
 #import "ShopContainerViewController.h"
 
 @interface CatalogShopViewController ()
@@ -136,7 +137,7 @@
     
 //    NSInteger rateAverage = (shop.shop_rate_accuracy + shop.shop_rate_service + shop.shop_rate_speed) / 3;
 //    [cell setShopRate:rateAverage];
-    [AppDelegate generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level withSet:shop.shop_reputation.shop_badge_level.set withImage:cell.stars isLarge:YES];
+    [SmileyAndMedal generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level withSet:shop.shop_reputation.shop_badge_level.set withImage:cell.stars isLarge:YES];
     [cell setTagContentStar:(int)indexPath.row];
     
     return cell;

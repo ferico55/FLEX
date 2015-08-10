@@ -7,6 +7,7 @@
 //
 
 #import "Talk.h"
+#import "CMPopTipView.h"
 #import "string_product.h"
 #import "detail.h"
 #import "GeneralAction.h"
@@ -23,6 +24,7 @@
 #import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
 #import "ReputationDetail.h"
+#import "SmileyAndMedal.h"
 #import "string_inbox_talk.h"
 #import "string_inbox_message.h"
 #import "stringrestkit.h"
@@ -32,7 +34,7 @@
 #define CTagDeleteMessage 13
 
 #pragma mark - Product Talk View Controller
-@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate,ReportViewControllerDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate>
+@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate,ReportViewControllerDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, CMPopTipViewDelegate, SmileyDelegate>
 {
     NSMutableArray *_list;
     NSArray *_headerimages;
@@ -42,6 +44,7 @@
     NSTimer *_timer;
     BOOL _isnodata;
     
+    CMPopTipView *cmPopTitpView;
     NSInteger _page;
     NSInteger _limit;
     NSString *_urinext;
@@ -238,7 +241,16 @@
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             ((GeneralTalkCell*)cell).data = list;
-            [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
+            ((GeneralTalkCell*)cell).btnReputation.tag = indexPath.row;
+            
+            if(list.talk_user_reputation.no_reputation!=nil && [list.talk_user_reputation.no_reputation isEqualToString:@"1"]) {
+                [((GeneralTalkCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [((GeneralTalkCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
+            }
+            else {
+                [((GeneralTalkCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
+            }
             
             //Set user label
 //            if([list.talk_user_label isEqualToString:CPenjual]) {
@@ -549,6 +561,7 @@
     
     RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
     [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNoReputation,
                                                                  CNegative,
                                                                  CNeutral,
                                                                  CPositif]];
@@ -952,6 +965,30 @@
 }
 
 #pragma mark - General Cell Comment Delegate
+- (void)actionSmile:(id)sender {
+    TalkList *list = _list[((UIView *) sender).tag];
+
+    if(! (list.talk_user_reputation.no_reputation!=nil && [list.talk_user_reputation.no_reputation isEqualToString:@"1"])) {
+        
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.talk_user_reputation.neutral withRepSmile:list.talk_user_reputation.positive withRepSad:list.talk_user_reputation.negative withDelegate:self];
+        
+        //Init pop up
+        cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        cmPopTitpView.delegate = self;
+        cmPopTitpView.backgroundColor = [UIColor whiteColor];
+        cmPopTitpView.animation = CMPopTipAnimationSlide;
+        cmPopTitpView.dismissTapAnywhere = YES;
+        cmPopTitpView.leftPopUp = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+    }
+}
+
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
@@ -1093,5 +1130,24 @@
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedDeleteMessage] delegate:self];
         [stickyAlertView show];
     }
+}
+
+#pragma mark - CMPopTipView Delegate
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
+    [self dismissAllPopTipViews];
 }
 @end

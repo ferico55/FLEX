@@ -28,6 +28,7 @@
 #import "ReportViewController.h"
 #import "GeneralAction.h"
 #import "InboxTalk.h"
+#import "SmileyAndMedal.h"
 
 #import "inbox.h"
 #import "string_home.h"
@@ -433,15 +434,15 @@ UIAlertViewDelegate>
 - (void)actionGetLikeStatus:(NSArray *)arrList {
     if(loadingLikeDislike.count > 10)
         return;
-    
-    ReviewList *list = [arrList firstObject];
-    RKObjectManager *tempObjectManager = [self getObjectManager:CTagGetTotalLike];
-    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
-                            kTKPDDETAIL_REVIEWIDS : list.review_id,
-                            kTKPDDETAIL_APISHOPIDKEY : list.review_shop_id};
-    RKManagedObjectRequestOperation *tempRequest = [tempObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[self getPath:CTagGetTotalLike] parameters:[param encrypt]];
-    
     dispatch_async(dispatch_get_main_queue(), ^(void){
+        ReviewList *list = [arrList firstObject];
+        RKObjectManager *tempObjectManager = [self getObjectManager:CTagGetTotalLike];
+        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
+                                kTKPDDETAIL_REVIEWIDS : list.review_id,
+                                kTKPDDETAIL_APISHOPIDKEY : list.review_shop_id};
+        RKManagedObjectRequestOperation *tempRequest = [tempObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[self getPath:CTagGetTotalLike] parameters:[param encrypt]];
+    
+    
         NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:list.review_id repeats:NO];
         [loadingLikeDislike setObject:@[tempRequest, [NSIndexPath indexPathForRow:[[arrList lastObject] intValue] inSection:0], timerLikeDislike] forKey:list.review_id];
     
@@ -456,7 +457,8 @@ UIAlertViewDelegate>
             [self performSelectorInBackground:@selector(updateDataInDetailView:) withObject:obj];
             
             //Update UI
-            [_table reloadRowsAtIndexPaths:@[[[loadingLikeDislike objectForKey:list.review_id] objectAtIndex:1]] withRowAnimation:UITableViewRowAnimationNone];
+            if([loadingLikeDislike objectForKey:list.review_id])
+                [_table reloadRowsAtIndexPaths:@[[[loadingLikeDislike objectForKey:list.review_id] objectAtIndex:1]] withRowAnimation:UITableViewRowAnimationNone];
             [loadingLikeDislike removeObjectForKey:list.review_id];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
@@ -564,8 +566,8 @@ UIAlertViewDelegate>
             NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductReputationCell" owner:nil options:0];
             cell = [tempArr objectAtIndex:0];
             cell.delegate = self;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            cell.frame = CGRectMake(0, 0, self.view.bounds.size.width, cell.bounds.size.height);
             [cell initProductCell];
             [self setPropertyLabelDesc:cell.getLabelDesc];
         }
@@ -575,12 +577,21 @@ UIAlertViewDelegate>
         [cell setLabelUser:list.review_user_name withUserLabel:list.review_user_label];
         [cell setLabelDate:list.review_create_time?:@""];
         [cell setLabelProductName:list.review_product_name];
-        [cell setPercentage:list.review_user_reputation.positive_percentage];
         cell.getBtnRateEmoji.tag = indexPath.row;
         cell.getBtnLike.tag = indexPath.row;
         cell.getBtnChat.tag = indexPath.row;
         cell.getBtnDisLike.tag = indexPath.row;
         cell.getLabelDesc.tag = indexPath.row;
+        
+        //Check reputation
+        if(list.review_user_reputation.no_reputation!=nil && [list.review_user_reputation.no_reputation isEqualToString:@"1"]) {
+            [cell.getBtnRateEmoji setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [cell setPercentage:@""];
+        }
+        else {
+            [cell.getBtnRateEmoji setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [cell setPercentage:list.review_user_reputation.positive_percentage];
+        }
         
         //Hidden review rate and comment
 //        if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
@@ -633,8 +644,7 @@ UIAlertViewDelegate>
             if(! [loadingLikeDislike objectForKey:list.review_id]) {
                 [loadingLikeDislike setObject:list.review_id forKey:list.review_id];
                 [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[list, [NSNumber numberWithInt:(int)indexPath.row]]];
-            }
-        }
+            }         }
         
         
         
@@ -658,8 +668,7 @@ UIAlertViewDelegate>
         //Set product image
         NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         UIImageView *productImageView = cell.getProductImage;
-        productImageView.image = nil;
-        [productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [productImageView setImageWithURLRequest:productImageRequest placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
             #pragma clang diagnostic push
             #pragma clang diagnostic ignored "-Warc-retain-cycles"
             [productImageView setImage:image];
@@ -717,6 +726,7 @@ UIAlertViewDelegate>
     RKObjectMapping *reviewUserReputation = [RKObjectMapping mappingForClass:[ReputationDetail class]];
     [reviewUserReputation addAttributeMappingsFromDictionary:@{CPositivePercentage:CPositivePercentage,
                                                                CNegative:CNegative,
+                                                               CNoReputation:CNoReputation,
                                                                CNeutral:CNeutral,
                                                                CPositif:CPositif}];
     
@@ -1144,20 +1154,24 @@ UIAlertViewDelegate>
 
 - (void)actionRate:(id)sender {
     ReviewList *list = _list[((UIView *) sender).tag];
-    int paddingRightLeftContent = 10;
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.review_user_reputation.neutral withRepSmile:list.review_user_reputation.positive withRepSad:list.review_user_reputation.negative withDelegate:self];
     
-    
-    //Init pop up
-    popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-    popTipView.delegate = self;
-    popTipView.backgroundColor = [UIColor whiteColor];
-    popTipView.animation = CMPopTipAnimationSlide;
-    popTipView.dismissTapAnywhere = YES;
-    
-    UIButton *button = (UIButton *)sender;
-    [popTipView presentPointingAtView:button inView:self.view animated:YES];
+    if(! (list.review_user_reputation.no_reputation!=nil && [list.review_user_reputation.no_reputation isEqualToString:@"1"])) {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.review_user_reputation.neutral withRepSmile:list.review_user_reputation.positive withRepSad:list.review_user_reputation.negative withDelegate:self];
+        
+        
+        //Init pop up
+        popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        popTipView.delegate = self;
+        popTipView.backgroundColor = [UIColor whiteColor];
+        popTipView.animation = CMPopTipAnimationSlide;
+        popTipView.dismissTapAnywhere = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [popTipView presentPointingAtView:button inView:self.view animated:YES];
+    }
 }
 
 - (void)actionLike:(id)sender {
@@ -1273,9 +1287,14 @@ UIAlertViewDelegate>
 }
 
 - (void)redirectToProductDetailReputation:(ReviewList *)reviewList withIndexPath:(NSIndexPath *)indexPath {
+    if(_shop.result.stats.shop_badge_level == nil) {
+        return;
+    }
+    
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.reviewList = reviewList;
     productDetailReputationViewController.isMyProduct = (_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:reviewList.review_product_owner.user_id]);
+    productDetailReputationViewController.shopBadgeLevel = _shop.result.stats.shop_badge_level;
     productDetailReputationViewController.dictLikeDislike = dictLikeDislike;
     productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     productDetailReputationViewController.indexPathSelected = indexPath;

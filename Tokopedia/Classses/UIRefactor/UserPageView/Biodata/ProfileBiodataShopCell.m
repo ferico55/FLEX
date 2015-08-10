@@ -8,6 +8,7 @@
 #import "DetailProductViewController.h"
 #import "ProfileBiodataShopCell.h"
 #import "ShopBadgeLevel.h"
+#import "SmileyAndMedal.h"
 
 @implementation ProfileBiodataShopCell
 
@@ -53,11 +54,11 @@
 
 #pragma mark - Method
 - (void)setBadgeIcon:(NSString *)badge {
-    [AppDelegate setIconResponseSpeed:badge withImage:btnKecepatan largeImage:NO];
+    [SmileyAndMedal setIconResponseSpeed:badge withImage:btnKecepatan largeImage:NO];
 }
 
 - (void)generateMedal:(ShopBadgeLevel *)shopBadgeLevel {
-    [AppDelegate generateMedalWithLevel:shopBadgeLevel.level withSet:shopBadgeLevel.set withImage:btnReputasi isLarge:YES];
+    [SmileyAndMedal generateMedalWithLevel:shopBadgeLevel.level withSet:shopBadgeLevel.set withImage:btnReputasi isLarge:YES];
     
     //Set image and title reputasi
     CGFloat spacing = 6.0;

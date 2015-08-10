@@ -460,6 +460,7 @@
     [userReputationMapping addAttributeMappingsFromDictionary:@{CPositivePercentage:CPositivePercentage,
                                                                 CNegative:CNegative,
                                                                 CPositif:CPositif,
+                                                                CNoReputation:CNoReputation,
                                                                 CNeutral:CNeutral}];
     
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];

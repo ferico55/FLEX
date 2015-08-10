@@ -7,6 +7,7 @@
 //
 
 #import "ProductDetailReputationCell.h"
+#import "SmileyAndMedal.h"
 
 @implementation ProductDetailReputationCell
 
@@ -58,10 +59,9 @@
 }
 
 #pragma mark - Method 
-- (void)setStar:(NSString *)valueStar {
-    [AppDelegate generateMedal:valueStar withImage:arrImageView isLarge:YES];
+- (void)setStar:(NSString *)level withSet:(NSString *)strSet {
+    [SmileyAndMedal generateMedalWithLevel:level withSet:strSet withImage:arrImageView isLarge:YES];
 }
-
 
 #pragma mark - Setter Getter
 - (UIButton *)getBtnTryAgain {

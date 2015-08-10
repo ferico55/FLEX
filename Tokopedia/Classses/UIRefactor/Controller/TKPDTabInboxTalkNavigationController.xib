@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -28,10 +28,6 @@
                     <rect key="frame" x="0.0" y="60" width="320" height="420"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="422" id="ry4-jk-7w6"/>
-                        <constraint firstAttribute="width" constant="320" id="vQ2-3b-KDY"/>
-                    </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D86-7r-ZYC">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
@@ -57,8 +53,6 @@
                         <constraint firstItem="UQ4-Ca-nLF" firstAttribute="leading" secondItem="D86-7r-ZYC" secondAttribute="leading" constant="9" id="Bik-8s-a04"/>
                         <constraint firstAttribute="trailing" secondItem="UQ4-Ca-nLF" secondAttribute="trailing" constant="9" id="FIV-WL-k9N"/>
                         <constraint firstItem="UQ4-Ca-nLF" firstAttribute="top" secondItem="D86-7r-ZYC" secondAttribute="top" constant="16" id="Ugg-2I-bBM"/>
-                        <constraint firstAttribute="width" constant="320" id="Xkt-Ak-9Qi"/>
-                        <constraint firstAttribute="height" constant="60" id="j85-5f-gp3"/>
                         <constraint firstAttribute="bottom" secondItem="UQ4-Ca-nLF" secondAttribute="bottom" constant="16" id="wpb-Rs-qgK"/>
                     </constraints>
                 </view>
@@ -151,10 +145,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PTW-8r-EbB">
                             <rect key="frame" x="0.0" y="88" width="320" height="392"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="320" id="9N4-JA-ziT"/>
-                                <constraint firstAttribute="height" constant="392" id="kUy-Sl-7PA"/>
-                            </constraints>
                             <connections>
                                 <outletCollection property="gestureRecognizers" destination="xJS-KU-k91" appends="YES" id="XdW-Xz-ei9"/>
                             </connections>
@@ -166,9 +156,7 @@
                         <constraint firstItem="PTW-8r-EbB" firstAttribute="leading" secondItem="TG6-Ga-jeZ" secondAttribute="leading" id="LaV-bB-EYW"/>
                         <constraint firstItem="PTW-8r-EbB" firstAttribute="top" secondItem="g1f-Zp-dRH" secondAttribute="bottom" id="Peq-g9-kje"/>
                         <constraint firstAttribute="bottom" secondItem="PTW-8r-EbB" secondAttribute="bottom" id="VsQ-Md-vHj"/>
-                        <constraint firstAttribute="width" constant="320" id="XZa-Rw-TPd"/>
                         <constraint firstAttribute="trailing" secondItem="PTW-8r-EbB" secondAttribute="trailing" id="j3m-0k-bg1"/>
-                        <constraint firstAttribute="height" constant="480" id="kcJ-vm-DVh"/>
                         <constraint firstItem="g1f-Zp-dRH" firstAttribute="top" secondItem="TG6-Ga-jeZ" secondAttribute="top" id="lk7-rs-xXi"/>
                         <constraint firstItem="g1f-Zp-dRH" firstAttribute="leading" secondItem="TG6-Ga-jeZ" secondAttribute="leading" id="zKS-Hc-a71"/>
                     </constraints>

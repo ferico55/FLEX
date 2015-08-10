@@ -7,6 +7,7 @@
 //
 
 #define CHeightUserLabel 21
+#import "ShopReputation.h"
 #import "CMPopTipView.h"
 #import "ReputationDetail.h"
 #import "ProductTalkDetailViewController.h"
@@ -22,6 +23,7 @@
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
 #import "LoginViewController.h"
+#import "ShopBadgeLevel.h"
 
 //#import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
@@ -36,12 +38,13 @@
 #import "InboxTalkViewController.h"
 #import "UserContainerViewController.h"
 
+#import "SmileyAndMedal.h"
 #import "string_inbox_message.h"
 #import "stringrestkit.h"
 #import "string_more.h"
 #import "string_inbox_talk.h"
 
-@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate, GeneralTalkCommentCellDelegate, UISplitViewControllerDelegate>
+@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate, GeneralTalkCommentCellDelegate, UISplitViewControllerDelegate, SmileyDelegate, CMPopTipViewDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_list;
@@ -288,12 +291,40 @@
 }
 
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    TalkCommentList *list = _list[indexPath.row];
-//    CGSize messageSize = [GeneralTalkCommentCell messageSize:list.comment_message];
-//    return messageSize.height + 2 * [GeneralTalkCommentCell textMarginVertical];
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellid = kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER;
+    GeneralTalkCommentCell *cell = (GeneralTalkCommentCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [GeneralTalkCommentCell newcell];
+        ((GeneralTalkCommentCell*)cell).delegate = self;
+        ((GeneralTalkCommentCell*)cell).del = self;
+        [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
+    }
+
+    
+    TalkCommentList *list = _list[indexPath.row];
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+    NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 5.0f;
+    NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message attributes:attributes];
+    ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
+    
+    cell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
+    
+    
+    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    height += 1;
+    
+    return height;
+}
+
+
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -321,13 +352,13 @@
                                                                                    attributes:attributes];
             ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
             
-            CGFloat commentLabelWidth = ((GeneralTalkCommentCell*)cell).commentlabel.frame.size.width;
+//            CGFloat commentLabelWidth = ((GeneralTalkCommentCell*)cell).commentlabel.frame.size.width;
             
-            [((GeneralTalkCommentCell*)cell).commentlabel sizeToFit];
+//            [((GeneralTalkCommentCell*)cell).commentlabel sizeToFit];
             
-            CGRect commentLabelFrame = ((GeneralTalkCommentCell*)cell).commentlabel.frame;
-            commentLabelFrame.size.width = commentLabelWidth;
-            ((GeneralTalkCommentCell*)cell).commentlabel.frame = commentLabelFrame;
+//            CGRect commentLabelFrame = ((GeneralTalkCommentCell*)cell).commentlabel.frame;
+//            commentLabelFrame.size.width = commentLabelWidth;
+//            ((GeneralTalkCommentCell*)cell).commentlabel.frame = commentLabelFrame;
             
             ((GeneralTalkCommentCell*)cell).user_name.text = list.comment_user_name;
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
@@ -336,13 +367,19 @@
             ((GeneralTalkCommentCell*)cell).btnReputation.tag = indexPath.row;
             
             
-            if([list.comment_user_label caseInsensitiveCompare:CPembeli] == NSOrderedSame) {//Buyer
-                [AppDelegate generateMedal:list.comment_shop_reputation withImage:((GeneralTalkCommentCell*)cell).btnReputation isLarge:NO];
+            if(list.comment_is_seller!=nil && [list.comment_is_seller isEqualToString:@"1"]) {//Seller
+                [SmileyAndMedal generateMedalWithLevel:list.comment_shop_reputation.reputation_badge_object.level withSet:list.comment_shop_reputation.reputation_badge_object.set withImage:((GeneralTalkCommentCell*)cell).btnReputation isLarge:NO];
                 [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
             }
             else {
-                [((GeneralTalkCommentCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                [((GeneralTalkCommentCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (list.comment_user_reputation==nil? @"0":list.comment_user_reputation.positive_percentage)] forState:UIControlStateNormal];
+                if(list.comment_user_reputation.no_reputation!=nil && [list.comment_user_reputation.no_reputation isEqualToString:@"1"]) {
+                    [((GeneralTalkCommentCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                    [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
+                }
+                else {
+                    [((GeneralTalkCommentCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                    [((GeneralTalkCommentCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (list.comment_user_reputation==nil? @"0":list.comment_user_reputation.positive_percentage)] forState:UIControlStateNormal];
+                }
             }
             
             //Set user label
@@ -397,6 +434,10 @@
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                 
             }];
+            
+            
+            [cell setNeedsUpdateConstraints];
+            [cell updateConstraintsIfNeeded];
         }
         
         return cell;
@@ -438,6 +479,37 @@
 
 
 #pragma mark - Methods
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    cmPopTitpView.leftPopUp = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
 -(void)setHeaderData:(NSDictionary*)data
 {
     
@@ -523,7 +595,13 @@
     }
     
     if([data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]) {
-        [btnReputation setTitle:[NSString stringWithFormat:@"%@%%", ((ReputationDetail *)[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).positive_percentage] forState:UIControlStateNormal];
+        if(((ReputationDetail *)[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).no_reputation!=nil && [((ReputationDetail *)[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).no_reputation isEqualToString:@"1"]) {
+            [btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [btnReputation setTitle:@"" forState:UIControlStateNormal];
+        }
+        else {
+            [btnReputation setTitle:[NSString stringWithFormat:@"%@%%", ((ReputationDetail *)[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).positive_percentage] forState:UIControlStateNormal];
+        }
     }
     
     
@@ -627,19 +705,28 @@
                                                  TKPD_TALK_COMMENT_USERNAME,
                                                  TKPD_TALK_COMMENT_USERID,
                                                  TKPD_TALK_COMMENT_USER_LABEL,
-                                                 TKPD_TALK_COMMENT_USER_LABEL_ID,
-                                                 CCommentShopReputation
+                                                 TKPD_TALK_COMMENT_USER_LABEL_ID
                                                  ]];
     RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
     [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNoReputation,
                                                                  CNegative,
                                                                  CNeutral,
                                                                  CPositif]];
+    
+    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
+    [shopReputationMapping addAttributeMappingsFromArray:@[CReputationScore]];
+    
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     // Relationship Mapping
+    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCommentShopReputation toKeyPath:CCommentShopReputation withMapping:shopReputationMapping]];
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCommentUserReputation toKeyPath:CCommentUserReputation withMapping:reviewUserReputationMapping]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -676,7 +763,6 @@
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:_urlPath parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
             [_timer invalidate];
             [_sendButton setEnabled:YES];
             _timer = nil;
@@ -1217,38 +1303,56 @@
 
 #pragma mark - Action Smiley
 - (IBAction)actionSmiley:(id)sender {
-    int paddingRightLeftContent = 10;
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:((ReputationDetail *)[_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).neutral withRepSmile:((ReputationDetail *)[_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).positive withRepSad:((ReputationDetail *)[_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).negative withDelegate:self];
-    
-    //Init pop up
-    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-    cmPopTitpView.delegate = self;
-    cmPopTitpView.backgroundColor = [UIColor whiteColor];
-    cmPopTitpView.animation = CMPopTipAnimationSlide;
-    cmPopTitpView.dismissTapAnywhere = YES;
-    
-    UIButton *button = (UIButton *)sender;
-    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+    if([_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]) {
+        if(! (((ReputationDetail *)[_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).no_reputation!=nil && [((ReputationDetail *)[_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).no_reputation isEqualToString:@"1"])) {
+            int paddingRightLeftContent = 10;
+            UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+            SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+            [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:((ReputationDetail *)[_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).neutral withRepSmile:((ReputationDetail *)[_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).positive withRepSad:((ReputationDetail *)[_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).negative withDelegate:self];
+            
+            //Init pop up
+            cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+            cmPopTitpView.delegate = self;
+            cmPopTitpView.backgroundColor = [UIColor whiteColor];
+            cmPopTitpView.animation = CMPopTipAnimationSlide;
+            cmPopTitpView.dismissTapAnywhere = YES;
+            cmPopTitpView.leftPopUp = YES;
+            
+            UIButton *button = (UIButton *)sender;
+            [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+
+        }
+    }
 }
 
 #pragma mark - Action Delete Comment Talk
 - (void)actionSmile:(id)sender {
     TalkCommentList *list = _list[((UIView *) sender).tag];
-    int paddingRightLeftContent = 10;
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.comment_user_reputation.neutral withRepSmile:list.comment_user_reputation.positive withRepSad:list.comment_user_reputation.negative withDelegate:self];
     
-    //Init pop up
-    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-    cmPopTitpView.delegate = self;
-    cmPopTitpView.backgroundColor = [UIColor whiteColor];
-    cmPopTitpView.animation = CMPopTipAnimationSlide;
-    cmPopTitpView.dismissTapAnywhere = YES;
-    cmPopTitpView.leftPopUp = YES;
-    
-    UIButton *button = (UIButton *)sender;
-    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+    if(list.comment_is_seller!=nil && [list.comment_is_seller isEqualToString:@"1"]) {
+        NSString *strText = [NSString stringWithFormat:@"%@ %@", list.comment_shop_reputation.reputation_score==nil? @"0":list.comment_shop_reputation.reputation_score, CStringPoin];
+        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+    }
+    else {
+        if(list.comment_user_reputation.no_reputation!=nil && [list.comment_user_reputation.no_reputation isEqualToString:@"0"]) {
+            int paddingRightLeftContent = 10;
+            UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+            
+            SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+            [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.comment_user_reputation.neutral withRepSmile:list.comment_user_reputation.positive withRepSad:list.comment_user_reputation.negative withDelegate:self];
+            
+            //Init pop up
+            cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+            cmPopTitpView.delegate = self;
+            cmPopTitpView.backgroundColor = [UIColor whiteColor];
+            cmPopTitpView.animation = CMPopTipAnimationSlide;
+            cmPopTitpView.dismissTapAnywhere = YES;
+            cmPopTitpView.leftPopUp = YES;
+            
+            UIButton *button = (UIButton *)sender;
+            [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+        }
+    }
 }
 
 - (void)deleteCommentTalkAtIndexPath:(NSIndexPath*)indexpath {

@@ -16,7 +16,7 @@
 #import "ShopInfoPaymentCell.h"
 #import "ShopInfoAddressCell.h"
 #import "ShopInfoAddressView.h"
-
+#import "SmileyAndMedal.h"
 #import "ShopFavoritedViewController.h"
 #import "ShopEditViewController.h"
 #import "ShopInfoViewController.h"
@@ -127,10 +127,10 @@
     lblKecepatan.text = [_shop.result.respond_speed.speed_level stringByReplacingOccurrencesOfString:@"Respon" withString:@"Transaksi"];
     
     //Set image speed
-    [AppDelegate setIconResponseSpeed:_shop.result.respond_speed.badge withImage:imageSpeed largeImage:NO];
+    [SmileyAndMedal setIconResponseSpeed:_shop.result.respond_speed.badge withImage:imageSpeed largeImage:NO];
     
     //Generate Medal Reputasi
-    [AppDelegate generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
+    [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated

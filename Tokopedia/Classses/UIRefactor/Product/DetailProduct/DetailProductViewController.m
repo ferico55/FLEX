@@ -32,6 +32,7 @@
 #import "string_more.h"
 #import "string_price_alert.h"
 #import "string_home.h"
+#import "SmileyAndMedal.h"
 #import "Product.h"
 #import "WishListObjectResult.h"
 #import "WishListObject.h"
@@ -1882,8 +1883,8 @@ UIAlertViewDelegate
         
         //Set icon speed
 //        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
-        [AppDelegate setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
-        [AppDelegate generateMedalWithLevel:_product.result.shop_info.shop_stats.shop_badge_level.level withSet:_product.result.shop_info.shop_stats.shop_badge_level.set withImage:btnReputasi isLarge:YES];
+        [SmileyAndMedal setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
+        [SmileyAndMedal generateMedalWithLevel:_product.result.shop_info.shop_stats.shop_badge_level.level withSet:_product.result.shop_info.shop_stats.shop_badge_level.set withImage:btnReputasi isLarge:YES];
         
         //Set image and title kecepatan
         CGFloat spacing = 6.0;

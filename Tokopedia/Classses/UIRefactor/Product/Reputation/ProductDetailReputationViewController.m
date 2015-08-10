@@ -23,6 +23,8 @@
 #import "ResponseCommentResult.h"
 #import "ResponseComment.h"
 #import "ReviewList.h"
+#import "SmileyAndMedal.h"
+#import "ShopBadgeLevel.h"
 #import "ShopReviewPageViewController.h"
 #import "ShopContainerViewController.h"
 #import "string_inbox_message.h"
@@ -498,6 +500,7 @@
     if(cell == nil) {
         NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductDetailReputationCell" owner:nil options:0];
         cell = [tempArr objectAtIndex:0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.del = self;
         cell.delegate = self;
         cell.getViewLabelUser.userInteractionEnabled = YES;
@@ -520,15 +523,8 @@
     } failure:nil];
     
     
-    NSString *nStar;
-    if(_detailReputaitonReview != nil) {
-        nStar = _detailReputaitonReview.product_owner.shop_reputation_score;
-    }
-    else {
-        nStar = @"0";//(_reviewList.review_product_owner.shop_reputation_score==nil||_reviewList.review_product_owner.shop_reputation_score.length==0? 0 : [_reviewList.review_product_owner.shop_reputation_score intValue]);
-    }
-    
-    [cell setStar:nStar];
+
+    [cell setStar:_shopBadgeLevel.level withSet:_shopBadgeLevel.set];
     [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_product_owner.user_name];
     [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
     [cell.getViewLabelUser setLabelBackground:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual];
@@ -679,7 +675,8 @@
 - (void)actionRate:(id)sender {
     int paddingRightLeftContent = 10;
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withRepSmile:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withRepSad:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withDelegate:self];
+    SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+    [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withRepSmile:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withRepSad:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withDelegate:self];
     
     //Init pop up
     popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];

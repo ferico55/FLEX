@@ -18,6 +18,7 @@
 #import "InboxTalk.h"
 
 #import "inbox.h"
+#import "SmileyAndMedal.h"
 #import "string_home.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
@@ -279,7 +280,17 @@
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
-            [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
+            
+            
+            
+            if(list.talk_user_reputation.no_reputation!=nil && [list.talk_user_reputation.no_reputation isEqualToString:@"1"]) {
+                [((GeneralTalkCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [((GeneralTalkCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
+            }
+            else {
+                [((GeneralTalkCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
+            }
             
             //Set user label
 //            if([list.talk_user_label isEqualToString:CPenjual]) {
@@ -431,6 +442,7 @@
     RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
     [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
                                                                  CNegative,
+                                                                 CNoReputation,
                                                                  CNeutral,
                                                                  CPositif]];
     
@@ -523,7 +535,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         _isNeedToInsertCache = YES;
        
@@ -664,22 +675,24 @@
 
 #pragma mark - General Talk Delegate
 - (void)actionSmile:(id)sender {
-    int paddingRightLeftContent = 10;
-    
     TalkList *list = _talkList[((UIView *) sender).tag];
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.talk_user_reputation.neutral withRepSmile:list.talk_user_reputation.positive withRepSad:list.talk_user_reputation.negative withDelegate:self];
-    
-    //Init pop up
-    popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-    popTipView.delegate = self;
-    popTipView.backgroundColor = [UIColor whiteColor];
-    popTipView.animation = CMPopTipAnimationSlide;
-    popTipView.dismissTapAnywhere = YES;
-    popTipView.leftPopUp = YES;
-    
-    UIButton *button = (UIButton *)sender;
-    [popTipView presentPointingAtView:button inView:self.view animated:YES];
+    if(! (list.talk_user_reputation.no_reputation!=nil && [list.talk_user_reputation.no_reputation isEqualToString:@"1"])) {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.talk_user_reputation.neutral withRepSmile:list.talk_user_reputation.positive withRepSad:list.talk_user_reputation.negative withDelegate:self];
+        
+        //Init pop up
+        popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        popTipView.delegate = self;
+        popTipView.backgroundColor = [UIColor whiteColor];
+        popTipView.animation = CMPopTipAnimationSlide;
+        popTipView.dismissTapAnywhere = YES;
+        popTipView.leftPopUp = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [popTipView presentPointingAtView:button inView:self.view animated:YES];
+    }
 }
 
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {

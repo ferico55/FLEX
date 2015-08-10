@@ -25,6 +25,8 @@
 #import "ShopContainerViewController.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "SkipReview.h"
+#import "ShopBadgeLevel.h"
+#import "SmileyAndMedal.h"
 #import "string_inbox_message.h"
 #import "String_Reputation.h"
 #import "SkipReviewResult.h"
@@ -435,6 +437,7 @@
     
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+    productDetailReputationViewController.shopBadgeLevel = detailReputationReview.shop_badge_level;
     productDetailReputationViewController.strProductID = detailReputationReview.product_id;
     productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
     detailReputationReview.review_user_label = [_detailMyInboxReputation.viewModel.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual;
@@ -573,6 +576,9 @@
                                                                  CShopDomain
                                                                  ]];
         
+        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+        
         
         RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
         [pagingMapping addAttributeMappingsFromDictionary:@{CUriNext:CUriNext,
@@ -580,6 +586,7 @@
         
         RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
         [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                     CNoReputation,
                                                                      CNegative,
                                                                      CNeutral,
                                                                      CPositif]];
@@ -607,6 +614,7 @@
         
         
         //relation
+        [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
         [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewUserReputation toKeyPath:CReviewUserReputation withMapping:reviewUserReputationMapping]];
         [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
         [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];
@@ -896,7 +904,9 @@
     else {
         int paddingRightLeftContent = 10;
         UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-        [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_detailMyInboxReputation.user_reputation.neutral withRepSmile:_detailMyInboxReputation.user_reputation.positive withRepSad:_detailMyInboxReputation.user_reputation.negative withDelegate:self];
+        
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_detailMyInboxReputation.user_reputation.neutral withRepSmile:_detailMyInboxReputation.user_reputation.positive withRepSad:_detailMyInboxReputation.user_reputation.negative withDelegate:self];
         
         //Init pop up
         cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
@@ -972,7 +982,7 @@
     _gtmContainer = appDelegate.container;
     
     baseUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationBase];
-    postUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+    postUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationPost];
     
     baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
     postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];

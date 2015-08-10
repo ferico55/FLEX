@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#define COwnerReputation @"owner_reputation"
+@class ReputationDetail;
 @interface Owner : NSObject
 
 @property (nonatomic, strong) NSString *owner_image;
@@ -16,5 +17,6 @@
 @property (nonatomic, strong) NSString *owner_email;
 @property (nonatomic, strong) NSString *owner_name;
 @property (nonatomic, strong) NSString *owner_messenger;
+@property (nonatomic, strong) ReputationDetail *owner_reputation;
 
 @end

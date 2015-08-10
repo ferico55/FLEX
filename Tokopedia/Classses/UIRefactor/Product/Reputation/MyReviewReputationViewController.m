@@ -19,6 +19,7 @@
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationViewController.h"
 #import "string_inbox_message.h"
+#import "SmileyAndMedal.h"
 #import "String_Reputation.h"
 #import "ShopBadgeLevel.h"
 #import "ShopContainerViewController.h"
@@ -560,7 +561,8 @@
     else {
         int paddingRightLeftContent = 10;
         UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-        [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:tempReputation.user_reputation.neutral withRepSmile:tempReputation.user_reputation.positive withRepSad:tempReputation.user_reputation.negative withDelegate:self];
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:tempReputation.user_reputation.neutral withRepSmile:tempReputation.user_reputation.positive withRepSad:tempReputation.user_reputation.negative withDelegate:self];
         
         //Init pop up
         cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
@@ -764,7 +766,7 @@
     
     
     baseUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationBase];
-    postUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+    postUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationPost];
     
     baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
     postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];

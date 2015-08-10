@@ -8,6 +8,7 @@
 #import "DetailProductViewController.h"
 #import "ShopBadgeLevel.h"
 #import "string_inbox_message.h"
+#import "SmileyAndMedal.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationCell.h"
 #import "ReputationDetail.h"
@@ -290,7 +291,7 @@
     
     //Set reputation
     if([object.role isEqualToString:@"1"]) {//Buyer
-        [AppDelegate generateMedalWithLevel:object.shop_badge_level.level withSet:object.shop_badge_level.set withImage:btnReputation isLarge:NO];
+        [SmileyAndMedal generateMedalWithLevel:object.shop_badge_level.level withSet:object.shop_badge_level.set withImage:btnReputation isLarge:NO];
         [btnReputation setTitle:@"" forState:UIControlStateNormal];
     }
     else {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -43,7 +43,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2sC-nI-h7Y">
-                        <rect key="frame" x="78" y="35" width="90" height="14"/>
+                        <rect key="frame" x="78" y="35" width="217" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="xPd-dO-vVQ"/>
                         </constraints>
@@ -68,6 +68,9 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ju3-7W-SNy">
                         <rect key="frame" x="78" y="77" width="217" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="Doy-Zs-QLZ"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -80,12 +83,13 @@
                     <constraint firstItem="2sC-nI-h7Y" firstAttribute="top" secondItem="Kqz-k7-A62" secondAttribute="bottom" constant="2" id="5rq-tr-czw"/>
                     <constraint firstItem="2sC-nI-h7Y" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="Bno-hZ-CTl"/>
                     <constraint firstItem="Kqz-k7-A62" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="GK6-Bo-eUl"/>
+                    <constraint firstAttribute="bottom" secondItem="Ju3-7W-SNy" secondAttribute="bottom" constant="17" id="GQe-67-VGW"/>
                     <constraint firstAttribute="trailing" secondItem="0Dn-bB-6Dv" secondAttribute="trailing" constant="8" id="Kil-Pu-4WM"/>
                     <constraint firstItem="arr-7l-tfF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="OKi-h0-OA2"/>
                     <constraint firstAttribute="trailing" secondItem="Kqz-k7-A62" secondAttribute="trailing" constant="8" id="QUz-qR-RW4"/>
                     <constraint firstItem="zzK-ok-yaY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="UAE-wd-S3w"/>
                     <constraint firstItem="0Dn-bB-6Dv" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="UjO-PY-iUF"/>
-                    <constraint firstAttribute="trailing" secondItem="2sC-nI-h7Y" secondAttribute="trailing" constant="152" id="VCI-ig-hqs"/>
+                    <constraint firstAttribute="trailing" secondItem="2sC-nI-h7Y" secondAttribute="trailing" constant="25" id="VTm-kp-Ddk"/>
                     <constraint firstItem="Kqz-k7-A62" firstAttribute="leading" secondItem="arr-7l-tfF" secondAttribute="trailing" constant="13" id="Wga-5U-aTh"/>
                     <constraint firstAttribute="trailing" secondItem="Ju3-7W-SNy" secondAttribute="trailing" constant="25" id="Xxl-G7-KjL"/>
                     <constraint firstItem="arr-7l-tfF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="hic-6u-o0E"/>
