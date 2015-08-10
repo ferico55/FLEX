@@ -175,9 +175,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
-    
-    [[GPPSignIn sharedInstance] signOut];
+    [FBSession setActiveSession:nil];    
 }
 
 -(void)viewWillDisappear:(BOOL)animated

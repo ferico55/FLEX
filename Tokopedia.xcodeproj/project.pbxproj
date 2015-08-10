@@ -398,7 +398,6 @@
 		7A3F82A51B6883F80052D281 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F7A9B1B6883F30052D281 /* LoginViewController.xib */; };
 		7A3F82A61B6883F80052D281 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F7A9E1B6883F30052D281 /* LogoutViewController.m */; };
 		7A3F82A71B6883F80052D281 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F7AA11B6883F30052D281 /* RegisterViewController.m */; };
-		7A3F82A81B6883F80052D281 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F7AA21B6883F30052D281 /* RegisterViewController.xib */; };
 		7A3F82A91B6883F80052D281 /* AddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F7AA61B6883F30052D281 /* AddressCell.m */; };
 		7A3F82AA1B6883F80052D281 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3F7AA71B6883F30052D281 /* AddressCell.xib */; };
 		7A3F82AB1B6883F80052D281 /* AddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3F7AA91B6883F30052D281 /* AddressViewController.m */; };
@@ -1535,6 +1534,7 @@
 		85CFC2CA1B73182100795ABE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CFC2C91B73182100795ABE /* CoreText.framework */; };
 		85CFC2CC1B73182700795ABE /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CFC2CB1B73182700795ABE /* MediaPlayer.framework */; };
 		85CFC2CE1B73186B00795ABE /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 85CFC2CD1B73186B00795ABE /* GooglePlus.bundle */; };
+		85E2AF4C1B78525000BF0146 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E2AF4B1B78525000BF0146 /* RegisterViewController.xib */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -2353,7 +2353,6 @@
 		7A3F7A9E1B6883F30052D281 /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutViewController.m; sourceTree = "<group>"; };
 		7A3F7AA01B6883F30052D281 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		7A3F7AA11B6883F30052D281 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
-		7A3F7AA21B6883F30052D281 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
 		7A3F7AA31B6883F30052D281 /* stringregister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringregister.h; sourceTree = "<group>"; };
 		7A3F7AA51B6883F30052D281 /* AddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCell.h; sourceTree = "<group>"; };
 		7A3F7AA61B6883F30052D281 /* AddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressCell.m; sourceTree = "<group>"; };
@@ -3894,6 +3893,7 @@
 		85CFC2C91B73182100795ABE /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		85CFC2CB1B73182700795ABE /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		85CFC2CD1B73186B00795ABE /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
+		85E2AF4B1B78525000BF0146 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -5665,7 +5665,7 @@
 			children = (
 				7A3F7AA01B6883F30052D281 /* RegisterViewController.h */,
 				7A3F7AA11B6883F30052D281 /* RegisterViewController.m */,
-				7A3F7AA21B6883F30052D281 /* RegisterViewController.xib */,
+				85E2AF4B1B78525000BF0146 /* RegisterViewController.xib */,
 				7A3F7AA31B6883F30052D281 /* stringregister.h */,
 			);
 			path = Register;
@@ -9070,6 +9070,7 @@
 				7A3F86B51B6883F90052D281 /* active_tab@2x.png in Resources */,
 				7A3F83281B6883F80052D281 /* GeneralNoResult.xib in Resources */,
 				7A3F85471B6883F90052D281 /* icon_5.png in Resources */,
+				85E2AF4C1B78525000BF0146 /* RegisterViewController.xib in Resources */,
 				7A3F82CB1B6883F80052D281 /* CameraCollectionCell.xib in Resources */,
 				7A3F835C1B6883F80052D281 /* InboxMessageDetailViewController.xib in Resources */,
 				7A3F85401B6883F90052D281 /* icon_21.png in Resources */,
@@ -9250,7 +9251,6 @@
 				7A3F84F11B6883F90052D281 /* TxOrderPaymentViewController.xib in Resources */,
 				7A3F86741B6883F90052D281 /* icon_more@2x.png in Resources */,
 				7A3F85981B6883F90052D281 /* icon_18@3x.png in Resources */,
-				7A3F82A81B6883F80052D281 /* RegisterViewController.xib in Resources */,
 				7A3F83FC1B6883F80052D281 /* ChooseProductViewController.xib in Resources */,
 				7A3F854B1B6883F90052D281 /* icon_7.png in Resources */,
 				7A3F84221B6883F90052D281 /* DetailShipmentStatusViewController.xib in Resources */,
