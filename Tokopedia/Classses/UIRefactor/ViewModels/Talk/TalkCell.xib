@@ -10,6 +10,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -35,16 +36,28 @@
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12e-9c-aU9" userLabel="create_time">
-                                        <rect key="frame" x="68" y="35" width="214" height="21"/>
+                                        <rect key="frame" x="68" y="46" width="214" height="21"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cGQ-7Q-PkS">
+                                        <rect key="frame" x="68" y="30" width="56" height="20"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                        <inset key="titleEdgeInsets" minX="2" minY="3" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="0" image="icon_smile_small.png">
+                                            <color key="titleColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tapToViewSmile:" destination="jrh-HM-K0p" eventType="touchUpInside" id="O9Z-q1-nvh"/>
+                                        </connections>
+                                    </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OFe-Dw-5Ii" userLabel="user_image">
                                         <rect key="frame" x="10" y="10" width="50" height="50"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0SD-ZE-iBV" customClass="ViewLabelUser">
-                                        <rect key="frame" x="68" y="13" width="180" height="30"/>
+                                        <rect key="frame" x="68" y="9" width="180" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
@@ -68,9 +81,6 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <connections>
-                                            <action selector="tap:" destination="jrh-HM-K0p" eventType="touchUpInside" id="Ghb-EA-WKR"/>
-                                        </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label " lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2x-t9-LPv" userLabel="Message Label">
                                         <rect key="frame" x="90" y="40" width="200" height="20"/>
@@ -93,7 +103,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="tap:" destination="jrh-HM-K0p" eventType="touchUpInside" id="DcC-bz-kxA"/>
+                                            <action selector="tapToDetailTalk:" destination="jrh-HM-K0p" eventType="touchUpInside" id="cd7-Oe-DrF"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KeR-6n-4n0">
@@ -105,7 +115,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="tap:" destination="jrh-HM-K0p" eventType="touchUpInside" id="UA3-oQ-J3K"/>
+                                            <action selector="tapToFollowTalk:" destination="jrh-HM-K0p" eventType="touchUpInside" id="mnz-aB-VHf"/>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iKJ-4B-f9d" userLabel="Horizontal Border">
@@ -125,7 +135,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="tap:" destination="jrh-HM-K0p" eventType="touchUpInside" id="6iM-Ey-Mfb"/>
+                                    <action selector="tapToMoreMenu:" destination="jrh-HM-K0p" eventType="touchUpInside" id="RCG-ow-beI"/>
                                 </connections>
                             </button>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dae-1B-YqQ">
@@ -141,9 +151,12 @@
             <connections>
                 <outlet property="buttonsView" destination="c9j-wd-E2h" id="gPL-N6-GAL"/>
                 <outlet property="createTimeLabel" destination="12e-9c-aU9" id="gN7-ie-OAL"/>
+                <outlet property="divider" destination="rzN-JK-IWj" id="PnO-Eq-TDS"/>
+                <outlet property="messageLabel" destination="U2x-t9-LPv" id="e5e-bs-Pkp"/>
                 <outlet property="middleView" destination="LoO-oE-hpb" id="uer-AW-jzy"/>
                 <outlet property="productButton" destination="mAW-TB-q5Y" id="mrB-Gg-qXG"/>
                 <outlet property="productImageView" destination="3yf-dZ-AHO" id="bz1-OU-NtO"/>
+                <outlet property="reputationButton" destination="cGQ-7Q-PkS" id="Uzm-kd-u2U"/>
                 <outlet property="topView" destination="MgD-xe-ng1" id="ewV-1H-qbk"/>
                 <outlet property="totalCommentButton" destination="atD-pc-dTI" id="CYL-Rx-EAr"/>
                 <outlet property="unfollowButton" destination="KeR-6n-4n0" id="VCQ-ir-egf"/>
@@ -158,6 +171,7 @@
     <resources>
         <image name="icon_arrow_down" width="14" height="14"/>
         <image name="icon_diskusi_comment_grey.png" width="14" height="14"/>
+        <image name="icon_smile_small.png" width="14" height="14"/>
         <image name="icon_unread.png" width="40" height="40"/>
     </resources>
 </document>

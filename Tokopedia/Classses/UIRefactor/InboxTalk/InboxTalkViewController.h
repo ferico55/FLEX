@@ -7,14 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#import "TKPDTabViewController.h"
+
+typedef NS_ENUM(NSInteger, InboxTalkType) {
+    InboxTalkTypeAll,
+    InboxTalkTypeMyProduct,
+    InboxTalkTypeFollowing
+};
+
 @class ProductTalkDetailViewController;
 
 @interface InboxTalkViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
+@property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;
+@property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
+@property InboxTalkType inboxTalkType;
 
 - (void)removeData:(NSString *)inboxID;
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
-@property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
 
 @end

@@ -163,8 +163,8 @@ typedef enum TagRequest {
     	
     _data = nil;
 #if DEBUG
-//    AlertBaseUrl *alert = [AlertBaseUrl newview];
-//    [alert show];
+    AlertBaseUrl *alert = [AlertBaseUrl newview];
+    [alert show];
 #endif
     [self presentcontrollers];
 }

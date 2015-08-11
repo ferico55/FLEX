@@ -7,11 +7,57 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CMPopTipView.h"
+#import "ReportViewController.h"
 
 @class TalkModelView;
 @class ViewLabelUser;
+@class NavigateViewController;
+@class ReputationDetail;
+@class CMPopTipView;
+@class ProductTalkDetailViewController;
+@class TalkList;
+@class ReportViewController;
 
-@interface TalkCell : UITableViewCell
+@protocol TalkCellDelegate <NSObject>
+
+@required
+- (void)tapToDetailTalk:(UITableViewCell*)cell;
+- (void)tapToSmileReputation:(UITableViewCell*)cell;
+- (id)getNavigationController:(UITableViewCell *)cell;
+- (UITableView*)getTable;
+- (NSMutableArray*)getTalkList;
+
+@optional
+- (void)tapToReportTalk:(UITableViewCell *)cell;
+- (void)tapToFollowTalk:(UITableViewCell *)cell withButton:(UIButton *)button;
+- (void)tapToDeleteTalk:(UITableViewCell *)cell;
+
+
+@end
+
+@interface TalkCell : UITableViewCell <UIActionSheetDelegate, SmileyDelegate, CMPopTipViewDelegate, ReportViewControllerDelegate> {
+    BOOL *_talkFollowStatus;
+    NSString *_myShopID;
+    NSString *_myUserID;
+    NavigateViewController *_navigateController;
+    UserAuthentificationManager *_userManager;
+    CMPopTipView *_popTipView;
+    ProductTalkDetailViewController *_detailViewController;
+    
+    TalkList *_unfollowTalk;
+    TalkList *_deleteTalk;
+    TalkList *_reportTalk;
+    
+    NSIndexPath *_unfollowIndexPath;
+    NSIndexPath *_deleteIndexPath;
+    NSIndexPath *_reportIndexPath;
+    
+    TokopediaNetworkManager *_unfollowNetworkManager;
+    TokopediaNetworkManager *_deleteNetworkManager;
+    __weak RKObjectManager *_objectUnfollowmanager;
+}
+
 
 - (void)setTalkViewModel:(TalkModelView*)modelView;
 
@@ -26,12 +72,20 @@
 @property (weak, nonatomic) IBOutlet UIButton *unfollowButton;
 @property (weak, nonatomic) IBOutlet UIButton *productButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreActionButton;
+@property (weak, nonatomic) IBOutlet UIButton *reputationButton;
 @property (weak, nonatomic) IBOutlet ViewLabelUser *userButton;
 
 @property (weak, nonatomic) IBOutlet UIView *view;
 @property (weak, nonatomic) IBOutlet UIView *middleView;
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UIView *buttonsView;
+@property (weak, nonatomic) IBOutlet UIView *divider;
+@property (nonatomic, weak) IBOutlet id<TalkCellDelegate> delegate;
+
+@property (nonatomic, strong) NSString *selectedTalkUserID;
+@property (nonatomic, strong) NSString *selectedTalkShopID;
+@property (nonatomic, strong) NSString *selectedTalkProductID;
+@property (nonatomic, strong) ReputationDetail *selectedTalkReputation;
 
 
 @end
