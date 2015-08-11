@@ -10,7 +10,8 @@
 
 #import "CatalogPrice.h"
 #import "CatalogImages.h"
-
+#define CCatalogID @"catalog_id"
+#define CCatalogPriceAlertPrice @"catalog_pricealert_price"
 @interface CatalogInfo : NSObject
 
 @property (nonatomic, strong) NSString *catalog_description;
@@ -21,5 +22,5 @@
 @property (nonatomic, strong) CatalogPrice *catalog_price;
 @property (nonatomic, strong) NSArray *catalog_images;
 @property (nonatomic, strong) NSString *catalog_url;
-
+@property (nonatomic, strong) NSString *catalog_pricealert_price;
 @end

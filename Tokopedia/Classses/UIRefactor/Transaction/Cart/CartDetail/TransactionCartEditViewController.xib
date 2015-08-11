@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -23,8 +22,7 @@
                 <outlet property="productNameLabel" destination="HqW-nE-YmQ" id="ahu-vl-KHb"/>
                 <outlet property="productPriceLabel" destination="0VY-Wg-4c6" id="ZNZ-ha-Xji"/>
                 <outlet property="productThumbImageView" destination="6bf-HE-efG" id="c4T-tS-R9P"/>
-                <outlet property="quantityLabel" destination="nQW-Ti-BFi" id="hT5-TA-uJD"/>
-                <outlet property="quantityStepper" destination="z73-uw-UAO" id="zpJ-fF-Dta"/>
+                <outlet property="quantityTextField" destination="2Qw-ii-gm2" id="i7R-Ip-eXv"/>
                 <outlet property="remarkTextView" destination="mTw-Zn-yMQ" id="1k4-iD-zZ8"/>
                 <outlet property="view" destination="blR-f3-fZu" id="VHT-R7-P9J"/>
             </connections>
@@ -115,39 +113,27 @@
                                 <constraint firstAttribute="height" constant="1" id="9yg-DZ-4Xw"/>
                             </constraints>
                         </view>
-                        <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="z73-uw-UAO">
-                            <rect key="frame" x="211" y="7" width="94" height="29"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="29" id="rvi-7H-e68"/>
-                                <constraint firstAttribute="width" constant="94" id="sjF-r2-TUc"/>
-                            </constraints>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2Qw-ii-gm2">
+                            <rect key="frame" x="149" y="7" width="156" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="valueChanged" id="DUy-Uu-jvv"/>
+                                <outlet property="delegate" destination="-1" id="Itc-wQ-qeY"/>
                             </connections>
-                        </stepper>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nQW-Ti-BFi">
-                            <rect key="frame" x="144" y="11" width="59" height="21"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="59" id="BOF-oh-Sl1"/>
-                                <constraint firstAttribute="height" constant="21" id="lLd-TW-Kn2"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        </textField>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="2Qw-ii-gm2" firstAttribute="leading" secondItem="ygY-pB-5rs" secondAttribute="trailing" id="3cO-ag-JgN"/>
                         <constraint firstItem="ygY-pB-5rs" firstAttribute="leading" secondItem="Hr8-p3-TyN" secondAttribute="leading" constant="15" id="6Bq-8M-1mp"/>
                         <constraint firstItem="kpb-9h-Quy" firstAttribute="leading" secondItem="Hr8-p3-TyN" secondAttribute="leading" id="8aB-1p-qJf"/>
                         <constraint firstAttribute="trailing" secondItem="kpb-9h-Quy" secondAttribute="trailing" id="BR8-qQ-eUx"/>
-                        <constraint firstAttribute="trailing" secondItem="z73-uw-UAO" secondAttribute="trailing" constant="15" id="HsP-fR-RiH"/>
                         <constraint firstItem="ygY-pB-5rs" firstAttribute="top" secondItem="Hr8-p3-TyN" secondAttribute="top" constant="11" id="VY1-EW-r7F"/>
                         <constraint firstAttribute="trailing" secondItem="kpb-9h-Quy" secondAttribute="trailing" id="Yg6-B2-RiG"/>
-                        <constraint firstItem="z73-uw-UAO" firstAttribute="leading" secondItem="nQW-Ti-BFi" secondAttribute="trailing" constant="8" id="jyS-Db-6Ee"/>
+                        <constraint firstAttribute="trailing" secondItem="2Qw-ii-gm2" secondAttribute="trailing" constant="15" id="dHu-ie-kxD"/>
+                        <constraint firstItem="kpb-9h-Quy" firstAttribute="top" secondItem="2Qw-ii-gm2" secondAttribute="bottom" constant="6" id="pPa-RR-OaW"/>
+                        <constraint firstItem="2Qw-ii-gm2" firstAttribute="top" secondItem="Hr8-p3-TyN" secondAttribute="top" constant="7" id="qfI-CC-smT"/>
                         <constraint firstAttribute="height" constant="44" id="sHw-OO-WVb"/>
-                        <constraint firstItem="nQW-Ti-BFi" firstAttribute="top" secondItem="Hr8-p3-TyN" secondAttribute="top" constant="11" id="sna-Cm-8ty"/>
-                        <constraint firstItem="z73-uw-UAO" firstAttribute="top" secondItem="Hr8-p3-TyN" secondAttribute="top" constant="7" id="xau-XG-jVe"/>
                         <constraint firstItem="kpb-9h-Quy" firstAttribute="top" secondItem="ygY-pB-5rs" secondAttribute="bottom" constant="11" id="zDV-Rh-ZSs"/>
                     </constraints>
                 </view>

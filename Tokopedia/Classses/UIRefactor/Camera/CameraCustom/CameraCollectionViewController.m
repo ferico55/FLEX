@@ -366,7 +366,9 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         if ([_selectedIndexPath containsObject:indexPath]) {
             cell.checkmarkImageView.hidden = YES;
             [_selectedIndexPath removeObject:indexPath];
-            [_delegate didRemoveImageDictionary:selectedImage];
+            if ([self.delegate respondsToSelector:@selector(didRemoveImageDictionary:)]) {
+                [_delegate didRemoveImageDictionary:selectedImage];
+            }
         }
         else
         {

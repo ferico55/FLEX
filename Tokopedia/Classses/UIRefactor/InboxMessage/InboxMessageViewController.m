@@ -20,7 +20,7 @@
 #import "EncodeDecoderManager.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-
+#import "TAGDataLayer.h"
 
 @interface InboxMessageViewController ()
 <
@@ -87,6 +87,13 @@ typedef enum TagRequest {
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     NSString *_messageNavigationFlag;
+    
+    NSString *_inboxMessageBaseUrl;
+    NSString *_inboxMessagePostUrl;
+    NSString *_inboxMessageFullUrl;
+    
+    
+    TAGContainer *_gtmContainer;
     
     BOOL _isrefreshnav;    
     
@@ -196,9 +203,11 @@ typedef enum TagRequest {
     _table.allowsSelectionDuringEditing = YES;
     _table.allowsMultipleSelectionDuringEditing = YES;
     
+    // GTM
+    [self configureGTM];
+    
     [_networkManager doRequest];
 }
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -214,7 +223,7 @@ typedef enum TagRequest {
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [_networkManager requestCancel];
+//    [_networkManager requestCancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -365,23 +374,18 @@ typedef enum TagRequest {
                     ((InboxMessageCell*)cell).is_unread.hidden = NO;
                 }
             }
-                        
+            
+
+            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
             thumb = [UIImageView circleimageview:thumb];
-            if(![list.user_image isEqualToString:@"0"]) {
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                
-
-                thumb.image = nil;
-                [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            thumb.image = nil;
+            [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    [thumb setImage:image];
+                [thumb setImage:image];
 #pragma clang diagnostic pop
-                } failure:nil];
-            } else {
-                [thumb setImage:[UIImage imageNamed:@"default-boy.png"]];
-            }
+            } failure:nil];
         }
         
         return cell;
@@ -913,7 +917,7 @@ typedef enum TagRequest {
 
 - (NSString *)getPath:(int)tag {
     if(tag == messageListTag) {
-        return KTKPDMESSAGE_PATHURL;
+        return [_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl;
     }
     
     return nil;
@@ -933,7 +937,13 @@ typedef enum TagRequest {
 
 - (id)getObjectManager:(int)tag {
     if(tag == messageListTag) {
-        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  ![_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxMessageBaseUrl]:[RKObjectManager sharedClient];
+        if([_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxMessageBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_inboxMessageBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
@@ -973,7 +983,7 @@ typedef enum TagRequest {
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:KTKPDMESSAGE_PATHURL
+                                                                                                 pathPattern:[_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -1053,5 +1063,15 @@ typedef enum TagRequest {
 }
 
 
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _inboxMessageBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxMessageBase];
+    _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+}
 
 @end

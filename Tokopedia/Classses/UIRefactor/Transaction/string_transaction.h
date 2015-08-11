@@ -20,9 +20,10 @@ typedef enum
     TAG_BUTTON_TRANSACTION_SERVICE_TYPE = 3,
     TAG_BUTTON_TRANSACTION_INSURANCE = 4,
     //Section2
-    TAG_BUTTON_TRANSACTION_PRODUCT_PRICE = 0,
-    TAG_BUTTON_TRANSACTION_SHIPMENT_COST = 1,
-    TAG_BUTTON_TRANSACTION_TOTAL = 2,
+    TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE = 0,
+    TAG_BUTTON_TRANSACTION_PRODUCT_PRICE = 1,
+    TAG_BUTTON_TRANSACTION_SHIPMENT_COST = 2,
+    TAG_BUTTON_TRANSACTION_TOTAL = 3,
     TAG_BUTTON_TRANSACTION_BUY = 14
 }TAG_BUTTON_TRANSACTION;
 
@@ -51,7 +52,8 @@ typedef enum
     TYPE_GATEWAY_TRANSFER_BANK = 1,
     TYPE_GATEWAY_MANDIRI_CLICK_PAY = 4,
     TYPE_GATEWAY_MANDIRI_E_CASH = 6,
-    TYPE_GATEWAY_CLICK_BCA = 7
+    TYPE_GATEWAY_CLICK_BCA = 7,
+    TYPE_GATEWAY_CC = 8,
 }TYPE_GATEWAY;
 
 typedef enum
@@ -77,6 +79,7 @@ typedef enum
 #define STRING_SALDO_TOKOPEDIA_TERSISA @"Saldo Tokopedia yang tersisa"
 #define STRING_JUMLAH_YANG_HARUS_DIBAYAR @"Jumlah yang harus dibayar"
 #define STRING_PENGGUNAAN_KUPON @"Penggunaan Kupon"
+#define STRING_PAYMENT
 
 #define DATA_DETAIL_PRODUCT_KEY @"product"
 #define DATA_SHIPMENT_KEY @"shipment"
@@ -94,6 +97,7 @@ typedef enum
 #define DATA_TODO_CALCULATE @"paramdo"
 #define DATA_CART_PRODUCT_KEY @"cart_product"
 #define DATA_CART_GATEWAY_KEY @"cart_gateway"
+#define DATA_CC_KEY @"cart_cc_data"
 #define DATA_CART_SHIPPING_KEY @"cart_shipping"
 #define DATA_CART_ADDRESS_KEY @"cart_address"
 #define DATA_CART_DETAIL_LIST_KEY @"cart_list_detail"
@@ -301,6 +305,22 @@ typedef enum
 
 #define API_LINK_MANDIRI_KEY @"link_mandiri"
 
+#pragma mark - Credit Card
+#define API_CC_EDIT_FLAG_KEY @"credit_card_edit_flag"
+#define API_CC_FIRST_NAME_KEY @"first_name"
+#define API_CC_LAST_NAME_KEY @"last_name"
+#define API_CC_CITY_KEY @"city"
+#define API_CC_POSTAL_CODE_KEY @"postal_code"
+#define API_CC_ADDRESS_KEY @"address_street"
+#define API_CC_PHONE_KEY @"phone"
+#define API_CC_STATE_KEY @"state"
+#define API_CC_CARD_NUMBER_KEY @"card_number"
+#define API_CC_EXP_MONTH_KEY @"card_exp_month"
+#define API_CC_EXP_YEAR_KEY @"card_exp_year"
+#define API_CC_CVV_KEY @"card_cvv"
+#define API_CC_OWNER_KEY @"card_owner"
+#define API_CC_TOKEN_ID_KEY @"credit_card_token"
+
 #define CALCULATE_PRODUCT @""
 #define CALCULATE_ADDRESS @"calculate_address_shipping"
 #define CALCULATE_SHIPMENT @"calculate_shipping"
@@ -312,6 +332,7 @@ typedef enum
 #define API_CHECK_VOUCHER_PATH @"tx-voucher.pl"
 #define API_EMONEY_PATH @"tx-payment-emoney.pl"
 #define API_BCA_KLICK_PAY_PATH @"tx-payment-bcaklikpay.pl"
+#define API_ACTION_CC_PATH @"action/tx.pl"
 
 #define TRANSACTION_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define TRANSACTION_NODATACELLTITLE @"no data"
@@ -338,6 +359,7 @@ typedef enum
 #define FORMAT_CART_PARTIAL_STR_CART_SUMMARY_KEY @"%zd-%zd-%zd"
 #define FORMAT_TOKO_TUTUP @"Toko tutup sampai tanggal : %@"
 #define FORMAT_SUCCESS_BUY @"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran %@"
+#define FORMAT_TOKO_TUTUP @"Toko tutup sampai tanggal : %@"
 
 #define ERRORMESSAGE_NULL_ADDRESS @"Alamat harus diisi."
 #define ERRORMESSAGE_NULL_CART_SHIPPING_AGENT @"Agen kurir harus diisi."

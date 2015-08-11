@@ -47,8 +47,10 @@
 {
     
     UserContainerViewController *container = [UserContainerViewController new];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
     container.data = @{
-                       @"user_id" : userID
+                       @"user_id" : userID,
+                       @"auth" : [auth getUserLoginData]?:@""
                        };
     
     [viewController.navigationController pushViewController:container animated:YES];
@@ -77,8 +79,7 @@
     [viewController.navigationController presentViewController:vc animated:YES completion:nil];
 }
 
--(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID
-{
+-(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID {
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{@"product_id" : productID};
     vc.hidesBottomBarWhenPushed = YES;

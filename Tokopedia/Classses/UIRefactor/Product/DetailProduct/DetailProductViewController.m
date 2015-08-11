@@ -13,8 +13,11 @@
 #define CTagWishList 5
 #define CTagUnWishList 6
 #define CTagNoteCanReture 7
+#define CTagPriceAlert 8
 
 #import "LabelMenu.h"
+#import "AlertPriceNotificationViewController.h"
+#import "PriceAlertViewController.h"
 #import "Notes.h"
 #import "NoteDetails.h"
 #import "NotesResult.h"
@@ -25,6 +28,7 @@
 #import "string_product.h"
 #import "string_transaction.h"
 #import "string_more.h"
+#import "string_price_alert.h"
 #import "string_home.h"
 #import "Product.h"
 #import "WishListObjectResult.h"
@@ -76,6 +80,8 @@
 #import "WebViewController.h"
 #import "EtalaseList.h"
 
+#import "TAGDataLayer.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -116,7 +122,7 @@ UIAlertViewDelegate
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
-    BOOL isDoingWishList, isDoingFavorite;
+    BOOL isDoingWishList, isDoingFavorite, redirectToPriceAlert;
     
     NSInteger _requestcount;
     
@@ -154,6 +160,9 @@ UIAlertViewDelegate
     __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
     
+    TokopediaNetworkManager *tokopediaNetworkManagerPriceAlert;
+    RKObjectManager *objectPriceAlertManager;
+    
     __weak RKObjectManager *_objectmanagerActionMoveToEtalase;
     __weak RKManagedObjectRequestOperation *_requestActionMoveToEtalase;
     
@@ -174,6 +183,11 @@ UIAlertViewDelegate
     
     RequestMoveTo *_requestMoveTo;
     UIImage *_tempFirstThumb;
+    TAGContainer *_gtmContainer;
+    
+    NSString *_detailProductBaseUrl;
+    NSString *_detailProductPostUrl;
+    NSString *_detailProductFullUrl;
     
 }
 
@@ -251,10 +265,6 @@ UIAlertViewDelegate
     self.title = @"Detail Produk";
     fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
-    if(_loadedData) {
-        
-    }
-    
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
@@ -267,9 +277,17 @@ UIAlertViewDelegate
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+    
+    // GTM
+    [self configureGTM];
+    
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
+    
+    tokopediaNetworkManagerPriceAlert = [TokopediaNetworkManager new];
+    tokopediaNetworkManagerPriceAlert.tagRequest = CTagPriceAlert;
+    tokopediaNetworkManagerPriceAlert.delegate = self;
     
     _requestMoveTo =[RequestMoveTo new];
     _requestMoveTo.delegate = self;
@@ -339,10 +357,8 @@ UIAlertViewDelegate
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
     btnShare.layer.borderWidth = 1;
-    btnShare.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
     btnShare.layer.masksToBounds = YES;
-    btnShare.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-    btnShare.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
     
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
@@ -422,8 +438,6 @@ UIAlertViewDelegate
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
         }
         [self.table reloadData];
-    } else {
-        
     }
 }
 
@@ -557,6 +571,8 @@ UIAlertViewDelegate
                 //Buy
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
+                    transactionVC.wholeSales = _product.result.wholesale_price;
+                    transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
@@ -1006,7 +1022,7 @@ UIAlertViewDelegate
         else {
             [productInfoCell hiddenViewRetur];
         }
-        
+
         _informationHeight = productInfoCell.productInformationView.frame.size.height+[productInfoCell getHeightReturView];
         cell = productInfoCell;
         return cell;
@@ -1125,6 +1141,10 @@ UIAlertViewDelegate
                  kTKPDNOTES_APINOTEIDKEY:_product.result.shop_info.shop_has_terms?:@"0",
                  NOTES_TERMS_FLAG_KEY:@(1),
                  kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id?:@"0"};
+    else if(tag == CTagPriceAlert) {
+        return @{kTKPDDETAIL_APIPRODUCTIDKEY:_product.result.product.product_id,
+                 kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_PRODUCT_PRICE_ALERT};
+    }
     
     return nil;
 }
@@ -1134,9 +1154,9 @@ UIAlertViewDelegate
     if(tag == CTagPromote)
         return @"action/product.pl";
     else if(tag == CTagTokopediaNetworkManager)
-        return kTKPDDETAILPRODUCT_APIPATH;
+        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
-        return kTKPDDETAILPRODUCT_APIPATH;
+        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -1145,6 +1165,8 @@ UIAlertViewDelegate
         return [NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH];
     else if(tag == CTagNoteCanReture)
         return kTKPDDETAILNOTES_APIPATH;
+    else if(tag == CTagPriceAlert)
+        return [NSString stringWithFormat:@"action/%@", CPriceAlertPL];
     
     return nil;
 }
@@ -1185,7 +1207,13 @@ UIAlertViewDelegate
     else if(tag == CTagTokopediaNetworkManager)
     {
         // initialize RestKit
-        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  ![_detailProductBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_detailProductBaseUrl]:[RKObjectManager sharedClient];
+        if([_detailProductBaseUrl isEqualToString:kTkpdBaseURLString] || [_detailProductBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_detailProductBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
@@ -1425,6 +1453,28 @@ UIAlertViewDelegate
         
         return _objectNoteCanReture;
     }
+    else if(tag == CTagPriceAlert) {
+        objectPriceAlertManager = [RKObjectManager sharedClient];
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        [objectPriceAlertManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return objectPriceAlertManager;
+    }
     
     return nil;
 }
@@ -1468,6 +1518,10 @@ UIAlertViewDelegate
     else if(tag == CTagNoteCanReture) {
         Notes *notes = stat;
         return notes.status;
+    }
+    else if(tag == CTagPriceAlert) {
+        GeneralAction *generalAction = stat;
+        return generalAction.status;
     }
     
     return nil;
@@ -1514,6 +1568,10 @@ UIAlertViewDelegate
                 isDoingFavorite = !isDoingFavorite;
                 [_favButton sendActionsForControlEvents:UIControlEventTouchUpInside];
             }
+            else if(redirectToPriceAlert) {
+                redirectToPriceAlert = !redirectToPriceAlert;
+                [btnPriceAlert sendActionsForControlEvents:UIControlEventTouchUpInside];
+            }
         }
     }
     else if(tag == CTagOtherProduct)
@@ -1548,19 +1606,14 @@ UIAlertViewDelegate
             [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
-            
-            [activityIndicator removeFromSuperview];
-            [activityIndicator stopAnimating];
-            [btnWishList setHidden:NO];
+            [self setRequestingAction:btnWishList isLoading:NO];
         }
         else
         {
             alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
             [self setBackgroundWishlist:YES];
             btnWishList.tag = 0;
-            [activityIndicator removeFromSuperview];
-            [activityIndicator stopAnimating];
-            [btnWishList setHidden:NO];
+            [self setRequestingAction:btnWishList isLoading:NO];
         }
         [alert show];
     }
@@ -1577,18 +1630,14 @@ UIAlertViewDelegate
             [self setBackgroundWishlist:YES];
             btnWishList.tag = 0;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
-            [activityIndicator removeFromSuperview];
-            [activityIndicator stopAnimating];
-            [btnWishList setHidden:NO];
+            [self setRequestingAction:btnWishList isLoading:NO];
         }
         else
         {
             alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
             [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
-            [activityIndicator removeFromSuperview];
-            [activityIndicator stopAnimating];
-            [btnWishList setHidden:NO];
+            [self setRequestingAction:btnWishList isLoading:NO];
         }
         
         [alert show];
@@ -1597,6 +1646,18 @@ UIAlertViewDelegate
         NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
         Notes *tempNotes = [result objectForKey:@""];
         notesDetail = tempNotes.result.detail;
+    }
+    else if(tag == CTagPriceAlert) {
+        NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
+        GeneralAction *generalAction = [result objectForKey:@""];
+        if([generalAction.result.is_success isEqualToString:@"1"]) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:generalAction.message_status delegate:self];
+            [stickyAlertView show];
+            
+            _product.result.product.product_price_alert = @"0";
+            [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
+        }
+        [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
 }
 
@@ -1621,9 +1682,8 @@ UIAlertViewDelegate
         [alert show];
         [self setBackgroundWishlist:YES];
         btnWishList.tag = 0;
-        [activityIndicator removeFromSuperview];
-        [activityIndicator stopAnimating];
-        [btnWishList setHidden:NO];
+        
+        [self setRequestingAction:btnWishList isLoading:NO];
     }
     else if(tag == CTagWishList)
     {
@@ -1631,12 +1691,13 @@ UIAlertViewDelegate
         [alert show];
         [self setBackgroundWishlist:NO];
         btnWishList.tag = 1;
-        [activityIndicator removeFromSuperview];
-        [activityIndicator stopAnimating];
-        [btnWishList setHidden:NO];
+        [self setRequestingAction:btnWishList isLoading:NO];
     }
     else if(tag == CTagNoteCanReture) {
         
+    }
+    else if(tag == CTagPriceAlert) {
+        [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
 }
 
@@ -1684,6 +1745,9 @@ UIAlertViewDelegate
     {}
     else if(tag == CTagWishList)
     {}
+    else if(tag == CTagPriceAlert) {
+    
+    }
 }
 
 - (void)actionRequestAsync:(int)tag
@@ -1704,6 +1768,8 @@ UIAlertViewDelegate
     {}
     else if(tag == CTagWishList)
     {}
+    else if(tag == CTagPriceAlert)
+    {}
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag
@@ -1723,6 +1789,8 @@ UIAlertViewDelegate
     else if(tag == CTagUnWishList)
     {}
     else if(tag == CTagWishList)
+    {}
+    else if(tag == CTagPriceAlert)
     {}
 }
 
@@ -1917,16 +1985,17 @@ UIAlertViewDelegate
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
             } else {
-                activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
+                activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
                 activityIndicator.color = [UIColor lightGrayColor];
-                btnWishList.hidden = NO;
+                btnWishList.hidden = btnPriceAlert.hidden = NO;
                 [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
                 btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
-                btnWishList.layer.cornerRadius = 5;
-                btnWishList.layer.masksToBounds = YES;
-                btnWishList.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-                btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-                btnWishList.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
+                btnWishList.layer.cornerRadius = btnPriceAlert.layer.cornerRadius = 5;
+                btnWishList.layer.masksToBounds = btnPriceAlert.layer.masksToBounds = YES;
+                btnWishList.layer.borderColor = btnPriceAlert.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+                btnWishList.layer.borderWidth = btnPriceAlert.layer.borderWidth = 1.0f;
+                btnWishList.imageEdgeInsets = btnPriceAlert.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+                btnWishList.titleEdgeInsets = btnPriceAlert.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
                 //Set background wishlist
                 if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
@@ -1939,6 +2008,10 @@ UIAlertViewDelegate
                     [self setBackgroundWishlist:NO];
                     btnWishList.tag = 1;
                 }
+                
+                
+                //Set background priceAlert
+                [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
             }
             
             //decide description height
@@ -2100,6 +2173,36 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (void)setBackgroundPriceAlert:(BOOL)isActive
+{
+    if(isActive) {
+        [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_active.png"] forState:UIControlStateNormal];
+        btnPriceAlert.backgroundColor = [UIColor colorWithRed:255/255.0f green:179/255.0f blue:0 alpha:1.0f];
+        [btnPriceAlert setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    else {
+        [btnPriceAlert setImage:[UIImage imageNamed:@"icon_button_pricealert_nonactive.png"] forState:UIControlStateNormal];
+        btnPriceAlert.backgroundColor = [UIColor whiteColor];
+        [btnPriceAlert setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    }
+}
+
+
+- (void)setRequestingAction:(UIButton *)tempBtn isLoading:(BOOL)isLoading
+{
+    if(isLoading) {
+        activityIndicator.frame = tempBtn.frame;
+        [viewContentWishList addSubview:activityIndicator];
+        [activityIndicator startAnimating];
+        [tempBtn setHidden:YES];
+    }
+    else {
+        [activityIndicator removeFromSuperview];
+        [activityIndicator stopAnimating];
+        [tempBtn setHidden:NO];
+    }
+}
+
 - (void)hiddenButtonBuyAndPromo
 {
     _dinkButton.hidden = YES;
@@ -2121,7 +2224,7 @@ UIAlertViewDelegate
     style.lineSpacing = 4.0;
     style.alignment = alignment;
     NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName: color,
+                                 NSForegroundColorAttributeName: (color == nil) ? [UIColor whiteColor] : color,
                                  NSFontAttributeName:(font == nil)? fontDesc : font,
                                  NSParagraphStyleAttributeName: style,
                                  };
@@ -2189,6 +2292,35 @@ UIAlertViewDelegate
         [self setUnWishList];
 }
 
+- (IBAction)actionPriceAlert:(id)sender
+{
+    if(_auth) {
+        if(btnPriceAlert.backgroundColor == [UIColor whiteColor]) { //Not price alert yet
+            PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+            priceAlertViewController.productDetail = _product.result.product;
+            [self.navigationController pushViewController:priceAlertViewController animated:YES];
+        }
+        else {
+            [self setRequestingAction:btnPriceAlert isLoading:YES];
+            [tokopediaNetworkManagerPriceAlert doRequest];
+        }
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        isNeedLogin = YES;
+        redirectToPriceAlert = YES;
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
+}
 
 - (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action
 {
@@ -2552,10 +2684,7 @@ UIAlertViewDelegate
 - (void)setUnWishList
 {
     if(_auth) {
-        [viewContentWishList addSubview:activityIndicator];
-        [activityIndicator startAnimating];
-        [btnWishList setHidden:YES];
-        
+        [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagUnWishList;
         [tokopediaNetworkManagerWishList doRequest];
     } else {
@@ -2580,9 +2709,7 @@ UIAlertViewDelegate
 - (void)setWishList
 {
     if(_auth) {
-        [viewContentWishList addSubview:activityIndicator];
-        [activityIndicator startAnimating];
-        [btnWishList setHidden:YES];
+        [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
         [tokopediaNetworkManagerWishList doRequest];
     } else {
@@ -2776,5 +2903,18 @@ UIAlertViewDelegate
 - (void)duplicate:(int)tag
 {
     [UIPasteboard generalPasteboard].string = lblDescription.text;
+}
+
+#pragma mark - Other Method
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
+    _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
+    _detailProductFullUrl = [_gtmContainer stringForKey:GTMKeyProductFull];
 }
 @end

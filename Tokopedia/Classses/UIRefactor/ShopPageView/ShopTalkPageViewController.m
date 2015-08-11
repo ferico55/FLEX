@@ -606,7 +606,8 @@ UIAlertViewDelegate>
                 TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
                 TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
-                TKPD_TALK_PRODUCT_STATUS:list.talk_product_status
+                TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@"",
+                TKPD_TALK_USER_LABEL:list.talk_user_label?:@""
                 };
     [self.navigationController pushViewController:vc animated:YES];
     

@@ -374,7 +374,8 @@
                                            DATA_INPUT_KEY : _dataInput?:@{},
                                            DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
                                            DATA_PRODUCT_DETAIL_KEY: productDetail,
-                                           DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0"
+                                           DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0",
+                                           @"Image_desc_array":_productImageDesc?:@[]
                                             };
                         _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
                         _detailVC.generateHost = _generateHost;
@@ -920,11 +921,6 @@
     }
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
@@ -933,9 +929,9 @@
     }
     if (tag == TAG_REQUEST_DETAIL)
     {
+        [_alertProcessing dismissWithClickedButtonIndex:0 animated:NO];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         [self enableButtonBeforeSuccessRequest:YES];
-        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
     }
 }
 
@@ -994,7 +990,7 @@
 {
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
     [alert show];
-    
+    [_alertProcessing dismissWithClickedButtonIndex:0 animated:NO];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -1023,6 +1019,13 @@
         [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.pic_id?:@""];
         
         NSArray *objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
+        NSMutableArray *photos = [NSMutableArray new];
+        for (NSString *photo in objectProductPhoto) {
+            if (![photo isEqualToString:@""]) {
+                [photos addObject:photo];
+            }
+        }
+        objectProductPhoto = [photos copy];
         NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
         [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
         NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
@@ -1105,6 +1108,13 @@
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
             [alert show];
             NSArray *objectProductPhoto = _productImageIDs;
+            NSMutableArray *photos = [NSMutableArray new];
+            for (NSString *photo in objectProductPhoto) {
+                if (![photo isEqualToString:@""]) {
+                    [photos addObject:photo];
+                }
+            }
+            objectProductPhoto = [photos copy];
             NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
             [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
@@ -1127,7 +1137,8 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"pic_id":@"pic_id"}];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"pic_id":@"pic_id",
+                                                        @"is_success":@"is_success"}];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -1161,6 +1172,7 @@
         [self requestSuccessEditProductPicture:pictureObject withOperation:operation mappingResult:mappingResult];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
         [timer invalidate];
     }];
     
@@ -1180,7 +1192,7 @@
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-         if (_setting.result.is_success == 1) {
+         if ([_images.result.is_success integerValue] == 1) {
             UIImageView *thumbProductImage = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
             thumbProductImage.alpha = 1.0;
             
@@ -1188,11 +1200,17 @@
             
             [_productImageURLs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.file_path?:@""];
             [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.pic_id?:@""];
-            
-            NSArray *objectProductPhoto = _productImageIDs;
-            NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
+             
+             NSMutableArray *photos = [NSMutableArray new];
+             for (NSString *photo in _productImageIDs) {
+                 if (![photo isEqualToString:@""]) {
+                     [photos addObject:photo];
+                 }
+             }
+             
+            NSString *stringImageURLs = [[photos valueForKey:@"description"] componentsJoinedByString:@"~"];
             [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-            NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
+            NSLog(@" Product image URL %@ with string %@ ", photos, stringImageURLs);
             [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
          }
     }
@@ -1201,6 +1219,7 @@
 -(void)requestTimeoutEditProductPicture
 {
     [self cancelEditProductPicture];
+    [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 
@@ -1366,7 +1385,10 @@
     RequestUploadImage *uploadImage = [RequestUploadImage new];
     uploadImage.imageObject = object;
     uploadImage.delegate = self;
-    uploadImage.productID = _product.result.product.product_id;
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    if (type != TYPE_ADD_EDIT_PRODUCT_COPY) {
+        uploadImage.productID = _product.result.product.product_id;
+    }
     uploadImage.generateHost = _generateHost;
     uploadImage.action = ACTION_UPLOAD_PRODUCT_IMAGE;
     uploadImage.fieldName = @"fileToUpload";
@@ -1457,7 +1479,13 @@
     
     NSArray *objectProductPhoto;
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        objectProductPhoto = _productImageURLs;
+        NSMutableArray *photos = [NSMutableArray new];
+        for (NSString *photo in _productImageURLs) {
+            if (![photo isEqualToString:@""]) {
+                [photos addObject:photo];
+            }
+        }
+        objectProductPhoto = [photos copy];
         NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
         [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
     }
@@ -1475,6 +1503,7 @@
     NSString *imagePath = _productImageURLs[index];
     NSString *imageID = _productImageIDs[index];
     NSString *defaultImage = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?imagePath:imageID;
+    NSArray *photosAll = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
     [_dataInput setObject:defaultImage forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
     [_dataInput setObject:[NSString stringWithFormat:@"%ld", (long)index] forKey:API_PRODUCT_IMAGE_DEFAULT_INDEX];
 }
@@ -1484,7 +1513,13 @@
     [_productImageDesc replaceObjectAtIndex:index withObject:name];
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        NSString *stringImageName = [[_productImageDesc valueForKey:@"description"] componentsJoinedByString:@"~"];
+        NSMutableArray *photos = [NSMutableArray new];
+        for (NSString *photo in _productImageDesc) {
+            if (![photo isEqualToString:@""]) {
+                [photos addObject:photo];
+            }
+        }
+        NSString *stringImageName = [[photos valueForKey:@"description"] componentsJoinedByString:@"~"];
         [_dataInput setObject:stringImageName forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
     }
     else
@@ -1783,6 +1818,7 @@
             NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[indexMoveTo] objectForKey:DATA_VALUE_KEY];
             product.product_move_to = value;
             product.product_etalase_id = product.product_etalase_id?:@(0);
+            product.product_short_desc = [product.product_short_desc stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
             product.product_description = product.product_short_desc?:@"";
             product.product_returnable = _product.result.info.product_returnable?:@"";
             product.product_min_order = _product.result.product.product_min_order?:@"1";
@@ -1806,7 +1842,7 @@
             ProductImages *image = images[i];
             ((UIButton*)_addImageButtons[i]).hidden = YES;
             [_productImageURLs replaceObjectAtIndex:i withObject:image.image_src];
-            [_productImageIDs replaceObjectAtIndex:i withObject:@(image.image_id)];
+            [_productImageIDs replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%zd",image.image_id]];
             [_productImageDesc replaceObjectAtIndex:i withObject:image.image_description];
 
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -1834,6 +1870,13 @@
         [_dataInput setObject:productImageDescription forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
 
         NSArray *objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
+        NSMutableArray *photos = [NSMutableArray new];
+        for (NSString *photo in objectProductPhoto) {
+            if (![photo isEqualToString:@""]) {
+                [photos addObject:photo];
+            }
+        }
+        objectProductPhoto = [photos copy];
         NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
         [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
         NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
@@ -1989,7 +2032,7 @@
     
     if ([product.product_min_order integerValue]>=1000) {
         isValid = NO;
-        [_errorMessage addObject:@"Maksimal untuk minimal pembelian 1 produk adalah 999"];
+        [_errorMessage addObject:@"Maksimal minimum pembelian untuk 1 produk adalah 999"];
     }
     
     if (!isValidImage) {
@@ -2027,7 +2070,7 @@
     ((UIImageView*)_thumbProductImageViews[index]).image = image;
     ((UIImageView*)_thumbProductImageViews[index]).hidden = NO;
     [_productImageURLs replaceObjectAtIndex:index withObject:deletedImagePath];
-    [_productImageIDs replaceObjectAtIndex:index withObject:@(deletedImageID)];
+    [_productImageIDs replaceObjectAtIndex:index withObject:[NSString stringWithFormat:@"%zd",deletedImageID]];
 }
 
 #pragma mark - Keyboard Notification

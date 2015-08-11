@@ -9,9 +9,9 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+//#define kTkpdBaseURLString @"http://www.ft-feby.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -19,8 +19,8 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-//#define kTkpdBaseURLString @"http://api.tokopedia.com/ws"
-#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -29,6 +29,7 @@
 #define kTKPD_DEVICETOKENKEY @"device_token"
 #define kTKPD_USERIMAGEKEY @"user_image"
 #define kTKPD_USERIDKEY @"user_id"
+#define kTKPD_TMP_USERIDKEY @"tmp_user_id"
 #define kTKPD_FULLNAMEKEY @"full_name"
 #define kTKPD_SHOPIDKEY @"shop_id"
 #define kTKPD_PRODUCTIDKEY @"product_id"
@@ -159,6 +160,8 @@ typedef enum {
 
 #define UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME @"tokopedia.UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME"
 
+#define kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION @"tokopedia.kTKPD_DIDTAPNAVIGATIONMENU_NOTIFICATION"
+
 #define kTKPD_APPLICATIONKEY @"application"
 #define kTKPD_INSTALLEDKEY @"installed"
 
@@ -202,13 +205,36 @@ typedef enum {
 #define productCollectionViewCellHeight6plus 250
 #define productCollectionViewCellHeightNormal 205
 
-
-
-
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
 
+#define kTKPD_SHOW_RATING_ALERT         @"tokopedia.kTKPD_CHECKING_USER_REVIEW"
+#define kTKPD_USER_REVIEW_DATA          @"tokopedia.kTKPD_USER_REVIEW_DATA"
+#define kTKPD_USER_REVIEW_IDS           @"tokopedia.kTKPD_USER_REVIEW_IDS"
+#define kTKPD_USER_REVIEW_DUE_DATE      @"tokopedia.kTKPD_USER_REVIEW_DUE_DATE"
+#define kTKPD_ITUNES_APP_URL            @"http://itunes.apple.com/app/id1001394201"
+#define kTKPD_ALWAYS_SHOW_RATING_ALERT  @"tokopedia.kTKPD_ALWAYS_SHOW_ALERT_RATING"
 
+// GTM Value
+#define GTMKeyInboxMessageBase @"inboxmessage_base_url"
+#define GTMKeyInboxMessagePost @"inboxmessage_post_url"
+#define GTMKeyInboxMessageFull @"inboxmessage_full_url"
+
+#define GTMKeyInboxTalkBase @"inboxtalk_base_url"
+#define GTMKeyInboxTalkPost @"inboxtalk_post_url"
+#define GTMKeyInboxTalkFull @"inboxtalk_full_url"
+
+#define GTMKeyInboxReviewBase @"inboxreview_base_url"
+#define GTMKeyInboxReviewPost @"inboxreview_post_url"
+#define GTMKeyInboxReviewFull @"inboxreview_full_url"
+
+#define GTMKeyProductBase @"product_base_url"
+#define GTMKeyProductPost @"product_post_url"
+#define GTMKeyProductFull @"product_full_url"
+
+#define GTMKeySearchBase @"search_base_url"
+#define GTMKeySearchPost @"search_post_url"
+#define GTMKeySearchFull @"search_full_url"
 
 #endif

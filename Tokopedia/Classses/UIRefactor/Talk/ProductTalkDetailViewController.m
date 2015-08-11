@@ -73,9 +73,6 @@
     NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
 
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
     HPGrowingTextView *_growingtextview;
     
     NSTimeInterval _timeinterval;
@@ -90,7 +87,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UILabel *talkmessagelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talkcreatetimelabel;
-@property (weak, nonatomic) IBOutlet UILabel *talkusernamelabel;
+//@property (weak, nonatomic) IBOutlet UILabel *talkusernamelabel;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *userButton;
 @property (weak, nonatomic) IBOutlet UILabel *talktotalcommentlabel;
 @property (weak, nonatomic) IBOutlet UIImageView *talkuserimage;
 @property (weak, nonatomic) IBOutlet UIImageView *talkProductImage;
@@ -168,8 +166,6 @@
     _operationSendCommentQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
     
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
     _datainput = [NSMutableDictionary new];
     _userManager = [UserAuthentificationManager new];
     _navigateController = [NavigateViewController new];
@@ -239,22 +235,11 @@
         }
 
     }
-
-    
-    NSDictionary *userinfo;
-    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
     UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userArea addGestureRecognizer:tapUserGes];
     [_userArea setUserInteractionEnabled:YES];
     
-    //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCTTALKDETAIL_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 
@@ -303,7 +288,7 @@
         if (cell == nil) {
             cell = [GeneralTalkCommentCell newcell];
             ((GeneralTalkCommentCell*)cell).delegate = self;
-            [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:15.0f]];
+            [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
         }
         
         if (_list.count > indexPath.row) {
@@ -398,17 +383,6 @@
         cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
         cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
-    return cell;
-}
-
-
-
-#pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
@@ -421,6 +395,20 @@
             [self loadData];
         }
     }
+    
+    return cell;
+}
+
+
+
+#pragma mark - Table View Delegate
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (_isnodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
+    
+    
 }
 
 -(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -475,7 +463,11 @@
     _talkmessagelabel.frame = myFrame;
     
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
-    _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
+//    _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
+    [_userButton setLabelBackground:[data objectForKey:TKPD_TALK_USER_LABEL]];
+    [_userButton setText:[data objectForKey:TKPD_TALK_USER_NAME]];
+    [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
+
     _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
@@ -687,48 +679,12 @@
     BOOL status = [_talkcomment.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if (_page <=1 && !_isrefreshview) {
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-            [_cachecontroller connectionDidFinish:_cacheconnection];
-            //save response data
-            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        }
         [self requestprocess:object];
     }
 }
 
 -(void) requestfailure:(id)object {
-    if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1) {
-        [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stats = [result objectForKey:@""];
-            _talkcomment = stats;
-            BOOL status = [_talkcomment.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
+    [self requestprocess:object];
 }
 
 -(void)requestprocess:(id)object
@@ -879,28 +835,36 @@
                     
                     commentlist.comment_create_time = dateString;
                     commentlist.is_just_sent = YES;
+                    commentlist.comment_user_label = [_userManager isMyShopWithShopId:[_data objectForKey:TKPD_TALK_SHOP_ID]] ? @"Penjual" : @"Pengguna";
                     
-                    [_list insertObject:commentlist atIndex:lastindexpathrow];
-                    NSArray *insertIndexPaths = [NSArray arrayWithObjects:
-                                                 [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
-                                                 ];
+                    if(![_act isAnimating]) {
+                        [_list insertObject:commentlist atIndex:lastindexpathrow];
+                        NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                     [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
+                                                     ];
+                        
+                        [_table beginUpdates];
+                        [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                        [_table endUpdates];
+                        
+                        NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
+                        [_table scrollToRowAtIndexPath:indexpath
+                                      atScrollPosition:UITableViewScrollPositionTop
+                                              animated:YES];
+                        
+                        //connect action to web service
+                        _savedComment = _growingtextview.text;
+                        [self configureSendCommentRestkit];
+                        [self addProductCommentTalk];
+                        
+                        _growingtextview.text = nil;
+                        [_growingtextview resignFirstResponder];
+                    } else {
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sedang memuat komentar.."]
+                                                                                       delegate:self];
+                        [alert show];
+                    }
                     
-                    [_table beginUpdates];
-                    [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-                    [_table endUpdates];
-                    
-                    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
-                    [_table scrollToRowAtIndexPath:indexpath
-                                  atScrollPosition:UITableViewScrollPositionTop
-                                          animated:YES];
-                    
-                    //connect action to web service
-                    _savedComment = _growingtextview.text;
-                    [self configureSendCommentRestkit];
-                    [self addProductCommentTalk];
-                    
-                    _growingtextview.text = nil;
-                    [_growingtextview resignFirstResponder];
                 }
                 else
                 {

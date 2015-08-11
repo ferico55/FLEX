@@ -8,7 +8,7 @@
 
 #import "ProductCell.h"
 #import "ProductModelView.h"
-
+#import "CatalogModelView.h"
 
 @implementation ProductCell
 
@@ -20,6 +20,10 @@
     [self.productName setText:viewModel.productName];
     [self.productPrice setText:viewModel.productPrice];
     [self.productShop setText:viewModel.productShop];
+    
+    if(!viewModel.productShop || [viewModel.productShop isEqualToString:@"0"]) {
+        [self.productShop setHidden:YES];
+    }
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -31,9 +35,28 @@
         [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
         [self.productImage setImage:image];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [self.productImage setImage:[UIImage imageNamed:@""]];
+        [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
+}
+
+- (void)setCatalogViewModel:(CatalogModelView *)viewModel {
+    [self.productName setText:viewModel.catalogName];
+    [self.productPrice setText:viewModel.catalogPrice];
+    [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
+    self.goldShopBadge.hidden = YES;
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [self.productImage setContentMode:UIViewContentModeCenter];
+    [self.productImage setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
+        [self.productImage setImage:image];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [self.productImage setImage:[UIImage imageNamed:@""]];
+    }];
 }
 
 @end

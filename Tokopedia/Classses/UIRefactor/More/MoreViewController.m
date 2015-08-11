@@ -5,6 +5,7 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
@@ -35,8 +36,8 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
-//#import "TKPDTabViewController.h"
-//#import "InboxCustomerServiceViewController.h"
+#import "TKPDTabViewController.h"
+#import "InboxTicketViewController.h"
 
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
@@ -174,9 +175,9 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-
-    [self updateSaldoTokopedia:nil];    
-
+    
+    [self updateSaldoTokopedia:nil];
+    
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker setAllowIDFACollection:YES];
@@ -349,7 +350,7 @@
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];
     NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];
     [_profilePictureImageView setImageWithURLRequest:request
                                     placeholderImage:nil
                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -491,11 +492,11 @@
             break;
             
         case 4:
-            return 4;
+            return 6;
             break;
             
         case 5:
-            return 3;
+            return 4;
             break;
             
         case 6:
@@ -649,20 +650,37 @@
             [self.navigationController pushViewController:nc animated:YES];
             
         } else if (indexPath.row == 3) {
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
+            
+
+        } else if (indexPath.row == 4) {
+            TKPDTabViewController *controller = [TKPDTabViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+            
+            InboxTicketViewController *allInbox = [InboxTicketViewController new];
+            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+            allInbox.delegate = controller;
+            
+            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+            unreadInbox.delegate = controller;
+            
+            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+            closedInbox.delegate = controller;
+            
+            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+            controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+            
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (indexPath.row == 5) {
             InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
-//            controller.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:controller animated:YES];
-            
-        } else if (indexPath.row  == 4) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-            
         }
-        
     }
     
     else if (indexPath.section == 5) {
@@ -672,9 +690,9 @@
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-//            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+            //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            //            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
             
             if([MFMailComposeViewController canSendMail]) {
                 MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
@@ -687,7 +705,7 @@
                 [emailController setMessageBody:messageBody isHTML:YES];
                 [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
                 [emailController.navigationBar setTintColor:[UIColor whiteColor]];
-                 
+                
                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
                 [self presentViewController:emailController animated:YES completion:nil];
             } else {
@@ -716,6 +734,18 @@
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [self.navigationController pushViewController:webViewController animated:YES];
+        } else if(indexPath.row == 3) {
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:kGAIScreenName value:@"Share App"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            
+            NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
+            NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
+            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                             applicationActivities:nil];
+            activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+            [self presentViewController:activityController animated:YES completion:nil];
         }
     }
     
@@ -726,7 +756,7 @@
                                                                 object:nil
                                                               userInfo:@{}];
         }
-
+        
     }
     
     self.hidesBottomBarWhenPushed = NO;
@@ -864,6 +894,7 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [self requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 

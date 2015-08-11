@@ -81,6 +81,7 @@
 #define FONT_GOTHAM_BOOK_13 [UIFont fontWithName:@"GothamBook" size:13.0f]
 #define FONT_GOTHAM_BOOK_14 [UIFont fontWithName:@"GothamBook" size:14.0f]
 #define FONT_GOTHAM_BOOK_16 [UIFont fontWithName:@"GothamBook" size:16.0f]
+#define FONT_GOTHAM_BOOK_18 [UIFont fontWithName:@"GothamBook" size:18.0f]
 
 #define TEXT_COLOUR_DEFAULT_CELL_TEXT [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1.0]
 

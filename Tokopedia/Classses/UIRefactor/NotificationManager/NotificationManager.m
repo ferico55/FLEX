@@ -219,10 +219,8 @@
     _notificationButton.enabled = YES;
     _notificationButton.badgeLabel.hidden = NO;
     
-    //TODO::removing price alert was here
-    NSString *notifWithNoPriceAlert = [NSString stringWithFormat:@"%ld", (long)([_notification.result.total_notif integerValue] - [_notification.result.inbox.inbox_wishlist integerValue])];
-    
-    _notificationButton.badgeLabel.text = [notifWithNoPriceAlert  stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    _notificationButton.badgeLabel.text = [_notification.result.total_notif  stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSInteger totalNotif = [_notification.result.total_notif integerValue];
     CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
     if (totalNotif >= 10 && totalNotif < 100) {
@@ -247,10 +245,15 @@
     //    }
     
     if ([_notification.result.total_cart integerValue]>0)
+    {
         [[_attachedViewController.tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = [_notification.result.total_cart stringValue];
+        NSLog(@"total cart:%@", [_notification.result.total_cart stringValue]);
+    }
     else
     {
         [[_attachedViewController.tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+        NSLog(@"total cart:%@", [_notification.result.total_cart stringValue]);
+
     }
 }
 

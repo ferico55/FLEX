@@ -17,7 +17,11 @@
 #import "CatalogShopViewController.h"
 #import "LoginViewController.h"
 #import "ProductAddEditViewController.h"
+#import "PriceAlertViewController.h"
 #import "GalleryViewController.h"
+
+static NSString *cellIdentifer = @"CatalogSpecificationCell";
+static CGFloat rowHeight = 40;
 
 @interface CatalogViewController ()
 <
@@ -45,6 +49,7 @@
     NSInteger _requestCount;
     
     UIRefreshControl *_refreshControl;
+    UIImage *imgPriceAlert, *imgPriceAlertNonActive;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
@@ -82,11 +87,23 @@
                                                                   action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backButton;
 
-    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                                  target:self
-                                                                                  action:@selector(tap:)];
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
+    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_share_white" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    UIImageView *tempImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    tempImage.image = newImage;
+    [tempImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)]];
+    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithCustomView:tempImage];
     actionButton.tag = 1;
-    self.navigationItem.rightBarButtonItem = actionButton;
+
+    UIImageView *imgPriceAlertView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [imgPriceAlertView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionAddNotificationPriceCatalog:)]];
+    UIBarButtonItem *priceAlertItem = [[UIBarButtonItem alloc] initWithCustomView:imgPriceAlertView];
+    self.navigationItem.rightBarButtonItems = @[actionButton, priceAlertItem];
+    [self setBackgroundPriceAlert:NO];
+    
 
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
@@ -167,8 +184,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifer = @"CatalogSpecificationCell";
-    
     CatalogSpecificationCell *cell = (CatalogSpecificationCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
     
     if (cell == nil) {
@@ -178,22 +193,71 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     
+    [self configureCell:cell atIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (void)configureCell:(CatalogSpecificationCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 9.0;
+
+    UIColor *gray = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
+    
+    NSDictionary *titleAttributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:14],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : gray,
+                                 };
+    
     NSString *title = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([title isEqualToString:@""]) {
         [cell hideTopBorder:YES];
         cell.titleLabel.text = @"";
     } else {
         cell.titleLabel.text = title;
+        cell.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:titleAttributes];
     }
+    
+    NSString *values = [[_specificationValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : gray,
+                                 };
+    
+    cell.valueLabel.attributedText = [[NSAttributedString alloc] initWithString:values attributes:attributes];
+    cell.valueLabel.numberOfLines = 0;
+    [cell.valueLabel sizeToFit];
+    
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
+    
     [cell hideBottomBorder:YES];
     
     if (indexPath.row == ([[_specificationKeys objectAtIndex:indexPath.section] count] - 1)) {
         [cell hideBottomBorder:NO];
     }
-    
-    cell.valueLabel.text = [[_specificationValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    
-    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *text = [[_specificationValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (text.length < 20) {
+        return rowHeight;
+    } else {
+        CGSize maximumLabelSize = CGSizeMake(220, CGFLOAT_MAX);
+        CGSize expectedLabelSize = [text sizeWithFont:FONT_GOTHAM_BOOK_14
+                                    constrainedToSize:maximumLabelSize
+                                        lineBreakMode:NSLineBreakByWordWrapping];
+        CGFloat height = rowHeight + (3 * expectedLabelSize.height); // add margin
+        return height;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return rowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -226,6 +290,7 @@
     [catalogInfoMapping addAttributeMappingsFromArray:@[API_CATALOG_NAME_KEY,
                                                         API_CATALOG_DESCRIPTION_KEY,
                                                         API_CATALOG_KEY_KEY,
+                                                        CCatalogPriceAlertPrice,
                                                         API_CATALOG_DEPARTMENT_ID_KEY,
                                                         API_CATALOG_URL_KEY,
                                                         API_CATALOG_ID_KEY]];
@@ -361,6 +426,7 @@
                                                                 parameters:[parameters encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [_timer invalidate];
         [_activityIndicatorView stopAnimating];
         [_tableView setTableFooterView:nil];
@@ -512,10 +578,51 @@
     [_request cancel];
 }
 
+#pragma mark - Method
+- (void)updatePriceAlert:(NSString *)strPrice
+{
+    _catalog.result.catalog_info.catalog_pricealert_price = strPrice;
+}
+
+- (void)setBackgroundPriceAlert:(BOOL)isActive
+{
+    if(isActive) {
+        if(! imgPriceAlert) {
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
+            [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_pricealert_active" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
+            imgPriceAlert = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+        }
+        
+        ((UIImageView *) ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems lastObject]).customView).image = imgPriceAlert;
+    }
+    else {
+        if(! imgPriceAlertNonActive) {
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
+            [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_pricealert_active" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
+            imgPriceAlertNonActive = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+        }
+        
+        ((UIImageView *) ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems lastObject]).customView).image = imgPriceAlertNonActive;
+    }
+}
+
 #pragma mark - Action
+- (void)actionAddNotificationPriceCatalog:(id)sender
+{
+    if(_catalog!=nil && _catalog.result.catalog_info!=nil) {
+        PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+        priceAlertViewController.catalogInfo = _catalog.result.catalog_info;
+        [self.navigationController pushViewController:priceAlertViewController animated:YES];
+    }
+}
 
 - (IBAction)tap:(id)sender
 {
+//    UIView *view = ((UITapGestureRecognizer *) sender).view;
+    
+
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
@@ -544,17 +651,42 @@
         }
         [_tableView reloadData];
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        NSInteger startingIndex = _productPhotoPageControl.currentPage;
-//        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
-//        controller.canDownload = NO;
-        GalleryViewController *gallery = [GalleryViewController new];
-        gallery.canDownload = YES;
-        [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
-        
-        
+        UIView *view = ((UITapGestureRecognizer *) sender).view;
+        if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {
+            if (_catalog) {
+                NSString *title = _catalog.result.catalog_info.catalog_name;
+                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
+                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                         applicationActivities:nil];
+                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:controller animated:YES completion:nil];
+            }
+        }
+        else {
+            NSInteger startingIndex = _productPhotoPageControl.currentPage;
+    //        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
+    //        controller.canDownload = NO;
+            GalleryViewController *gallery = [GalleryViewController new];
+            gallery.canDownload = YES;
+            [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
+            
+            
 
-        gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:gallery animated:YES completion:nil];
+            gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self.navigationController presentViewController:gallery animated:YES completion:nil];
+        }
+    } else{
+        UIView *view = ((UIGestureRecognizer*)sender).view;
+        if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {
+            if (_catalog) {
+                NSString *title = _catalog.result.catalog_info.catalog_name;
+                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
+                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                         applicationActivities:nil];
+                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:controller animated:YES completion:nil];
+            }
+        }
     }
 }
 

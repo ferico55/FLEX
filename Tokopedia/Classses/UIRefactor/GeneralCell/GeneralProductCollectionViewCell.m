@@ -17,16 +17,16 @@
 
 - (void)setViewModel:(ProductModelView *)productModelView
 {
-    self.productPrice.text = productModelView.catalog_price?:productModelView.productPrice;
+    self.productPrice.text = productModelView.productPrice;
     
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:productModelView.catalog_name?:productModelView.productName];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:productModelView.productName];
     NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
     [paragrahStyle setLineSpacing:5];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [productModelView.catalog_name?:productModelView.productName length])];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [productModelView.productName length])];
     self.productName.attributedText = attributedString;
     self.productName.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.productShop.text = productModelView.shop_name?:@"";
-    if([productModelView.shop_gold_status isEqualToString:@"1"]) {
+    self.productShop.text = productModelView.productShop?:@"";
+    if(productModelView.isGoldShopProduct) {
         self.goldShopBadge.hidden = NO;
     } else {
         self.goldShopBadge.hidden = YES;
@@ -34,7 +34,7 @@
     
     
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:productModelView.catalog_image?:productModelView.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:productModelView.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     UIImageView *thumb = self.productImage;
     thumb.image = nil;
     

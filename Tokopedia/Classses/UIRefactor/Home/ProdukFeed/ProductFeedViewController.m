@@ -15,13 +15,12 @@
 #import "LoadingView.h"
 #import "NoResultView.h"
 
-#import "GeneralProductCollectionViewCell.h"
 #import "NavigateViewController.h"
 #import "ProductCell.h"
 
-NSString *const ProductCellIdentifier = @"ProductCellIdentifier";
-NSInteger const normalWidth = 320;
-NSInteger const normalHeight = 568;
+static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
+static NSInteger const normalWidth = 320;
+static NSInteger const normalHeight = 568;
 
 @interface ProductFeedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
@@ -115,7 +114,7 @@ typedef enum TagRequest {
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ProductCellIdentifier forIndexPath:indexPath];
+    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:productFeedCellIdentifier forIndexPath:indexPath];
     
     ProductFeedList *product = _product[indexPath.row];
     [cell setViewModel:product.viewModel];
@@ -145,17 +144,6 @@ typedef enum TagRequest {
     }
     
     return reusableView;
-}
-
-- (void)registerNib {
-    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
-    
-    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
-    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
-    
-    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
-    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -294,9 +282,11 @@ typedef enum TagRequest {
         _nextPageUri =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
-        if(_nextPageUri!=nil && [_nextPageUri isEqualToString:@"0"]) {
+        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
             //remove loadingview if there is no more item
             [_flowLayout setFooterReferenceSize:CGSizeZero];
+        } else {
+            [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
         }
     } else {
         // no data at all
@@ -358,6 +348,17 @@ typedef enum TagRequest {
     _page = 1;
     _isShowRefreshControl = YES;
     [_networkManager doRequest];
+}
+
+- (void)registerNib {
+    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:productFeedCellIdentifier];
+    
+    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+    
+    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
 }
 
 @end

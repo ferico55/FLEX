@@ -139,6 +139,7 @@
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
 
+    [self adjustNavigationTitle];
 }
 
 -(void)setControllerTitle:(NSString *)controllerTitle

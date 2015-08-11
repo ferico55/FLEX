@@ -34,12 +34,14 @@
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
+#import "AlertBaseUrl.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
 <
     UITabBarControllerDelegate,
+    UIAlertViewDelegate,
     LoginViewDelegate,
     TokopediaNetworkManagerDelegate
 >
@@ -54,8 +56,10 @@
     __weak RKObjectManager *_objectmanager;
     
     NSString *_persistToken;
+    NSString *_persistBaseUrl;
     
     UIAlertView *_logingOutAlertView;
+    NSTimer *_containerTimer;
 }
 
 @end
@@ -79,8 +83,9 @@ typedef enum TagRequest {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        
     [self adjustnavigationbar];
-    
+        
     _auth = [NSMutableDictionary new];
     _cacheController = [URLCacheController new];
     
@@ -111,7 +116,13 @@ typedef enum TagRequest {
     [center addObserver:self
                selector:@selector(updateTabBarMore:)
                    name:UPDATE_TABBAR object:nil];
-    
+
+    [center addObserver:self
+               selector:@selector(didReceiveShowRatingNotification:)
+                   name:kTKPD_SHOW_RATING_ALERT object:nil];
+
+    //refresh timer for GTM Container
+    _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -149,6 +160,10 @@ typedef enum TagRequest {
 	_auth = [auth mutableCopy];
     	
     _data = nil;
+#if DEBUG
+    AlertBaseUrl *alert = [AlertBaseUrl newview];
+    [alert show];
+#endif
     [self presentcontrollers];
 }
 
@@ -444,17 +459,15 @@ typedef enum TagRequest {
     [proxy setShadowImage:[[UIImage alloc] init]];
     
 #endif
+    
+    // redirect to home after login or register
+    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
 }
 
 #pragma mark - Notification observers
 
 - (void)applicationLogin:(NSNotification*)notification
-{
-    if (_logingOutAlertView) {
-        [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        _logingOutAlertView = nil;
-    }
-    
+{    
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     
@@ -521,6 +534,7 @@ typedef enum TagRequest {
 {
     _userManager = [UserAuthentificationManager new];
     _persistToken = [_userManager getMyDeviceToken]; //token device from ios
+
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar ?"
                                                         message:nil
                                                        delegate:self
@@ -556,13 +570,18 @@ typedef enum TagRequest {
 //    [_cacheController clearCache];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+    
     [storage resetKeychain];
     [_auth removeAllObjects];
     
-    [storage setKeychainWithValue:_persistToken withKey:@"device_token"];
+    [storage setKeychainWithValue:_persistToken?:@"" withKey:@"device_token"];
+    [storage setKeychainWithValue:_persistBaseUrl?:@"" withKey:@"AppBaseUrl"];
+    
     [self removeCacheUser];
     
     [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+    [((UINavigationController*)[_tabBarController.viewControllers objectAtIndex:3]) popToRootViewControllerAnimated:NO];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
                                                         object:nil
@@ -570,8 +589,12 @@ typedef enum TagRequest {
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     
-    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
+    if (_logingOutAlertView) {
+        [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        _logingOutAlertView = nil;
+    }
     
+    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
 }
 
@@ -587,6 +610,8 @@ typedef enum TagRequest {
         if(buttonIndex == 1) {
             [self doApplicationLogout];
         }
+    } else if (alertView.tag == 2) {
+        [self ratingAlertView:alertView clickedButtonAtIndex:buttonIndex];
     }
 }
 
@@ -708,8 +733,125 @@ typedef enum TagRequest {
 
 #pragma mark - Notification Observer Method
 - (void)forceLogout {
+    _persistToken = [_userManager getMyDeviceToken]; //token device from ios
     [self doApplicationLogout];
 }
 
+- (void)didRefreshContainer:(NSTimer*)timer {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
+    [container refresh];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didRefreshGTM" object:nil];
+}
+
+- (void)didReceiveShowRatingNotification:(NSNotification *)notification {
+    if ([[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT]) {
+        if ([[[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT] boolValue]) {
+            [self showRatingAlertFromNotification:notification];
+        }
+    } else {
+        [self checkUserRating:notification];
+    }
+}
+
+- (void)checkUserRating:(NSNotification *)notification {
+    _userManager = [UserAuthentificationManager new];
+    // Reviews data structure
+    // ReviewData (Dictionary containing belows data)
+    //   -> UserIds (Array containing user ids that already rated the app)
+    //   -> UsersDueDates (Dictionary consist of user ids and due dates)
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *reviewData = [defaults objectForKey:kTKPD_USER_REVIEW_DATA];
+    if (reviewData) {
+        reviewData = [reviewData mutableCopy];
+        NSMutableArray *userids = [reviewData objectForKey:kTKPD_USER_REVIEW_IDS];
+        if (userids) {
+            userids = [userids mutableCopy];
+            if (![userids containsObject:_userManager.getUserId]) {
+                NSMutableDictionary *dueDates = [reviewData objectForKey:kTKPD_USER_REVIEW_DUE_DATE];
+                if (dueDates) {
+                    dueDates = [dueDates mutableCopy];
+                    NSDate *userDueDate = [dueDates objectForKey:_userManager.getUserId];
+                    if (userDueDate) {
+                        NSDate *today = [NSDate new];
+                        if (today.timeIntervalSince1970 >= userDueDate.timeIntervalSince1970) {
+                            [self showRatingAlertFromNotification:notification];
+                        }
+                    } else {
+                        [self showRatingAlertFromNotification:notification];
+                    }
+                } else {
+                    NSMutableDictionary *newUsersDueDates = [NSMutableDictionary new];
+                    [reviewData setObject:newUsersDueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
+                    [self showRatingAlertFromNotification:notification];
+                }
+            }
+        } else {
+            NSMutableArray *newUserIds = [NSMutableArray new];
+            [reviewData setObject:newUserIds forKey:kTKPD_USER_REVIEW_IDS];
+            if (![reviewData objectForKey:kTKPD_USER_REVIEW_DUE_DATE]) {
+                NSMutableDictionary *dueDates = [NSMutableDictionary new];
+                [reviewData setObject:dueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
+            }
+            [self showRatingAlertFromNotification:notification];
+        }
+    } else {
+        NSMutableDictionary *newReviewData = [NSMutableDictionary new];
+        NSMutableArray *newUserIds = [NSMutableArray new];
+        NSMutableDictionary *newUsersDueDates = [NSMutableDictionary new];
+        [newReviewData setObject:newUserIds forKey:kTKPD_USER_REVIEW_IDS];
+        [newReviewData setObject:newUsersDueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
+        reviewData = newReviewData;
+        [self showRatingAlertFromNotification:notification];
+    }
+    [defaults setObject:reviewData forKey:kTKPD_USER_REVIEW_DATA];
+    [defaults synchronize];
+}
+
+- (void)showRatingAlertFromNotification:(NSNotification *)notification {
+    NSString *title = @"Suka dengan aplikasi iOS Tokopedia?";
+    NSString *message = @"Rate 5 bintang untuk aplikasi ini. Setiap rating yang kalian berikan adalah semangat bagi kami! Terima kasih Toppers.";
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"Tidak"
+                                          otherButtonTitles:@"Ya", nil];
+
+    if ([[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT]) {
+        if ([[[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT] boolValue]) {
+            alert.tag = 1;
+        }
+    } else {
+        alert.tag = 2;
+    }
+    alert.delegate = self;
+    [alert show];
+}
+
+- (void)ratingAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kTKPD_ITUNES_APP_URL]];
+    }
+    else if (alertView.tag == 2) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSMutableDictionary *reviewData = [[defaults objectForKey:kTKPD_USER_REVIEW_DATA] mutableCopy];
+        if (buttonIndex == 0) {
+            NSMutableDictionary *dueDates = [[reviewData objectForKey:kTKPD_USER_REVIEW_DUE_DATE] mutableCopy];
+            NSDate *today = [NSDate date];
+            int daysInterval = 7;
+            NSDate *nextWeek = [today dateByAddingTimeInterval:60*60*24*daysInterval];
+            [dueDates setObject:nextWeek forKey:_userManager.getUserId];
+            [reviewData setObject:dueDates forKey:kTKPD_USER_REVIEW_DUE_DATE];
+        } else if (buttonIndex == 1) {
+            NSMutableArray *userids = [[reviewData objectForKey:kTKPD_USER_REVIEW_IDS] mutableCopy];
+            [userids addObject:_userManager.getUserId];
+            [reviewData setObject:userids forKey:kTKPD_USER_REVIEW_IDS];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kTKPD_ITUNES_APP_URL]];
+        }
+        [defaults setObject:reviewData forKey:kTKPD_USER_REVIEW_DATA];
+        [defaults synchronize];
+    }
+}
 
 @end

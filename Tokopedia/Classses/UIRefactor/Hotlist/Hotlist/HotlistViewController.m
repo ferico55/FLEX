@@ -108,7 +108,6 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
@@ -143,6 +142,7 @@
         _page = 1;
         _isNeedToRemoveAllObject = YES;
         [_networkManager doRequest];
+        [self initCacheHotlist];
         _table.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
     }
 }

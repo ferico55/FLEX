@@ -105,6 +105,17 @@
         isValid = NO;
         [errorMessages addObject:@"Nomor resi belum diisi"];
     }
+    else
+    {
+        if ([_nomorReceiptTextField.text isAllNonNumber]) {
+            isValid = NO;
+            [errorMessages addObject:@"Nomor resi tidak valid"];
+        }
+        
+        if (_nomorReceiptTextField.text.length < 7 || _nomorReceiptTextField.text.length > 17) {
+            [errorMessages addObject:@"Nomor resi antara 7 - 17 karakter"];
+        }
+    }
     
     if ([_selectedShipment.shipment_id integerValue] == 0) {
         isValid = NO;
