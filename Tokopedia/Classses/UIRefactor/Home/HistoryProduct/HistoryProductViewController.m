@@ -159,7 +159,8 @@ typedef enum TagRequest {
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     HistoryProductList *product = [_product objectAtIndex:indexPath.row];
-    [navigateController navigateToProductFromViewController:self withProductID:[NSString stringWithFormat:@"%@", product.product_id]];
+//    [navigateController navigateToProductFromViewController:self withProductID:[NSString stringWithFormat:@"%@", product.product_id]];
+    [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

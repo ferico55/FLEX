@@ -36,6 +36,7 @@
 
 #import "GeneralSingleProductCell.h"
 #import "GeneralPhotoProductCell.h"
+#import "NavigateViewController.h"
 
 
 #define CTagGeneralProductCollectionView @"ProductCell"
@@ -1066,9 +1067,7 @@ GeneralPhotoProductDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     List *list = _product[indexPath.row];
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    [self.navigationController pushViewController:vc animated:YES];
+    NavigateViewController *navigator = [NavigateViewController new];
+    [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }
 @end

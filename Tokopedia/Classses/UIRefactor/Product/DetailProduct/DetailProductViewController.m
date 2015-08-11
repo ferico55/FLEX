@@ -354,6 +354,14 @@ UIAlertViewDelegate
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
     
+    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
+        _dinkButton.hidden = NO;
+        _buyButton.hidden = YES;
+    } else {
+        _dinkButton.hidden = YES;
+        _buyButton.hidden = NO;
+    }
+    
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
     btnShare.layer.borderWidth = 1;
@@ -421,7 +429,7 @@ UIAlertViewDelegate
     inset.bottom += 20;
     _table.contentInset = inset;
     
-    [self configureRestKit];
+
     
     _favButton.layer.cornerRadius = 3;
     _favButton.layer.borderWidth = 1;
@@ -429,8 +437,30 @@ UIAlertViewDelegate
     _favButton.enabled = YES;
     _favButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     
-    
-    if (_isnodata) {
+    if (_isnodata || _product.result.shop_info.shop_id == nil) {
+        
+        ProductDetail *detailProduct = [ProductDetail new];
+        detailProduct.product_id = [_loadedData objectForKey:@"product_id"];
+        detailProduct.product_name = [_loadedData objectForKey:@"product_name"];
+        detailProduct.product_price = [_loadedData objectForKey:@"product_price"];
+        
+        ShopInfo *shopInfo = [ShopInfo new];
+        shopInfo.shop_name = [_loadedData objectForKey:@"shop_name"];
+        
+        DetailProductResult *result = [DetailProductResult new];
+        result.product = detailProduct;
+        result.shop_info = shopInfo;
+        
+        ProductImages *image = [ProductImages new];
+        image.image_src = [_loadedData objectForKey:@"product_image"];
+        result.product_images = [NSArray arrayWithObject:image];
+        
+        Product *product = [Product new];
+        product.result = result;
+        product.status = @"OK";
+        [self requestprocess:product];
+        
+        [self configureRestKit];
         [self loadData];
         if (_product.result.wholesale_price) {
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
@@ -1714,26 +1744,6 @@ UIAlertViewDelegate
         [_act stopAnimating];
         [self unsetWarehouse];
         
-        ProductDetail *detailProduct = [ProductDetail new];
-        detailProduct.product_id = [_loadedData objectForKey:@"product_id"];
-        detailProduct.product_name = [_loadedData objectForKey:@"product_name"];
-        detailProduct.product_price = [_loadedData objectForKey:@"product_price"];
-        
-        ShopInfo *shopInfo = [ShopInfo new];
-        shopInfo.shop_name = [_loadedData objectForKey:@"shop_name"];
-        
-        DetailProductResult *result = [DetailProductResult new];
-        result.product = detailProduct;
-        result.shop_info = shopInfo;
-        
-        ProductImages *image = [ProductImages new];
-        image.image_src = [_loadedData objectForKey:@"product_image"];
-        result.product_images = [NSArray arrayWithObject:image];
-        
-        Product *product = [Product new];
-        product.result = result;
-        product.status = @"OK";
-        [self requestprocess:product];
     }
     else if(tag == CTagOtherProduct)
     {
@@ -1851,7 +1861,7 @@ UIAlertViewDelegate
     _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     if (_timeinterval > _cachecontroller.URLCacheInterval) {
 //        [_act startAnimating];
-        _buyButton.enabled = NO;
+//        _buyButton.enabled = NO;
         [tokopediaNetworkManager doRequest];
     }
     else {
@@ -2041,13 +2051,13 @@ UIAlertViewDelegate
                 [self hiddenButtonBuyAndPromo];
             }
             else {
-                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
-                    _dinkButton.hidden = NO;
-                    _buyButton.hidden = YES;
-                } else {
-                    _buyButton.hidden = NO;
-                    _dinkButton.hidden = YES;
-                }
+//                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
+//                    _dinkButton.hidden = NO;
+//                    _buyButton.hidden = YES;
+//                } else {
+//                    _buyButton.hidden = NO;
+//                    _dinkButton.hidden = YES;
+//                }
                 
                 //Check is in warehouse
                 if([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING) {
@@ -2365,14 +2375,14 @@ UIAlertViewDelegate
     
     //Update header view
     _pricelabel.text = _product.result.product.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count?:@"0"];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count?:@"0"];
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count?:@""];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count?:@""];
     
-    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count?:@"0"] forState:UIControlStateNormal];
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count?:@""] forState:UIControlStateNormal];
     [_reviewbutton.layer setBorderWidth:1];
     [_reviewbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk_count?:@"0"] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk_count?:@""] forState:UIControlStateNormal];
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
@@ -2915,6 +2925,5 @@ UIAlertViewDelegate
     
     _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
     _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
-    _detailProductFullUrl = [_gtmContainer stringForKey:GTMKeyProductFull];
 }
 @end
