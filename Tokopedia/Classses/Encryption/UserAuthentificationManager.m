@@ -43,7 +43,7 @@
 }
 
 - (NSString *)getUserId {
-    if ([[_auth objectForKey:@"user_id"] stringValue]) {
+    if ([_auth objectForKey:@"user_id"]) {
         return [[_auth objectForKey:@"user_id"] stringValue];
     } else if ([_auth objectForKey:@"tmp_user_id"]){
         return [[_auth objectForKey:@"tmp_user_id"] stringValue];

@@ -150,13 +150,15 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _container.contentSize = CGSizeMake(self.view.frame.size.width,
                                         _contentView.frame.size.height);
     
-    GPPSignIn *signIn = [GPPSignIn sharedInstance];
-    signIn.shouldFetchGooglePlusUser = YES;
-    signIn.shouldFetchGoogleUserEmail = YES;
-    signIn.clientID = kClientId;
-    signIn.scopes = @[ kGTLAuthScopePlusLogin ];
-    signIn.delegate = self;
-    [signIn trySilentAuthentication];
+    _signIn = [GPPSignIn sharedInstance];
+    _signIn.shouldFetchGooglePlusUser = YES;
+    _signIn.shouldFetchGoogleUserEmail = YES;
+    _signIn.clientID = kClientId;
+    _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
+    _signIn.delegate = self;
+    [_signIn trySilentAuthentication];
+
+    [_signInButton setStyle:kGPPSignInButtonStyleWide];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -393,8 +395,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         [[FBSession activeSession] close];
         [FBSession setActiveSession:nil];
     }
-    
-    [[GPPSignIn sharedInstance] signOut];
 }
 
 - (void)configureRestKit
