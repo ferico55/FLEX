@@ -7,9 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@class InboxMessageViewController;
 
 @interface InboxMessageDetailViewController : UIViewController
 
 @property (strong, nonatomic) NSDictionary *data;
+
+-(void)replaceDataSelected:(NSDictionary*)data;
+
+@property (strong, nonatomic) UIViewController *masterViewController;
+
 
 @end

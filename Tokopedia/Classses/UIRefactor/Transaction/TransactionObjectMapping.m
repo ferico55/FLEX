@@ -192,6 +192,7 @@
                                                         API_TOKEN_KEY,
                                                         API_STEP_KEY,
                                                         API_DROPSHIP_LIST_KEY,
+                                                        @"klikbca_user"
                                                         ]];
     return transactionMapping;
 }
@@ -280,6 +281,22 @@
                                              @"total_idr",
                                              @"total",
                                              @"charge_25"
+                                             ]
+     ];
+    return mapping;
+}
+
+-(RKObjectMapping *)indomaretMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[IndomaretData class]];
+    [mapping addAttributeMappingsFromArray:@[@"charge_idr",
+                                             @"total_charge_real_idr",
+                                             @"total",
+                                             @"charge_real",
+                                             @"charge",
+                                             @"payment_code",
+                                             @"charge_real_idr",
+                                             @"total_idr"
                                              ]
      ];
     return mapping;

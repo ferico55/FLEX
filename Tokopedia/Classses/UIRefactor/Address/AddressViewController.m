@@ -264,9 +264,8 @@
 #pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
+    [cell setBackgroundColor:[UIColor clearColor]];
+
 }
 
 #pragma mark - Cell Delegate

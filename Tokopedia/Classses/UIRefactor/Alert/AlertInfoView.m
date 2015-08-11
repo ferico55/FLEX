@@ -28,7 +28,7 @@
     detailText = detailText?:@"";
     _detailText = detailText;
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+    UIFont *font = [UIFont fontWithName:@"Gotham Book" size:13];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;

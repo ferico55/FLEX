@@ -58,4 +58,10 @@
     }
 }
 
+
+#pragma mark - Setter Getter
+- (UIView *)getViewContent
+{
+    return viewContent;
+}
 @end

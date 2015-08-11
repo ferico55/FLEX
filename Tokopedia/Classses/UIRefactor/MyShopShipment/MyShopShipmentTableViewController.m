@@ -158,6 +158,12 @@ GeneralTableViewControllerDelegate
 
 @implementation MyShopShipmentTableViewController
 @synthesize createShopViewController;
+- (void)dealloc {
+    [_request cancel];
+    [_operationQueue cancelAllOperations];
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Pengiriman";
@@ -882,6 +888,16 @@ GeneralTableViewControllerDelegate
     }
     
     if(errorMessage.count == 0) {
+        if(createShopViewController != nil) {
+            if(! [self hasSelectedShipping]) {
+                StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringSelectedShipping] delegate:self];
+                [stickyAlertView show];
+                
+                return;
+            }
+        }
+        
+        
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *_auth = [_userManager getUserLoginData];
         
@@ -1264,6 +1280,7 @@ GeneralTableViewControllerDelegate
     [_objectManager addResponseDescriptor:responseDescriptor];
 }
 
+
 - (void)request
 {
     if (_request.isExecuting) return;
@@ -1626,6 +1643,84 @@ GeneralTableViewControllerDelegate
 
 
 #pragma mark - Method
+- (void)loadData {
+    [self.loadingView startAnimating];
+    self.loadingView.hidden = NO;
+    [self configureRestKit];
+    [self request];
+}
+
+- (BOOL)hasSelectedShipping {
+    //jne
+    if ([[self getAvailShipment] containsObject:[self getJne].shipment_id]) {
+        if ([[self getJnePackageYes].active boolValue]) {
+            return YES;
+        }
+        if ([[self getJnePackageReguler].active boolValue]) {
+            return YES;
+        }
+        if ([[self getJnePackageOke].active boolValue]) {
+            return YES;
+        }
+    }
+    
+    //tiki
+    if ([[self getAvailShipment] containsObject:[self getTiki].shipment_id]) {
+        if ([[self getTikiPackageRegular].active boolValue]) {
+            return YES;
+        }
+        if ([[self getTikiPackageOn].active boolValue]) {
+            return YES;
+        }
+    }
+    
+    //rpx
+    if ([[self getAvailShipment] containsObject:[self getRpx].shipment_id]) {
+        if ([[self getRpxPackageNextDay].active boolValue]) {
+            return YES;
+        }
+        if ([[self getRpxPackageEco].active boolValue]) {
+            return YES;
+        }
+    }
+    
+    //wahana
+    if ([[self getAvailShipment] containsObject:[self getWahana].shipment_id]) {
+        if ([[self getWahanaPackNormal].active boolValue]) {
+            return YES;
+        }
+    }
+    
+    //Pos indo
+    if ([[self getAvailShipment] containsObject:[self getPosIndo].shipment_id]) {
+        if ([[self getPosPackageKhusus].active boolValue]) {
+            return YES;
+        }
+        if ([[self getPosPackageBiasa].active boolValue]) {
+            return YES;
+        }
+        if ([[self getPosPackageExpress].active boolValue]) {
+            return YES;
+        }
+    }
+    
+    //Cahaya
+    if ([[self getAvailShipment] containsObject:[self getCahaya].shipment_id]) {
+        if ([[self getCahayaPackageNormal].active boolValue]) {
+            return YES;
+        }
+    }
+    
+    //pandu
+    if ([[self getAvailShipment] containsObject:[self getPandu].shipment_id]) {
+        if ([[self getPanduPackageRegular].active boolValue]) {
+            return YES;
+        }
+    }
+
+    return NO;
+}
+
 - (ShippingInfoShipments *)getPandu
 {
     return _pandu;

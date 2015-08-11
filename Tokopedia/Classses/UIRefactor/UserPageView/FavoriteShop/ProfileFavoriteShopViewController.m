@@ -124,7 +124,7 @@
     
     _stickyTab = [(UIView *)_header viewWithTag:18];
 
-    _table.tableHeaderView = _header;
+    //_table.tableHeaderView = _header;
     _table.tableFooterView = _footer;
     _table.delegate = self;
 }
@@ -218,6 +218,7 @@
         cell.textLabel.text = kTKPDPROFILE_NODATACELLTITLE;
         cell.detailTextLabel.text = kTKPDPROFILE_NODATACELLDESCS;
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -240,6 +241,15 @@
 	}
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 205;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return _header;
+}
 
 #pragma mark - Memory Management
 - (void)dealloc{
@@ -503,6 +513,18 @@
                        kTKPD_AUTHKEY:[_data objectForKey:@"auth"]?:@{}};
     [self.navigationController pushViewController:container animated:YES];
     
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ListFavoriteShop *list = _list[indexPath.row];
+    
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id,
+                       kTKPD_AUTHKEY:[_data objectForKey:@"auth"]?:@{}};
+    [self.navigationController pushViewController:container animated:YES];
+
 }
 
 #pragma mark - UserPageHeader Delegate

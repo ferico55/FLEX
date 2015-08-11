@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#define CCustomerReputation @"customer_reputation"
+@class ReputationDetail;
 
 @interface ResolutionCustomer : NSObject
 
@@ -14,5 +16,5 @@
 @property (nonatomic, strong) NSString *customer_name;
 @property (nonatomic, strong) NSString *customer_url;
 @property (nonatomic, strong) NSString *customer_id;
-
+@property (nonatomic, strong) ReputationDetail *customer_reputation;
 @end

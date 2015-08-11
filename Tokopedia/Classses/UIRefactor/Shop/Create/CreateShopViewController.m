@@ -452,6 +452,11 @@
             controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
             controller.createShopViewController = self;
         }
+        else if([controller getAvailShipment] == nil) {
+            [controller loadData];
+        }
+        
+        
         [self.navigationController pushViewController:controller animated:YES];
     }
 }

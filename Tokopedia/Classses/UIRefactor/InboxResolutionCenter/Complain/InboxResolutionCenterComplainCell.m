@@ -30,6 +30,10 @@
     [_warningLabel setCustomAttributedText:@"Komplain lebih dari 30 hari"];
 }
 
+- (IBAction)actionReputation:(id)sender {
+    [_delegate actionReputation:sender];
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

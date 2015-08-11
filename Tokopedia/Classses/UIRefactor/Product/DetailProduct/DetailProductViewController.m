@@ -15,6 +15,8 @@
 #define CTagNoteCanReture 7
 #define CTagPriceAlert 8
 
+#import "ProductReputationViewController.h"
+#import "CMPopTipView.h"
 #import "LabelMenu.h"
 #import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
@@ -80,8 +82,6 @@
 #import "WebViewController.h"
 #import "EtalaseList.h"
 
-#import "TAGDataLayer.h"
-
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -107,9 +107,12 @@ LoginViewDelegate,
 TokopediaNetworkManagerDelegate,
 MyShopEtalaseFilterViewControllerDelegate,
 RequestMoveToDelegate,
+UIAlertViewDelegate,
+CMPopTipViewDelegate,
 UIAlertViewDelegate
 >
 {
+    CMPopTipView *cmPopTitpView;
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
     NSMutableArray *_otherProductObj;
@@ -178,16 +181,12 @@ UIAlertViewDelegate
     
     BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
-    UIActivityIndicatorView *activityIndicator;
+    UIActivityIndicatorView *activityIndicator, *actFav;
     UIFont *fontDesc;
     
     RequestMoveTo *_requestMoveTo;
     UIImage *_tempFirstThumb;
     TAGContainer *_gtmContainer;
-    
-    NSString *_detailProductBaseUrl;
-    NSString *_detailProductPostUrl;
-    NSString *_detailProductFullUrl;
     
 }
 
@@ -209,9 +208,6 @@ UIAlertViewDelegate
 @property (weak, nonatomic) IBOutlet StarsRateView *accuracyrateview;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 
-@property (weak, nonatomic) IBOutlet StarsRateView *ratespeedshop;
-@property (weak, nonatomic) IBOutlet StarsRateView *rateaccuracyshop;
-@property (weak, nonatomic) IBOutlet StarsRateView *rateserviceshop;
 @property (weak, nonatomic) IBOutlet UILabel *countsoldlabel;
 @property (weak, nonatomic) IBOutlet UILabel *countviewlabel;
 
@@ -325,8 +321,7 @@ UIAlertViewDelegate
         }
     }
     
-    
-    _table.tableHeaderView = _header;
+    //_table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
     _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
@@ -391,24 +386,24 @@ UIAlertViewDelegate
     
     if(_favButton.tag == 17) {//Favorite is 17
         _favButton.tag = 18;
-        [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
+//        [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
         [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_active.png"] forState:UIControlStateNormal];
         [_favButton.layer setBorderWidth:0];
         _favButton.tintColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.3 animations:^(void) {
             [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
-            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }];
     }
     else {
         _favButton.tag = 17;
-        [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
+//        [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
         [_favButton setImage:[UIImage imageNamed:@"icon_button_favorite_nonactive.png"] forState:UIControlStateNormal];
         [_favButton.layer setBorderWidth:1];
         _favButton.tintColor = [UIColor lightGrayColor];
         [UIView animateWithDuration:0.3 animations:^(void) {
             [_favButton setBackgroundColor:[UIColor whiteColor]];
-            [_favButton setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
+//            [_favButton setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
         }];
     }
 }
@@ -546,6 +541,16 @@ UIAlertViewDelegate
         switch (btn.tag) {
             case 12:
             {
+                if(_product.result.shop_info.shop_domain != nil) {
+                    ProductReputationViewController *productReputationViewController = [ProductReputationViewController new];
+                    productReputationViewController.strShopDomain = _product.result.shop_info.shop_domain;
+                    productReputationViewController.strProductID = _product.result.product.product_id;
+                    [self.navigationController pushViewController:productReputationViewController animated:YES];
+                }
+                return;
+                
+                
+                
                 // go to review page
                 ProductReviewViewController *vc = [ProductReviewViewController new];
                 NSArray *images = _product.result.product_images;
@@ -565,7 +570,7 @@ UIAlertViewDelegate
                 // got to talk page
                 ProductTalkViewController *vc = [ProductTalkViewController new];
                 NSArray *images = _product.result.product_images;
-                ProductImages *image = images[0];
+                ProductImages *image = images.count>0? images[0]:nil;
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
@@ -577,7 +582,8 @@ UIAlertViewDelegate
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
                 [data setObject:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null] forKey:kTKPD_AUTHKEY];
-                [data setObject:image.image_src forKey:@"talk_product_image"];
+                [data setObject:image.image_src==nil?@"":image.image_src forKey:@"talk_product_image"];
+
                 vc.data = data;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -1318,6 +1324,8 @@ UIAlertViewDelegate
         
         RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
         [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
+                                                               CShopReputationScore:CShopReputationScore,
+                                                               CShopSpeedDesc:CShopSpeedDesc,
                                                                kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
                                                                kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
                                                                kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
@@ -1337,7 +1345,18 @@ UIAlertViewDelegate
         RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
         [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
         
+        
+        RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+        [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+                                                                   CTwoDay:CTwoDay,
+                                                                   CThreeDay:CThreeDay,
+                                                                   CSpeedLevel:CSpeedLevel,
+                                                                   CBadge:CBadge,
+                                                                   CCountTotal:CCountTotal}];
+        
         // Relationship Mapping
+        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseFast toKeyPath:CResponseFast withMapping:responseSpeedMapping]];
+        
         [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
         
         [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:API_PRODUCT_INFO_KEY withMapping:infoMapping]];
@@ -1532,6 +1551,7 @@ UIAlertViewDelegate
     }
     else if(tag == CTagFavorite)
     {
+        tempShopID = nil;
         FavoriteShopAction *favoriteShopAction = stat;
         return favoriteShopAction.status;
     }
@@ -1622,6 +1642,12 @@ UIAlertViewDelegate
         [stickyAlertView show];
         [self requestFavoriteResult:successResult withOperation:operation];
         [self setButtonFav];
+
+        //Change this block to method (Any in branch f_bug_fixing)
+        [actFav stopAnimating];
+        [actFav removeFromSuperview];
+        actFav = nil;
+        _favButton.hidden = NO;
     }
     else if(tag == CTagUnWishList)
     {
@@ -1681,7 +1707,7 @@ UIAlertViewDelegate
         NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
         GeneralAction *generalAction = [result objectForKey:@""];
         if([generalAction.result.is_success isEqualToString:@"1"]) {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:generalAction.message_status delegate:self];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
             [stickyAlertView show];
             
             _product.result.product.product_price_alert = @"0";
@@ -1793,9 +1819,16 @@ UIAlertViewDelegate
         
     }
     else if(tag == CTagOtherProduct)
-    {}
+    {
+    }
     else if(tag == CTagFavorite)
-    {}
+    {
+        //Change this block to method (Any in branch f_bug_fixing)
+        [actFav stopAnimating];
+        [actFav removeFromSuperview];
+        actFav = nil;
+        _favButton.hidden = NO;
+    }
     else if(tag == CTagUnWishList)
     {}
     else if(tag == CTagWishList)
@@ -1888,6 +1921,25 @@ UIAlertViewDelegate
 //            [_act stopAnimating];
 //            return;
 //        }
+        
+        //Set icon speed
+//        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
+        [AppDelegate setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];        
+        [AppDelegate generateMedal:_product.result.shop_info.shop_stats.shop_reputation_score withImage:btnReputasi isLarge:YES];
+        
+        //Set image and title kecepatan
+        CGFloat spacing = 6.0;
+        CGSize imageSize = btnKecepatan.imageView.frame.size;
+        btnKecepatan.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+        CGSize titleSize = btnKecepatan.titleLabel.frame.size;
+        btnKecepatan.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+
+        //Set image and title reputasi
+        imageSize = btnReputasi.imageView.frame.size;
+        btnReputasi.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+        titleSize = btnReputasi.titleLabel.frame.size;
+        btnReputasi.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+        
         
         
         //Set toko tutup
@@ -2082,6 +2134,7 @@ UIAlertViewDelegate
             }
             
             // UIView below table view (View More Product button)
+            //TODO::
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
             backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
@@ -2183,6 +2236,47 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Methods
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+- (IBAction)actionReputasi:(id)sender
+{
+    NSString *strText = [NSString stringWithFormat:@"%@ %@", _product.result.shop_info.shop_stats.shop_reputation_score, CStringPoin];
+    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+}
+
+- (IBAction)actionKecepatan:(id)sender
+{
+    [self initPopUp:_product.result.shop_info.respond_speed.speed_level withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+}
+
 - (void)setBackgroundPriceAlert:(BOOL)isActive
 {
     if(isActive) {
@@ -2399,17 +2493,16 @@ UIAlertViewDelegate
     [[_imagescrollview subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_headerimages removeAllObjects];
     
-
-    
-    for(int i = 0; i< images.count; i++) {
-        CGFloat y = i * self.view.frame.size.width;
+    for(int i = 0; i< images.count; i++)
+    {
+        CGFloat y = i * _table.frame.size.width;
         
         ProductImages *image = images[i];
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
         
-        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
+        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _table.frame.size.width, _imagescrollview.frame.size.height)];
         
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
@@ -2440,7 +2533,7 @@ UIAlertViewDelegate
     }
     
     if(images.count == 0) {
-        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake((_imagescrollview.bounds.size.width-100)/2.0f, (_imagescrollview.bounds.size.height-100)/2.0f, 100, 100)];
+        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _table.bounds.size.width, _imagescrollview.bounds.size.height)];
         thumb.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Icon_no_photo_transparan@2x" ofType:@"png"]];
         thumb.contentMode = UIViewContentModeScaleAspectFit;
         [_imagescrollview addSubview:thumb];
@@ -2482,10 +2575,6 @@ UIAlertViewDelegate
         _goldShop.hidden = YES;
     }
     
-    _ratespeedshop.starscount = _product.result.shop_info.shop_stats.shop_speed_rate;
-    _rateserviceshop.starscount = _product.result.shop_info.shop_stats.shop_service_rate;
-    _rateaccuracyshop.starscount = _product.result.shop_info.shop_stats.shop_accuracy_rate;
-    
     UIImageView *thumb = _shopthumb;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.result.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -2512,28 +2601,31 @@ UIAlertViewDelegate
 
 -(void)setOtherProducts
 {
-    otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/2.0f);
+    float count;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        count = 3.0f;
+    }
+    else
+    {
+        count = 2.0f;
+    }
+    
+    float widthOtherProductView = (_otherproductscrollview.frame.size.width-(10*3))/count;
+    constraintHeightScrollOtherView.constant = widthOtherProductView + (widthOtherProductView/count);
+    otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/count);
+    int x = ([UIScreen mainScreen].bounds.size.width/320 * 10);
     for(int i = 0; i< _otherProductObj.count; i++)
     {
         TheOtherProductList *product = _otherProductObj[i];
         
         DetailProductOtherView *v = [DetailProductOtherView newview];
         
-        int x;
-        if(i == 0) {
-            x = 10;
-        } else if(i == 1) {
-            x = 165;
-        } else if(i == 2) {
-            x = 330;
-        } else if(i == 3) {
-            x = 485;
-        } else if(i == 4) {
-            x = 650;
-        } else if(i == 5) {
-            x = 805;
-        }
-        [v setFrame:CGRectMake(x, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+//        x += 10 + v.bounds.size.width;
+        [v setFrame:CGRectMake(x, 0, widthOtherProductView, (widthOtherProductView+(widthOtherProductView/count)))];
+        x += widthOtherProductView+([UIScreen mainScreen].bounds.size.width/320 * 10);
+//        NSInteger countInt = (int)count;
+//        x += (i%countInt==1&&i<(_otherProductObj.count-1)? 10 : 0);
         v.delegate = self;
         v.index = i;
         [v.act startAnimating];
@@ -2570,7 +2662,9 @@ UIAlertViewDelegate
     }
     
     _otherproductscrollview.pagingEnabled = YES;
-    _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
+    _otherproductscrollview.contentSize = CGSizeMake(x, 0);
+    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, _otherproductscrollview.frame.origin.y + constraintHeightScrollOtherView.constant + 6 + _pagecontrol.bounds.size.height);
+    _table.tableFooterView = _shopinformationview;
 }
 
 
@@ -2631,7 +2725,9 @@ UIAlertViewDelegate
                     _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, lblOtherProductTitle.frame.origin.y);
                     _table.tableFooterView = _shopinformationview;
                 }
-                [self setOtherProducts];
+                else {
+                    [self setOtherProducts];
+                }
             }
         }
         else{
@@ -2740,9 +2836,17 @@ UIAlertViewDelegate
     }
 }
 
-
 -(void)favoriteShop:(NSString*)shop_id
 {
+    //Change this block to method (Any in branch f_bug_fixing)
+    if(actFav == nil) {
+        actFav = [[UIActivityIndicatorView alloc] init];
+        actFav.color = [UIColor lightGrayColor];
+    }
+    actFav.frame = _favButton.frame;
+    [actFav startAnimating];
+    [_favButton.superview addSubview:actFav];
+    _favButton.hidden = YES;
     
     tempShopID = shop_id;
     [tokopediaNetworkManagerFavorite doRequest];
@@ -2906,6 +3010,21 @@ UIAlertViewDelegate
         webViewController.strContentHTML = [NSString stringWithFormat:@"<font face='Gotham Book' size='2'>%@</font>", notesDetail.notes_content];
         [self.navigationController pushViewController:webViewController animated:YES];
     }
+}
+
+
+#pragma mark - PopUp 
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
 }
 
 

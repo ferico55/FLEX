@@ -362,6 +362,7 @@
     [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
 }
 
+
 - (void)setContentValue
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -84,6 +84,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="AdM-0C-yeS" firstAttribute="leading" secondItem="Qwt-JV-ZUn" secondAttribute="leading" id="8Z4-1v-MOi"/>
                     <constraint firstAttribute="trailing" secondItem="AdM-0C-yeS" secondAttribute="trailing" id="BYT-6I-2sV"/>
@@ -93,13 +94,13 @@
                     <constraint firstItem="AdM-0C-yeS" firstAttribute="top" secondItem="Qwt-JV-ZUn" secondAttribute="top" id="kaR-YX-Nzf"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="notificationDetail" destination="pEW-aA-Rd4" id="zar-GP-LMS"/>
                 <outlet property="notificationName" destination="ELS-pO-yAA" id="l6K-qY-vqi"/>
                 <outlet property="settingSwitch" destination="Bxf-yE-0l1" id="0Nl-yA-xRy"/>
             </connections>
-            <point key="canvasLocation" x="608" y="475"/>
+            <point key="canvasLocation" x="597" y="308"/>
         </tableViewCell>
     </objects>
 </document>

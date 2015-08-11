@@ -5,6 +5,8 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "MyReviewReputationViewController.h"
+#import "SegmentedReviewReputationViewController.h"
 #import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
@@ -51,8 +53,11 @@
 #import "ProductListMyShopViewController.h"
 #import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
+#import "InboxResolSplitViewController.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
+
+#import "NavigateViewController.h"
 
 #import <MessageUI/MessageUI.h>
 
@@ -72,6 +77,8 @@
     NotificationManager *_notifManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSTimer *_requestTimer;
+    
+    NavigateViewController *_navigate;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -114,7 +121,7 @@
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
-        
+         
     }
     return self;
 }
@@ -133,6 +140,8 @@
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
+    
+    _navigate = [NavigateViewController new];
     
     _isNoDataDeposit  = YES;
     _depositRequestCount = 0;
@@ -384,16 +393,16 @@
         if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
             imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-                                         _shopIsGoldLabel.frame.origin.y - 3,
+                                         _shopIsGoldLabel.frame.origin.y,
                                          22, 22);
             [_shopCell addSubview:imageView];
             _shopIsGoldLabel.text = @"        Gold Merchant";
-                        
         } else {
             _shopIsGoldLabel.text = @"Regular Merchant";
             CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
             shopIsGoldLabelFrame.origin.x = 83;
             _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            _shopIsGoldLabel.text = @"";
         }
     }
 }
@@ -442,17 +451,18 @@
                                        } failure: nil];
         
         if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-//            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
-//            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-//                                         _shopIsGoldLabel.frame.origin.y,
-//                                         22, 22);
-//            [_shopCell addSubview:imageView];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
+            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
+                                         _shopIsGoldLabel.frame.origin.y,
+                                         22, 22);
+            [_shopCell addSubview:imageView];
             _shopIsGoldLabel.text = @"        Gold Merchant";
         } else {
             _shopIsGoldLabel.text = @"Regular Merchant";
-//            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
-//            shopIsGoldLabelFrame.origin.x = 83;
-//            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
+            shopIsGoldLabelFrame.origin.x = 83;
+            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            _shopIsGoldLabel.text = @"";
         }
         
         [self.tableView reloadData];
@@ -596,42 +606,17 @@
     
     else if (indexPath.section == 4) {
         if(indexPath.row == 0) {
-            InboxMessageViewController *vc = [InboxMessageViewController new];
-            vc.data=@{@"nav":@"inbox-message"};
-            
-            InboxMessageViewController *vc1 = [InboxMessageViewController new];
-            vc1.data=@{@"nav":@"inbox-message-sent"};
-            
-            InboxMessageViewController *vc2 = [InboxMessageViewController new];
-            vc2.data=@{@"nav":@"inbox-message-archive"};
-            
-            InboxMessageViewController *vc3 = [InboxMessageViewController new];
-            vc3.data=@{@"nav":@"inbox-message-trash"};
-            NSArray *vcs = @[vc,vc1, vc2, vc3];
-            
-            TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-            [inboxController setSelectedIndex:2];
-            [inboxController setViewControllers:vcs];
-            inboxController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:inboxController animated:YES];
+            [_navigate navigateToInboxMessageFromViewController:self];
         } else if(indexPath.row == 1) {
-            InboxTalkViewController *vc = [InboxTalkViewController new];
-            vc.data=@{@"nav":@"inbox-talk"};
-            
-            InboxTalkViewController *vc1 = [InboxTalkViewController new];
-            vc1.data=@{@"nav":@"inbox-talk-my-product"};
-            
-            InboxTalkViewController *vc2 = [InboxTalkViewController new];
-            vc2.data=@{@"nav":@"inbox-talk-following"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            nc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:nc animated:YES];
+            [_navigate navigateToInboxTalkFromViewController:self];
         } else if (indexPath.row == 2) {
+            SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+            segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:segmentedReputationViewController animated:YES];
+            
+            
+            
+            /*
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
             
@@ -648,7 +633,7 @@
             [nc setViewControllers:vcs];
             nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
-            
+            */
         } else if (indexPath.row == 3) {
             AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
             alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
@@ -677,9 +662,16 @@
             
             [self.navigationController pushViewController:controller animated:YES];
         } else if (indexPath.row == 5) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            } else {
+                InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+            }
         }
     }
     

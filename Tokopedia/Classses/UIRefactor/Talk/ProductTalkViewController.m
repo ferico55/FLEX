@@ -12,7 +12,6 @@
 #import "GeneralAction.h"
 #import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
-#import "ProductTalkCell.h"
 #import "ProductTalkDetailViewController.h"
 #import "ProductTalkFormViewController.h"
 #import "TKPDSecureStorage.h"
@@ -23,6 +22,7 @@
 #import "ReportViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
+#import "ReputationDetail.h"
 #import "string_inbox_talk.h"
 #import "string_inbox_message.h"
 #import "stringrestkit.h"
@@ -124,7 +124,7 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _table.tableHeaderView = _header;
     
@@ -229,6 +229,7 @@
             [((GeneralTalkCell*)cell).userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
             ((GeneralTalkCell*)cell).userButton.userInteractionEnabled = YES;
             [((GeneralTalkCell*)cell).userButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(tap:)]];
+            [((GeneralTalkCell*)cell) hiddenViewProduct];
 		}
         
         if (_list.count > indexPath.row) {
@@ -237,6 +238,7 @@
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             ((GeneralTalkCell*)cell).data = list;
+            [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
             
             //Set user label
 //            if([list.talk_user_label isEqualToString:CPenjual]) {
@@ -270,8 +272,9 @@
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                 
+                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 75;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralTalkCell*)cell).commentbutton.frame.size.width) / 2;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             
@@ -544,10 +547,19 @@
                                                  TKPD_TALK_USER_LABEL
                                                  ]];
     
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNegative,
+                                                                 CNeutral,
+                                                                 CPositif]];
+
+    
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     // Relationship Mapping
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:reviewUserReputationMapping]];
+
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
@@ -773,7 +785,7 @@
                 TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
                 TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
                 TKPD_TALK_ID:list.talk_id?:@0,
-                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id],
+                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id]?:@0,
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
@@ -782,7 +794,8 @@
                 TKPD_TALK_PRODUCT_NAME:[_data objectForKey:@"product_name"],
                 //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
-                TKPD_TALK_USER_LABEL:list.talk_user_label
+                TKPD_TALK_USER_LABEL:list.talk_user_label,
+                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation
                 };
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -861,6 +874,7 @@
 -(void) updateTotalComment:(NSNotification*)notification{
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    if(index > _list.count) return;
     
     TalkList *list = _list[index];
     list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];

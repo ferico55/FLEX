@@ -23,7 +23,8 @@
     UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
     TransactionCartViewControllerDelegate,
-    NotificationManagerDelegate
+    NotificationManagerDelegate,
+    UIScrollViewDelegate
 >
 {
     NSInteger _index;
@@ -38,7 +39,6 @@
     NotificationManager *_notifManager;
 }
 
-@property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) IBOutlet UIView *noLoginView;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (weak, nonatomic) IBOutlet UIView *pageControlView;
@@ -59,14 +59,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self.navigationController.navigationBar setTranslucent:NO];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
-        self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    _isShouldRefreshingCart = NO;
-    [self initNotification];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = _noLoginView.frame;
+    frame.size.width = screenRect.size.width;
+    _noLoginView.frame = frame;
     
+    _isShouldRefreshingCart = NO;
     
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
 
@@ -75,12 +79,11 @@
         button.layer.cornerRadius = button.frame.size.width/2;
         button.clipsToBounds=YES;
     }
-    
     _pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     _pageController.dataSource = self;
     
-    [[_pageController view] setFrame:_containerView.frame];
+    _pageController.view.frame = CGRectMake(0, _pageControlView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height-_pageControlView.frame.size.height);
     
     [self addChildViewController:_pageController];
     [[self view] addSubview:[_pageController view]];
@@ -101,6 +104,11 @@
     
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
+    
+//    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]]
+//                              direction:UIPageViewControllerNavigationDirectionForward
+//                               animated:YES
+//                             completion:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -124,15 +132,23 @@
                 _isShouldRefreshingCart = NO;
             } else {
                 if (_cartViewController == nil) {
+                    
                     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
                 }
             }
             
             [_noLoginView setHidden:YES];
-            
+        }
+        if (_isLogin && self.navigationController.viewControllers.count<=1) {
+            [self initNotificationManager];
         }
     }
+}
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -206,9 +222,9 @@
                 backButton.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
                 self.navigationItem.leftBarButtonItem = barButton;
             }
-            _isShouldRefreshingCart = NO;
+            
             if (_isLogin && self.navigationController.viewControllers.count<=1) {
-                [self initNotificationManager];
+                self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
             }
             else
             {
@@ -216,6 +232,9 @@
                 self.navigationItem.titleView = nil;
                 self.navigationItem.title = @"Keranjang Belanja";
             }
+
+            _isShouldRefreshingCart = NO;
+            
             break;
         }
         case 1:
@@ -271,7 +290,6 @@
             [barbutton1 setTintColor:[UIColor whiteColor]];
             [barbutton1 setTag:11];
             if (_isLogin) {
-                [self initNotificationManager];
                 self.navigationItem.rightBarButtonItem = barbutton1;
             }
             else
@@ -286,6 +304,7 @@
             break;
     }
     ((UIButton*)_pageButtons[index]).enabled = YES;
+
     return (UIViewController*)childViewController;
 }
 
@@ -462,7 +481,7 @@
     _auth = [secureStorage keychainDictionary];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
-        [self initNotificationManager];
+        self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
     }
     else
     {
@@ -475,9 +494,8 @@
 -(void)isNodata:(BOOL)isNodata
 {
     _pageControlView.hidden = isNodata;
-    _containerView.hidden = isNodata;
     if (isNodata) {
-        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
+        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
         [self.view addSubview:noResultView];
     }
     else
@@ -489,7 +507,7 @@
         }
     }
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
-        [self initNotificationManager];
+        self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
     }
     else
     {

@@ -10,6 +10,7 @@
 #import "TransactionCartList.h"
 #import "TransactionSummaryBCAParam.h"
 #import "CCFee.h"
+#import "IndomaretData.h"
 
 @interface TransactionSummaryDetail : NSObject
 
@@ -55,6 +56,8 @@
 @property (nonatomic,strong) NSString *payment_left;
 
 @property (nonatomic,strong) CCFee *credit_card;
+@property (nonatomic, strong) IndomaretData *indomaret;
+@property (nonatomic,strong) NSString *klikbca_user;
 
 
 @end

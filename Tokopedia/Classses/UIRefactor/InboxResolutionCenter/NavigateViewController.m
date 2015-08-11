@@ -20,6 +20,21 @@
 #import "DetailProductViewController.h"
 #import "ProductGalleryViewController.h"
 
+#import "InboxRootViewController.h"
+#import "InboxMessageViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
+
+#import "InboxTalkSplitViewController.h"
+#import "InboxTalkViewController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
+
+#import "InboxReviewSplitViewController.h"
+#import "InboxReviewViewController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
+
+#import "InboxResolutionCenterTabViewController.h"
+#import "InboxResolSplitViewController.h"
+
 #import "ProductImages.h"
 
 @implementation NavigateViewController
@@ -81,7 +96,7 @@
 
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID {
     DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{@"product_id" : productID};
+    vc.data = @{@"product_id" : productID?:@""};
     vc.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:vc animated:YES];
@@ -93,6 +108,32 @@
     productController.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:productController animated:YES];
+-(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxRootViewController *inboxController = [InboxRootViewController new];
+        [viewController.navigationController pushViewController:inboxController animated:YES];
+        
+    } else {
+        InboxMessageViewController *vc = [InboxMessageViewController new];
+        vc.data=@{@"nav":@"inbox-message"};
+        
+        InboxMessageViewController *vc1 = [InboxMessageViewController new];
+        vc1.data=@{@"nav":@"inbox-message-sent"};
+        
+        InboxMessageViewController *vc2 = [InboxMessageViewController new];
+        vc2.data=@{@"nav":@"inbox-message-archive"};
+        
+        InboxMessageViewController *vc3 = [InboxMessageViewController new];
+        vc3.data=@{@"nav":@"inbox-message-trash"};
+        NSArray *vcs = @[vc,vc1, vc2, vc3];
+        
+        TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
+        [inboxController setSelectedIndex:2];
+        [inboxController setViewControllers:vcs];
+        
+        [viewController.navigationController pushViewController:inboxController animated:YES];
+    }
 }
 
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName {
@@ -104,6 +145,72 @@
     productController.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:productController animated:YES];
+}
+
+-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxTalkSplitViewController *controller = [InboxTalkSplitViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+        
+    } else {
+        InboxTalkViewController *vc = [InboxTalkViewController new];
+        vc.data=@{@"nav":@"inbox-talk"};
+        
+        InboxTalkViewController *vc1 = [InboxTalkViewController new];
+        vc1.data=@{@"nav":@"inbox-talk-my-product"};
+        
+        InboxTalkViewController *vc2 = [InboxTalkViewController new];
+        vc2.data=@{@"nav":@"inbox-talk-following"};
+        
+        NSArray *vcs = @[vc,vc1, vc2];
+        
+        TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
+        [controller setSelectedIndex:2];
+        [controller setViewControllers:vcs];
+        controller.hidesBottomBarWhenPushed = YES;
+        
+        [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
+
+-(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+        
+    } else {
+        InboxReviewViewController *vc = [InboxReviewViewController new];
+        vc.data=@{@"nav":@"inbox-review"};
+        
+        InboxReviewViewController *vc1 = [InboxReviewViewController new];
+        vc1.data=@{@"nav":@"inbox-review-my-product"};
+        
+        InboxReviewViewController *vc2 = [InboxReviewViewController new];
+        vc2.data=@{@"nav":@"inbox-review-following"};
+        
+        NSArray *vcs = @[vc,vc1, vc2];
+        
+        TKPDTabInboxReviewNavigationController *controller = [TKPDTabInboxReviewNavigationController new];
+        [controller setSelectedIndex:2];
+        [controller setViewControllers:vcs];
+        controller.hidesBottomBarWhenPushed = YES;
+        
+        [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
+
+-(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+        
+    } else {
+        InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 @end

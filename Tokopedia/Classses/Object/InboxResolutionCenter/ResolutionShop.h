@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+@class ShopReputation;
+
+#define CShopReputation @"shop_reputation"
 
 @interface ResolutionShop : NSObject
 
@@ -14,5 +17,6 @@
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *shop_url;
 @property (nonatomic, strong) NSString *shop_id;
+@property (nonatomic, strong) ShopReputation *shop_reputation;
 
 @end

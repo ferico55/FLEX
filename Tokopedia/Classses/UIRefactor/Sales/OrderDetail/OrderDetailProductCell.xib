@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -113,6 +113,7 @@
                         </constraints>
                     </view>
                 </subviews>
+                <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="2EJ-lT-6Tf" firstAttribute="leading" secondItem="qcn-Fu-fwi" secondAttribute="leading" id="0Pj-cW-cB0"/>
                     <constraint firstItem="6l1-IH-jzm" firstAttribute="leading" secondItem="qcn-Fu-fwi" secondAttribute="leading" constant="15" id="4qX-Ly-c84"/>
@@ -139,7 +140,7 @@
                     <constraint firstItem="2eH-Gn-eLV" firstAttribute="top" secondItem="eMP-Ff-Vbv" secondAttribute="bottom" constant="13" id="tYg-mF-Jel"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="productImageView" destination="SGT-pK-Du9" id="JMB-ui-Fdh"/>
                 <outlet property="productNameLabel" destination="zRw-5m-47o" id="pz5-0W-C9L"/>

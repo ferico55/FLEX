@@ -106,7 +106,7 @@
     if (!label)
     {
         label = [[UILabel alloc] init];
-        label.font = [UIFont fontWithName:@"GothamBook" size:16];
+        label.font = [UIFont fontWithName:@"Gotham Book" size:16];
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
     }
@@ -170,6 +170,7 @@
     _newGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
     [_background addGestureRecognizer:_newGesture];
     
+    self.frame = CGRectMake(0, self.frame.origin.y, _window.bounds.size.width, self.bounds.size.height);
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	
