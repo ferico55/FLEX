@@ -1,3 +1,4 @@
+
 //
 //  TransactionCartViewController.m
 //  Tokopedia
@@ -400,7 +401,7 @@
         }
     }
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, cell.contentView.frame.size.width,1)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, _tableView.frame.size.width,1)];
     if (indexPath.section != shopCount+1) {
         lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
         [cell.contentView addSubview:lineView];
@@ -411,7 +412,7 @@
         NSInteger productCount = products.count;
         if (indexPath.section <shopCount && indexPath.row <=productCount) {
             [lineView removeFromSuperview];
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width,1)];
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width,1)];
             lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
             [cell.contentView addSubview:lineView];
         }
@@ -1028,7 +1029,7 @@
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
     }
-    if (voucherCode.length != 12)
+    if (voucherCode.length < 11)
     {
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_VOUCHER_CODE_LENGHT];
@@ -1907,7 +1908,7 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Detail Pengiriman";
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width,1)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width,1)];
         lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
         [cell.contentView addSubview:lineView];
     return cell;

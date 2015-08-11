@@ -236,7 +236,7 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="FPU-4B-Nq1"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V33-g9-JWw">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V33-g9-JWw">
                     <rect key="frame" x="15" y="70" width="290" height="46"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="JQy-EO-S4t"/>
@@ -245,9 +245,6 @@
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                        <rect key="frame" x="15" y="70" width="290" height="51.5"/>
-                    </variation>
                     <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                         <rect key="frame" x="15" y="70" width="290" height="51.5"/>
                     </variation>
@@ -769,7 +766,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="183"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zj-kU-VAf">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zj-kU-VAf">
                     <rect key="frame" x="15" y="15" width="290" height="58"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="3Bp-Xi-Dob"/>
@@ -780,14 +777,11 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                        <rect key="frame" x="15" y="15" width="290" height="64.5"/>
-                    </variation>
                     <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                         <rect key="frame" x="15" y="15" width="290" height="64.5"/>
                     </variation>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rt-3a-lHR">
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rt-3a-lHR">
                     <rect key="frame" x="15" y="94" width="290" height="40"/>
                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -798,9 +792,6 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                         <color key="titleColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                        <rect key="frame" x="15" y="100.5" width="290" height="40"/>
-                    </variation>
                     <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                         <rect key="frame" x="15" y="100.5" width="290" height="40"/>
                     </variation>
