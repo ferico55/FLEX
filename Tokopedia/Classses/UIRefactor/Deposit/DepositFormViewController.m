@@ -85,6 +85,8 @@
 @property (nonatomic, strong) NSDictionary *userinfo;
 @property (nonatomic, strong) NSIndexPath *accountIndexPath;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *otpViewHeightConstraint;
+
 
 @end
 
@@ -166,6 +168,9 @@
     // Do any additional setup after loading the view from its nib.
     _imgInfo.userInteractionEnabled = YES;
     [_imgInfo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionInfo:)]];
+
+    [_containerScrollView addSubview:_contentView];
+
 }
 
 #pragma mark - Request Send OTP 
@@ -659,16 +664,14 @@
     if([[_userinfo objectForKey:@"is_verified_account"] integerValue] == 1) {
         _otpViewArea.hidden = YES;
         
-        CGRect newFrame = _passwordViewArea.frame;
-        newFrame.origin.y = 320;
-        _passwordViewArea.frame = newFrame;
+        _otpViewHeightConstraint.constant = 0;
+
         
     } else {
         _otpViewArea.hidden = NO;
         
-        CGRect newFrame = _passwordViewArea.frame;
-        newFrame.origin.y = 420;
-        _passwordViewArea.frame = newFrame;
+        _otpViewHeightConstraint.constant = 121;
+
     }
     
     [_chooseAccountButton setTitle:[_userinfo objectForKey:@"bank_account_name"] forState:UIControlStateNormal];
@@ -726,8 +729,20 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[_contentView(==%f)]", self.view.bounds.size.width] options:0 metrics:nil views:NSDictionaryOfVariableBindings(_contentView)]];
-    _containerScrollView.contentSize = CGSizeMake(_contentView.bounds.size.width, _passwordViewArea.frame.origin.y+_passwordViewArea.bounds.size.height+10);
+    [super viewWillAppear:animated];
+    
+    [_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[_contentView(==%f)]", [UIScreen mainScreen].bounds.size.width] options:0 metrics:nil views:NSDictionaryOfVariableBindings(_contentView)]];
+    CGFloat contentSizeWidth = [UIScreen mainScreen].bounds.size.width;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        contentSizeWidth = _containerScrollView.frame.size.width;
+    }
+    _contentView.frame = CGRectMake(0, 0, contentSizeWidth, _contentView.frame.size.height);
+    CGFloat contenSizeHeight =_passwordViewArea.frame.origin.y+_passwordViewArea.bounds.size.height+40;
+    if (contenSizeHeight <= [[UIScreen mainScreen]bounds].size.height) {
+        contenSizeHeight = [[UIScreen mainScreen]bounds].size.height+10;
+    }
+    
+    _containerScrollView.contentSize = CGSizeMake(contentSizeWidth, contenSizeHeight);
 }
 
 - (void)keyboardWillHide:(NSNotification *)note {
