@@ -563,6 +563,8 @@ typedef enum TagRequest {
         [FBSession.activeSession closeAndClearTokenInformation];
     }
     
+    [[GPPSignIn sharedInstance] signOut];
+
     [_logoutRequestManager doRequest];
 
 //    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];

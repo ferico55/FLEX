@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "Login.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <GooglePlus/GooglePlus.h>
+#import <GoogleOpenSource/GoogleOpenSource.h>
 
 @protocol CreatePasswordDelegate <NSObject>
 
@@ -21,5 +23,6 @@
 @property (strong, nonatomic) Login *login;
 @property (weak, nonatomic) id<CreatePasswordDelegate> delegate;
 @property (strong, nonatomic) id<FBGraphUser> facebookUser;
+@property GTLPlusPerson *googleUser;
 
 @end
