@@ -92,6 +92,12 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    CGRect frame = _detailTransactionView.frame;
+    frame.size.width = screenWidth;
+    _detailTransactionView.frame = frame;
+    
     self.title = @"Detail Transaksi";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
@@ -107,6 +113,11 @@
     [_cityLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
     [_countryLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
     [_phoneNumberLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    
+    [_addressLabel setUserInteractionEnabled:YES];
+    [_cityLabel setUserInteractionEnabled:YES];
+    [_countryLabel setUserInteractionEnabled:YES];
+    [_phoneNumberLabel setUserInteractionEnabled:YES];
     
     
     _tableView.tableHeaderView = _orderHeaderView;

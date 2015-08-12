@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,22 +13,42 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tNY-1p-Uud" id="vMl-lm-ALI">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pqA-gy-Jgx">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pqA-gy-Jgx">
                         <rect key="frame" x="10" y="0.0" width="300" height="44"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_arrow_down_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="egg-oh-3oz">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_down_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="egg-oh-3oz">
                                 <rect key="frame" x="143" y="15" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="7Hu-2o-nFZ"/>
+                                    <constraint firstAttribute="height" constant="14" id="Kxo-r8-eQI"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="egg-oh-3oz" secondAttribute="centerY" id="btl-Ur-Dcr"/>
+                            <constraint firstAttribute="centerX" secondItem="egg-oh-3oz" secondAttribute="centerX" id="nhp-Fe-Zu7"/>
+                        </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.86666666670000003" green="0.86666666670000003" blue="0.86666666670000003" alpha="0.01" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="pqA-gy-Jgx" firstAttribute="top" secondItem="vMl-lm-ALI" secondAttribute="top" id="Pfi-t4-KbM"/>
+                    <constraint firstItem="pqA-gy-Jgx" firstAttribute="leading" secondItem="vMl-lm-ALI" secondAttribute="leading" constant="10" id="YTi-pl-fDw"/>
+                    <constraint firstAttribute="trailing" secondItem="pqA-gy-Jgx" secondAttribute="trailing" constant="10" id="dUt-Qx-Hzh"/>
+                    <constraint firstAttribute="bottom" secondItem="pqA-gy-Jgx" secondAttribute="bottom" id="h84-gE-UON"/>
+                </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.86666666670000003" green="0.86666666670000003" blue="0.86666666670000003" alpha="0.01" colorSpace="custom" customColorSpace="sRGB"/>
             <point key="canvasLocation" x="357" y="253"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_arrow_down_grey.png" width="14" height="14"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

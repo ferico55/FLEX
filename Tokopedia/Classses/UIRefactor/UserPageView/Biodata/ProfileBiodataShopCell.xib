@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -23,8 +22,19 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" tag="16" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vq3-Bw-YG3">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Gq-r7-bfH">
+                        <rect key="frame" x="10" y="10" width="50" height="50"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="5Kn-kN-cW3"/>
+                            <constraint firstAttribute="height" constant="50" id="awQ-F9-D9x"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vq3-Bw-YG3">
                         <rect key="frame" x="68" y="10" width="237" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="keg-bZ-mKs"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <state key="normal" title="Button">
                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -34,134 +44,110 @@
                             <action selector="tapButton:" destination="-2" eventType="touchUpInside" id="NsT-aX-vRC"/>
                         </connections>
                     </button>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="p3M-tL-azv">
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="p3M-tL-azv">
                         <rect key="frame" x="25" y="25" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="SEZ-hH-iSD"/>
+                            <constraint firstAttribute="height" constant="20" id="qJO-tt-r7h"/>
+                        </constraints>
                     </activityIndicatorView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Gq-r7-bfH">
-                        <rect key="frame" x="10" y="10" width="50" height="50"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="9WE-FG-GEI">
+                        <rect key="frame" x="68" y="39" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="15" id="8Vp-Ox-0Xe"/>
+                            <constraint firstAttribute="height" constant="15" id="QxJ-cO-jIo"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZbE-RC-Dpf">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZbE-RC-Dpf">
                         <rect key="frame" x="86" y="38" width="226" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="I0f-lE-RSj"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Kecepatan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eDB-cT-QcQ">
-                        <rect key="frame" x="10" y="79" width="100" height="20"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Akurasi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Wb-LE-zbK">
-                        <rect key="frame" x="110" y="79" width="100" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pelayanan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57Z-TI-PNt">
-                        <rect key="frame" x="210" y="79" width="100" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mty-47-1sY" customClass="StarsRateView">
-                        <rect key="frame" x="20" y="101" width="86" height="24"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nwl-qu-EFk">
-                                <rect key="frame" x="34" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DUi-X0-EUq">
-                                <rect key="frame" x="68" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="djP-YU-CYz">
-                                <rect key="frame" x="51" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sxX-7f-Y7T">
-                                <rect key="frame" x="17" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="in6-bz-zUh">
-                                <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <connections>
-                            <outletCollection property="starimages" destination="in6-bz-zUh" id="RSQ-sk-ztI"/>
-                            <outletCollection property="starimages" destination="sxX-7f-Y7T" id="CQA-Ps-8zg"/>
-                            <outletCollection property="starimages" destination="Nwl-qu-EFk" id="0yQ-Zs-ce1"/>
-                            <outletCollection property="starimages" destination="djP-YU-CYz" id="P04-Ie-FWc"/>
-                            <outletCollection property="starimages" destination="DUi-X0-EUq" id="vVd-Q7-g6U"/>
-                        </connections>
-                    </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VNC-c6-uUg" customClass="StarsRateView">
-                        <rect key="frame" x="117" y="101" width="86" height="24"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rfB-VK-h3s">
-                                <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gtZ-4p-Y6O">
-                                <rect key="frame" x="17" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eVv-ZJ-VPQ">
-                                <rect key="frame" x="34" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X38-FK-2y6">
-                                <rect key="frame" x="51" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zaJ-3N-AFn">
-                                <rect key="frame" x="68" y="0.0" width="15" height="15"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <connections>
-                            <outletCollection property="starimages" destination="rfB-VK-h3s" id="ELI-gF-vxy"/>
-                            <outletCollection property="starimages" destination="gtZ-4p-Y6O" id="Zf9-KV-Anj"/>
-                            <outletCollection property="starimages" destination="eVv-ZJ-VPQ" id="zpa-b4-Cp0"/>
-                            <outletCollection property="starimages" destination="X38-FK-2y6" id="7GQ-AD-PdU"/>
-                            <outletCollection property="starimages" destination="zaJ-3N-AFn" id="JJb-B7-ysJ"/>
-                        </connections>
-                    </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="9WE-FG-GEI">
-                        <rect key="frame" x="68" y="39" width="15" height="15"/>
-                    </imageView>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e0h-Xq-DcR">
-                        <rect key="frame" x="10" y="70" width="300" height="1"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0h-Xq-DcR">
+                        <rect key="frame" x="0.0" y="68" width="320" height="1"/>
                         <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="57s-wF-3ga"/>
+                        </constraints>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uzr-KN-ion" customClass="StarsRateView">
-                        <rect key="frame" x="217" y="101" width="86" height="24"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YAT-3v-2Rh">
-                                <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qGV-bN-WCI">
-                                <rect key="frame" x="17" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yd0-Kb-zoh">
-                                <rect key="frame" x="34" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0i4-fM-vrq">
-                                <rect key="frame" x="51" y="0.0" width="15" height="15"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rEf-fK-cig">
-                                <rect key="frame" x="68" y="0.0" width="15" height="15"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JhF-Za-vcV">
+                        <rect key="frame" x="160" y="68" width="1" height="64"/>
+                        <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="yWN-Wc-aSK"/>
+                            <constraint firstAttribute="height" constant="64" id="z0e-Lt-10b"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWZ-1t-6o3">
+                        <rect key="frame" x="160" y="68" width="160" height="64"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="64" id="zAZ-ga-jp7"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <inset key="titleEdgeInsets" minX="-20" minY="-30" maxX="0.0" maxY="0.0"/>
+                        <inset key="imageEdgeInsets" minX="67" minY="15" maxX="0.0" maxY="0.0"/>
+                        <state key="normal" title="Kecepatan" image="icon_speed_fast.png">
+                            <color key="titleColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
                         <connections>
-                            <outletCollection property="starimages" destination="YAT-3v-2Rh" id="UPg-ch-TX1"/>
-                            <outletCollection property="starimages" destination="qGV-bN-WCI" id="afg-Un-oy6"/>
-                            <outletCollection property="starimages" destination="Yd0-Kb-zoh" id="HjU-BE-zyR"/>
-                            <outletCollection property="starimages" destination="0i4-fM-vrq" id="5DG-VP-6dD"/>
-                            <outletCollection property="starimages" destination="rEf-fK-cig" id="EWu-sr-dfH"/>
+                            <action selector="actionKecepatan:" destination="kjE-GT-oL0" eventType="touchUpInside" id="0f6-rc-h1g"/>
                         </connections>
-                    </view>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NST-Mt-FiX">
+                        <rect key="frame" x="0.0" y="68" width="160" height="64"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="64" id="125-zC-DTO"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <inset key="titleEdgeInsets" minX="-60" minY="-30" maxX="0.0" maxY="0.0"/>
+                        <inset key="imageEdgeInsets" minX="48" minY="10" maxX="0.0" maxY="0.0"/>
+                        <state key="normal" title="Reputasi" image="icon_medal_diamond.png">
+                            <color key="titleColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="actionReputasi:" destination="kjE-GT-oL0" eventType="touchUpInside" id="Qlk-nN-ZM3"/>
+                        </connections>
+                    </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="9WE-FG-GEI" firstAttribute="leading" secondItem="3Gq-r7-bfH" secondAttribute="trailing" constant="8" id="1Bi-B3-SQh"/>
+                    <constraint firstAttribute="trailing" secondItem="fWZ-1t-6o3" secondAttribute="trailing" id="1gE-If-uiU"/>
+                    <constraint firstItem="p3M-tL-azv" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" constant="25" id="3KK-G5-jV6"/>
+                    <constraint firstItem="e0h-Xq-DcR" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" id="6r1-Jn-HEb"/>
+                    <constraint firstItem="9WE-FG-GEI" firstAttribute="top" secondItem="Vq3-Bw-YG3" secondAttribute="bottom" constant="-1" id="DCN-NQ-khb"/>
+                    <constraint firstItem="3Gq-r7-bfH" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" constant="10" id="F7D-zV-LuW"/>
+                    <constraint firstItem="Vq3-Bw-YG3" firstAttribute="leading" secondItem="3Gq-r7-bfH" secondAttribute="trailing" constant="8" id="LZ7-Dq-Pbd"/>
+                    <constraint firstAttribute="trailing" secondItem="e0h-Xq-DcR" secondAttribute="trailing" id="PUa-M4-5Sx"/>
+                    <constraint firstItem="p3M-tL-azv" firstAttribute="top" secondItem="oU4-Iy-eEd" secondAttribute="top" constant="25" id="QxI-08-5r0"/>
+                    <constraint firstItem="fWZ-1t-6o3" firstAttribute="leading" secondItem="JhF-Za-vcV" secondAttribute="trailing" constant="-1" id="S2J-id-1EJ"/>
+                    <constraint firstItem="Vq3-Bw-YG3" firstAttribute="top" secondItem="oU4-Iy-eEd" secondAttribute="top" constant="10" id="SMq-aZ-eLd"/>
+                    <constraint firstItem="e0h-Xq-DcR" firstAttribute="top" secondItem="ZbE-RC-Dpf" secondAttribute="bottom" constant="9" id="TpB-37-xuJ"/>
+                    <constraint firstItem="JhF-Za-vcV" firstAttribute="top" secondItem="e0h-Xq-DcR" secondAttribute="bottom" constant="-1" id="VUP-KK-e8o"/>
+                    <constraint firstItem="NST-Mt-FiX" firstAttribute="top" secondItem="e0h-Xq-DcR" secondAttribute="bottom" constant="-1" id="W1a-PM-gaM"/>
+                    <constraint firstItem="fWZ-1t-6o3" firstAttribute="top" secondItem="e0h-Xq-DcR" secondAttribute="bottom" constant="-1" id="YnR-Aa-keL"/>
+                    <constraint firstItem="JhF-Za-vcV" firstAttribute="leading" secondItem="NST-Mt-FiX" secondAttribute="trailing" id="aAj-pU-U7D"/>
+                    <constraint firstItem="ZbE-RC-Dpf" firstAttribute="leading" secondItem="9WE-FG-GEI" secondAttribute="trailing" constant="3" id="blD-4d-CFZ"/>
+                    <constraint firstAttribute="bottom" secondItem="JhF-Za-vcV" secondAttribute="bottom" id="c8J-1C-Wz3"/>
+                    <constraint firstItem="NST-Mt-FiX" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" id="cej-Yl-Tyh"/>
+                    <constraint firstItem="ZbE-RC-Dpf" firstAttribute="top" secondItem="Vq3-Bw-YG3" secondAttribute="bottom" constant="-2" id="dX1-Bn-Vkt"/>
+                    <constraint firstItem="NST-Mt-FiX" firstAttribute="width" secondItem="fWZ-1t-6o3" secondAttribute="width" id="fES-ly-vNF"/>
+                    <constraint firstAttribute="trailing" secondItem="ZbE-RC-Dpf" secondAttribute="trailing" constant="8" id="pPG-3I-T0n"/>
+                    <constraint firstItem="3Gq-r7-bfH" firstAttribute="top" secondItem="oU4-Iy-eEd" secondAttribute="top" constant="10" id="rnW-4d-tuJ"/>
+                    <constraint firstAttribute="trailing" secondItem="Vq3-Bw-YG3" secondAttribute="trailing" constant="15" id="xuH-8Y-chs"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="act" destination="p3M-tL-azv" id="s8P-k4-Xly"/>
+                <outlet property="btnKecepatan" destination="fWZ-1t-6o3" id="BdF-8u-YMX"/>
+                <outlet property="btnReputasi" destination="NST-Mt-FiX" id="IaF-mj-mUo"/>
                 <outlet property="buttonName" destination="Vq3-Bw-YG3" id="3L0-Xb-5SE"/>
                 <outlet property="labellocation" destination="ZbE-RC-Dpf" id="Sfz-fl-hUb"/>
-                <outlet property="rateaccuracy" destination="VNC-c6-uUg" id="Q4U-rE-Dtm"/>
-                <outlet property="rateservice" destination="Uzr-KN-ion" id="nSR-hQ-ujf"/>
-                <outlet property="ratespeed" destination="Mty-47-1sY" id="5y9-ua-hqS"/>
                 <outlet property="thumb" destination="3Gq-r7-bfH" id="yg6-aQ-3Im"/>
             </connections>
             <point key="canvasLocation" x="140" y="94.5"/>
@@ -169,6 +155,8 @@
     </objects>
     <resources>
         <image name="icon_location.png" width="14" height="14"/>
+        <image name="icon_medal_diamond.png" width="60" height="20"/>
+        <image name="icon_speed_fast.png" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -24,6 +24,8 @@
 
 @interface GeneralTalkCell () <UIActionSheetDelegate> {
     NavigateViewController *_navigateController;
+    __weak IBOutlet NSLayoutConstraint *constraintwidth;
+    __weak IBOutlet NSLayoutConstraint *equalWidthConstraint;
 }
 
 @end
@@ -58,12 +60,13 @@
     [self.commentlabel addGestureRecognizer:messageGesture];
     [self.commentlabel setUserInteractionEnabled:YES];
     
-    [self.messageLabel addGestureRecognizer:messageGesture];
-    [self.messageLabel setUserInteractionEnabled:YES];
+//    [self.messageLabel addGestureRecognizer:messageGesture];
+//    [self.messageLabel setUserInteractionEnabled:YES];
     
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [self.thumb addGestureRecognizer:userGesture];
     [self.thumb setUserInteractionEnabled:YES];
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -229,7 +232,7 @@
         TalkList *talkList = (TalkList *)_data;
         
         UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
-        NSString *userId = [NSString stringWithFormat:@"%d", talkList.talk_user_id];
+        NSString *userId = [NSString stringWithFormat:@"%d", (int)talkList.talk_user_id];
         [_navigateController navigateToProfileFromViewController:nav withUserID:userId];
     }
 }
@@ -261,8 +264,13 @@
     else if (buttonIndex != cancelButtonIndex) {
          [_delegate reportTalk:self withindexpath:_indexpath];
     }
-
 }
 
+- (IBAction)actionSmile:(id)sender {
+    [_delegate actionSmile:sender];
+}
 
+- (void)hiddenViewProduct {
+    constHeightProduct.constant = 0;
+}
 @end

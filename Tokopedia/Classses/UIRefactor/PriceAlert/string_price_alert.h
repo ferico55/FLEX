@@ -55,7 +55,7 @@
 #define CStringFailedAddCatalogPriceAlert @"Gagal menambah notifikasi harga katalog"
 #define CStringFailedAddPriceAlert @"Gagal menambah notifikasi harga produk"
 #define CStringFailedEditPriceAlert @"Gagal mengubah notifikasi harga produk"
-#define CStringFailedDeletePriceAlert @"Gagal delete price alert"
+#define CStringFailedDeletePriceAlert @"Gagal menghapus notifikasi harga"
 #define CStringWaitLoading @"Silahkan coba lagi, Ada proses yang sedang di eksekusi"
 #define CStringAllDepartment @"Semua Department"
 #define CStringDepartment @"Department"

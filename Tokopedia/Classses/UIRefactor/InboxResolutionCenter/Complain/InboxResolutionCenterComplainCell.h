@@ -15,7 +15,7 @@
 - (void)goToShopOrProfileAtIndexPath:(NSIndexPath*)indexPath;
 - (void)goToResolutionDetailAtIndexPath:(NSIndexPath*)indexPath;
 - (void)showImageAtIndexPath:(NSIndexPath*)indexPath;
-
+- (void)actionReputation:(id)sender;
 @end
 
 
@@ -40,10 +40,12 @@
 
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
+@property (weak, nonatomic) IBOutlet UIButton *btnReputation;
 @property (weak, nonatomic) IBOutlet UILabel *warningLabel;
 @property (weak, nonatomic) IBOutlet UIView *unreadBorderView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadIconImageView;
 
 +(id)newCell;
+- (IBAction)actionReputation:(id)sender;
 
 @end

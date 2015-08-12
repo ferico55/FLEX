@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -25,9 +25,6 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="80" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="cfa-ni-T9e">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="435" id="quK-HL-LAe"/>
-                    </constraints>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Gyo-uH-mb8"/>
                         <outlet property="delegate" destination="-1" id="oD9-rW-Lae"/>
@@ -63,13 +60,13 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="cfa-ni-T9e" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="48P-9o-xal"/>
                 <constraint firstAttribute="bottom" secondItem="9Qy-Ti-zpV" secondAttribute="bottom" id="4t3-u6-u1d"/>
                 <constraint firstAttribute="trailing" secondItem="9Qy-Ti-zpV" secondAttribute="trailing" id="EQJ-kK-zg6"/>
-                <constraint firstItem="9Qy-Ti-zpV" firstAttribute="top" secondItem="cfa-ni-T9e" secondAttribute="bottom" id="Gxn-dh-gqc"/>
                 <constraint firstItem="9Qy-Ti-zpV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OTJ-Zt-cIM"/>
-                <constraint firstItem="cfa-ni-T9e" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dQb-PM-LAm"/>
-                <constraint firstAttribute="trailing" secondItem="cfa-ni-T9e" secondAttribute="trailing" id="euS-8M-6Ds"/>
+                <constraint firstItem="cfa-ni-T9e" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Rrf-ey-2vI"/>
+                <constraint firstItem="9Qy-Ti-zpV" firstAttribute="top" secondItem="cfa-ni-T9e" secondAttribute="bottom" id="Unu-FO-7YZ"/>
+                <constraint firstItem="cfa-ni-T9e" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fdS-64-77M"/>
+                <constraint firstAttribute="trailing" secondItem="cfa-ni-T9e" secondAttribute="trailing" id="pud-6w-k1q"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>

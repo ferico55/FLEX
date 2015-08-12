@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ReputationDetail.h"
+
+#define CUserReputation @"user_reputation"
 
 @interface UserInfo : NSObject
 
@@ -18,6 +21,6 @@
 @property (nonatomic, strong) NSString *user_image;
 @property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, strong) NSString *user_birth;
-
+@property (nonatomic, strong) ReputationDetail *user_reputation;
 
 @end

@@ -11,7 +11,8 @@
 
 //#define kTkpdBaseURLString @"http://www.ft-feby.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://www.py-purnaresa.ndvl/ws"
+//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -19,8 +20,7 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-//#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
-//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -205,6 +205,7 @@ typedef enum {
 #define productCollectionViewCellHeight6plus 250
 #define productCollectionViewCellHeightNormal 205
 
+
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
@@ -237,4 +238,12 @@ typedef enum {
 #define GTMKeySearchPost @"search_post_url"
 #define GTMKeySearchFull @"search_full_url"
 
+#define GTMKeyInboxReputationBase @"inbox_reputation_base_url"
+#define GTMKeyInboxReputationPost @"inbox_reputation_post_url"
+
+#define GTMKeyInboxActionReputationBase @"action_reputation_base_url"
+#define GTMKeyInboxActionReputationPost @"action_reputation_post_url"
+
+#define GTMKeyActionReviewBase @"action_review_base_url"
+#define GTMKeyActionReviewPost @"action_review_post_url"
 #endif

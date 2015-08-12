@@ -48,6 +48,7 @@
     
     FBLoginView *_loginView;
     id<FBGraphUser> _facebookUser;
+    
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -80,25 +81,25 @@
 @synthesize emailTextField = _emailTextField;
 @synthesize passwordTextField = _passwordTextField;
 
-#pragma mark - Initialization
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    /** Cecking UI device iPhone or iPad (different xib) **/
-    self = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)?[super initWithNibName:kTKPDACTIVATION_LOGINNIBNAMEIPHONE bundle:nil]:[super initWithNibName:kTKPDACTIVATION_LOGINNIBNAMEIPAD bundle:nil];
-    
-    if (self) {
-        self.title = kTKPDACTIVATION_LOGINTITTLE;
-        UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-        [self.navigationItem setTitleView:logo];
-    }
-    return self;
-}
 
 #pragma mark - Life Cycle
+
 - (void)viewDidLoad
 {    
     [super viewDidLoad];
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        CGRect frame = _facebookLoginButton.frame;
+        frame.size.width = 400;
+        _facebookLoginButton.frame = frame;
+    }
+    else
+    {
+        CGRect frame = _facebookLoginButton.frame;
+        frame.size.width = [UIScreen mainScreen].bounds.size.width-30;
+        _facebookLoginButton.frame = frame;
+    }
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered

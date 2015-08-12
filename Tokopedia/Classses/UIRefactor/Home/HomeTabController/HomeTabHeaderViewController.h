@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface HomeTabHeaderViewController : UIViewController
-{
-    IBOutlet UIScrollView *_scrollView;
-}
 
 
 - (void)tapButton:(UIButton*)button;

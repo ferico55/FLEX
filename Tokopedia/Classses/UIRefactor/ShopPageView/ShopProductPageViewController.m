@@ -43,6 +43,8 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 
+#import "RetryCollectionReusableView.h"
+
 #import "NoResult.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -151,7 +153,7 @@ TokopediaNetworkManagerDelegate
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
-    
+
     BOOL _isFailRequest;
 }
 
@@ -330,8 +332,8 @@ TokopediaNetworkManagerDelegate
     
     if(kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
-            _isFailRequest = !_isFailRequest;
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+            ((RetryCollectionReusableView*)reusableView).delegate = self;
         } else {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }
@@ -448,6 +450,9 @@ TokopediaNetworkManagerDelegate
     /** clear object **/
     _page = 1;
     _isrefreshview = YES;
+    [_refreshControl beginRefreshing];
+    [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    
     [_networkManager doRequest];
 }
 
@@ -575,6 +580,7 @@ TokopediaNetworkManagerDelegate
                 MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
                 //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];

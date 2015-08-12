@@ -59,6 +59,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = _noLoginView.frame;
+    frame.size.width = screenRect.size.width;
+    _noLoginView.frame = frame;
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -22,25 +22,51 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" tag="1" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_check_grey" translatesAutoresizingMaskIntoConstraints="NO" id="XgY-NW-CJX">
+                    <imageView userInteractionEnabled="NO" tag="1" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_check_grey" translatesAutoresizingMaskIntoConstraints="NO" id="XgY-NW-CJX">
                         <rect key="frame" x="120" y="12" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="GO5-bH-Qbt"/>
+                            <constraint firstAttribute="height" constant="20" id="Jd9-sR-W5Z"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAw-aV-fVl" userLabel="Value 1">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAw-aV-fVl" userLabel="Value 1">
                         <rect key="frame" x="148" y="1" width="164" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="0s0-tf-BDX"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a1X-kQ-kCX" userLabel="Horizontal Border">
-                        <rect key="frame" x="120" y="43" width="200" height="1"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1X-kQ-kCX" userLabel="Horizontal Border">
+                        <rect key="frame" x="120" y="42" width="200" height="1"/>
                         <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="CR4-sd-fKK"/>
+                        </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Se-VU-1Bh" userLabel="Title">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Se-VU-1Bh" userLabel="Title">
                         <rect key="frame" x="8" y="0.0" width="109" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="HgI-wD-iPy"/>
+                            <constraint firstAttribute="width" constant="109" id="eLB-ue-s4P"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="XgY-NW-CJX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="2sb-4K-0VX"/>
+                    <constraint firstItem="a1X-kQ-kCX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="120" id="35B-Lo-d7X"/>
+                    <constraint firstItem="8Se-VU-1Bh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="3oO-Gd-uPG"/>
+                    <constraint firstItem="XgY-NW-CJX" firstAttribute="leading" secondItem="8Se-VU-1Bh" secondAttribute="trailing" constant="3" id="Aw5-2V-bTh"/>
+                    <constraint firstItem="LAw-aV-fVl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="HoJ-kX-PKU"/>
+                    <constraint firstAttribute="trailing" secondItem="a1X-kQ-kCX" secondAttribute="trailing" id="QUK-X2-rj2"/>
+                    <constraint firstItem="8Se-VU-1Bh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="V7L-jj-liA"/>
+                    <constraint firstAttribute="bottom" secondItem="a1X-kQ-kCX" secondAttribute="bottom" id="a5X-52-MnC"/>
+                    <constraint firstAttribute="trailing" secondItem="LAw-aV-fVl" secondAttribute="trailing" constant="8" id="c6s-fe-Ewu"/>
+                    <constraint firstItem="LAw-aV-fVl" firstAttribute="leading" secondItem="XgY-NW-CJX" secondAttribute="trailing" constant="8" id="ykx-ix-H9r"/>
+                </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>

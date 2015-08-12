@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "InboxResolutionCenterList.h"
 
+@class InboxResolutionCenterTabViewController;
+
 #pragma mark - Transaction Cart Payment Delegate
 @protocol ResolutionCenterDetailViewControllerDelegate <NSObject>
 @required
@@ -17,8 +19,11 @@
 @end
 
 @interface ResolutionCenterDetailViewController : UIViewController
+{
+    IBOutlet UIButton *btnReputation;
+}
 
-
+@property (strong, nonatomic) InboxResolutionCenterTabViewController*masterViewController;
 
 @property (nonatomic, weak) IBOutlet id<ResolutionCenterDetailViewControllerDelegate> delegate;
 
@@ -27,5 +32,7 @@
 
 @property NSIndexPath *indexPath;
 @property NSString *resolutionID;
+
+-(void)replaceDataSelected:(InboxResolutionCenterList*)resolution indexPath:(NSIndexPath*)indexPath resolutionID:(NSString*)resolutionID;
 
 @end

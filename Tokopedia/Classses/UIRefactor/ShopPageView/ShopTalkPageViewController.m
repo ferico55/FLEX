@@ -22,6 +22,7 @@
 #import "detail.h"
 
 #import "URLCacheController.h"
+#import "ReputationDetail.h"
 #import "ShopPageHeader.h"
 #import "string_inbox_message.h"
 #import "NoResultView.h"
@@ -154,7 +155,7 @@ UIAlertViewDelegate>
     _cachecontroller = [URLCacheController new];
     _list = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -262,14 +263,13 @@ UIAlertViewDelegate>
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
             
-            //            ((GeneralTalkCell*)cell).deleteButton.hidden = NO;
-            //            ((GeneralTalkCell*)cell).reportView.hidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             ((GeneralTalkCell*)cell).data = list;
             ((GeneralTalkCell*)cell).userButton.text = list.talk_user_name;
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
+            [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
             
             //Set user label
 //            if([list.talk_user_label isEqualToString:CPenjual]) {
@@ -303,8 +303,9 @@ UIAlertViewDelegate>
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
                 
+                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = 75;
+                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralTalkCell*)cell).commentbutton.frame.size.width) / 2-10;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             
@@ -323,12 +324,7 @@ UIAlertViewDelegate>
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
             
-//            if([list.talk_product_status isEqualToString:@"0"]) {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
-//            } else {
-//                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
-//            }
-            
+
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
             userImageView.image = nil;
@@ -811,7 +807,7 @@ UIAlertViewDelegate>
     NSLog(@"Content offset container %f", scrollView.contentOffset.y);
 
     
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (305 - _fakeStickyTab.frame.size.height);
     
     NSLog(@"Sticky Tab %hhd", isFakeStickyVisible);
     //    NSLog(@"Range : %f", (_header.frame.size.height - _stickyTab.frame.size.height));

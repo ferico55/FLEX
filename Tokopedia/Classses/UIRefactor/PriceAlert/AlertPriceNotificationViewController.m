@@ -153,7 +153,7 @@
         NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
         cell = [arrPriceAlert objectAtIndex:0];
         cell.viewController = self;
-        cell.getBtnProductName.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+        cell.getBtnProductName.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     

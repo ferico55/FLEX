@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -24,17 +24,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="b9s-Dn-GGl">
-                    <rect key="frame" x="0.0" y="50" width="320" height="475"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <inset key="separatorInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="qPm-sf-ivc"/>
-                        <outlet property="delegate" destination="-1" id="cl8-mr-6IT"/>
-                    </connections>
-                </tableView>
-                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MbX-dX-rBP">
+                <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MbX-dX-rBP">
                     <rect key="frame" x="7" y="0.0" width="305" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="zoU-3i-csI"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                     <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Tambah Akun Baru" image="icon_plus_blue">
@@ -45,24 +39,57 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="lQj-wM-lLS"/>
                     </connections>
                 </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="b9s-Dn-GGl">
+                    <rect key="frame" x="0.0" y="50" width="320" height="518"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="separatorInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="qPm-sf-ivc"/>
+                        <outlet property="delegate" destination="-1" id="cl8-mr-6IT"/>
+                    </connections>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="b9s-Dn-GGl" secondAttribute="bottom" id="9Eb-Cp-MwF"/>
+                <constraint firstItem="b9s-Dn-GGl" firstAttribute="top" secondItem="MbX-dX-rBP" secondAttribute="bottom" constant="6" id="KUw-lH-ikt"/>
+                <constraint firstAttribute="trailing" secondItem="b9s-Dn-GGl" secondAttribute="trailing" id="ME9-up-Pew"/>
+                <constraint firstAttribute="trailing" secondItem="MbX-dX-rBP" secondAttribute="trailing" constant="8" id="Uox-E6-KT0"/>
+                <constraint firstItem="MbX-dX-rBP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Zbp-MF-ShJ"/>
+                <constraint firstItem="MbX-dX-rBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="jxZ-8h-LXf"/>
+                <constraint firstItem="b9s-Dn-GGl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lqj-43-2Pf"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="437" y="325"/>
         </view>
         <view contentMode="scaleToFill" id="QuF-y9-Bt8" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="iL7-Gh-s0h">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="iL7-Gh-s0h">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="AaN-sC-wfG"/>
+                        <constraint firstAttribute="width" constant="20" id="jWx-IX-Yj9"/>
+                    </constraints>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerY" secondItem="iL7-Gh-s0h" secondAttribute="centerY" id="1h5-Zu-HBW"/>
+                <constraint firstAttribute="centerX" secondItem="iL7-Gh-s0h" secondAttribute="centerX" id="yQH-Er-pDu"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="437" y="-41"/>
         </view>
     </objects>
     <resources>
         <image name="icon_plus_blue" width="20" height="20"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

@@ -36,6 +36,8 @@
 #import "Logout.h"
 #import "AlertBaseUrl.h"
 
+#import "InboxRootViewController.h"
+
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
@@ -161,8 +163,8 @@ typedef enum TagRequest {
     	
     _data = nil;
 #if DEBUG
-    AlertBaseUrl *alert = [AlertBaseUrl newview];
-    [alert show];
+//    AlertBaseUrl *alert = [AlertBaseUrl newview];
+//    [alert show];
 #endif
     [self presentcontrollers];
 }
@@ -461,7 +463,7 @@ typedef enum TagRequest {
 #endif
     
     // redirect to home after login or register
-    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
+//    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
 }
 
 #pragma mark - Notification observers
