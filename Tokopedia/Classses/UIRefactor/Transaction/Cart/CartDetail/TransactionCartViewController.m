@@ -1031,7 +1031,7 @@
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
     }
-    if (voucherCode.length != 12)
+    if (voucherCode.length < 11)
     {
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_VOUCHER_CODE_LENGHT];

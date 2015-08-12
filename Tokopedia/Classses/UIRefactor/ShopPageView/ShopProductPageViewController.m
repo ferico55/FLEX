@@ -520,13 +520,37 @@ TokopediaNetworkManagerDelegate
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
-    [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+    
+    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    
+    if (![searchBarBefore isEqualToString:searchBar.text]) {
+        [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [self reloadDataSearch];
+    }
+}
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
+    searchBar.showsCancelButton = NO;
+    
+    searchBar.text = @"";
+    
+    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    
+    if (![searchBarBefore isEqualToString:searchBar.text]) {
+        [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [self reloadDataSearch];
+    }
+}
+
+-(void)reloadDataSearch
+{
     _tmpProduct = [NSArray arrayWithArray:_product];
     [_product removeAllObjects];
-
+    
     [_collectionView reloadData];
-
+    
     _tmpNextPageUri = _nextPageUri;
     _tmpPage = _page;
     
@@ -535,18 +559,6 @@ TokopediaNetworkManagerDelegate
     _isrefreshview = YES;
     
     [_networkManager doRequest];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [searchBar resignFirstResponder];
-    searchBar.showsCancelButton = NO;
-    [_noResult removeFromSuperview];
-    _product = [NSMutableArray arrayWithArray:_tmpProduct];
-    _nextPageUri = _tmpNextPageUri;
-    _page = _tmpPage;
-    _isrefreshview = YES;
-    [_detailfilter setObject:@"" forKey:kTKPDDETAIL_DATAQUERYKEY];
-    [self.collectionView reloadData];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

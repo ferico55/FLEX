@@ -171,7 +171,7 @@ UIAlertViewDelegate>
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;
-    _table.tableHeaderView = _header;
+    //_table.tableHeaderView = _header;
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
@@ -220,6 +220,16 @@ UIAlertViewDelegate>
 }
 
 #pragma mark - TableView Delegate
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return _header;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return _header.frame.size.height;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_isNoData) {

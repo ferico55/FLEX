@@ -270,7 +270,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
+        cell.backgroundColor = [UIColor clearColor];
     }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;

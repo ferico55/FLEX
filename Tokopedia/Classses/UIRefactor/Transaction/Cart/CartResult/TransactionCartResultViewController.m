@@ -55,6 +55,7 @@
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *klikBCAStepsLabels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *indomaretNotes;
 @property (weak, nonatomic) IBOutlet UILabel *IndomaretCodeLabel;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *klikBCAImages;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *klikBCAAditionalConstraint;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *klikBCAImagesSteps;
 @end
@@ -79,6 +80,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _klikBCAImages = [NSArray sortViewsWithTagInArray:_klikBCAImages];
+    
     _navigate = [NavigateViewController new];
     
     _listSystemBank = [NSMutableArray new];
@@ -92,7 +95,7 @@
     [self adjustFooterPurchaseStatus];
     
 //    _tableView.tableFooterView = _klikBCAStepsView;
-    //_tableView.tableFooterView = _indomaretStepsView;
+//    _tableView.tableFooterView = _indomaretStepsView;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -200,10 +203,10 @@
                 return _paymentStatusView.frame.size.height;
         }
         else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
-            return _klikBCAStepsView.frame.size.height - _klikBCAAditionalConstraint.constant;
+            return 1168;
         }
         else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
-            return _indomaretStepsView.frame.size.height;
+            return 600;
         }
         else
             return _viewConfirmPayment.frame.size.height;
@@ -262,12 +265,28 @@
     return 4;
 }
 
+- (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
+{
+    NSArray *BCASteps = @[
+                          @"1.  Masuk ke situs www.klikbca.com. Masukkan User ID dan password Anda",
+                          @"2.  Pilih pembayaran e-Commerce. Pilih Kategori Marketplace. Pilih Tokopedia",
+                          @"3.  Masukkan KeyBCA Token untuk memproses transaksi",
+                          @"4.  Anda tidak perlu melakukan konfirmasi pembayaran Tokopedia otomatis memverifikasi pembayaran Anda"
+                          ];
+    if(((int) index) < 0)
+        return BCASteps[0];
+    else if(((int)index) > BCASteps.count-1)
+        return [BCASteps objectAtIndex:BCASteps.count-1];
+    
+    return [BCASteps objectAtIndex:index];
+}
+
 - (UIImage *)photoGallery:(NSUInteger)index {
     if(((int) index) < 0)
-        return ((UIImageView *) [_klikBCAImagesSteps objectAtIndex:0]).image;
-    else if(((int)index) > _klikBCAImagesSteps.count-1)
-        return ((UIImageView *) [_klikBCAImagesSteps objectAtIndex:_klikBCAImagesSteps.count-1]).image;
-    return ((UIImageView *) [_klikBCAImagesSteps objectAtIndex:index]).image;
+        return ((UIImageView *) [_klikBCAImages objectAtIndex:0]).image;
+    else if(((int)index) > _klikBCAImages.count-1)
+        return ((UIImageView *) [_klikBCAImages objectAtIndex:_klikBCAImages.count-1]).image;
+    return ((UIImageView *) [_klikBCAImages objectAtIndex:index]).image;
 }
 
 #pragma mark - methods Cell
