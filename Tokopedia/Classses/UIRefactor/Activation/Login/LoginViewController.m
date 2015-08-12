@@ -147,6 +147,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _signIn.clientID = kClientId;
     _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
     _signIn.delegate = self;
+    
+    [self.signInButton setStyle:kGPPSignInButtonStyleWide];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -304,14 +306,12 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _forgetPasswordButton.hidden = NO;
     _facebookLoginButton.hidden = NO;
     self.signInButton.hidden = NO;
-    
+
     [_activityIndicator stopAnimating];
     
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
-    
-    [[GPPSignIn sharedInstance] signOut];
+    [FBSession setActiveSession:nil];    
 }
 
 - (void)setLoggingInState {
