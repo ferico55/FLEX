@@ -570,13 +570,20 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lfk-xl-Rbu" id="9r9-kM-wgv">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gunakan Saldo Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpc-Rx-yiu">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gunakan Saldo Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpc-Rx-yiu">
                         <rect key="frame" x="15" y="11" width="196" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="196" id="x9s-5J-7po"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
+                    <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
                         <rect key="frame" x="259" y="6" width="51" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="49" id="Mor-Xi-SP0"/>
+                            <constraint firstAttribute="height" constant="31" id="co1-ug-4QS"/>
+                        </constraints>
                         <connections>
                             <action selector="switchUsingSaldo:" destination="-1" eventType="touchUpInside" id="cjq-bV-vFe"/>
                         </connections>
@@ -598,11 +605,16 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="dAf-t4-mYj" firstAttribute="leading" secondItem="9r9-kM-wgv" secondAttribute="leading" id="3W9-37-5Wk"/>
+                    <constraint firstAttribute="trailing" secondItem="sI2-vl-FxW" secondAttribute="trailing" constant="12" id="8Ot-pe-JOe"/>
+                    <constraint firstItem="sI2-vl-FxW" firstAttribute="top" secondItem="dAf-t4-mYj" secondAttribute="bottom" constant="5" id="9Wj-wp-scB"/>
                     <constraint firstAttribute="bottom" secondItem="EUB-WT-MFg" secondAttribute="bottom" constant="-0.5" id="VbH-Ce-Ybo"/>
                     <constraint firstItem="dAf-t4-mYj" firstAttribute="top" secondItem="9r9-kM-wgv" secondAttribute="top" id="X4d-WY-y9J"/>
+                    <constraint firstItem="bpc-Rx-yiu" firstAttribute="top" secondItem="dAf-t4-mYj" secondAttribute="bottom" constant="10" id="YZW-jt-V1v"/>
                     <constraint firstItem="EUB-WT-MFg" firstAttribute="leading" secondItem="9r9-kM-wgv" secondAttribute="leading" id="bzb-71-6N1"/>
+                    <constraint firstItem="EUB-WT-MFg" firstAttribute="top" secondItem="bpc-Rx-yiu" secondAttribute="bottom" constant="11" id="drj-UD-J65"/>
                     <constraint firstAttribute="trailing" secondItem="EUB-WT-MFg" secondAttribute="trailing" id="uWQ-Gh-iMV"/>
                     <constraint firstAttribute="trailing" secondItem="dAf-t4-mYj" secondAttribute="trailing" id="ycC-3q-2vc"/>
+                    <constraint firstItem="bpc-Rx-yiu" firstAttribute="leading" secondItem="9r9-kM-wgv" secondAttribute="leading" constant="15" id="zf6-Vb-eY5"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

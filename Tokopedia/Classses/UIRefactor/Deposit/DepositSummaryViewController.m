@@ -347,8 +347,8 @@
                     newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
                     _infoReviewSaldo.frame = newFrame4;
                     
-                    constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height+10;
-                    constraintHeightHeader.constant = constraintHeightHeader.constant +_infoReviewSaldo.frame.size.height+10;
+                    constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height-2;
+                    constraintHeightHeader.constant = constraintHeightHeader.constant +_infoReviewSaldo.frame.size.height-2;
                 }
             }
             

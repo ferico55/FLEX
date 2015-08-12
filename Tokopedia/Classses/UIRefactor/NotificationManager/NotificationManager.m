@@ -44,11 +44,11 @@
     _notificationButton = [[NotificationBarButton alloc] init];
     UIButton *button = (UIButton *)_notificationButton.customView;
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGRect frame = _attachedViewController.view.frame;
-    frame.size.height = screenRect.size.height;
-    _attachedViewController.view.frame = frame;
-    
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+//    CGRect frame = _attachedViewController.view.frame;
+//    frame.size.height = screenRect.size.height;
+//    _attachedViewController.view.frame = frame;
+        
     [button addTarget:_attachedViewController action:@selector(tapNotificationBar) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -99,10 +99,11 @@
 - (void)tapNotificationBar {
     [_notificationWindow makeKeyAndVisible];
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGRect frame = _attachedViewController.view.frame;
-    frame.size.height = screenRect.size.height;
-    _attachedViewController.view.frame = frame;
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+//    CGRect frame = _attachedViewController.view.frame;
+//    frame.size.height = screenRect.size.height;
+//    _attachedViewController.view.frame = frame;
+    
     
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:_attachedViewController action:@selector(tapWindowBar)];
     
@@ -138,12 +139,10 @@
     _notificationController.tableView.backgroundView = bgImageView;
     _notificationController.tableView.backgroundView.contentMode = UIViewContentModeTop;
     
-    
-    
     _notificationController.tableView.frame = notificationTableFrame;
     [_notificationController.tableView endUpdates];
     
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, _attachedViewController.view.frame.size.height+40, 0);
+    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 650, 0);
     
     CGRect windowFrame = _notificationWindow.frame;
     windowFrame.size.height = 0;
@@ -178,6 +177,7 @@
     [self setUnreadNotification:nil];
     [self resetNotification];
 }
+
 
 - (void)resetNotification {
     [_notificationRequest resetNotification];
