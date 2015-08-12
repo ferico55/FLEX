@@ -175,6 +175,7 @@
     _userManager = [UserAuthentificationManager new];
     _navigateController = [NavigateViewController new];
     
+    [_header setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, _header.frame.size.height)];
     _table.tableHeaderView = _header;
     _page = 1;
     _auth = [NSMutableDictionary new];
