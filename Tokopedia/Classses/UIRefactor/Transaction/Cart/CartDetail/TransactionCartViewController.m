@@ -882,7 +882,8 @@
     if ([product.product_error_msg isEqualToString:@""] ||
         [product.product_error_msg isEqualToString:@"0"] ||
         product.product_error_msg == nil ) {
-        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+//        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+        [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -895,7 +896,8 @@
     
     if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
 
-        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+//        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+        [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
     }
 }
 

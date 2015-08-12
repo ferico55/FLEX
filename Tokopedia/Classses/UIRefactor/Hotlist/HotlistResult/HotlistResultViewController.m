@@ -26,7 +26,6 @@
 
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
-#import "DetailProductViewController.h"
 
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"

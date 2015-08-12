@@ -108,6 +108,8 @@
     productController.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:productController animated:YES];
+}
+
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {

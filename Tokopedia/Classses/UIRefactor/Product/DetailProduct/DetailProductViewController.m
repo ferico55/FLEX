@@ -75,12 +75,14 @@
 #import "LoginViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
+#import "NavigateViewController.h"
 
 #import "MyShopEtalaseFilterViewController.h"
 #import "NoResultView.h"
 #import "RequestMoveTo.h"
 #import "WebViewController.h"
 #import "EtalaseList.h"
+#import "TAGDataLayer.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -187,7 +189,11 @@ UIAlertViewDelegate
     RequestMoveTo *_requestMoveTo;
     UIImage *_tempFirstThumb;
     TAGContainer *_gtmContainer;
+    NavigateViewController *_TKPDNavigator;
     
+    NSString *_detailProductBaseUrl;
+    NSString *_detailProductPostUrl;
+    NSString *_detailProductFullUrl;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -235,6 +241,8 @@ UIAlertViewDelegate
     BOOL hasSetTokoTutup;
     NSString *_formattedProductDescription;
     NSString *_formattedProductTitle;
+    
+    NSArray *_constraint;
 }
 
 @synthesize data = _data;
@@ -273,6 +281,9 @@ UIAlertViewDelegate
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+    _TKPDNavigator = [NavigateViewController new];
+    
+    _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
     // GTM
     [self configureGTM];
@@ -323,6 +334,7 @@ UIAlertViewDelegate
     
     //_table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
+    [_table setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     
     _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
     
@@ -1959,6 +1971,12 @@ UIAlertViewDelegate
             float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 8 + tempHeight);
             _table.tableHeaderView = _header;
+        } else if ([_product.result.product.product_status intValue] ==PRODUCT_STATE_WAREHOUSE) {
+            [viewContentWarehouse removeConstraints:_constraint];
+            [viewContentWarehouse addConstraint:constraintHeightWarehouse];
+            [viewContentWarehouse setHidden:NO];
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+            _table.tableHeaderView = _header;
         }
         
         _table.tableHeaderView = _header;
@@ -1973,7 +1991,7 @@ UIAlertViewDelegate
 
 - (void)unsetWarehouse {
     [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
-    [viewContentWarehouse addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)]];
+    [viewContentWarehouse addConstraints:_constraint];
     viewContentWarehouse.hidden = YES;
     _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
     _table.tableHeaderView = _header;
@@ -2229,9 +2247,7 @@ UIAlertViewDelegate
 {
     OtherProduct *product = _otherProductObj[index];
     if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
-        DetailProductViewController *vc = [DetailProductViewController new];
-        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id};
-        [self.navigationController pushViewController:vc animated:YES];
+        [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.result.shop_info.shop_name];
     }
 }
 
@@ -2442,7 +2458,7 @@ UIAlertViewDelegate
     NSString *productName = _formattedProductTitle?:@"";
     
     
-    CGRect labelCGRectFrame = CGRectMake(0, 0, 480, 44);
+    CGRect labelCGRectFrame = CGRectMake(self.navigationItem.titleView.frame.origin.x, 0, [UIScreen mainScreen].bounds.size.width, 44);
     MarqueeLabel *productLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:6.0 andFadeLength:10.0f];
     
     

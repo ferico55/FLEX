@@ -674,7 +674,8 @@
 
 - (void)tapProduct {
     if(![_review.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![_review.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
-        [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+//        [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+        [_navigateController navigateToProductFromViewController:self withName:_review.review_product_name withPrice:nil withId:_review.review_product_id withImageurl:_review.review_product_image withShopName:nil];
     }
 }
 

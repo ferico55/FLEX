@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 #import "CMPopTipView.h"
 #import "detail.h"
-#import "DetailProductViewController.h"
 #import "DetailMyReviewReputationViewController.h"
 #import "DetailReputationReview.h"
 #import "GeneralAction.h"
@@ -34,6 +33,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
+#import "NavigateViewController.h"
 
 #define CStringLimitText @"Panjang pesan harus lebih besar dari 5 karakter"
 #define CStringSuccessSentComment @"Anda berhasil memberikan komentar"
@@ -55,6 +55,7 @@
     TAGContainer *_gtmContainer;
     NSString *baseActionUrl;
     NSString *postActionUrl;
+    NavigateViewController *_TKPDNavigator;
 
     
     __block NSTimer *_timer;
@@ -71,6 +72,7 @@
     [self initNavigation];
     btnSend.layer.cornerRadius = 5.0f;
     btnSend.layer.masksToBounds = isSuccessSentMessage = YES;
+    _TKPDNavigator = [NavigateViewController new];
     
     growTextView.isScrollable = NO;
     growTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -362,12 +364,8 @@
 }
 
 - (void)goToDetailProduct:(id)sender {
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
+    [_TKPDNavigator navigateToProductFromViewController:self withName:_detailReputaitonReview.product_name withPrice:nil withId:_detailReputaitonReview.product_id withImageurl:_detailReputaitonReview.product_image withShopName:_detailReputaitonReview.shop_name];
     
-    DetailProductViewController *detailProductViewController = [DetailProductViewController new];
-    detailProductViewController.data = @{@"product_id" : (_detailReputaitonReview==nil? _reviewList.review_product_id:_detailReputaitonReview.product_id), kTKPD_AUTHKEY:auth?:[NSNull null]};
-    [self.navigationController pushViewController:detailProductViewController animated:YES];
 }
 
 - (void)actionVote:(id)sender

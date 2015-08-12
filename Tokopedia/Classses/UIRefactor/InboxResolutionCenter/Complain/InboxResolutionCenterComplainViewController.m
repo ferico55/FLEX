@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import "CMPopTipView.h"
-#import "DetailProductViewController.h"
 #import "string_inbox_message.h"
 #import "NavigateViewController.h"
 

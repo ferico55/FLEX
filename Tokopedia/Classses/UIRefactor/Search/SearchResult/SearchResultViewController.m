@@ -373,7 +373,7 @@ UICollectionViewDelegateFlowLayout
         
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [navigateController navigateToProductFromViewController:self withProductID:product.product_id];        
+        [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
     }
 
 }

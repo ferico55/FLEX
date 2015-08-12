@@ -11,7 +11,6 @@
 #import "detail.h"
 
 #import "HistoryProductViewController.h"
-#import "DetailProductViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
 #import "NavigateViewController.h"

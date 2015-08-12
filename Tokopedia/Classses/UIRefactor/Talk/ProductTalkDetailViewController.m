@@ -808,9 +808,10 @@
 
 - (void)tapProduct {
     if([[_data objectForKey:@"talk_product_status"] isEqualToString:@"1"]) {
-        DetailProductViewController *vc = [DetailProductViewController new];
-        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
-        [self.navigationController pushViewController:vc animated:YES];
+//        DetailProductViewController *vc = [DetailProductViewController new];
+//        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
+//        [self.navigationController pushViewController:vc animated:YES];
+        [_navigateController navigateToProductFromViewController:self withName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME] withPrice:nil withId:[_data objectForKey:TKPD_TALK_PRODUCT_ID] withImageurl:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE] withShopName:nil];
     }
 }
 

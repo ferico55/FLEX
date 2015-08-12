@@ -132,6 +132,7 @@ TokopediaNetworkManagerDelegate
     __weak RKManagedObjectRequestOperation *_requestDelete;
     
     TokopediaNetworkManager *_networkManager;
+    NavigateViewController *_TKPDNavigator;
     
     NSOperationQueue *_operationQueue;
     NSOperationQueue *_operationUnfollowQueue;
@@ -193,6 +194,7 @@ TokopediaNetworkManagerDelegate
     
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
+    _TKPDNavigator = [NavigateViewController new];
     
     _operationQueue = [NSOperationQueue new];
     _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
@@ -385,9 +387,9 @@ TokopediaNetworkManagerDelegate
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NavigateViewController *navigateController = [NavigateViewController new];
     List *product = [_product objectAtIndex:indexPath.row];
-    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+
+    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -676,11 +678,8 @@ TokopediaNetworkManagerDelegate
     
     List *list = _product[index];
     
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
-    
-    [self.navigationController pushViewController:vc animated:YES];
-}
+    [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
+    }
 
 #pragma mark - Keyboard
 - (void)keyboardWillShow:(NSNotification *)info {
