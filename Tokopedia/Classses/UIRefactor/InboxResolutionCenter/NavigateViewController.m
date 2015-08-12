@@ -102,6 +102,13 @@
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)navigateToProductFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = data;
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
+
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {

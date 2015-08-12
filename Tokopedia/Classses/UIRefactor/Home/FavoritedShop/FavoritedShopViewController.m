@@ -19,21 +19,29 @@
 #import "ShopContainerViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "PromoRequest.h"
+#import "PromoInfoAlertView.h"
+#import "WebViewController.h"
 
 #define CTagFavoriteButton 11
 #define CTagRequest 234
 
-@interface FavoritedShopViewController ()<UITableViewDataSource, UITableViewDelegate, FavoritedShopCellDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+@interface FavoritedShopViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    FavoritedShopCellDelegate,
+    TokopediaNetworkManagerDelegate,
+    LoadingViewDelegate,
+    TKPDAlertViewDelegate,
+    PromoRequestDelegate
+>
 {
     BOOL _isnodata;
     BOOL _isrefreshview;
     NSString *strTempShopID, *strUserID;
     
     NSOperationQueue *_operationQueue;
-    NSMutableArray *_shop;
-    NSMutableArray *_goldshop;
-    NSMutableDictionary *_shopdictionary;
-    NSArray *_shopdictionarytitle;
     NSInteger _page;
     NSInteger _limit;
     NSInteger _requestcount;
@@ -49,7 +57,7 @@
     UIRefreshControl *_refreshControl;
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *tokopediaNetworkManager;
-    
+    PromoRequest *_promoRequest;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -58,8 +66,13 @@
 @property (strong, nonatomic) IBOutlet UITableView *table;
 
 @property (nonatomic, strong) NSMutableArray *shop;
-@property (nonatomic, strong) NSMutableArray *goldshop;
-@property (nonatomic, strong) NSDictionary *shopdictionary;
+@property (nonatomic, strong) NSMutableArray *promoShops;
+
+@property (strong, nonatomic) NSMutableArray *promo;
+
+@property (strong, nonatomic) IBOutlet UIView *topAdsHeaderView;
+@property (strong, nonatomic) IBOutlet UIView *shopHeaderView;
+
 @end
 
 @implementation FavoritedShopViewController
@@ -72,8 +85,7 @@
     
     /** create new **/
     _shop = [NSMutableArray new];
-    _goldshop = [NSMutableArray new];
-    _shopdictionary = [NSMutableDictionary new];
+    _promoShops = [NSMutableArray new];
     
     /** set first page become 1 **/
     _page = 1;
@@ -86,7 +98,6 @@
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
-    //    [self setHeaderData:_goldshop];
     [_act startAnimating];
     
     tokopediaNetworkManager = [TokopediaNetworkManager new];
@@ -94,7 +105,7 @@
     
     [self setTableInset];
     
-    if (_shop.count + _goldshop.count > 0) {
+    if (_shop.count > 0) {
         _isnodata = NO;
     }
     
@@ -110,21 +121,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
     if (!_isrefreshview) {
-        [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self request];
             objLoadData = [NSObject new];
         }
     }
-    
-    _table.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 0)];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.screenName = @"Home - Favorite Shop";
-
     
     //Check login with different id
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -134,25 +135,25 @@
     if(! [strUserID isEqualToString:[NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]]]) {
         strUserID = [NSString stringWithFormat:@"%@", [_auth objectForKey:kTKPD_USERIDKEY]];
         _shop = [NSMutableArray new];
-        _goldshop = [NSMutableArray new];
-        _shopdictionary = [NSMutableDictionary new];
         _isnodata = YES;
         _urinext = nil;
         _page = 1;
     }
     
-    
-
     if(objLoadData == nil) {
         _page = 1;
         _isrefreshview = NO;
         _urinext = nil;
-        [self configureRestKit];
         [self request];
     }
     else {
         objLoadData = nil;
     }
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.screenName = @"Home - Favorite Shop";
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -166,11 +167,7 @@
 }
 
 - (void) setTableInset {
-    if([[UIScreen mainScreen]bounds].size.height >= 568) {
-        _table.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
-    } else {
-        _table.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
-    }
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 200, 0);
 }
 
 #pragma mark - Initialization
@@ -195,11 +192,9 @@
 {
     NSInteger rows = 0;
     if (section == 0) {
-        // Gold shops
-        rows = [_goldshop count];
-    } else {
-        // Normal shops
-        rows = [_shop count];
+        rows = _promoShops.count;
+    } else if (section == 1) {
+        rows = _shop.count;
     }
     return rows;
 }
@@ -215,44 +210,41 @@
             ((FavoritedShopCell*)cell).delegate = self;
         }
         
+        NSArray *shops;
+        if (indexPath.section == 0) {
+            shops = _promoShops;
+        } else {
+            shops = _shop;
+        }
+        FavoritedShopList *shop = shops[indexPath.row];
         
-        //if (_shop.count > indexPath.row ) {
-            NSArray *shops;
-            if (indexPath.section == 0) {
-                shops = _goldshop;
-            } else {
-                shops = _shop;
-            }
-            FavoritedShopList *shop = shops[indexPath.row];
-            
-            ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
-            ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
-            
-            if (indexPath.section == 0) {
-                [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-            } else {
-                [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
-            }
-            
-            ((FavoritedShopCell*)cell).indexpath = indexPath;
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image?:nil]
-                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            
-            UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
-            thumb.image = nil;
-            
-            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
+        ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
+        
+        if (indexPath.section == 0) {
+            [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+        } else {
+            [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
+        }
+        
+        ((FavoritedShopCell*)cell).indexpath = indexPath;
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image?:nil]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
+        thumb.image = nil;
+        
+        [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
+            [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
-            } failure:nil];
-        //}
-        
+        } failure:nil];
         
         return cell;
+
     } else {
         static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
         
@@ -269,25 +261,46 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (_shop.count + _goldshop.count > 0) {
-        return 33;
-    } else {
-        return 0;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    CGFloat height = 0;
+    if (section == 0) {
+        if (_promoShops.count > 0) {
+            height = 40;
+        } else if (_promoShops.count == 0 && _shop.count > 0) {
+            height = 40;
+        }
+    } else if (section == 1) {
+        if (_shop.count > 0) {
+            height = 40;
+        }
     }
+    return height;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    CGFloat height = 0;
+    if (section == 0) {
+        if (_promoShops.count > 0) {
+            height = 30;
+        } else if (_promoShops.count == 0 && _shop.count > 0) {
+            height = 40;
+        }
+    } else if (section == 1) {
+        if (_shop.count > 0) {
+            height = 40;
+        }
+    }
+    return height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
-    [view setBackgroundColor:tableView.backgroundColor];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
-    [label setFont:[UIFont fontWithName:@"GothamBook" size:15]];
-    [label setTextColor:[UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1]];
-    label.text = [_shopdictionarytitle objectAtIndex:section];
-    [view addSubview:label];
-    return view;
+    if (section == 0 && _promoShops.count > 0) {
+        return _topAdsHeaderView;
+    } else if (section == 1 && _shop.count > 0){
+        return _shopHeaderView;
+    }
+    return nil;
 }
 
 #pragma mark - Table View Delegate
@@ -297,26 +310,24 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
     
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    
-    if (row == indexPath.row) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            [self configureRestKit];
-            [self request];
+    if (_shop.count > 0 && indexPath.section == 1) {
+        NSInteger row = [self tableView:tableView numberOfRowsInSection:1] - 1;
+        if (row == indexPath.row) {
+            if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+                [self request];
+            }
         }
     }
 }
 
 
--(void) removeFavoritedRow:(NSIndexPath*)indexpath{
+-(void)removeFavoritedRow:(NSIndexPath*)indexpath{
     is_already_updated = YES;
-    
     if(indexpath.section == 0) {
+        FavoritedShopList *list = _promoShops[indexpath.row];
         
-        FavoritedShopList *list = _goldshop[indexpath.row];
-        
-        [_shop insertObject:_goldshop[indexpath.row] atIndex:0];
-        [_goldshop removeObjectAtIndex:indexpath.row];
+        [_shop insertObject:_promoShops[indexpath.row] atIndex:0];
+        [_promoShops removeObjectAtIndex:indexpath.row];
         
         NSArray *insertIndexPaths = [NSArray arrayWithObjects:
                                      [NSIndexPath indexPathForRow:0 inSection:1],nil
@@ -326,33 +337,19 @@
                                      [NSIndexPath indexPathForRow:indexpath.row inSection:0], nil
                                      ];
         
-        [self configureRestkitFav];
         [self pressFavoriteAction:list.shop_id withIndexPath:indexpath];
-        
-        
         
         [_table beginUpdates];
         [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
         [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
         [_table endUpdates];
         
-        
-        if(_goldshop.count < 2) {
+        if(_promoShops.count < 2) {
             NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
             [section addIndex:0];
             [_table reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
         }
-    } else {
-        //        [_shop removeObjectAtIndex:indexpath.row];
     }
-    
-    //TODO ini animation nya masih jelek, yg bagus malah bikin bugs, checkthisout later!!
-    //    [_table reloadData];
-    
-}
-
--(void) configureRestkitFav {
-    
 }
 
 -(void) pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
@@ -361,18 +358,9 @@
     [tokopediaNetworkManager doRequest];
 }
 
-
--(void) requestsuccessfav:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    //NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    //id info = [result objectForKey:@""];
-    
-}
-
--(void) requestfailurefav:(id)error{
-    
-    [_goldshop insertObject:_shop[0] atIndex:0];
+-(void) requestfailurefav:(id)error {
+    [_promoShops insertObject:_shop[0] atIndex:0];
     [_shop removeObjectAtIndex:0];
-    
     
     NSArray *insertIndexPaths = [NSArray arrayWithObjects:
                                  [NSIndexPath indexPathForRow:0 inSection:0],nil
@@ -391,10 +379,6 @@
 
 
 #pragma mark - Request + Mapping
--(void) configureRestKit {
-    
-    
-}
 
 -(void) request {
     if (tokopediaNetworkManager.getObjectRequest.isExecuting) return;
@@ -438,26 +422,11 @@
         if (status) {
             if(_page == 1) {
                 _shop = [favoritedshop.result.list mutableCopy];
-                _goldshop = [favoritedshop.result.list_gold mutableCopy];
             } else {
                 [_shop addObjectsFromArray: favoritedshop.result.list];
-//                [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
-            }
-            
-            _shopdictionary = [NSMutableDictionary new];
-            
-            if (_goldshop.count > 0) {
-                [_shopdictionary setObject:_goldshop forKey:@"a"];
             }
             
             if (_shop.count > 0) {
-                [_shopdictionary setObject:_shop forKey:@"b"];
-            }
-            
-            _shopdictionarytitle = @[@"Rekomendasi",@""];
-
-            
-            if (_shop.count + _goldshop.count >0) {
                 _isnodata = NO;
                 _urinext =  favoritedshop.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
@@ -477,55 +446,17 @@
                 _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
             } else {
                 _isnodata = YES;
-//                _table.tableFooterView = _noResult;
             }
             
-            
+            _promoRequest = [PromoRequest new];
+            _promoRequest.delegate = self;
+            [_promoRequest requestForShopFeed];
             
             if(_refreshControl.isRefreshing) {
                 [_refreshControl endRefreshing];
-                [_table reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
-            } else  {
-                [_table reloadData];
             }
-
-            //
-//            [_shop addObjectsFromArray: favoritedshop.result.list];
-//            if(!is_already_updated && _page == 1) {
-//                [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
-//            }
-//            
-//            _shopdictionary = [NSMutableDictionary new];
-//            
-//            if (_goldshop.count > 0) {
-//                [_shopdictionary setObject:_goldshop forKey:@"a"];
-//            }
-//            
-//            if (_shop.count > 0) {
-//                [_shopdictionary setObject:_shop forKey:@"b"];
-//            }
-//            
-//            _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
-//            
-//            if (_shop.count + _goldshop.count > 0) {
-//                _isnodata = NO;
-//                _urinext =  favoritedshop.result.paging.uri_next;
-//                NSURL *url = [NSURL URLWithString:_urinext];
-//                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-//                
-//                NSMutableDictionary *queries = [NSMutableDictionary new];
-//                [queries removeAllObjects];
-//                for (NSString *keyValuePair in querry)
-//                {
-//                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-//                    NSString *key = [pairComponents objectAtIndex:0];
-//                    NSString *value = [pairComponents objectAtIndex:1];
-//                    
-//                    [queries setObject:value forKey:key];
-//                }
-//                
-//                _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
-//            }
+            
+            [_table reloadData];
         }
         else{
             
@@ -538,15 +469,11 @@
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
+                } else {
                     [_act stopAnimating];
                     _table.tableFooterView = nil;
                 }
-            }
-            else
-            {
+            } else {
                 [_act stopAnimating];
                 _table.tableFooterView = nil;
             }
@@ -566,35 +493,31 @@
 
 
 #pragma mark - Delegate
--(void)FavoritedShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview
-{
-    NSInteger section = indexpath.section;
-    FavoritedShopList *list;
+-(void)FavoritedShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview {
+
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     
-    if(section == 0) {
-        list = _goldshop[indexpath.row];
+    if (indexpath.section == 0 && _promoShops.count > 0) {
+        PromoShop *shop = [_promoShops objectAtIndex:indexpath.row];
+        container.data = @{
+                           kTKPDDETAIL_APISHOPIDKEY:shop.shop_id?:@0,
+                           kTKPDDETAIL_APISHOPNAMEKEY:shop.shop_name?:@"",
+                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                           PromoImpressionKey          : shop.ad_key,
+                           PromoSemKey                 : shop.ad_sem_key,
+                           PromoReferralKey            : shop.ad_r
+                           };
+
     } else {
-        list = _shop[indexpath.row];
+        FavoritedShopList *shop = [_shop objectAtIndex:indexpath.row];
+        container.data = @{
+                           kTKPDDETAIL_APISHOPIDKEY:shop.shop_id?:@0,
+                           kTKPDDETAIL_APISHOPNAMEKEY:shop.shop_name?:@"",
+                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                           };
     }
     
-    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@0,
-                       kTKPDDETAIL_APISHOPNAMEKEY:list.shop_name?:@"",
-                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                       };
     [self.navigationController pushViewController:container animated:YES];
-    //
-    //Check Difference userID
-    //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    //    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-    //    shopViewController.data = @{
-    //                                kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
-    //                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-    //                                @"is_dismissed" : @YES
-    //                                };
-    //
-    //    [self.delegate pushViewController:shopViewController];
-    
 }
 
 
@@ -602,23 +525,21 @@
 {
     [self cancel];
     /** clear object **/
-//    [_shop removeAllObjects];
-//    [_goldshop removeAllObjects];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
     is_already_updated = NO;
     
-//    [_table reloadData];
     _table.tableFooterView = nil;
     /** request data **/
-    [self configureRestKit];
     [self request];
+    
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
+    [_promoRequest requestForShopFeed];
 }
 
 -(void)cancel {
-//    [_request cancel];
-//    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
@@ -753,9 +674,7 @@
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
-    if(tag == CTagFavoriteButton)
-    {
-        [self requestsuccessfav:successResult withOperation:operation];
+    if(tag == CTagFavoriteButton) {
         [_act stopAnimating];
         _table.tableFooterView = nil;
         [_table reloadData];
@@ -763,9 +682,7 @@
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-    }
-    else
-    {
+    } else {
         [self requestsuccess:successResult withOperation:operation];
         [_act stopAnimating];
         _table.tableFooterView = nil;
@@ -779,55 +696,34 @@
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
-    if(tag == CTagFavoriteButton)
-    {
+    if(tag == CTagFavoriteButton) {
         /** failure **/
         [self requestfailurefav:errorResult];
-        //[_act stopAnimating];
         _table.tableFooterView = nil;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-    }
-    else
-    {
+    } else {
         /** failure **/
         [self requestfailure:errorResult];
-        //[_act stopAnimating];
-//        _table.tableFooterView = nil;
-//        _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
     }
 }
 
-- (void)actionBeforeRequest:(int)tag
-{}
-
-- (void)actionRequestAsync:(int)tag
-{}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
-    if(tag == CTagFavoriteButton)
-    {
-    }
-    else
-    {
-        if(loadingView == nil)
-        {
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    if(tag != CTagFavoriteButton) {
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        if(loadingView == nil) {
             loadingView = [LoadingView new];
             loadingView.delegate = self;
         }
-    
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
         _table.tableFooterView = loadingView.view;
     }
 }
-
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton
@@ -863,6 +759,31 @@
     [tokopediaNetworkManager requestCancel];
     tokopediaNetworkManager.delegate = nil;
     tokopediaNetworkManager = nil;
+}
+
+#pragma mark - Actions
+
+- (IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIButton class]]) {
+        PromoInfoAlertView *alert = [PromoInfoAlertView newview];
+        alert.delegate = self;
+        [alert show];
+    }
+}
+
+#pragma mark - Tkpd alert delegate
+
+- (void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.tokopedia.com/iklan"]];
+    }
+}
+
+#pragma mark - Promo request delegate
+
+- (void)didReceivePromo:(NSArray *)promo {
+    _promoShops = [NSMutableArray arrayWithArray:promo];
+    [_table reloadData];
 }
 
 @end
