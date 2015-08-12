@@ -2551,7 +2551,7 @@ UIAlertViewDelegate
     float widthOtherProductView = (_otherproductscrollview.frame.size.width-(10*3))/count;
     constraintHeightScrollOtherView.constant = widthOtherProductView + (widthOtherProductView/count);
     otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/count);
-    int x = ([UIScreen mainScreen].bounds.size.width/320 * 10);
+    int x = 10;
     for(int i = 0; i< _otherProductObj.count; i++)
     {
         TheOtherProductList *product = _otherProductObj[i];
@@ -2560,9 +2560,9 @@ UIAlertViewDelegate
         
 //        x += 10 + v.bounds.size.width;
         [v setFrame:CGRectMake(x, 0, widthOtherProductView, (widthOtherProductView+(widthOtherProductView/count)))];
-        x += widthOtherProductView+([UIScreen mainScreen].bounds.size.width/320 * 10);
-//        NSInteger countInt = (int)count;
-//        x += (i%countInt==1&&i<(_otherProductObj.count-1)? 10 : 0);
+        x += widthOtherProductView+10;
+        NSInteger countInt = (int)count;
+        x += (i%countInt==1&&i<(_otherProductObj.count-1)? 10 : 0);
         v.delegate = self;
         v.index = i;
         [v.act startAnimating];
