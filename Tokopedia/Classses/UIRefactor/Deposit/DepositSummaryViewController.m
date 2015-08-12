@@ -263,7 +263,7 @@
         if (_page && _page != 0) {
             [self loadData];
         } else {
-            _table.tableFooterView = nil;
+            _table.tableFooterView = [UIView new];
             [_act stopAnimating];
         }
     }
@@ -292,7 +292,7 @@
         [_act startAnimating];
     }
     else{
-        _table.tableFooterView = nil;
+        _table.tableFooterView = [UIView new];
         [_act stopAnimating];
     }
     
@@ -347,6 +347,8 @@
                     newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
                     _infoReviewSaldo.frame = newFrame4;
                     
+                    constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height-2;
+                    constraintHeightHeader.constant = constraintHeightHeader.constant +_infoReviewSaldo.frame.size.height-2;
                 }
             }
             
