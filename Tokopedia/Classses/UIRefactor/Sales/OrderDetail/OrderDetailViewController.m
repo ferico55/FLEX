@@ -456,7 +456,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     DetailProductViewController *controller = [DetailProductViewController new];
-    controller.data = @{@"product_id":[[_transaction.order_products objectAtIndex:indexPath.row] product_id]};
+    controller.data = @{@"product_id":[[_transaction.order_products objectAtIndex:indexPath.section] product_id]};
     [self.navigationController pushViewController:controller animated:YES];
 }
 
