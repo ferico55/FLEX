@@ -335,8 +335,8 @@
         [self goToInboxTalk];
     } else if (code == STATE_NEW_ORDER) {
         [self goToNewOrder];
-    } else if (code == STATE_NEW_REVIEW ||
-               code == STATE_EDIT_REVIEW ||
+    } else if (code == STATE_NEW_REPSYS ||
+               code == STATE_EDIT_REPSYS ||
                code == STATE_REPLY_REVIEW) {
         [self goToInboxReview];
     }

@@ -621,13 +621,18 @@
 - (void)actionInvoice:(id)sender
 {
     if(! isRefreshing) {
-        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-        
-        if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-            WebViewController *webViewController = [WebViewController new];
-            webViewController.strURL = tempObj.invoice_uri;
-            webViewController.strTitle = @"";
-            [self.navigationController pushViewController:webViewController animated:YES];
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
+        }
+        else {
+            DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+            
+            if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
+                WebViewController *webViewController = [WebViewController new];
+                webViewController.strURL = tempObj.invoice_uri;
+                webViewController.strTitle = @"";
+                [self.navigationController pushViewController:webViewController animated:YES];
+            }
         }
     }
 }

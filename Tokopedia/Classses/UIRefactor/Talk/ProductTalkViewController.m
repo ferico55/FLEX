@@ -218,6 +218,10 @@
 #endif
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return tableView.rowHeight;
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
@@ -233,7 +237,9 @@
             ((GeneralTalkCell*)cell).userButton.userInteractionEnabled = YES;
             [((GeneralTalkCell*)cell).userButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(tap:)]];
             [((GeneralTalkCell*)cell) hiddenViewProduct];
+            ((GeneralTalkCell*)cell).productViewIsHidden = YES;
 		}
+
         
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
@@ -296,7 +302,6 @@
             } else {
                 ((GeneralTalkCell*)cell).moreActionButton.hidden = YES;
             }
-            ((GeneralTalkCell*)cell).productViewIsHidden = YES;
             ((GeneralTalkCell*)cell).messageLabel.hidden = NO;
             ((GeneralTalkCell*)cell).messageLabel.text = list.talk_message;
             ((GeneralTalkCell*)cell).indexpath = indexPath;

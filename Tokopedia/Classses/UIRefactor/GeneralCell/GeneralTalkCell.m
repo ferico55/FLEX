@@ -272,5 +272,6 @@
 
 - (void)hiddenViewProduct {
     constHeightProduct.constant = 0;
+    constHeightContentView.constant = 128;
 }
 @end

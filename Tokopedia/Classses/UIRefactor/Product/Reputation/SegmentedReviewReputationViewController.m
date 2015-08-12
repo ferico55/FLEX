@@ -7,6 +7,7 @@
 //
 #import "MyReviewReputationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
+#import "SplitReputationViewController.h"
 #define CInboxReputation @"inbox-reputation"
 #define CInboxReputationMyProduct @"inbox-reputation-my-product"
 #define CInboxReputationMyReview @"inbox-reputation-my-review"
@@ -27,13 +28,28 @@
     [super viewDidLoad];
     [self initNavigation];
     selectedFilter = CTagSemuaReview;
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+        
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        self.navigationItem.leftBarButtonItem = barButton;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     if(viewContent.subviews.count == 0) {
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+        
         [viewContent setNeedsLayout];
         [viewContent layoutIfNeeded];
+        
+        segmentedControl.selectedSegmentIndex = _selectedIndex;
         [self actionValueChange:segmentedControl];
     }
 }
@@ -54,6 +70,11 @@
 */
 
 #pragma mark - Method
+- (void)tapBackButton:(id)sender
+{
+    [_splitVC.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)initNavigation
 {
     btnTitle = [UIButton buttonWithType:UIButtonTypeCustom];

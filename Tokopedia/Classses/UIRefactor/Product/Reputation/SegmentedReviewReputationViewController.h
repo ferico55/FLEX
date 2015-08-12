@@ -14,7 +14,7 @@
 #define CTagSemuaReview @"all"
 #define CTagBelumDibaca @"unread"
 #define CtagBelumDireviw @"unassessed"
-@class MyReviewReputationViewController;
+@class MyReviewReputationViewController, SplitReputationViewController;
 
 @interface SegmentedReviewReputationViewController : UIViewController
 {
@@ -23,6 +23,9 @@
     IBOutlet UIButton *btnAllReview, *btnBelumDibaca, *btnBelumDireview;
     IBOutlet NSLayoutConstraint *constTopCheckList;
 }
+
+@property (nonatomic, unsafe_unretained) SplitReputationViewController *splitVC;
+@property (nonatomic) int selectedIndex;
 
 - (NSString *)getSelectedFilter;
 - (IBAction)actionReview:(id)sender;

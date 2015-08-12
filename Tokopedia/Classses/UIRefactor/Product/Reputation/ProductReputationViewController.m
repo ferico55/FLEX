@@ -1144,7 +1144,10 @@
         [dictFilter setObject:@"get_product_review" forKey:@"action"];
         [dictFilter setObject:_strShopDomain forKey:@"shop_domain"];
         [dictFilter setObject:_strProductID forKey:@"product_id"];
-        [dictFilter setObject:(btnFilterAllTime.tag==1? @(0):@(1)) forKey:@"month_range"];
+        
+        if(btnFilter6Month.tag == 1) {
+            [dictFilter setObject:@(6) forKey:@"month_range"];
+        }
         [dictFilter setObject:@(page) forKey:@"page"];
         
         if((int)segmentedControl.selectedSegmentIndex==0 && filterStar>0) {//Quality
@@ -1217,7 +1220,7 @@
                                                                        CReviewRateProductDesc:CReviewRateProductDesc,
                                                                        CReviewRateSpeedDesc:CReviewRateSpeedDesc,
                                                                        CReviewShopID:CShopID,
-                                                                        @"review_rate_reputation_id":CReputationID,
+                                                                        @"review_reputation_id":CReputationID,
                                                                        CReviewUserImage:CReviewUserImage,
                                                                        CReviewUserLabel:CReviewUserLabel,
                                                                        CReviewCreateTime:CReviewCreateTime,

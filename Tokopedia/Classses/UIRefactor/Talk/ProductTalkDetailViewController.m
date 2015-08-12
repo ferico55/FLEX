@@ -7,6 +7,7 @@
 //
 
 #define CHeightUserLabel 21
+#import "Tkpd.h"
 #import "ShopReputation.h"
 #import "CMPopTipView.h"
 #import "ReputationDetail.h"
@@ -60,6 +61,7 @@
     NSMutableDictionary *_datainput;
     NSString *_savedComment;
     CMPopTipView *cmPopTitpView;
+    NSMutableDictionary *dictCell;
 
     NSInteger _requestcount;
     __weak RKObjectManager *_objectmanager;
@@ -165,6 +167,12 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        _table.estimatedRowHeight = 44;
+        _table.rowHeight = UITableViewAutomaticDimension;
+    }
+    
     // Do any additional setup after loading the view from its nib.
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     self.view.frame = screenRect;
@@ -293,17 +301,21 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellid = kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER;
-    GeneralTalkCommentCell *cell = (GeneralTalkCommentCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    TalkCommentList *list = _list[indexPath.row];
+
+    GeneralTalkCommentCell *cell = [dictCell objectForKey:list.comment_id==nil? @"-1":list.comment_id];
     if (cell == nil) {
-        cell = [GeneralTalkCommentCell newcell];
-        ((GeneralTalkCommentCell*)cell).delegate = self;
-        ((GeneralTalkCommentCell*)cell).del = self;
-        [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
+        NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"GeneralTalkCommentCell" owner:nil options:0];
+        cell = [tempArr objectAtIndex:0];
+        
+        if(dictCell == nil) {
+            dictCell = [NSMutableDictionary new];
+        }
+        
+        [dictCell setObject:cell forKey:list.comment_id==nil? @"-1":list.comment_id];
     }
 
     
-    TalkCommentList *list = _list[indexPath.row];
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
     NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 5.0f;
@@ -372,7 +384,7 @@
                 [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
             }
             else {
-                if(list.comment_user_reputation.no_reputation!=nil && [list.comment_user_reputation.no_reputation isEqualToString:@"1"]) {
+                if(list.comment_user_reputation==nil || (list.comment_user_reputation.no_reputation!=nil && [list.comment_user_reputation.no_reputation isEqualToString:@"1"])) {
                     [((GeneralTalkCommentCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
                     [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
                 }
@@ -1155,6 +1167,9 @@
             commentlist.comment_id = commentaction.result.comment_id;
             commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
             
+            if([dictCell objectForKey:@"-1"]) //-1 is keyword for temporay where ui need display first after send message
+                [dictCell removeObjectForKey:@"-1"];
+            
             NSDictionary *userinfo;
             userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
             
@@ -1218,7 +1233,7 @@
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     
     // get a rect for the textView frame
-    self.view.backgroundColor = [UIColor clearColor];
+//    self.view.backgroundColor = [UIColor clearColor];
     CGRect containerFrame = self.view.frame;
     
     containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;

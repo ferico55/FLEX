@@ -243,6 +243,7 @@
                             <constraint firstItem="vha-Ji-1ch" firstAttribute="leading" secondItem="hGR-0U-1Pc" secondAttribute="leading" id="qXm-IR-zF8"/>
                             <constraint firstItem="0fc-in-38T" firstAttribute="leading" secondItem="hGR-0U-1Pc" secondAttribute="leading" id="qdH-Dw-d33"/>
                             <constraint firstAttribute="trailing" secondItem="RLW-fv-Vyh" secondAttribute="trailing" id="yQr-hv-w3z"/>
+                            <constraint firstAttribute="height" constant="217" id="yk3-HO-wi5"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -261,6 +262,7 @@
                 <outlet property="buttonsView" destination="RLW-fv-Vyh" id="wSd-Jr-hve"/>
                 <outlet property="commentbutton" destination="XgT-YB-IIV" id="aX2-2Y-94T"/>
                 <outlet property="commentlabel" destination="h7v-ML-7J6" id="PEi-30-YfB"/>
+                <outlet property="constHeightContentView" destination="yk3-HO-wi5" id="mpW-6R-0gB"/>
                 <outlet property="constHeightProduct" destination="diV-Aw-lPH" id="ZRO-0K-Ony"/>
                 <outlet property="middleView" destination="vha-Ji-1ch" id="IF0-QP-k4I"/>
                 <outlet property="moreActionButton" destination="a6p-Q1-IF0" id="w2J-J7-03Z"/>

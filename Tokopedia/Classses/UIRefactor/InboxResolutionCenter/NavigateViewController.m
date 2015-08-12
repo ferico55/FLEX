@@ -13,6 +13,7 @@
 #import "WebViewInvoiceViewController.h"
 #import "ShopContainerViewController.h"
 #import "string_more.h"
+#import "SegmentedReviewReputationViewController.h"
 #import "UserContainerViewController.h"
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
@@ -27,6 +28,7 @@
 #import "InboxTalkSplitViewController.h"
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
+#import "SplitReputationViewController.h"
 
 #import "InboxReviewSplitViewController.h"
 #import "InboxReviewViewController.h"
@@ -36,8 +38,13 @@
 #import "InboxResolSplitViewController.h"
 
 #import "ProductImages.h"
+@interface NavigateViewController()<SplitReputationVcProtocol>
 
-@implementation NavigateViewController
+@end
+
+@implementation NavigateViewController {
+    UISplitViewController *splitViewController;
+}
 -(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
@@ -160,27 +167,40 @@
 -(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
-        [viewController.navigationController pushViewController:controller animated:YES];
+//        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+//        [viewController.navigationController pushViewController:controller animated:YES];
+        
+        splitViewController = [UISplitViewController new];
+        
+        SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+        splitReputationViewController.splitViewController = splitViewController;
+        splitReputationViewController.del = self;
+        [viewController.navigationController pushViewController:splitReputationViewController animated:YES];
         
     } else {
-        InboxReviewViewController *vc = [InboxReviewViewController new];
-        vc.data=@{@"nav":@"inbox-review"};
+        SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+        segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+        segmentedReputationViewController.selectedIndex = CTagReviewSaya;
+        [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
         
-        InboxReviewViewController *vc1 = [InboxReviewViewController new];
-        vc1.data=@{@"nav":@"inbox-review-my-product"};
         
-        InboxReviewViewController *vc2 = [InboxReviewViewController new];
-        vc2.data=@{@"nav":@"inbox-review-following"};
-        
-        NSArray *vcs = @[vc,vc1, vc2];
-        
-        TKPDTabInboxReviewNavigationController *controller = [TKPDTabInboxReviewNavigationController new];
-        [controller setSelectedIndex:2];
-        [controller setViewControllers:vcs];
-        controller.hidesBottomBarWhenPushed = YES;
-        
-        [viewController.navigationController pushViewController:controller animated:YES];
+//        InboxReviewViewController *vc = [InboxReviewViewController new];
+//        vc.data=@{@"nav":@"inbox-review"};
+//        
+//        InboxReviewViewController *vc1 = [InboxReviewViewController new];
+//        vc1.data=@{@"nav":@"inbox-review-my-product"};
+//        
+//        InboxReviewViewController *vc2 = [InboxReviewViewController new];
+//        vc2.data=@{@"nav":@"inbox-review-following"};
+//        
+//        NSArray *vcs = @[vc,vc1, vc2];
+//        
+//        TKPDTabInboxReviewNavigationController *controller = [TKPDTabInboxReviewNavigationController new];
+//        [controller setSelectedIndex:2];
+//        [controller setViewControllers:vcs];
+//        controller.hidesBottomBarWhenPushed = YES;
+//        
+//        [viewController.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -196,4 +216,9 @@
     }
 }
 
+
+#pragma mark - SplitViewReputation Delegate
+- (void)deallocVC {
+    splitViewController = nil;
+}
 @end

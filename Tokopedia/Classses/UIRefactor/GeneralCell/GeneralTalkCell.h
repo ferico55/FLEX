@@ -31,7 +31,7 @@
 #pragma mark - General Talk Cell
 @interface GeneralTalkCell : UITableViewCell
 {
-    IBOutlet NSLayoutConstraint *constHeightProduct;
+    IBOutlet NSLayoutConstraint *constHeightProduct, *constHeightContentView;
 }
 
 

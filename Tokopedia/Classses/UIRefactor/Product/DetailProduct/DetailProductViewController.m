@@ -1307,17 +1307,17 @@ UIAlertViewDelegate
         [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
         
         
-        RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
-        [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
-                                                                   CTwoDay:CTwoDay,
-                                                                   CThreeDay:CThreeDay,
-                                                                   CSpeedLevel:CSpeedLevel,
-                                                                   CBadge:CBadge,
-                                                                   CCountTotal:CCountTotal}];
+//        RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+//        [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+//                                                                   CTwoDay:CTwoDay,
+//                                                                   CThreeDay:CThreeDay,
+//                                                                   CSpeedLevel:CSpeedLevel,
+//                                                                   CBadge:CBadge,
+//                                                                   CCountTotal:CCountTotal}];
         
         // Relationship Mapping
         [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
-        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseFast toKeyPath:CResponseFast withMapping:responseSpeedMapping]];
+//        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseFast toKeyPath:CResponseFast withMapping:responseSpeedMapping]];
         
         [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
         

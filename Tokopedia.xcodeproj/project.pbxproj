@@ -16,6 +16,7 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		854A0DCB1B78B53C0089F842 /* SplitReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 854A0DCA1B78B53C0089F842 /* SplitReputationViewController.m */; };
 		857B51301B7061BB00AF052B /* ShopBadgeLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 857B512F1B7061BB00AF052B /* ShopBadgeLevel.m */; };
 		8598D40D1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8598D40C1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib */; };
 		85A5BCB11B749FD200CB2C68 /* SmileyAndMedal.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A5BCB01B749FD200CB2C68 /* SmileyAndMedal.m */; };
@@ -1774,6 +1775,8 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		854A0DC91B78B53C0089F842 /* SplitReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitReputationViewController.h; sourceTree = "<group>"; };
+		854A0DCA1B78B53C0089F842 /* SplitReputationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplitReputationViewController.m; sourceTree = "<group>"; };
 		857B512E1B7061BB00AF052B /* ShopBadgeLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopBadgeLevel.h; sourceTree = "<group>"; };
 		857B512F1B7061BB00AF052B /* ShopBadgeLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopBadgeLevel.m; sourceTree = "<group>"; };
 		8598D40C1B6F1A4C00A6875D /* ProductTalkDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkDetailViewController.xib; sourceTree = "<group>"; };
@@ -7124,6 +7127,8 @@
 				85C825F61B6B6B8600E40481 /* SegmentedReviewReputationViewController.m */,
 				85C825F71B6B6B8600E40481 /* SegmentedReviewReputationViewController.xib */,
 				85C825F81B6B6B8600E40481 /* String_Reputation.h */,
+				854A0DC91B78B53C0089F842 /* SplitReputationViewController.h */,
+				854A0DCA1B78B53C0089F842 /* SplitReputationViewController.m */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -11009,6 +11014,7 @@
 				85C82BCD1B6B6B8C00E40481 /* ReputationList.m in Sources */,
 				85C82AFF1B6B6B8C00E40481 /* AddressObj.m in Sources */,
 				85C82BC31B6B6B8C00E40481 /* NotificationForm.m in Sources */,
+				854A0DCB1B78B53C0089F842 /* SplitReputationViewController.m in Sources */,
 				85C82D901B6B6B8D00E40481 /* PriceAlertCell.m in Sources */,
 				85C82E1B1B6B6B8D00E40481 /* SearchResultCell.m in Sources */,
 				85C82C6B1B6B6B8D00E40481 /* UploadImageImage.m in Sources */,

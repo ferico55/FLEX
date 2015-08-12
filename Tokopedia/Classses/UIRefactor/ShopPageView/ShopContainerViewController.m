@@ -443,13 +443,13 @@
                                                     kTKPDSHOP_APIADDRESSKEY
                                                     ]];
     
-    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
-    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
-                                                                     CTwoDay:CTwoDay,
-                                                                     CThreeDay:CThreeDay,
-                                                                     CSpeedLevel:CSpeedLevel,
-                                                                     CBadge:CBadge,
-                                                                     CCountTotal:CCountTotal}];
+//    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+//    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+//                                                                     CTwoDay:CTwoDay,
+//                                                                     CThreeDay:CThreeDay,
+//                                                                     CSpeedLevel:CSpeedLevel,
+//                                                                     CBadge:CBadge,
+//                                                                     CCountTotal:CCountTotal}];
     
     // Relationship Mapping
     [ownerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:COwnerReputation toKeyPath:COwnerReputation withMapping:ownerReputationMapping]];
@@ -475,7 +475,7 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                   toKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                 withMapping:shopstatsMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
+//    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CRatings toKeyPath:CRatings withMapping:ratingMapping]];
     
     RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY

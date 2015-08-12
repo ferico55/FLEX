@@ -5,6 +5,7 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "SplitReputationViewController.h"
 #import "MyReviewReputationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "AlertPriceNotificationViewController.h"
@@ -62,7 +63,7 @@
 
 #define CTagProfileInfo 12
 
-@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate> {
+@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -77,6 +78,7 @@
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSTimer *_requestTimer;
     
+    UISplitViewController *splitViewController;
     NavigateViewController *_navigate;
 }
 
@@ -130,7 +132,6 @@
 {
     
     [super viewDidLoad];
-    
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -609,11 +610,19 @@
         } else if(indexPath.row == 1) {
             [_navigate navigateToInboxTalkFromViewController:self];
         } else if (indexPath.row == 2) {
-            SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
-            segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:segmentedReputationViewController animated:YES];
-            
-            
+            if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                splitViewController = [UISplitViewController new];
+                
+                SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+                splitReputationViewController.splitViewController = splitViewController;
+                splitReputationViewController.del = self;
+                [self.navigationController pushViewController:splitReputationViewController animated:YES];
+            }
+            else  {
+                SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:segmentedReputationViewController animated:YES];
+            }
             
             /*
             InboxReviewViewController *vc = [InboxReviewViewController new];
@@ -914,4 +923,9 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+
+#pragma mark - SplitVC Delegate
+- (void)deallocVC {
+    splitViewController = nil;
+}
 @end
