@@ -92,18 +92,10 @@
     [_pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadNotification)
-                                                 name:@"reloadNotification"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(shouldBackToFirstPage)
-                                                 name:SHOULD_REFRESH_CART
-                                               object:nil];
-    
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
+    
+    [self initNotification];
     
 //    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]]
 //                              direction:UIPageViewControllerNavigationDirectionForward
@@ -224,7 +216,7 @@
             }
             
             if (_isLogin && self.navigationController.viewControllers.count<=1) {
-                self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+                [self initNotificationManager];
             }
             else
             {
@@ -471,6 +463,14 @@
 #pragma mark - Notification Center
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(shouldBackToFirstPage)
+                                                 name:SHOULD_REFRESH_CART
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(doRefreshingCart)
                                                  name:@"doRefreshingCart" object:nil];
     
@@ -481,7 +481,7 @@
     _auth = [secureStorage keychainDictionary];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
-        self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+        [self initNotificationManager];
     }
     else
     {
@@ -507,7 +507,7 @@
         }
     }
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
-        self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+        [self initNotificationManager];
     }
     else
     {
