@@ -842,6 +842,7 @@ TokopediaNetworkManagerDelegate
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     SearchItem *feed = [result objectForKey:@""];
+    [_collectionView setContentInset:UIEdgeInsetsZero];
     [_noResult removeFromSuperview];
     
     if(_page == 1) {
@@ -864,6 +865,7 @@ TokopediaNetworkManagerDelegate
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         [_collectionView addSubview:_noResult];
+        [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, _noResult.frame.size.height, 0)];
     }
     
     if(_refreshControl.isRefreshing) {
