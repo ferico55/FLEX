@@ -341,7 +341,7 @@
             
         } else {
             
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."]
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah resi gagal."]
                                                                            delegate:self];
             [alert show];
         
@@ -349,7 +349,7 @@
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah resi gagal."] delegate:self];
         [alert show];
         
     }];
