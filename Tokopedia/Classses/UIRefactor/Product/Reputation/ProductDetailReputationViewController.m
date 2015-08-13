@@ -227,7 +227,15 @@
     NSString *strTempProductID = _detailReputaitonReview==nil? _reviewList.review_product_id : _detailReputaitonReview.product_id;
     if(((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && ![_detailReputaitonReview.review_message isEqualToString:@"0"]) || (_reviewList!=nil && _reviewList.review_message!=nil && ![_reviewList.review_message isEqualToString:@"0"])) && (strTempProductID!=nil && ![strTempProductID isEqualToString:@""])) {
         [productReputationCell initProductCell];
-        [productReputationCell setLabelProductName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name];
+        
+
+        NSString *strTempProductName = (_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name;
+        if(strTempProductName==nil || [strTempProductName isEqualToString:@"0"]) {
+            [productReputationCell setLabelProductName:@"-"];
+            constraintHeightViewMessage.constant = 0;
+        }
+        else
+            [productReputationCell setLabelProductName:strTempProductName];
         [[productReputationCell getLabelProductName] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToDetailProduct:)]];
         [productReputationCell getLabelProductName].userInteractionEnabled = YES;
         [productReputationCell.getViewSeparatorProduct removeFromSuperview];
@@ -1222,6 +1230,16 @@
                     [((ShopReviewPageViewController *) viewController) reloadTable];
                 }
             }
+            
+            
+            //Update Header
+            NSString *strResponseMessage = (_detailReputaitonReview==nil? _reviewList.review_response.response_message:_detailReputaitonReview.review_response.response_message);
+            if(strResponseMessage==nil || [strResponseMessage isEqualToString:@"0"]) {
+                [productReputationCell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", strResponseMessage] forState:UIControlStateNormal];
+            }
+            else {
+                [productReputationCell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
+            }
         }
         else {
             if(_detailReputaitonReview != nil) {
@@ -1238,9 +1256,9 @@
         isDeletingMessage = NO;
         if(successResult) {
             if(_detailReputaitonReview != nil) {
-                _detailReputaitonReview.review_response.canDelete = NO;
-                _detailReputaitonReview.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
-                _detailReputaitonReview.review_response.response_message = responseComment.result.review_response.response_message;
+                _detailReputaitonReview.review_response.canDelete = _detailReputaitonReview.viewModel.review_response.canDelete = NO;
+                _detailReputaitonReview.review_response.response_create_time = _detailReputaitonReview.viewModel.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
+                _detailReputaitonReview.review_response.response_message = _detailReputaitonReview.viewModel.review_response.response_message = responseComment.result.review_response.response_message;
                 _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
                 _detailReputaitonReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
                 _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
@@ -1277,6 +1295,17 @@
                     [((ShopReviewPageViewController *) viewController) reloadTable];
                 }
             }
+            
+            
+            //Update Header
+            NSString *strResponseMessage = (_detailReputaitonReview==nil? _reviewList.review_response.response_message:_detailReputaitonReview.review_response.response_message);
+            if(strResponseMessage==nil || [strResponseMessage isEqualToString:@"0"]) {
+                [productReputationCell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", strResponseMessage==nil? @"0":strResponseMessage] forState:UIControlStateNormal];
+            }
+            else {
+                [productReputationCell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
+            }
+
             
             //Add Text message
             growTextView.text = @"";

@@ -989,13 +989,14 @@
                     
                     if(![_act isAnimating]) {
                         [_list insertObject:commentlist atIndex:lastindexpathrow];
-                        NSArray *insertIndexPaths = [NSArray arrayWithObjects:
-                                                     [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
-                                                     ];
+//                        NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+//                                                     [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
+//                                                     ];
                         
-                        [_table beginUpdates];
-                        [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-                        [_table endUpdates];
+//                        [_table beginUpdates];
+//                        [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+//                        [_table endUpdates];
+                        [_table reloadData];
                         
                         NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
                         [_table scrollToRowAtIndexPath:indexpath
@@ -1485,6 +1486,7 @@
                     StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
                     [stickyAlertView show];
                     
+                    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%d Komentar", (int)_list.count?:0];
                     NSDictionary *userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment" object:nil userInfo:userinfo];
                 }

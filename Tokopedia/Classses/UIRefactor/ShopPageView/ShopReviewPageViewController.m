@@ -587,11 +587,9 @@ UIAlertViewDelegate>
         //Check product exist or not
         if([list.review_product_name isEqualToString:@"0"]) {
             [cell setLabelProductName:@"-"];
-            cell.getBtnLike.userInteractionEnabled = cell.getBtnDisLike.userInteractionEnabled = NO;
         }
         else {
             [cell setLabelProductName:list.review_product_name];
-            cell.getBtnLike.userInteractionEnabled = cell.getBtnDisLike.userInteractionEnabled = YES;
         }
         
 
