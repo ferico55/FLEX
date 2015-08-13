@@ -15,8 +15,8 @@
 #import "GeneralTableViewController.h"
 #import "FilterCatalogViewController.h"
 #import "CatalogProductViewController.h"
-#import "DetailProductViewController.h"
 #import "ShopContainerViewController.h"
+#import "NavigateViewController.h"
 
 @interface CatalogShopViewController ()
 <
@@ -32,6 +32,9 @@
     
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
+    NavigateViewController *_navigator;
+    
+    
 
     CMPopTipView *cmPopTitpView;
     NSOperationQueue *_operationQueue;
@@ -51,6 +54,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _navigator = [NavigateViewController new];
  
     self.title = @"Daftar Toko";
     
@@ -344,7 +349,6 @@
                                                                 parameters:[parameters encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [_timer invalidate];
         [_activityIndicatorView stopAnimating];
         [_tableView setTableFooterView:nil];
@@ -499,18 +503,14 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath
 {
-    DetailProductViewController *controller = [DetailProductViewController new];
     ProductList *product = [[[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
-    controller.data = @{kTKPDDETAIL_APIPRODUCTIDKEY:product.product_id};
-    [self.navigationController pushViewController:controller animated:YES];
+    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectBuyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    DetailProductViewController *controller = [DetailProductViewController new];
     ProductList *product = [[[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
-    controller.data = @{kTKPDDETAIL_APIPRODUCTIDKEY:product.product_id};
-    [self.navigationController pushViewController:controller animated:YES];   
+    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectOtherProductAtIndexPath:(NSIndexPath *)indexPath

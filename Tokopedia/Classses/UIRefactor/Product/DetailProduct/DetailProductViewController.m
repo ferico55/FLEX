@@ -75,12 +75,14 @@
 #import "LoginViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
+#import "NavigateViewController.h"
 
 #import "MyShopEtalaseFilterViewController.h"
 #import "NoResultView.h"
 #import "RequestMoveTo.h"
 #import "WebViewController.h"
 #import "EtalaseList.h"
+#import "TAGDataLayer.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -185,7 +187,13 @@ UIAlertViewDelegate
     UIFont *fontDesc;
     
     RequestMoveTo *_requestMoveTo;
+    UIImage *_tempFirstThumb;
+    TAGContainer *_gtmContainer;
+    NavigateViewController *_TKPDNavigator;
     
+    NSString *_detailProductBaseUrl;
+    NSString *_detailProductPostUrl;
+    NSString *_detailProductFullUrl;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -233,6 +241,8 @@ UIAlertViewDelegate
     BOOL hasSetTokoTutup;
     NSString *_formattedProductDescription;
     NSString *_formattedProductTitle;
+    
+    NSArray *_constraint;
 }
 
 @synthesize data = _data;
@@ -271,6 +281,13 @@ UIAlertViewDelegate
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+    _TKPDNavigator = [NavigateViewController new];
+    
+    _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
+    
+    // GTM
+    [self configureGTM];
+    
     _promoteNetworkManager = [TokopediaNetworkManager new];
     _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
@@ -317,6 +334,7 @@ UIAlertViewDelegate
     
     //_table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
+    [_table setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     
     _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
     
@@ -342,6 +360,14 @@ UIAlertViewDelegate
     self.table.hidden = YES;
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
+    
+    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
+        _dinkButton.hidden = NO;
+        _buyButton.hidden = YES;
+    } else {
+        _dinkButton.hidden = YES;
+        _buyButton.hidden = NO;
+    }
     
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
@@ -410,7 +436,7 @@ UIAlertViewDelegate
     inset.bottom += 20;
     _table.contentInset = inset;
     
-    [self configureRestKit];
+
     
     _favButton.layer.cornerRadius = 3;
     _favButton.layer.borderWidth = 1;
@@ -418,8 +444,30 @@ UIAlertViewDelegate
     _favButton.enabled = YES;
     _favButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     
-    
-    if (_isnodata) {
+    if (_isnodata || _product.result.shop_info.shop_id == nil) {
+        
+        ProductDetail *detailProduct = [ProductDetail new];
+        detailProduct.product_id = [_loadedData objectForKey:@"product_id"];
+        detailProduct.product_name = [_loadedData objectForKey:@"product_name"];
+        detailProduct.product_price = [_loadedData objectForKey:@"product_price"];
+        
+        ShopInfo *shopInfo = [ShopInfo new];
+        shopInfo.shop_name = [_loadedData objectForKey:@"shop_name"];
+        
+        DetailProductResult *result = [DetailProductResult new];
+        result.product = detailProduct;
+        result.shop_info = shopInfo;
+        
+        ProductImages *image = [ProductImages new];
+        image.image_src = [_loadedData objectForKey:@"product_image"];
+        result.product_images = [NSArray arrayWithObject:image];
+        
+        Product *product = [Product new];
+        product.result = result;
+        product.status = @"OK";
+        [self requestprocess:product];
+        
+        [self configureRestKit];
         [self loadData];
         if (_product.result.wholesale_price) {
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
@@ -538,8 +586,8 @@ UIAlertViewDelegate
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
-                [_datatalk setObject:_product.result.statistic.product_sold_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
-                [_datatalk setObject:_product.result.statistic.product_view_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
+                [_datatalk setObject:_product.result.statistic.product_sold_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
+                [_datatalk setObject:_product.result.statistic.product_view_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
                 [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
                 [_datatalk setObject:_product.result.product.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
                 
@@ -637,6 +685,9 @@ UIAlertViewDelegate
             }
             case 20 : {
                 NSString *shopid = _product.result.shop_info.shop_id;
+                if(!shopid) {
+                    return;
+                }
                 if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] isEqualToString:shopid]) {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
@@ -1089,7 +1140,7 @@ UIAlertViewDelegate
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
 {
     ((DetailProductInfoCell*)cell).minorderlabel.text = _product.result.product.product_min_order;
-    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.result.product.product_weight, _product.result.product.product_weight_unit];
+    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.result.product.product_weight?:@"0", _product.result.product.product_weight_unit?:@"gr"];
     ((DetailProductInfoCell*)cell).insurancelabel.text = _product.result.product.product_insurance;
     ((DetailProductInfoCell*)cell).conditionlabel.text = _product.result.product.product_condition;
     [((DetailProductInfoCell*)cell).etalasebutton setTitle:_product.result.product.product_etalase forState:UIControlStateNormal];
@@ -1151,9 +1202,9 @@ UIAlertViewDelegate
     if(tag == CTagPromote)
         return @"action/product.pl";
     else if(tag == CTagTokopediaNetworkManager)
-        return kTKPDDETAILPRODUCT_APIPATH;
+        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
-        return kTKPDDETAILPRODUCT_APIPATH;
+        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -1204,7 +1255,13 @@ UIAlertViewDelegate
     else if(tag == CTagTokopediaNetworkManager)
     {
         // initialize RestKit
-        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  ![_detailProductBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_detailProductBaseUrl]:[RKObjectManager sharedClient];
+        if([_detailProductBaseUrl isEqualToString:kTkpdBaseURLString] || [_detailProductBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_detailProductBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
@@ -1721,6 +1778,9 @@ UIAlertViewDelegate
     }
     else if(tag == CTagTokopediaNetworkManager)
     {
+        _act.hidden = YES;
+        [_act stopAnimating];
+        [self unsetWarehouse];
         
     }
     else if(tag == CTagOtherProduct)
@@ -1845,8 +1905,8 @@ UIAlertViewDelegate
     [_cachecontroller getFileModificationDate];
     _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        [_act startAnimating];
-        _buyButton.enabled = NO;
+//        [_act startAnimating];
+//        _buyButton.enabled = NO;
         [tokopediaNetworkManager doRequest];
     }
     else {
@@ -1865,14 +1925,14 @@ UIAlertViewDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(_product.result == nil) {
-            NoResultView *temp = [NoResultView new];
-            [self.view addSubview:temp.view];
-            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
-            _act.hidden = YES;
-            [_act stopAnimating];
-            return;
-        }
+//        if(_product.result == nil) {
+//            NoResultView *temp = [NoResultView new];
+//            [self.view addSubview:temp.view];
+//            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
+//            _act.hidden = YES;
+//            [_act stopAnimating];
+//            return;
+//        }
         
         //Set icon speed
 //        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
@@ -1902,11 +1962,7 @@ UIAlertViewDelegate
         
         //Set shop in warehouse
         if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE && [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
-            [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
-            [viewContentWarehouse addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)]];
-            viewContentWarehouse.hidden = YES;
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
-            _table.tableHeaderView = _header;
+            [self unsetWarehouse];
         }
         else if([_product.result.product.product_status intValue] == PRODUCT_STATE_PENDING) {
             lblTitleWarehouse.text = CStringTitleBanned;
@@ -1914,6 +1970,12 @@ UIAlertViewDelegate
             
             float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 8 + tempHeight);
+            _table.tableHeaderView = _header;
+        } else if ([_product.result.product.product_status intValue] ==PRODUCT_STATE_WAREHOUSE) {
+            [viewContentWarehouse removeConstraints:_constraint];
+            [viewContentWarehouse addConstraint:constraintHeightWarehouse];
+            [viewContentWarehouse setHidden:NO];
+            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
             _table.tableHeaderView = _header;
         }
         
@@ -1927,6 +1989,15 @@ UIAlertViewDelegate
     }
 }
 
+- (void)unsetWarehouse {
+    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
+    [viewContentWarehouse addConstraints:_constraint];
+    viewContentWarehouse.hidden = YES;
+    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+    _table.tableHeaderView = _header;
+
+}
+
 - (void)requestfailure:(id)object {
     
 }
@@ -1934,9 +2005,14 @@ UIAlertViewDelegate
 -(void)requestprocess:(id)object
 {
     if (object) {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stats = [result objectForKey:@""];
-        _product = stats;
+        if([object isKindOfClass:[Product class]]) {
+            _product = object;
+        } else {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stats = [result objectForKey:@""];
+            _product = stats;
+        }
+
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
         _formattedProductTitle = _product.result.product.product_name;
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
@@ -2045,13 +2121,13 @@ UIAlertViewDelegate
                 [self hiddenButtonBuyAndPromo];
             }
             else {
-                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
-                    _dinkButton.hidden = NO;
-                    _buyButton.hidden = YES;
-                } else {
-                    _buyButton.hidden = NO;
-                    _dinkButton.hidden = YES;
-                }
+//                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
+//                    _dinkButton.hidden = NO;
+//                    _buyButton.hidden = YES;
+//                } else {
+//                    _buyButton.hidden = NO;
+//                    _dinkButton.hidden = YES;
+//                }
                 
                 //Check is in warehouse
                 if([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING) {
@@ -2171,9 +2247,7 @@ UIAlertViewDelegate
 {
     OtherProduct *product = _otherProductObj[index];
     if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
-        DetailProductViewController *vc = [DetailProductViewController new];
-        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id};
-        [self.navigationController pushViewController:vc animated:YES];
+        [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.result.shop_info.shop_name];
     }
 }
 
@@ -2317,7 +2391,7 @@ UIAlertViewDelegate
 
 - (IBAction)actionShare:(id)sender
 {
-    if (_product) {
+    if (_product.result.product.product_url) {
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
                            _formattedProductTitle,
                            _product.result.shop_info.shop_name];
@@ -2384,7 +2458,7 @@ UIAlertViewDelegate
     NSString *productName = _formattedProductTitle?:@"";
     
     
-    CGRect labelCGRectFrame = CGRectMake(0, 0, 480, 44);
+    CGRect labelCGRectFrame = CGRectMake(self.navigationItem.titleView.frame.origin.x, 0, [UIScreen mainScreen].bounds.size.width, 44);
     MarqueeLabel *productLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:6.0 andFadeLength:10.0f];
     
     
@@ -2411,15 +2485,14 @@ UIAlertViewDelegate
     
     //Update header view
     _pricelabel.text = _product.result.product.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count];
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count?:@""];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count?:@""];
     
-    
-    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count] forState:UIControlStateNormal];
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count?:@""] forState:UIControlStateNormal];
     [_reviewbutton.layer setBorderWidth:1];
     [_reviewbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk_count] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk_count?:@""] forState:UIControlStateNormal];
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
@@ -2449,11 +2522,17 @@ UIAlertViewDelegate
         
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
+        if(i == 0) {
+            thumb.image = _tempFirstThumb;
+        }
         
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
+//            if([[request.URL absoluteString] isEqualToString:[_loadedData objectForKey:@"product_image"]]) {
+                _tempFirstThumb = image;
+//            }
             [thumb setImage:image];
             
 #pragma clang diagnostic pop
@@ -2501,7 +2580,7 @@ UIAlertViewDelegate
     NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
     
     NSMutableAttributedString *myString= [[NSMutableAttributedString alloc]initWithAttributedString:attachmentString ];
-    NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.result.shop_info.shop_location attributes:nil];
+    NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.result.shop_info.shop_location?:@"" attributes:nil];
     [myString appendAttributedString:newAttString];
     
     _shoplocation.attributedText = myString;
@@ -2835,7 +2914,9 @@ UIAlertViewDelegate
 
 - (void)tapShop {
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    
+    if(!_product.result.shop_info.shop_id) {
+        return;
+    }
     container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
                        kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
                        kTKPD_AUTHKEY:_auth?:[NSNull null]};
@@ -2967,5 +3048,17 @@ UIAlertViewDelegate
 - (void)duplicate:(int)tag
 {
     [UIPasteboard generalPasteboard].string = lblDescription.text;
+}
+
+#pragma mark - Other Method
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
+    _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
 }
 @end

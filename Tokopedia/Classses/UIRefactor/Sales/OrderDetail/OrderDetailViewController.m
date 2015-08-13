@@ -19,7 +19,6 @@
 #import "CancelShipmentViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
-#import "DetailProductViewController.h"
 #import "NavigateViewController.h"
 
 #define CTagAddress 2
@@ -38,6 +37,7 @@
 >
 {
     NSDictionary *_textAttributes;
+    NavigateViewController *_TKPDNavigator;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *topButtonsView;
@@ -99,6 +99,7 @@
     _detailTransactionView.frame = frame;
     
     self.title = @"Detail Transaksi";
+    _TKPDNavigator = [NavigateViewController new];
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
@@ -455,9 +456,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DetailProductViewController *controller = [DetailProductViewController new];
-    controller.data = @{@"product_id":[[_transaction.order_products objectAtIndex:indexPath.section] product_id]};
-    [self.navigationController pushViewController:controller animated:YES];
+    OrderProduct *product = [_transaction.order_products objectAtIndex:indexPath.row];
+    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:nil];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath

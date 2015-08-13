@@ -26,7 +26,6 @@
 
 #import "URLCacheController.h"
 #import "NoResultView.h"
-#import "DetailProductViewController.h"
 #import "TAGDataLayer.h"
 
 

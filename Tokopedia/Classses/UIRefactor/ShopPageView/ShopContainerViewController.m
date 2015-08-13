@@ -389,15 +389,15 @@
     
     RKObjectMapping *ratingMapping = [RKObjectMapping mappingForClass:[Rating class]];
     RKObjectMapping *qualityMapping = [RKObjectMapping mappingForClass:[Quality class]];
-    [qualityMapping addAttributeMappingsFromDictionary:@{CRatingStar:CRatingStar,
-                                                         CAverage:CAverage,
-                                                         COneStarRank:COneStarRank,
-                                                         CCountTotal:CCountTotal,
-                                                         CFourStarRank:CFourStarRank,
-                                                         CFiveStarRank:CFiveStarRank,
-                                                         CTwoStarRank:CTwoStarRank,
-                                                         CThreeStarRank:CThreeStarRank}];
-    
+//    [qualityMapping addAttributeMappingsFromDictionary:@{CRatingStar:CRatingStar,
+//                                                         CAverage:CAverage,
+//                                                         COneStarRank:COneStarRank,
+//                                                         CCountTotal:CCountTotal,
+//                                                         CFourStarRank:CFourStarRank,
+//                                                         CFiveStarRank:CFiveStarRank,
+//                                                         CTwoStarRank:CTwoStarRank,
+//                                                         CThreeStarRank:CThreeStarRank}];
+//    
     
     RKObjectMapping *shipmentMapping = [RKObjectMapping mappingForClass:[Shipment class]];
     [shipmentMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APISHIPMENTIDKEY:kTKPDDETAILSHOP_APISHIPMENTIDKEY,
