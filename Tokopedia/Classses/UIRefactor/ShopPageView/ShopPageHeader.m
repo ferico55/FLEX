@@ -226,7 +226,7 @@
         _shopClosedView.hidden = NO;
         NSString *until = [NSString stringWithFormat:@"Toko ini akan tutup sampai : %@",_shop.result.closed_info.until];
         NSString *reason = [NSString stringWithFormat:@"Alasan : %@",_shop.result.closed_info.note];
-        [_shopClosedReason setText:reason];
+        [_shopClosedReason setCustomAttributedText:reason];
         [_shopClosedUntil setText:until];
     } else {
         _shopClosedView.hidden = YES;
