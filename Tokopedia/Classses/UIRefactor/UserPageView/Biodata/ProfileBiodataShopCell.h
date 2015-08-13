@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "StarsRateView.h"
+@class ShopBadgeLevel;
 
 #define kTKPDPROFILEBIODATASHOPCELLIDENTIFIER @"DetailProfileBiodataShopCellIdentifier"
 
@@ -36,7 +36,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 
 +(id)newcell;
-- (void)generateMedal:(NSString *)value;
+- (void)generateMedal:(ShopBadgeLevel *)shopBadgeLevel;
 - (void)setBadgeIcon:(NSString *)badge;
 - (IBAction)actionReputasi:(id)sender;
 - (IBAction)actionKecepatan:(id)sender;

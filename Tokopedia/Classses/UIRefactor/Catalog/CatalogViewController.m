@@ -22,6 +22,7 @@
 #import "PriceAlert.h"
 #import "PriceAlertResult.h"
 #import "PriceAlertViewController.h"
+#import "ShopBadgeLevel.h"
 #import "ShopStats.h"
 #import "TokopediaNetworkManager.h"
 #import "GalleryViewController.h"
@@ -373,6 +374,10 @@ static CGFloat rowHeight = 40;
                                                         @"product_name",
                                                         API_SHOP_NAME_KEY]];
     
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
+    [shopStatMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"reputation_badge" toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
     [catalogShopsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopStatMapping]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
@@ -692,7 +697,8 @@ static CGFloat rowHeight = 40;
         controller.catalog = _catalog;
         controller.catalog_shops = _catalog.result.catalog_shops;
         [self.navigationController pushViewController:controller animated:YES];
-    } else if ([sender isKindOfClass:[UISegmentedControl class]]) {
+    }
+    else if ([sender isKindOfClass:[UISegmentedControl class]]) {
         UISegmentedControl *control = (UISegmentedControl *)sender;
         if (control.selectedSegmentIndex == 0) {
             _hideTableRows = NO;

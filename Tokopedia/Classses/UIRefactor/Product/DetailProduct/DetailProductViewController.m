@@ -32,6 +32,7 @@
 #import "string_more.h"
 #import "string_price_alert.h"
 #import "string_home.h"
+#import "SmileyAndMedal.h"
 #import "Product.h"
 #import "WishListObjectResult.h"
 #import "WishListObject.h"
@@ -39,6 +40,7 @@
 #import "ShopSettings.h"
 #import "RKObjectManager.h"
 #import "TTTAttributedLabel.h"
+#import "ShopBadgeLevel.h"
 
 #import "StarsRateView.h"
 #import "MarqueeLabel.h"
@@ -1345,6 +1347,10 @@ UIAlertViewDelegate
                                                                kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
                                                                }];
         
+        
+        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+        
         RKObjectMapping *wholesaleMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
         [wholesaleMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIWHOLESALEMINKEY,kTKPDDETAILPRODUCT_APIWHOLESALEPRICEKEY,kTKPDDETAILPRODUCT_APIWHOLESALEMAXKEY]];
         
@@ -1358,16 +1364,17 @@ UIAlertViewDelegate
         [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
         
         
-        RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
-        [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
-                                                                   CTwoDay:CTwoDay,
-                                                                   CThreeDay:CThreeDay,
-                                                                   CSpeedLevel:CSpeedLevel,
-                                                                   CBadge:CBadge,
-                                                                   CCountTotal:CCountTotal}];
+//        RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+//        [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+//                                                                   CTwoDay:CTwoDay,
+//                                                                   CThreeDay:CThreeDay,
+//                                                                   CSpeedLevel:CSpeedLevel,
+//                                                                   CBadge:CBadge,
+//                                                                   CCountTotal:CCountTotal}];
         
         // Relationship Mapping
-        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseFast toKeyPath:CResponseFast withMapping:responseSpeedMapping]];
+        [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
+//        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseFast toKeyPath:CResponseFast withMapping:responseSpeedMapping]];
         
         [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
         
@@ -1936,8 +1943,8 @@ UIAlertViewDelegate
         
         //Set icon speed
 //        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
-        [AppDelegate setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];        
-        [AppDelegate generateMedal:_product.result.shop_info.shop_stats.shop_reputation_score withImage:btnReputasi isLarge:YES];
+        [SmileyAndMedal setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
+        [SmileyAndMedal generateMedalWithLevel:_product.result.shop_info.shop_stats.shop_badge_level.level withSet:_product.result.shop_info.shop_stats.shop_badge_level.set withImage:btnReputasi isLarge:YES];
         
         //Set image and title kecepatan
         CGFloat spacing = 6.0;

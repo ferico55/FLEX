@@ -38,7 +38,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
-    self.title = @"Tulis Ulasan";
     txtDes.placeholder = CPlaceHolderTulisReview;
     txtDes.delegate = self;
     nRateAkurasi = nRateKualitas = 0;
@@ -46,6 +45,8 @@
     [self isLoading:NO];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self initData];
+    
+    self.title = isEdit? @"Ubah Ulasan":@"Tulis Ulasan";
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
 
@@ -87,7 +88,7 @@
     //Set image product
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationView.product_uri] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
 
-    [imgProduct setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [imgProduct setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey-01" ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [imgProduct setImage:image];
@@ -157,7 +158,7 @@
         }
     }
     else {
-        if(nRateAkurasi==0 && nRateKualitas==0) {
+        if(nRateAkurasi==0 || nRateKualitas==0) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringPleaseFillReviewRating] delegate:self];
             [stickyAlertView show];
             

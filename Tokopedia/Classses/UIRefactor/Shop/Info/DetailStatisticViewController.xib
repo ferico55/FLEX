@@ -981,7 +981,7 @@
                                             <rect key="frame" x="0.0" y="45" width="301" height="170"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbh-Jh-fh4">
-                                                    <rect key="frame" x="8" y="12" width="285" height="46"/>
+                                                    <rect key="frame" x="8" y="25" width="285" height="46"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="46" id="diQ-ga-Sw8"/>
                                                         <constraint firstAttribute="width" constant="285" id="vz6-j2-L4f"/>
@@ -990,7 +990,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Berhasil" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mee-c5-Zck">
-                                                    <rect key="frame" x="8" y="56" width="285" height="18"/>
+                                                    <rect key="frame" x="8" y="69" width="285" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="VXa-ey-yjN"/>
                                                     </constraints>
@@ -999,7 +999,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dari 0 Transaksi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4a-Tp-3Io">
-                                                    <rect key="frame" x="8" y="74" width="285" height="21"/>
+                                                    <rect key="frame" x="8" y="87" width="285" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="PE2-2D-6Rn"/>
                                                     </constraints>
@@ -1016,7 +1016,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="Mee-c5-Zck" secondAttribute="trailing" constant="8" id="HE5-0k-Dj5"/>
                                                 <constraint firstItem="i4a-Tp-3Io" firstAttribute="top" secondItem="Mee-c5-Zck" secondAttribute="bottom" id="dFt-Pm-XTU"/>
                                                 <constraint firstItem="i4a-Tp-3Io" firstAttribute="leading" secondItem="i9T-PC-lwx" secondAttribute="leading" constant="8" id="iCe-i4-enL"/>
-                                                <constraint firstItem="bbh-Jh-fh4" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="12" id="jaq-ft-UXt"/>
+                                                <constraint firstItem="bbh-Jh-fh4" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="25" id="jaq-ft-UXt"/>
                                                 <constraint firstItem="Mee-c5-Zck" firstAttribute="top" secondItem="bbh-Jh-fh4" secondAttribute="bottom" constant="-2" id="yjk-bB-Ixh"/>
                                             </constraints>
                                         </view>
@@ -1102,7 +1102,7 @@
                 <constraint firstAttribute="bottom" secondItem="37t-Te-Zzb" secondAttribute="bottom" id="xOK-Gw-e8t"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="306" y="662"/>
+            <point key="canvasLocation" x="324" y="399"/>
         </view>
     </objects>
     <resources>

@@ -25,6 +25,8 @@
 #import "ShopContainerViewController.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "SkipReview.h"
+#import "ShopBadgeLevel.h"
+#import "SmileyAndMedal.h"
 #import "string_inbox_message.h"
 #import "String_Reputation.h"
 #import "SkipReviewResult.h"
@@ -148,6 +150,8 @@
         CGRect rectCell = cell.frame;
         rectCell.size.width = tableView.bounds.size.width;
         cell.frame = rectCell;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell setUnClickViewAction];
         
         cell.delegate = self;
         [self setPropertyLabelDesc:cell.getLabelDesc];
@@ -159,14 +163,6 @@
     cell.getBtnUbah.tag = indexPath.row;
     cell.strRole = _detailMyInboxReputation.role;
     [cell setView:detailReputationReview.viewModel];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    if(detailReputationReview.viewModel==nil || detailReputationReview.viewModel.review_message==nil || [detailReputationReview.viewModel.review_message isEqualToString:@"0"]) {
-        if([_detailMyInboxReputation.role isEqualToString:@"2"]) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-    }
-    
     
     return cell;
 }
@@ -440,6 +436,7 @@
     
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+    productDetailReputationViewController.shopBadgeLevel = detailReputationReview.shop_badge_level;
     productDetailReputationViewController.strProductID = detailReputationReview.product_id;
     productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
     detailReputationReview.review_user_label = [_detailMyInboxReputation.viewModel.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual;
@@ -578,6 +575,9 @@
                                                                  CShopDomain
                                                                  ]];
         
+        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+        
         
         RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
         [pagingMapping addAttributeMappingsFromDictionary:@{CUriNext:CUriNext,
@@ -585,6 +585,7 @@
         
         RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
         [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                     CNoReputation,
                                                                      CNegative,
                                                                      CNeutral,
                                                                      CPositif]];
@@ -612,6 +613,7 @@
         
         
         //relation
+        [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
         [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewUserReputation toKeyPath:CReviewUserReputation withMapping:reviewUserReputationMapping]];
         [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
         [detailReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];
@@ -802,7 +804,12 @@
     if(isRefreshing)
         return;
     
-    [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
+    DetailReputationReview *detailReputationReview = arrList[(int)((UIButton *) sender).tag];
+    if(! ((detailReputationReview.viewModel.review_message==nil || [detailReputationReview.viewModel.review_message isEqualToString:@"0"]) && [_detailMyInboxReputation.role isEqualToString:@"1"])) {
+        [self tableView:tableContent didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:(int)((UIButton *) sender).tag inSection:0]];
+    }
+    else
+        [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
 }
 
 - (void)actionProduct:(id)sender {
@@ -897,7 +904,9 @@
     else {
         int paddingRightLeftContent = 10;
         UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-        [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_detailMyInboxReputation.user_reputation.neutral withRepSmile:_detailMyInboxReputation.user_reputation.positive withRepSad:_detailMyInboxReputation.user_reputation.negative withDelegate:self];
+        
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_detailMyInboxReputation.user_reputation.neutral withRepSmile:_detailMyInboxReputation.user_reputation.positive withRepSad:_detailMyInboxReputation.user_reputation.negative withDelegate:self];
         
         //Init pop up
         cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
@@ -916,15 +925,19 @@
 }
 
 - (void)actionReviewRate:(id)sender {
-    UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-    if([tempViewController isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
-        UIView *tempView = [UIView new];
-        tempView.tag = _tag;
-        [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) tempViewController) getSegmentedViewController]) actionReviewRate:tempView];
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
     }
-    
-//    [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
-
+    else {
+        UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+        if([tempViewController isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
+            UIView *tempView = [UIView new];
+            tempView.tag = _tag;
+            [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) tempViewController) getSegmentedViewController]) actionReviewRate:tempView];
+        }
+        
+    //    [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
+    }
 }
 
 - (void)actionLabelUser:(id)sender {
@@ -973,7 +986,7 @@
     _gtmContainer = appDelegate.container;
     
     baseUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationBase];
-    postUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+    postUrl = [_gtmContainer stringForKey:GTMKeyInboxReputationPost];
     
     baseActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
     postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];

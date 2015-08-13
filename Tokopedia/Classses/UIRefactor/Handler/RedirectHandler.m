@@ -50,7 +50,7 @@
         [self redirectToMessage];
     } else if(state == STATE_NEW_TALK) {
         [self redirectToTalk];
-    } else if(state == STATE_NEW_REVIEW) {
+    } else if(state == STATE_NEW_REPSYS || state == STATE_NEW_REVIEW) {
         [self redirectToReview];
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];

@@ -7,6 +7,7 @@
 //
 #import "DetailShopResult.h"
 #import "DetailStatisticViewController.h"
+#import "SmileyAndMedal.h"
 #define CStringTransaksiSuccess @"Transaksi Sukses"
 #define CStringTransaksiGagal @"Transaksi gagal / Ditolak"
 
@@ -29,7 +30,12 @@
     
     self.title = @"Statistik";
     [self setProgressHeader:0 withAnimate:NO];
-    [self initSpeedData];
+//    [self initSpeedData]; being comment, cause now speed data is not display
+    
+    UISegmentedControl *tempView = [UISegmentedControl new];
+    tempView.tag = 12;//12 is tag for transaction segment
+    tempView.selectedSegmentIndex = 1;
+    [self actionSegmented:tempView];
     [self initKepuasanToko];
 }
 
@@ -50,7 +56,7 @@
 #pragma mark - Init Data
 - (void)initSpeedData {
     lblTransaksiCepat.text = _detailShopResult.respond_speed.speed_level;
-    [AppDelegate setIconResponseSpeed:_detailShopResult.respond_speed.badge withImage:imgSpeed largeImage:YES];
+    [SmileyAndMedal setIconResponseSpeed:_detailShopResult.respond_speed.badge withImage:imgSpeed largeImage:YES];
     
     progressFooter1.progress = _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0? 0:([[_detailShopResult.respond_speed.one_day objectForKey:CCount] intValue]/[_detailShopResult.respond_speed.count_total floatValue]);
     progressFooter2.progress = _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0? 0:([[_detailShopResult.respond_speed.two_days objectForKey:CCount] intValue]/[_detailShopResult.respond_speed.count_total floatValue]);
@@ -175,7 +181,11 @@
             }
             else {
                 viewPlot.hidden = NO;
-                lblPercentageFooter.text = [NSString stringWithFormat:@"%.1f%%", _detailShopResult.stats.rate_success==nil||[_detailShopResult.stats.rate_success isEqualToString:@""]? 0:[_detailShopResult.stats.rate_success floatValue]];
+                if(_detailShopResult.stats.hide_rate!=nil && [_detailShopResult.stats.hide_rate isEqualToString:@"1"]) { //if hide_rate == 1 not using percentage
+                    lblPercentageFooter.text = [NSString stringWithFormat:@"%@", _detailShopResult.stats.tx_count_success==nil||[_detailShopResult.stats.tx_count_success isEqualToString:@""]? @"0":_detailShopResult.stats.tx_count_success];
+                }
+                else
+                    lblPercentageFooter.text = [NSString stringWithFormat:@"%.1f%%", _detailShopResult.stats.rate_success==nil||[_detailShopResult.stats.rate_success isEqualToString:@""]? 0:[_detailShopResult.stats.rate_success floatValue]];
 
                 NSString *strDari = @"Dari ";
                 NSString *strTransaksi = @" Transaksi";
