@@ -139,7 +139,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1119"
             endingLineNumber = "1119"
-            landmarkName = "-configureSendCommentRestkit"
+            landmarkName = "-addProductCommentTalk"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
