@@ -1145,7 +1145,7 @@
     }
     else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
-        [_navigate navigateToInboxReviewFromViewController:self];
+        [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {

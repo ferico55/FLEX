@@ -56,7 +56,7 @@
     CMPopTipView *cmPopTitpView;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSString *strUriNext;
-    BOOL isRefreshing;
+    BOOL isRefreshing, getDataFromMasterInServer;
     int page, tempTagSkip;
     float heightBtnFooter;
     NSMutableParagraphStyle *style;
@@ -497,9 +497,18 @@
 #pragma mark - Tokopedia Network Manager
 - (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagListReputationReview) {
-        return @{@"action":CGetListReputationReview,
-                 @"reputation_inbox_id":_detailMyInboxReputation.reputation_inbox_id,
-                 @"reputation_id":_detailMyInboxReputation.reputation_id};
+        NSMutableDictionary *dictResult = [NSMutableDictionary new];
+        
+        if(getDataFromMasterInServer) {
+            getDataFromMasterInServer = NO;
+            [dictResult setObject:@(1) forKey:@"n"];
+        }
+        
+        [dictResult setObject:CGetListReputationReview forKey:@"action"];
+        [dictResult setObject:_detailMyInboxReputation.reputation_inbox_id forKey:@"reputation_inbox_id"];
+        [dictResult setObject:_detailMyInboxReputation.reputation_id forKey:@"reputation_id"];
+        
+        return dictResult;
     }
     else if(tag == CTagSkipReputationReview)
         return @{@"action":CSkipReputationReview,
@@ -725,6 +734,7 @@
             [tableContent reloadData];
             
             _detailMyInboxReputation.unassessed_reputation_review = _detailMyInboxReputation.viewModel.unassessed_reputation_review = [NSString stringWithFormat:@"%d", [_detailMyInboxReputation.unassessed_reputation_review intValue]-1];
+            getDataFromMasterInServer = YES;
             [self loadMoreData:YES];
             [[self getNetworkManager:CTagListReputationReview] doRequest];
         }

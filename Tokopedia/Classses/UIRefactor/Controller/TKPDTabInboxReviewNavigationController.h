@@ -50,7 +50,7 @@
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (void)setSelectedViewController:(UIViewController *)selectedViewController animated:(BOOL)animated;
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated;
-
+- (NSString *)getTitleNavReview;
 
 @end
 

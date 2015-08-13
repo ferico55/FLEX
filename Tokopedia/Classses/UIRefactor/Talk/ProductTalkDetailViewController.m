@@ -302,9 +302,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
-        return UITableViewAutomaticDimension;
-    
     TalkCommentList *list = _list[indexPath.row];
 
     GeneralTalkCommentCell *cell = [dictCell objectForKey:list.comment_id==nil? @"-1":list.comment_id];

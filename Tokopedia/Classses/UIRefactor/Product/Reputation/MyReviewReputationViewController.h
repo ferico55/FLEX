@@ -18,6 +18,7 @@
 
 @property (nonatomic, unsafe_unretained) SegmentedReviewReputationViewController *segmentedReviewReputationViewController;
 @property (nonatomic, strong) NSString *strNav;
+@property (nonatomic) BOOL getDataFromMasterDB;
 - (void)actionReview:(id)sender;
 - (void)actionReviewRate:(id)sender;
 - (void)actionBelumDibaca:(id)sender;

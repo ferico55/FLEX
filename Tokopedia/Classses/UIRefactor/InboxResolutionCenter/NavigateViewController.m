@@ -223,6 +223,27 @@
     }
 }
 
+
+
+- (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController withGetDataFromMasterDB:(BOOL)getDataFromMaster
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        splitViewController = [UISplitViewController new];
+        
+        SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+        splitReputationViewController.splitViewController = splitViewController;
+        splitReputationViewController.del = self;
+        [viewController.navigationController pushViewController:splitReputationViewController animated:YES];
+        
+    } else {
+        SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+        segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+        segmentedReputationViewController.getDataFromMasterDB = getDataFromMaster;
+        segmentedReputationViewController.selectedIndex = CTagReviewSaya;
+        [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
+    }
+}
+
 -(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {

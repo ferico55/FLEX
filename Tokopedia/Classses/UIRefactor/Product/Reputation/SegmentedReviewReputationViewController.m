@@ -265,6 +265,7 @@
         {
             if(allReviewViewController == nil) {
                 allReviewViewController = [MyReviewReputationViewController new];
+                allReviewViewController.getDataFromMasterDB = _getDataFromMasterDB;
                 allReviewViewController.segmentedReviewReputationViewController = self;
                 allReviewViewController.strNav = CInboxReputation;
             }
@@ -290,6 +291,7 @@
                 myProductViewController = [MyReviewReputationViewController new];
                 myProductViewController.segmentedReviewReputationViewController = self;
                 myProductViewController.strNav = CInboxReputationMyProduct;
+                myProductViewController.getDataFromMasterDB = _getDataFromMasterDB;
             }
             [self addChildViewController:myProductViewController];
             [viewContent addSubview:myProductViewController.view];
@@ -313,6 +315,7 @@
                 myReviewViewController = [MyReviewReputationViewController new];
                 myReviewViewController.segmentedReviewReputationViewController = self;
                 myReviewViewController.strNav = CInboxReputationMyReview;
+                myReviewViewController.getDataFromMasterDB = _getDataFromMasterDB;
             }
             [self addChildViewController:myReviewViewController];
             [viewContent addSubview:myReviewViewController.view];

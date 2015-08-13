@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 12/11/14.
 //
 //
-
+#import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxReviewViewController.h"
 #import "InboxReview.h"
 #import "GeneralReviewCell.h"
@@ -120,7 +120,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showTalkWithFilter:)
-                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
+                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", NAV_REVIEW]
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -161,6 +161,13 @@
 #pragma mark - ViewController Life
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _readStatus = [((TKPDTabInboxReviewNavigationController *) self.parentViewController) getTitleNavReview];
+    if([_readStatus isEqualToString:ALL_REVIEW])
+        _readStatus = @"all";
+    else
+        _readStatus = @"unread";
+    
     
     _operationQueue = [NSOperationQueue new];
     _operationSkipReviewQueue = [NSOperationQueue new];

@@ -27,6 +27,7 @@
 
 @property (nonatomic, unsafe_unretained) SplitReputationViewController *splitVC;
 @property (nonatomic) int selectedIndex;
+@property (nonatomic) BOOL getDataFromMasterDB;
 
 - (NSString *)getSelectedFilter;
 - (IBAction)actionReview:(id)sender;

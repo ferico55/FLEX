@@ -1228,6 +1228,9 @@
                     [((ShopReviewPageViewController *) viewController) reloadTable];
                 }
             }
+            else if([viewController isMemberOfClass:[ProductReputationViewController class]]) {
+                [((ProductReputationViewController *) viewController) reloadTable];
+            }
             
             
             //Update Header
@@ -1292,6 +1295,9 @@
                 if([viewController isMemberOfClass:[ShopReviewPageViewController class]]) {
                     [((ShopReviewPageViewController *) viewController) reloadTable];
                 }
+            }
+            else if([viewController isMemberOfClass:[ProductReputationViewController class]]) {
+                [((ProductReputationViewController *) viewController) reloadTable];
             }
             
             

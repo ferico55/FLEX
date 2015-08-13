@@ -22,6 +22,7 @@
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
 -(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;
 -(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController;
+- (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController withGetDataFromMasterDB:(BOOL)getDataFromMaster;
 -(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController;
 
 @end

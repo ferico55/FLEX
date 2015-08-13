@@ -111,6 +111,13 @@
 */
 
 #pragma mark - Method
+- (void)alertWarningReviewSmiley {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Anda hanya bisa mengubah nilai reputasi menjadi lebih baik." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+    [alertView show];
+    indexPathInsertReputation = nil;
+}
+
+
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
@@ -248,10 +255,18 @@
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagGetInboxReputation) {
-        return @{@"action":CActionGetInboxReputation,
-                 @"nav":strNav,
-                 @"page":@(page),
-                 @"filter":_segmentedReviewReputationViewController.getSelectedFilter};
+        NSMutableDictionary *dictParam = [NSMutableDictionary new];
+        if(_getDataFromMasterDB) {
+            _getDataFromMasterDB = NO;
+            [dictParam setObject:@(1) forKey:@"n"];
+        }
+        
+        [dictParam setObject:CActionGetInboxReputation forKey:@"action"];
+        [dictParam setObject:strNav forKey:@"nav"];
+        [dictParam setObject:@(page) forKey:@"page"];
+        [dictParam setObject:_segmentedReviewReputationViewController.getSelectedFilter forKey:@"filter"];
+        
+        return dictParam;
     }
     else if(tag == CTagInsertReputation) {
         return @{@"action" : CInsertReputation,
@@ -737,33 +752,49 @@
     alertRateView = nil;
 }
 
+
 - (void)submitWithSelected:(int)tag {
     if(strRequestingInsertReputation != nil) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CPleaseWait] delegate:self];
         [stickyAlertView show];
+        indexPathInsertReputation = nil;
         
         return;
     }
-    
+
+    DetailMyInboxReputation *tempObj = arrList[alertRateView.tag];
+    NSString *strCurrentScore = ([tempObj.viewModel.role isEqualToString:@"2"]?tempObj.viewModel.buyer_score:tempObj.viewModel.seller_score);
     switch (tag) {
         case CTagMerah:
         {
+            if([strCurrentScore isEqualToString:CRevieweeScroreBad]) {
+                [self alertWarningReviewSmiley];
+                return;
+            }
             emoticonState = CRevieweeScroreBad;
         }
             break;
         case CTagKuning:
         {
+            if([strCurrentScore isEqualToString:CRevieweeScroreNetral]) {
+                [self alertWarningReviewSmiley];
+                return;
+            }
             emoticonState = CRevieweeScroreNetral;
         }
             break;
         case CTagHijau:
         {
+            if([strCurrentScore isEqualToString:CRevieweeScroreGood]) {
+                [self alertWarningReviewSmiley];
+                return;
+            }
             emoticonState = CRevieweeScroreGood;
         }
             break;
     }
 
-    DetailMyInboxReputation *tempObj = arrList[alertRateView.tag];
+    
     strRequestingInsertReputation = tempObj.reputation_id;
     strInsertReputationRole = tempObj.role;
     

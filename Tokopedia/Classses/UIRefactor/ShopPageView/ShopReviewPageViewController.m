@@ -167,9 +167,11 @@ UIAlertViewDelegate>
     }
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [self addBottomInsetWhen14inch];
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
