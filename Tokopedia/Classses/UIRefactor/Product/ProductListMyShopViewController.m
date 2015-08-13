@@ -28,6 +28,7 @@
 #import "RequestMoveTo.h"
 
 #import "TokopediaNetworkManager.h"
+#import "NavigateViewController.h"
 
 #import "LoadingView.h"
 
@@ -81,8 +82,10 @@
     RequestMoveTo *_requestMoveTo;
     
     TokopediaNetworkManager *_networkManager;
-    
+    NavigateViewController *_TKPDNavigator;
     LoadingView *_loadingView;
+    
+    BOOL _isNeedToSearch;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -111,6 +114,8 @@
 {
     [super viewDidLoad];
     
+    _isNeedToSearch = YES;
+    
     _list= [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
     _dataFilter = [NSMutableDictionary new];
@@ -128,6 +133,7 @@
     
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    _TKPDNavigator = [NavigateViewController new];
     
     _page = 1;
     _limit = 8;
@@ -248,16 +254,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     
     ManageProductList *list = _list[indexPath.row];
-    DetailProductViewController *detailProductVC = [DetailProductViewController new];
-    detailProductVC.hidesBottomBarWhenPushed = YES;
-    detailProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
-                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                             DATA_PRODUCT_DETAIL_KEY : list,
-                             };
-    [self.navigationController pushViewController:detailProductVC animated:YES];
+
+    [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:nil withId:[NSString stringWithFormat:@"%ld", (long)list.product_id] withImageurl:list.product_image withShopName:[_auth objectForKey:@"shop_name"]];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -285,11 +287,13 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
 }
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         if ([sender tag] == 11) {
@@ -776,6 +780,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    _searchbar.text = @"";
     [_searchbar resignFirstResponder];
 }
 
@@ -790,10 +795,14 @@
     [searchBar setShowsCancelButton:NO animated:YES];
     
     NSString *searchBarBefore = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
-    [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
     
-    if (![searchBarBefore isEqualToString:searchBar.text]) {
+    if (![searchBarBefore isEqualToString:searchBar.text] && _isNeedToSearch) {
+        [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
         [self refreshView:nil];
+    }
+    
+    if (!_isNeedToSearch) {
+        _isNeedToSearch = YES;
     }
     
     return YES;
@@ -850,6 +859,7 @@
 
 -(NSArray*)swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
+    _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     
     swipeSettings.transition = MGSwipeTransitionStatic;

@@ -220,14 +220,25 @@
 #pragma mark - Table View Delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat rowHeight = 0;
+    
     BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
     if (indexPath.row == 0) {
-        return 120;
+        rowHeight = 130;
     }
     else if (indexPath.row == 1)
-        return isShowBank?181:44;
+        rowHeight = isShowBank?181:44;
     else
-        return 50;
+    {
+        rowHeight = 40;
+    
+        TxOrderConfirmedList *detailOrder = _list[indexPath.section];
+        if (([[detailOrder.button objectForKey:API_ORDER_BUTTON_UPLOAD_PROOF_KEY] integerValue] != 1) &&
+            [detailOrder.system_account_no integerValue] == 0)
+                rowHeight = 0;
+    }
+    
+    return rowHeight;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -333,7 +344,7 @@
 -(UITableViewCell*)cellConfirmedBankAtIndexPath:(NSIndexPath*)indexPath
 {
     NSString *cellid = BANK_CELL_IDENTIFIER;
- 
+    
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
     
     TxOrderConfirmedBankCell *cell = (TxOrderConfirmedBankCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
@@ -342,8 +353,9 @@
     }
     [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
     [cell.bankNameLabel setText:detailOrder.user_bank_name?:@"" animated:NO];
+    NSString *accountNumber = ([detailOrder.user_account_no integerValue] != 0)?detailOrder.user_account_no:@"";
     [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
-    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, detailOrder.system_account_no] animated:NO];
+    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber] animated:NO];
     
     if ([cell.userNameLabel.text isEqualToString:@""]) {
         cell.userNameLabel.text =@"-";

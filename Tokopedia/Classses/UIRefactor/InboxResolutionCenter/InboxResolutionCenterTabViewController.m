@@ -375,7 +375,7 @@
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
     [attributedText addAttribute:NSFontAttributeName
-                           value:[UIFont boldSystemFontOfSize: 16.0f]
+                           value:[UIFont fontWithName:@"Gotham Medium" size:15.0]
                            range:NSMakeRange(0, [string length])];
     button.titleLabel.numberOfLines = 2;
     button.titleLabel.font = [UIFont systemFontOfSize: 11.0f];

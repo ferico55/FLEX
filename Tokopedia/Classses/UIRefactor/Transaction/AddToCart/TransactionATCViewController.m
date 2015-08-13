@@ -45,6 +45,7 @@
     UITableViewDataSource,
     UITableViewDelegate,
     UITextViewDelegate,
+    UITextFieldDelegate,
     UIAlertViewDelegate
 >
 {
@@ -110,6 +111,7 @@
 @property (weak, nonatomic) IBOutlet UIStepper *productQuantityStepper;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowInsuranceImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *insuraceConstraint;
+@property (weak, nonatomic) IBOutlet UITextField *productQuantityTextField;
 
 @end
 
@@ -365,11 +367,17 @@
                         if (wholesalePrice.count>0) {
                             for (int i = 0; i<wholesalePrice.count; i++) {
                                 WholesalePrice *price = wholesalePrice[i];
-                                if (i == wholesalePrice.count-1) {
+                                if (i == 0 && [_productQuantityTextField.text integerValue] < [price.wholesale_min integerValue]) {
+                                //if (i == 0 && _productQuantityStepper.value < [price.wholesale_min integerValue]) {
+                                    break;
+                                }
+                                if (i == wholesalePrice.count-1 && [_productQuantityTextField.text integerValue] >= [price.wholesale_max integerValue]) {
+                                //if (i == wholesalePrice.count-1 && _productQuantityStepper.value >= [price.wholesale_max integerValue]) {
                                     priceString = price.wholesale_price;
                                     break;
                                 }
-                                if (_productQuantityStepper.value >= [price.wholesale_min integerValue] && _productQuantityStepper.value <= [price.wholesale_max integerValue]) {
+                                if ([_productQuantityTextField.text integerValue] >= [price.wholesale_min integerValue] && [_productQuantityTextField.text integerValue] <= [price.wholesale_max integerValue]) {
+                                //if (_productQuantityStepper.value >= [price.wholesale_min integerValue] && _productQuantityStepper.value <= [price.wholesale_max integerValue]) {
                                     priceString = price.wholesale_price;
                                     break;
                                 }
@@ -436,8 +444,8 @@
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     if (indexPath.section == 2 && _productQuantityChanged) {
-        [_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
-        [self calculatePriceWithAction:@""];
+        //[_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
+        //[self calculatePriceWithAction:@""];
     }
 }
 
@@ -456,7 +464,8 @@
         case 2:
             cell = _tableViewPaymentDetailCell[indexPath.row];
             if (indexPath.row == TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE) {
-                if (_productQuantityStepper.value<=1) {
+                if ([_productQuantityTextField.text integerValue]<=1) {
+                //if (_productQuantityStepper.value<=1) {
                     return 0;
                 }
                 else
@@ -634,7 +643,7 @@
         ProductDetail *product = [userinfo objectForKey:DATA_DETAIL_PRODUCT_KEY];
         
         NSInteger productID = [ product.product_id integerValue];
-        NSInteger quantity = [_productQuantityLabel.text integerValue];
+        NSInteger quantity = [_productQuantityTextField.text integerValue];
         NSInteger insuranceID = [product.product_insurance integerValue];
         NSInteger shippingID = [shipment.shipment_id integerValue];
         NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
@@ -678,7 +687,7 @@
         NSString *toDoCalculate = [userinfo objectForKey:DATA_TODO_CALCULATE]?:@"";
         ProductDetail *product = [userinfo objectForKey:DATA_DETAIL_PRODUCT_KEY];
         NSInteger productID = [product.product_id integerValue];
-        NSInteger quantity = [[userinfo objectForKey:API_QUANTITY_KEY]integerValue];
+        NSInteger quantity = [_productQuantityTextField.text integerValue];
         NSInteger insuranceID = [[userinfo objectForKey:API_INSURANCE_KEY]integerValue];
         ShippingInfoShipments *shipment = _selectedShipment;
         NSInteger shippingID = [shipment.shipment_id integerValue];
@@ -897,7 +906,7 @@
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if (![package.price isEqualToString:@"0"]) {
+                    if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
                     }
                 }
@@ -915,6 +924,7 @@
             ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
             product = ATCForm.result.form.product_detail;
             _productQuantityStepper.value = [product.product_min_order integerValue]?:1;
+            _productQuantityTextField.text = product.product_min_order?:@"1";
             _productQuantityLabel.text = product.product_min_order?:@"1";
             _productQuantityStepper.minimumValue = [product.product_min_order integerValue]?:1;
             [_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
@@ -1054,7 +1064,7 @@
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if (![package.price isEqualToString:@"0"]) {
+                    if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
                     }
                 }
@@ -1099,7 +1109,7 @@
         NSMutableArray *availablePackage = [NSMutableArray new];
         
         for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-            if (![package.price isEqualToString:@"0"]) {
+            if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                 [availablePackage addObject:package];
             }
         }
@@ -1111,7 +1121,7 @@
         {
             _selectedShipment = shipmentObject;
             for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-                if (![package.price isEqualToString:@"0"]) {
+                if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                     _selectedShipmentPackage = package;
                 }
             }
@@ -1198,10 +1208,35 @@
     return YES;
 }
 
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    _productQuantityChanged = YES;
+    
+    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+
+    if ([textField.text integerValue] <1) {
+        textField.text = product.product_min_order;
+    }
+    
+    [_dataInput setObject:textField.text forKey:API_QUANTITY_KEY];
+    [self calculatePriceWithAction:@""];
+    [_tableView reloadData];
+}
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [_activeTextField resignFirstResponder];
     return YES;
+}
+
+- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString*)string
+{
+    NSString* newText;
+    
+    newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    return [newText intValue] < 1000;
 }
 
 #pragma mark - Text View Delegate

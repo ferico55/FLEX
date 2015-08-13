@@ -17,7 +17,12 @@
 #import "AlertDatePickerView.h"
 
 #pragma mark - Shop Edit Status View Controller
-@interface ShopEditStatusViewController ()<UITextViewDelegate, TKPDAlertViewDelegate>
+@interface ShopEditStatusViewController ()
+<
+    UITextViewDelegate,
+    UIScrollViewDelegate,
+    TKPDAlertViewDelegate
+>
 {
     NSInteger _type;
     
@@ -50,6 +55,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelcatatan;
 @property (weak, nonatomic) IBOutlet UIButton *buttondate;
 @property (weak, nonatomic) IBOutlet UITextView *textviewnote;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 - (IBAction)tap:(id)sender;
 - (IBAction)gesture:(id)sender;
@@ -93,8 +100,15 @@
     
     [self setDefaultData:_data];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+    CGRect frame = _contentView.frame;
+    frame.size.width = self.view.frame.size.width;
+    frame.size.height = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 19; // 19 = status bar
+    _contentView.frame = frame;
+
+    [_scrollView addSubview:_contentView];
+    _scrollView.contentSize = CGSizeMake(frame.size.width, frame.size.height);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -293,11 +307,21 @@
 }
 
 #pragma mark - Keyboard Notification
-- (void)keyboardWillShow:(NSNotification *)info {
-
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
+    self.scrollView.contentInset = UIEdgeInsetsZero;
+}
+
+#pragma mark - Scroll delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
 }
 
 @end

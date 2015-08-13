@@ -1,3 +1,4 @@
+
 //
 //  TransactionCartViewController.m
 //  Tokopedia
@@ -169,14 +170,17 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentDetail;
 @property (weak, nonatomic) IBOutlet UILabel *depositAmountLabel;
 @property (strong, nonatomic) IBOutlet UITableViewCell *voucherUsedCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *klikBCAUserIDCell;
+@property (weak, nonatomic) IBOutlet UITextField *userIDKlikBCATextField;
 
+@property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
 - (IBAction)tap:(id)sender;
 @end
 
 #define TAG_ALERT_PARTIAL 13
 #define DATA_PARTIAL_SECTION @"data_partial"
 #define DATA_CART_GRAND_TOTAL @"cart_grand_total"
-#define DATA_CART_GRAND_TOTAL_BEFORE_DECREASE @"data_grand_total"
+#define DATA_UPDATED_GRAND_TOTAL@"data_grand_total"
 #define DATA_VOUCHER_AMOUNT @"data_voucher_amount"
 #define DATA_CART_USED_VOUCHER_AMOUNT @"data_used_voucher_amount"
 #define DATA_DETAIL_CART_FOR_SHIPMENT @"data_detail_cart_fort_shipment"
@@ -281,6 +285,7 @@
 
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
 }
 
 
@@ -366,7 +371,7 @@
         rowCount = products.count+6; //ErrorMessage, Detail Pengiriman, Partial, Dropshipper, dropshipper name, dropshipper phone
     }
     else if (section == listCount+1)
-        rowCount = 4; //saldo tokopedia, textfield saldo, deposit amount, password tokopedia
+        rowCount = 5; //saldo tokopedia, textfield saldo, deposit amount, password tokopedia, userID klik BCA
     else rowCount = 2; // Biaya administrasi, total pembayaran
     
     return _isnodata?0:rowCount;
@@ -396,7 +401,7 @@
         }
     }
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, cell.contentView.frame.size.width,1)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, _tableView.frame.size.width,1)];
     if (indexPath.section != shopCount+1) {
         lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
         [cell.contentView addSubview:lineView];
@@ -407,7 +412,7 @@
         NSInteger productCount = products.count;
         if (indexPath.section <shopCount && indexPath.row <=productCount) {
             [lineView removeFromSuperview];
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width,1)];
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width,1)];
             lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
             [cell.contentView addSubview:lineView];
         }
@@ -616,7 +621,7 @@
                     _cart.grand_total = [NSString stringWithFormat:@"%zd", totalInteger];
                     _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
                     
-                    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+                    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
                     
                     [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
                     [_dataInput setObject:@(0) forKey:DATA_VOUCHER_AMOUNT];
@@ -638,6 +643,8 @@
             switch ([_cartSummary.gateway integerValue]) {
                 case TYPE_GATEWAY_TOKOPEDIA:
                 case TYPE_GATEWAY_TRANSFER_BANK:
+                case TYPE_GATEWAY_BCA_KLIK_BCA:
+                case TYPE_GATEWAY_INDOMARET:
                     if ([self isValidInput]) {
                         _requestCart.param = [self paramBuy];
                         [_requestCart dorequestBuy];
@@ -653,12 +660,12 @@
                     }
                 }
                     break;
-                case TYPE_GATEWAY_CLICK_BCA:
+                case TYPE_GATEWAY_BCA_CLICK_PAY:
                 {
                     if ([self isValidInput]) {
                         TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
                         vc.BCAParam = _cartSummary.bca_param;
-                        vc.gateway = @(TYPE_GATEWAY_CLICK_BCA);
+                        vc.gateway = @(TYPE_GATEWAY_BCA_CLICK_PAY);
                         vc.token = _cartSummary.token;
                         vc.cartDetail = _cartSummary;
                         vc.delegate = self;
@@ -696,7 +703,41 @@
     BOOL isvalid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     if ([_cart.grand_total integerValue] <50000) {
-        [errorMessage addObject:@"Minimum pembayaran untuk kartu kredit adalah Rp 50.000,00."];
+        [errorMessage addObject:@"Minimum pembayaran untuk kartu kredit adalah Rp 50.000."];
+        isvalid = NO;
+    }
+    
+    if (!isvalid) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
+    }
+    
+    return isvalid;
+}
+
+-(BOOL)isValidInputKlikBCA
+{
+    BOOL isvalid = YES;
+    NSMutableArray *errorMessage = [NSMutableArray new];
+    if ([_cart.grand_total integerValue] <50000) {
+        [errorMessage addObject:@"Minimum pembayaran untuk KlikBCA adalah Rp 50.000."];
+        isvalid = NO;
+    }
+    
+    if (!isvalid) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
+    }
+    
+    return isvalid;
+}
+
+-(BOOL)isValidInputIndomaret
+{
+    BOOL isvalid = YES;
+    NSMutableArray *errorMessage = [NSMutableArray new];
+    if ([_cart.grand_total integerValue] <10000) {
+        [errorMessage addObject:@"Minimum pembayaran untuk Indomaret adalah Rp 10.000."];
         isvalid = NO;
     }
     
@@ -775,7 +816,7 @@
     NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        if (![gateway.gateway isEqual:@(9)] && ![gateway.gateway isEqual:@(10)]) {
+        if (![gateway.gateway isEqual:@(11)] ) {
             [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
         }
     }
@@ -838,8 +879,11 @@
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
-        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    if ([product.product_error_msg isEqualToString:@""] ||
+        [product.product_error_msg isEqualToString:@"0"] ||
+        product.product_error_msg == nil ) {
+//        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+        [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -852,7 +896,8 @@
     
     if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
 
-        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+//        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+        [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -907,11 +952,17 @@
         if (gateway == TYPE_GATEWAY_CC) {
             return [self isValidInputCC];
         }
+        if (gateway == TYPE_GATEWAY_BCA_KLIK_BCA) {
+            return [self isValidInputKlikBCA];
+        }
+        if (gateway == TYPE_GATEWAY_INDOMARET) {
+            return  [self isValidInputIndomaret];
+        }
         if (_isUsingSaldoTokopedia)
         {
-            NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+            NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL];
             NSNumber *deposit = [_dataInput objectForKey:DATA_USED_SALDO_KEY];
-            if ([deposit integerValue]> [grandTotal integerValue])
+            if ([deposit integerValue] >= [grandTotal integerValue])
             {
                 isValid = NO;
                 [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
@@ -922,11 +973,21 @@
             }
         }
     }
-    else if (_indexPage == 1 && [_cartSummary.deposit_amount integerValue]>0) {
-        NSString *password = _passwordTextField.text;
-        if ([password isEqualToString:@""] || password == nil) {
-            isValid = NO;
-            [messageError addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
+    
+    if (_indexPage == 1) {
+        if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
+            NSString *userID = _userIDKlikBCATextField.text;
+            if ([userID isEqualToString:@""] || userID == nil) {
+                isValid = NO;
+                [messageError addObject:ERRORMESSAGE_NULL_CART_USERID];
+            }
+        }
+        if ([_cartSummary.deposit_amount integerValue]>0) {
+            NSString *password = _passwordTextField.text;
+            if ([password isEqualToString:@""] || password == nil) {
+                isValid = NO;
+                [messageError addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
+            }
         }
     }
     
@@ -970,7 +1031,7 @@
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
     }
-    if (voucherCode.length != 12)
+    if (voucherCode.length < 11)
     {
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_VOUCHER_CODE_LENGHT];
@@ -1040,7 +1101,10 @@
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if ([product.product_error_msg isEqualToString:@""] ||
+        [product.product_error_msg isEqualToString:@"0"] ||
+        product.product_error_msg == nil ||
+        [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
         UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
                                 @"Hapus",
                                 @"Edit",
@@ -1124,7 +1188,10 @@
         }
         case 1:
         {
-            if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+            if ([product.product_error_msg isEqualToString:@""] ||
+                [product.product_error_msg isEqualToString:@"0"] ||
+                product.product_error_msg == nil ||
+                [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
                 TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 editViewController.data = _dataInput;
@@ -1171,7 +1238,7 @@
             [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
         }
         
-        NSString *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+        NSString *grandTotal = [_dataInput objectForKey:DATA_UPDATED_GRAND_TOTAL];
         
         NSInteger grandTotalInteger = [grandTotal integerValue] + voucherUsedAmount;
         
@@ -1303,7 +1370,7 @@
         grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
         grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
         grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        [_dataInput setObject:grandTotal forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+        [_dataInput setObject:grandTotal forKey:DATA_UPDATED_GRAND_TOTAL];
     }
 
     return YES;
@@ -1572,6 +1639,7 @@
     
     _tableView.tableFooterView = nil;
     _saldoTokopediaAmountTextField.text = @"";
+    _userIDKlikBCATextField.text = @"";
     
     [_tableView reloadData];
 }
@@ -1805,7 +1873,7 @@
 
 -(UITableViewCell*)cellAdjustDepositAtIndexPath:(NSIndexPath*)indexPath
 {
-    // 0 saldo tokopedia, 1 textfield saldo, 2 password tokopedia
+    // 0 saldo tokopedia, 1 textfield saldo, 2 password tokopedia, 3 Deposit ammount, 4 userID klik BCA
     UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case 0:
@@ -1820,6 +1888,9 @@
             break;
         case 3:
             cell = _passwordCell;
+            break;
+        case 4:
+            cell = _klikBCAUserIDCell;
             break;
         default:
             break;
@@ -1839,7 +1910,7 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Detail Pengiriman";
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width,1)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width,1)];
         lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
         [cell.contentView addSubview:lineView];
     return cell;
@@ -2015,6 +2086,10 @@
         {
             cell.errorProductLabel.text = @"MODERASI";
         }
+        else if ([product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
+        {
+            [cell.errorProductLabel setCustomAttributedText:@"Maks\n999 item"];
+        }
         else if ([list.cart_is_price_changed integerValue] == 1)
         {
             [cell.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
@@ -2067,7 +2142,7 @@
     }
     else if (indexPath.section == _list.count+1)
     {
-        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia
+        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia, 4. userID klik BCA
         if (indexPath.row == 0 || indexPath.row == 2) {
             if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
                 [selectedGateway.gateway isEqual:@(NOT_SELECT_GATEWAY)] ||
@@ -2093,6 +2168,9 @@
                 return HEIGHT_VIEW_TOTAL_DEPOSIT;
         }
         if (indexPath.row == 3) {
+            return 0;
+        }
+        if (indexPath.row == 4) {
             return 0;
         }
     }
@@ -2168,7 +2246,7 @@
     }
     else if (indexPath.section == _list.count+1)
     {
-        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia
+        //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia, 4 userID klik BCA
         if (indexPath.row == 0)
         {
             return 0;
@@ -2189,7 +2267,13 @@
                 return 0;
             }
         }
-        
+        if (indexPath.row == 4) {
+            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
+                return 145;
+            }
+            else
+                return 0;
+        }
     }
     else if (indexPath.section == _list.count+2)
     {
@@ -2210,7 +2294,7 @@
     {
         NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
         CGSize maximumLabelSize = CGSizeMake(290,9999);
-        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_18
+        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
                                       constrainedToSize:maximumLabelSize
                                           lineBreakMode:NSLineBreakByTruncatingTail];
         
@@ -2319,6 +2403,7 @@
     NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
     NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
     NSString *password = _passwordTextField.text?:@"";
+    NSString *userIDKlikBCA = _userIDKlikBCATextField.text?:@"";
     
     NSString *CCToken = [_dataInput objectForKey:API_CC_TOKEN_ID_KEY]?:@"";
     NSString *CCEditFlag =[_dataInput objectForKey:API_CC_EDIT_FLAG_KEY]?:@"1";
@@ -2349,7 +2434,8 @@
                             API_CC_ADDRESS_KEY : CCAddress,
                             API_CC_PHONE_KEY : CCPhone,
                             API_CC_STATE_KEY : CCState,
-                            API_CC_CARD_NUMBER_KEY : CCNumber
+                            API_CC_CARD_NUMBER_KEY : CCNumber,
+                            API_BCA_USER_ID_KEY : userIDKlikBCA
                             };
     return param;
 }
@@ -2424,7 +2510,9 @@
         
     }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
+        
     }
+    
     if (tag == TAG_REQUEST_EMONEY) {
         [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
         [_alertLoading show];
@@ -2567,12 +2655,12 @@
         }
     }
     
-    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
         
     [self adjustDropshipperListParam];
     [self adjustPartialListParam];
     
-    NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    NSNumber *grandTotal = [_dataInput objectForKey:DATA_UPDATED_GRAND_TOTAL];
     
     NSString *deposit = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
@@ -2603,7 +2691,7 @@
     
     
     
-    [_dataInput setObject:@(grandTotalCartFromWS) forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    [_dataInput setObject:@(grandTotalCartFromWS) forKey:DATA_UPDATED_GRAND_TOTAL];
     
     [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
     
@@ -2766,7 +2854,7 @@
     _cart.grand_total = [NSString stringWithFormat:@"%zd",totalInteger];
     _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
     [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
-    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
     [_tableView reloadData];
     
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];

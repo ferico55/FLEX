@@ -291,11 +291,11 @@
                     }
                     else
                     {
-                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @" ";
                     }
 
                     if (![_searchKeyword isEqualToString:@""] && _searchKeyword != nil) {
-                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@"";
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@" ";
                     }
                 }
             }
@@ -354,7 +354,19 @@
     if (indexPath.row == 0) {
         return 44;
     } else {
-        return 243;
+        AddressFormList *list = _list[indexPath.section];
+        
+        NSString *string = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@ %@",
+                            [NSString convertHTML:list.address_street], list.district_name, list.city_name,
+                            list.province_name, list.country_name, list.postal_code];
+        
+        //Calculate the expected size based on the font and linebreak mode of your label
+        CGSize maximumLabelSize = CGSizeMake(190,9999);
+        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:NSLineBreakByTruncatingTail];
+        return 243-35+expectedLabelSize.height;
+
     }
 }
 
@@ -517,7 +529,14 @@
                 
                 _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
                 NSLog(@"%zd",_page);
+                
+                _table.tableFooterView = nil;
+            } else {
+                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+                self.table.tableFooterView = noResultView;
             }
+            
             NSInteger type = [[_datainput objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
             if (type == TYPE_ADD_EDIT_PROFILE_EDIT) {
                 //TODO: Behavior after edit
@@ -877,6 +896,15 @@
 }
 
 #pragma mark - delegate address detail
+-(void)setDefaultAddressData:(NSDictionary *)data
+{
+    AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
+    _indexPath = (NSIndexPath *)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
+    [self setAsDefaultAtIndexPath:_indexPath];
+}
+
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
@@ -1042,10 +1070,9 @@
     }
     
     _searchKeyword = searchBar.text;
-
+    
     [_table reloadData];
-    [self performSelector:@selector(reloadTableData) withObject:nil afterDelay:0.1];
-
+    
     return YES;
 }
 

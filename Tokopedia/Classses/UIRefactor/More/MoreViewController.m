@@ -54,6 +54,7 @@
 #import "ProductListMyShopViewController.h"
 #import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
+#import "InboxResolSplitViewController.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 
@@ -670,9 +671,16 @@
             
             [self.navigationController pushViewController:controller animated:YES];
         } else if (indexPath.row == 5) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            } else {
+                InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+            }
         }
     }
     

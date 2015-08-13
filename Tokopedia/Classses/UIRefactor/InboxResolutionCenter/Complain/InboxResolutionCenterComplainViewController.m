@@ -7,7 +7,6 @@
 //
 #import "ShopBadgeLevel.h"
 #import "CMPopTipView.h"
-#import "DetailProductViewController.h"
 #import "string_inbox_message.h"
 #import "NavigateViewController.h"
 

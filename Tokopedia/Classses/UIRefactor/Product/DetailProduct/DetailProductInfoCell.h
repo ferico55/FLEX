@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TTTAttributedLabel, DetailProductViewController;
+@class TTTAttributedLabel;
 
 #define CPaddingTopDescToko 10
 #define kTKPDDETAILPRODUCTINFOCELLIDENTIFIER @"DetailProductInfoCellIdentifier"

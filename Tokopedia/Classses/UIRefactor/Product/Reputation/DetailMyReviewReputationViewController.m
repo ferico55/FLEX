@@ -7,7 +7,7 @@
 //
 #import "CMPopTipView.h"
 #import "detail.h"
-#import "DetailProductViewController.h"
+
 #import "DetailMyReviewReputationCell.h"
 #import "DetailMyInboxReputation.h"
 #import "DetailReputationReview.h"
@@ -35,6 +35,7 @@
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
 #import "WebViewController.h"
+#import "NavigateViewController.h"
 
 #define CCellIdentifier @"cell"
 #define CGetListReputationReview @"get_list_reputation_review"
@@ -70,6 +71,8 @@
     DetailReputationReview *tempDetailReputationReview;
     LoadingView *loadingView;
     NoResultView *noResultView;
+    
+    NavigateViewController *_TKPDNavigator;
 }
 
 - (void)dealloc {
@@ -86,6 +89,8 @@
     [self initTable];
     [self loadMoreData:YES];
     [[self getNetworkManager:CTagListReputationReview] doRequest];
+    
+    _TKPDNavigator = [NavigateViewController new];
     
     style = [NSMutableParagraphStyle new];
     style.lineSpacing = 4.0f;
@@ -811,13 +816,9 @@
     if(isRefreshing)
         return;
     
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
     DetailReputationReview *detailReputationReview = arrList[((UIButton *) sender).tag];
-    
-    DetailProductViewController *detailProductViewController = [DetailProductViewController new];
-    detailProductViewController.data = @{@"product_id" : detailReputationReview.product_id, kTKPD_AUTHKEY:auth?:[NSNull null]};
-    [self.navigationController pushViewController:detailProductViewController animated:YES];
+
+    [_TKPDNavigator navigateToProductFromViewController:self withName:detailReputationReview.product_name withPrice:nil withId:detailReputationReview.product_id withImageurl:detailReputationReview.product_image withShopName:detailReputationReview.shop_name];
 }
 
 - (void)actionUbah:(id)sender {

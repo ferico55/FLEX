@@ -166,14 +166,16 @@
 {
     NSArray *listProducts = _order.order_products;
     OrderProduct *product = listProducts[indexPath.row];
-    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+//    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_picture withShopName:_order.order_shop.shop_name];
 }
 
 -(void)didTapProductAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *listProducts = _order.order_products;
     OrderProduct *product = listProducts[indexPath.row];
-    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+//    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_picture withShopName:_order.order_shop.shop_name];
 }
 
 - (void)tapMoreButtonActionAtIndexPath:(NSIndexPath *)indexPath {

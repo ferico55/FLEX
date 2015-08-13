@@ -236,7 +236,7 @@
             //Update DetailPriceAlert ViewController
             UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
             if([viewController isMemberOfClass:[CatalogViewController class]]) {
-                _catalogInfo.catalog_pricealert_price = [txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                 _catalogInfo.catalog_pricealert_price = [txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 [((CatalogViewController *) viewController) updatePriceAlert:[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]];
             }
             [self.navigationController popViewControllerAnimated:YES];

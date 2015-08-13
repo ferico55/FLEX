@@ -1211,6 +1211,7 @@
         default:
             break;
     }
+    [cell setUserInteractionEnabled:NO];
     return cell;
 }
 

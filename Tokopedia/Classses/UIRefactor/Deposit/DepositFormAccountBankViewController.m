@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *OTPTextField;
 @property (weak, nonatomic) IBOutlet UIButton *sendOTPButton;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UILabel *notesLabel;
 
 - (void)configureRestkit;
 - (void)cancelCurrentAction;
@@ -52,6 +53,8 @@
     barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbuttonright setTag:11];
     self.navigationItem.rightBarButtonItem = barbuttonright;
+
+    [_container addSubview:_contentView];
 }
 
 #pragma mark - ViewController Life
@@ -63,6 +66,22 @@
     self.title = ktkpdAddBankAccount;
     
     _datainput = [NSMutableDictionary new];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[_contentView(==%f)]", [UIScreen mainScreen].bounds.size.width] options:0 metrics:nil views:NSDictionaryOfVariableBindings(_contentView)]];
+    CGFloat contentSizeWidth = [UIScreen mainScreen].bounds.size.width;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        contentSizeWidth = _container.frame.size.width;
+    }
+    _contentView.frame = CGRectMake(0, 0, contentSizeWidth, _contentView.frame.size.height);
+    CGFloat contenSizeHeight =_notesLabel.frame.origin.y+_notesLabel.bounds.size.height+10;
+    if (contenSizeHeight <= [[UIScreen mainScreen]bounds].size.height) {
+        contenSizeHeight = [[UIScreen mainScreen]bounds].size.height+10;
+    }
+    _container.contentSize = CGSizeMake(contentSizeWidth, contenSizeHeight);
 }
 
 #pragma mark - DataSource Delegate
@@ -233,6 +252,12 @@
    
 }
 
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [_accountNameTextField resignFirstResponder];
+    [_accountNumberTextField resignFirstResponder];
+    [_bankBranchTextField resignFirstResponder];
+}
 
 
 @end

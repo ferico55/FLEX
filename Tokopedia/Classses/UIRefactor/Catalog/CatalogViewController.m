@@ -727,6 +727,8 @@ static CGFloat rowHeight = 40;
             GalleryViewController *gallery = [GalleryViewController new];
             gallery.canDownload = YES;
             [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
+            
+            
 
             gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self.navigationController presentViewController:gallery animated:YES completion:nil];

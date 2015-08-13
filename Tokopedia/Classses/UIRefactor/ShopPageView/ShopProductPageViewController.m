@@ -132,6 +132,7 @@ TokopediaNetworkManagerDelegate
     __weak RKManagedObjectRequestOperation *_requestDelete;
     
     TokopediaNetworkManager *_networkManager;
+    NavigateViewController *_TKPDNavigator;
     
     NSOperationQueue *_operationQueue;
     NSOperationQueue *_operationUnfollowQueue;
@@ -193,6 +194,7 @@ TokopediaNetworkManagerDelegate
     
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
+    _TKPDNavigator = [NavigateViewController new];
     
     _operationQueue = [NSOperationQueue new];
     _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
@@ -385,9 +387,9 @@ TokopediaNetworkManagerDelegate
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NavigateViewController *navigateController = [NavigateViewController new];
     List *product = [_product objectAtIndex:indexPath.row];
-    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+
+    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -500,6 +502,9 @@ TokopediaNetworkManagerDelegate
     } else {
         ypos = [[userinfo objectForKey:@"y_position"] floatValue];
     }
+    
+    CGPoint cgpoint = CGPointMake(0, ypos);
+    _collectionView.contentOffset = cgpoint;
 }
 
 #pragma mark - SearchBar Delegate
@@ -515,13 +520,37 @@ TokopediaNetworkManagerDelegate
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
-    [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+    
+    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    
+    if (![searchBarBefore isEqualToString:searchBar.text]) {
+        [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [self reloadDataSearch];
+    }
+}
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
+    searchBar.showsCancelButton = NO;
+    
+    searchBar.text = @"";
+    
+    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    
+    if (![searchBarBefore isEqualToString:searchBar.text]) {
+        [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [self reloadDataSearch];
+    }
+}
+
+-(void)reloadDataSearch
+{
     _tmpProduct = [NSArray arrayWithArray:_product];
     [_product removeAllObjects];
-
+    
     [_collectionView reloadData];
-
+    
     _tmpNextPageUri = _nextPageUri;
     _tmpPage = _page;
     
@@ -530,18 +559,6 @@ TokopediaNetworkManagerDelegate
     _isrefreshview = YES;
     
     [_networkManager doRequest];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [searchBar resignFirstResponder];
-    searchBar.showsCancelButton = NO;
-    [_noResult removeFromSuperview];
-    _product = [NSMutableArray arrayWithArray:_tmpProduct];
-    _nextPageUri = _tmpNextPageUri;
-    _page = _tmpPage;
-    _isrefreshview = YES;
-    [_detailfilter setObject:@"" forKey:kTKPDDETAIL_DATAQUERYKEY];
-    [self.collectionView reloadData];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -673,11 +690,8 @@ TokopediaNetworkManagerDelegate
     
     List *list = _product[index];
     
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
-    
-    [self.navigationController pushViewController:vc animated:YES];
-}
+    [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
+    }
 
 #pragma mark - Keyboard
 - (void)keyboardWillShow:(NSNotification *)info {
@@ -695,7 +709,7 @@ TokopediaNetworkManagerDelegate
 
 
 #pragma mark - LoadingView Delegate
-- (IBAction)pressRetryButton:(id)sender {
+- (void)pressRetryButton {
     [_networkManager doRequest];
     _isFailRequest = NO;
     [_collectionView reloadData];
@@ -827,6 +841,7 @@ TokopediaNetworkManagerDelegate
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     SearchItem *feed = [result objectForKey:@""];
+    [_collectionView setContentInset:UIEdgeInsetsZero];
     [_noResult removeFromSuperview];
     
     if(_page == 1) {
@@ -849,6 +864,7 @@ TokopediaNetworkManagerDelegate
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         [_collectionView addSubview:_noResult];
+        [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, _noResult.frame.size.height, 0)];
     }
     
     if(_refreshControl.isRefreshing) {

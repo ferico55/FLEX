@@ -133,8 +133,9 @@
     RKObjectMapping *ccMapping          = [[self mapping] transactionCCDataMapping];
     RKObjectMapping *veritransMapping   = [[self mapping] veritransDataMapping];
     RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
+    RKObjectMapping *indomaretMapping   = [[self mapping] indomaretMapping];
     
-    if(_gatewayID == TYPE_GATEWAY_CLICK_BCA){
+    if(_gatewayID == TYPE_GATEWAY_BCA_CLICK_PAY){
         RKObjectMapping *BCAParamMapping = [[self mapping] BCAParamMapping];
         RKRelationshipMapping *bcaParamRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_BCA_PARAM_KEY
                                                                                          toKeyPath:API_BCA_PARAM_KEY
@@ -159,6 +160,11 @@
         [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
                                                                                            toKeyPath:@"credit_card"
                                                                                          withMapping:ccFeeMapping]];
+    }
+    if(_gatewayID == TYPE_GATEWAY_INDOMARET){
+        [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"indomaret"
+                                                                                           toKeyPath:@"indomaret"
+                                                                                         withMapping:indomaretMapping]];
     }
     
     RKRelationshipMapping *listRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
@@ -224,6 +230,7 @@
     RKObjectMapping *shipmentsMapping   = [[self mapping] shipmentsMapping];
     RKObjectMapping *shopinfoMapping    = [[self mapping] shopInfoMapping];
     RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
+    RKObjectMapping *indomaretMapping   = [[self mapping] indomaretMapping];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -251,6 +258,11 @@
         [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
                                                                                            toKeyPath:@"credit_card"
                                                                                          withMapping:ccFeeMapping]];
+    }
+    if(_gatewayID == TYPE_GATEWAY_INDOMARET){
+        [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"indomaret"
+                                                                                           toKeyPath:@"indomaret"
+                                                                                         withMapping:indomaretMapping]];
     }
     
     // register mappings with the provider using a response descriptor
@@ -377,6 +389,7 @@
     RKObjectMapping *shipmentsMapping   = [[self mapping] shipmentsMapping];
     RKObjectMapping *shopinfoMapping    = [[self mapping] shopInfoMapping];
     RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
+    RKObjectMapping *indomaretMapping   = [[self mapping] indomaretMapping];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -404,6 +417,11 @@
         [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card"
                                                                                        toKeyPath:@"credit_card"
                                                                                      withMapping:ccFeeMapping]];
+    }
+    if(_gatewayID == TYPE_GATEWAY_INDOMARET){
+        [transactionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"indomaret"
+                                                                                           toKeyPath:@"indomaret"
+                                                                                         withMapping:indomaretMapping]];
     }
     
     // register mappings with the provider using a response descriptor

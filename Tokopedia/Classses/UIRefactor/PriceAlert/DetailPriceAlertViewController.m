@@ -9,7 +9,6 @@
 #import "CatalogViewController.h"
 #import "CatalogShops.h"
 #import "detail.h"
-#import "DetailProductViewController.h"
 #import "DepartmentTableViewController.h"
 #import "DetailPriceAlert.h"
 #import "DetailProductResult.h"
@@ -33,6 +32,7 @@
 #import "string_transaction.h"
 #import "TokopediaNetworkManager.h"
 #import "TransactionATCViewController.h"
+#import "NavigateViewController.h"
 #define CCellIdentifier @"cell"
 
 #define CTagGetDetailPriceList 1
@@ -61,6 +61,7 @@
     NoResultView *noResultView;
     UIActivityIndicatorView *activityIndicatorView, *activityIndicatorLoadProductDetail;
     LoadingView *loadingView;
+    NavigateViewController *_TKPDNavigator;
     int nSelectedFilter, nSelectedSort, page;
 }
 
@@ -76,6 +77,8 @@
     [super viewDidLoad];
     self.navigationItem.title = CStringNotificationHarga;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CStringUbah style:UIBarButtonItemStylePlain target:self action:@selector(actionUbah:)];
+    
+    _TKPDNavigator = [NavigateViewController new];
     
     page = 1;
     NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
@@ -201,7 +204,7 @@
 
 - (void)actionProductName:(id)sender
 {
-    [self redirectToDetailProduct:((ProductDetail *) [((CatalogShops *) [catalogList objectAtIndex:((CustomButton *) sender).tagIndexPath.section]).product_list objectAtIndex:((CustomButton *) sender).tagIndexPath.row]).product_id];
+    [self redirectToDetailProduct:((ProductDetail *) [((CatalogShops *) [catalogList objectAtIndex:((CustomButton *) sender).tagIndexPath.section]).product_list objectAtIndex:((CustomButton *) sender).tagIndexPath.row])];
 }
 
 - (void)actionBuy:(id)sender
@@ -233,14 +236,8 @@
 
 
 #pragma mark - Method
-- (void)redirectToDetailProduct:(NSString *)strProductID
-{
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    
-    DetailProductViewController *detailProductViewController = [DetailProductViewController new];
-    detailProductViewController.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : (strProductID?:_detailPriceAlert.pricealert_product_id), kTKPD_AUTHKEY:auth?:[NSNull null]};
-    [self.navigationController pushViewController:detailProductViewController animated:YES];
+- (void)redirectToDetailProduct:(ProductDetail *)detailProduct {
+    [_TKPDNavigator navigateToProductFromViewController:self withName:detailProduct.product_name?:_detailPriceAlert.pricealert_product_name withPrice:detailProduct.product_price?:_detailPriceAlert.pricealert_price withId:detailProduct.product_id?:_detailPriceAlert.pricealert_product_id withImageurl:detailProduct.product_pic?:_detailPriceAlert.pricealert_product_image withShopName:nil];
 }
 
 
@@ -359,7 +356,6 @@
     _detailPriceAlert.pricealert_price = [self getPrice:strPrice];
     [priceAlertCell setPriceNotification:_detailPriceAlert.pricealert_price];
     
-    //Load data again from server
     [catalogList removeAllObjects];
     [tblDetailPriceAlert reloadData];
     [self isGettingCatalogList:YES];
