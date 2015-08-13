@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabInboxTalkNavigationController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabInboxReviewNavigationController">
             <connections>
                 <outlet property="allBtn" destination="0Kb-ol-9H9" id="E36-qH-U2R"/>
                 <outlet property="allSign" destination="Zcu-9X-V2C" id="Kw3-Md-Q5V"/>
                 <outlet property="container" destination="6yB-o3-Oev" id="ahQ-Bf-YhH"/>
+                <outlet property="lblDescChangeReviewStyle" destination="mQK-7W-b7u" id="U7F-8w-pIc"/>
                 <outlet property="readOption" destination="TG6-Ga-jeZ" id="EYU-bn-IH5"/>
                 <outlet property="segmentContainer" destination="K43-zI-5Ib" id="1pS-KJ-W7w"/>
                 <outlet property="segmentcontrol" destination="UQ4-Ca-nLF" id="5fR-xm-BrH"/>
@@ -23,16 +29,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yB-o3-Oev">
-                    <rect key="frame" x="0.0" y="60" width="320" height="508"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <gestureRecognizers/>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K43-zI-5Ib">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                     <subviews>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="UQ4-Ca-nLF">
-                            <rect key="frame" x="8" y="16" width="304" height="29"/>
+                            <rect key="frame" x="8" y="8" width="304" height="29"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="28" id="poI-Ha-6aa"/>
                             </constraints>
@@ -48,11 +49,40 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="UQ4-Ca-nLF" firstAttribute="top" secondItem="K43-zI-5Ib" secondAttribute="top" constant="16" id="7Pi-2M-rzu"/>
-                        <constraint firstAttribute="height" constant="60" id="8Qh-Sa-KYW"/>
+                        <constraint firstItem="UQ4-Ca-nLF" firstAttribute="top" secondItem="K43-zI-5Ib" secondAttribute="top" constant="8" id="7Pi-2M-rzu"/>
+                        <constraint firstAttribute="height" constant="45" id="8Qh-Sa-KYW"/>
                         <constraint firstAttribute="trailing" secondItem="UQ4-Ca-nLF" secondAttribute="trailing" constant="8" id="P7Q-iC-Ol9"/>
                         <constraint firstItem="UQ4-Ca-nLF" firstAttribute="leading" secondItem="K43-zI-5Ib" secondAttribute="leading" constant="8" id="uLQ-2i-ftD"/>
                     </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yB-o3-Oev">
+                    <rect key="frame" x="0.0" y="45" width="320" height="483"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HuQ-jL-9PU">
+                    <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Klik disini untuk melihat ulasan baru Anda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mQK-7W-b7u">
+                            <rect key="frame" x="46" y="14" width="229" height="13"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="13" id="wxq-9g-TI2"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="mQK-7W-b7u" secondAttribute="centerY" id="1qg-N6-Fyw"/>
+                        <constraint firstAttribute="centerX" secondItem="mQK-7W-b7u" secondAttribute="centerX" id="AcY-L8-d7H"/>
+                        <constraint firstAttribute="height" constant="40" id="jsV-CK-0Nj"/>
+                    </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="O9W-eI-2Gy" appends="YES" id="fcc-zh-aGg"/>
+                    </connections>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TG6-Ga-jeZ">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -60,6 +90,7 @@
                         <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Kb-ol-9H9">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="J6N-eR-tlS"/>
                             </constraints>
@@ -130,20 +161,28 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="6yB-o3-Oev" firstAttribute="top" secondItem="K43-zI-5Ib" secondAttribute="bottom" id="3CY-B6-yuG"/>
                 <constraint firstAttribute="bottom" secondItem="TG6-Ga-jeZ" secondAttribute="bottom" id="3DH-bP-oRN"/>
-                <constraint firstItem="K43-zI-5Ib" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="3VK-Ku-2Qr"/>
+                <constraint firstItem="TG6-Ga-jeZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JDd-cL-6LP"/>
+                <constraint firstItem="HuQ-jL-9PU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LPs-wS-F4l"/>
                 <constraint firstItem="K43-zI-5Ib" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="RqS-A8-hby"/>
                 <constraint firstAttribute="trailing" secondItem="6yB-o3-Oev" secondAttribute="trailing" id="SEB-Uw-1aW"/>
                 <constraint firstAttribute="trailing" secondItem="K43-zI-5Ib" secondAttribute="trailing" id="Sjl-6K-qOT"/>
+                <constraint firstAttribute="bottom" secondItem="HuQ-jL-9PU" secondAttribute="bottom" id="UQC-wE-gxD"/>
                 <constraint firstItem="6yB-o3-Oev" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XD3-is-RAz"/>
                 <constraint firstAttribute="trailing" secondItem="TG6-Ga-jeZ" secondAttribute="trailing" id="hBz-oW-m5d"/>
-                <constraint firstAttribute="bottom" secondItem="6yB-o3-Oev" secondAttribute="bottom" id="lBK-v7-d8T"/>
+                <constraint firstAttribute="trailing" secondItem="HuQ-jL-9PU" secondAttribute="trailing" id="hdS-L9-H2Y"/>
                 <constraint firstItem="TG6-Ga-jeZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mpK-p2-nbm"/>
-                <constraint firstItem="TG6-Ga-jeZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="wNW-O5-P3f"/>
+                <constraint firstItem="K43-zI-5Ib" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="oqa-ve-hNE"/>
+                <constraint firstItem="HuQ-jL-9PU" firstAttribute="top" secondItem="6yB-o3-Oev" secondAttribute="bottom" id="rRR-vE-cho"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="top" secondItem="K43-zI-5Ib" secondAttribute="bottom" id="uMt-eT-mRL"/>
             </constraints>
             <point key="canvasLocation" x="497" y="187"/>
         </view>
+        <tapGestureRecognizer id="O9W-eI-2Gy">
+            <connections>
+                <action selector="actionNewReview:" destination="-1" id="PV2-Wf-YPq"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_check_orange.png" width="14" height="14"/>

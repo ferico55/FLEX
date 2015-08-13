@@ -49,4 +49,12 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
+
+
+#pragma mark - Method
+- (void)setDetailViewController:(UIViewController *)viewController {
+    UINavigationController *detailVC = [[UINavigationController alloc] initWithRootViewController:viewController];
+    detailVC.navigationBar.translucent = NO;
+    splitViewController.viewControllers = [NSArray arrayWithObjects:[splitViewController.viewControllers firstObject], detailVC, nil];
+}
 @end

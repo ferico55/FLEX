@@ -182,8 +182,10 @@
     [labelUser setText:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
     
     [labelUser setLabelBackground:[object.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual];
-    [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
     
+    
+    [UIView setAnimationsEnabled:NO];
+    [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
     
     if(object.unassessed_reputation_review==nil || [object.unassessed_reputation_review isEqualToString:@"0"]) {
         if(object.updated_reputation_review==nil || [object.updated_reputation_review isEqualToString:@"0"] || [object.role isEqualToString:@"1"]) {//1 is buyer
@@ -298,5 +300,7 @@
         [btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
         [btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (object.user_reputation==nil? @"0":object.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
+    
+    [UIView setAnimationsEnabled:YES];
 }
 @end

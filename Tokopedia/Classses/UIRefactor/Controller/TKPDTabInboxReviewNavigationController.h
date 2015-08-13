@@ -30,7 +30,9 @@
 #pragma mark -
 #pragma mark TKPDTabInboxReviewNavigationController
 
-@interface TKPDTabInboxReviewNavigationController : UIViewController
+@interface TKPDTabInboxReviewNavigationController : UIViewController {
+    IBOutlet UILabel *lblDescChangeReviewStyle;
+}
 
 @property (nonatomic, strong) UIViewController *splitVC;
 
@@ -44,6 +46,7 @@
 @property (nonatomic, copy, setter = setData:) NSDictionary *data;
 
 //+ (id)allocinit;
+- (IBAction)actionNewReview:(id)sender;
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (void)setSelectedViewController:(UIViewController *)selectedViewController animated:(BOOL)animated;
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated;

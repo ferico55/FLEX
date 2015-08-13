@@ -5,9 +5,12 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "InboxReviewSplitViewController.h"
+#import "InboxReviewViewController.h"
 #import "MyReviewReputationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "SplitReputationViewController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
 #define CInboxReputation @"inbox-reputation"
 #define CInboxReputationMyProduct @"inbox-reputation-my-product"
 #define CInboxReputationMyReview @"inbox-reputation-my-review"
@@ -28,6 +31,8 @@
     [super viewDidLoad];
     [self initNavigation];
     selectedFilter = CTagSemuaReview;
+    [self setNavigationTitle:selectedFilter];
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
@@ -38,6 +43,12 @@
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
         self.navigationItem.leftBarButtonItem = barButton;
     }
+    
+    //Set text attribute for information change review style
+    NSMutableAttributedString *attribute = [[NSMutableAttributedString alloc] initWithAttributedString:lblDescChangeReviewStyle.attributedText];
+    NSRange rangeText = [lblDescChangeReviewStyle.text rangeOfString:@"ulasan lama"];
+    [attribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0/255.0f green:122/255.0f blue:255/255.0f alpha:1.0] range:rangeText];
+    [lblDescChangeReviewStyle setAttributedText:attribute];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -181,23 +192,9 @@
     [self hiddenShadowFilter:YES];
     [self setNavigationTitle:selectedFilter];
     
-    switch (segmentedControl.selectedSegmentIndex) {
-        case CTagSemua:
-        {
-            [allReviewViewController actionReview:sender];
-        }
-            break;
-        case CTagProductSaya:
-        {
-            [myProductViewController actionReview:sender];
-        }
-            break;
-        case CTagReviewSaya:
-        {
-            [myReviewViewController actionReview:sender];
-        }
-            break;
-    }
+    [allReviewViewController actionReview:sender];
+    [myProductViewController actionReview:sender];
+    [myReviewViewController actionReview:sender];
 }
 
 - (IBAction)actionBelumDibaca:(id)sender {
@@ -205,46 +202,53 @@
     [self hiddenShadowFilter:YES];
     [self setNavigationTitle:selectedFilter];
     
-    switch (segmentedControl.selectedSegmentIndex) {
-        case CTagSemua:
-        {
-            [allReviewViewController actionBelumDibaca:sender];
-        }
-            break;
-        case CTagProductSaya:
-        {
-            [myProductViewController actionBelumDibaca:sender];
-        }
-            break;
-        case CTagReviewSaya:
-        {
-            [myReviewViewController actionBelumDibaca:sender];
-        }
-            break;
-    }
+    [allReviewViewController actionBelumDibaca:sender];
+    [myProductViewController actionBelumDibaca:sender];
+    [myReviewViewController actionBelumDibaca:sender];
 }
+
 - (IBAction)actionBelumDireview:(id)sender {
     selectedFilter = CtagBelumDireviw;
     [self hiddenShadowFilter:YES];
     [self setNavigationTitle:selectedFilter];
     
-    switch (segmentedControl.selectedSegmentIndex) {
-        case CTagSemua:
-        {
-            [allReviewViewController actionBelumDireview:sender];
-        }
-            break;
-        case CTagProductSaya:
-        {
-            [myProductViewController actionBelumDireview:sender];
-        }
-            break;
-        case CTagReviewSaya:
-        {
-            [myReviewViewController actionBelumDireview:sender];
-        }
-            break;
+    [allReviewViewController actionBelumDireview:sender];
+    [myProductViewController actionBelumDireview:sender];
+    [myReviewViewController actionBelumDireview:sender];
+}
+
+- (IBAction)actionOldReview:(id)sender {
+    //Change ViewController
+    NSMutableArray *newViewController = [NSMutableArray new];
+    for(UIViewController *tempViewController in self.navigationController.viewControllers) {
+        [newViewController addObject:tempViewController];
     }
+    [newViewController removeLastObject];
+
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+        [newViewController addObject:controller];
+    } else {
+        InboxReviewViewController *vc = [InboxReviewViewController new];
+        vc.data=@{@"nav":@"inbox-review"};
+        
+        InboxReviewViewController *vc1 = [InboxReviewViewController new];
+        vc1.data=@{@"nav":@"inbox-review-my-product"};
+        
+        InboxReviewViewController *vc2 = [InboxReviewViewController new];
+        vc2.data=@{@"nav":@"inbox-review-my-review"};
+        
+        NSArray *vcs = @[vc,vc1, vc2];
+        TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+        [nc setSelectedIndex:2];
+        [nc setViewControllers:vcs];
+        nc.hidesBottomBarWhenPushed = YES;
+        
+        [newViewController addObject:nc];
+    }
+    
+    [self.navigationController setViewControllers:newViewController];
 }
 
 - (IBAction)actionValueChange:(id)sender {
@@ -261,6 +265,7 @@
         {
             if(allReviewViewController == nil) {
                 allReviewViewController = [MyReviewReputationViewController new];
+                allReviewViewController.segmentedReviewReputationViewController = self;
                 allReviewViewController.strNav = CInboxReputation;
             }
             [self addChildViewController:allReviewViewController];
@@ -283,6 +288,7 @@
         {
             if(myProductViewController == nil) {
                 myProductViewController = [MyReviewReputationViewController new];
+                myProductViewController.segmentedReviewReputationViewController = self;
                 myProductViewController.strNav = CInboxReputationMyProduct;
             }
             [self addChildViewController:myProductViewController];
@@ -305,6 +311,7 @@
         {
             if(myReviewViewController == nil) {
                 myReviewViewController = [MyReviewReputationViewController new];
+                myReviewViewController.segmentedReviewReputationViewController = self;
                 myReviewViewController.strNav = CInboxReputationMyReview;
             }
             [self addChildViewController:myReviewViewController];

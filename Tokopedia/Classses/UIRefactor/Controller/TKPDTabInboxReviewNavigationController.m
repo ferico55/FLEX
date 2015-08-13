@@ -8,10 +8,12 @@
 
 #import "controller.h"
 #import "string_inbox_review.h"
+#import "SplitReputationViewController.h"
+#import "SegmentedReviewReputationViewController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
 
 
-@interface TKPDTabInboxReviewNavigationController () {
+@interface TKPDTabInboxReviewNavigationController ()<SplitReputationVcProtocol> {
     UIView* _tabbar;
     NSArray* _buttons;
     NSInteger _unloadSelectedIndex;
@@ -20,6 +22,7 @@
     NSString *_titleNavReview;
     NSString *_titleNavMyProductReview;
     NSString *_titleNavMyReview;
+
 }
 
 
@@ -32,7 +35,7 @@
 @property (weak, nonatomic) IBOutlet UIView *unreadSign;
 @property (weak, nonatomic) IBOutlet UIView *segmentContainer;
 
-
+- (IBAction)actionNewReview:(id)sender;
 - (IBAction)tap:(UISegmentedControl *)sender;
 - (UIEdgeInsets)contentInsetForContainerController;
 - (UIViewController*)isChildViewControllersContainsNavigationController:(UIViewController*)controller;
@@ -42,7 +45,9 @@
 #pragma mark -
 #pragma mark TKPDTabBarController
 
-@implementation TKPDTabInboxReviewNavigationController
+@implementation TKPDTabInboxReviewNavigationController {
+    UISplitViewController *splitViewController;
+}
 
 @synthesize viewControllers = _viewControllers;
 @synthesize selectedViewController = _selectedViewController;
@@ -135,7 +140,11 @@
                                              selector:@selector(disableButtonRead:)
                                                  name:@"disableButtonRead" object:nil];
     
-
+    //Set text attribute for information change review style
+    NSMutableAttributedString *attribute = [[NSMutableAttributedString alloc] initWithAttributedString:lblDescChangeReviewStyle.attributedText];
+    NSRange rangeText = [lblDescChangeReviewStyle.text rangeOfString:@"ulasan baru"];
+    [attribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0/255.0f green:122/255.0f blue:255/255.0f alpha:1.0] range:rangeText];
+    [lblDescChangeReviewStyle setAttributedText:attribute];
 }
 
 -(IBAction)tapBackButton:(id)sender
@@ -147,6 +156,7 @@
         [_splitVC.navigationController popViewControllerAnimated:YES];
 
 }
+
 
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -459,6 +469,31 @@
 
 
 #pragma mark View actions
+- (IBAction)actionNewReview:(id)sender {
+    NSMutableArray *newViewController = [NSMutableArray new];
+    for(UIViewController *tempViewController in self.navigationController.viewControllers) {
+        [newViewController addObject:tempViewController];
+    }
+    [newViewController removeLastObject];
+    
+    
+    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        splitViewController = [UISplitViewController new];
+        
+        SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+        splitReputationViewController.splitViewController = splitViewController;
+        splitReputationViewController.del = self;
+        [newViewController addObject:splitReputationViewController];
+    }
+    else  {
+        SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+        segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+        [newViewController addObject:segmentedReputationViewController];
+    }
+    
+    [self.navigationController setViewControllers:newViewController];
+}
+
 -(IBAction)tap:(UISegmentedControl*) sender
 {
     if (_viewControllers != nil) {
@@ -715,5 +750,10 @@
     _unreadSign.hidden = NO;
 }
 
+
+#pragma mark - SplitReputation delegate
+- (void)deallocVC {
+    splitViewController = nil;
+}
 @end
 

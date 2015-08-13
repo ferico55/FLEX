@@ -167,11 +167,8 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-        _table.estimatedRowHeight = 44;
-        _table.rowHeight = UITableViewAutomaticDimension;
-    }
+//    _table.estimatedRowHeight = 44;
+//    _table.rowHeight = UITableViewAutomaticDimension;
     
     // Do any additional setup after loading the view from its nib.
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -188,7 +185,10 @@
     
     _table.tableHeaderView = _header;
     _page = 1;
-    _auth = [NSMutableDictionary new];
+    
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    _auth = [auth mutableCopy];
     [_sendButton setEnabled:NO];
     
     //validate previous class so it can use several URL path
@@ -301,6 +301,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0"))
+        return UITableViewAutomaticDimension;
+    
     TalkCommentList *list = _list[indexPath.row];
 
     GeneralTalkCommentCell *cell = [dictCell objectForKey:list.comment_id==nil? @"-1":list.comment_id];
@@ -321,19 +324,11 @@
     style.lineSpacing = 5.0f;
     NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message attributes:attributes];
+    
+    
     ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    
-    cell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-    [cell setNeedsLayout];
-    [cell layoutIfNeeded];
-    
-    
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    height += 1;
-    
-    return height;
+    CGSize tempSizeComment = [((GeneralTalkCommentCell *)cell).commentlabel sizeThatFits:CGSizeMake(tableView.bounds.size.width-25-((GeneralTalkCommentCell *)cell).commentlabel.frame.origin.x, 9999)];//left space
+    return ((GeneralTalkCommentCell *)cell).commentlabel.frame.origin.y + 17 + tempSizeComment.height;//17 bottom space
 }
 
 
@@ -384,6 +379,20 @@
                 [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
             }
             else {
+                if(list.comment_user_reputation==nil && list.comment_user_id!=nil && _auth!=nil && [list.comment_user_id isEqualToString:[[_auth objectForKey:kTKPD_USERIDKEY] stringValue]] && [_auth objectForKey:CUserReputation]) {
+                    NSData *data = [[_auth objectForKey:CUserReputation] dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *tempDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    
+                    if(tempDict) {
+                        list.comment_user_reputation = [ReputationDetail new];
+                        list.comment_user_reputation.positive_percentage = [tempDict objectForKey:CPositivePercentage];
+                        list.comment_user_reputation.negative = [tempDict objectForKey:CNegative];
+                        list.comment_user_reputation.neutral = [tempDict objectForKey:CNeutral];
+                        list.comment_user_reputation.positive = [tempDict objectForKey:CPositif];
+                        list.comment_user_reputation.no_reputation = [tempDict objectForKey:CNoReputation];
+                    }
+                }
+                
                 if(list.comment_user_reputation==nil || (list.comment_user_reputation.no_reputation!=nil && [list.comment_user_reputation.no_reputation isEqualToString:@"1"])) {
                     [((GeneralTalkCommentCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
                     [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
@@ -967,7 +976,7 @@
                     commentlist.comment_message =_growingtextview.text;
                     commentlist.comment_user_name = [_auth objectForKey:@"full_name"];
                     commentlist.comment_user_image = [_auth objectForKey:@"user_image"];
-                    
+                    commentlist.comment_user_id = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
                     
                     NSDate *today = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];

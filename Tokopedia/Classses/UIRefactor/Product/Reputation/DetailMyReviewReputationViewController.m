@@ -145,6 +145,8 @@
         CGRect rectCell = cell.frame;
         rectCell.size.width = tableView.bounds.size.width;
         cell.frame = rectCell;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell setUnClickViewAction];
         
         cell.delegate = self;
         [self setPropertyLabelDesc:cell.getLabelDesc];
@@ -156,14 +158,6 @@
     cell.getBtnUbah.tag = indexPath.row;
     cell.strRole = _detailMyInboxReputation.role;
     [cell setView:detailReputationReview.viewModel];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    if(detailReputationReview.viewModel==nil || detailReputationReview.viewModel.review_message==nil || [detailReputationReview.viewModel.review_message isEqualToString:@"0"]) {
-        if([_detailMyInboxReputation.role isEqualToString:@"2"]) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-    }
-    
     
     return cell;
 }
@@ -805,7 +799,12 @@
     if(isRefreshing)
         return;
     
-    [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
+    DetailReputationReview *detailReputationReview = arrList[(int)((UIButton *) sender).tag];
+    if(! ((detailReputationReview.viewModel.review_message==nil || [detailReputationReview.viewModel.review_message isEqualToString:@"0"]) && [_detailMyInboxReputation.role isEqualToString:@"1"])) {
+        [self tableView:tableContent didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:(int)((UIButton *) sender).tag inSection:0]];
+    }
+    else
+        [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
 }
 
 - (void)actionProduct:(id)sender {
@@ -925,15 +924,19 @@
 }
 
 - (void)actionReviewRate:(id)sender {
-    UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-    if([tempViewController isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
-        UIView *tempView = [UIView new];
-        tempView.tag = _tag;
-        [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) tempViewController) getSegmentedViewController]) actionReviewRate:tempView];
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
     }
-    
-//    [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
-
+    else {
+        UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+        if([tempViewController isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
+            UIView *tempView = [UIView new];
+            tempView.tag = _tag;
+            [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) tempViewController) getSegmentedViewController]) actionReviewRate:tempView];
+        }
+        
+    //    [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
+    }
 }
 
 - (void)actionLabelUser:(id)sender {

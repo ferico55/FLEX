@@ -79,6 +79,8 @@
         userInfo = @{@"state" : @(STATE_NEW_ORDER)};
     } else if ([notificationCode integerValue] == STATE_NEW_REPSYS ||
                [notificationCode integerValue] == STATE_EDIT_REPSYS ||
+               [notificationCode integerValue] == STATE_EDIT_REVIEW ||
+               [notificationCode integerValue] == STATE_NEW_REVIEW ||
                [notificationCode integerValue] == STATE_REPLY_REVIEW) {
         userInfo = @{@"state" : @(STATE_NEW_REPSYS)};
     }

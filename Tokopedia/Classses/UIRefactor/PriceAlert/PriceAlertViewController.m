@@ -229,7 +229,7 @@
     GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
     if(tag == CTagAddCatalogPriceAlert) {
         if([generalAction.result.is_success isEqualToString:@"1"]) {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[(isEditCatalog? CStringSuccessEditPriceAlert:CStringSuccessAddPriceCatalog)] delegate:self];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[(isEditCatalog? CStringSuccessEditPriceCatalog:CStringSuccessAddPriceCatalog)] delegate:self];
             [stickyAlertView show];
             
             

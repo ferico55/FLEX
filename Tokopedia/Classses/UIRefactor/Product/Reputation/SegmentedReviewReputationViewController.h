@@ -22,6 +22,7 @@
     IBOutlet UIView *viewContent, *viewContentAction, *viewShadow;
     IBOutlet UIButton *btnAllReview, *btnBelumDibaca, *btnBelumDireview;
     IBOutlet NSLayoutConstraint *constTopCheckList;
+    IBOutlet UILabel *lblDescChangeReviewStyle;
 }
 
 @property (nonatomic, unsafe_unretained) SplitReputationViewController *splitVC;
@@ -32,6 +33,7 @@
 - (IBAction)actionBelumDibaca:(id)sender;
 - (IBAction)actionBelumDireview:(id)sender;
 - (IBAction)actionValueChange:(id)sender;
+- (IBAction)actionOldReview:(id)sender;
 - (int)getSelectedSegmented;
 - (void)setNavigationTitle:(NSString *)strTitle;
 - (MyReviewReputationViewController *)getSegmentedViewController;

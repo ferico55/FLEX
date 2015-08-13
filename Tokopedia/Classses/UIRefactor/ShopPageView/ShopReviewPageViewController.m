@@ -567,6 +567,7 @@ UIAlertViewDelegate>
             cell = [tempArr objectAtIndex:0];
             cell.delegate = self;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.frame = CGRectMake(0, 0, tableView.bounds.size.width, cell.bounds.size.height);
             
             [cell initProductCell];
             [self setPropertyLabelDesc:cell.getLabelDesc];
@@ -576,12 +577,24 @@ UIAlertViewDelegate>
         [cell.getLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
         [cell setLabelUser:list.review_user_name withUserLabel:list.review_user_label];
         [cell setLabelDate:list.review_create_time?:@""];
-        [cell setLabelProductName:list.review_product_name];
         cell.getBtnRateEmoji.tag = indexPath.row;
         cell.getBtnLike.tag = indexPath.row;
         cell.getBtnChat.tag = indexPath.row;
         cell.getBtnDisLike.tag = indexPath.row;
         cell.getLabelDesc.tag = indexPath.row;
+        
+        
+        //Check product exist or not
+        if([list.review_product_name isEqualToString:@"0"]) {
+            [cell setLabelProductName:@"-"];
+            cell.getBtnLike.userInteractionEnabled = cell.getBtnDisLike.userInteractionEnabled = NO;
+        }
+        else {
+            [cell setLabelProductName:list.review_product_name];
+            cell.getBtnLike.userInteractionEnabled = cell.getBtnDisLike.userInteractionEnabled = YES;
+        }
+        
+
         
         //Check reputation
         if(list.review_user_reputation.no_reputation!=nil && [list.review_user_reputation.no_reputation isEqualToString:@"1"]) {
@@ -826,7 +839,6 @@ UIAlertViewDelegate>
                                                                       path:@"shop.pl"
                                                                 parameters:[param encrypt]];
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [_timer invalidate];
         _timer = nil;
         [_act stopAnimating];

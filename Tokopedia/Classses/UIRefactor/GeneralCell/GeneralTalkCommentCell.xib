@@ -28,7 +28,7 @@
                             <constraint firstAttribute="height" constant="50" id="Wm5-lL-BK4"/>
                         </constraints>
                     </imageView>
-                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3192A0A5-8EC0-4E67-BD4E-2661857BA927" translatesAutoresizingMaskIntoConstraints="NO" id="zzK-ok-yaY">
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="260A7010-5BA3-45B1-83CC-90556E91EA6E" translatesAutoresizingMaskIntoConstraints="NO" id="zzK-ok-yaY">
                         <rect key="frame" x="300" y="8" width="15" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="KsI-Ar-FIO"/>
@@ -111,7 +111,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="3192A0A5-8EC0-4E67-BD4E-2661857BA927" width="14" height="14">
+        <image name="260A7010-5BA3-45B1-83CC-90556E91EA6E" width="14" height="14">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

@@ -18,6 +18,7 @@
 #import "MyReviewReputationCell.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationViewController.h"
+#import "SplitReputationViewController.h"
 #import "string_inbox_message.h"
 #import "SmileyAndMedal.h"
 #import "String_Reputation.h"
@@ -47,7 +48,7 @@
     NSMutableArray *arrList;
     NSString *strRequestingInsertReputation;
     TokopediaNetworkManager *tokopediaNetworkManager, *tokopediaNetworkInsertReputation;
-    NSString *filterNav, *filter, *emoticonState, *strInsertReputationRole;
+    NSString *emoticonState, *strInsertReputationRole;
     int page;
     BOOL isRefreshing;
     NSString *strUriNext;
@@ -75,7 +76,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
-    filter = CTagSemuaReview;
     page = 0;
     tableContent.allowsSelection = NO;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
@@ -98,7 +98,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [tableContent reloadData];
-    [((SegmentedReviewReputationViewController *) self.parentViewController) setNavigationTitle:filter];
 }
 
 /*
@@ -252,7 +251,7 @@
         return @{@"action":CActionGetInboxReputation,
                  @"nav":strNav,
                  @"page":@(page),
-                 @"filter":filter};
+                 @"filter":_segmentedReviewReputationViewController.getSelectedFilter};
     }
     else if(tag == CTagInsertReputation) {
         return @{@"action" : CInsertReputation,
@@ -517,7 +516,6 @@
 
 #pragma mark - Action
 - (void)actionReview:(id)sender {
-    filter = CTagSemuaReview;
     page = 0;
     strUriNext = nil;
     
@@ -528,7 +526,6 @@
 }
 
 - (void)actionBelumDibaca:(id)sender {
-    filter = CTagBelumDibaca;
     page = 0;
     strUriNext = nil;
 
@@ -539,7 +536,6 @@
 }
 
 - (void)actionBelumDireview:(id)sender {
-    filter = CtagBelumDireviw;
     page = 0;
     strUriNext = nil;
     
@@ -579,10 +575,15 @@
 
 - (void)actionLabelUser:(id)sender {
     if(! isRefreshing) {
+        
+        
         DetailMyInboxReputation *tempObj = arrList[((ViewLabelUser *) ((UITapGestureRecognizer *) sender).view).tag];
+        UserContainerViewController *container;
+        ShopContainerViewController *containerShop;
+        
         
         if([tempObj.role isEqualToString:@"2"]) {//2 is seller
-            UserContainerViewController *container = [UserContainerViewController new];
+            container = [UserContainerViewController new];
             UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
             NSDictionary *auth = [_userManager getUserLoginData];
             
@@ -592,17 +593,29 @@
                                    @"user_id" : [arrUri lastObject],
                                    @"auth" : auth?:[NSNull null]
                                    };
-                [self.navigationController pushViewController:container animated:YES];
+                
+                if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                    [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:container];
+                }
+                else {
+                    [self.navigationController pushViewController:container animated:YES];
+                }
             }
         }
         else {
-            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            containerShop = [[ShopContainerViewController alloc] init];
             TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
             NSDictionary *auth = [secureStorage keychainDictionary];
             
-            container.data = @{kTKPDDETAIL_APISHOPIDKEY:tempObj.shop_id,
+            containerShop.data = @{kTKPDDETAIL_APISHOPIDKEY:tempObj.shop_id,
                                kTKPD_AUTHKEY:auth?:[NSNull null]};
-            [self.navigationController pushViewController:container animated:YES];
+            
+            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:containerShop];
+            }
+            else {
+                [self.navigationController pushViewController:containerShop animated:YES];
+            }
         }
     }
 }
@@ -621,16 +634,18 @@
 - (void)actionInvoice:(id)sender
 {
     if(! isRefreshing) {
-        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-
-        }
-        else {
-            DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+        WebViewController *webViewController;
+        
+        if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
+            webViewController = [WebViewController new];
+            webViewController.strURL = tempObj.invoice_uri;
+            webViewController.strTitle = @"";
             
-            if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-                WebViewController *webViewController = [WebViewController new];
-                webViewController.strURL = tempObj.invoice_uri;
-                webViewController.strTitle = @"";
+            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:webViewController];
+            }
+            else {
                 [self.navigationController pushViewController:webViewController animated:YES];
             }
         }
@@ -705,7 +720,14 @@
         DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
         detailMyReviewReputationViewController.tag = (int)((UIButton *) sender).tag;
         detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
-        [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
+
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:detailMyReviewReputationViewController];
+        }
+        else {
+            [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
+        }
     }
 }
 

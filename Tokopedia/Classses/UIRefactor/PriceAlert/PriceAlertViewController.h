@@ -15,7 +15,6 @@
     IBOutlet UILabel *lblDesc;
 }
 
-@property (nonatomic) BOOL isCatalog;
 @property (nonatomic, unsafe_unretained) CatalogInfo *catalogInfo;
 @property (nonatomic, unsafe_unretained) ProductDetail *productDetail;
 @property (nonatomic, unsafe_unretained) DetailPriceAlert *detailPriceAlert;
