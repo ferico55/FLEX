@@ -53,9 +53,9 @@
 }
 
 - (void)initNotificationWindow {
-    _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _notificationWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-//    _notificationWindow.clipsToBounds = YES;
+    _notificationWindow.clipsToBounds = YES;
     
     _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
     _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -97,6 +97,7 @@
 }
 
 - (void)tapNotificationBar {
+    
     [_notificationWindow makeKeyAndVisible];
     
 //    CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -122,7 +123,6 @@
     notificationTableFrame.origin.y = 64;
     notificationTableFrame.size.height = [UIScreen mainScreen].bounds.size.height;
     
-    
     UIGraphicsBeginImageContext([UIScreen mainScreen].bounds.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     UIView *view = _attachedViewController.view;
@@ -142,14 +142,7 @@
     _notificationController.tableView.frame = notificationTableFrame;
     [_notificationController.tableView endUpdates];
     
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 650, 0);
-    
-    CGRect windowFrame = _notificationWindow.frame;
-    windowFrame.size.height = 0;
-    _notificationWindow.frame = windowFrame;
-    
-
-    windowFrame.size.height = _attachedViewController.view.frame.size.height-64;
+    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 64, 0);
     
     [_notificationWindow addSubview:_notificationController.view];
     
@@ -163,7 +156,6 @@
     //        _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 568);
     //    }];
     
-    _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 568);
     CGAffineTransform tr = CGAffineTransformScale(_notificationWindow.transform, 0.1, 0.1);
     _notificationWindow.transform = tr;
     _notificationWindow.hidden = NO;
