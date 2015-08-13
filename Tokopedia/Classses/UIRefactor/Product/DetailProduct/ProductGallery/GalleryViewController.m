@@ -100,11 +100,12 @@
         [btnCancel setImage:[UIImage imageNamed:@"icon_close_white.png"] forState:UIControlStateNormal];
         btnCancel.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width-49, 0, 49, 49);
         
-        lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, btnCancel.frame.origin.x-10, btnCancel.bounds.size.height)];
+        lblTitle = [[TopAlignedLabel alloc] initWithFrame:CGRectMake(10, 10, btnCancel.frame.origin.x-10, 4*btnCancel.bounds.size.height)];
         lblTitle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin;
         lblTitle.font = [UIFont fontWithName:CFont_Gotham_book size:13.0f];
         lblTitle.backgroundColor = [UIColor clearColor];
         lblTitle.textColor = [UIColor whiteColor];
+        lblTitle.numberOfLines = 0;
         
         UIView *contentHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 70)];
         CAGradientLayer *gradient = [CAGradientLayer layer];
@@ -392,7 +393,7 @@
     {
         if([_photoSource respondsToSelector:@selector(photoGallery:captionForPhotoAtIndex:)])
         {
-            lblTitle.text = [_photoSource photoGallery:self captionForPhotoAtIndex:_currentIndex];
+            [lblTitle setCustomAttributedText:[_photoSource photoGallery:self captionForPhotoAtIndex:_currentIndex]];
 //            lblTitle.text = @"Testong aj";
             if(lblTitle.text.length>0 && lblTitle.layer.shadowOpacity != 0.5) {
                 lblTitle.layer.shadowColor = [UIColor blackColor].CGColor;
