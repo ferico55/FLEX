@@ -322,7 +322,7 @@ typedef enum TagRequest {
     [_messages_selected removeAllObjects];
     if(_messages==nil || _messages.count==0) {
         _isnodata = YES;
-        _table.tableFooterView = [self getNoResult];
+//        _table.tableFooterView = [self getNoResult];
     }
     [_table endUpdates];
     

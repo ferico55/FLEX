@@ -556,27 +556,20 @@
             {
                 //save
                 NSMutableArray *message = [NSMutableArray new];
-                NSString *shopdesc = [_datainput objectForKey:kTKPDSHOPEDIT_APISHORTDESCKEY]?:_shop.info.shop_description;
-                NSString *tagline = [_datainput objectForKey:kTKPDSHOPEDIT_APITAGLINEKEY]?:_shop.info.shop_description;
-                
-                if (shopdesc && ![shopdesc isEqualToString:@""] &&
-                    tagline && ![tagline isEqualToString:@""] //&&
-                    ){ //status) {
-                    [self configureRestKit];
-                    [self requestaction:_datainput];
+                NSString *shopdesc = [_datainput objectForKey:kTKPDSHOPEDIT_APISHORTDESCKEY];
+                NSString *tagline = [_datainput objectForKey:kTKPDSHOPEDIT_APITAGLINEKEY];
+                if (shopdesc.length == 0) {
+                    [message addObject:@"Deskripsi harus diisi."];
                 }
-                else
-                {
-                    if (!tagline || [tagline isEqualToString:@""]) {
-                        [message addObject:@"Slogan harus diisi."];
-                    }
-                    if (!shopdesc || [shopdesc isEqualToString:@""]) {
-                        [message addObject:@"Deskripsi harus diisi."];
-                    }
+                if (tagline.length == 0) {
+                    [message addObject:@"Slogan harus diisi."];
                 }
                 if (message.count>0) {
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:message delegate:self];
                     [alert show];
+                } else {
+                    [self configureRestKit];
+                    [self requestaction:_datainput];
                 }
                 break;
             }
