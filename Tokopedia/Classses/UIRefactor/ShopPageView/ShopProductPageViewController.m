@@ -290,6 +290,11 @@ TokopediaNetworkManagerDelegate
                                forState:UIControlStateNormal];
     }
     
+    if(_data) {
+        [_detailfilter setValue:[_data objectForKey:@"product_etalase_id"] forKey:@"product_etalase_id"];
+        [_detailfilter setValue:[_data objectForKey:@"product_etalase_name"] forKey:@"product_etalase_name"];
+    }
+    
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshView:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
     
@@ -595,6 +600,8 @@ TokopediaNetworkManagerDelegate
                 //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                             @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
+                            @"product_etalase_name" : [_detailfilter objectForKey:@"product_etalase_name"]?:@"",
+                            @"product_etalase_id" : [_detailfilter objectForKey:@"product_etalase_id"]?:@"",
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
@@ -669,11 +676,14 @@ TokopediaNetworkManagerDelegate
 #pragma mark - Filter Delegate
 -(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
     [_networkManager requestCancel];
+    [_detailfilter removeAllObjects];
     [_detailfilter setObject:[userInfo objectForKey:DATA_ETALASE_KEY]?:@""
                       forKey:DATA_ETALASE_KEY];
     
     [_detailfilter setObject:[userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:@""
                       forKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
+    
+    
     [self refreshView:nil];
 }
 
@@ -738,7 +748,7 @@ TokopediaNetworkManagerDelegate
         etalaseid = etalase.etalase_id?:@"";
     }
     
-    if([_data objectForKey:@"product_etalase_id"]) {
+    if([_data objectForKey:@"product_etalase_id"] && !etalase) {
         etalaseid = [_data objectForKey:@"product_etalase_id"];
     }
     
