@@ -282,8 +282,8 @@
     //Set chat total
     if(auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]) {
         [cell.getBtnChat setHidden:NO];
-        if([detailReputationReview.review_response.response_message isEqualToString:@"0"]) {
-            [cell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", detailReputationReview.review_response.response_message] forState:UIControlStateNormal];
+        if(detailReputationReview.review_response.response_message==nil || [detailReputationReview.review_response.response_message isEqualToString:@"0"]) {
+            [cell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", detailReputationReview.review_response.response_message==nil? @"0":detailReputationReview.review_response.response_message] forState:UIControlStateNormal];
         }
         else {
             [cell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
