@@ -32,7 +32,7 @@
 - (UIButton *)getBtnTryAgain;
 - (IBAction)actionTryAgain:(id)sender;
 - (IBAction)actionHapus:(id)sender;
-- (void)setStar:(NSString *)valueStar;
+- (void)setStar:(NSString *)level withSet:(NSString *)strSet;
 - (ViewLabelUser *)getViewLabelUser;
 - (UIView *)getViewStar;
 - (UITextView *)getTvDesc;

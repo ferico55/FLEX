@@ -96,6 +96,15 @@
     [_delegate actionProduct:sender];
 }
 
+- (void)setUnClickViewAction {
+    [viewContentAction setUserInteractionEnabled:YES];
+    [viewContentAction addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapEmptyAction:)]];
+}
+
+- (void)tapEmptyAction:(id)sender {
+
+}
+
 - (void)setView:(DetailReviewReputaionViewModel *)viewModel {
     lblDate.text = @"";
     [btnProduct setTitle:viewModel.product_name forState:UIControlStateNormal];
@@ -184,13 +193,11 @@
     if((viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) && [_strRole isEqualToString:@"1"]) {
         btnKomentar.hidden = NO;
         [self setHiddenRating:YES];
-        btnKomentar.userInteractionEnabled = YES;
         [btnKomentar setTitle:@"Beri Review" forState:UIControlStateNormal];
         [btnKomentar setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
     else {
         btnKomentar.hidden = NO;
-        btnKomentar.userInteractionEnabled = NO;
         if(viewModel.review_response!=nil && viewModel.review_response.response_message!=nil && viewModel.review_response.response_message.length>0 && ![viewModel.review_response.response_message isEqualToString:@"0"])
             [btnKomentar setTitle:[NSString stringWithFormat:@"1 %@", CStringKomentar] forState:UIControlStateNormal];
         else

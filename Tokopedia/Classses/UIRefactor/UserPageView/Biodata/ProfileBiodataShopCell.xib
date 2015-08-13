@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -74,16 +74,28 @@
                             <constraint firstAttribute="height" constant="1" id="57s-wF-3ga"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JhF-Za-vcV">
-                        <rect key="frame" x="160" y="68" width="1" height="64"/>
+                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JhF-Za-vcV">
+                        <rect key="frame" x="0.0" y="68" width="0.0" height="64"/>
                         <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="1" id="yWN-Wc-aSK"/>
-                            <constraint firstAttribute="height" constant="64" id="z0e-Lt-10b"/>
-                        </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWZ-1t-6o3">
-                        <rect key="frame" x="160" y="68" width="160" height="64"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NST-Mt-FiX">
+                        <rect key="frame" x="0.0" y="68" width="320" height="64"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="64" id="bu2-K9-yVS"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <inset key="titleEdgeInsets" minX="-60" minY="-30" maxX="0.0" maxY="0.0"/>
+                        <inset key="imageEdgeInsets" minX="48" minY="10" maxX="0.0" maxY="0.0"/>
+                        <state key="normal" title="Reputasi" image="icon_medal_diamond.png">
+                            <color key="titleColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="actionReputasi:" destination="kjE-GT-oL0" eventType="touchUpInside" id="Qlk-nN-ZM3"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWZ-1t-6o3">
+                        <rect key="frame" x="0.0" y="68" width="320" height="64"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="64" id="zAZ-ga-jp7"/>
                         </constraints>
@@ -98,47 +110,28 @@
                             <action selector="actionKecepatan:" destination="kjE-GT-oL0" eventType="touchUpInside" id="0f6-rc-h1g"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NST-Mt-FiX">
-                        <rect key="frame" x="0.0" y="68" width="160" height="64"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="64" id="125-zC-DTO"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                        <inset key="titleEdgeInsets" minX="-60" minY="-30" maxX="0.0" maxY="0.0"/>
-                        <inset key="imageEdgeInsets" minX="48" minY="10" maxX="0.0" maxY="0.0"/>
-                        <state key="normal" title="Reputasi" image="icon_medal_diamond.png">
-                            <color key="titleColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="actionReputasi:" destination="kjE-GT-oL0" eventType="touchUpInside" id="Qlk-nN-ZM3"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="9WE-FG-GEI" firstAttribute="leading" secondItem="3Gq-r7-bfH" secondAttribute="trailing" constant="8" id="1Bi-B3-SQh"/>
                     <constraint firstAttribute="trailing" secondItem="fWZ-1t-6o3" secondAttribute="trailing" id="1gE-If-uiU"/>
+                    <constraint firstAttribute="trailing" secondItem="NST-Mt-FiX" secondAttribute="trailing" id="1rs-Cn-Xtr"/>
                     <constraint firstItem="p3M-tL-azv" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" constant="25" id="3KK-G5-jV6"/>
                     <constraint firstItem="e0h-Xq-DcR" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" id="6r1-Jn-HEb"/>
+                    <constraint firstItem="fWZ-1t-6o3" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" id="7bq-4J-BRh"/>
+                    <constraint firstItem="NST-Mt-FiX" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" id="AHi-TK-rFV"/>
                     <constraint firstItem="9WE-FG-GEI" firstAttribute="top" secondItem="Vq3-Bw-YG3" secondAttribute="bottom" constant="-1" id="DCN-NQ-khb"/>
                     <constraint firstItem="3Gq-r7-bfH" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" constant="10" id="F7D-zV-LuW"/>
                     <constraint firstItem="Vq3-Bw-YG3" firstAttribute="leading" secondItem="3Gq-r7-bfH" secondAttribute="trailing" constant="8" id="LZ7-Dq-Pbd"/>
                     <constraint firstAttribute="trailing" secondItem="e0h-Xq-DcR" secondAttribute="trailing" id="PUa-M4-5Sx"/>
                     <constraint firstItem="p3M-tL-azv" firstAttribute="top" secondItem="oU4-Iy-eEd" secondAttribute="top" constant="25" id="QxI-08-5r0"/>
-                    <constraint firstItem="fWZ-1t-6o3" firstAttribute="leading" secondItem="JhF-Za-vcV" secondAttribute="trailing" constant="-1" id="S2J-id-1EJ"/>
                     <constraint firstItem="Vq3-Bw-YG3" firstAttribute="top" secondItem="oU4-Iy-eEd" secondAttribute="top" constant="10" id="SMq-aZ-eLd"/>
                     <constraint firstItem="e0h-Xq-DcR" firstAttribute="top" secondItem="ZbE-RC-Dpf" secondAttribute="bottom" constant="9" id="TpB-37-xuJ"/>
-                    <constraint firstItem="JhF-Za-vcV" firstAttribute="top" secondItem="e0h-Xq-DcR" secondAttribute="bottom" constant="-1" id="VUP-KK-e8o"/>
-                    <constraint firstItem="NST-Mt-FiX" firstAttribute="top" secondItem="e0h-Xq-DcR" secondAttribute="bottom" constant="-1" id="W1a-PM-gaM"/>
                     <constraint firstItem="fWZ-1t-6o3" firstAttribute="top" secondItem="e0h-Xq-DcR" secondAttribute="bottom" constant="-1" id="YnR-Aa-keL"/>
-                    <constraint firstItem="JhF-Za-vcV" firstAttribute="leading" secondItem="NST-Mt-FiX" secondAttribute="trailing" id="aAj-pU-U7D"/>
                     <constraint firstItem="ZbE-RC-Dpf" firstAttribute="leading" secondItem="9WE-FG-GEI" secondAttribute="trailing" constant="3" id="blD-4d-CFZ"/>
-                    <constraint firstAttribute="bottom" secondItem="JhF-Za-vcV" secondAttribute="bottom" id="c8J-1C-Wz3"/>
-                    <constraint firstItem="NST-Mt-FiX" firstAttribute="leading" secondItem="oU4-Iy-eEd" secondAttribute="leading" id="cej-Yl-Tyh"/>
                     <constraint firstItem="ZbE-RC-Dpf" firstAttribute="top" secondItem="Vq3-Bw-YG3" secondAttribute="bottom" constant="-2" id="dX1-Bn-Vkt"/>
-                    <constraint firstItem="NST-Mt-FiX" firstAttribute="width" secondItem="fWZ-1t-6o3" secondAttribute="width" id="fES-ly-vNF"/>
                     <constraint firstAttribute="trailing" secondItem="ZbE-RC-Dpf" secondAttribute="trailing" constant="8" id="pPG-3I-T0n"/>
                     <constraint firstItem="3Gq-r7-bfH" firstAttribute="top" secondItem="oU4-Iy-eEd" secondAttribute="top" constant="10" id="rnW-4d-tuJ"/>
+                    <constraint firstItem="NST-Mt-FiX" firstAttribute="top" secondItem="e0h-Xq-DcR" secondAttribute="bottom" constant="-1" id="vS0-Ep-Q8M"/>
                     <constraint firstAttribute="trailing" secondItem="Vq3-Bw-YG3" secondAttribute="trailing" constant="15" id="xuH-8Y-chs"/>
                 </constraints>
             </tableViewCellContentView>

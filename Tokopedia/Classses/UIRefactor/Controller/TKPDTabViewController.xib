@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -74,7 +74,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jIp-aI-jNk">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="40" y="0.0" width="240" height="45"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="45" id="FZ5-sj-Ive"/>
                                             </constraints>
@@ -107,10 +107,10 @@
                                         <constraint firstItem="sds-8e-xqT" firstAttribute="top" secondItem="aJA-pH-kcl" secondAttribute="top" constant="7" id="B8d-Sy-ghh"/>
                                         <constraint firstItem="WTT-gV-iUz" firstAttribute="leading" secondItem="aJA-pH-kcl" secondAttribute="leading" id="G2G-ug-4Yf"/>
                                         <constraint firstAttribute="height" constant="45" id="IXT-ug-6PH"/>
-                                        <constraint firstAttribute="trailing" secondItem="jIp-aI-jNk" secondAttribute="trailing" id="O7e-L8-qVZ"/>
+                                        <constraint firstAttribute="trailing" secondItem="jIp-aI-jNk" secondAttribute="trailing" constant="40" id="O7e-L8-qVZ"/>
                                         <constraint firstAttribute="trailing" secondItem="WTT-gV-iUz" secondAttribute="trailing" id="Qgn-qG-Urm"/>
                                         <constraint firstItem="WTT-gV-iUz" firstAttribute="top" secondItem="sds-8e-xqT" secondAttribute="bottom" constant="7" id="aJv-zU-70W"/>
-                                        <constraint firstItem="jIp-aI-jNk" firstAttribute="leading" secondItem="aJA-pH-kcl" secondAttribute="leading" id="ggb-wY-hRr"/>
+                                        <constraint firstItem="jIp-aI-jNk" firstAttribute="leading" secondItem="aJA-pH-kcl" secondAttribute="leading" constant="40" id="ggb-wY-hRr"/>
                                         <constraint firstItem="jIp-aI-jNk" firstAttribute="top" secondItem="aJA-pH-kcl" secondAttribute="top" id="nEv-jL-UtA"/>
                                         <constraint firstAttribute="bottom" secondItem="WTT-gV-iUz" secondAttribute="bottom" id="nJi-JX-LpF"/>
                                         <constraint firstAttribute="trailing" secondItem="sds-8e-xqT" secondAttribute="trailing" constant="9" id="zVs-oF-8Dj"/>
@@ -120,7 +120,7 @@
                                     <rect key="frame" x="0.0" y="45" width="320" height="45"/>
                                     <subviews>
                                         <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8LF-FY-hE6">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="40" y="0.0" width="240" height="45"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="45" id="BW4-CY-kX8"/>
                                             </constraints>
@@ -156,9 +156,9 @@
                                         <constraint firstItem="8LF-FY-hE6" firstAttribute="top" secondItem="wyz-NK-kTK" secondAttribute="top" id="Iyb-HU-1MM"/>
                                         <constraint firstAttribute="height" constant="45" id="XDn-g9-qOT"/>
                                         <constraint firstItem="Sku-9l-e0b" firstAttribute="top" secondItem="72e-Ue-Jnb" secondAttribute="bottom" constant="7" id="XUh-e0-ocw"/>
-                                        <constraint firstItem="8LF-FY-hE6" firstAttribute="leading" secondItem="wyz-NK-kTK" secondAttribute="leading" id="lgw-Sj-xDO"/>
+                                        <constraint firstItem="8LF-FY-hE6" firstAttribute="leading" secondItem="wyz-NK-kTK" secondAttribute="leading" constant="40" id="lgw-Sj-xDO"/>
                                         <constraint firstAttribute="bottom" secondItem="Sku-9l-e0b" secondAttribute="bottom" id="nuw-zk-61o"/>
-                                        <constraint firstAttribute="trailing" secondItem="8LF-FY-hE6" secondAttribute="trailing" id="pFA-nO-537"/>
+                                        <constraint firstAttribute="trailing" secondItem="8LF-FY-hE6" secondAttribute="trailing" constant="40" id="pFA-nO-537"/>
                                         <constraint firstAttribute="trailing" secondItem="Sku-9l-e0b" secondAttribute="trailing" id="u3Z-3e-fqS"/>
                                     </constraints>
                                 </view>
@@ -166,7 +166,7 @@
                                     <rect key="frame" x="0.0" y="90" width="320" height="45"/>
                                     <subviews>
                                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jz7-xO-N9o">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="40" y="0.0" width="240" height="45"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="45" id="Ydq-nw-aWP"/>
                                             </constraints>
@@ -198,10 +198,10 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="45" id="3Sr-hg-wvC"/>
                                         <constraint firstItem="jz7-xO-N9o" firstAttribute="top" secondItem="H59-i3-RKB" secondAttribute="top" id="8v0-Bf-6vT"/>
-                                        <constraint firstItem="jz7-xO-N9o" firstAttribute="leading" secondItem="H59-i3-RKB" secondAttribute="leading" id="9Td-Ab-Mnn"/>
+                                        <constraint firstItem="jz7-xO-N9o" firstAttribute="leading" secondItem="H59-i3-RKB" secondAttribute="leading" constant="40" id="9Td-Ab-Mnn"/>
                                         <constraint firstItem="pvB-6G-zCJ" firstAttribute="top" secondItem="H59-i3-RKB" secondAttribute="top" constant="7" id="FrO-U1-M6N"/>
                                         <constraint firstItem="cYj-cA-rlk" firstAttribute="leading" secondItem="H59-i3-RKB" secondAttribute="leading" id="IVo-Ld-yDz"/>
-                                        <constraint firstAttribute="trailing" secondItem="jz7-xO-N9o" secondAttribute="trailing" id="efD-MD-cxm"/>
+                                        <constraint firstAttribute="trailing" secondItem="jz7-xO-N9o" secondAttribute="trailing" constant="40" id="efD-MD-cxm"/>
                                         <constraint firstAttribute="bottom" secondItem="cYj-cA-rlk" secondAttribute="bottom" id="gcs-Mk-UzP"/>
                                         <constraint firstAttribute="trailing" secondItem="cYj-cA-rlk" secondAttribute="trailing" id="lJ6-v0-O8y"/>
                                         <constraint firstAttribute="trailing" secondItem="pvB-6G-zCJ" secondAttribute="trailing" constant="9" id="qdL-4c-RNh"/>
@@ -212,7 +212,7 @@
                                     <rect key="frame" x="0.0" y="135" width="320" height="45"/>
                                     <subviews>
                                         <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="70h-AA-bo5">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="40" y="0.0" width="240" height="45"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="45" id="jh0-1q-h1M"/>
                                             </constraints>
@@ -242,7 +242,7 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="70h-AA-bo5" secondAttribute="trailing" id="0bL-ol-fa8"/>
+                                        <constraint firstAttribute="trailing" secondItem="70h-AA-bo5" secondAttribute="trailing" constant="40" id="0bL-ol-fa8"/>
                                         <constraint firstItem="R3U-U4-Bfb" firstAttribute="top" secondItem="lri-Y9-BxZ" secondAttribute="bottom" constant="7" id="2bs-Um-c0n"/>
                                         <constraint firstAttribute="trailing" secondItem="R3U-U4-Bfb" secondAttribute="trailing" id="9dZ-f2-gA4"/>
                                         <constraint firstAttribute="bottom" secondItem="R3U-U4-Bfb" secondAttribute="bottom" id="EDH-dj-T37"/>
@@ -251,7 +251,7 @@
                                         <constraint firstAttribute="trailing" secondItem="lri-Y9-BxZ" secondAttribute="trailing" constant="9" id="Vis-cQ-HDO"/>
                                         <constraint firstItem="R3U-U4-Bfb" firstAttribute="leading" secondItem="eN8-zb-bJN" secondAttribute="leading" id="VkT-Qe-kxf"/>
                                         <constraint firstItem="70h-AA-bo5" firstAttribute="top" secondItem="eN8-zb-bJN" secondAttribute="top" id="cBc-Ng-bkK"/>
-                                        <constraint firstItem="70h-AA-bo5" firstAttribute="leading" secondItem="eN8-zb-bJN" secondAttribute="leading" id="rJy-6W-AJD"/>
+                                        <constraint firstItem="70h-AA-bo5" firstAttribute="leading" secondItem="eN8-zb-bJN" secondAttribute="leading" constant="40" id="rJy-6W-AJD"/>
                                         <constraint firstAttribute="height" constant="45" id="wob-w0-w3W"/>
                                     </constraints>
                                 </view>

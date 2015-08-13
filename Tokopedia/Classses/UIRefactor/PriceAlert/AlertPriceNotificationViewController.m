@@ -165,10 +165,19 @@
         } failure:nil];
     }
     
+    
+    if(detailPriceAlert.pricealert_is_active!=nil && [detailPriceAlert.pricealert_is_active isEqualToString:@"1"]) {
+        cell.userInteractionEnabled = YES;
+        [cell setProductName:[NSString convertHTML:detailPriceAlert.pricealert_product_name]];
+    }
+    else {
+        cell.userInteractionEnabled = NO;
+        [cell setProductName:@"Produk telah dihapus"];
+    }
+    
     cell.getViewUnread.hidden = ([detailPriceAlert.pricealert_total_unread isEqualToString:@"0"]);
     [cell setTagBtnClose:(int)indexPath.row];
     [cell setLblDateProduct:detailPriceAlert.pricealert_time];
-    [cell setProductName:[NSString convertHTML:detailPriceAlert.pricealert_product_name]];
     [cell setPriceNotification:[self getPrice:detailPriceAlert.pricealert_price]];
     [cell setLowPrice:detailPriceAlert.pricealert_price_min];
     

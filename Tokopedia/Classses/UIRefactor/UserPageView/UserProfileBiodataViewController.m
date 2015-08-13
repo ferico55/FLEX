@@ -227,7 +227,7 @@
             }
             ((ProfileBiodataShopCell*)cell).labelname.text = _profile.result.shop_info.shop_name;
             [((ProfileBiodataShopCell*)cell) setBadgeIcon:_profile.result.respond_speed.badge];
-            [((ProfileBiodataShopCell*)cell) generateMedal:_profile.result.shop_stats.shop_reputation_score];
+            [((ProfileBiodataShopCell*)cell) generateMedal:_profile.result.shop_stats.shop_badge_level];
             [((ProfileBiodataShopCell*)cell).buttonName setTitle:_profile.result.shop_info.shop_name forState:UIControlStateNormal];
             ((ProfileBiodataShopCell*)cell).labellocation.text = _profile.result.shop_info.shop_location;
             

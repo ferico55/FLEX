@@ -22,6 +22,8 @@
 #import "ResponseCommentResult.h"
 #import "ResponseComment.h"
 #import "ReviewList.h"
+#import "SmileyAndMedal.h"
+#import "ShopBadgeLevel.h"
 #import "ShopReviewPageViewController.h"
 #import "ShopContainerViewController.h"
 #import "string_inbox_message.h"
@@ -227,7 +229,15 @@
     NSString *strTempProductID = _detailReputaitonReview==nil? _reviewList.review_product_id : _detailReputaitonReview.product_id;
     if(((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && ![_detailReputaitonReview.review_message isEqualToString:@"0"]) || (_reviewList!=nil && _reviewList.review_message!=nil && ![_reviewList.review_message isEqualToString:@"0"])) && (strTempProductID!=nil && ![strTempProductID isEqualToString:@""])) {
         [productReputationCell initProductCell];
-        [productReputationCell setLabelProductName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name];
+        
+
+        NSString *strTempProductName = (_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name;
+        if(strTempProductName==nil || [strTempProductName isEqualToString:@"0"]) {
+            [productReputationCell setLabelProductName:@"-"];
+            constraintHeightViewMessage.constant = 0;
+        }
+        else
+            [productReputationCell setLabelProductName:strTempProductName];
         [[productReputationCell getLabelProductName] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToDetailProduct:)]];
         [productReputationCell getLabelProductName].userInteractionEnabled = YES;
         [productReputationCell.getViewSeparatorProduct removeFromSuperview];
@@ -496,6 +506,7 @@
     if(cell == nil) {
         NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductDetailReputationCell" owner:nil options:0];
         cell = [tempArr objectAtIndex:0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.del = self;
         cell.delegate = self;
         cell.getViewLabelUser.userInteractionEnabled = YES;
@@ -518,15 +529,8 @@
     } failure:nil];
     
     
-    NSString *nStar;
-    if(_detailReputaitonReview != nil) {
-        nStar = _detailReputaitonReview.product_owner.shop_reputation_score;
-    }
-    else {
-        nStar = @"0";//(_reviewList.review_product_owner.shop_reputation_score==nil||_reviewList.review_product_owner.shop_reputation_score.length==0? 0 : [_reviewList.review_product_owner.shop_reputation_score intValue]);
-    }
-    
-    [cell setStar:nStar];
+
+    [cell setStar:_shopBadgeLevel.level withSet:_shopBadgeLevel.set];
     [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_product_owner.user_name];
     [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
     [cell.getViewLabelUser setLabelBackground:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual];
@@ -677,7 +681,8 @@
 - (void)actionRate:(id)sender {
     int paddingRightLeftContent = 10;
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withRepSmile:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withRepSad:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withDelegate:self];
+    SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+    [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withRepSmile:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withRepSad:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withDelegate:self];
     
     //Init pop up
     popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
@@ -954,13 +959,13 @@
 - (void)updateLikeDislike:(LikeDislike *)likeDislikeObj {
     if(likeDislikeObj.result.like_dislike_review.count > 0) {
         TotalLikeDislike *tempTotalLikeDislike = ((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]);
-        [productReputationCell setHiddenViewLoad:YES];
-        [productReputationCell.getBtnDisLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_dislike  forState:UIControlStateNormal];
-        [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_like  forState:UIControlStateNormal];
-        
         
         if((_detailReputaitonReview!=nil && [tempTotalLikeDislike.review_id isEqualToString:_detailReputaitonReview.review_id]) ||
            (_reviewList!=nil && [tempTotalLikeDislike.review_id isEqualToString:_reviewList.review_id])) {
+            [productReputationCell setHiddenViewLoad:YES];
+            [productReputationCell.getBtnDisLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_dislike  forState:UIControlStateNormal];
+            [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_like  forState:UIControlStateNormal];
+
             [self setLikeDislikeActive:tempTotalLikeDislike.like_status];
         }
     }
@@ -1223,6 +1228,16 @@
                     [((ShopReviewPageViewController *) viewController) reloadTable];
                 }
             }
+            
+            
+            //Update Header
+            NSString *strResponseMessage = (_detailReputaitonReview==nil? _reviewList.review_response.response_message:_detailReputaitonReview.review_response.response_message);
+            if(strResponseMessage==nil || [strResponseMessage isEqualToString:@"0"]) {
+                [productReputationCell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", strResponseMessage] forState:UIControlStateNormal];
+            }
+            else {
+                [productReputationCell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
+            }
         }
         else {
             if(_detailReputaitonReview != nil) {
@@ -1239,9 +1254,9 @@
         isDeletingMessage = NO;
         if(successResult) {
             if(_detailReputaitonReview != nil) {
-                _detailReputaitonReview.review_response.canDelete = NO;
-                _detailReputaitonReview.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
-                _detailReputaitonReview.review_response.response_message = responseComment.result.review_response.response_message;
+                _detailReputaitonReview.review_response.canDelete = _detailReputaitonReview.viewModel.review_response.canDelete = NO;
+                _detailReputaitonReview.review_response.response_create_time = _detailReputaitonReview.viewModel.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
+                _detailReputaitonReview.review_response.response_message = _detailReputaitonReview.viewModel.review_response.response_message = responseComment.result.review_response.response_message;
                 _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
                 _detailReputaitonReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
                 _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
@@ -1278,6 +1293,17 @@
                     [((ShopReviewPageViewController *) viewController) reloadTable];
                 }
             }
+            
+            
+            //Update Header
+            NSString *strResponseMessage = (_detailReputaitonReview==nil? _reviewList.review_response.response_message:_detailReputaitonReview.review_response.response_message);
+            if(strResponseMessage==nil || [strResponseMessage isEqualToString:@"0"]) {
+                [productReputationCell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", strResponseMessage==nil? @"0":strResponseMessage] forState:UIControlStateNormal];
+            }
+            else {
+                [productReputationCell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
+            }
+
             
             //Add Text message
             growTextView.text = @"";

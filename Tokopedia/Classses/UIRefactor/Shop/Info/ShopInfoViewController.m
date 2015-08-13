@@ -16,7 +16,7 @@
 #import "ShopInfoPaymentCell.h"
 #import "ShopInfoAddressCell.h"
 #import "ShopInfoAddressView.h"
-
+#import "SmileyAndMedal.h"
 #import "ShopFavoritedViewController.h"
 #import "ShopEditViewController.h"
 #import "ShopInfoViewController.h"
@@ -116,17 +116,6 @@
                                                  name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                object:nil];
     
-    //Set Position Btn Lihat Detail Statistic
-    CGSize newSize = CGSizeMake(15, 15);
-    UIGraphicsBeginImageContext(newSize);
-    [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_arrow_right_gray" ofType:@"png"]] drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *tempImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    [btnLihatDetailStat setImage:tempImage forState:UIControlStateNormal];
-    btnLihatDetailStat.imageEdgeInsets = UIEdgeInsetsMake(0, btnLihatDetailStat.bounds.size.width+20, 0, -btnLihatDetailStat.titleLabel.frame.size.width);
-    
-    
     //set reputasi and akurasi
     UIFont *boldFont = [UIFont boldSystemFontOfSize:lblReputasi.font.pointSize];
     
@@ -138,10 +127,10 @@
     lblKecepatan.text = [_shop.result.respond_speed.speed_level stringByReplacingOccurrencesOfString:@"Respon" withString:@"Transaksi"];
     
     //Set image speed
-    [AppDelegate setIconResponseSpeed:_shop.result.respond_speed.badge withImage:imageSpeed largeImage:NO];
+    [SmileyAndMedal setIconResponseSpeed:_shop.result.respond_speed.badge withImage:imageSpeed largeImage:NO];
     
     //Generate Medal Reputasi
-    [AppDelegate generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
+    [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated

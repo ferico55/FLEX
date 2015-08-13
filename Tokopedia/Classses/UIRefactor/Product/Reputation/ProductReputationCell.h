@@ -58,6 +58,7 @@
 - (UIButton *)getBtnChat;
 - (UIButton *)getBtnMore;
 - (UILabel *)getLabelProductName;
+- (UILabel *)getLabelPercentageRate;
 - (void)setLabelUser:(NSString *)strUser withUserLabel:(NSString *)strUserLabel;
 - (void)setPercentage:(NSString *)strPercentage;
 - (void)setLabelDate:(NSString *)strDate;

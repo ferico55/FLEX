@@ -17,6 +17,8 @@
 #import "ShopInfoViewController.h"
 #import "SendMessageViewController.h"
 #import "ShopSettingViewController.h"
+#import "ShopBadgeLevel.h"
+#import "ReputationDetail.h"
 #import "ResponseSpeed.h"
 #import "Rating.h"
 #import "TTTAttributedLabel.h"
@@ -151,6 +153,7 @@
     [super viewDidLoad];
     
     [self initNotificationCenter];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 
     // Do any additional setup after loading the view from its nib.
     
@@ -339,6 +342,14 @@
                                                        kTKPDDETAILSHOP_APIOWNERMESSAGERKEY:kTKPDDETAILSHOP_APIOWNERMESSAGERKEY
                                                        }];
     
+    RKObjectMapping *ownerReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [ownerReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                            CNoReputation,
+                                                            CNegative,
+                                                            CPositif,
+                                                            CNeutral]];
+    
+    
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
     [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
@@ -372,6 +383,8 @@
                                                            kTKPDSHOP_APISHOPTOTALPRODUCTKEY:kTKPDSHOP_APISHOPTOTALPRODUCTKEY,
                                                            kTKPDSHOP_APISHOPTOTALSOLDKEY:kTKPDSHOP_APISHOPTOTALSOLDKEY,
                                                            CTxCount:CTxCount,
+                                                           CHideRate:CHideRate,
+                                                           CTxCountSuccess:CTxCountSuccess,
                                                            CRateFailure:CRateFailure,
                                                            CShopTotalTransactionCancel:CShopTotalTransactionCancel,
                                                            CShopReputationScore:CShopReputationScore,
@@ -431,15 +444,16 @@
                                                     kTKPDSHOP_APIADDRESSKEY
                                                     ]];
     
-    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
-    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
-                                                                     CTwoDay:CTwoDay,
-                                                                     CThreeDay:CThreeDay,
-                                                                     CSpeedLevel:CSpeedLevel,
-                                                                     CBadge:CBadge,
-                                                                     CCountTotal:CCountTotal}];
+//    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+//    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+//                                                                     CTwoDay:CTwoDay,
+//                                                                     CThreeDay:CThreeDay,
+//                                                                     CSpeedLevel:CSpeedLevel,
+//                                                                     CBadge:CBadge,
+//                                                                     CCountTotal:CCountTotal}];
     
     // Relationship Mapping
+    [ownerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:COwnerReputation toKeyPath:COwnerReputation withMapping:ownerReputationMapping]];
     [ratingMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CQuality toKeyPath:CQuality withMapping:qualityMapping]];
     [ratingMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CAccuracy toKeyPath:CAccuracy withMapping:qualityMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastOneMonth toKeyPath:CShopLastOneMonth withMapping:countScoreMapping]];
@@ -462,7 +476,7 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                   toKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                 withMapping:shopstatsMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
+//    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CRatings toKeyPath:CRatings withMapping:ratingMapping]];
     
     RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY

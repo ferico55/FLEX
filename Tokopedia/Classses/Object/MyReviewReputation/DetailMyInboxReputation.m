@@ -33,6 +33,7 @@
         viewModel.score_edit_time_fmt = _score_edit_time_fmt;
         viewModel.reputation_score = _reputation_score;
         viewModel.user_reputation = _user_reputation;
+        viewModel.shop_badge_level = _shop_badge_level;
         
         _viewModel = viewModel;
     }
