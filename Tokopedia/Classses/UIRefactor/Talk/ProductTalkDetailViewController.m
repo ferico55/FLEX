@@ -917,7 +917,7 @@
 //        DetailProductViewController *vc = [DetailProductViewController new];
 //        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
 //        [self.navigationController pushViewController:vc animated:YES];
-        [_navigateController navigateToProductFromViewController:self withName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME] withPrice:nil withId:[_data objectForKey:TKPD_TALK_PRODUCT_ID] withImageurl:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE] withShopName:nil];
+        [_navigateController navigateToProductFromViewController:self withName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME] withPrice:nil withId:[_data objectForKey:TKPD_TALK_PRODUCT_ID]?:[_data objectForKey:@"product_id"] withImageurl:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE] withShopName:nil];
     }
 }
 
