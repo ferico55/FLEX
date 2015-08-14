@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -162,9 +162,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONs-sZ-J5M">
-                                        <rect key="frame" x="178" y="5" width="103" height="30"/>
+                                        <rect key="frame" x="150" y="0.0" width="150" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="HfT-sL-E7j"/>
+                                            <constraint firstAttribute="height" constant="40" id="icJ-IH-Uef"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -195,15 +195,18 @@
                                 <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="v6b-mv-Xqz" secondAttribute="centerX" id="2Bu-TM-wpp"/>
+                                    <constraint firstAttribute="bottom" secondItem="XgT-YB-IIV" secondAttribute="bottom" id="4d9-wT-lbK"/>
                                     <constraint firstItem="XgT-YB-IIV" firstAttribute="leading" secondItem="RLW-fv-Vyh" secondAttribute="leading" id="5wW-nj-Vkx"/>
                                     <constraint firstItem="5lB-rd-0wj" firstAttribute="leading" secondItem="RLW-fv-Vyh" secondAttribute="leading" id="7c2-IW-cAg"/>
                                     <constraint firstAttribute="height" constant="40" id="8wg-Qo-V0a"/>
+                                    <constraint firstItem="XgT-YB-IIV" firstAttribute="width" secondItem="ONs-sZ-J5M" secondAttribute="width" id="9hj-Tg-7VO"/>
                                     <constraint firstAttribute="trailing" secondItem="5lB-rd-0wj" secondAttribute="trailing" id="H7A-Tx-ec4"/>
-                                    <constraint firstItem="ONs-sZ-J5M" firstAttribute="top" secondItem="RLW-fv-Vyh" secondAttribute="top" constant="5" id="ch2-wp-gL7"/>
+                                    <constraint firstItem="ONs-sZ-J5M" firstAttribute="top" secondItem="RLW-fv-Vyh" secondAttribute="top" id="JOE-93-NAy"/>
+                                    <constraint firstItem="ONs-sZ-J5M" firstAttribute="leading" secondItem="v6b-mv-Xqz" secondAttribute="trailing" constant="-1" id="YQ2-Av-wn6"/>
+                                    <constraint firstAttribute="trailing" secondItem="ONs-sZ-J5M" secondAttribute="trailing" id="hMf-PU-eqt"/>
                                     <constraint firstItem="XgT-YB-IIV" firstAttribute="top" secondItem="RLW-fv-Vyh" secondAttribute="top" id="k1w-EB-KrB"/>
                                     <constraint firstItem="v6b-mv-Xqz" firstAttribute="top" secondItem="RLW-fv-Vyh" secondAttribute="top" constant="10" id="nCM-gT-ucr"/>
-                                    <constraint firstItem="ONs-sZ-J5M" firstAttribute="leading" secondItem="v6b-mv-Xqz" secondAttribute="trailing" constant="27" id="pv0-AI-bJg"/>
-                                    <constraint firstAttribute="trailing" secondItem="ONs-sZ-J5M" secondAttribute="trailing" constant="19" id="sNo-Bd-Qbz"/>
+                                    <constraint firstAttribute="bottom" secondItem="ONs-sZ-J5M" secondAttribute="bottom" id="oDq-6u-uMq"/>
                                     <constraint firstItem="5lB-rd-0wj" firstAttribute="top" secondItem="RLW-fv-Vyh" secondAttribute="top" id="t5Z-RG-Tr5"/>
                                     <constraint firstItem="v6b-mv-Xqz" firstAttribute="leading" secondItem="XgT-YB-IIV" secondAttribute="trailing" id="wjG-Dm-RTe"/>
                                 </constraints>

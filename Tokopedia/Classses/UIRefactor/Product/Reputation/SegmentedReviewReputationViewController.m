@@ -219,13 +219,20 @@
 
 - (IBAction)actionOldReview:(id)sender {
     //Change ViewController
+    NSMutableArray *newViewController = [NSMutableArray new];
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-//        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
-//
-//        assdf
-//        [newViewController addObject:controller];
+        id tempSplitReputationViewController = self.parentViewController.parentViewController.nextResponder.nextResponder;
+        UIViewController *tmepViewController = ((SplitReputationViewController *) tempSplitReputationViewController).parentViewController;
+
+        for(UIViewController *tempViewController in tmepViewController.navigationController.viewControllers) {
+            [newViewController addObject:tempViewController];
+        }
+        [newViewController removeLastObject];
+        
+        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+        [newViewController addObject:controller];
     } else {
-        NSMutableArray *newViewController = [NSMutableArray new];
         for(UIViewController *tempViewController in self.navigationController.viewControllers) {
             [newViewController addObject:tempViewController];
         }
