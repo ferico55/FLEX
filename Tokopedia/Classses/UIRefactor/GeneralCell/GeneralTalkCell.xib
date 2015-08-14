@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -87,7 +89,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vha-Ji-1ch" userLabel="View Middle">
-                                <rect key="frame" x="0.0" y="83" width="300" height="94"/>
+                                <rect key="frame" x="0.0" y="73" width="300" height="94"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qgd-Mh-6sP" userLabel="Product Image View">
                                         <rect key="frame" x="12" y="11" width="70" height="70"/>
@@ -118,7 +120,7 @@
                                             <action selector="tap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="1lm-0N-y20"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label " lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7v-ML-7J6" userLabel="Message Label">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label " lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7v-ML-7J6" userLabel="Message Label">
                                         <rect key="frame" x="90" y="49" width="200" height="11"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <nil key="highlightedColor"/>
@@ -141,7 +143,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RLW-fv-Vyh" userLabel="View Bottom">
-                                <rect key="frame" x="0.0" y="170" width="300" height="40"/>
+                                <rect key="frame" x="0.0" y="177" width="300" height="40"/>
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XgT-YB-IIV">
                                         <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
@@ -226,19 +228,25 @@
                                     <constraint firstAttribute="height" constant="10" id="W2c-zo-89j"/>
                                 </constraints>
                             </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZNs-5O-cbx">
+                                <rect key="frame" x="10" y="83" width="280" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="0fc-in-38T" secondAttribute="trailing" id="JdN-UF-MHJ"/>
-                            <constraint firstItem="vha-Ji-1ch" firstAttribute="top" secondItem="0fc-in-38T" secondAttribute="bottom" constant="10" id="JnY-wf-8ke"/>
+                            <constraint firstItem="vha-Ji-1ch" firstAttribute="top" secondItem="0fc-in-38T" secondAttribute="bottom" id="JnY-wf-8ke"/>
                             <constraint firstItem="a6p-Q1-IF0" firstAttribute="top" secondItem="hGR-0U-1Pc" secondAttribute="top" constant="7" id="QhQ-Rd-KtQ"/>
                             <constraint firstAttribute="trailing" secondItem="vha-Ji-1ch" secondAttribute="trailing" id="SvB-hg-cdf"/>
+                            <constraint firstAttribute="bottom" secondItem="RLW-fv-Vyh" secondAttribute="bottom" id="Tsk-yD-VTC"/>
                             <constraint firstItem="Oqa-zP-9jh" firstAttribute="top" secondItem="a6p-Q1-IF0" secondAttribute="bottom" constant="3" id="U0A-Y4-diZ"/>
                             <constraint firstAttribute="trailing" secondItem="a6p-Q1-IF0" secondAttribute="trailing" constant="3" id="YPL-wi-kiZ"/>
                             <constraint firstItem="0fc-in-38T" firstAttribute="top" secondItem="hGR-0U-1Pc" secondAttribute="top" id="dRX-OJ-mCY"/>
                             <constraint firstAttribute="trailing" secondItem="Oqa-zP-9jh" secondAttribute="trailing" constant="13" id="deF-gQ-Loo"/>
                             <constraint firstItem="RLW-fv-Vyh" firstAttribute="leading" secondItem="hGR-0U-1Pc" secondAttribute="leading" id="nv2-R6-yVA"/>
-                            <constraint firstItem="RLW-fv-Vyh" firstAttribute="top" secondItem="vha-Ji-1ch" secondAttribute="bottom" constant="-7" id="p5P-S8-B1z"/>
                             <constraint firstItem="vha-Ji-1ch" firstAttribute="leading" secondItem="hGR-0U-1Pc" secondAttribute="leading" id="qXm-IR-zF8"/>
                             <constraint firstItem="0fc-in-38T" firstAttribute="leading" secondItem="hGR-0U-1Pc" secondAttribute="leading" id="qdH-Dw-d33"/>
                             <constraint firstAttribute="trailing" secondItem="RLW-fv-Vyh" secondAttribute="trailing" id="yQr-hv-w3z"/>
@@ -263,6 +271,7 @@
                 <outlet property="commentlabel" destination="h7v-ML-7J6" id="PEi-30-YfB"/>
                 <outlet property="constHeightContentView" destination="yk3-HO-wi5" id="mpW-6R-0gB"/>
                 <outlet property="constHeightProduct" destination="diV-Aw-lPH" id="ZRO-0K-Ony"/>
+                <outlet property="messageLabel" destination="ZNs-5O-cbx" id="fUW-jS-KXG"/>
                 <outlet property="middleView" destination="vha-Ji-1ch" id="IF0-QP-k4I"/>
                 <outlet property="moreActionButton" destination="a6p-Q1-IF0" id="w2J-J7-03Z"/>
                 <outlet property="productButton" destination="JiO-N2-7Yl" id="h7R-ho-dWJ"/>
