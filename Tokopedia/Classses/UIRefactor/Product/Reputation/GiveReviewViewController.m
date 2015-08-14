@@ -9,6 +9,7 @@
 #import "DetailMyReviewReputationViewController.h"
 #import "GeneralAction.h"
 #import "GiveReviewViewController.h"
+#import "string_inbox_message.h"
 #import "TKPDTextView.h"
 #import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
@@ -361,7 +362,7 @@
                 UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
                 NSDictionary *auth = [_userManager getUserLoginData];
                 _detailReputationView.review_full_name = [auth objectForKey:@"full_name"]?:@"-";
-                
+                _detailReputationView.review_user_label = CPembeli;
                 
                 if([auth objectForKey:CUserReputation]) {
                     NSData *data = [[auth objectForKey:CUserReputation] dataUsingEncoding:NSUTF8StringEncoding];
