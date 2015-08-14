@@ -141,13 +141,13 @@
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Talk Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4zl-YQ-GyN">
                     <rect key="frame" x="94" y="107" width="208" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="USt-Pl-yvb"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="USt-Pl-yvb"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0FA5D7F2-B1D9-40A3-B761-97D2DF67AAB5" translatesAutoresizingMaskIntoConstraints="NO" id="y2i-en-h5n">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="942C74D8-065E-4942-BD5A-80FA09B2C2FA" translatesAutoresizingMaskIntoConstraints="NO" id="y2i-en-h5n">
                     <rect key="frame" x="34" y="202" width="15" height="15"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="15" id="pFU-yQ-WmI"/>
@@ -155,8 +155,9 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Comment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V0k-hC-jae">
-                    <rect key="frame" x="54" y="199" width="70" height="21"/>
+                    <rect key="frame" x="54" y="199" width="100" height="21"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="100" id="UyF-80-egr"/>
                         <constraint firstAttribute="height" constant="21" id="Vxl-I4-Qep"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
@@ -303,7 +304,7 @@
         </view>
     </objects>
     <resources>
-        <image name="0FA5D7F2-B1D9-40A3-B761-97D2DF67AAB5" width="14" height="14">
+        <image name="942C74D8-065E-4942-BD5A-80FA09B2C2FA" width="14" height="14">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
