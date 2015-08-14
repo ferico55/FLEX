@@ -150,7 +150,7 @@
     
     DetailProductViewController *productController = [DetailProductViewController new];
     productController.loadedData = loadedData;
-    productController.data = @{@"product_id" : productId};
+    productController.data = @{@"product_id" : productId?:@""};
     productController.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:productController animated:YES];
