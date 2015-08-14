@@ -118,14 +118,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     tempPriceAlert = [arrList objectAtIndex:indexPath.row];
-    PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
-    
     if(! [tempPriceAlert.pricealert_total_unread isEqualToString:@"0"]) {
         tempUnreadIndexPath = indexPath;
     }
+    else if(! (tempPriceAlert.pricealert_is_active!=nil && [tempPriceAlert.pricealert_is_active isEqualToString:@"1"])) {
+        return;
+    }
+
     
+    PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
     tempPriceAlert.pricealert_product_name = [NSString convertHTML:tempPriceAlert.pricealert_product_name];
     DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
     detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
@@ -171,7 +173,6 @@
         [cell setProductName:[NSString convertHTML:detailPriceAlert.pricealert_product_name]];
     }
     else {
-        cell.userInteractionEnabled = NO;
         [cell setProductName:@"Produk telah dihapus"];
     }
     

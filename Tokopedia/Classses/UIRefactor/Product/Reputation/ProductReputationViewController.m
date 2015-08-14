@@ -497,7 +497,7 @@
 }
 
 - (IBAction)actionSegmentedValueChange:(id)sender {
-    switch (((UISegmentedControl *) sender).selectedSegmentIndex) {
+    /*switch (((UISegmentedControl *) sender).selectedSegmentIndex) {
         case 0:
         {
             [self setRateStar:0 withAnimate:YES];
@@ -509,6 +509,14 @@
         }
             break;
     }
+    */
+    
+    page = 0;
+    strUri = nil;
+    [arrList removeAllObjects];
+    [tableContent reloadData];
+    [self setLoadingView:YES];
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 
 - (void)actionVote:(id)sender {
@@ -832,14 +840,15 @@
     if(loadingLikeDislike.count > 10)
         return;
     
-    DetailReputationReview *list = (DetailReputationReview *)[arrayList firstObject];
-    RKObjectManager *tempObjectManager = [self getObjectManagerTotalLike];
-    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
-                            kTKPDDETAIL_REVIEWIDS : list.review_id,
-                            kTKPDDETAIL_APISHOPIDKEY : list.shop_id};
-    RKManagedObjectRequestOperation *tempRequest = [tempObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[self getPathLikeDislike] parameters:[param encrypt]];
-    
     dispatch_async(dispatch_get_main_queue(), ^(void){
+        DetailReputationReview *list = (DetailReputationReview *)[arrayList firstObject];
+        RKObjectManager *tempObjectManager = [self getObjectManagerTotalLike];
+        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
+                                kTKPDDETAIL_REVIEWIDS : list.review_id,
+                                kTKPDDETAIL_APISHOPIDKEY : list.shop_id};
+        RKManagedObjectRequestOperation *tempRequest = [tempObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[self getPathLikeDislike] parameters:[param encrypt]];
+
+        
         NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:list.review_id repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:timerLikeDislike forMode:NSRunLoopCommonModes];
         [loadingLikeDislike setObject:@[tempRequest, [NSIndexPath indexPathForRow:[[arrayList lastObject] intValue] inSection:0], timerLikeDislike] forKey:list.review_id];
@@ -1152,10 +1161,10 @@
         [dictFilter setObject:@(page) forKey:@"page"];
         
         if((int)segmentedControl.selectedSegmentIndex==0 && filterStar>0) {//Quality
-            [dictFilter setObject:@(filterStar) forKey:@"rating"];
+            [dictFilter setObject:@(filterStar) forKey:@"shop_quality"];
         }
         else if(filterStar > 0){
-            [dictFilter setObject:@(filterStar) forKey:@"rate_accuracy"];
+            [dictFilter setObject:@(filterStar) forKey:@"shop_accuracy"];
         }
         
         return dictFilter;

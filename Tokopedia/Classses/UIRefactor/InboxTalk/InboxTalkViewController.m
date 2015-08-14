@@ -319,6 +319,7 @@
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = NO;
                 [((GeneralTalkCell *)cell) setTalkFollowStatus:YES];
+                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = NO;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;

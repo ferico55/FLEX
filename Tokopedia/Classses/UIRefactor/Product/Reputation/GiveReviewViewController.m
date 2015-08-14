@@ -12,6 +12,7 @@
 #import "TKPDTextView.h"
 #import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
+#import "UserInfo.h"
 #define CStringTidakAdaPerubahan @"Tidak ada perubahan ulasan"
 #define CStringAndaTidakDapatMenurunkanRate @"Anda tidak dapat memberi penurunan rating"
 #define CStringPleaseFillReviewRating @"Rating harus diisi"
@@ -356,6 +357,25 @@
             if(! isEdit) {
                 _detailReputationView.viewModel.review_is_allow_edit = _detailReputationView.review_is_allow_edit = @"1";
                 _detailReputationView.viewModel.review_create_time = _detailReputationView.review_create_time = [formatter stringFromDate:[NSDate new]];
+                
+                UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+                NSDictionary *auth = [_userManager getUserLoginData];
+                _detailReputationView.review_full_name = [auth objectForKey:@"full_name"]?:@"-";
+                
+                
+                if([auth objectForKey:CUserReputation]) {
+                    NSData *data = [[auth objectForKey:CUserReputation] dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *tempDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    
+                    if(tempDict) {
+                        _detailReputationView.review_user_reputation = [ReputationDetail new];
+                        _detailReputationView.review_user_reputation.positive_percentage = [tempDict objectForKey:CPositivePercentage];
+                        _detailReputationView.review_user_reputation.negative = [tempDict objectForKey:CNegative];
+                        _detailReputationView.review_user_reputation.neutral = [tempDict objectForKey:CNeutral];
+                        _detailReputationView.review_user_reputation.positive = [tempDict objectForKey:CPositif];
+                        _detailReputationView.review_user_reputation.no_reputation = [tempDict objectForKey:CNoReputation];
+                    }
+                }
             }
             else {
                 _detailReputationView.viewModel.review_is_allow_edit = _detailReputationView.review_is_allow_edit = @"0";

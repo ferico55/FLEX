@@ -18,6 +18,7 @@
 #import "MyReviewReputation.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationCell.h"
+#import "NavigateViewController.h"
 #import "NoResultView.h"
 #import "ProductDetailReputationViewController.h"
 #import "Paging.h"
@@ -34,8 +35,6 @@
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
-#import "WebViewController.h"
-#import "NavigateViewController.h"
 
 #define CCellIdentifier @"cell"
 #define CGetListReputationReview @"get_list_reputation_review"
@@ -791,13 +790,13 @@
         lblDesc.enabledTextCheckingTypes = NSTextCheckingTypeLink;
         lblDesc.activeLinkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor lightGrayColor], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
         lblDesc.linkAttributes = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
-        [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
         
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
         [str addAttribute:NSFontAttributeName value:lblDesc.font range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
+        [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
     }
     else {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
@@ -898,13 +897,8 @@
 #pragma mark - MyReviewReputationCell delegate
 - (void)actionInvoice:(id)sender {
     if(_detailMyInboxReputation.invoice_uri!=nil && _detailMyInboxReputation.invoice_uri.length>0) {
-        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-        NSString *userID = [_userManager getUserId];
-        
-        WebViewController *webViewController = [WebViewController new];
-        webViewController.strURL = [NSString stringWithFormat:@"%@&user_id=%@", _detailMyInboxReputation.invoice_uri, userID];
-        webViewController.strTitle = @"";
-        [self.navigationController pushViewController:webViewController animated:YES];
+        NavigateViewController *navigate = [NavigateViewController new];
+        [navigate navigateToInvoiceFromViewController:self withInvoiceURL:_detailMyInboxReputation.invoice_uri];
     }
 }
 
