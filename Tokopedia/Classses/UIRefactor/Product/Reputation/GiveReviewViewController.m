@@ -83,7 +83,7 @@
 
 #pragma mark - Method View
 - (void)initData {
-    lblProduct.text = _detailReputationView.product_name;
+    lblProduct.text = [NSString convertHTML:_detailReputationView.product_name];
 
     //Set image product
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationView.product_uri] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -108,7 +108,7 @@
     
     isEdit = !(_detailReputationView.review_message==nil || [_detailReputationView.review_message isEqualToString:@"0"]);
     if(isEdit) {
-        txtDes.text = _detailReputationView.review_message;
+        txtDes.text = [NSString convertHTML:_detailReputationView.review_message];
         self.navigationItem.rightBarButtonItem.enabled = (txtDes.text.length>=5);
         
         //Set Akurasi

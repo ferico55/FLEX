@@ -107,7 +107,7 @@
 
 - (void)setView:(DetailReviewReputaionViewModel *)viewModel {
     lblDate.text = @"";
-    [btnProduct setTitle:viewModel.product_name forState:UIControlStateNormal];
+    [btnProduct setTitle:[NSString convertHTML:viewModel.product_name] forState:UIControlStateNormal];
     
     //Check deleted product status
     if([viewModel.product_status isEqualToString:@"1"]) {
@@ -132,7 +132,7 @@
     
     
     //Set image product
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.product_uri] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     UIImageView *thumb = imgProduct;
     thumb.image = nil;
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey" ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
