@@ -18,6 +18,7 @@
 #import "MyReviewReputationCell.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationViewController.h"
+#import "NavigateViewController.h"
 #import "SplitReputationViewController.h"
 #import "string_inbox_message.h"
 #import "SmileyAndMedal.h"
@@ -28,7 +29,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
-#import "WebViewController.h"
+
 #define CFailedGetData @"Process ambil data gagal"
 #define CCellIndetifier @"cell"
 #define CActionGetInboxReputation @"get_inbox_reputation"
@@ -650,19 +651,10 @@
 {
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-        WebViewController *webViewController;
         
         if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-            webViewController = [WebViewController new];
-            webViewController.strURL = tempObj.invoice_uri;
-            webViewController.strTitle = @"";
-            
-            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:webViewController];
-            }
-            else {
-                [self.navigationController pushViewController:webViewController animated:YES];
-            }
+            NavigateViewController *navigate = [NavigateViewController new];
+            [navigate navigateToInvoiceFromViewController:self withInvoiceURL:tempObj.invoice_uri];
         }
     }
 }
