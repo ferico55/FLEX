@@ -482,6 +482,7 @@
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
         [self initNotificationManager];
+        
     }
     else
     {
