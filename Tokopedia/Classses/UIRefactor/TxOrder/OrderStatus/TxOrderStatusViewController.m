@@ -485,9 +485,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_isNodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
+    cell.backgroundColor = [UIColor clearColor];
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.row] -1;
     
