@@ -59,8 +59,13 @@
         if (button.tag == 1) {
             [self dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
-            [self.delegate didFinishWritingExplanation:_textView.text];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            if (_textView.text.length == 0) {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Keterangan harus diisi."] delegate:self];
+                [alert show];
+            } else {
+                [self.delegate didFinishWritingExplanation:_textView.text];
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
         }
     }
 }

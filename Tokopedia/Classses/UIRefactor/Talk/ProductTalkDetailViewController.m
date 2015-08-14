@@ -105,6 +105,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *talkProductName;
 @property (weak, nonatomic) IBOutlet UIView *userArea;
 @property (weak, nonatomic) IBOutlet UIView *buttonsDividers;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputViewConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *header;
 
@@ -255,6 +256,11 @@
            ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
            ) {
             [self initTalkInputView];
+        }
+        else
+        {
+            _talkInputView.hidden = YES;
+            _inputViewConstraint.constant = 0;
         }
 
     }
@@ -533,9 +539,9 @@
 
 -(void)setHeaderData:(NSDictionary*)data
 {
-    
     if(!data) {
         [_talkInputView setHidden:YES];
+        _inputViewConstraint.constant = 0;
         [_header setHidden:YES];
         return;
     } else {
@@ -1197,13 +1203,7 @@
 #pragma mark - UITextView Delegate
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
-    float diff = (growingTextView.frame.size.height - height);
-    
-    CGRect r = _talkInputView.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-    _talkInputView.frame = r;
-    [_talkInputView setTranslatesAutoresizingMaskIntoConstraints:YES];
+    _inputViewConstraint.constant = height+20;
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
