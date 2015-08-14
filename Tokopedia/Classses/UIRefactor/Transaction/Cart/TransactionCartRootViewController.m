@@ -216,7 +216,7 @@
             }
             
             if (_isLogin && self.navigationController.viewControllers.count<=1) {
-                self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+                [self initNotificationManager];
             }
             else
             {
@@ -481,7 +481,8 @@
     _auth = [secureStorage keychainDictionary];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
-        self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+        [self initNotificationManager];
+        
     }
     else
     {
@@ -507,7 +508,7 @@
         }
     }
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
-        self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+        [self initNotificationManager];
     }
     else
     {
