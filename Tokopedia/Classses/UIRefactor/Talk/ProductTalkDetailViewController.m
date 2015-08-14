@@ -323,10 +323,13 @@
     NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message attributes:attributes];
     
+    UILabel *tempLbl = [[UILabel alloc] init];
+    tempLbl.numberOfLines = 0;
+    [tempLbl setAttributedText:attributedString];
+    [tableView addSubview:tempLbl];
     
-    ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
-    CGSize tempSizeComment = [((GeneralTalkCommentCell *)cell).commentlabel sizeThatFits:CGSizeMake(tableView.bounds.size.width-25-((GeneralTalkCommentCell *)cell).commentlabel.frame.origin.x, 9999)];//left space
-    return ((GeneralTalkCommentCell *)cell).commentlabel.frame.origin.y + 17 + tempSizeComment.height;//17 bottom space
+    CGSize tempSizeComment = [tempLbl sizeThatFits:CGSizeMake(tableView.bounds.size.width-25-((GeneralTalkCommentCell *)cell).commentlabel.frame.origin.x, 9999)];//left space
+    return ((GeneralTalkCommentCell *)cell).commentlabel.frame.origin.y + 27 + tempSizeComment.height;//27 bottom space
 }
 
 
@@ -364,7 +367,6 @@
 //            CGRect commentLabelFrame = ((GeneralTalkCommentCell*)cell).commentlabel.frame;
 //            commentLabelFrame.size.width = commentLabelWidth;
 //            ((GeneralTalkCommentCell*)cell).commentlabel.frame = commentLabelFrame;
-            
             ((GeneralTalkCommentCell*)cell).user_name.text = list.comment_user_name;
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             
