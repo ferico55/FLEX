@@ -500,7 +500,7 @@
     
     [_buttonArrowLocation setTitle:[NSString stringWithFormat:@"%zd Offline", totallocation] forState:UIControlStateNormal];
     
-    _labelsuccessfulltransaction.text = _shop.result.stats.shop_total_transaction;
+    _labelsuccessfulltransaction.text = _shop.result.stats.tx_count_success;
     _labelsold.text = _shop.result.stats.shop_item_sold;
     _labeletalase.text = _shop.result.stats.shop_total_etalase;
     _labeltotalproduct.text = _shop.result.stats.shop_total_product;
