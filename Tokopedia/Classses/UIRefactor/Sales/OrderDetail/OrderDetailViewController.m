@@ -19,7 +19,6 @@
 #import "CancelShipmentViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
-#import "DetailProductViewController.h"
 #import "NavigateViewController.h"
 
 #define CTagAddress 2
@@ -38,6 +37,7 @@
 >
 {
     NSDictionary *_textAttributes;
+    NavigateViewController *_TKPDNavigator;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *topButtonsView;
@@ -92,7 +92,14 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    CGRect frame = _detailTransactionView.frame;
+    frame.size.width = screenWidth;
+    _detailTransactionView.frame = frame;
+    
     self.title = @"Detail Transaksi";
+    _TKPDNavigator = [NavigateViewController new];
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
@@ -107,6 +114,11 @@
     [_cityLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
     [_countryLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
     [_phoneNumberLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    
+    [_addressLabel setUserInteractionEnabled:YES];
+    [_cityLabel setUserInteractionEnabled:YES];
+    [_countryLabel setUserInteractionEnabled:YES];
+    [_phoneNumberLabel setUserInteractionEnabled:YES];
     
     
     _tableView.tableHeaderView = _orderHeaderView;
@@ -444,9 +456,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DetailProductViewController *controller = [DetailProductViewController new];
-    controller.data = @{@"product_id":[[_transaction.order_products objectAtIndex:indexPath.section] product_id]};
-    [self.navigationController pushViewController:controller animated:YES];
+    OrderProduct *product = [_transaction.order_products objectAtIndex:indexPath.row];
+    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:nil];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath

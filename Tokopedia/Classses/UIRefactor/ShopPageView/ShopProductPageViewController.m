@@ -43,6 +43,8 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 
+#import "RetryCollectionReusableView.h"
+
 #import "NoResult.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -130,6 +132,7 @@ TokopediaNetworkManagerDelegate
     __weak RKManagedObjectRequestOperation *_requestDelete;
     
     TokopediaNetworkManager *_networkManager;
+    NavigateViewController *_TKPDNavigator;
     
     NSOperationQueue *_operationQueue;
     NSOperationQueue *_operationUnfollowQueue;
@@ -151,7 +154,7 @@ TokopediaNetworkManagerDelegate
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
-    
+
     BOOL _isFailRequest;
 }
 
@@ -191,6 +194,7 @@ TokopediaNetworkManagerDelegate
     
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
+    _TKPDNavigator = [NavigateViewController new];
     
     _operationQueue = [NSOperationQueue new];
     _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
@@ -286,6 +290,11 @@ TokopediaNetworkManagerDelegate
                                forState:UIControlStateNormal];
     }
     
+    if(_data) {
+        [_detailfilter setValue:[_data objectForKey:@"product_etalase_id"] forKey:@"product_etalase_id"];
+        [_detailfilter setValue:[_data objectForKey:@"product_etalase_name"] forKey:@"product_etalase_name"];
+    }
+    
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshView:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
     
@@ -330,8 +339,8 @@ TokopediaNetworkManagerDelegate
     
     if(kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
-            _isFailRequest = !_isFailRequest;
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+            ((RetryCollectionReusableView*)reusableView).delegate = self;
         } else {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }
@@ -383,9 +392,14 @@ TokopediaNetworkManagerDelegate
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NavigateViewController *navigateController = [NavigateViewController new];
     List *product = [_product objectAtIndex:indexPath.row];
-    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+    
+    NSString *shopName = product.shop_name;
+    if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
+        shopName = [_data objectForKey:@"shop_name"];
+    }
+
+    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:shopName];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -448,6 +462,9 @@ TokopediaNetworkManagerDelegate
     /** clear object **/
     _page = 1;
     _isrefreshview = YES;
+    [_refreshControl beginRefreshing];
+    [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+    
     [_networkManager doRequest];
 }
 
@@ -513,13 +530,37 @@ TokopediaNetworkManagerDelegate
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
-    [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+    
+    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    
+    if (![searchBarBefore isEqualToString:searchBar.text]) {
+        [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [self reloadDataSearch];
+    }
+}
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
+    searchBar.showsCancelButton = NO;
+    
+    searchBar.text = @"";
+    
+    NSString *searchBarBefore = [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    
+    if (![searchBarBefore isEqualToString:searchBar.text]) {
+        [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+        [self reloadDataSearch];
+    }
+}
+
+-(void)reloadDataSearch
+{
     _tmpProduct = [NSArray arrayWithArray:_product];
     [_product removeAllObjects];
-
+    
     [_collectionView reloadData];
-
+    
     _tmpNextPageUri = _nextPageUri;
     _tmpPage = _page;
     
@@ -528,18 +569,6 @@ TokopediaNetworkManagerDelegate
     _isrefreshview = YES;
     
     [_networkManager doRequest];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [searchBar resignFirstResponder];
-    searchBar.showsCancelButton = NO;
-    [_noResult removeFromSuperview];
-    _product = [NSMutableArray arrayWithArray:_tmpProduct];
-    _nextPageUri = _tmpNextPageUri;
-    _page = _tmpPage;
-    _isrefreshview = YES;
-    [_detailfilter setObject:@"" forKey:kTKPDDETAIL_DATAQUERYKEY];
-    [self.collectionView reloadData];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -575,6 +604,9 @@ TokopediaNetworkManagerDelegate
                 MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
                 //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
+                            @"product_etalase_name" : [_detailfilter objectForKey:@"product_etalase_name"]?:@"",
+                            @"product_etalase_id" : [_detailfilter objectForKey:@"product_etalase_id"]?:@"",
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
@@ -649,11 +681,14 @@ TokopediaNetworkManagerDelegate
 #pragma mark - Filter Delegate
 -(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
     [_networkManager requestCancel];
+    [_detailfilter removeAllObjects];
     [_detailfilter setObject:[userInfo objectForKey:DATA_ETALASE_KEY]?:@""
                       forKey:DATA_ETALASE_KEY];
     
     [_detailfilter setObject:[userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:@""
                       forKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
+    
+    
     [self refreshView:nil];
 }
 
@@ -670,11 +705,13 @@ TokopediaNetworkManagerDelegate
     
     List *list = _product[index];
     
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
+    NSString *shopName = list.shop_name;
+    if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
+        shopName = [_data objectForKey:@"shop_name"];
+    }
     
-    [self.navigationController pushViewController:vc animated:YES];
-}
+    [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:shopName];
+    }
 
 #pragma mark - Keyboard
 - (void)keyboardWillShow:(NSNotification *)info {
@@ -692,7 +729,7 @@ TokopediaNetworkManagerDelegate
 
 
 #pragma mark - LoadingView Delegate
-- (IBAction)pressRetryButton:(id)sender {
+- (void)pressRetryButton {
     [_networkManager doRequest];
     _isFailRequest = NO;
     [_collectionView reloadData];
@@ -721,7 +758,7 @@ TokopediaNetworkManagerDelegate
         etalaseid = etalase.etalase_id?:@"";
     }
     
-    if([_data objectForKey:@"product_etalase_id"]) {
+    if([_data objectForKey:@"product_etalase_id"] && !etalase) {
         etalaseid = [_data objectForKey:@"product_etalase_id"];
     }
     
@@ -824,6 +861,7 @@ TokopediaNetworkManagerDelegate
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     SearchItem *feed = [result objectForKey:@""];
+    [_collectionView setContentInset:UIEdgeInsetsZero];
     [_noResult removeFromSuperview];
     
     if(_page == 1) {
@@ -846,6 +884,7 @@ TokopediaNetworkManagerDelegate
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         [_collectionView addSubview:_noResult];
+        [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, _noResult.frame.size.height, 0)];
     }
     
     if(_refreshControl.isRefreshing) {

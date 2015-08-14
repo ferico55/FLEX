@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -21,33 +22,66 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Iyh-KE-p0V" id="23k-hv-OaH">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bank BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7O-pF-cdI">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7O-pF-cdI">
                         <rect key="frame" x="17" y="13" width="170" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="wo8-ka-j2Q"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cab. Permata Hijau" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QXe-Jv-r4h">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cab. Permata Hijau" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QXe-Jv-r4h">
                         <rect key="frame" x="17" y="42" width="176" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="Z9M-XV-oA0"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1233455676" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mH9-ep-De2">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1233455676" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mH9-ep-De2">
                         <rect key="frame" x="17" y="64" width="176" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="176" id="HBL-KX-SV0"/>
+                            <constraint firstAttribute="height" constant="21" id="sPk-Hw-zOO"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="a/n Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8CO-7Q-qvz">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="a/n Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8CO-7Q-qvz">
                         <rect key="frame" x="17" y="86" width="176" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="uIm-MX-AAg"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Yd-w1-WmL">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Yd-w1-WmL">
                         <rect key="frame" x="202" y="9" width="110" height="55"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="55" id="by7-pQ-avv"/>
+                            <constraint firstAttribute="width" constant="110" id="eE9-5T-UNm"/>
+                        </constraints>
                     </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="QXe-Jv-r4h" firstAttribute="leading" secondItem="23k-hv-OaH" secondAttribute="leading" constant="17" id="0zx-XT-gAI"/>
+                    <constraint firstItem="QXe-Jv-r4h" firstAttribute="top" secondItem="K7O-pF-cdI" secondAttribute="bottom" constant="8" id="1Yn-BK-3M9"/>
+                    <constraint firstItem="K7O-pF-cdI" firstAttribute="top" secondItem="23k-hv-OaH" secondAttribute="top" constant="13" id="3te-az-N63"/>
+                    <constraint firstItem="8Yd-w1-WmL" firstAttribute="leading" secondItem="QXe-Jv-r4h" secondAttribute="trailing" constant="9" id="6Kx-ir-Xk3"/>
+                    <constraint firstItem="8CO-7Q-qvz" firstAttribute="top" secondItem="mH9-ep-De2" secondAttribute="bottom" constant="1" id="LXp-ol-Wla"/>
+                    <constraint firstAttribute="trailing" secondItem="mH9-ep-De2" secondAttribute="trailing" constant="127" id="YiK-m6-92i"/>
+                    <constraint firstItem="8Yd-w1-WmL" firstAttribute="leading" secondItem="K7O-pF-cdI" secondAttribute="trailing" constant="15" id="Zfk-5T-tU6"/>
+                    <constraint firstItem="mH9-ep-De2" firstAttribute="leading" secondItem="23k-hv-OaH" secondAttribute="leading" constant="17" id="dPL-CO-V5A"/>
+                    <constraint firstItem="K7O-pF-cdI" firstAttribute="leading" secondItem="23k-hv-OaH" secondAttribute="leading" constant="17" id="gJT-NC-nsU"/>
+                    <constraint firstAttribute="trailing" secondItem="8Yd-w1-WmL" secondAttribute="trailing" constant="8" id="hKK-DQ-oFh"/>
+                    <constraint firstItem="8Yd-w1-WmL" firstAttribute="top" secondItem="23k-hv-OaH" secondAttribute="top" constant="9" id="jfJ-1H-YuV"/>
+                    <constraint firstItem="8CO-7Q-qvz" firstAttribute="leading" secondItem="23k-hv-OaH" secondAttribute="leadingMargin" constant="9" id="m92-qe-9Xd"/>
+                    <constraint firstItem="mH9-ep-De2" firstAttribute="top" secondItem="QXe-Jv-r4h" secondAttribute="bottom" constant="1" id="mE2-ti-dQN"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="8CO-7Q-qvz" secondAttribute="trailing" constant="119" id="uFx-Lu-ovY"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="accountNameLabel" destination="8CO-7Q-qvz" id="xfB-Wy-SEO"/>

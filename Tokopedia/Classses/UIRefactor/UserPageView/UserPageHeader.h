@@ -18,7 +18,9 @@
 @end
 
 @interface UserPageHeader : UIViewController
-
+{
+    IBOutlet UIButton *btnRate;
+}
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) NSDictionary *data;
 @property CGPoint contentOffset;
@@ -29,4 +31,6 @@
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) id<UserPageHeaderDelegate> delegate;
 
+
+- (UIView *)getManipulatedView;
 @end

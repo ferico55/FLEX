@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#define CUserReputation @"user_reputation"
+@class ReputationDetail;
 
 @interface LoginResult : NSObject //<NSCoding>
 
@@ -25,5 +27,8 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *msisdn_is_verified;
 @property (nonatomic, strong) NSString *msisdn_show_dialog;
+
+
+@property (nonatomic, strong) ReputationDetail *user_reputation;
 
 @end

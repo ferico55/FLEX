@@ -452,6 +452,11 @@
             controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
             controller.createShopViewController = self;
         }
+        else if([controller getAvailShipment] == nil) {
+            [controller loadData];
+        }
+        
+        
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
@@ -593,7 +598,7 @@
             txtDomain.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
             txtDomain.delegate = self;
             txtDomain.placeholder = CStringDomain;
-            imageCheckList = [[UIImageView alloc] initWithFrame:CGRectMake(txtDomain.frame.origin.x+txtDomain.bounds.size.width, (txtDomain.bounds.size.height-20)/2.0f, widthCheckList, txtDomain.bounds.size.height-(((txtDomain.bounds.size.height-20)/2.0f)*2))];
+            imageCheckList = [[UIImageView alloc] initWithFrame:CGRectMake(tableView.frame.size.width-widthCheckList-15, (txtDomain.bounds.size.height-20)/2.0f, widthCheckList, txtDomain.bounds.size.height-(((txtDomain.bounds.size.height-20)/2.0f)*2))];
             imageCheckList.tag = CTagCheckList;
             imageCheckList.image = nil;
         }
@@ -617,9 +622,11 @@
         
         if(viewImgGambar == nil)
         {
+            int diameterImage = 100;
+
             viewImgGambar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.height, CHeightHeaderCell*3)];
             viewImgGambar.tag = CTagUnggahImage;
-            UILabel *lblUnggahGambar = [[UILabel alloc] initWithFrame:CGRectMake(0, (CHeightHeaderCell*3)-20, cell.bounds.size.width, 20)];
+            UILabel *lblUnggahGambar = [[UILabel alloc] initWithFrame:CGRectMake((tableView.frame.size.width)/2.0f-cell.bounds.size.width/2, (CHeightHeaderCell*3)-20, cell.bounds.size.width, 20)];
             lblUnggahGambar.text = CStringUnggahGambar;
             lblUnggahGambar.textAlignment = NSTextAlignmentCenter;
             lblUnggahGambar.font = [UIFont fontWithName:CFont_Gotham_Medium size:CFontSizeFooter];
@@ -628,8 +635,7 @@
             lblUnggahGambar.userInteractionEnabled = YES;
             [viewImgGambar addSubview:lblUnggahGambar];
             
-            int diameterImage = 100;
-            imgGambar = [[UIImageView alloc] initWithFrame:CGRectMake((cell.bounds.size.width-diameterImage)/2.0f, 10, diameterImage, diameterImage)];
+            imgGambar = [[UIImageView alloc] initWithFrame:CGRectMake((tableView.bounds.size.width)/2.0f-diameterImage/2.0f, 10, diameterImage, diameterImage)];
             imgGambar.layer.cornerRadius = imgGambar.bounds.size.width/2.0f;
             imgGambar.layer.borderColor = [[UIColor lightGrayColor] CGColor];
             imgGambar.layer.borderWidth = 0.5f;

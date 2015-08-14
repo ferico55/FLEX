@@ -14,9 +14,10 @@
 #import "NavigateViewController.h"
 #import "ViewLabelUser.h"
 
+#import "ReviewFormViewController.h"
 #import "TokopediaNetworkManager.h"
 
-@interface DetailReviewViewController () <HPGrowingTextViewDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
+@interface DetailReviewViewController () <HPGrowingTextViewDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate, UISplitViewControllerDelegate>
 {
     HPGrowingTextView *_growingtextview;
     UserAuthentificationManager *_userManager;
@@ -49,7 +50,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIView *userView;
 @property (weak, nonatomic) IBOutlet UIView *productView;
-
 
 @end
 
@@ -105,6 +105,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    self.view.bounds = screenRect;
+    
     _userManager = [UserAuthentificationManager new];
     _operationQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
@@ -113,6 +116,8 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = 1;
+    
+    scrollContent.hidden = YES;
     
     [self initNavigationBar];
     [self initReviewData];
@@ -146,6 +151,7 @@
     CGRect newFrame = _talkInputView.frame;
     newFrame.size.height = 0;
     _talkInputView.frame = newFrame;
+    
 }
 
 - (void)initReviewData {
@@ -156,6 +162,23 @@
     [_userButton setText:_review.review_user_name];
     [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
     
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        
+        if([_review.review_id isEqualToString:@"0"] || !_review.review_id) {
+            scrollContent.hidden = YES;
+
+        }
+        else
+        {
+            scrollContent.hidden = NO;
+        }
+    }
+    else
+    {
+        scrollContent.hidden = NO;
+    }
+    
+    //[_userNamelabel setText:_review.review_user_name];
     [_timelabel setText:_review.review_create_time];
     
     if([_review.review_response.response_message isEqualToString:@"0"]) {
@@ -164,7 +187,10 @@
         if([[_userManager getUserId] isEqualToString:@"0"] || ![_userManager isMyShopWithShopId:_review.review_shop_id]) {
             [self hideInputView];
         }
-
+        else
+        {
+            _talkInputView.hidden = NO;
+        }
         _respondView.hidden = YES;
         
     } else {
@@ -174,7 +200,7 @@
         [self hideInputView];
         _reviewCreateTimeLabel.text = _review.review_response.response_create_time;
         
-        NSString *reviewMessage = _review.review_response.response_message;
+        NSString *reviewMessage = _review.review_response.response_message?:@"Belum ada review";
         NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 3.0;
@@ -195,6 +221,7 @@
     {
         [self hideInputView];
     }
+
     
     
     _productNamelabel.text = _review.review_product_name;
@@ -209,7 +236,7 @@
                                  };
     
     NSString *reviewMessage = [_review.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    _commentlabel.attributedText = [[NSAttributedString alloc] initWithString:reviewMessage
+    _commentlabel.attributedText = [[NSAttributedString alloc] initWithString:reviewMessage?:@""
                                                                        attributes:attributes];
     
     
@@ -219,6 +246,16 @@
     
     CGRect newFrame = CGRectMake(10, 75, 300, _commentlabel.frame.size.height);
     _commentlabel.frame = newFrame;
+   
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        newFrame.size.width = [[UIScreen mainScreen] bounds].size.width - [(UIViewController*)_masterViewController view].frame.size.width - 20;
+        _commentlabel.frame = newFrame;
+    }
+    
+    CGRect frame = _productView.frame;
+    frame.size.height = _commentlabel.frame.size.height+120;
+    _productView.frame = frame;
+    
 
     if(_commentlabel.frame.size.height > 50) {
         CGFloat diff = _commentlabel.frame.size.height - 50;
@@ -320,7 +357,7 @@
             case 10:
             {
                 _commentReview = _growingtextview.text;
-                _reviewRespondLabel.text = _commentReview;
+                _reviewRespondLabel.text = _commentReview?:@"Belum ada review";
                 _reviewCreateTimeLabel.text = @"Just now";
                 _growingtextview.text = nil;
                 [_growingtextview resignFirstResponder];
@@ -410,7 +447,8 @@
 }
 
 - (void) initTalkInputView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240, 45)];
+    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10 - ((UIViewController*)_masterViewController).view.frame.size.width;
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
     //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -636,7 +674,8 @@
 
 - (void)tapProduct {
     if(![_review.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![_review.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
-        [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+//        [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+        [_navigateController navigateToProductFromViewController:self withName:_review.review_product_name withPrice:nil withId:_review.review_product_id withImageurl:_review.review_product_image withShopName:nil];
     }
 }
 
@@ -682,7 +721,7 @@
 
 - (NSDictionary *)getParameter:(int)tag {
     return @{
-        @"review_id" : _review.review_id,
+             @"review_id" : _review.review_id?:@(0),
         @"action" : @"set_read_review"
     };
 }
@@ -698,6 +737,41 @@
     GeneralAction *action = ((GeneralAction*)successResult);
 //    if([action.result.is_success isEqualToString:@"1"]) {
 //
+//    }
+}
+
+-(void)replaceDataSelected:(NSDictionary *)data
+{
+    _data = data;
+    
+    if (data) {
+        [self initReviewData];
+    }
+}
+
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
+}
+
+-(BOOL)isNeedToPush
+{
+    for (id vc in self.navigationController.viewControllers) {
+        if ([vc isKindOfClass:[ReviewFormViewController class]]) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+-(void)dissmissReviewFormBefore
+{
+//    for (id vc in self.navigationController.viewControllers) {
+//        if ([vc isKindOfClass:[ReviewFormViewController class]]) {
+//            [((UIViewController*)vc).navigationController popViewControllerAnimated:NO];
+//            break;
+//        }
 //    }
 }
 

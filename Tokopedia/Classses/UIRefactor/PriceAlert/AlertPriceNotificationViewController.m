@@ -118,14 +118,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     tempPriceAlert = [arrList objectAtIndex:indexPath.row];
-    PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
-    
     if(! [tempPriceAlert.pricealert_total_unread isEqualToString:@"0"]) {
         tempUnreadIndexPath = indexPath;
     }
+    else if(! (tempPriceAlert.pricealert_is_active!=nil && [tempPriceAlert.pricealert_is_active isEqualToString:@"1"])) {
+        return;
+    }
+
     
+    PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
     tempPriceAlert.pricealert_product_name = [NSString convertHTML:tempPriceAlert.pricealert_product_name];
     DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
     detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
@@ -153,7 +155,7 @@
         NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
         cell = [arrPriceAlert objectAtIndex:0];
         cell.viewController = self;
-        cell.getBtnProductName.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+        cell.getBtnProductName.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
@@ -165,10 +167,18 @@
         } failure:nil];
     }
     
+    
+    if(detailPriceAlert.pricealert_is_active!=nil && [detailPriceAlert.pricealert_is_active isEqualToString:@"1"]) {
+        cell.userInteractionEnabled = YES;
+        [cell setProductName:[NSString convertHTML:detailPriceAlert.pricealert_product_name]];
+    }
+    else {
+        [cell setProductName:@"Produk telah dihapus"];
+    }
+    
     cell.getViewUnread.hidden = ([detailPriceAlert.pricealert_total_unread isEqualToString:@"0"]);
     [cell setTagBtnClose:(int)indexPath.row];
     [cell setLblDateProduct:detailPriceAlert.pricealert_time];
-    [cell setProductName:[NSString convertHTML:detailPriceAlert.pricealert_product_name]];
     [cell setPriceNotification:[self getPrice:detailPriceAlert.pricealert_price]];
     [cell setLowPrice:detailPriceAlert.pricealert_price_min];
     

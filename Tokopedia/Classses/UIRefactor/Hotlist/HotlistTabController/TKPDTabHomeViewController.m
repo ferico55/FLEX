@@ -25,6 +25,8 @@
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
 
+#import "NavigateViewController.h"
+
 @interface TKPDTabHomeViewController ()
 <   UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
@@ -47,6 +49,7 @@
     NotificationManager *_notifManager;
     UserAuthentificationManager *_userManager;
 
+    NavigateViewController *_navigate;
 }
 
 @property (strong, nonatomic) UIPageViewController *pageController;
@@ -69,6 +72,8 @@
 {
     
     [super viewDidLoad];
+    
+    _navigate = [NavigateViewController new];
     
     _userManager = [UserAuthentificationManager new];
 
@@ -529,7 +534,9 @@
         [self goToInboxTalk];
     } else if (code == STATE_NEW_ORDER) {
         [self goToNewOrder];
-    } else if (code == STATE_NEW_REVIEW ||
+    } else if (code == STATE_NEW_REPSYS ||
+               code == STATE_EDIT_REPSYS ||
+               code == STATE_NEW_REVIEW ||
                code == STATE_EDIT_REVIEW ||
                code == STATE_REPLY_REVIEW) {
         [self goToInboxReview];
@@ -537,63 +544,15 @@
 }
 
 - (void)goToInboxMessage {
-    InboxMessageViewController *vc = [InboxMessageViewController new];
-    vc.data=@{@"nav":@"inbox-message"};
-    
-    InboxMessageViewController *vc1 = [InboxMessageViewController new];
-    vc1.data=@{@"nav":@"inbox-message-sent"};
-    
-    InboxMessageViewController *vc2 = [InboxMessageViewController new];
-    vc2.data=@{@"nav":@"inbox-message-archive"};
-    
-    InboxMessageViewController *vc3 = [InboxMessageViewController new];
-    vc3.data=@{@"nav":@"inbox-message-trash"};
-    NSArray *vcs = @[vc,vc1, vc2, vc3];
-    
-    TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-    [inboxController setSelectedIndex:2];
-    [inboxController setViewControllers:vcs];
-    
-    [self.navigationController pushViewController:inboxController animated:YES];
+    [_navigate navigateToInboxMessageFromViewController:self];
 }
 
 - (void)goToInboxTalk {
-    InboxTalkViewController *vc = [InboxTalkViewController new];
-    vc.data=@{@"nav":@"inbox-talk"};
-    
-    InboxTalkViewController *vc1 = [InboxTalkViewController new];
-    vc1.data=@{@"nav":@"inbox-talk-my-product"};
-    
-    InboxTalkViewController *vc2 = [InboxTalkViewController new];
-    vc2.data=@{@"nav":@"inbox-talk-following"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-//    [nav.navigationBar setTranslucent:NO];
-//    [self.navigationController presentViewController:nav animated:YES completion:nil];
-    [self.navigationController pushViewController:nc animated:YES];
+    [_navigate navigateToInboxTalkFromViewController:self];
 }
 
 - (void)goToInboxReview {
-    InboxReviewViewController *vc = [InboxReviewViewController new];
-    vc.data=@{@"nav":@"inbox-review"};
-    
-    InboxReviewViewController *vc1 = [InboxReviewViewController new];
-    vc1.data=@{@"nav":@"inbox-review-my-product"};
-    
-    InboxReviewViewController *vc2 = [InboxReviewViewController new];
-    vc2.data=@{@"nav":@"inbox-review-my-review"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-    [self.navigationController pushViewController:nc animated:YES];
+    [_navigate navigateToInboxReviewFromViewController:self];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {

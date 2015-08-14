@@ -21,5 +21,4 @@
 
 @property (nonatomic, strong) TAGManager *tagManager;
 @property (nonatomic, strong) TAGContainer *container;
-
 @end

@@ -44,18 +44,23 @@
     _notificationButton = [[NotificationBarButton alloc] init];
     UIButton *button = (UIButton *)_notificationButton.customView;
     
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+//    CGRect frame = _attachedViewController.view.frame;
+//    frame.size.height = screenRect.size.height;
+//    _attachedViewController.view.frame = frame;
+        
     [button addTarget:_attachedViewController action:@selector(tapNotificationBar) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)initNotificationWindow {
-    _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _notificationWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
     _notificationWindow.clipsToBounds = YES;
     
     _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
     _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
     _notificationArrowImageView.clipsToBounds = YES;
-    _notificationArrowImageView.frame = CGRectMake(280, 60, 10, 5);
+    _notificationArrowImageView.frame = CGRectMake(_notificationWindow.frame.size.width-40, 60, 10, 5);
     _notificationArrowImageView.alpha = 0;
     [_notificationWindow addSubview:_notificationArrowImageView];
 }
@@ -72,16 +77,19 @@
         userInfo = @{@"state" : @(STATE_NEW_TALK)};
     } else if ([notificationCode integerValue] == STATE_NEW_ORDER) {
         userInfo = @{@"state" : @(STATE_NEW_ORDER)};
-    } else if ([notificationCode integerValue] == STATE_NEW_REVIEW ||
+    } else if ([notificationCode integerValue] == STATE_NEW_REPSYS ||
+               [notificationCode integerValue] == STATE_EDIT_REPSYS ||
                [notificationCode integerValue] == STATE_EDIT_REVIEW ||
+               [notificationCode integerValue] == STATE_NEW_REVIEW ||
                [notificationCode integerValue] == STATE_REPLY_REVIEW) {
-        userInfo = @{@"state" : @(STATE_NEW_REVIEW)};
+        userInfo = @{@"state" : @(STATE_NEW_REPSYS)};
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"redirectAfterNotification" object:self userInfo:userInfo];
 }
 
 - (void)setViewController:(UIViewController*)vc {
     _attachedViewController = vc;
+    
     NSString* userId = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
     if(![userId isEqualToString:IS_NOT_LOGIN]) {
         [self initNotificationBarButton];
@@ -91,9 +99,17 @@
 }
 
 - (void)tapNotificationBar {
+    
     [_notificationWindow makeKeyAndVisible];
     
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+//    CGRect frame = _attachedViewController.view.frame;
+//    frame.size.height = screenRect.size.height;
+//    _attachedViewController.view.frame = frame;
+    
+    
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:_attachedViewController action:@selector(tapWindowBar)];
+    
     
     UIView *tapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 64)];
     [tapView addGestureRecognizer:tapRecognizer];
@@ -107,7 +123,7 @@
     [_notificationController.tableView beginUpdates];
     CGRect notificationTableFrame = _notificationController.tableView.frame;
     notificationTableFrame.origin.y = 64;
-    notificationTableFrame.size.height = 300;
+    notificationTableFrame.size.height = [UIScreen mainScreen].bounds.size.height;
     
     UIGraphicsBeginImageContext([UIScreen mainScreen].bounds.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -125,18 +141,10 @@
     _notificationController.tableView.backgroundView = bgImageView;
     _notificationController.tableView.backgroundView.contentMode = UIViewContentModeTop;
     
-    
-    
     _notificationController.tableView.frame = notificationTableFrame;
     [_notificationController.tableView endUpdates];
     
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 355, 0);
-    
-    CGRect windowFrame = _notificationWindow.frame;
-    windowFrame.size.height = 0;
-    _notificationWindow.frame = windowFrame;
-    
-    windowFrame.size.height = _attachedViewController.view.frame.size.height-64;
+    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 64, 0);
     
     [_notificationWindow addSubview:_notificationController.view];
     
@@ -150,7 +158,6 @@
     //        _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 568);
     //    }];
     
-    _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 568);
     CGAffineTransform tr = CGAffineTransformScale(_notificationWindow.transform, 0.1, 0.1);
     _notificationWindow.transform = tr;
     _notificationWindow.hidden = NO;
@@ -164,6 +171,7 @@
     [self setUnreadNotification:nil];
     [self resetNotification];
 }
+
 
 - (void)resetNotification {
     [_notificationRequest resetNotification];

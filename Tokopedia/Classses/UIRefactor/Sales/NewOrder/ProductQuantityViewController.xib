@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -24,9 +24,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="135" sectionHeaderHeight="22" sectionFooterHeight="22" id="May-Mf-z8r">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="135" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="May-Mf-z8r">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="fi6-ah-aRL"/>
@@ -35,46 +34,66 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="May-Mf-z8r" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Hat-cL-Pck"/>
+                <constraint firstAttribute="trailing" secondItem="May-Mf-z8r" secondAttribute="trailing" id="J85-cD-OkP"/>
+                <constraint firstAttribute="bottom" secondItem="May-Mf-z8r" secondAttribute="bottom" id="WBw-e0-e15"/>
+                <constraint firstItem="May-Mf-z8r" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="mVu-fh-iWI"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="189" y="182"/>
         </view>
         <view contentMode="scaleToFill" id="16A-Jf-hoy">
             <rect key="frame" x="0.0" y="0.0" width="320" height="195"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="S2l-4b-WqV" userLabel="Horizontal Line">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S2l-4b-WqV" userLabel="Horizontal Line">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="lkg-xf-Xxx"/>
+                    </constraints>
                 </view>
-                <view contentMode="scaleToFill" id="NQX-dO-Ann" userLabel="Horizontal Line">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NQX-dO-Ann" userLabel="Horizontal Line">
                     <rect key="frame" x="0.0" y="194" width="320" height="1"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="YRs-HO-N5g"/>
+                    </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SjV-ZD-G53">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SjV-ZD-G53">
                     <rect key="frame" x="15" y="11" width="291" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="uEK-ni-Qtm"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="ygK-rY-QbB">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygK-rY-QbB">
                     <rect key="frame" x="10" y="40" width="310" height="139"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="S2l-4b-WqV" secondAttribute="trailing" id="6iF-pX-jbq"/>
+                <constraint firstItem="ygK-rY-QbB" firstAttribute="top" secondItem="SjV-ZD-G53" secondAttribute="bottom" constant="8" id="8Xf-W4-1PQ"/>
+                <constraint firstAttribute="trailing" secondItem="ygK-rY-QbB" secondAttribute="trailing" id="CtH-2J-CaH"/>
+                <constraint firstItem="S2l-4b-WqV" firstAttribute="leading" secondItem="16A-Jf-hoy" secondAttribute="leading" id="Eur-hp-3Ni"/>
+                <constraint firstItem="S2l-4b-WqV" firstAttribute="top" secondItem="16A-Jf-hoy" secondAttribute="top" id="Faw-i5-5L2"/>
+                <constraint firstAttribute="trailing" secondItem="NQX-dO-Ann" secondAttribute="trailing" id="M3i-Pj-dUZ"/>
+                <constraint firstItem="NQX-dO-Ann" firstAttribute="top" secondItem="ygK-rY-QbB" secondAttribute="bottom" constant="15" id="Niq-ZX-ppB"/>
+                <constraint firstItem="ygK-rY-QbB" firstAttribute="leading" secondItem="16A-Jf-hoy" secondAttribute="leading" constant="10" id="VeQ-ho-9PE"/>
+                <constraint firstItem="SjV-ZD-G53" firstAttribute="leading" secondItem="16A-Jf-hoy" secondAttribute="leading" constant="15" id="cqU-8t-3Jj"/>
+                <constraint firstAttribute="trailing" secondItem="SjV-ZD-G53" secondAttribute="trailing" constant="14" id="gDm-k5-XOv"/>
+                <constraint firstItem="NQX-dO-Ann" firstAttribute="leading" secondItem="16A-Jf-hoy" secondAttribute="leading" id="q8A-gM-tik"/>
+                <constraint firstItem="SjV-ZD-G53" firstAttribute="top" secondItem="S2l-4b-WqV" secondAttribute="bottom" constant="10" id="t24-XS-kNb"/>
+                <constraint firstAttribute="bottom" secondItem="NQX-dO-Ann" secondAttribute="bottom" id="vD1-6T-ODo"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="920" y="197.5"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

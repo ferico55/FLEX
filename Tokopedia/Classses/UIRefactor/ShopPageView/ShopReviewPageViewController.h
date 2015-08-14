@@ -16,4 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
 @property (nonatomic, strong) ShopPageHeader *shopPageHeader;
+@property (nonatomic, strong) NSMutableDictionary *dictLikeDislike, *loadingLikeDislike;
+
+- (void)reloadTable;
 @end

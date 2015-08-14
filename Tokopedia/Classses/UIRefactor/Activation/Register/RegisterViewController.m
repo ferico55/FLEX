@@ -113,6 +113,24 @@
 {
     [super viewDidLoad];
     
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        CGRect frame = _facebookLoginView.frame;
+        frame.size.width = 550;
+        _facebookLoginView.frame = frame;
+    }
+    else
+    {
+        CGRect frame = _facebookLoginView.frame;
+        frame.size.width = [UIScreen mainScreen].bounds.size.width-30;
+        _facebookLoginView.frame = frame;
+    }
+
+    self.title = kTKPDREGISTER_NEW_TITLE;
+    
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _contentView.frame = screenRect;
+    
     _datainput = [NSMutableDictionary new];
     [_datainput setObject:@"1" forKey:kTKPDREGISTER_APIGENDERKEY];
 
@@ -152,8 +170,10 @@
     [_facebookLoginView addSubview:_loginView];
 
     [_container addSubview:_contentView];
+    
     _container.contentSize = CGSizeMake(self.view.frame.size.width,
-                                        _contentView.frame.size.height);
+                                        _container.frame.size.height);
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {

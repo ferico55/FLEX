@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
+#import "DetailPriceAlert.h"
 #import "string_catalog.h"
+#import "string_price_alert.h"
 
 #import "Catalog.h"
 #import "UserAuthentificationManager.h"
@@ -17,8 +19,15 @@
 #import "CatalogShopViewController.h"
 #import "LoginViewController.h"
 #import "ProductAddEditViewController.h"
+#import "PriceAlert.h"
+#import "PriceAlertResult.h"
 #import "PriceAlertViewController.h"
+#import "ShopBadgeLevel.h"
+#import "ShopStats.h"
+#import "TokopediaNetworkManager.h"
 #import "GalleryViewController.h"
+
+#define CTagGetAddCatalogPriceAlert 2
 
 static NSString *cellIdentifer = @"CatalogSpecificationCell";
 static CGFloat rowHeight = 40;
@@ -27,19 +36,21 @@ static CGFloat rowHeight = 40;
 <
     UITableViewDataSource,
     UITableViewDelegate,
+    TokopediaNetworkManagerDelegate,
     UIScrollViewDelegate,
     LoginViewDelegate,
     GalleryViewControllerDelegate
 >
 {
     Catalog *_catalog;
+    TokopediaNetworkManager *tokopediaNetworkManager;
     
     NSMutableArray *_arrayCatalogImage;
     NSMutableArray *_specificationTitles;
     NSMutableArray *_specificationValues;
     NSMutableArray *_specificationKeys;
     
-    BOOL _hideTableRows;
+    BOOL _hideTableRows, doActionPriceAlert;
     
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -85,6 +96,7 @@ static CGFloat rowHeight = 40;
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(tap:)];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     self.navigationItem.backBarButtonItem = backButton;
 
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
@@ -102,8 +114,8 @@ static CGFloat rowHeight = 40;
     [imgPriceAlertView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionAddNotificationPriceCatalog:)]];
     UIBarButtonItem *priceAlertItem = [[UIBarButtonItem alloc] initWithCustomView:imgPriceAlertView];
     self.navigationItem.rightBarButtonItems = @[actionButton, priceAlertItem];
+    [priceAlertItem setEnabled:NO];
     [self setBackgroundPriceAlert:NO];
-    
 
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
@@ -154,6 +166,10 @@ static CGFloat rowHeight = 40;
     [self.productPhotoScrollView addGestureRecognizer:tap];
     
     [self request];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -267,7 +283,9 @@ static CGFloat rowHeight = 40;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    CatalogSectionHeaderView *view = [CatalogSectionHeaderView new];
+    NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView" owner:nil options:0];
+    CatalogSectionHeaderView *view = [tempArr objectAtIndex:0];
+    
     view.titleLabel.text = [_specificationTitles objectAtIndex:section];
     return view;
 }
@@ -344,6 +362,10 @@ static CGFloat rowHeight = 40;
                                                          API_SHOP_RATE_SPEED_KEY,
                                                          API_IS_GOLD_SHOP_KEY,
                                                          ]];
+    
+    RKObjectMapping *shopStatMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
+    [shopStatMapping addAttributeMappingsFromDictionary:@{CToolTip:CToolTip,
+                                                          @"reputation_score": CShopReputationScore}];
 
     RKObjectMapping *productListMapping = [RKObjectMapping mappingForClass:[ProductList class]];
     [productListMapping addAttributeMappingsFromArray:@[API_PRODUCT_CONDITION_KEY,
@@ -351,6 +373,12 @@ static CGFloat rowHeight = 40;
                                                         @"product_id",
                                                         @"product_name",
                                                         API_SHOP_NAME_KEY]];
+    
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
+    [shopStatMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"reputation_badge" toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
+    [catalogShopsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopStatMapping]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
@@ -570,6 +598,7 @@ static CGFloat rowHeight = 40;
         _buyButton.layer.opacity = 1;
         
         [_tableView reloadData];
+        [[self getNetworkManager:CTagGetAddCatalogPriceAlert] doRequest];
     }
 }
 
@@ -579,14 +608,24 @@ static CGFloat rowHeight = 40;
 }
 
 #pragma mark - Method
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
+    if(tokopediaNetworkManager == nil) {
+        tokopediaNetworkManager = [TokopediaNetworkManager new];
+        tokopediaNetworkManager.delegate = self;
+    }
+    tokopediaNetworkManager.tagRequest = tag;
+    
+    return tokopediaNetworkManager;
+}
+
 - (void)updatePriceAlert:(NSString *)strPrice
 {
-    _catalog.result.catalog_info.catalog_pricealert_price = strPrice;
+    [self setBackgroundPriceAlert:_catalog.result.catalog_info.catalog_pricealert_price!=nil && ![_catalog.result.catalog_info.catalog_pricealert_price isEqualToString:@"0"] && ![_catalog.result.catalog_info.catalog_pricealert_price isEqualToString:@""]];
 }
 
 - (void)setBackgroundPriceAlert:(BOOL)isActive
 {
-    if(isActive) {
+    if(! isActive) {
         if(! imgPriceAlert) {
             UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
             [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_pricealert_active" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
@@ -599,7 +638,7 @@ static CGFloat rowHeight = 40;
     else {
         if(! imgPriceAlertNonActive) {
             UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), NO, 0.0);
-            [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_pricealert_active" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
+            [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_button_pricealert_nonactive" ofType:@"png"]] drawInRect:CGRectMake(0, 0, 30, 30)];
             imgPriceAlertNonActive = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
         }
@@ -612,9 +651,27 @@ static CGFloat rowHeight = 40;
 - (void)actionAddNotificationPriceCatalog:(id)sender
 {
     if(_catalog!=nil && _catalog.result.catalog_info!=nil) {
-        PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
-        priceAlertViewController.catalogInfo = _catalog.result.catalog_info;
-        [self.navigationController pushViewController:priceAlertViewController animated:YES];
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSDictionary *auth = [_userManager getUserLoginData];
+        if(auth) {
+            PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
+            priceAlertViewController.catalogInfo = _catalog.result.catalog_info;
+            [self.navigationController pushViewController:priceAlertViewController animated:YES];
+        }
+        else {
+            doActionPriceAlert = YES;
+            UINavigationController *navigationController = [[UINavigationController alloc] init];
+            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+            navigationController.navigationBar.translucent = NO;
+            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
+            
+            LoginViewController *controller = [LoginViewController new];
+            controller.delegate = self;
+            controller.isPresentedViewController = YES;
+            navigationController.viewControllers = @[controller];
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        }
     }
 }
 
@@ -640,7 +697,8 @@ static CGFloat rowHeight = 40;
         controller.catalog = _catalog;
         controller.catalog_shops = _catalog.result.catalog_shops;
         [self.navigationController pushViewController:controller animated:YES];
-    } else if ([sender isKindOfClass:[UISegmentedControl class]]) {
+    }
+    else if ([sender isKindOfClass:[UISegmentedControl class]]) {
         UISegmentedControl *control = (UISegmentedControl *)sender;
         if (control.selectedSegmentIndex == 0) {
             _hideTableRows = NO;
@@ -691,10 +749,20 @@ static CGFloat rowHeight = 40;
 }
 
 #pragma mark - Login view delegate
+- (void)cancelLoginView {
+    doActionPriceAlert = NO;
+}
+
+- (void)userDidLogin:(id)sender {
+    if(doActionPriceAlert) {
+        doActionPriceAlert = NO;
+        [self actionAddNotificationPriceCatalog:nil];
+    }
+}
 
 - (void)redirectViewController:(id)viewController
 {
-    [self.navigationController pushViewController:viewController animated:YES];
+//    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Scroll view delegate
@@ -731,4 +799,93 @@ static CGFloat rowHeight = 40;
     return nil;
 }
 
+
+
+#pragma mark - Tokopedia Network Manager
+- (NSDictionary*)getParameter:(int)tag {
+    if(tag == CTagGetAddCatalogPriceAlert) {
+        return @{CAction:@"get_add_catalog_price_alert_form", CCatalogID:_catalogID};
+    }
+
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag {
+    if(tag == CTagGetAddCatalogPriceAlert) {
+        return @"inbox-price-alert.pl";
+    }
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag {
+    if(tag == CTagGetAddCatalogPriceAlert) {
+        RKObjectManager *rkObjectManager = [RKObjectManager sharedClient];
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[PriceAlert class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[PriceAlertResult class]];
+        [resultMapping addAttributeMappingsFromArray:@[CCatalogID, CTotalProduct]];
+        
+        RKObjectMapping *priceAlertMapping = [RKObjectMapping mappingForClass:[DetailPriceAlert class]];
+        [priceAlertMapping addAttributeMappingsFromDictionary:@{CPriceAlertPrice:CPriceAlertPrice,
+                                                                CPriceAlertID:CPriceAlertID
+                                                                }];
+
+//        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"price_alert" toKeyPath:CPriceAlertDetail withMapping:priceAlertMapping]];
+        
+//        register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [rkObjectManager addResponseDescriptor:responseDescriptorStatus];
+        return rkObjectManager;
+    }
+    
+    return nil;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
+    if(tag == CTagGetAddCatalogPriceAlert) {
+        PriceAlert *priceAlert = [((RKMappingResult *) result).dictionary objectForKey:@""];
+
+        return priceAlert.status;
+    }
+    
+    return nil;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+    if(tag == CTagGetAddCatalogPriceAlert) {
+        PriceAlert *priceAlert = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+        if([_catalogID isEqualToString:priceAlert.result.catalog_id]) {
+            [((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems lastObject]) setEnabled:YES];
+            [self setBackgroundPriceAlert:priceAlert.result.price_alert_detail.pricealert_price!=nil && ![priceAlert.result.price_alert_detail.pricealert_price isEqualToString:@"0"] && ![priceAlert.result.price_alert_detail.pricealert_price isEqualToString:@""]];
+            
+            _catalog.result.catalog_info.catalog_pricealert_price = priceAlert.result.price_alert_detail.pricealert_price;
+        }
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+}
+
+- (void)actionBeforeRequest:(int)tag {
+
+}
+
+- (void)actionRequestAsync:(int)tag {
+
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    if(tag == CTagGetAddCatalogPriceAlert) {
+        
+    }
+}
 @end

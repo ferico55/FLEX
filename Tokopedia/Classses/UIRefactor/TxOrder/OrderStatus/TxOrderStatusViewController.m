@@ -485,9 +485,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_isNodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
+    cell.backgroundColor = [UIColor clearColor];
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.row] -1;
     
@@ -1145,21 +1143,7 @@
     }
     else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
-        InboxReviewViewController *vc = [InboxReviewViewController new];
-        vc.data=@{@"nav":@"inbox-review"};
-        
-        InboxReviewViewController *vc1 = [InboxReviewViewController new];
-        vc1.data=@{@"nav":@"inbox-review-my-product"};
-        
-        InboxReviewViewController *vc2 = [InboxReviewViewController new];
-        vc2.data=@{@"nav":@"inbox-review-my-review"};
-        
-        NSArray *vcs = @[vc,vc1, vc2];
-        
-        TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-        [nc setSelectedIndex:2];
-        [nc setViewControllers:vcs];
-        [self.navigationController pushViewController:nc animated:YES];        
+        [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {

@@ -18,7 +18,22 @@
 
 #import "NotificationState.h"
 
+#import "NavigateViewController.h"
+
+
 @implementation RedirectHandler
+{
+    NavigateViewController *_navigate;
+}
+
+-(NavigateViewController*)navigate
+{
+    if (!_navigate) {
+        _navigate = [NavigateViewController new];
+    }
+    
+    return _navigate;
+}
 
 - (id)init {
     self = [super init];
@@ -35,7 +50,7 @@
         [self redirectToMessage];
     } else if(state == STATE_NEW_TALK) {
         [self redirectToTalk];
-    } else if(state == STATE_NEW_REVIEW) {
+    } else if(state == STATE_NEW_REPSYS || state == STATE_NEW_REVIEW) {
         [self redirectToReview];
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];
@@ -44,68 +59,23 @@
 
 - (void)redirectToMessage {
     UINavigationController *nav = (UINavigationController*)_delegate;
-    
-    InboxMessageViewController *vc = [InboxMessageViewController new];
-    vc.data=@{@"nav":@"inbox-message"};
-    
-    InboxMessageViewController *vc1 = [InboxMessageViewController new];
-    vc1.data=@{@"nav":@"inbox-message-sent"};
-    
-    InboxMessageViewController *vc2 = [InboxMessageViewController new];
-    vc2.data=@{@"nav":@"inbox-message-archive"};
-    
-    InboxMessageViewController *vc3 = [InboxMessageViewController new];
-    vc3.data=@{@"nav":@"inbox-message-trash"};
-    NSArray *vcs = @[vc,vc1, vc2, vc3];
-    
-    TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-    [inboxController setSelectedIndex:2];
-    [inboxController setViewControllers:vcs];
-    
-    [nav.navigationController pushViewController:inboxController animated:YES];
+    _navigationController = (UINavigationController*)_delegate;
+
+    [[self navigate]navigateToInboxMessageFromViewController:[[nav viewControllers] lastObject]];
 }
 
 - (void)redirectToTalk {
     UINavigationController *nav = (UINavigationController*)_delegate;
     _navigationController = (UINavigationController*)_delegate;
     
-    InboxTalkViewController *vc = [InboxTalkViewController new];
-    vc.data=@{@"nav":@"inbox-talk"};
-    
-    InboxTalkViewController *vc1 = [InboxTalkViewController new];
-    vc1.data=@{@"nav":@"inbox-talk-my-product"};
-    
-    InboxTalkViewController *vc2 = [InboxTalkViewController new];
-    vc2.data=@{@"nav":@"inbox-talk-following"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-    [nav.navigationController pushViewController:nc animated:YES];
+    [[self navigate]navigateToInboxTalkFromViewController:[[nav viewControllers] lastObject]];
 }
 
 - (void)redirectToReview {
     UINavigationController *nav = (UINavigationController*)_delegate;
     _navigationController = (UINavigationController*)_delegate;
     
-    InboxReviewViewController *vc = [InboxReviewViewController new];
-    vc.data=@{@"nav":@"inbox-review"};
-    
-    InboxReviewViewController *vc1 = [InboxReviewViewController new];
-    vc1.data=@{@"nav":@"inbox-review-my-product"};
-    
-    InboxReviewViewController *vc2 = [InboxReviewViewController new];
-    vc2.data=@{@"nav":@"inbox-review-my-review"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-    nc.hidesBottomBarWhenPushed = YES;
-    [nav.navigationController pushViewController:nc animated:YES];
+    [[self navigate]navigateToInboxReviewFromViewController:self];
 }
 
 - (void)redirectToNewOrder {

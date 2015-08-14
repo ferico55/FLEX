@@ -38,7 +38,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KI5-qt-OAg">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Mda-ty-KT2">
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Mda-ty-KT2">
                             <rect key="frame" x="8" y="16" width="304" height="29"/>
                             <segments>
                                 <segment title="Inbox"/>
@@ -52,6 +52,12 @@
                         </segmentedControl>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Mda-ty-KT2" firstAttribute="leading" secondItem="KI5-qt-OAg" secondAttribute="leading" constant="8" id="9ZP-UE-yus"/>
+                        <constraint firstAttribute="trailing" secondItem="Mda-ty-KT2" secondAttribute="trailing" constant="8" id="K7L-KQ-ddV"/>
+                        <constraint firstItem="Mda-ty-KT2" firstAttribute="top" secondItem="KI5-qt-OAg" secondAttribute="top" constant="16" id="buX-4e-loa"/>
+                        <constraint firstAttribute="bottom" secondItem="Mda-ty-KT2" secondAttribute="bottom" constant="16" id="xG6-mg-F83"/>
+                    </constraints>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HIc-y5-HzX">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>

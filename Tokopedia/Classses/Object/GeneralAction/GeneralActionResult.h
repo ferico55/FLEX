@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#define CFeedBackID @"feedback_id"
 
 @interface GeneralActionResult : NSObject
 
-
+@property (nonatomic, strong) NSString *feedback_id;
 @property (nonatomic, strong) NSString *is_success;
 
 @end

@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface DepositSummaryViewController : GAITrackedViewController
+{
+    IBOutlet NSLayoutConstraint *constraintHeightHeader, *constraintHeightSuperHeader;
+}
 
 @property (strong, nonatomic) NSDictionary *data;
 

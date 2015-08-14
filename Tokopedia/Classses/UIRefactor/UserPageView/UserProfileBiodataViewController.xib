@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -23,8 +23,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="NYx-Yt-sMn">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="NYx-Yt-sMn">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="separatorColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
@@ -32,15 +32,21 @@
                         <outlet property="delegate" destination="-1" id="gMZ-LE-qBT"/>
                     </connections>
                 </tableView>
-                <view hidden="YES" tag="18" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q1z-Bq-Qui" userLabel="ViewSelf">
+                <view hidden="YES" tag="18" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1z-Bq-Qui" userLabel="ViewSelf">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                     <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tzg-Ff-J0u">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tzg-Ff-J0u">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="cMw-k3-R0s"/>
+                            </constraints>
                         </view>
-                        <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JoB-Y8-gbv">
+                        <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JoB-Y8-gbv">
                             <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="ztR-4L-laV"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <state key="normal" title="Info Profil">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -50,8 +56,11 @@
                                 <action selector="tap:" destination="-2" eventType="touchUpInside" id="sum-rr-PzX"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9vR-js-DCf">
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9vR-js-DCf">
                             <rect key="frame" x="160" y="0.0" width="160" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="yNP-hL-XOz"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <state key="normal" title="Toko Favoritku">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -61,23 +70,73 @@
                                 <action selector="tap:" destination="-2" eventType="touchUpInside" id="PWg-Kc-BW4"/>
                             </connections>
                         </button>
-                        <view tag="20" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g0Q-hY-eXL" userLabel="TokoGreen">
+                        <view tag="20" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g0Q-hY-eXL" userLabel="TokoGreen">
                             <rect key="frame" x="0.0" y="37" width="160" height="3"/>
                             <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="3" id="KVY-VW-sec"/>
+                            </constraints>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yey-Sd-8Bu">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yey-Sd-8Bu">
                             <rect key="frame" x="0.0" y="39" width="320" height="1"/>
                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="gfe-ES-uXe"/>
+                            </constraints>
                         </view>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Aks-Se-8QS">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aks-Se-8QS">
                             <rect key="frame" x="160" y="10" width="1" height="20"/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="Pgb-uw-fMM"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Aks-Se-8QS" firstAttribute="leading" secondItem="JoB-Y8-gbv" secondAttribute="trailing" id="2cv-GK-NqY"/>
+                        <constraint firstAttribute="trailing" secondItem="tzg-Ff-J0u" secondAttribute="trailing" id="5yr-xS-Wri"/>
+                        <constraint firstItem="g0Q-hY-eXL" firstAttribute="width" secondItem="9vR-js-DCf" secondAttribute="width" id="BGc-OL-gFw"/>
+                        <constraint firstAttribute="bottom" secondItem="Aks-Se-8QS" secondAttribute="bottom" constant="10" id="BKX-n2-MXu"/>
+                        <constraint firstItem="tzg-Ff-J0u" firstAttribute="top" secondItem="Q1z-Bq-Qui" secondAttribute="top" id="CSh-Q9-lAk"/>
+                        <constraint firstAttribute="bottom" secondItem="Yey-Sd-8Bu" secondAttribute="bottom" id="EHa-ZR-zYc"/>
+                        <constraint firstItem="Yey-Sd-8Bu" firstAttribute="top" secondItem="tzg-Ff-J0u" secondAttribute="bottom" constant="38" id="Er8-ND-lzb"/>
+                        <constraint firstItem="JoB-Y8-gbv" firstAttribute="top" secondItem="Q1z-Bq-Qui" secondAttribute="top" id="Fbm-Oc-4Oq"/>
+                        <constraint firstItem="JoB-Y8-gbv" firstAttribute="leading" secondItem="Q1z-Bq-Qui" secondAttribute="leading" id="HAH-kb-zGJ"/>
+                        <constraint firstItem="Yey-Sd-8Bu" firstAttribute="leading" secondItem="Q1z-Bq-Qui" secondAttribute="leading" id="OA8-A5-ysV"/>
+                        <constraint firstItem="Aks-Se-8QS" firstAttribute="leading" secondItem="JoB-Y8-gbv" secondAttribute="trailing" id="ODa-Y7-ySj"/>
+                        <constraint firstAttribute="bottom" secondItem="g0Q-hY-eXL" secondAttribute="bottom" id="Qzk-Lv-zv0"/>
+                        <constraint firstAttribute="trailing" secondItem="9vR-js-DCf" secondAttribute="trailing" id="WKj-BD-adT"/>
+                        <constraint firstAttribute="trailing" secondItem="9vR-js-DCf" secondAttribute="trailing" id="Wo9-hk-OeJ"/>
+                        <constraint firstAttribute="bottom" secondItem="9vR-js-DCf" secondAttribute="bottom" id="blF-3v-WoC"/>
+                        <constraint firstItem="tzg-Ff-J0u" firstAttribute="leading" secondItem="Q1z-Bq-Qui" secondAttribute="leading" id="cPk-bA-i6e"/>
+                        <constraint firstItem="g0Q-hY-eXL" firstAttribute="top" secondItem="tzg-Ff-J0u" secondAttribute="bottom" constant="36" id="eW5-fa-icD"/>
+                        <constraint firstItem="9vR-js-DCf" firstAttribute="leading" secondItem="JoB-Y8-gbv" secondAttribute="trailing" id="edk-I7-abc"/>
+                        <constraint firstItem="g0Q-hY-eXL" firstAttribute="leading" secondItem="Q1z-Bq-Qui" secondAttribute="leading" id="fDS-eY-rA8"/>
+                        <constraint firstItem="Aks-Se-8QS" firstAttribute="leading" secondItem="JoB-Y8-gbv" secondAttribute="trailing" id="hTI-ZR-A7g"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="g0Q-hY-eXL" secondAttribute="trailing" constant="160" id="ifa-FP-tRq"/>
+                        <constraint firstItem="9vR-js-DCf" firstAttribute="top" secondItem="Q1z-Bq-Qui" secondAttribute="top" id="kTc-iR-zIF"/>
+                        <constraint firstAttribute="bottom" secondItem="JoB-Y8-gbv" secondAttribute="bottom" id="o1e-Yy-ApQ"/>
+                        <constraint firstAttribute="height" constant="40" id="o8g-Ne-C7T"/>
+                        <constraint firstAttribute="trailing" secondItem="Yey-Sd-8Bu" secondAttribute="trailing" id="rzk-AE-HbT"/>
+                        <constraint firstItem="g0Q-hY-eXL" firstAttribute="width" secondItem="JoB-Y8-gbv" secondAttribute="width" id="suu-NX-bSS"/>
+                        <constraint firstItem="Aks-Se-8QS" firstAttribute="top" secondItem="Q1z-Bq-Qui" secondAttribute="top" constant="10" id="xIR-eJ-CKG"/>
+                        <constraint firstAttribute="trailing" secondItem="9vR-js-DCf" secondAttribute="trailing" id="zlG-9f-mxb"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Q1z-Bq-Qui" firstAttribute="top" secondItem="NYx-Yt-sMn" secondAttribute="top" id="CFg-v8-RiQ"/>
+                <constraint firstItem="NYx-Yt-sMn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="KYF-qr-It6"/>
+                <constraint firstItem="Q1z-Bq-Qui" firstAttribute="leading" secondItem="NYx-Yt-sMn" secondAttribute="leading" id="OWa-H1-7qH"/>
+                <constraint firstAttribute="trailing" secondItem="Q1z-Bq-Qui" secondAttribute="trailing" id="QfI-Ed-2Nh"/>
+                <constraint firstAttribute="bottom" secondItem="NYx-Yt-sMn" secondAttribute="bottom" id="ZPN-Zo-GKm"/>
+                <constraint firstItem="Q1z-Bq-Qui" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ccx-sm-J7G"/>
+                <constraint firstAttribute="trailing" secondItem="NYx-Yt-sMn" secondAttribute="trailing" id="s9h-GN-M6w"/>
+                <constraint firstItem="Q1z-Bq-Qui" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ukU-dT-0Fa"/>
+                <constraint firstItem="NYx-Yt-sMn" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="upL-U7-OyF"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>

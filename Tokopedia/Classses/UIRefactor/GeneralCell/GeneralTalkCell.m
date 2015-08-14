@@ -16,7 +16,6 @@
 #import "TalkList.h"
 #import "TKPDSecureStorage.h"
 
-#import "DetailProductViewController.h"
 
 #import "detail.h"
 #import "string_inbox_talk.h"
@@ -24,6 +23,8 @@
 
 @interface GeneralTalkCell () <UIActionSheetDelegate> {
     NavigateViewController *_navigateController;
+    __weak IBOutlet NSLayoutConstraint *constraintwidth;
+    __weak IBOutlet NSLayoutConstraint *equalWidthConstraint;
 }
 
 @end
@@ -58,12 +59,15 @@
     [self.commentlabel addGestureRecognizer:messageGesture];
     [self.commentlabel setUserInteractionEnabled:YES];
     
-    [self.messageLabel addGestureRecognizer:messageGesture];
-    [self.messageLabel setUserInteractionEnabled:YES];
+    _navigateController = [NavigateViewController new];
+    
+//    [self.messageLabel addGestureRecognizer:messageGesture];
+//    [self.messageLabel setUserInteractionEnabled:YES];
     
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [self.thumb addGestureRecognizer:userGesture];
     [self.thumb setUserInteractionEnabled:YES];
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -112,14 +116,10 @@
     NSIndexPath* indexpath = _indexpath;
     
     TalkList *talkList = (TalkList *)_data;
-    NSString *productId = talkList.talk_product_id;
     UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
     
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : productId};
-    
     if(![talkList.talk_product_status isEqualToString:STATE_TALK_PRODUCT_DELETED] && ![talkList.talk_product_status isEqualToString:STATE_TALK_PRODUCT_BANNED]) {
-        [nav.navigationController pushViewController:vc animated:YES];
+        [_navigateController navigateToProductFromViewController:nav withName:talkList.talk_product_name withPrice:nil withId:talkList.talk_product_id withImageurl:talkList.talk_product_image withShopName:nil];
     }
 }
 
@@ -134,7 +134,6 @@
     NSString *userId = [NSString stringWithFormat:@"%ld", (long)talkList.talk_user_id];
     NSIndexPath* indexpath = _indexpath;
     
-    _navigateController = [NavigateViewController new];
     UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
     [_navigateController navigateToProfileFromViewController:nav withUserID:userId];
 }
@@ -173,12 +172,9 @@
             case 15 :
             {
                 TalkList *talkList = (TalkList *)_data;
-                NSString *productId = talkList.talk_product_id;
                 UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
                 
-                DetailProductViewController *vc = [DetailProductViewController new];
-                vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : productId};
-                [nav.navigationController pushViewController:vc animated:YES];
+                [_navigateController navigateToProductFromViewController:nav withName:talkList.talk_product_name withPrice:nil withId:talkList.talk_product_id withImageurl:talkList.talk_product_image withShopName:nil];
                 
                 break;
             }
@@ -229,7 +225,7 @@
         TalkList *talkList = (TalkList *)_data;
         
         UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
-        NSString *userId = [NSString stringWithFormat:@"%d", talkList.talk_user_id];
+        NSString *userId = [NSString stringWithFormat:@"%d", (int)talkList.talk_user_id];
         [_navigateController navigateToProfileFromViewController:nav withUserID:userId];
     }
 }
@@ -261,8 +257,14 @@
     else if (buttonIndex != cancelButtonIndex) {
          [_delegate reportTalk:self withindexpath:_indexpath];
     }
-
 }
 
+- (IBAction)actionSmile:(id)sender {
+    [_delegate actionSmile:sender];
+}
 
+- (void)hiddenViewProduct {
+    constHeightProduct.constant = 0;
+    constHeightContentView.constant = 128;
+}
 @end
