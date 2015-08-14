@@ -219,17 +219,19 @@
 
 - (IBAction)actionOldReview:(id)sender {
     //Change ViewController
-    NSMutableArray *newViewController = [NSMutableArray new];
-    for(UIViewController *tempViewController in self.navigationController.viewControllers) {
-        [newViewController addObject:tempViewController];
-    }
-    [newViewController removeLastObject];
-
-    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
-        [newViewController addObject:controller];
+//        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+//
+//        assdf
+//        [newViewController addObject:controller];
     } else {
+        NSMutableArray *newViewController = [NSMutableArray new];
+        for(UIViewController *tempViewController in self.navigationController.viewControllers) {
+            [newViewController addObject:tempViewController];
+        }
+        [newViewController removeLastObject];
+
+        
         InboxReviewViewController *vc = [InboxReviewViewController new];
         vc.data=@{@"nav":@"inbox-review"};
         
@@ -246,9 +248,8 @@
         nc.hidesBottomBarWhenPushed = YES;
         
         [newViewController addObject:nc];
+        [self.navigationController setViewControllers:newViewController];
     }
-    
-    [self.navigationController setViewControllers:newViewController];
 }
 
 - (IBAction)actionValueChange:(id)sender {
