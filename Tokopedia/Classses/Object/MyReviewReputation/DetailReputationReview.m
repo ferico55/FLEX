@@ -18,7 +18,7 @@
         tempViewModel.product_rating_point = _product_rating_point;
         tempViewModel.review_create_time = _review_create_time;
         tempViewModel.review_is_skipable = _review_is_skipable;
-        tempViewModel.product_uri = _product_uri;
+        tempViewModel.product_image = _product_image;
         tempViewModel.product_service_point = _product_service_point;
         tempViewModel.product_accuracy_point = _product_accuracy_point;
         tempViewModel.review_message = _review_message;
