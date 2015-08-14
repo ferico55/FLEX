@@ -898,8 +898,11 @@
 #pragma mark - MyReviewReputationCell delegate
 - (void)actionInvoice:(id)sender {
     if(_detailMyInboxReputation.invoice_uri!=nil && _detailMyInboxReputation.invoice_uri.length>0) {
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        NSString *userID = [_userManager getUserId];
+        
         WebViewController *webViewController = [WebViewController new];
-        webViewController.strURL = _detailMyInboxReputation.invoice_uri;
+        webViewController.strURL = [NSString stringWithFormat:@"%@&user_id=%@", _detailMyInboxReputation.invoice_uri, userID];
         webViewController.strTitle = @"";
         [self.navigationController pushViewController:webViewController animated:YES];
     }

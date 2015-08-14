@@ -52,7 +52,11 @@
         CGRect barFrame = CGRectMake(0,     navigaitonBarBounds.size.height - progressBarHeight, navigaitonBarBounds.size.width, progressBarHeight);
         progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
         [self.navigationController.navigationBar addSubview:progressView];
-        [webView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strURL]]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
+        [request setURL:[NSURL URLWithString:strURL]];
+        [webView loadRequest:request];
     }
 }
 
