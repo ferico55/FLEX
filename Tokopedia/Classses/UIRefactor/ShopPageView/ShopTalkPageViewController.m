@@ -222,6 +222,7 @@ UIAlertViewDelegate>
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_isNoData) {
+        
         cell.backgroundColor = [UIColor whiteColor];
     }
     
