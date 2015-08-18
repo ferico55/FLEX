@@ -19,7 +19,7 @@
                 <outlet property="productImageView" destination="v5M-LO-sqp" id="4fp-ue-T9S"/>
                 <outlet property="productNameTextField" destination="Dhg-U7-tPK" id="vMd-M8-wpB"/>
                 <outlet property="setDefaultButton" destination="w6a-qa-8ZA" id="zeb-v2-F07"/>
-                <outlet property="table" destination="Fig-9A-V9V" id="8qr-mx-SOH"/>
+                <outlet property="table" destination="Fig-9A-V9V" id="xUL-ae-YMB"/>
                 <outlet property="view" destination="Rsn-J7-Jnv" id="LLH-2N-FbV"/>
                 <outletCollection property="section1Cells" destination="9Qu-Ky-Qq3" id="82D-88-Ef3"/>
                 <outletCollection property="section0Cells" destination="osX-MX-P6S" id="e5t-ec-cIX"/>
