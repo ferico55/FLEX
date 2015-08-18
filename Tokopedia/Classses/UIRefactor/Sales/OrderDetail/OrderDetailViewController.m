@@ -456,8 +456,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    OrderProduct *product = [_transaction.order_products objectAtIndex:indexPath.row];
-    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:nil];
+    OrderProduct *product = [_transaction.order_products objectAtIndex:indexPath.section];
+    [_TKPDNavigator navigateToProductFromViewController:self
+                                               withName:product.product_name
+                                              withPrice:product.product_price
+                                                 withId:product.product_id
+                                           withImageurl:nil
+                                           withShopName:nil];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
