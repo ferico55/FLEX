@@ -62,7 +62,7 @@
 
     
     _header = _userHeader.view;
-    _table.tableHeaderView = _header;
+    //_table.tableHeaderView = _header;
     _table.tableFooterView = _footer;
     _table.delegate = self;
     
@@ -115,6 +115,9 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return _header.frame.size.height;
+    }
     return 45;
 }
 
@@ -127,7 +130,7 @@
     if (!_isnodatashop) {
         if(indexPath.section == 0) {
             //height penilaian user
-            return 166;
+            return 206;
         }
         else if (indexPath.section == 1) {
             //height shop
@@ -161,9 +164,10 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width, 40)];
     titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
     if(section == 0) {
-        titleLabel.text = CStringPenilaianUser;
-        [headerView addSubview:titleLabel];
-        return headerView;
+        //titleLabel.text = CStringPenilaianUser;
+        //[headerView addSubview:titleLabel];
+        //return headerView;
+        return _header;
     }
     else if(section == 1 ) {
 //        if(_profile.result.shop_info) {

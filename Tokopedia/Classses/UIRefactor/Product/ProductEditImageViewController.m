@@ -20,9 +20,6 @@
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
     
-    CGRect _containerDefault;
-    CGSize _scrollviewContentSize;
-    
     TKPDPhotoPicker *_photoPicker;
     
     BOOL _isDefaultImage;
@@ -31,8 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UITextField *productNameTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *defaultPictureSwitch;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIButton *deleteImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *defaultPictLabel;
 @property (weak, nonatomic) IBOutlet UIButton *setDefaultButton;
@@ -88,11 +84,6 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
--(void)viewDidLayoutSubviews
-{
-    _scrollView.contentSize = _contentView.frame.size;
 }
 
 - (void)didReceiveMemoryWarning
@@ -317,16 +308,31 @@
 }
 
 #pragma mark - Keyboard Notification
-- (void)keyboardWillShow:(NSNotification *)info {
-    NSDictionary* keyboardInfo = [info userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _table.contentInset = contentInsets;
+    _table.scrollIndicatorInsets = contentInsets;
+    
+    if (_activeTextField == _productNameTextField) {
+        [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-     self.scrollView.contentInset = UIEdgeInsetsZero;
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                          delay:0
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         _table.contentInset = contentInsets;
+                         _table.scrollIndicatorInsets = contentInsets;
+                     }
+                     completion:^(BOOL finished){
+                     }];
 }
 
 

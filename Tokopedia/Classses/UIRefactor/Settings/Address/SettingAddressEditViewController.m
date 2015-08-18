@@ -106,6 +106,7 @@
     
     _section1Cells = [NSArray sortViewsWithTagInArray:_section1Cells];
 
+    _datainput =[NSMutableDictionary new];
     _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     _act.hidesWhenStopped = YES;
     

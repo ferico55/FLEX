@@ -15,12 +15,16 @@
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "GeneralAction.h"
+#import "LoginViewController.h"
+
 
 @interface ReportViewController () <UITextViewDelegate> {
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
+    
+    UserAuthentificationManager *_userManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
@@ -32,6 +36,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    _userManager = [UserAuthentificationManager new];
+    
     self.title = @"Lapor";
     [self setTextViewPlaceholder:@"Isi deskripsi laporan kamu disini.."];
     _operationQueue = [NSOperationQueue new];
@@ -50,6 +56,21 @@
     [super viewWillAppear:animated];
     
     _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+    if(![_userManager isLogin]) {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = [_delegate didReceiveViewController];
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = [_delegate didReceiveViewController];
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        return;
+    }
 //    [_messageTextView becomeFirstResponder];
 }
 
