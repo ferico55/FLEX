@@ -35,7 +35,7 @@
                         <outlet property="delegate" destination="-1" id="pIH-Of-A09"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RiG-1C-3Io">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RiG-1C-3Io">
                     <rect key="frame" x="0.0" y="555" width="600" height="45"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qON-II-d5w" userLabel="Border">
