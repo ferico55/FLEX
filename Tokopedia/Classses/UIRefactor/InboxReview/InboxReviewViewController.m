@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 12/11/14.
 //
 //
-
+#import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxReviewViewController.h"
 #import "InboxReview.h"
 #import "GeneralReviewCell.h"
@@ -120,7 +120,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showTalkWithFilter:)
-                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
+                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", NAV_REVIEW]
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -161,6 +161,13 @@
 #pragma mark - ViewController Life
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _readStatus = [((TKPDTabInboxReviewNavigationController *) self.parentViewController) getTitleNavReview];
+    if([_readStatus isEqualToString:ALL_REVIEW])
+        _readStatus = @"all";
+    else
+        _readStatus = @"unread";
+    
     
     _operationQueue = [NSOperationQueue new];
     _operationSkipReviewQueue = [NSOperationQueue new];
@@ -267,7 +274,6 @@
                 [((GeneralReviewCell*)cell).unreadIcon setHidden:YES];
             }
             
-            ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
             //edit button visibility
             if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = NO;
@@ -278,15 +284,16 @@
             
             if ([list.review_is_skipable isEqualToString:@"1"]) {
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = NO;
+//                CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
+//                newFrame.origin.x = 0;
+//                ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
+                ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = NO;
+            } else {
                 ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = YES;
+                ((GeneralReviewCell*)cell).skipReviewButton.hidden = YES;
                 CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
                 newFrame.origin.x = 0;
-                ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
-            } else {
-                ((GeneralReviewCell*)cell).skipReviewButton.hidden = YES;
-                ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = YES;
-                CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
-                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
+                newFrame.size.width = tableView.bounds.size.width-((((GeneralReviewCell*) cell).contentReview.frame.origin.x)*2);
                 ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
             }
             
@@ -301,18 +308,17 @@
                 ((GeneralReviewCell*)cell).reportReviewButton.hidden = YES;
             }
             
-            if (((GeneralReviewCell*)cell).reportReviewButton.hidden && ((GeneralReviewCell*)cell).editReviewButton) {
-                CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
-                newFrame.origin.x = cell.frame.size.width/2-newFrame.size.width/2;
-                ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
-            }
-            else
-            {
-                CGRect newFrame = ((GeneralReviewCell*)cell).commentbutton.frame;
+            if (((GeneralReviewCell*)cell).reportReviewButton.hidden && ((GeneralReviewCell*)cell).editReviewButton.isHidden) {
+                ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
+
+                CGRect newFrame = ((GeneralReviewCell*) cell).commentbutton.frame;
                 newFrame.origin.x = 0;
+                newFrame.size.width = tableView.bounds.size.width-(((GeneralReviewCell*) cell).contentReview.frame.origin.x*2);
                 ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
             }
-            
+            else {
+                ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = NO;
+            }
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
     
             if ([list.review_message length] > 50) {
@@ -795,6 +801,10 @@
 
 - (NSDictionary *)getParameter {
     return @{@"action" : @"report_review", @"review_id" : _reportedReviewId};
+}
+
+- (UIViewController *)didReceiveViewController {
+    return self;
 }
 
 #pragma mark - Action Skip Review

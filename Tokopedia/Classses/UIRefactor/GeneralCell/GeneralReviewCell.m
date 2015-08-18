@@ -148,7 +148,8 @@
     
     ReviewList *list = (ReviewList *)_data;
     if(![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
-        [navigation navigateToProductFromViewController:nav withProductID:list.review_product_id];
+//        [navigation navigateToProductFromViewController:nav withProductID:list.review_product_id];
+        [navigation navigateToProductFromViewController:nav withName:list.review_product_name withPrice:nil withId:list.review_product_id withImageurl:list.review_product_image withShopName:nil];
     }
 
 }

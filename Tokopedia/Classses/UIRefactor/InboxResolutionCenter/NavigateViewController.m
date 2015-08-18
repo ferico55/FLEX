@@ -13,6 +13,7 @@
 #import "WebViewInvoiceViewController.h"
 #import "ShopContainerViewController.h"
 #import "string_more.h"
+#import "SegmentedReviewReputationViewController.h"
 #import "UserContainerViewController.h"
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
@@ -27,6 +28,7 @@
 #import "InboxTalkSplitViewController.h"
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
+#import "SplitReputationViewController.h"
 
 #import "InboxReviewSplitViewController.h"
 #import "InboxReviewViewController.h"
@@ -37,8 +39,13 @@
 #import "TKPDTabViewController.h"
 
 #import "ProductImages.h"
+@interface NavigateViewController()<SplitReputationVcProtocol>
 
-@implementation NavigateViewController
+@end
+
+@implementation NavigateViewController {
+    UISplitViewController *splitViewController;
+}
 -(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
@@ -103,6 +110,14 @@
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)navigateToProductFromViewController:(UIViewController *)viewController withLoadedData:(NSDictionary*)loadedData {
+    DetailProductViewController *productController = [DetailProductViewController new];
+    productController.loadedData = loadedData;
+    productController.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -129,6 +144,17 @@
         
         [viewController.navigationController pushViewController:inboxController animated:YES];
     }
+}
+
+- (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName {
+    NSDictionary *loadedData = @{@"product_id" : productId?:@"", @"product_name" : name?:@"", @"product_image" : url?:@"", @"product_price" :price?:@"", @"shop_name" : shopName?:@""};
+    
+    DetailProductViewController *productController = [DetailProductViewController new];
+    productController.loadedData = loadedData;
+    productController.data = @{@"product_id" : productId?:@""};
+    productController.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:productController animated:YES];
 }
 
 -(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController
@@ -181,27 +207,61 @@
 -(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
-        [viewController.navigationController pushViewController:controller animated:YES];
+//        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+//        [viewController.navigationController pushViewController:controller animated:YES];
+        
+        splitViewController = [UISplitViewController new];
+        
+        SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+        splitReputationViewController.splitViewController = splitViewController;
+        splitReputationViewController.del = self;
+        [viewController.navigationController pushViewController:splitReputationViewController animated:YES];
         
     } else {
-        InboxReviewViewController *vc = [InboxReviewViewController new];
-        vc.data=@{@"nav":@"inbox-review"};
+        SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+        segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+        segmentedReputationViewController.selectedIndex = CTagReviewSaya;
+        [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
         
-        InboxReviewViewController *vc1 = [InboxReviewViewController new];
-        vc1.data=@{@"nav":@"inbox-review-my-product"};
         
-        InboxReviewViewController *vc2 = [InboxReviewViewController new];
-        vc2.data=@{@"nav":@"inbox-review-following"};
+//        InboxReviewViewController *vc = [InboxReviewViewController new];
+//        vc.data=@{@"nav":@"inbox-review"};
+//        
+//        InboxReviewViewController *vc1 = [InboxReviewViewController new];
+//        vc1.data=@{@"nav":@"inbox-review-my-product"};
+//        
+//        InboxReviewViewController *vc2 = [InboxReviewViewController new];
+//        vc2.data=@{@"nav":@"inbox-review-following"};
+//        
+//        NSArray *vcs = @[vc,vc1, vc2];
+//        
+//        TKPDTabInboxReviewNavigationController *controller = [TKPDTabInboxReviewNavigationController new];
+//        [controller setSelectedIndex:2];
+//        [controller setViewControllers:vcs];
+//        controller.hidesBottomBarWhenPushed = YES;
+//        
+//        [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
+
+
+
+- (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController withGetDataFromMasterDB:(BOOL)getDataFromMaster
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        splitViewController = [UISplitViewController new];
         
-        NSArray *vcs = @[vc,vc1, vc2];
+        SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+        splitReputationViewController.splitViewController = splitViewController;
+        splitReputationViewController.del = self;
+        [viewController.navigationController pushViewController:splitReputationViewController animated:YES];
         
-        TKPDTabInboxReviewNavigationController *controller = [TKPDTabInboxReviewNavigationController new];
-        [controller setSelectedIndex:2];
-        [controller setViewControllers:vcs];
-        controller.hidesBottomBarWhenPushed = YES;
-        
-        [viewController.navigationController pushViewController:controller animated:YES];
+    } else {
+        SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+        segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+        segmentedReputationViewController.getDataFromMasterDB = getDataFromMaster;
+        segmentedReputationViewController.selectedIndex = CTagReviewSaya;
+        [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
     }
 }
 
@@ -217,4 +277,9 @@
     }
 }
 
+
+#pragma mark - SplitViewReputation Delegate
+- (void)deallocVC {
+    splitViewController = nil;
+}
 @end

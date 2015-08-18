@@ -64,6 +64,10 @@
     return [_auth objectForKey:@"shop_id"]?:@"0";
 }
 
+- (NSString *)getShopName {
+    return [_auth objectForKey:@"shop_name"]?:@"0";
+}
+
 -(NSString *)getShopHasTerm
 {
     NSNumber *shopHasTerms = [_auth objectForKey:@"shop_has_terms"];

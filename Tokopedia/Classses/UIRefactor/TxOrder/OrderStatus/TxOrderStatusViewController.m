@@ -485,9 +485,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_isNodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
+    cell.backgroundColor = [UIColor clearColor];
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.row] -1;
     
@@ -1145,7 +1143,7 @@
     }
     else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
-        [_navigate navigateToInboxReviewFromViewController:self];
+        [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {

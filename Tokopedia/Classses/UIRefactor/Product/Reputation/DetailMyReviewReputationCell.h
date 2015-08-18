@@ -49,4 +49,5 @@
 - (IBAction)actionProduct:(id)sender;
 - (TTTAttributedLabel *)getLabelDesc;
 - (void)setView:(DetailReviewReputaionViewModel *)viewModel;
+- (void)setUnClickViewAction;
 @end

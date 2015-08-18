@@ -17,4 +17,6 @@
 - (BOOL) isNotAllBaseCharacter;
 -(BOOL)isAllNonNumber;
 
+- (BOOL) isNotAllBaseCharacter;
+
 @end

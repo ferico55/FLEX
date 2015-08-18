@@ -101,14 +101,15 @@
 {
     TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
     OrderProduct *product = orderList.order_products[indexPath.row];
-    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+//    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_picture withShopName:orderList.order_shop.shop_name];
 }
 
 -(void)didTapProductAtIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
     OrderProduct *product = orderList.order_products[indexPath.row];
-    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+    [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_picture withShopName:orderList.order_shop.shop_name];
 }
 
 #pragma mark - Table View Data Source

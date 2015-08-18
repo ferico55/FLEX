@@ -7,6 +7,7 @@
 //
 
 #import "Talk.h"
+#import "CMPopTipView.h"
 #import "string_product.h"
 #import "detail.h"
 #import "GeneralAction.h"
@@ -23,6 +24,7 @@
 #import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
 #import "ReputationDetail.h"
+#import "SmileyAndMedal.h"
 #import "string_inbox_talk.h"
 #import "string_inbox_message.h"
 #import "stringrestkit.h"
@@ -34,7 +36,8 @@
 #define CTagDeleteMessage 13
 
 #pragma mark - Product Talk View Controller
-@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate,ReportViewControllerDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate> {
+@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate,ReportViewControllerDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, CMPopTipViewDelegate, SmileyDelegate, TalkCellDelegate>
+{
     NSMutableArray *_list;
     NSArray *_headerimages;
     NSInteger _requestcount;
@@ -43,6 +46,7 @@
     NSTimer *_timer;
     BOOL _isnodata;
     
+    CMPopTipView *cmPopTitpView;
     NSInteger _page;
     NSInteger _limit;
     NSString *_urinext;
@@ -286,6 +290,7 @@
     
     RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
     [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNoReputation,
                                                                  CNegative,
                                                                  CNeutral,
                                                                  CPositif]];
@@ -458,7 +463,98 @@
     }
 }
 
--(void)setHeaderData:(NSDictionary*)data {
+
+#pragma mark - Delegate
+- (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
+    NSInteger row = indexpath.row;
+    TalkList *list = _list[row];
+    
+    
+    ReputationDetail *tempReputationDetail;
+    if(list.talk_user_reputation == nil) {
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary* auth = [secureStorage keychainDictionary];
+        auth = [auth mutableCopy];
+        if(auth) {
+            if([[auth objectForKey:@"user_id"] intValue] == list.talk_user_id) {
+                NSData *data = [[auth objectForKey:@"user_reputation"] dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *tempDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                
+                if(tempDict) {
+                    tempReputationDetail = [ReputationDetail new];
+                    tempReputationDetail.positive_percentage = [tempDict objectForKey:CPositivePercentage];
+                    tempReputationDetail.negative = [tempDict objectForKey:CNegative];
+                    tempReputationDetail.neutral = [tempDict objectForKey:CNeutral];
+                    tempReputationDetail.positive = [tempDict objectForKey:CPositif];
+                    tempReputationDetail.no_reputation = [tempDict objectForKey:CNoReputation];
+                }
+            }
+        }
+    }
+    
+    
+    NSMutableDictionary *dictData = [NSMutableDictionary new];
+    [dictData setObject:list.talk_message?:@0 forKey:TKPD_TALK_MESSAGE];
+    [dictData setObject:list.talk_user_image?:@0 forKey:TKPD_TALK_USER_IMG];
+    [dictData setObject:list.talk_create_time?:@0 forKey:TKPD_TALK_CREATE_TIME];
+    [dictData setObject:list.talk_user_name?:@0 forKey:TKPD_TALK_USER_NAME];
+    [dictData setObject:list.talk_id?:@0 forKey:TKPD_TALK_ID];
+    [dictData setObject:[NSString stringWithFormat:@"%d", list.talk_user_id] forKey:TKPD_TALK_USER_ID];
+    [dictData setObject:list.talk_total_comment?:@0 forKey:TKPD_TALK_TOTAL_COMMENT];
+    [dictData setObject:list.talk_shop_id?:@0 forKey:TKPD_TALK_SHOP_ID];
+    [dictData setObject:product_id forKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY];
+    [dictData setObject:[_data objectForKey:@"talk_product_status"] forKey:TKPD_TALK_PRODUCT_STATUS];
+    [dictData setObject:[_data objectForKey:@"talk_product_image"] forKey:TKPD_TALK_PRODUCT_IMAGE];
+    [dictData setObject:[_data objectForKey:@"product_name"] forKey:TKPD_TALK_PRODUCT_NAME];
+    
+    //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
+    [dictData setObject:@(row)?:@0 forKey:kTKPDDETAIL_DATAINDEXKEY];
+    
+    if(list.talk_user_reputation!=nil && list.talk_user_label!=nil) {
+        [dictData setObject:list.talk_user_label forKey:TKPD_TALK_USER_LABEL];
+        [dictData setObject:list.talk_user_reputation forKey:TKPD_TALK_REPUTATION_PERCENTAGE];
+    }
+    else if(tempReputationDetail != nil){
+        [dictData setObject:@"Pengguna" forKey:TKPD_TALK_USER_LABEL];
+        [dictData setObject:tempReputationDetail forKey:TKPD_TALK_REPUTATION_PERCENTAGE];
+    }
+    
+    vc.data = dictData;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    return self;
+}
+
+#pragma mark - UIScrollView Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+    // Update the page when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = _imagescrollview.frame.size.width;
+    _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    _pagecontrol.currentPage = _pageheaderimages;
+}
+
+#pragma mark - Methods
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
+    if(tag == CTagDeleteMessage) {
+        if(tokopediaNetworkManagerDeleteMessage == nil) {
+            tokopediaNetworkManagerDeleteMessage = [TokopediaNetworkManager new];
+            tokopediaNetworkManagerDeleteMessage.delegate = self;
+            tokopediaNetworkManagerDeleteMessage.tagRequest = tag;
+        }
+        
+        return tokopediaNetworkManagerDeleteMessage;
+    }
+    
+    return nil;
+}
+
+-(void)setHeaderData:(NSDictionary*)data
+{
     _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
     _productnamelabel.numberOfLines = 1;
     

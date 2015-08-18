@@ -20,7 +20,10 @@
 #define CShopSpeedDesc @"shop_speed_description"
 #define CRateSuccess @"rate_success"
 #define CToolTip @"tooltip"
+#define CHideRate @"hide_rate"
 #define CShopBadgeLevel @"shop_badge_level"
+#define CTxCountSuccess @"tx_count_success"
+
 @interface ShopStats : NSObject
 @property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;
 @property (nonatomic) NSInteger shop_service_rate;
@@ -37,7 +40,8 @@
 @property (nonatomic, strong) CountRatingResult *shop_last_six_months;
 @property (nonatomic, strong) CountRatingResult *shop_last_twelve_months;
 
-
+@property (nonatomic, strong) NSString *tx_count_success;
+@property (nonatomic, strong) NSString *hide_rate;
 @property (nonatomic, strong) NSString *tx_count;
 @property (nonatomic, strong) NSString *rate_failure;
 @property (nonatomic, strong) NSString *shop_total_transaction_canceled;

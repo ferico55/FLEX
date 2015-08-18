@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -21,11 +21,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MbX-dX-rBP">
-                    <rect key="frame" x="7" y="0.0" width="305" height="44"/>
+                    <rect key="frame" x="7" y="0.0" width="585" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="zoU-3i-csI"/>
                     </constraints>
@@ -40,7 +40,7 @@
                     </connections>
                 </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="b9s-Dn-GGl">
-                    <rect key="frame" x="0.0" y="50" width="320" height="518"/>
+                    <rect key="frame" x="0.0" y="50" width="600" height="550"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <inset key="separatorInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                     <connections>
@@ -51,15 +51,46 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="b9s-Dn-GGl" secondAttribute="bottom" id="6Vk-HY-B4U"/>
                 <constraint firstAttribute="bottom" secondItem="b9s-Dn-GGl" secondAttribute="bottom" id="9Eb-Cp-MwF"/>
                 <constraint firstItem="b9s-Dn-GGl" firstAttribute="top" secondItem="MbX-dX-rBP" secondAttribute="bottom" constant="6" id="KUw-lH-ikt"/>
-                <constraint firstAttribute="trailing" secondItem="b9s-Dn-GGl" secondAttribute="trailing" id="ME9-up-Pew"/>
-                <constraint firstAttribute="trailing" secondItem="MbX-dX-rBP" secondAttribute="trailing" constant="8" id="Uox-E6-KT0"/>
+                <constraint firstAttribute="trailing" secondItem="b9s-Dn-GGl" secondAttribute="trailing" id="ME9-up-Pew">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="b9s-Dn-GGl" firstAttribute="top" secondItem="MbX-dX-rBP" secondAttribute="bottom" id="Tdh-lN-JZY"/>
+                <constraint firstAttribute="trailing" secondItem="MbX-dX-rBP" secondAttribute="trailing" constant="8" id="Uox-E6-KT0">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="b9s-Dn-GGl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="70" id="WAB-8O-0F0"/>
                 <constraint firstItem="MbX-dX-rBP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Zbp-MF-ShJ"/>
-                <constraint firstItem="MbX-dX-rBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="jxZ-8h-LXf"/>
-                <constraint firstItem="b9s-Dn-GGl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lqj-43-2Pf"/>
+                <constraint firstAttribute="trailing" secondItem="b9s-Dn-GGl" secondAttribute="trailing" constant="70" id="hpU-g8-A8B"/>
+                <constraint firstItem="MbX-dX-rBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="jxZ-8h-LXf">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="b9s-Dn-GGl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lqj-43-2Pf">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="6Vk-HY-B4U"/>
+                    <exclude reference="Tdh-lN-JZY"/>
+                    <exclude reference="WAB-8O-0F0"/>
+                    <exclude reference="hpU-g8-A8B"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="6Vk-HY-B4U"/>
+                    <exclude reference="9Eb-Cp-MwF"/>
+                    <exclude reference="KUw-lH-ikt"/>
+                    <exclude reference="ME9-up-Pew"/>
+                    <include reference="Tdh-lN-JZY"/>
+                    <include reference="WAB-8O-0F0"/>
+                    <include reference="hpU-g8-A8B"/>
+                    <exclude reference="lqj-43-2Pf"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="437" y="325"/>
         </view>
         <view contentMode="scaleToFill" id="QuF-y9-Bt8" userLabel="FooterView">
@@ -87,9 +118,4 @@
     <resources>
         <image name="icon_plus_blue" width="20" height="20"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

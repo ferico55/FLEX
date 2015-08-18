@@ -10,7 +10,9 @@
 #import "ShopPageHeader.h"
 #import "ShopDescriptionView.h"
 #import "ShopStatView.h"
+#import "ShopBadgeLevel.h"
 #import "detail.h"
+#import "SmileyAndMedal.h"
 #import "string_product.h"
 #import "UserAuthentificationManager.h"
 #import "ShopSettingViewController.h"
@@ -204,9 +206,7 @@
                                                                                     attributes:attributes];
     _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
     _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
-    _descriptionView.descriptionLabel.numberOfLines = 4;
-    [_descriptionView.descriptionLabel sizeToFit];
-    
+    _descriptionView.descriptionLabel.numberOfLines = 4;    
     
     _statView.locationLabel.text = _shop.result.info.shop_name;
     _statView.openStatusLabel.text = _shop.result.info.shop_location;
@@ -226,7 +226,7 @@
         _shopClosedView.hidden = NO;
         NSString *until = [NSString stringWithFormat:@"Toko ini akan tutup sampai : %@",_shop.result.closed_info.until];
         NSString *reason = [NSString stringWithFormat:@"Alasan : %@",_shop.result.closed_info.note];
-        [_shopClosedReason setText:reason];
+        [_shopClosedReason setCustomAttributedText:reason];
         [_shopClosedUntil setText:until];
     } else {
         _shopClosedView.hidden = YES;
@@ -296,7 +296,7 @@
 
 #pragma mark - Method
 - (void)generateMedal {
-    [AppDelegate generateMedal:_shop.result.stats.shop_reputation_score withImage:_statView.imgStatistic isLarge:YES];
+    [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:_statView.imgStatistic isLarge:YES];
     _statView.constraintWidthMedal.constant = _statView.imgStatistic.image.size.width;
 }
 

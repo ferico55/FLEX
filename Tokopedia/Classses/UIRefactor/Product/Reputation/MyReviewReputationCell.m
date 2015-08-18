@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import "DetailProductViewController.h"
+#import "ShopBadgeLevel.h"
 #import "string_inbox_message.h"
+#import "SmileyAndMedal.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewReputationCell.h"
 #import "ReputationDetail.h"
@@ -164,6 +166,7 @@
         
         view.hidden = YES;
         activityRating.frame = view.frame;
+        activityRating.center = view.center;
         [activityRating startAnimating];
         [view.superview addSubview:activityRating];
     }
@@ -179,8 +182,10 @@
     [labelUser setText:[UIColor colorWithRed:69/255.0f green:124/255.0f blue:16/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
     
     [labelUser setLabelBackground:[object.reviewee_role isEqualToString:@"1"]? CPembeli:CPenjual];
-    [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
     
+    
+    [UIView setAnimationsEnabled:NO];
+    [btnInvoice setTitle:object.invoice_ref_num forState:UIControlStateNormal];
     
     if(object.unassessed_reputation_review==nil || [object.unassessed_reputation_review isEqualToString:@"0"]) {
         if(object.updated_reputation_review==nil || [object.updated_reputation_review isEqualToString:@"0"] || [object.role isEqualToString:@"1"]) {//1 is buyer
@@ -263,7 +268,7 @@
         removeFlag = !(object.buyer_score==nil || [object.buyer_score isEqualToString:@"0"] || [object.buyer_score isEqualToString:@""]);
     }
     else {
-        removeFlag = (object.seller_score==nil || [object.seller_score isEqualToString:@"0"] || [object.seller_score isEqualToString:@""]);
+        removeFlag = !(object.seller_score==nil || [object.seller_score isEqualToString:@"0"] || [object.seller_score isEqualToString:@""]);
     }
         
         
@@ -288,12 +293,14 @@
     
     //Set reputation
     if([object.role isEqualToString:@"1"]) {//Buyer
-        [AppDelegate generateMedal:object.reputation_score withImage:btnReputation isLarge:NO];
+        [SmileyAndMedal generateMedalWithLevel:object.shop_badge_level.level withSet:object.shop_badge_level.set withImage:btnReputation isLarge:NO];
         [btnReputation setTitle:@"" forState:UIControlStateNormal];
     }
     else {
         [btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
         [btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (object.user_reputation==nil? @"0":object.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
+    
+    [UIView setAnimationsEnabled:YES];
 }
 @end

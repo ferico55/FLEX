@@ -20,21 +20,24 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="280" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="63E-dj-1jg">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="meL-Rh-83Y"/>
                         <outlet property="delegate" destination="-1" id="NhA-4e-5g8"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="63E-dj-1jg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PJ7-9T-DZ2"/>
+                <constraint firstItem="63E-dj-1jg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PJ7-9T-DZ2">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstItem="63E-dj-1jg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dQV-to-aCL"/>
-                <constraint firstAttribute="trailing" secondItem="63E-dj-1jg" secondAttribute="trailing" id="jxi-Sb-Ttj"/>
+                <constraint firstAttribute="trailing" secondItem="63E-dj-1jg" secondAttribute="trailing" id="jxi-Sb-Ttj">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstAttribute="bottom" secondItem="63E-dj-1jg" secondAttribute="bottom" id="vOK-zv-qfB"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
         <view contentMode="scaleToFill" id="SPu-YJ-oxh" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>

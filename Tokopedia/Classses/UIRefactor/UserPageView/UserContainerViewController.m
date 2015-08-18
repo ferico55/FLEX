@@ -13,6 +13,7 @@
 #import "ShopNotesPageViewController.h"
 #import "ShopInfoViewController.h"
 #import "SendMessageViewController.h"
+#import "ShopBadgeLevel.h"
 #import "ShopSettingViewController.h"
 #import "ProductAddEditViewController.h"
 #import "UserProfileBiodataViewController.h"
@@ -459,6 +460,7 @@
     [userReputationMapping addAttributeMappingsFromDictionary:@{CPositivePercentage:CPositivePercentage,
                                                                 CNegative:CNegative,
                                                                 CPositif:CPositif,
+                                                                CNoReputation:CNoReputation,
                                                                 CNeutral:CNeutral}];
     
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
@@ -486,20 +488,24 @@
                                                            CShopReputationScore:CShopReputationScore
                                                            }];
     
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
     RKObjectMapping *countRatingMapping = [RKObjectMapping mappingForClass:[CountRatingResult class]];
     [countRatingMapping addAttributeMappingsFromDictionary:@{CCountScoreGood:CCountScoreGood,
                                                              CCountScoreNeutral:CCountScoreNeutral,
                                                              CCountScoreBad:CCountScoreBad}];
     
-    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
-    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
-                                                               CTwoDay:CTwoDay,
-                                                               CThreeDay:CThreeDay,
-                                                               CSpeedLevel:CSpeedLevel,
-                                                               CBadge:CBadge,
-                                                               CCountTotal:CCountTotal}];
+//    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+//    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+//                                                               CTwoDay:CTwoDay,
+//                                                               CThreeDay:CThreeDay,
+//                                                               CSpeedLevel:CSpeedLevel,
+//                                                               CBadge:CBadge,
+//                                                               CCountTotal:CCountTotal}];
     
     // Relationship Mapping
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastOneMonth toKeyPath:CShopLastOneMonth withMapping:countRatingMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastSixMonth toKeyPath:CShopLastSixMonth withMapping:countRatingMapping]];
     [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastTwelveMonth toKeyPath:CShopLastTwelveMonth withMapping:countRatingMapping]];
@@ -520,7 +526,7 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY
                                                                                   toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY
                                                                                 withMapping:shopstatsMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
+//    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST

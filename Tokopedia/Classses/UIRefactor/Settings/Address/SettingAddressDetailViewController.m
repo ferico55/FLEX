@@ -34,6 +34,12 @@
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section4Cells;
+
 @end
 
 @implementation SettingAddressDetailViewController
@@ -52,14 +58,7 @@
 {
     [super viewDidLoad];
     
-    
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
-    
-    CGRect frame = _contentView.frame;
-    frame.size.width = screenWidth;
-    _contentView.frame = frame;
-    
+    _section2Cells = [NSArray sortViewsWithTagInArray:_section2Cells];
     [self setDefaultData:_data];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
@@ -79,10 +78,6 @@
     backBarButton.tag = 10;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    [self.scrollView addSubview:_contentView];
-    self.scrollView.delegate = self;
-    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width,
-                                               self.contentView.frame.size.height)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -191,6 +186,87 @@
         _viewsetasdefault.hidden = isdefault;
     }
 }
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return _section0Cells.count;
+            break;
+        case 1:
+            return _section1Cells.count;
+            break;
+        case 2:
+            return _section2Cells.count;
+            break;
+        case 3:
+            return _section3Cells.count;
+            break;
+        case 4:
+            return _section4Cells.count;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell= nil;
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0Cells[indexPath.row];
+            break;
+        case 1:
+            cell = _section1Cells[indexPath.row];
+            break;
+        case 2:
+            cell = _section2Cells[indexPath.row];
+            break;
+        case 3:
+            cell = _section3Cells[indexPath.row];
+            break;
+        case 4:
+            cell = _section4Cells[indexPath.row];
+            break;
+        default:
+            break;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 5;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+            return [_section0Cells[indexPath.row] frame].size.height;
+            break;
+        case 1:
+            return [_section1Cells[indexPath.row] frame].size.height;
+            break;
+        case 2:
+            return [_section2Cells[indexPath.row] frame].size.height;
+            break;
+        case 3:
+            return [_section3Cells[indexPath.row] frame].size.height;
+            break;
+        case 4:
+            return [_section4Cells[indexPath.row] frame].size.height;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+
 
 #pragma mark - Edit address delegate
 

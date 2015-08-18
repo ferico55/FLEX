@@ -11,6 +11,7 @@
 #import "OrderProduct.h"
 #import "UITextView+UITextView_Placeholder.h"
 #import "DetailProductViewController.h"
+#import "NavigateViewController.h"
 
 @interface ProductQuantityViewController ()
 <
@@ -22,6 +23,7 @@
 >
 {
     NSMutableArray *_productQuantity;
+    NavigateViewController *_TKPDNavigator;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -36,6 +38,7 @@
     [super viewDidLoad];
 
     self.title = @"Terima Sebagian";
+    _TKPDNavigator = [NavigateViewController new];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
@@ -139,9 +142,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OrderProduct *product = [_products objectAtIndex:indexPath.row];
-    DetailProductViewController *controller = [DetailProductViewController new];
-    controller.data = @{@"product_id":product.product_id};
-    [self.navigationController pushViewController:controller animated:YES];
+//    DetailProductViewController *controller = [DetailProductViewController new];
+//    controller.data = @{@"product_id":product.product_id};
+//    [self.navigationController pushViewController:controller animated:YES];
+    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_picture withShopName:nil];
 }
 
 #pragma mark - Text field method

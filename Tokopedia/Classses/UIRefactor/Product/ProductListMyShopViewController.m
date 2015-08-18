@@ -28,6 +28,7 @@
 #import "RequestMoveTo.h"
 
 #import "TokopediaNetworkManager.h"
+#import "NavigateViewController.h"
 
 #import "LoadingView.h"
 
@@ -81,7 +82,7 @@
     RequestMoveTo *_requestMoveTo;
     
     TokopediaNetworkManager *_networkManager;
-    
+    NavigateViewController *_TKPDNavigator;
     LoadingView *_loadingView;
     
     BOOL _isNeedToSearch;
@@ -132,6 +133,7 @@
     
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    _TKPDNavigator = [NavigateViewController new];
     
     _page = 1;
     _limit = 8;
@@ -256,13 +258,8 @@
     [_searchbar resignFirstResponder];
     
     ManageProductList *list = _list[indexPath.row];
-    DetailProductViewController *detailProductVC = [DetailProductViewController new];
-    detailProductVC.hidesBottomBarWhenPushed = YES;
-    detailProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
-                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                             DATA_PRODUCT_DETAIL_KEY : list,
-                             };
-    [self.navigationController pushViewController:detailProductVC animated:YES];
+
+    [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:nil withId:[NSString stringWithFormat:@"%ld", (long)list.product_id] withImageurl:list.product_image withShopName:[_auth objectForKey:@"shop_name"]];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
