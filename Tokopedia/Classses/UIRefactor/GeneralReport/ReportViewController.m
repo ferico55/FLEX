@@ -50,12 +50,7 @@
     doneButton.tag = 2;
     self.navigationItem.rightBarButtonItem = doneButton;
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     
-    _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     if(![_userManager isLogin]) {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -71,6 +66,13 @@
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         return;
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+    
 //    [_messageTextView becomeFirstResponder];
 }
 
