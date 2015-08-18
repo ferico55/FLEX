@@ -66,8 +66,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5KM-w5-Omj">
                     <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Klik disini untuk melihat ulasan lama Anda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2JF-P5-PQS">
-                            <rect key="frame" x="45" y="14" width="231" height="13"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Klik disini untuk melihat ulasan lama Anda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2JF-P5-PQS">
+                            <rect key="frame" x="45" y="14" width="230" height="13"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="13" id="0y5-xM-fYO"/>
                             </constraints>
