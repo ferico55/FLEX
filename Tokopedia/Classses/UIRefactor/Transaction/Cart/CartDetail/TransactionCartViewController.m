@@ -2230,7 +2230,7 @@
             }
         }
         if (indexPath.row == 3) {
-            if ([_cartSummary.voucher_amount_idr integerValue]<=0) {
+            if ([_cartSummary.voucher_amount integerValue]<=0) {
                 return 0;
             }
         }
