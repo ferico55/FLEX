@@ -24,6 +24,8 @@
 #import "RatingList.h"
 #import "ReviewResponse.h"
 #import "Review.h"
+#import "ShopReputation.h"
+#import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
 #import "String_Reputation.h"
 #import "TAGDataLayer.h"
@@ -668,6 +670,7 @@
     productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = _strProductID;
+    productDetailReputationViewController.shopBadgeLevel = detailReputationReview.product_owner.user_shop_reputation.reputation_badge_object;
 
     if([dictLikeDislike objectForKey:productDetailReputationViewController.detailReputaitonReview.review_id]) {
         TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.detailReputaitonReview.review_id];
@@ -1262,6 +1265,16 @@
                                                                 CUserName:CFullName,
                                                                 CFullName:CUserName}];
         
+        RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
+        [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
+                                                               CReputationBadge,
+                                                               CReputationScore,
+                                                               CScore,
+                                                               CMinBadgeScore]];        
+        
+        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+        
 
         RKObjectMapping *ratingListMapping = [RKObjectMapping mappingForClass:[RatingList class]];
         [ratingListMapping addAttributeMappingsFromArray:@[CRatingRatingStarPoint,
@@ -1280,6 +1293,8 @@
         
                                                                 
         //add relationship mapping
+        [productOwnerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserShopReputation toKeyPath:CUserShopReputation withMapping:shopReputationMapping]];
+        [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
         [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
         [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping]];
         [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CAdvanceReview toKeyPath:CAdvanceReview withMapping:advreviewMapping]];
