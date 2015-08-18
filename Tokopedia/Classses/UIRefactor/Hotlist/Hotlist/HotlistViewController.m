@@ -571,7 +571,7 @@ UICollectionViewDelegateFlowLayout
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
-    [_table scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+    [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
