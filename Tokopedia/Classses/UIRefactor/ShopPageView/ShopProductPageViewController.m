@@ -247,7 +247,7 @@ TokopediaNetworkManagerDelegate
     [header addSubview:_header];
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, _header.frame.size.height, 320, 200)];
     
-    [_refreshControl addTarget:self action:@selector(refreshRequest:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
@@ -451,20 +451,16 @@ TokopediaNetworkManagerDelegate
 
 
 #pragma mark - Refresh View
--(void)refreshRequest:(NSNotification*)notification {
-    _page = 1;
-    [_refreshControl beginRefreshing];
-    //[_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-    [self refreshView:_refreshControl];
-}
-
 -(void)refreshView:(UIRefreshControl*)refresh {
     /** clear object **/
     _page = 1;
     _isrefreshview = YES;
-    [_refreshControl beginRefreshing];
-    [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
+    if(!_refreshControl.isRefreshing) {
+        [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+        [_refreshControl beginRefreshing];
+    }
+
     [_networkManager doRequest];
 }
 
@@ -861,7 +857,7 @@ TokopediaNetworkManagerDelegate
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     SearchItem *feed = [result objectForKey:@""];
-    [_collectionView setContentInset:UIEdgeInsetsZero];
+//    [_collectionView setContentInset:UIEdgeInsetsZero];
     [_noResult removeFromSuperview];
     
     if(_page == 1) {
