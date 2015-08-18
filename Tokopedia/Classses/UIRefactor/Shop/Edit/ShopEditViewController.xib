@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -71,17 +71,17 @@
                                                 <constraint firstAttribute="height" constant="1" id="1xr-79-7m7"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gold Merchant" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uW-Go-tJ5">
-                                            <rect key="frame" x="253" y="0.0" width="106" height="43"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gold Merchant" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uW-Go-tJ5">
+                                            <rect key="frame" x="254" y="0.0" width="200" height="43"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="106" id="bbT-Ir-hsB"/>
+                                                <constraint firstAttribute="width" constant="200" id="bbT-Ir-hsB"/>
                                                 <constraint firstAttribute="height" constant="43" id="rrl-jd-3Fy"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="4ZK-gk-Jbr">
-                                            <rect key="frame" x="230" y="12" width="20" height="20"/>
+                                            <rect key="frame" x="231" y="12" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" id="7bW-7w-tt9"/>
                                                 <constraint firstAttribute="height" constant="20" id="NbZ-oB-V99"/>
@@ -97,7 +97,7 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="centerX" secondItem="1uW-Go-tJ5" secondAttribute="centerX" constant="-6" id="0g3-SF-NNR"/>
+                                        <constraint firstAttribute="centerX" secondItem="1uW-Go-tJ5" secondAttribute="centerX" constant="-54" id="0g3-SF-NNR"/>
                                         <constraint firstAttribute="bottom" secondItem="D6r-Oh-2SG" secondAttribute="bottom" id="59H-7h-9Kc"/>
                                         <constraint firstAttribute="trailing" secondItem="UK8-zc-fPk" secondAttribute="trailing" id="9rV-Ic-IvK"/>
                                         <constraint firstAttribute="height" constant="44" id="Fgk-f5-0Cj"/>
@@ -429,7 +429,7 @@
                     </subviews>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="WSU-4g-xv4" secondAttribute="bottom" constant="-82" id="EPH-Jn-2NA"/>
+                        <constraint firstAttribute="bottom" secondItem="WSU-4g-xv4" secondAttribute="bottom" constant="-50" id="EPH-Jn-2NA"/>
                         <constraint firstItem="WSU-4g-xv4" firstAttribute="leading" secondItem="Ulp-8c-Qlb" secondAttribute="leading" id="FSA-ZD-N9n"/>
                         <constraint firstItem="WSU-4g-xv4" firstAttribute="top" secondItem="Ulp-8c-Qlb" secondAttribute="top" id="dl5-nb-vMq"/>
                         <constraint firstItem="WSU-4g-xv4" firstAttribute="centerX" secondItem="Ulp-8c-Qlb" secondAttribute="centerX" id="krD-kj-5fX"/>
