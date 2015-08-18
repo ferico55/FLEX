@@ -400,10 +400,6 @@
             _shopIsGoldLabel.text = @"        Gold Merchant";
         } else {
             _shopIsGoldLabel.text = @"Regular Merchant";
-            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
-            shopIsGoldLabelFrame.origin.x = 83;
-            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
-            _shopIsGoldLabel.text = @"";
         }
     }
 }

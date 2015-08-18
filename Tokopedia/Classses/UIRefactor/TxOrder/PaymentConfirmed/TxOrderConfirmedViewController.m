@@ -353,7 +353,7 @@
     }
     [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
     [cell.bankNameLabel setText:detailOrder.user_bank_name?:@"" animated:NO];
-    NSString *accountNumber = ([detailOrder.user_account_no integerValue] != 0)?detailOrder.user_account_no:@"";
+    NSString *accountNumber = (![detailOrder.system_account_no isEqualToString:@""] && detailOrder.system_account_no != nil && ![detailOrder.system_account_no isEqualToString:@"0"])?detailOrder.system_account_no:@"";
     [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
     [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber] animated:NO];
     

@@ -206,9 +206,7 @@
                                                                                     attributes:attributes];
     _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
     _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
-    _descriptionView.descriptionLabel.numberOfLines = 4;
-    [_descriptionView.descriptionLabel sizeToFit];
-    
+    _descriptionView.descriptionLabel.numberOfLines = 4;    
     
     _statView.locationLabel.text = _shop.result.info.shop_name;
     _statView.openStatusLabel.text = _shop.result.info.shop_location;

@@ -1057,6 +1057,10 @@
              };
 }
 
+- (UIViewController *)didReceiveViewController {
+    return self;
+}
+
 
 - (NSString *)getPath {
     return @"action/talk.pl";

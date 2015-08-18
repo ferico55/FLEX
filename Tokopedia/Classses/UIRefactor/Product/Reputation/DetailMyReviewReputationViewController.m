@@ -895,6 +895,10 @@
     return nil;
 }
 
+- (UIViewController *)didReceiveViewController {
+    return self;
+}
+
 #pragma mark - MyReviewReputationCell delegate
 - (void)actionInvoice:(id)sender {
     if(_detailMyInboxReputation.invoice_uri!=nil && _detailMyInboxReputation.invoice_uri.length>0) {

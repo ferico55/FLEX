@@ -939,6 +939,10 @@
     return @"action/talk.pl";
 }
 
+- (UIViewController *)didReceiveViewController {
+    return self;
+}
+
 #pragma mark - Method
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     ReportViewController *_reportController = [ReportViewController new];

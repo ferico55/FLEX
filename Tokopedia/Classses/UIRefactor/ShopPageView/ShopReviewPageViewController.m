@@ -1519,6 +1519,9 @@ UIAlertViewDelegate>
     return nil;
 }
 
+- (UIViewController *)didReceiveViewController {
+    return self;
+}
 
 - (NSString *)getPath {
     return @"action/review.pl";

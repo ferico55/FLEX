@@ -13,6 +13,7 @@
 @required
 - (NSDictionary*)getParameter;
 - (NSString*)getPath;
+- (UIViewController*)didReceiveViewController;
 
 @end
 
