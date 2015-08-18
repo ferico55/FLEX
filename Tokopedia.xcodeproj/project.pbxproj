@@ -264,10 +264,6 @@
 		851D00FB1B7CA98300671399 /* CreateShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF9711B7CA97F00671399 /* CreateShopViewController.m */; };
 		851D00FC1B7CA98300671399 /* CreateShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851DF9721B7CA97F00671399 /* CreateShopViewController.xib */; };
 		851D00FD1B7CA98300671399 /* ShopDeliveryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF9741B7CA97F00671399 /* ShopDeliveryCell.m */; };
-		851D00FE1B7CA98300671399 /* ShopEditStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF9791B7CA97F00671399 /* ShopEditStatusViewController.m */; };
-		851D00FF1B7CA98300671399 /* ShopEditStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851DF97A1B7CA97F00671399 /* ShopEditStatusViewController.xib */; };
-		851D01001B7CA98300671399 /* ShopEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF97C1B7CA97F00671399 /* ShopEditViewController.m */; };
-		851D01011B7CA98300671399 /* ShopEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851DF97D1B7CA97F00671399 /* ShopEditViewController.xib */; };
 		851D01021B7CA98300671399 /* ShopFavoritedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF9801B7CA97F00671399 /* ShopFavoritedCell.m */; };
 		851D01031B7CA98300671399 /* ShopFavoritedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851DF9811B7CA97F00671399 /* ShopFavoritedCell.xib */; };
 		851D01041B7CA98300671399 /* ShopFavoritedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF9831B7CA97F00671399 /* ShopFavoritedViewController.m */; };
@@ -1733,6 +1729,10 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		8547E1EE1B82D35500759A93 /* ShopEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8547E1EA1B82D35500759A93 /* ShopEditViewController.m */; };
+		8547E1EF1B82D35500759A93 /* ShopEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8547E1EB1B82D35500759A93 /* ShopEditViewController.xib */; };
+		8547E1F31B82EEB300759A93 /* ShopEditStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8547E1F11B82EEB300759A93 /* ShopEditStatusViewController.m */; };
+		8547E1F41B82EEB300759A93 /* ShopEditStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8547E1F21B82EEB300759A93 /* ShopEditStatusViewController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -3364,12 +3364,6 @@
 		851DF9741B7CA97F00671399 /* ShopDeliveryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopDeliveryCell.m; sourceTree = "<group>"; };
 		851DF9751B7CA97F00671399 /* string_create_shop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_create_shop.h; sourceTree = "<group>"; };
 		851DF9761B7CA97F00671399 /* detail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detail.h; sourceTree = "<group>"; };
-		851DF9781B7CA97F00671399 /* ShopEditStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopEditStatusViewController.h; sourceTree = "<group>"; };
-		851DF9791B7CA97F00671399 /* ShopEditStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopEditStatusViewController.m; sourceTree = "<group>"; };
-		851DF97A1B7CA97F00671399 /* ShopEditStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditStatusViewController.xib; sourceTree = "<group>"; };
-		851DF97B1B7CA97F00671399 /* ShopEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopEditViewController.h; sourceTree = "<group>"; };
-		851DF97C1B7CA97F00671399 /* ShopEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopEditViewController.m; sourceTree = "<group>"; };
-		851DF97D1B7CA97F00671399 /* ShopEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditViewController.xib; sourceTree = "<group>"; };
 		851DF97F1B7CA97F00671399 /* ShopFavoritedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopFavoritedCell.h; sourceTree = "<group>"; };
 		851DF9801B7CA97F00671399 /* ShopFavoritedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopFavoritedCell.m; sourceTree = "<group>"; };
 		851DF9811B7CA97F00671399 /* ShopFavoritedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopFavoritedCell.xib; sourceTree = "<group>"; };
@@ -4344,6 +4338,12 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8547E1E91B82D35500759A93 /* ShopEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopEditViewController.h; sourceTree = "<group>"; };
+		8547E1EA1B82D35500759A93 /* ShopEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopEditViewController.m; sourceTree = "<group>"; };
+		8547E1EB1B82D35500759A93 /* ShopEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditViewController.xib; sourceTree = "<group>"; };
+		8547E1F01B82EEB300759A93 /* ShopEditStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopEditStatusViewController.h; sourceTree = "<group>"; };
+		8547E1F11B82EEB300759A93 /* ShopEditStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopEditStatusViewController.m; sourceTree = "<group>"; };
+		8547E1F21B82EEB300759A93 /* ShopEditStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditStatusViewController.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -7519,9 +7519,9 @@
 		851DF9691B7CA97F00671399 /* Shop */ = {
 			isa = PBXGroup;
 			children = (
+				8547E1E51B82D35500759A93 /* Edit */,
 				851DF96A1B7CA97F00671399 /* Create */,
 				851DF9761B7CA97F00671399 /* detail.h */,
-				851DF9771B7CA97F00671399 /* Edit */,
 				851DF97E1B7CA97F00671399 /* Favorited */,
 				851DF9851B7CA97F00671399 /* Header */,
 				851DF98F1B7CA97F00671399 /* Info */,
@@ -7551,19 +7551,6 @@
 				851DF9751B7CA97F00671399 /* string_create_shop.h */,
 			);
 			path = Create;
-			sourceTree = "<group>";
-		};
-		851DF9771B7CA97F00671399 /* Edit */ = {
-			isa = PBXGroup;
-			children = (
-				851DF9781B7CA97F00671399 /* ShopEditStatusViewController.h */,
-				851DF9791B7CA97F00671399 /* ShopEditStatusViewController.m */,
-				851DF97A1B7CA97F00671399 /* ShopEditStatusViewController.xib */,
-				851DF97B1B7CA97F00671399 /* ShopEditViewController.h */,
-				851DF97C1B7CA97F00671399 /* ShopEditViewController.m */,
-				851DF97D1B7CA97F00671399 /* ShopEditViewController.xib */,
-			);
-			path = Edit;
 			sourceTree = "<group>";
 		};
 		851DF97E1B7CA97F00671399 /* Favorited */ = {
@@ -9056,6 +9043,19 @@
 			path = Veritrans;
 			sourceTree = "<group>";
 		};
+		8547E1E51B82D35500759A93 /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				8547E1F01B82EEB300759A93 /* ShopEditStatusViewController.h */,
+				8547E1F11B82EEB300759A93 /* ShopEditStatusViewController.m */,
+				8547E1F21B82EEB300759A93 /* ShopEditStatusViewController.xib */,
+				8547E1E91B82D35500759A93 /* ShopEditViewController.h */,
+				8547E1EA1B82D35500759A93 /* ShopEditViewController.m */,
+				8547E1EB1B82D35500759A93 /* ShopEditViewController.xib */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -9333,6 +9333,7 @@
 				851D02C81B7CA98300671399 /* icon_medal_silver@2x.png in Resources */,
 				851D01E61B7CA98300671399 /* icon_19@2x.png in Resources */,
 				851DFF3B1B7CA98200671399 /* AlertListView.xib in Resources */,
+				8547E1F41B82EEB300759A93 /* ShopEditStatusViewController.xib in Resources */,
 				851D03171B7CA98300671399 /* icon_questionmark_grey@3x.png in Resources */,
 				851D02A61B7CA98300671399 /* icon_maintenance_grey.png in Resources */,
 				851D00461B7CA98200671399 /* PriceAlertViewController.xib in Resources */,
@@ -9351,6 +9352,7 @@
 				851D02A11B7CA98300671399 /* icon_love@2x.png in Resources */,
 				851D03FB1B7CA98300671399 /* icon_category_actibe@2x.png in Resources */,
 				851D01C81B7CA98300671399 /* GothamMedium.ttf in Resources */,
+				8547E1EF1B82D35500759A93 /* ShopEditViewController.xib in Resources */,
 				851D028D1B7CA98300671399 /* icon_incorrect@2x.png in Resources */,
 				851D03561B7CA98300671399 /* icon_smile50.png in Resources */,
 				851D000C1B7CA98200671399 /* InboxTalkSplitViewController.xib in Resources */,
@@ -9691,7 +9693,6 @@
 				851D01B61B7CA98300671399 /* ProductSingleViewCell.xib in Resources */,
 				851D02F21B7CA98300671399 /* icon_neutral_sad50@2x.png in Resources */,
 				851D02481B7CA98300671399 /* icon_5@3x.png in Resources */,
-				851D00FF1B7CA98300671399 /* ShopEditStatusViewController.xib in Resources */,
 				851D03251B7CA98300671399 /* icon_sad25@3x.png in Resources */,
 				851D001C1B7CA98200671399 /* WebViewController.xib in Resources */,
 				851D03D51B7CA98300671399 /* icon_filter@3x.png in Resources */,
@@ -9963,7 +9964,6 @@
 				851D03B91B7CA98300671399 /* navigate-down@2x.png in Resources */,
 				851D033B1B7CA98300671399 /* icon_shop@2x.png in Resources */,
 				851D030C1B7CA98300671399 /* icon_order_check@2x.png in Resources */,
-				851D01011B7CA98300671399 /* ShopEditViewController.xib in Resources */,
 				851D026E1B7CA98300671399 /* icon_diskusi_report_grey.png in Resources */,
 				851DFFF31B7CA98200671399 /* InboxResolutionCenterTabViewController.xib in Resources */,
 				851D02FA1B7CA98300671399 /* icon_neutral_smile@2x.png in Resources */,
@@ -10354,6 +10354,7 @@
 				851D003C1B7CA98200671399 /* AlertPriceNotificationViewController.m in Sources */,
 				851D00E81B7CA98300671399 /* SettingNotificationCell.m in Sources */,
 				851D01111B7CA98300671399 /* ShopInfoPaymentCell.m in Sources */,
+				8547E1F31B82EEB300759A93 /* ShopEditStatusViewController.m in Sources */,
 				851DFDB91B7CA98200671399 /* Deposit.m in Sources */,
 				851D01661B7CA98300671399 /* TransactionCartResultPaymentCell.m in Sources */,
 				851DFE6C1B7CA98200671399 /* AddressFormList.m in Sources */,
@@ -10399,7 +10400,6 @@
 				851DFE5F1B7CA98200671399 /* ProfileEditForm.m in Sources */,
 				851D01531B7CA98300671399 /* TransactionCartEditViewController.m in Sources */,
 				851DFFDD1B7CA98200671399 /* TKPDTabHomeViewController.m in Sources */,
-				851D01001B7CA98300671399 /* ShopEditViewController.m in Sources */,
 				851D00901B7CA98200671399 /* ReputationMyProductViewController.m in Sources */,
 				851D01171B7CA98300671399 /* ShopNotesDetailViewController.m in Sources */,
 				851DFE281B7CA98200671399 /* InboxTicket.m in Sources */,
@@ -10527,7 +10527,6 @@
 				851DFDF51B7CA98200671399 /* HistoryProduct.m in Sources */,
 				851D006A1B7CA98200671399 /* ProductListMyShopCell.m in Sources */,
 				851D00801B7CA98200671399 /* ProductReputationViewController.m in Sources */,
-				851D00FE1B7CA98300671399 /* ShopEditStatusViewController.m in Sources */,
 				851DFE9F1B7CA98200671399 /* ShipmentCourierPackage.m in Sources */,
 				851D006C1B7CA98200671399 /* ProductListMyShopFilterViewController.m in Sources */,
 				851DFDC41B7CA98200671399 /* CatalogInfo.m in Sources */,
@@ -10814,6 +10813,7 @@
 				851DFED91B7CA98200671399 /* TransactionATCFormResult.m in Sources */,
 				851DFED61B7CA98200671399 /* TransactionAddressShippingResult.m in Sources */,
 				851DFE601B7CA98200671399 /* ProfileEditFormResult.m in Sources */,
+				8547E1EE1B82D35500759A93 /* ShopEditViewController.m in Sources */,
 				851D016D1B7CA98300671399 /* TransactionShipmentViewController.m in Sources */,
 				851D00041B7CA98200671399 /* InboxReviewSplitViewController.m in Sources */,
 				851DFDF31B7CA98200671399 /* GeneralAction.m in Sources */,

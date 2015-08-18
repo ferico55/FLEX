@@ -41,6 +41,7 @@
     _oneButtonView.hidden = YES;
     _twoButtonView.hidden = YES;
     _atachmentView.hidden = YES;
+    _btnReputation.hidden = YES;
 }
 
 - (IBAction)gesture:(UITapGestureRecognizer*)sender {
@@ -67,7 +68,9 @@
 }
 
 - (void)setViewModel:(ConversationViewModel *)viewModel {
+    
     [self hideAllViews];
+
     self.topMarginConstraint.constant = 5;
     self.twobuttonConstraintHeight.constant = 0;
     self.oneButtonConstraintHeight.constant = 0;

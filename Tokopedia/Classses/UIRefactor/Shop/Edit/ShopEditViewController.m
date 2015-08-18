@@ -395,7 +395,7 @@
                             kTKPDSHOPEDIT_APITAGLINEKEY : tagline,
                             kTKPDSHOPEDIT_APISTATUSKEY : @(status),
                             kTKPDSHOPEDIT_APICLOSEUNTILKEY:closeuntil,
-                            kTKPDSHOPEDIT_APICLOSEDNOTEKEY: closenote
+                            kTKPDSHOPEDIT_APICLOSEDNOTEKEY: closenote,
                             };
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPEDITINFO_APIPATH parameters:[param encrypt]];
@@ -629,6 +629,7 @@
         NSInteger limit = 48;
         NSString *string = _shop.info.shop_tagline;
         _textviewslogan.text = string?:@"";
+        [_datainput setObject:string forKey:kTKPDSHOPEDIT_APITAGLINEKEY];
         if (string) {
             _labelslogancharcount.text = [NSString stringWithFormat:@"%u", limit - _textviewslogan.text.length];
         }
@@ -636,6 +637,7 @@
         limit = 140;
         string = _shop.info.shop_description;
         _textviewdesc.text = string?:@"";
+        [_datainput setObject:string forKey:kTKPDSHOPEDIT_APISHORTDESCKEY];
         if (string) {
             _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewdesc.text.length];
         }
@@ -724,8 +726,10 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     if (textView == _textviewslogan) {
+        [_datainput setObject:textView.text forKey:kTKPDSHOPEDIT_APITAGLINEKEY];
         _labelslogancharcount.text = [NSString stringWithFormat:@"%zd", 48 - textView.text.length];
     } else if (textView == _textviewdesc) {
+        [_datainput setObject:textView.text forKey:kTKPDSHOPEDIT_APISHORTDESCKEY];
         _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", 140 - textView.text.length];
     }
 }
