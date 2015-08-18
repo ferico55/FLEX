@@ -191,7 +191,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)tapToProduct {
     UINavigationController *controller = [_delegate getNavigationController:self];
-    [_navigateController navigateToProductFromViewController:controller withProductID:_selectedTalkProductID];
+//    [_navigateController navigateToProductFromViewController:controller withProductID:_selectedTalkProductID];
+    
 }
 
 - (void)tapToUser {
@@ -243,8 +244,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     int paddingRightLeftContent = 10;
     
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_selectedTalkReputation.neutral withRepSmile:_selectedTalkReputation.positive withRepSad:_selectedTalkReputation.negative withDelegate:self];
-    
+//    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_selectedTalkReputation.neutral withRepSmile:_selectedTalkReputation.positive withRepSad:_selectedTalkReputation.negative withDelegate:self];
+//    
     _popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
     _popTipView.delegate = self;
     _popTipView.backgroundColor = [UIColor whiteColor];

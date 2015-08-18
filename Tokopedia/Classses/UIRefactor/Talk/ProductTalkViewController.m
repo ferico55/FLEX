@@ -529,29 +529,6 @@
     return self;
 }
 
-#pragma mark - UIScrollView Delegate
-- (void)scrollViewDidScroll:(UIScrollView *)sender
-{
-    // Update the page when more than 50% of the previous/next page is visible
-    CGFloat pageWidth = _imagescrollview.frame.size.width;
-    _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    _pagecontrol.currentPage = _pageheaderimages;
-}
-
-#pragma mark - Methods
-- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
-    if(tag == CTagDeleteMessage) {
-        if(tokopediaNetworkManagerDeleteMessage == nil) {
-            tokopediaNetworkManagerDeleteMessage = [TokopediaNetworkManager new];
-            tokopediaNetworkManagerDeleteMessage.delegate = self;
-            tokopediaNetworkManagerDeleteMessage.tagRequest = tag;
-        }
-        
-        return tokopediaNetworkManagerDeleteMessage;
-    }
-    
-    return nil;
-}
 
 -(void)setHeaderData:(NSDictionary*)data
 {

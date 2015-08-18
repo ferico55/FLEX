@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CMPopTipView.h"
 #import "ReportViewController.h"
+#import "SmileyDelegate.h"
 
 @class TalkModelView;
 @class ViewLabelUser;
