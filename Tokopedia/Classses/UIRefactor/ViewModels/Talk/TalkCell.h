@@ -23,8 +23,6 @@
 @protocol TalkCellDelegate <NSObject>
 
 @required
-- (void)tapToDetailTalk:(UITableViewCell*)cell;
-- (void)tapToSmileReputation:(UITableViewCell*)cell;
 - (id)getNavigationController:(UITableViewCell *)cell;
 - (UITableView*)getTable;
 - (NSMutableArray*)getTalkList;

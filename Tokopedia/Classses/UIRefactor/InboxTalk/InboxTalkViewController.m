@@ -33,7 +33,7 @@
 #import "NoResultView.h"
 #import "TAGDataLayer.h"
 
-@interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate, CMPopTipViewDelegate, SmileyDelegate, ReportViewControllerDelegate>
+@interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -166,7 +166,13 @@
     return self.table;
 }
 
+- (NSMutableArray *)getTalkList {
+    return _talkList;
+}
 
+- (id)getNavigationController:(UITableViewCell *)cell {
+    return self;
+}
 
 #pragma mark - Refresh View 
 - (void)refreshView:(UIRefreshControl*)refresh {
