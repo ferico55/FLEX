@@ -1545,6 +1545,10 @@
     return @"action/talk.pl";
 }
 
+- (UIViewController *)didReceiveViewController {
+    return self;
+}
+
 /*
 #pragma mark - Navigation
 
