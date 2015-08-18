@@ -20,6 +20,8 @@
 #define CuserID @"user_id"
 #define CUserName @"user_name"
 #define CShopReputationBadge @"shop_reputation_badge"
+#define CUserShopReputation @"user_shop_reputation"
+@class ShopReputation;
 
 @interface ProductOwner : NSObject
 @property (nonatomic, strong) NSString *shop_id;
@@ -34,4 +36,5 @@
 @property (nonatomic, strong) NSString *user_label;
 @property (nonatomic, strong) NSString *user_id;
 @property (nonatomic, strong) NSString *shop_reputation_badge;
+@property (nonatomic, strong) ShopReputation *user_shop_reputation;
 @end

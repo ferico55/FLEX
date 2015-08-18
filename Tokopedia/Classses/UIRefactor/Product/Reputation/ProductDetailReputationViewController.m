@@ -22,6 +22,7 @@
 #import "ResponseCommentResult.h"
 #import "ResponseComment.h"
 #import "ReviewList.h"
+#import "ShopReputation.h"
 #import "SmileyAndMedal.h"
 #import "ShopBadgeLevel.h"
 #import "ShopReviewPageViewController.h"
@@ -1003,9 +1004,25 @@
 #pragma mark - ProductDetailReputation Delegate
 - (void)actionTapStar:(UIView *)sender
 {
-    NSString *strNReputation = _detailReputaitonReview==nil? @"0":_detailReputaitonReview.product_owner.shop_reputation_score;
-    NSString *strText = [NSString stringWithFormat:@"%@ Poin", strNReputation];
-    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
+    NSString *strNReputation = @"0";
+    NSString *strText = @"";
+    if(_detailReputaitonReview == nil) {
+        strText = [NSString stringWithFormat:@"%@ Poin", strNReputation];
+        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
+    }
+    else {
+        strText = _detailReputaitonReview.product_owner.user_shop_reputation.tooltip;
+        
+        if(strText != nil) {
+            NSArray *tempStr = [strText componentsSeparatedByString:@" "];
+            [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-((NSString *)[tempStr lastObject]).length, ((NSString *)[tempStr lastObject]).length)];
+        }
+        else {
+            strNReputation = _detailReputaitonReview.product_owner.shop_reputation_score;
+            strText = [NSString stringWithFormat:@"%@ Poin", strNReputation];
+            [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
+        }
+    }
 }
 
 
@@ -1013,35 +1030,29 @@
 - (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagComment) {
         if(_detailReputaitonReview != nil) {
-            return @{@"action":@"insert_reputation_review_response",
-                 @"reputation_id":_detailReputaitonReview.reputation_id,
-                 @"shop_id":_detailReputaitonReview.shop_id,
+            return @{@"action":@"add_comment_review",
+                 @"reputation_id":_detailReputaitonReview.reputation_id==nil? @"":_detailReputaitonReview.reputation_id,
+                 @"product_id":_strProductID,
                  @"review_id":_detailReputaitonReview.review_id,
-                 @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+                 @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
         }
         else if(_reviewList != nil) {
-            return @{@"action":@"insert_reputation_review_response",
-                     @"reputation_id":_reviewList.review_reputation_id,
-                     @"shop_id":_reviewList.review_shop_id,
+            return @{@"action":@"add_comment_review",
+                     @"reputation_id":_reviewList.review_reputation_id==nil? @"":_reviewList.review_reputation_id,
+                     @"product_id":_strProductID,
                      @"review_id":_reviewList.review_id,
-                     @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+                     @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
         }
     }
     else if(tag == CTagHapus) {
         if(_detailReputaitonReview != nil) {
-            return @{@"action":@"delete_reputation_review_response",
-                     @"reputation_id":_detailReputaitonReview.reputation_id,
-                     @"shop_id":_detailReputaitonReview.shop_id,
-                     @"review_id":_detailReputaitonReview.review_id,
-                     @"product_id":_strProductID
+            return @{@"action":@"delete_comment_review",
+                     @"review_id":_detailReputaitonReview.review_id
                      };
         }
         else if(_reviewList != nil) {
-            return @{@"action":@"delete_reputation_review_response",
-                     @"reputation_id":_reviewList.review_reputation_id,
-                     @"shop_id":_reviewList.review_shop_id,
-                     @"review_id":_reviewList.review_id,
-                     @"product_id":_reviewList.review_product_id
+            return @{@"action":@"delete_comment_review",
+                     @"review_id":_reviewList.review_id
                      };
         }
     }
@@ -1052,7 +1063,7 @@
 
 - (NSString*)getPath:(int)tag {
     if(tag==CTagComment || tag==CTagHapus) {
-        return [postActionUrl isEqualToString:@""] ? @"action/reputation.pl" : postActionUrl;
+        return [postActionUrl isEqualToString:@""] ? @"action/review.pl" : postActionUrl;
     }
     
     return nil;
@@ -1255,7 +1266,7 @@
     }
     else if(tag == CTagHapus) {
         isDeletingMessage = NO;
-        if(successResult) {
+        if(successResult && [((ResponseComment *) [((RKMappingResult *) successResult).dictionary objectForKey:@""]).result.is_success isEqualToString:@"1"]) {
             if(_detailReputaitonReview != nil) {
                 _detailReputaitonReview.review_response.canDelete = _detailReputaitonReview.viewModel.review_response.canDelete = NO;
                 _detailReputaitonReview.review_response.response_create_time = _detailReputaitonReview.viewModel.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
@@ -1323,7 +1334,7 @@
                 _reviewList.review_response.canDelete = YES;
             }
             
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringFailedRemoveMessage] delegate:self];
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedRemoveMessage] delegate:self];
             [stickyAlertView show];
         }
         
