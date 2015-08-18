@@ -258,7 +258,7 @@
         }
         
         //Set image product
-        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_uri : _reviewList.product_images] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         productReputationCell.getProductImage.image = nil;
         [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey" ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -375,8 +375,7 @@
 }
 
 - (void)goToDetailProduct:(id)sender {
-    [_TKPDNavigator navigateToProductFromViewController:self withName:_detailReputaitonReview.product_name withPrice:nil withId:_detailReputaitonReview.product_id withImageurl:_detailReputaitonReview.product_image withShopName:_detailReputaitonReview.shop_name];
-    
+    [_TKPDNavigator navigateToProductFromViewController:self withName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name withPrice:nil withId:(_detailReputaitonReview==nil? _reviewList.review_product_id:_detailReputaitonReview.product_id) withImageurl:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images) withShopName:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_product_owner.user_name];
 }
 
 - (void)actionVote:(id)sender
