@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -42,7 +42,7 @@
                                 <constraint firstAttribute="height" constant="22" id="SUF-Z4-Lb2"/>
                                 <constraint firstAttribute="width" constant="22" id="qTe-q8-sGp"/>
                             </constraints>
-                            <state key="normal" image="icon_urutkan.png">
+                            <state key="normal" image="icon_urutkan_alt.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
@@ -195,7 +195,7 @@
     <resources>
         <image name="icon_filter.png" width="30" height="30"/>
         <image name="icon_share.png" width="30" height="30"/>
-        <image name="icon_urutkan.png" width="30" height="30"/>
+        <image name="icon_urutkan_alt.png" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
