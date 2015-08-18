@@ -1422,6 +1422,10 @@
     
 }
 
+- (UIViewController *)didReceiveViewController {
+    return self;
+}
+
 - (NSDictionary *)getParameter {
     return nil;
 }

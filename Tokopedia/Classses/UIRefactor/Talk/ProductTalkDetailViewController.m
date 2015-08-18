@@ -987,7 +987,7 @@
                     
                     NSDate *today = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
+                    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:mm"];
                     NSString *dateString = [dateFormat stringFromDate:today];
                     
                     commentlist.comment_create_time = dateString;
@@ -1543,6 +1543,10 @@
 
 - (NSString *)getPath {
     return @"action/talk.pl";
+}
+
+- (UIViewController *)didReceiveViewController {
+    return self;
 }
 
 /*

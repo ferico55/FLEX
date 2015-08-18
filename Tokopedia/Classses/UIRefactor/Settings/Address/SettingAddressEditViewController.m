@@ -124,8 +124,30 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    [_textfieldreceivername becomeFirstResponder];
+    _datainput = [NSMutableDictionary new];
+    
     _textviewaddress.placeholder = @"Tulis alamat";
+    
+    [_textfieldreceivername becomeFirstResponder];
+    [_textfieldreceivername addTarget:self
+                               action:@selector(textFieldShouldEndEditing:)
+                     forControlEvents:UIControlEventEditingChanged];
+    
+    [_textfieldaddressname addTarget:self
+                              action:@selector(textFieldShouldEndEditing:)
+                    forControlEvents:UIControlEventEditingChanged];
+    
+    [_textfieldpostcode addTarget:self
+                           action:@selector(textFieldShouldEndEditing:)
+                 forControlEvents:UIControlEventEditingChanged];
+    
+    [_textfieldphonenumber addTarget:self
+                              action:@selector(textFieldShouldEndEditing:)
+                    forControlEvents:UIControlEventEditingChanged];
+    
+    [_textfieldpass addTarget:self
+                       action:@selector(textFieldShouldEndEditing:)
+             forControlEvents:UIControlEventEditingChanged];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -670,10 +692,8 @@
 
 #pragma mark - Text View Delegate
 
--(BOOL)textViewShouldReturn:(UITextView *)textView{
-
+-(BOOL)textViewShouldReturn:(UITextView *)textView {
     [_activetextfield resignFirstResponder];
-    
     return YES;
 }
 
@@ -684,6 +704,13 @@
                        forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
     }
     return YES;
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+    if (textView == _textviewaddress) {
+        [_datainput setObject:textView.text
+                       forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
+    }
 }
 
 

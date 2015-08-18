@@ -803,6 +803,10 @@
     return @{@"action" : @"report_review", @"review_id" : _reportedReviewId};
 }
 
+- (UIViewController *)didReceiveViewController {
+    return self;
+}
+
 #pragma mark - Action Skip Review
 - (void)configureSkipReviewRestkit {
     _objectSkipReviewManager =  [RKObjectManager sharedClient];
