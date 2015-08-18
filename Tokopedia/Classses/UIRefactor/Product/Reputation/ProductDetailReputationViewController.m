@@ -1202,27 +1202,34 @@
                 _detailReputaitonReview.review_response.response_message = _detailReputaitonReview.viewModel.review_response.response_message = responseComment.result.review_response.response_message;
                 _detailReputaitonReview.review_response.failedSentMessage = _detailReputaitonReview.viewModel.review_response.failedSentMessage = NO;
                 _detailReputaitonReview.review_response.canDelete = _detailReputaitonReview.viewModel.review_response.canDelete = YES;
-                _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
-                _detailReputaitonReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
-                _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
-                _detailReputaitonReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
-                _detailReputaitonReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
-                _detailReputaitonReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
-                _detailReputaitonReview.product_owner.full_name = responseComment.result.product_owner.full_name;
-                _detailReputaitonReview.product_owner.user_img = responseComment.result.product_owner.user_img;
-                _detailReputaitonReview.product_owner.user_label = responseComment.result.product_owner.user_label;
-                _detailReputaitonReview.product_owner.user_id = responseComment.result.product_owner.user_id;
-                _detailReputaitonReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
-                _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
+                
+                
+                if(responseComment.result.product_owner != nil) {
+                    _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
+                    _detailReputaitonReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
+                    _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
+                    _detailReputaitonReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
+                    _detailReputaitonReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
+                    _detailReputaitonReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
+                    _detailReputaitonReview.product_owner.user_label = responseComment.result.product_owner.user_label;
+                    _detailReputaitonReview.product_owner.full_name = responseComment.result.product_owner.full_name;
+                    _detailReputaitonReview.product_owner.user_img = responseComment.result.product_owner.user_img;
+                    _detailReputaitonReview.product_owner.user_id = responseComment.result.product_owner.user_id;
+                    _detailReputaitonReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
+                    _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
+                }
             }
             else if(_reviewList != nil) {
                 _reviewList.review_response.response_create_time = responseComment.result.review_response.response_time_ago;
                 _reviewList.review_response.response_message = responseComment.result.review_response.response_message;
                 _reviewList.review_response.failedSentMessage = NO;
                 _reviewList.review_response.canDelete = YES;
-                _reviewList.review_product_owner.user_image = responseComment.result.product_owner.user_img;
-                _reviewList.review_product_owner.user_name = responseComment.result.product_owner.full_name;
-                _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
+                
+                if(responseComment.result.product_owner != nil) {
+                    _reviewList.review_product_owner.user_name = responseComment.result.product_owner.full_name;
+                    _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
+                    _reviewList.review_product_owner.user_image = responseComment.result.product_owner.user_img;
+                }
             }
             
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessSentComment] delegate:self];
