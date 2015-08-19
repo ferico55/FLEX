@@ -395,7 +395,7 @@
             cell = _ccFeeCell;
             TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
             if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya transaksi";
+                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya administrasi.";
             }
             else
             {
