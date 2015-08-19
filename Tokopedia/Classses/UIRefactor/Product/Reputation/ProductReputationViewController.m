@@ -1261,6 +1261,8 @@
         [productOwnerMapping addAttributeMappingsFromDictionary:@{CUserLabelID:CUserLabelID,
                                                                 CUserLabel:CUserLabel,
                                                                 CuserID:CuserID,
+                                                                  @"user_shop_name":CShopName,
+                                                                  @"user_shop_image":CShopImg,
                                                                 CUserImage:CUserImg,
                                                                 CUserName:CFullName,
                                                                 CFullName:CUserName}];

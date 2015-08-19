@@ -223,15 +223,18 @@
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         id tempSplitReputationViewController = self.parentViewController.parentViewController.nextResponder.nextResponder;
-        UIViewController *tmepViewController = ((SplitReputationViewController *) tempSplitReputationViewController).parentViewController;
-
-        for(UIViewController *tempViewController in tmepViewController.navigationController.viewControllers) {
+        UINavigationController *tmepViewController = (UINavigationController *)((SplitReputationViewController *) tempSplitReputationViewController).parentViewController;
+        
+        for(UIViewController *tempViewController in tmepViewController.viewControllers) {
             [newViewController addObject:tempViewController];
         }
         [newViewController removeLastObject];
         
         InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
         [newViewController addObject:controller];
+        [tmepViewController setViewControllers:newViewController];
+        controller.hidesBottomBarWhenPushed = NO;
     } else {
         for(UIViewController *tempViewController in self.navigationController.viewControllers) {
             [newViewController addObject:tempViewController];

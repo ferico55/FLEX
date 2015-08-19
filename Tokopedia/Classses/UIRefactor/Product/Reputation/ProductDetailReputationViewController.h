@@ -19,7 +19,7 @@
     IBOutlet NSLayoutConstraint *constraintHeightViewMessage, *constHeightViewContent;
 }
 
-@property (nonatomic) BOOL isMyProduct;
+@property (nonatomic) BOOL isMyProduct, isFromInboxNotification;
 @property (nonatomic, unsafe_unretained) NSMutableDictionary *dictLikeDislike, *loadingLikeDislike;
 @property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputaitonReview;
 @property (nonatomic, unsafe_unretained) ShopBadgeLevel *shopBadgeLevel;
