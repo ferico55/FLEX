@@ -28,6 +28,7 @@
 #import "SkipReview.h"
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
+#import "SplitReputationViewController.h"
 #import "string_inbox_message.h"
 #import "String_Reputation.h"
 #import "SkipReviewResult.h"
@@ -434,6 +435,7 @@
     NSDictionary *auth = [_userManager getUserLoginData];
     
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
+    productDetailReputationViewController.isFromInboxNotification = YES;
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.shop_badge_level;
     productDetailReputationViewController.strProductID = detailReputationReview.product_id;
@@ -938,7 +940,12 @@
 
 - (void)actionReviewRate:(id)sender {
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
+        UINavigationController *navMaster = [((SplitReputationViewController *) self.parentViewController.parentViewController.nextResponder.nextResponder) getMasterNavigation];
+        if([[navMaster.viewControllers firstObject] isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
+            UIView *tempView = [UIView new];
+            tempView.tag = _tag;
+            [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) [navMaster.viewControllers firstObject]) getSegmentedViewController]) actionReviewRate:tempView];
+        }
     }
     else {
         UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
