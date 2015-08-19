@@ -14,6 +14,7 @@
 
 @interface SplitReputationViewController : UIViewController
 @property (nonatomic, unsafe_unretained) UISplitViewController *splitViewController;
+@property (nonatomic) BOOL isFromNotificationView;
 @property (nonatomic, unsafe_unretained) id<SplitReputationVcProtocol> del;
 
 

@@ -38,13 +38,10 @@
     [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
     tempBtn.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:14.0f];
     
-    CGSize imageSize = tempBtn.imageView.bounds.size;
-    CGSize titleSize = tempBtn.titleLabel.bounds.size;
-    CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
-    
-    
-    tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- ((totalHeight-tempBtn.imageView.bounds.size.height)+10), ((tempBtn.bounds.size.width-tempBtn.imageView.bounds.size.width)/2.0f)-3, 0.0, 0.0);
-    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, - tempBtn.imageView.bounds.size.width, - ((totalHeight-titleSize.height)), 0.0);
+    CGSize imageSize = tempBtn.imageView.image.size;
+    tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize.width, -(imageSize.height+spacing), 0.0);
+    CGSize titleSize = [tempBtn.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:tempBtn.titleLabel.font}];
+    tempBtn.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height+spacing), 0.0, 0.0, -titleSize.width);
 }
 
 - (instancetype)initViewWithDelegate:(id<AlertRateDelegate>)delegate withDefaultScore:(NSString *)tag from:(NSString *)strFrom{
@@ -112,7 +109,6 @@
         UIButton *btnPuas = [UIButton buttonWithType:UIButtonTypeCustom];
         [self initButtonContentPopUp:@"Puas" withImage:defaultSelectedIndex==CTagHijau? iconGood:imageUnSelectSmile withFrame:CGRectMake(btnNetral.frame.origin.x+btnNetral.bounds.size.width+10, btnTidakPuas.frame.origin.y, btnTidakPuas.bounds.size.width, btnTidakPuas.bounds.size.height) withTextColor:[UIColor lightGrayColor] withButton:btnPuas];
         
-        
         btnPuas.tag = CTagHijau;
         btnNetral.tag = CTagKuning;
         btnTidakPuas.tag = CTagMerah;
@@ -138,7 +134,7 @@
         [btnBatal setTitleColor:[UIColor colorWithRed:0 green:122/255.0f blue:255/255.0f alpha:1.0f] forState:UIControlStateNormal];
         btnBatal.frame = CGRectMake(0, viewSeparator.frame.origin.y+viewSeparator.bounds.size.height, viewContentSmile.bounds.size.width/2.0f, viewContentSmile.bounds.size.height-(viewSeparator.frame.origin.y+viewSeparator.bounds.size.height));
         
-        UIView *viewVerticalSeparator = [[UIView alloc] initWithFrame:CGRectMake(btnBatal.bounds.size.width, btnBatal.frame.origin.y, 0.5, btnBatal.bounds.size.height)];
+        UIView *viewVerticalSeparator = [[UIView alloc] initWithFrame:CGRectMake(btnBatal.bounds.size.width, btnBatal.frame.origin.y, 1.5, btnBatal.bounds.size.height)];
         viewVerticalSeparator.backgroundColor = viewSeparator.backgroundColor;
         viewVerticalSeparator.alpha = 0.5f;
         
@@ -147,7 +143,7 @@
         [btnSubmit setTitle:@"Kirim" forState:UIControlStateNormal];
         btnSubmit.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:16.0f];
         [btnSubmit setTitleColor:[UIColor colorWithRed:0 green:122/255.0f blue:255/255.0f alpha:1.0f] forState:UIControlStateNormal];
-        btnSubmit.frame = CGRectMake(btnBatal.bounds.size.width, btnBatal.frame.origin.y, btnBatal.bounds.size.width, btnBatal.bounds.size.height);
+        btnSubmit.frame = CGRectMake(btnBatal.bounds.size.width+viewVerticalSeparator.bounds.size.width, btnBatal.frame.origin.y, btnBatal.bounds.size.width-viewVerticalSeparator.bounds.size.width, btnBatal.bounds.size.height);
         
         [viewContentSmile addSubview:viewSeparator];
         [viewContentSmile addSubview:btnBatal];

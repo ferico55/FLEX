@@ -471,27 +471,38 @@
 #pragma mark View actions
 - (IBAction)actionNewReview:(id)sender {
     NSMutableArray *newViewController = [NSMutableArray new];
-    for(UIViewController *tempViewController in self.navigationController.viewControllers) {
-        [newViewController addObject:tempViewController];
-    }
-    [newViewController removeLastObject];
-    
     
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         splitViewController = [UISplitViewController new];
+        id tempSplitReputationViewController = self.parentViewController.parentViewController.nextResponder.nextResponder;
+        UINavigationController *tmepViewController = (UINavigationController *)((SplitReputationViewController *) tempSplitReputationViewController).parentViewController;
+        
+        for(UIViewController *tempViewController in tmepViewController.viewControllers) {
+            [newViewController addObject:tempViewController];
+        }
+        [newViewController removeLastObject];
+        
         
         SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+        splitReputationViewController.hidesBottomBarWhenPushed = YES;
         splitReputationViewController.splitViewController = splitViewController;
         splitReputationViewController.del = self;
+        
         [newViewController addObject:splitReputationViewController];
+        [tmepViewController setViewControllers:newViewController];
+        splitReputationViewController.hidesBottomBarWhenPushed = NO;
     }
     else  {
+        for(UIViewController *tempViewController in self.navigationController.viewControllers) {
+            [newViewController addObject:tempViewController];
+        }
+        [newViewController removeLastObject];
+        
         SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
         segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
         [newViewController addObject:segmentedReputationViewController];
+        [self.navigationController setViewControllers:newViewController];
     }
-    
-    [self.navigationController setViewControllers:newViewController];
 }
 
 -(IBAction)tap:(UISegmentedControl*) sender

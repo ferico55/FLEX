@@ -520,11 +520,11 @@
     cell.getBtnTryAgain.hidden = !(_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [productReputationCell.getImageProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_img:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [cell.getImgProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [productReputationCell.getImageProfile setImage:image];
+        [cell.getImgProfile setImage:image];
 #pragma clang diagnostic pop
     } failure:nil];
     
@@ -1028,31 +1028,69 @@
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagComment) {
-        if(_detailReputaitonReview != nil) {
-            return @{@"action":@"add_comment_review",
-                 @"reputation_id":_detailReputaitonReview.reputation_id==nil? @"":_detailReputaitonReview.reputation_id,
-                 @"product_id":_strProductID,
-                 @"review_id":_detailReputaitonReview.review_id,
-                 @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+        if(_isFromInboxNotification) {
+            if(_detailReputaitonReview != nil) {
+                return @{@"action":@"insert_reputation_review_response",
+                         @"reputation_id":_detailReputaitonReview.reputation_id,
+                         @"shop_id":_detailReputaitonReview.shop_id,
+                         @"review_id":_detailReputaitonReview.review_id,
+                         @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+            }
+            else if(_reviewList != nil) {
+                return @{@"action":@"insert_reputation_review_response",
+                         @"reputation_id":_reviewList.review_reputation_id,
+                         @"shop_id":_reviewList.review_shop_id,
+                         @"review_id":_reviewList.review_id,
+                         @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+            }
         }
-        else if(_reviewList != nil) {
-            return @{@"action":@"add_comment_review",
-                     @"reputation_id":_reviewList.review_reputation_id==nil? @"":_reviewList.review_reputation_id,
+        else {
+            if(_detailReputaitonReview != nil) {
+                return @{@"action":@"add_comment_review",
+                     @"reputation_id":_detailReputaitonReview.reputation_id==nil? @"":_detailReputaitonReview.reputation_id,
                      @"product_id":_strProductID,
-                     @"review_id":_reviewList.review_id,
+                     @"review_id":_detailReputaitonReview.review_id,
                      @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+            }
+            else if(_reviewList != nil) {
+                return @{@"action":@"add_comment_review",
+                         @"reputation_id":_reviewList.review_reputation_id==nil? @"":_reviewList.review_reputation_id,
+                         @"product_id":_strProductID,
+                         @"review_id":_reviewList.review_id,
+                         @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+            }
         }
     }
     else if(tag == CTagHapus) {
-        if(_detailReputaitonReview != nil) {
-            return @{@"action":@"delete_comment_review",
-                     @"review_id":_detailReputaitonReview.review_id
-                     };
+        if(_isFromInboxNotification) {
+            if(_detailReputaitonReview != nil) {
+                return @{@"action":@"delete_reputation_review_response",
+                         @"reputation_id":_detailReputaitonReview.reputation_id,
+                         @"shop_id":_detailReputaitonReview.shop_id,
+                         @"review_id":_detailReputaitonReview.review_id,
+                         @"product_id":_strProductID
+                         };
+            }
+            else if(_reviewList != nil) {
+                return @{@"action":@"delete_reputation_review_response",
+                         @"reputation_id":_reviewList.review_reputation_id,
+                         @"shop_id":_reviewList.review_shop_id,
+                         @"review_id":_reviewList.review_id,
+                         @"product_id":_reviewList.review_product_id
+                         };
+            }
         }
-        else if(_reviewList != nil) {
-            return @{@"action":@"delete_comment_review",
-                     @"review_id":_reviewList.review_id
-                     };
+        else {
+            if(_detailReputaitonReview != nil) {
+                return @{@"action":@"delete_comment_review",
+                         @"review_id":_detailReputaitonReview.review_id
+                         };
+            }
+            else if(_reviewList != nil) {
+                return @{@"action":@"delete_comment_review",
+                         @"review_id":_reviewList.review_id
+                         };
+            }
         }
     }
     
@@ -1062,7 +1100,11 @@
 
 - (NSString*)getPath:(int)tag {
     if(tag==CTagComment || tag==CTagHapus) {
-        return [postActionUrl isEqualToString:@""] ? @"action/review.pl" : postActionUrl;
+        if(_isFromInboxNotification) {
+            return [postActionUrl isEqualToString:@""] ? @"action/reputation.pl" : postActionUrl;
+        }
+        else
+            return [postActionUrl isEqualToString:@""] ? @"action/review.pl" : postActionUrl;
     }
     
     return nil;

@@ -29,6 +29,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
+#import "WebViewInvoiceViewController.h"
 
 #define CFailedGetData @"Process ambil data gagal"
 #define CCellIndetifier @"cell"
@@ -229,6 +230,7 @@
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MyReviewReputationCell" owner:self options:nil];
         cell = [topLevelObjects objectAtIndex:0];
         cell.delegate = self;
+        cell.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
     }
     
     cell.getBtnFooter.tag = indexPath.row;
@@ -651,10 +653,24 @@
 {
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-        
-        if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-            NavigateViewController *navigate = [NavigateViewController new];
-            [navigate navigateToInvoiceFromViewController:self withInvoiceURL:tempObj.invoice_uri];
+
+        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            UserAuthentificationManager *auth = [UserAuthentificationManager new];
+            WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
+            NSDictionary *invoiceURLDictionary = [NSDictionary dictionaryFromURLString:tempObj.invoice_uri];
+            NSString *invoicePDF = [invoiceURLDictionary objectForKey:@"pdf"];
+            NSString *invoiceID = [invoiceURLDictionary objectForKey:@"id"];
+            NSString *userID = [auth getUserId];
+            NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@", kTkpdBaseURLString, invoicePDF, invoiceID, userID];
+            VC.urlAddress = invoiceURLforWS?:@"";
+            
+            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:VC];
+        }
+        else {
+            if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
+                NavigateViewController *navigate = [NavigateViewController new];
+                [navigate navigateToInvoiceFromViewController:self withInvoiceURL:tempObj.invoice_uri];
+            }
         }
     }
 }
