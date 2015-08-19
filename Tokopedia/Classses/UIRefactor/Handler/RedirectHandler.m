@@ -39,7 +39,7 @@
     self = [super init];
     
     if(self != nil) {
-        
+
     }
     
     return self;
@@ -50,7 +50,7 @@
         [self redirectToMessage];
     } else if(state == STATE_NEW_TALK) {
         [self redirectToTalk];
-    } else if(state == STATE_NEW_REPSYS || state == STATE_NEW_REVIEW) {
+    } else if(state == STATE_NEW_REPSYS || state == STATE_NEW_REVIEW || state == STATE_EDIT_REPSYS) {
         [self redirectToReview];
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];
@@ -58,24 +58,18 @@
 }
 
 - (void)redirectToMessage {
-    UINavigationController *nav = (UINavigationController*)_delegate;
     _navigationController = (UINavigationController*)_delegate;
-
-    [[self navigate]navigateToInboxMessageFromViewController:[[nav viewControllers] lastObject]];
+    [[self navigate]navigateToInboxMessageFromViewController:_navigationController];
 }
 
 - (void)redirectToTalk {
-    UINavigationController *nav = (UINavigationController*)_delegate;
     _navigationController = (UINavigationController*)_delegate;
-    
-    [[self navigate]navigateToInboxTalkFromViewController:[[nav viewControllers] lastObject]];
+    [[self navigate]navigateToInboxTalkFromViewController:_navigationController];
 }
 
 - (void)redirectToReview {
-    UINavigationController *nav = (UINavigationController*)_delegate;
     _navigationController = (UINavigationController*)_delegate;
-    
-    [[self navigate]navigateToInboxReviewFromViewController:self];
+    [[self navigate]navigateToInboxReviewFromViewController:_navigationController];
 }
 
 - (void)redirectToNewOrder {
