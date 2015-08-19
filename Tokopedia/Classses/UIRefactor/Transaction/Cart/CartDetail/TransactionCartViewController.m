@@ -393,6 +393,14 @@
     {
         if (indexPath.row == 1) {
             cell = _ccFeeCell;
+            TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+            if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
+                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya transaksi";
+            }
+            else
+            {
+                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya transaksi 2.5%";
+            }
         }
         else
         {
@@ -2177,7 +2185,8 @@
     else
     {
         if (indexPath.row == 1) {
-            if ([selectedGateway.gateway integerValue] != TYPE_GATEWAY_CC) {
+            if ([selectedGateway.gateway integerValue] != TYPE_GATEWAY_CC &&
+                [selectedGateway.gateway integerValue] != TYPE_GATEWAY_INDOMARET) {
                 return 0;
             }
         }
