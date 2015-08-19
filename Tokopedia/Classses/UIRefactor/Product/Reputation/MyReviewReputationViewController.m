@@ -465,8 +465,19 @@
             ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.seller_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score;
         }
         
+        //Get view controller based on device (ipad / iphone)
+        UIViewController *tempViewController;
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            UINavigationController *navController = [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC getDetailNavigation];
+            if(navController.viewControllers.count > 0) {
+                tempViewController = [navController.viewControllers firstObject];
+            }
+        }
+        else {
+            tempViewController = [self.navigationController.viewControllers lastObject];
+        }
+        
         //Update ui detail reputation
-        UIViewController *tempViewController = [self.navigationController.viewControllers lastObject];
         if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
             [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id withState:emoticonState];
         }

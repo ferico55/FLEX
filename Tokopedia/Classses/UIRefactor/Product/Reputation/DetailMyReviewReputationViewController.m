@@ -28,6 +28,7 @@
 #import "SkipReview.h"
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
+#import "SplitReputationViewController.h"
 #import "string_inbox_message.h"
 #import "String_Reputation.h"
 #import "SkipReviewResult.h"
@@ -939,7 +940,12 @@
 
 - (void)actionReviewRate:(id)sender {
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
+        UINavigationController *navMaster = [((SplitReputationViewController *) self.parentViewController.parentViewController.nextResponder.nextResponder) getMasterNavigation];
+        if([[navMaster.viewControllers firstObject] isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
+            UIView *tempView = [UIView new];
+            tempView.tag = _tag;
+            [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) [navMaster.viewControllers firstObject]) getSegmentedViewController]) actionReviewRate:tempView];
+        }
     }
     else {
         UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];

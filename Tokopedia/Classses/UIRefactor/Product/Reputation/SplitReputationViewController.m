@@ -58,6 +58,14 @@
 
 
 #pragma mark - Method
+- (UINavigationController *)getDetailNavigation {
+    return [splitViewController.viewControllers lastObject];
+}
+
+- (UINavigationController *)getMasterNavigation {
+    return [splitViewController.viewControllers firstObject];
+}
+
 - (void)setDetailViewController:(UIViewController *)viewController {
     UINavigationController *detailVC = [[UINavigationController alloc] initWithRootViewController:viewController];
     detailVC.navigationBar.translucent = NO;

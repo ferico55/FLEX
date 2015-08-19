@@ -19,4 +19,6 @@
 
 
 - (void)setDetailViewController:(UIViewController *)viewController;
+- (UINavigationController *)getMasterNavigation;
+- (UINavigationController *)getDetailNavigation;
 @end
