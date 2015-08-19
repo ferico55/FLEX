@@ -50,7 +50,7 @@
         [self redirectToMessage];
     } else if(state == STATE_NEW_TALK) {
         [self redirectToTalk];
-    } else if(state == STATE_NEW_REPSYS || state == STATE_NEW_REVIEW || state == STATE_EDIT_REPSYS) {
+    } else if(state == STATE_NEW_REPSYS || state == STATE_NEW_REVIEW || state == STATE_EDIT_REPSYS || state == STATE_EDIT_REVIEW || state == STATE_REPLY_REVIEW) {
         [self redirectToReview];
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];
