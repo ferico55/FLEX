@@ -524,15 +524,11 @@
         //Set Smiley
         BtnSmiley *btnSmiley = [BtnSmiley buttonWithType:UIButtonTypeCustom];
         [btnSmiley addTarget:self action:@selector(actionSmiley:) forControlEvents:UIControlEventTouchUpInside];
-        btnSmiley.frame = CGRectMake(imgHeader.frame.origin.x+imgHeader.bounds.size.height + padding, btnLokasi.frame.origin.y, 70, btnLokasi.bounds.size.height);
+        btnSmiley.frame = CGRectMake(imgHeader.frame.origin.x+imgHeader.bounds.size.height + padding, btnLokasi.frame.origin.y, 100, btnLokasi.bounds.size.height);
         btnSmiley.tag = CTagSmiley;
         [btnSmiley setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         btnSmiley.titleLabel.font = btnLokasi.titleLabel.font;
         [btnSmiley setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        
-        CGFloat spacing = 5;
-        btnSmiley.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, spacing);
-        btnSmiley.titleEdgeInsets = UIEdgeInsetsMake(0, spacing+5, 0, 0);
         [viewContent addSubview:btnSmiley];
         
         
@@ -613,16 +609,7 @@
     
     //Smiley
     BtnSmiley *btnSmiley = (BtnSmiley *)[tempViewContent viewWithTag:CTagSmiley];
-    if(catalogShop.shop_reputation.shop_reputation_score==nil || [catalogShop.shop_reputation.shop_reputation_score isEqualToString:@"0"]) {
-        [btnSmiley setImage:[SmileyAndMedal generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
-        [btnSmiley setTitle:@"" forState:UIControlStateNormal];
-        btnSmiley.userInteractionEnabled = NO;
-    }
-    else {
-        [btnSmiley setImage:[SmileyAndMedal generateImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] withCount:1] forState:UIControlStateNormal];
-        [btnSmiley setTitle:[NSString stringWithFormat:@"%@ %%", catalogShop.shop_reputation.shop_reputation_score] forState:UIControlStateNormal];
-        btnSmiley.userInteractionEnabled = YES;
-    }
+    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation.shop_badge_level.level withSet:catalogShop.shop_reputation.shop_badge_level.level withImage:btnSmiley isLarge:NO];
     btnSmiley.intTag = (int)section;
     
     
