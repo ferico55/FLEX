@@ -609,7 +609,7 @@
     
     //Smiley
     BtnSmiley *btnSmiley = (BtnSmiley *)[tempViewContent viewWithTag:CTagSmiley];
-    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation.shop_badge_level.level withSet:catalogShop.shop_reputation.shop_badge_level.level withImage:btnSmiley isLarge:NO];
+    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation.shop_badge_level.level withSet:catalogShop.shop_reputation.shop_badge_level.set withImage:btnSmiley isLarge:NO];
     btnSmiley.intTag = (int)section;
     
     
