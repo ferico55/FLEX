@@ -101,6 +101,9 @@
     else if([image isMemberOfClass:[UIImageView class]]){
         ((UIImageView *) image).image = tempImage;
     }
+    else if([image isKindOfClass:[UIButton class]]) {
+        [((UIButton *) image) setImage:tempImage forState:UIControlStateNormal];
+    }
 }
 
 - (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
