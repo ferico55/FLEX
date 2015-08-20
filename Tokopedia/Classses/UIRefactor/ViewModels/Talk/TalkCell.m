@@ -17,6 +17,7 @@
 #import "TKPDTabViewController.h"
 #import "GeneralAction.h"
 #import "ReportViewController.h"
+#import "SmileyAndMedal.h"
 
 #import "stringrestkit.h"
 #import "detail.h"
@@ -96,6 +97,16 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self.userButton setLabelBackground:modelView.userLabel];
     [self.userButton setText:modelView.userName];
     [self.unreadImageView setHidden:[modelView.readStatus isEqualToString:@"1"] ? NO : YES];
+    
+    if(modelView.userReputation.no_reputation!=nil && [modelView.userReputation.no_reputation isEqualToString:@"1"]) {
+        [self.reputationButton setTitle:@"" forState:UIControlStateNormal];
+        [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+    }
+    else {
+        [self.reputationButton setTitle:[NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage==nil? @"0":modelView.userReputation.positive_percentage] forState:UIControlStateNormal];
+        [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+    }
+                                                                                           
     [self.reputationButton setTitle:[ NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage == nil ? @"0" : modelView.userReputation.positive_percentage] forState:UIControlStateNormal];
 
 }
@@ -244,8 +255,10 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     int paddingRightLeftContent = 10;
     
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-//    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_selectedTalkReputation.neutral withRepSmile:_selectedTalkReputation.positive withRepSad:_selectedTalkReputation.negative withDelegate:self];
-//    
+
+    SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+    [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:_selectedTalkReputation.neutral withRepSmile:_selectedTalkReputation.positive withRepSad:_selectedTalkReputation.negative withDelegate:self];
+    
     _popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
     _popTipView.delegate = self;
     _popTipView.backgroundColor = [UIColor whiteColor];
@@ -429,6 +442,10 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (NSString *)getPath {
     return @"action/talk.pl";
+}
+
+- (UIViewController *)didReceiveViewController {
+    return [_delegate getNavigationController:self];
 }
 
 
