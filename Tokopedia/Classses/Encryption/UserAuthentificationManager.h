@@ -20,6 +20,7 @@
 - (id)getUserLoginData;
 - (NSString*)getUserId;
 - (NSString*)getShopId;
+- (NSString*)getShopName;
 - (NSString*)getShopHasTerm;
 - (Breadcrumb*)getLastProductAddCategory;
 - (NSString*)getMyDeviceToken;

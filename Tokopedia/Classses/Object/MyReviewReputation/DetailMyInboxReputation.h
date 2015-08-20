@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #define CValueRead @"1"
 #define CValueUnRead @"2"
 
@@ -37,7 +36,8 @@
 #define CScoreEditTimeFmt @"score_edit_time_fmt"
 #define CReputationInboxID @"reputation_inbox_id"
 #define CUserReputation @"user_reputation"
-@class DetailMyInboxReputation, MyReviewReputationViewModel, ReputationDetail;
+#define CShopBadgeLevel @"shop_badge_level"
+@class DetailMyInboxReputation, MyReviewReputationViewModel, ReputationDetail, ShopBadgeLevel;
 
 @interface DetailMyInboxReputation : NSObject
 @property (nonatomic, strong) NSString *score_edit_time_fmt;
@@ -68,4 +68,5 @@
 
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 @property (nonatomic, strong) MyReviewReputationViewModel *viewModel;
+@property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;
 @end

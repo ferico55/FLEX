@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -30,7 +30,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="keP-TI-Hke">
-                    <rect key="frame" x="10" y="78" width="300" height="21"/>
+                    <rect key="frame" x="10" y="83" width="300" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="NIx-c7-dNu"/>
                     </constraints>
@@ -39,15 +39,18 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TdE-Q9-Yqa">
-                    <rect key="frame" x="10" y="100" width="300" height="21"/>
+                    <rect key="frame" x="10" y="105" width="300" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="RbW-ei-xRH"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_medal_diamond.png" translatesAutoresizingMaskIntoConstraints="NO" id="CI8-Xj-cWM">
-                    <rect key="frame" x="120" y="53" width="80" height="25"/>
+                    <rect key="frame" x="120" y="48" width="80" height="35"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="25" id="ppE-Il-VqM"/>
+                        <constraint firstAttribute="height" constant="35" id="ppE-Il-VqM"/>
                         <constraint firstAttribute="width" constant="80" id="sYH-oW-khf"/>
                     </constraints>
                 </imageView>
@@ -55,13 +58,13 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="TdE-Q9-Yqa" firstAttribute="centerX" secondItem="nIy-Cq-MHn" secondAttribute="centerX" id="0eT-WA-dgN"/>
+                <constraint firstAttribute="bottom" secondItem="TdE-Q9-Yqa" secondAttribute="bottom" constant="5" id="21Q-J4-mEg"/>
+                <constraint firstItem="CI8-Xj-cWM" firstAttribute="top" secondItem="Pp2-wY-HYE" secondAttribute="bottom" constant="1" id="69n-Sx-kQ5"/>
                 <constraint firstItem="keP-TI-Hke" firstAttribute="leading" secondItem="Pp2-wY-HYE" secondAttribute="leading" id="FCJ-jL-pYL"/>
                 <constraint firstItem="Pp2-wY-HYE" firstAttribute="top" secondItem="nIy-Cq-MHn" secondAttribute="top" constant="26" id="Gd1-2G-LNg"/>
                 <constraint firstItem="TdE-Q9-Yqa" firstAttribute="top" secondItem="keP-TI-Hke" secondAttribute="bottom" constant="1" id="NEJ-uW-hD1"/>
-                <constraint firstItem="CI8-Xj-cWM" firstAttribute="top" secondItem="Pp2-wY-HYE" secondAttribute="bottom" constant="6" id="PKM-ik-1Fq"/>
                 <constraint firstItem="keP-TI-Hke" firstAttribute="leading" secondItem="TdE-Q9-Yqa" secondAttribute="leading" id="TaI-xl-hA3"/>
                 <constraint firstItem="keP-TI-Hke" firstAttribute="trailing" secondItem="TdE-Q9-Yqa" secondAttribute="trailing" id="X9V-Ms-1rU"/>
-                <constraint firstAttribute="bottom" secondItem="TdE-Q9-Yqa" secondAttribute="bottom" constant="10" id="aZ7-XJ-mJu"/>
                 <constraint firstItem="keP-TI-Hke" firstAttribute="top" secondItem="CI8-Xj-cWM" secondAttribute="bottom" id="amp-dU-CFU"/>
                 <constraint firstAttribute="centerX" secondItem="CI8-Xj-cWM" secondAttribute="centerX" id="qYy-5U-HCM"/>
                 <constraint firstItem="Pp2-wY-HYE" firstAttribute="leading" secondItem="nIy-Cq-MHn" secondAttribute="leading" constant="10" id="v6l-W3-tiJ"/>

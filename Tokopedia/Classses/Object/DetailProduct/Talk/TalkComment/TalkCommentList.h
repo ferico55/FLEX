@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class ReputationDetail;
+@class ReputationDetail, ShopReputation;
 #define CCommentShopReputation @"comment_shop_reputation"
 #define CCommentUserReputation @"comment_user_reputation"
 
@@ -26,7 +26,7 @@
 @property (assign) BOOL is_just_sent;
 @property (nonatomic, strong) NSString *comment_user_label;
 @property (nonatomic, strong) NSString *comment_user_label_id;
-@property (nonatomic, strong) NSString *comment_shop_reputation;
 @property (nonatomic, strong) ReputationDetail *comment_user_reputation;
+@property (nonatomic, strong) ShopReputation *comment_shop_reputation;
 @end
 

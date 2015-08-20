@@ -86,9 +86,9 @@
     }
     else
     {
-        lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5,
+        lblMessageRetur.frame = CGRectMake(70+5,
                                            CPaddingTopDescToko,
-                                           ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15,
+                                           ([[UIScreen mainScreen] bounds].size.width-30)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15,
                                            height);
     }
     

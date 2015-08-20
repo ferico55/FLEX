@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "CMPopTipView.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "ShopTalkPageViewController.h"
 #import "ProductTalkDetailViewController.h"
@@ -27,11 +27,14 @@
 #import "string_inbox_message.h"
 #import "NoResultView.h"
 #import "NSString+HTML.h"
+#import "SmileyAndMedal.h"
 #import "UserAuthentificationManager.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
 UIScrollViewDelegate,
+SmileyDelegate,
+CMPopTipViewDelegate,
 GeneralTalkCellDelegate,
 ShopPageHeaderDelegate,
 UIAlertViewDelegate>
@@ -58,7 +61,8 @@ UIAlertViewDelegate>
     NSInteger _page;
     NSInteger _limit;
     NSInteger _viewposition;
-    
+
+    CMPopTipView *cmPopTitpView;
     NSMutableDictionary *_paging;
     
     NSString *_uriNext;
@@ -171,7 +175,7 @@ UIAlertViewDelegate>
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;
-    _table.tableHeaderView = _header;
+    //_table.tableHeaderView = _header;
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
@@ -220,9 +224,20 @@ UIAlertViewDelegate>
 }
 
 #pragma mark - TableView Delegate
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return _header;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return _header.frame.size.height;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_isNoData) {
+        
         cell.backgroundColor = [UIColor whiteColor];
     }
     
@@ -263,13 +278,23 @@ UIAlertViewDelegate>
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
             
+            ((GeneralTalkCell*)cell).btnReputation.tag = indexPath.row;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             ((GeneralTalkCell*)cell).data = list;
             ((GeneralTalkCell*)cell).userButton.text = list.talk_user_name;
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
-            [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
+            
+            
+            if(list.talk_user_reputation.no_reputation!=nil && [list.talk_user_reputation.no_reputation isEqualToString:@"1"]) {
+                [((GeneralTalkCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
+                [((GeneralTalkCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            }
+            else {
+                [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
+                [((GeneralTalkCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            }
             
             //Set user label
 //            if([list.talk_user_label isEqualToString:CPenjual]) {
@@ -411,10 +436,18 @@ UIAlertViewDelegate>
                                                  TKPD_TALK_USER_LABEL_ID
                                                  ]];
     
+    RKObjectMapping *reputationDetailMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reputationDetailMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                             CNoReputation,
+                                                             CNegative,
+                                                             CPositif,
+                                                             CNeutral]];
+    
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     // Relationship Mapping
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:reputationDetailMapping]];
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
@@ -585,17 +618,40 @@ UIAlertViewDelegate>
 
 
 #pragma mark - General Talk Delegate
+- (void)actionSmile:(id)sender {
+    TalkList *list = _list[((UIView *) sender).tag];
+    
+    if(! (list.talk_user_reputation.no_reputation!=nil && [list.talk_user_reputation.no_reputation isEqualToString:@"1"])) {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.talk_user_reputation.neutral withRepSmile:list.talk_user_reputation.positive withRepSad:list.talk_user_reputation.negative withDelegate:self];
+        
+        //Init pop up
+        cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        cmPopTitpView.delegate = self;
+        cmPopTitpView.backgroundColor = [UIColor whiteColor];
+        cmPopTitpView.animation = CMPopTipAnimationSlide;
+        cmPopTitpView.dismissTapAnywhere = YES;
+        cmPopTitpView.leftPopUp = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+    }
+}
+
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
     NSInteger row = indexpath.row;
     TalkList *list = _list[row];
     vc.data = @{
+                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation,
                 TKPD_TALK_MESSAGE:list.talk_message?:@0,
                 TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
                 TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
                 TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
                 TKPD_TALK_ID:list.talk_id?:@0,
-                                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", list.talk_user_id],
+                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", (int)list.talk_user_id],
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
@@ -875,4 +931,15 @@ UIAlertViewDelegate>
  }
  */
 
+#pragma mark - PopUp
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
 @end

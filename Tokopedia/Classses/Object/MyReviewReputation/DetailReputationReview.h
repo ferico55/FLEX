@@ -12,7 +12,9 @@
 #import "ReputationDetail.h"
 #import "ReviewResponse.h"
 #import "ProductOwner.h"
+@class ShopBadgeLevel;
 
+#define CShopBadgeLevel @"shop_badge_level"
 #define CReviewRateAccuracy @"review_rate_accuracy"
 #define CReviewRateAccuracyDesc @"review_rate_accuracy_desc"
 #define CProductRatingPoint @"product_rating_point"
@@ -109,6 +111,7 @@
 @property (nonatomic, strong) NSString *review_rate_service_desc;   
 @property (nonatomic, strong) NSString *review_rate_service;
 
+@property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;
 @property (nonatomic, strong) ReputationDetail *review_user_reputation;
 @property (nonatomic, strong) ProductOwner *product_owner;
 @property (nonatomic, strong) ReviewResponse *review_response;

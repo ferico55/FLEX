@@ -26,7 +26,6 @@
 
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
-#import "DetailProductViewController.h"
 
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"
@@ -36,6 +35,7 @@
 
 #import "GeneralSingleProductCell.h"
 #import "GeneralPhotoProductCell.h"
+#import "NavigateViewController.h"
 
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
@@ -1052,6 +1052,9 @@ typedef enum ScrollDirection {
             [self configureRestKit];
             [self request];
         }
+        else {
+            [flowLayout setFooterReferenceSize:CGSizeZero];
+        }
     }
     
     return cell;
@@ -1133,11 +1136,9 @@ typedef enum ScrollDirection {
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    List *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,
-                kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    [self.navigationController pushViewController:vc animated:YES];
+	List *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    NavigateViewController *navigator = [NavigateViewController new];
+    [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }
 
 #pragma mark - Promo request delegate

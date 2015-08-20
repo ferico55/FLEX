@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -616,7 +616,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Bulan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghd-7a-Otb">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1 Bulan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghd-7a-Otb">
                                             <rect key="frame" x="75" y="35" width="76" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -661,7 +661,7 @@
                                                 <constraint firstAttribute="height" constant="1" id="7zf-Od-fD2"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hL3-wz-1sx">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hL3-wz-1sx">
                                             <rect key="frame" x="75" y="74" width="76" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="oVq-D5-FQB"/>
@@ -699,7 +699,7 @@
                                                 <constraint firstAttribute="height" constant="1" id="aYX-0T-QGg"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="asU-wt-S6X">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="asU-wt-S6X">
                                             <rect key="frame" x="75" y="132" width="76" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.79087534530386738" green="0.72248119503358921" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -727,7 +727,7 @@
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="54i-99-lVN">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="54i-99-lVN">
                                             <rect key="frame" x="75" y="190" width="76" height="21"/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                             <color key="textColor" red="0.9613569426801104" green="0.1004593398804098" blue="0.080186771294239692" alpha="1" colorSpace="calibratedRGB"/>
@@ -981,7 +981,7 @@
                                             <rect key="frame" x="0.0" y="45" width="301" height="170"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbh-Jh-fh4">
-                                                    <rect key="frame" x="8" y="12" width="285" height="46"/>
+                                                    <rect key="frame" x="8" y="25" width="285" height="46"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="46" id="diQ-ga-Sw8"/>
                                                         <constraint firstAttribute="width" constant="285" id="vz6-j2-L4f"/>
@@ -990,7 +990,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Berhasil" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mee-c5-Zck">
-                                                    <rect key="frame" x="8" y="56" width="285" height="18"/>
+                                                    <rect key="frame" x="8" y="69" width="285" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="VXa-ey-yjN"/>
                                                     </constraints>
@@ -999,7 +999,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dari 0 Transaksi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4a-Tp-3Io">
-                                                    <rect key="frame" x="8" y="74" width="285" height="21"/>
+                                                    <rect key="frame" x="8" y="87" width="285" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="PE2-2D-6Rn"/>
                                                     </constraints>
@@ -1016,7 +1016,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="Mee-c5-Zck" secondAttribute="trailing" constant="8" id="HE5-0k-Dj5"/>
                                                 <constraint firstItem="i4a-Tp-3Io" firstAttribute="top" secondItem="Mee-c5-Zck" secondAttribute="bottom" id="dFt-Pm-XTU"/>
                                                 <constraint firstItem="i4a-Tp-3Io" firstAttribute="leading" secondItem="i9T-PC-lwx" secondAttribute="leading" constant="8" id="iCe-i4-enL"/>
-                                                <constraint firstItem="bbh-Jh-fh4" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="12" id="jaq-ft-UXt"/>
+                                                <constraint firstItem="bbh-Jh-fh4" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="25" id="jaq-ft-UXt"/>
                                                 <constraint firstItem="Mee-c5-Zck" firstAttribute="top" secondItem="bbh-Jh-fh4" secondAttribute="bottom" constant="-2" id="yjk-bB-Ixh"/>
                                             </constraints>
                                         </view>
@@ -1102,7 +1102,7 @@
                 <constraint firstAttribute="bottom" secondItem="37t-Te-Zzb" secondAttribute="bottom" id="xOK-Gw-e8t"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="306" y="662"/>
+            <point key="canvasLocation" x="324" y="399"/>
         </view>
     </objects>
     <resources>

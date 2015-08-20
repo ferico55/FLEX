@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -64,10 +64,10 @@
                                         <constraint firstAttribute="height" constant="50" id="ygd-z1-pgA"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eQY-NZ-SZx">
-                                    <rect key="frame" x="66" y="22" width="246" height="21"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eQY-NZ-SZx">
+                                    <rect key="frame" x="66" y="8" width="246" height="50"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="21" id="pYn-aL-7Bk"/>
+                                        <constraint firstAttribute="height" constant="50" id="Mq9-Of-GFr"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
                                     <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
@@ -439,13 +439,13 @@
                                 <constraint firstItem="0K8-hz-wA7" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" constant="8" id="Wy1-rz-b8b"/>
                                 <constraint firstItem="0K8-hz-wA7" firstAttribute="top" secondItem="Gfa-da-sz9" secondAttribute="top" constant="8" id="ZCm-Oy-y6C"/>
                                 <constraint firstAttribute="trailing" secondItem="eQY-NZ-SZx" secondAttribute="trailing" constant="8" id="Zc7-Ik-D5K"/>
-                                <constraint firstItem="eQY-NZ-SZx" firstAttribute="top" secondItem="Gfa-da-sz9" secondAttribute="top" constant="22" id="ZfJ-HS-gOd"/>
                                 <constraint firstAttribute="trailing" secondItem="GL3-JT-WN8" secondAttribute="trailing" id="dAp-kT-nm8"/>
                                 <constraint firstItem="rcB-NB-gSS" firstAttribute="top" secondItem="lNq-1Y-VpO" secondAttribute="bottom" constant="8" id="oFo-6V-3Nd"/>
                                 <constraint firstAttribute="height" constant="568" id="q4k-aG-Uad"/>
                                 <constraint firstItem="rcB-NB-gSS" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" constant="8" id="tCh-Jy-KdU"/>
                                 <constraint firstAttribute="trailing" secondItem="lNq-1Y-VpO" secondAttribute="trailing" id="uGn-Kb-Vo5"/>
                                 <constraint firstItem="lNq-1Y-VpO" firstAttribute="top" secondItem="0K8-hz-wA7" secondAttribute="bottom" constant="8" id="uJz-lQ-UpP"/>
+                                <constraint firstItem="eQY-NZ-SZx" firstAttribute="top" secondItem="Gfa-da-sz9" secondAttribute="top" constant="8" id="yK1-d5-o19"/>
                             </constraints>
                         </view>
                     </subviews>

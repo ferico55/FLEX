@@ -39,5 +39,6 @@
 -(RKObjectMapping*)veritransDataMapping;
 -(RKObjectMapping *)dataCreditMapping;
 -(RKObjectMapping *)ccFeeMapping;
+-(RKObjectMapping *)indomaretMapping;
 
 @end

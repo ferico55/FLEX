@@ -14,7 +14,7 @@
 #define CTagSemuaReview @"all"
 #define CTagBelumDibaca @"unread"
 #define CtagBelumDireviw @"unassessed"
-@class MyReviewReputationViewController;
+@class MyReviewReputationViewController, SplitReputationViewController;
 
 @interface SegmentedReviewReputationViewController : UIViewController
 {
@@ -22,13 +22,19 @@
     IBOutlet UIView *viewContent, *viewContentAction, *viewShadow;
     IBOutlet UIButton *btnAllReview, *btnBelumDibaca, *btnBelumDireview;
     IBOutlet NSLayoutConstraint *constTopCheckList;
+    IBOutlet UILabel *lblDescChangeReviewStyle;
 }
+
+@property (nonatomic, unsafe_unretained) SplitReputationViewController *splitVC;
+@property (nonatomic) int selectedIndex;
+@property (nonatomic) BOOL getDataFromMasterDB;
 
 - (NSString *)getSelectedFilter;
 - (IBAction)actionReview:(id)sender;
 - (IBAction)actionBelumDibaca:(id)sender;
 - (IBAction)actionBelumDireview:(id)sender;
 - (IBAction)actionValueChange:(id)sender;
+- (IBAction)actionOldReview:(id)sender;
 - (int)getSelectedSegmented;
 - (void)setNavigationTitle:(NSString *)strTitle;
 - (MyReviewReputationViewController *)getSegmentedViewController;

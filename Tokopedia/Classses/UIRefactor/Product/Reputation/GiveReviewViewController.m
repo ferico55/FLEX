@@ -9,9 +9,11 @@
 #import "DetailMyReviewReputationViewController.h"
 #import "GeneralAction.h"
 #import "GiveReviewViewController.h"
+#import "string_inbox_message.h"
 #import "TKPDTextView.h"
 #import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
+#import "UserInfo.h"
 #define CStringTidakAdaPerubahan @"Tidak ada perubahan ulasan"
 #define CStringAndaTidakDapatMenurunkanRate @"Anda tidak dapat memberi penurunan rating"
 #define CStringPleaseFillReviewRating @"Rating harus diisi"
@@ -38,7 +40,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
-    self.title = @"Tulis Ulasan";
     txtDes.placeholder = CPlaceHolderTulisReview;
     txtDes.delegate = self;
     nRateAkurasi = nRateKualitas = 0;
@@ -46,6 +47,8 @@
     [self isLoading:NO];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self initData];
+    
+    self.title = isEdit? @"Ubah Ulasan":@"Tulis Ulasan";
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
 
@@ -82,17 +85,19 @@
 
 #pragma mark - Method View
 - (void)initData {
-    lblProduct.text = _detailReputationView.product_name;
+    lblProduct.text = [NSString convertHTML:_detailReputationView.product_name];
 
     //Set image product
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationView.product_uri] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationView.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
 
-    [imgProduct setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [imgProduct setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey-01" ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [imgProduct setImage:image];
 #pragma clang diagnostic pop
-    } failure:nil];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        NSLog(@"Failure get image in giveReviewViewController");
+    }];
     
     //add gesture to every image
     for(UIImageView *tempImage in arrImgAkurasi) {
@@ -107,7 +112,7 @@
     
     isEdit = !(_detailReputationView.review_message==nil || [_detailReputationView.review_message isEqualToString:@"0"]);
     if(isEdit) {
-        txtDes.text = _detailReputationView.review_message;
+        txtDes.text = [NSString convertHTML:_detailReputationView.review_message];
         self.navigationItem.rightBarButtonItem.enabled = (txtDes.text.length>=5);
         
         //Set Akurasi
@@ -157,7 +162,7 @@
         }
     }
     else {
-        if(nRateAkurasi==0 && nRateKualitas==0) {
+        if(nRateAkurasi==0 || nRateKualitas==0) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringPleaseFillReviewRating] delegate:self];
             [stickyAlertView show];
             
@@ -355,6 +360,25 @@
             if(! isEdit) {
                 _detailReputationView.viewModel.review_is_allow_edit = _detailReputationView.review_is_allow_edit = @"1";
                 _detailReputationView.viewModel.review_create_time = _detailReputationView.review_create_time = [formatter stringFromDate:[NSDate new]];
+                
+                UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+                NSDictionary *auth = [_userManager getUserLoginData];
+                _detailReputationView.review_full_name = [auth objectForKey:@"full_name"]?:@"-";
+                _detailReputationView.review_user_label = CPembeli;
+                
+                if([auth objectForKey:CUserReputation]) {
+                    NSData *data = [[auth objectForKey:CUserReputation] dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *tempDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    
+                    if(tempDict) {
+                        _detailReputationView.review_user_reputation = [ReputationDetail new];
+                        _detailReputationView.review_user_reputation.positive_percentage = [tempDict objectForKey:CPositivePercentage];
+                        _detailReputationView.review_user_reputation.negative = [tempDict objectForKey:CNegative];
+                        _detailReputationView.review_user_reputation.neutral = [tempDict objectForKey:CNeutral];
+                        _detailReputationView.review_user_reputation.positive = [tempDict objectForKey:CPositif];
+                        _detailReputationView.review_user_reputation.no_reputation = [tempDict objectForKey:CNoReputation];
+                    }
+                }
             }
             else {
                 _detailReputationView.viewModel.review_is_allow_edit = _detailReputationView.review_is_allow_edit = @"0";

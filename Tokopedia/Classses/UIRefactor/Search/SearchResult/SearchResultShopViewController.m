@@ -114,17 +114,6 @@
     /** set max data per page request **/
     _limit = kTKPDSEARCH_LIMITPAGE;
     
-    /** set inset table for different size**/
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        //inset.bottom += 200;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        //inset.bottom += 280;
-        _table.contentInset = inset;
-    }
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -176,7 +165,7 @@
             [self loadData];
         }
     }
-    self.table.contentInset = UIEdgeInsetsMake(0, 0, 45, 0);
+//    self.table.contentInset = UIEdgeInsetsMake(0, 0, 45, 0);
     self.screenName = @"Search Result - Shop Tab";
 }
 

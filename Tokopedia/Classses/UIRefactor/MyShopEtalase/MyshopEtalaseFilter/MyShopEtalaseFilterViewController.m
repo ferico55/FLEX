@@ -432,8 +432,17 @@
             NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
             
-            if([_data objectForKey:ETALASE_OBJECT_SELECTED_KEY]) {
-                EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+            
+            if([[_data objectForKey:@"product_etalase_name"] isEqualToString:@""]) {
+                if([_data objectForKey:ETALASE_OBJECT_SELECTED_KEY]) {
+                    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+                    _selectedEtalase = selectedEtalase;
+                }
+            } else {
+                EtalaseList *selectedEtalase = [EtalaseList new];
+                selectedEtalase.etalase_id = [_data objectForKey:@"product_etalase_id"];
+                selectedEtalase.etalase_name = [_data objectForKey:@"product_etalase_name"];
+                
                 _selectedEtalase = selectedEtalase;
             }
 
