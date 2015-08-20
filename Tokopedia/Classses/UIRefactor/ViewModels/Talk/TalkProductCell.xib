@@ -3,6 +3,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -30,13 +32,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ltb-r2-MB2" userLabel="View Top">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="60"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qBW-pl-Idc" userLabel="Vertical Border">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="1"/>
-                                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="E92-1K-wPs"/>
-                                        </constraints>
-                                    </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ajz-HT-HpZ" userLabel="create_time">
                                         <rect key="frame" x="68" y="46" width="214" height="21"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
@@ -75,20 +70,20 @@
                                     <constraint firstItem="FvV-2K-W1R" firstAttribute="top" secondItem="ltb-r2-MB2" secondAttribute="top" constant="10" id="4Zu-4I-aQP"/>
                                     <constraint firstAttribute="height" constant="60" id="K39-eS-Kdt"/>
                                     <constraint firstAttribute="trailing" secondItem="FvV-2K-W1R" secondAttribute="trailing" constant="52" id="Pt8-0U-PkF"/>
-                                    <constraint firstItem="qBW-pl-Idc" firstAttribute="top" secondItem="ltb-r2-MB2" secondAttribute="top" id="SHD-dv-4BF"/>
                                     <constraint firstItem="FvV-2K-W1R" firstAttribute="leading" secondItem="ltb-r2-MB2" secondAttribute="leading" constant="68" id="art-UH-vdj"/>
-                                    <constraint firstAttribute="trailing" secondItem="qBW-pl-Idc" secondAttribute="trailing" id="bCB-cH-eSg"/>
                                     <constraint firstItem="sAw-cv-9Ub" firstAttribute="top" secondItem="ltb-r2-MB2" secondAttribute="top" constant="10" id="btD-Z9-MrH"/>
-                                    <constraint firstItem="qBW-pl-Idc" firstAttribute="leading" secondItem="ltb-r2-MB2" secondAttribute="leading" id="k40-oJ-trv"/>
                                     <constraint firstItem="sAw-cv-9Ub" firstAttribute="leading" secondItem="ltb-r2-MB2" secondAttribute="leading" constant="10" id="qLJ-l3-R1r"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfJ-BF-A1J" userLabel="View Bottom">
                                 <rect key="frame" x="0.0" y="110" width="300" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TwU-7J-zW1">
+                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TwU-7J-zW1">
                                         <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
                                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="150" id="P8k-Lj-o0C"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="1 Comment" image="icon_diskusi_comment_grey.png">
@@ -99,7 +94,7 @@
                                             <action selector="tapToDetailTalk:" destination="gpV-C8-7Bp" eventType="touchUpInside" id="sbX-84-M4D"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="11" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYV-dm-i5C">
+                                    <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYV-dm-i5C">
                                         <rect key="frame" x="151" y="0.0" width="150" height="40"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -111,19 +106,40 @@
                                             <action selector="tapToFollowTalk:" destination="gpV-C8-7Bp" eventType="touchUpInside" id="1Cb-88-ltZ"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3fr-V2-gS2" userLabel="Horizontal Border">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3fr-V2-gS2" userLabel="Horizontal Border">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="1"/>
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="2Cy-7J-tjT"/>
+                                        </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tvY-tu-w5P" userLabel="Vertical Border">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tvY-tu-w5P" userLabel="Vertical Border">
                                         <rect key="frame" x="150" y="10" width="1" height="20"/>
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="5LT-bC-bu4"/>
+                                            <constraint firstAttribute="height" constant="20" id="8vd-be-7tj"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="aYV-dm-i5C" secondAttribute="trailing" constant="-1" id="TF3-HK-i8s"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="centerY" secondItem="tvY-tu-w5P" secondAttribute="centerY" id="1Xa-b2-Jq3"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="width" secondItem="aYV-dm-i5C" secondAttribute="width" id="38n-Co-2SM"/>
+                                    <constraint firstAttribute="trailing" secondItem="aYV-dm-i5C" secondAttribute="trailing" constant="-1" id="9HD-Jq-5dd"/>
+                                    <constraint firstAttribute="bottom" secondItem="TwU-7J-zW1" secondAttribute="bottom" id="CTq-sc-uVt"/>
+                                    <constraint firstAttribute="trailing" secondItem="3fr-V2-gS2" secondAttribute="trailing" id="MUz-3t-Ru7"/>
+                                    <constraint firstItem="tvY-tu-w5P" firstAttribute="leading" secondItem="TwU-7J-zW1" secondAttribute="trailing" id="Oe8-B2-1KG"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="top" secondItem="3fr-V2-gS2" secondAttribute="top" id="Vbz-qc-qKE"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="top" secondItem="aYV-dm-i5C" secondAttribute="top" id="dtu-p6-rF8"/>
+                                    <constraint firstItem="aYV-dm-i5C" firstAttribute="leading" secondItem="tvY-tu-w5P" secondAttribute="trailing" id="ef8-Pw-ZRS"/>
+                                    <constraint firstItem="aYV-dm-i5C" firstAttribute="centerY" secondItem="tvY-tu-w5P" secondAttribute="centerY" id="fDV-aK-Imx"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="firstBaseline" secondItem="aYV-dm-i5C" secondAttribute="baseline" id="hve-Of-Abu"/>
+                                    <constraint firstItem="3fr-V2-gS2" firstAttribute="top" secondItem="QfJ-BF-A1J" secondAttribute="top" id="lg5-mJ-9cf"/>
                                     <constraint firstAttribute="height" constant="40" id="rVb-Ro-eeQ"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="baseline" secondItem="aYV-dm-i5C" secondAttribute="firstBaseline" id="ukH-EN-y4D"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="leading" secondItem="3fr-V2-gS2" secondAttribute="leading" id="zML-ed-i5i"/>
+                                    <constraint firstItem="3fr-V2-gS2" firstAttribute="leading" secondItem="QfJ-BF-A1J" secondAttribute="leading" id="zXe-Dg-QhX"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vKY-ZR-h4r" userLabel="More Action Button">

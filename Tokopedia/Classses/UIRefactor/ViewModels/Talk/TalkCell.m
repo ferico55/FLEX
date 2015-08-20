@@ -47,6 +47,12 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToUser)];
     [self.userImageView addGestureRecognizer:userGesture];
     [self.userImageView setUserInteractionEnabled:YES];
+    
+    CGFloat borderWidth = 0.5f;
+    
+    self.view.frame = CGRectInset(self.frame, -borderWidth, -borderWidth);
+    self.view.layer.borderColor = [UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0].CGColor;
+    self.view.layer.borderWidth = borderWidth;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
