@@ -128,6 +128,11 @@
     [super viewWillAppear:animated];
     
     _auth = [_userManager getUserLoginData];
+    
+    if(CGSizeEqualToSize(_statView.bounds.size, CGSizeZero)) {
+        _statView.frame = CGRectMake(0, _statView.frame.origin.y, self.view.bounds.size.width, self.scrollView.bounds.size.height);
+        [self.scrollView setContentSize:CGSizeMake(self.view.bounds.size.width*2, 77)];
+    }
 }
 
 - (void)viewDidLoad
@@ -144,7 +149,7 @@
     [self.scrollView addSubview:_descriptionView];
     
     _statView = [ShopStatView newView];
-    _statView.frame = CGRectMake(0, _statView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);
+    _statView.frame = CGRectZero;
     id pageController = ((UIViewController *) _delegate).parentViewController;
     if([pageController isMemberOfClass:[UIPageViewController class]]) {
         if([((UIPageViewController *) pageController).delegate isMemberOfClass:[ShopContainerViewController class]]) {
@@ -163,9 +168,6 @@
     [_navigationTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_navigationTab.layer setShadowRadius:1];
     [_navigationTab.layer setShadowOpacity:0.3];
-    
-    [self.scrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width*2, 77)];
-    
 }
 
 - (void)showPopUp:(id)sender {

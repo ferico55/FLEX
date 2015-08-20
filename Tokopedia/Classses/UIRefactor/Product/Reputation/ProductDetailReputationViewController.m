@@ -258,7 +258,7 @@
         }
         
         //Set image product
-        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_uri : _reviewList.product_images] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         productReputationCell.getProductImage.image = nil;
         [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey" ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -270,7 +270,7 @@
     
     
     //Set image profile
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil? _detailReputaitonReview.user_image:_reviewList.review_user_image)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil? (_detailReputaitonReview.user_image==nil? _detailReputaitonReview.review_user_image:_detailReputaitonReview.user_image):_reviewList.review_user_image)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     UIImageView *userImageView = productReputationCell.getImageProfile;
     userImageView.image = nil;
     [userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -375,8 +375,7 @@
 }
 
 - (void)goToDetailProduct:(id)sender {
-    [_TKPDNavigator navigateToProductFromViewController:self withName:_detailReputaitonReview.product_name withPrice:nil withId:_detailReputaitonReview.product_id withImageurl:_detailReputaitonReview.product_image withShopName:_detailReputaitonReview.shop_name];
-    
+    [_TKPDNavigator navigateToProductFromViewController:self withName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name withPrice:nil withId:(_detailReputaitonReview==nil? _reviewList.review_product_id:_detailReputaitonReview.product_id) withImageurl:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images) withShopName:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_product_owner.user_name];
 }
 
 - (void)actionVote:(id)sender
@@ -521,11 +520,11 @@
     cell.getBtnTryAgain.hidden = !(_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [productReputationCell.getImageProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_img:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [cell.getImgProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [productReputationCell.getImageProfile setImage:image];
+        [cell.getImgProfile setImage:image];
 #pragma clang diagnostic pop
     } failure:nil];
     
@@ -743,6 +742,152 @@
 
 
 #pragma mark - Method
+- (void)setMappingNewComment:(RKObjectManager *)objectManager withTag:(int)tag {
+    RKObjectMapping *responseCommentMapping = [RKObjectMapping mappingForClass:[ResponseComment class]];
+    [responseCommentMapping addAttributeMappingsFromArray:@[CStatus,
+                                                            CServerProcessTime,
+                                                            CMessageError]];
+    
+    RKObjectMapping *responseCommentResultMapping = [RKObjectMapping mappingForClass:[ResponseCommentResult class]];
+    [responseCommentResultMapping addAttributeMappingsFromArray:@[CIsOwner,
+                                                                  CReputationReviewCounter,
+                                                                  CIsSuccess,
+                                                                  CShowBookmark,
+                                                                  CReviewID]];
+    
+    RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
+    [productOwnerMapping addAttributeMappingsFromArray:@[CShopID,
+                                                         CUserLabelID,
+                                                         CUserURL,
+                                                         CShopImg,
+                                                         CShopUrl,
+                                                         CShopName,
+                                                         CFullName,
+                                                         CUserImg,
+                                                         CUserLabel,
+                                                         CuserID,
+                                                         CShopReputationBadge,
+                                                         CShopReputation]];
+    
+    RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
+    [reviewResponseMapping addAttributeMappingsFromDictionary:@{CResponseMsg:CResponseMessage,
+                                                                CResponseTimeFmt:CResponseTimeFmt,
+                                                                CResponseTimeAgo:CResponseTimeAgo
+                                                                }];
+    
+    //Relation
+    [responseCommentMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResult toKeyPath:CResult withMapping:responseCommentResultMapping]];
+    [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
+    [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:responseCommentMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:[self getPath:tag]
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)setMappingOldComment:(RKObjectManager *)objectManager withTag:(int)tag {
+    RKObjectMapping *responseCommentMapping = [RKObjectMapping mappingForClass:[ResponseComment class]];
+    [responseCommentMapping addAttributeMappingsFromArray:@[CStatus,
+                                                            CServerProcessTime,
+                                                            CMessageError]];
+    
+    RKObjectMapping *responseCommentResultMapping = [RKObjectMapping mappingForClass:[ResponseCommentResult class]];
+    [responseCommentResultMapping addAttributeMappingsFromArray:@[CShopID,
+                                                                  CIsSuccess,
+                                                                  CShopName,
+                                                                  CShopImgUri]];
+    
+    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
+    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
+                                                           CReputationScore,
+                                                           CMinBadgeScore,
+                                                           CScore]];
+    
+    
+    RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
+    [productOwnerMapping addAttributeMappingsFromArray:@[CUserImg,
+                                                         CUserLabel,
+                                                         CUserLabelID,
+                                                         CUserURL,
+                                                         CuserID,
+                                                         CFullName]];
+    
+    RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
+    [reviewResponseMapping addAttributeMappingsFromDictionary:@{CResponseMsg:CResponseMessage,
+                                                                CResponseTimeFmt:CResponseTimeFmt,
+                                                                CResponseTimeAgo:CResponseTimeAgo
+                                                                }];
+    
+    RKObjectMapping *reputationBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [reputationBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
+    
+    //Relation
+    [responseCommentMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResult toKeyPath:CResult withMapping:responseCommentResultMapping]];
+    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:reputationBadgeMapping]];
+    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResult toKeyPath:CResult withMapping:responseCommentResultMapping]];
+    [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_owner" toKeyPath:CProductOwner withMapping:productOwnerMapping]];
+    [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];
+    [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"get_shop_reputation_set" toKeyPath:CShopReputation withMapping:shopReputationMapping]];
+
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:responseCommentMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:[self getPath:tag]
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)setMappingNewDeleteComment:(RKObjectManager *)objectManager withTag:(int)tag {
+    RKObjectMapping *responseCommentMapping = [RKObjectMapping mappingForClass:[ResponseComment class]];
+    [responseCommentMapping addAttributeMappingsFromArray:@[CStatus,
+                                                            CServerProcessTime,
+                                                            CMessageError]];
+    
+    RKObjectMapping *responseCommentResultMapping = [RKObjectMapping mappingForClass:[ResponseCommentResult class]];
+    [responseCommentResultMapping addAttributeMappingsFromArray:@[CIsOwner,
+                                                                  CReputationReviewCounter,
+                                                                  CIsSuccess,
+                                                                  CShowBookmark,
+                                                                  CReviewID]];
+    
+    RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
+    [productOwnerMapping addAttributeMappingsFromArray:@[CShopID,
+                                                         CUserLabelID,
+                                                         CUserURL,
+                                                         CShopImg,
+                                                         CShopUrl,
+                                                         CShopName,
+                                                         CFullName,
+                                                         CUserImg,
+                                                         CUserLabel,
+                                                         CuserID,
+                                                         CShopReputationBadge,
+                                                         CShopReputation]];
+    
+    //Relation
+    [responseCommentMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResult toKeyPath:CResult withMapping:responseCommentResultMapping]];
+    [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:responseCommentMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:[self getPath:tag]
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+
 - (void)actionTapCellLabelUser:(UITapGestureRecognizer *)sender {
     if([(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
@@ -1029,31 +1174,69 @@
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagComment) {
-        if(_detailReputaitonReview != nil) {
-            return @{@"action":@"add_comment_review",
-                 @"reputation_id":_detailReputaitonReview.reputation_id==nil? @"":_detailReputaitonReview.reputation_id,
-                 @"product_id":_strProductID,
-                 @"review_id":_detailReputaitonReview.review_id,
-                 @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+        if(_isFromInboxNotification) {
+            if(_detailReputaitonReview != nil) {
+                return @{@"action":@"insert_reputation_review_response",
+                         @"reputation_id":_detailReputaitonReview.reputation_id,
+                         @"shop_id":_detailReputaitonReview.shop_id,
+                         @"review_id":_detailReputaitonReview.review_id,
+                         @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+            }
+            else if(_reviewList != nil) {
+                return @{@"action":@"insert_reputation_review_response",
+                         @"reputation_id":_reviewList.review_reputation_id,
+                         @"shop_id":_reviewList.review_shop_id,
+                         @"review_id":_reviewList.review_id,
+                         @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+            }
         }
-        else if(_reviewList != nil) {
-            return @{@"action":@"add_comment_review",
-                     @"reputation_id":_reviewList.review_reputation_id==nil? @"":_reviewList.review_reputation_id,
+        else {
+            if(_detailReputaitonReview != nil) {
+                return @{@"action":@"add_comment_review",
+                     @"reputation_id":_detailReputaitonReview.reputation_id==nil? @"":_detailReputaitonReview.reputation_id,
                      @"product_id":_strProductID,
-                     @"review_id":_reviewList.review_id,
+                     @"review_id":_detailReputaitonReview.review_id,
                      @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+            }
+            else if(_reviewList != nil) {
+                return @{@"action":@"add_comment_review",
+                         @"reputation_id":_reviewList.review_reputation_id==nil? @"":_reviewList.review_reputation_id,
+                         @"product_id":_strProductID,
+                         @"review_id":_reviewList.review_id,
+                         @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
+            }
         }
     }
     else if(tag == CTagHapus) {
-        if(_detailReputaitonReview != nil) {
-            return @{@"action":@"delete_comment_review",
-                     @"review_id":_detailReputaitonReview.review_id
-                     };
+        if(_isFromInboxNotification) {
+            if(_detailReputaitonReview != nil) {
+                return @{@"action":@"delete_reputation_review_response",
+                         @"reputation_id":_detailReputaitonReview.reputation_id,
+                         @"shop_id":_detailReputaitonReview.shop_id,
+                         @"review_id":_detailReputaitonReview.review_id,
+                         @"product_id":_strProductID
+                         };
+            }
+            else if(_reviewList != nil) {
+                return @{@"action":@"delete_reputation_review_response",
+                         @"reputation_id":_reviewList.review_reputation_id,
+                         @"shop_id":_reviewList.review_shop_id,
+                         @"review_id":_reviewList.review_id,
+                         @"product_id":_reviewList.review_product_id
+                         };
+            }
         }
-        else if(_reviewList != nil) {
-            return @{@"action":@"delete_comment_review",
-                     @"review_id":_reviewList.review_id
-                     };
+        else {
+            if(_detailReputaitonReview != nil) {
+                return @{@"action":@"delete_comment_review",
+                         @"review_id":_detailReputaitonReview.review_id
+                         };
+            }
+            else if(_reviewList != nil) {
+                return @{@"action":@"delete_comment_review",
+                         @"review_id":_reviewList.review_id
+                         };
+            }
         }
     }
     
@@ -1063,11 +1246,16 @@
 
 - (NSString*)getPath:(int)tag {
     if(tag==CTagComment || tag==CTagHapus) {
-        return [postActionUrl isEqualToString:@""] ? @"action/review.pl" : postActionUrl;
+        if(_isFromInboxNotification) {
+            return [postActionUrl isEqualToString:@""] ? @"action/reputation.pl" : postActionUrl;
+        }
+        else
+            return [postActionUrl isEqualToString:@""] ? @"action/review.pl" : postActionUrl;
     }
     
     return nil;
 }
+
 
 - (id)getObjectManager:(int)tag {
     if(tag == CTagComment) {
@@ -1078,52 +1266,13 @@
             objectManager = [RKObjectManager sharedClient:baseActionUrl];
         }
         
+        if(_isFromInboxNotification) {
+            [self setMappingNewComment:objectManager withTag:tag];
+        }
+        else {
+            [self setMappingOldComment:objectManager withTag:tag];
+        }
         
-        RKObjectMapping *responseCommentMapping = [RKObjectMapping mappingForClass:[ResponseComment class]];
-        [responseCommentMapping addAttributeMappingsFromArray:@[CStatus,
-                                                                CServerProcessTime,
-                                                                CMessageError]];
-        
-        RKObjectMapping *responseCommentResultMapping = [RKObjectMapping mappingForClass:[ResponseCommentResult class]];
-        [responseCommentResultMapping addAttributeMappingsFromArray:@[CIsOwner,
-                                                                      CReputationReviewCounter,
-                                                                      CIsSuccess,
-                                                                      CShowBookmark,
-                                                                      CReviewID]];
-        
-        RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
-        [productOwnerMapping addAttributeMappingsFromArray:@[CShopID,
-                                                             CUserLabelID,
-                                                             CUserURL,
-                                                             CShopImg,
-                                                             CShopUrl,
-                                                             CShopName,
-                                                             CFullName,
-                                                             CUserImg,
-                                                             CUserLabel,
-                                                             CuserID,
-                                                             CShopReputationBadge,
-                                                             CShopReputation]];
-        
-        RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
-        [reviewResponseMapping addAttributeMappingsFromDictionary:@{CResponseMsg:CResponseMessage,
-                                                                    CResponseTimeFmt:CResponseTimeFmt,
-                                                                    CResponseTimeAgo:CResponseTimeAgo
-                                                                    }];
-        
-        //Relation
-        [responseCommentMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResult toKeyPath:CResult withMapping:responseCommentResultMapping]];
-        [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
-        [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];
-
-        // register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:responseCommentMapping
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:[self getPath:tag]
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [objectManager addResponseDescriptor:responseDescriptorStatus];
         return objectManager;
     }
     else if(tag == CTagHapus) {
@@ -1134,45 +1283,7 @@
             objectManager = [RKObjectManager sharedClient:baseActionUrl];
         }
         
-        RKObjectMapping *responseCommentMapping = [RKObjectMapping mappingForClass:[ResponseComment class]];
-        [responseCommentMapping addAttributeMappingsFromArray:@[CStatus,
-                                                                CServerProcessTime,
-                                                                CMessageError]];
-        
-        RKObjectMapping *responseCommentResultMapping = [RKObjectMapping mappingForClass:[ResponseCommentResult class]];
-        [responseCommentResultMapping addAttributeMappingsFromArray:@[CIsOwner,
-                                                                      CReputationReviewCounter,
-                                                                      CIsSuccess,
-                                                                      CShowBookmark,
-                                                                      CReviewID]];
-        
-        RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
-        [productOwnerMapping addAttributeMappingsFromArray:@[CShopID,
-                                                             CUserLabelID,
-                                                             CUserURL,
-                                                             CShopImg,
-                                                             CShopUrl,
-                                                             CShopName,
-                                                             CFullName,
-                                                             CUserImg,
-                                                             CUserLabel,
-                                                             CuserID,
-                                                             CShopReputationBadge,
-                                                             CShopReputation]];
-        
-        //Relation
-        [responseCommentMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResult toKeyPath:CResult withMapping:responseCommentResultMapping]];
-        [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
-
-        // register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:responseCommentMapping
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:[self getPath:tag]
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [objectManager addResponseDescriptor:responseDescriptorStatus];
-        
+        [self setMappingNewDeleteComment:objectManager withTag:tag];
         
         return objectManager;
     }
@@ -1205,18 +1316,29 @@
                 
                 
                 if(responseComment.result.product_owner != nil) {
-                    _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
                     _detailReputaitonReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
-                    _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
-                    _detailReputaitonReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
-                    _detailReputaitonReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
-                    _detailReputaitonReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
                     _detailReputaitonReview.product_owner.user_label = responseComment.result.product_owner.user_label;
-                    _detailReputaitonReview.product_owner.full_name = responseComment.result.product_owner.full_name;
-                    _detailReputaitonReview.product_owner.user_img = responseComment.result.product_owner.user_img;
-                    _detailReputaitonReview.product_owner.user_id = responseComment.result.product_owner.user_id;
-                    _detailReputaitonReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
-                    _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
+                    
+                    if(_isFromInboxNotification) {
+                        _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
+                        
+                        _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
+                        _detailReputaitonReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
+                        _detailReputaitonReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
+                        _detailReputaitonReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
+                        _detailReputaitonReview.product_owner.full_name = responseComment.result.product_owner.full_name;
+                        _detailReputaitonReview.product_owner.user_img = responseComment.result.product_owner.user_img;
+                        _detailReputaitonReview.product_owner.user_id = responseComment.result.product_owner.user_id;
+                        _detailReputaitonReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
+                        _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
+                    }
+                    else {
+                        _shopBadgeLevel = _detailReputaitonReview.shop_badge_level = responseComment.result.shop_reputation.reputation_badge_object;
+                        _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.shop_reputation.reputation_score;
+                        _detailReputaitonReview.product_owner.shop_id = responseComment.result.shop_id;
+                        _detailReputaitonReview.product_owner.shop_name = responseComment.result.shop_name;
+                        _detailReputaitonReview.product_owner.shop_url = responseComment.result.shop_img_uri;
+                    }
                 }
             }
             else if(_reviewList != nil) {
@@ -1229,6 +1351,12 @@
                     _reviewList.review_product_owner.user_name = responseComment.result.product_owner.full_name;
                     _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
                     _reviewList.review_product_owner.user_image = responseComment.result.product_owner.user_img;
+                }
+                
+                //Set badge number
+                if(! _isFromInboxNotification) {
+                    _shopBadgeLevel.level = responseComment.result.shop_reputation.reputation_badge_object.level;
+                    _shopBadgeLevel.set = responseComment.result.shop_reputation.reputation_badge_object.set;
                 }
             }
             

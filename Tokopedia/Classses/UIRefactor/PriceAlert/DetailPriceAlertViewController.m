@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 5/25/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "CMPopTipView.h"
 #import "Catalog.h"
 #import "CatalogViewController.h"
 #import "CatalogShops.h"
@@ -25,6 +26,10 @@
 #import "ProductDetail.h"
 #import "PriceAlert.h"
 #import "PriceAlertResult.h"
+#import "ShopStats.h"
+#import "ShopReputation.h"
+#import "ShopBadgeLevel.h"
+#import "SmileyAndMedal.h"
 #import "ShopContainerViewController.h"
 #import "string_price_alert.h"
 #import "string_product.h"
@@ -46,11 +51,26 @@
 #define CTagKecepatan 8
 #define CTagAkurasi 9
 #define CTagPelayanan 10
+#define CTagSmiley 11
 #define CTagSort 1
 #define CTagFilter 2
 
-@interface DetailPriceAlertViewController ()<TokopediaNetworkManagerDelegate, LoginViewDelegate, LoadingViewDelegate, DepartmentListDelegate>
+@interface BtnSmiley : UIButton
+@property (nonatomic) int intTag;
+@end
+
+@implementation BtnSmiley
+@synthesize intTag;
+@end
+
+
+
+
+
+
+@interface DetailPriceAlertViewController ()<TokopediaNetworkManagerDelegate, LoginViewDelegate, LoadingViewDelegate, DepartmentListDelegate, CMPopTipViewDelegate>
 {
+    CMPopTipView *cmPopTitpView;
     NSMutableArray *catalogList;
     PriceAlertCell *priceAlertCell;
     TokopediaNetworkManager *tokopediaNetworkManager;
@@ -234,8 +254,47 @@
     }
 }
 
+- (void)actionSmiley:(BtnSmiley *)btnSmile {
+    CatalogShops *catalogShops = [catalogList objectAtIndex:btnSmile.intTag];
+    
+    NSString *strText = [NSString stringWithFormat:@"%@ %@", catalogShops.shop_reputation.shop_reputation_score==nil||[catalogShops.shop_reputation.shop_reputation_score isEqualToString:@""]? @"0":catalogShops.shop_reputation.shop_reputation_score, CStringPoin];
+    [self initPopUp:strText withSender:btnSmile withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+}
+
 
 #pragma mark - Method
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    cmPopTitpView.leftPopUp = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+
 - (void)redirectToDetailProduct:(ProductDetail *)detailProduct {
     [_TKPDNavigator navigateToProductFromViewController:self withName:detailProduct.product_name?:_detailPriceAlert.pricealert_product_name withPrice:detailProduct.product_price?:_detailPriceAlert.pricealert_price withId:detailProduct.product_id?:_detailPriceAlert.pricealert_product_id withImageurl:detailProduct.product_pic?:_detailPriceAlert.pricealert_product_image withShopName:nil];
 }
@@ -454,18 +513,27 @@
         [viewContent addSubview:btnHeaderName];
         
         //Location
-        UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(imgHeader.frame.origin.x+imgHeader.bounds.size.height + padding, heightProductName+padding+(padding/2.0f), diameterGold-5, diameterGold-5)];
-        imgLocation.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_location" ofType:@"png"]];
-        [viewContent addSubview:imgLocation];
-
-        UILabel *lblLocation = [[UILabel alloc] initWithFrame:CGRectMake(imgLocation.frame.origin.x+imgLocation.bounds.size.width, imgLocation.frame.origin.y+2, viewContent.bounds.size.width-(imgLocation.frame.origin.x+imgLocation.bounds.size.width+3), heightProductName)];
-        lblLocation.backgroundColor = [UIColor clearColor];
-        lblLocation.tag = CTagLocation;
-        lblLocation.font = [UIFont fontWithName:CGothamBook size:12.0f];
-        [viewContent addSubview:lblLocation];
+        UIButton *btnLokasi = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btnLokasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_location" ofType:@"png"]] forState:UIControlStateNormal];
+        btnLokasi.titleLabel.font = [UIFont fontWithName:CGothamBook size:12.0f];
+        btnLokasi.tag = CTagLocation;
+        [btnLokasi setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        btnLokasi.frame = CGRectMake(viewContent.bounds.size.width-130, heightProductName+padding+(padding/2.0f), 130, heightProductName);
+        [viewContent addSubview:btnLokasi];
+        
+        //Set Smiley
+        BtnSmiley *btnSmiley = [BtnSmiley buttonWithType:UIButtonTypeCustom];
+        [btnSmiley addTarget:self action:@selector(actionSmiley:) forControlEvents:UIControlEventTouchUpInside];
+        btnSmiley.frame = CGRectMake(imgHeader.frame.origin.x+imgHeader.bounds.size.height + padding, btnLokasi.frame.origin.y, 100, btnLokasi.bounds.size.height);
+        btnSmiley.tag = CTagSmiley;
+        [btnSmiley setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        btnSmiley.titleLabel.font = btnLokasi.titleLabel.font;
+        [btnSmiley setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [viewContent addSubview:btnSmiley];
+        
         
         //SetRate
-        UILabel *lblKecepatan = [[UILabel alloc] initWithFrame:CGRectMake(0, imgHeader.frame.origin.y+imgHeader.bounds.size.height+3, viewContent.bounds.size.width/3.0f, 12)];
+        UILabel *lblKecepatan = [[UILabel alloc] initWithFrame:CGRectMake(0, imgHeader.frame.origin.y+imgHeader.bounds.size.height+3, viewContent.bounds.size.width/2.0f, 12)];
         lblKecepatan.text = CStringKecepatan;
         lblKecepatan.textAlignment = NSTextAlignmentCenter;
         lblKecepatan.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
@@ -499,24 +567,24 @@
         [viewContent addSubview:viewAkurasi];
         
         
-        //Layanan
-        UILabel *lblPelayanan = [[UILabel alloc] initWithFrame:CGRectMake(lblAkurasi.frame.origin.x+lblAkurasi.bounds.size.width, lblKecepatan.frame.origin.y, lblKecepatan.bounds.size.width, lblKecepatan.bounds.size.height)];
-        lblPelayanan.text = CStringPelayanan;
-        lblPelayanan.textAlignment = lblAkurasi.textAlignment;
-        lblPelayanan.font = lblAkurasi.font;
-        [viewContent addSubview:lblPelayanan];
-        
-        [viewContent addSubview:lblAkurasi];
-        UIView *viewLayanan = [[UIView alloc] initWithFrame:CGRectMake(viewAkurasi.frame.origin.x+viewAkurasi.bounds.size.width, lblPelayanan.frame.origin.y+lblPelayanan.bounds.size.height, lblPelayanan.bounds.size.width, 12)];
-        viewLayanan.tag = CTagPelayanan;
-        
-        x = (viewLayanan.bounds.size.width-(viewLayanan.bounds.size.height*5))/2.0f;
-        for(int i=0;i<5;i++) {
-            UIImageView *imgStar = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, viewLayanan.bounds.size.height, viewLayanan.bounds.size.height)];
-            x += imgStar.bounds.size.width;
-            [viewLayanan addSubview:imgStar];
-        }
-        [viewContent addSubview:viewLayanan];
+//        //Layanan
+//        UILabel *lblPelayanan = [[UILabel alloc] initWithFrame:CGRectMake(lblAkurasi.frame.origin.x+lblAkurasi.bounds.size.width, lblKecepatan.frame.origin.y, lblKecepatan.bounds.size.width, lblKecepatan.bounds.size.height)];
+//        lblPelayanan.text = CStringPelayanan;
+//        lblPelayanan.textAlignment = lblAkurasi.textAlignment;
+//        lblPelayanan.font = lblAkurasi.font;
+//        [viewContent addSubview:lblPelayanan];
+//        
+//        [viewContent addSubview:lblAkurasi];
+//        UIView *viewLayanan = [[UIView alloc] initWithFrame:CGRectMake(viewAkurasi.frame.origin.x+viewAkurasi.bounds.size.width, lblPelayanan.frame.origin.y+lblPelayanan.bounds.size.height, lblPelayanan.bounds.size.width, 12)];
+//        viewLayanan.tag = CTagPelayanan;
+//        
+//        x = (viewLayanan.bounds.size.width-(viewLayanan.bounds.size.height*5))/2.0f;
+//        for(int i=0;i<5;i++) {
+//            UIImageView *imgStar = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, viewLayanan.bounds.size.height, viewLayanan.bounds.size.height)];
+//            x += imgStar.bounds.size.width;
+//            [viewLayanan addSubview:imgStar];
+//        }
+//        [viewContent addSubview:viewLayanan];
     }
     
     CatalogShops *catalogShop = [catalogList objectAtIndex:section];
@@ -535,9 +603,15 @@
     btnHeaderName.tagIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     [btnHeaderName setTitle:catalogShop.shop_name forState:UIControlStateNormal];
 
-
-    UILabel *lblLocation = (UILabel *)[tempViewContent viewWithTag:CTagLocation];
-    lblLocation.text = catalogShop.shop_location;
+    //Lokasi
+    UIButton *btnLokasi= (UIButton *)[tempViewContent viewWithTag:CTagLocation];
+    [btnLokasi setTitle:catalogShop.shop_location forState:UIControlStateNormal];
+    
+    //Smiley
+    BtnSmiley *btnSmiley = (BtnSmiley *)[tempViewContent viewWithTag:CTagSmiley];
+    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation.shop_badge_level.level withSet:catalogShop.shop_reputation.shop_badge_level.set withImage:btnSmiley isLarge:NO];
+    btnSmiley.intTag = (int)section;
+    
     
     //Akurasi
     UIView *viewAkurasi = (UIView *)[tempViewContent viewWithTag:CTagAkurasi];
@@ -566,20 +640,18 @@
     }
     
     //Pelayanan
-    UIView *viewPelayanan = (UIView *)[tempViewContent viewWithTag:CTagPelayanan];
-    for(int i=0;i<viewPelayanan.subviews.count;i++) {
-        UIImageView *tempImg = [viewPelayanan.subviews objectAtIndex:i];
-        
-        if(i < catalogShop.shop_rate_service) {
-            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
-        }
-        else {
-            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star" ofType:@"png"]];
-        }
-    }
-    
-    
-    
+//    UIView *viewPelayanan = (UIView *)[tempViewContent viewWithTag:CTagPelayanan];
+//    for(int i=0;i<viewPelayanan.subviews.count;i++) {
+//        UIImageView *tempImg = [viewPelayanan.subviews objectAtIndex:i];
+//        
+//        if(i < catalogShop.shop_rate_service) {
+//            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
+//        }
+//        else {
+//            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star" ofType:@"png"]];
+//        }
+//    }
+//    
     return view;
 }
 
@@ -720,6 +792,13 @@
                                                             CShopRateService,
                                                             CShopDomain]];
         
+        RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
+        [shopReputationMapping addAttributeMappingsFromDictionary:@{CToolTip:CToolTip,
+                                                                    @"reputation_score":CShopReputationScore}];
+        
+        RKObjectMapping *shopBadgeLeveMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+        [shopBadgeLeveMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+
         
         RKObjectMapping *productDetailMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
         [productDetailMapping addAttributeMappingsFromArray:@[CProductPrice, CProductID, CProductCondition, CProductName, CProductPriceFmt, CProductUri]];
@@ -728,6 +807,10 @@
         
         
         //relation
+        [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CShopBadgeLevel withMapping:shopBadgeLeveMapping]];
+        [catalogShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
+        
+        
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];
         
@@ -1030,4 +1113,19 @@
         departmentViewController = nil;
     }];
 }
+
+
+#pragma mark - CMPopTipView Delegate
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
 @end

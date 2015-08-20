@@ -16,7 +16,7 @@
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
-
+#import "SplitReputationViewController.h"
 #import "SalesNewOrderViewController.h"
 #import "ShipmentStatusViewController.h"
 
@@ -32,7 +32,7 @@
 #import "InboxResolSplitViewController.h"
 
 
-@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
+@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate, SplitReputationVcProtocol>
 
 @property (weak, nonatomic) IBOutlet UILabel *messageCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *discussionCountLabel;
@@ -64,6 +64,9 @@
 @end
 
 @implementation NotificationViewController
+{
+    UISplitViewController *splitViewController;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -363,9 +366,13 @@
                 
             case 2 : {
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                    InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
-                    [self.delegate pushViewController:controller];
+                    splitViewController = [UISplitViewController new];
                     
+                    SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+                    splitReputationViewController.splitViewController = splitViewController;
+                    splitReputationViewController.isFromNotificationView = YES;
+                    splitReputationViewController.del = self;
+                    [self.delegate pushViewController:splitReputationViewController];
                 } else {
                     SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
 	                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
@@ -480,4 +487,8 @@
     
 }
 
+#pragma mark - SplitVC Delegate
+- (void)deallocVC {
+    splitViewController = nil;
+}
 @end

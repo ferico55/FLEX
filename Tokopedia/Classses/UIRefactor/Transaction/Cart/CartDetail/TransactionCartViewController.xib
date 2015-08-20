@@ -907,10 +907,6 @@
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hJb-lx-Y9Z">
                                 <rect key="frame" x="118" y="3" width="187" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="D5Y-Tt-w7O"/>
-                                    <constraint firstAttribute="width" constant="187" id="ZhB-OK-u0w"/>
-                                </constraints>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -921,10 +917,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="rGT-eV-rjU" firstAttribute="top" secondItem="hJb-lx-Y9Z" secondAttribute="top" constant="-3" id="HoY-Jx-5Fc"/>
+                            <constraint firstItem="hJb-lx-Y9Z" firstAttribute="leading" secondItem="rGT-eV-rjU" secondAttribute="trailing" constant="10" id="HJC-i1-4VN"/>
+                            <constraint firstAttribute="trailing" secondItem="hJb-lx-Y9Z" secondAttribute="trailing" constant="15" id="Lml-8k-Hrh"/>
+                            <constraint firstAttribute="bottom" secondItem="hJb-lx-Y9Z" secondAttribute="bottom" id="QdM-PM-n7u"/>
+                            <constraint firstItem="hJb-lx-Y9Z" firstAttribute="top" secondItem="ZEg-l7-f8o" secondAttribute="top" constant="3" id="cxu-44-Cpf"/>
                             <constraint firstItem="rGT-eV-rjU" firstAttribute="top" secondItem="ZEg-l7-f8o" secondAttribute="top" id="deZ-vC-NZh"/>
                             <constraint firstItem="rGT-eV-rjU" firstAttribute="leading" secondItem="ZEg-l7-f8o" secondAttribute="leading" id="fNO-TT-Alk"/>
-                            <constraint firstItem="hJb-lx-Y9Z" firstAttribute="leading" secondItem="rGT-eV-rjU" secondAttribute="trailing" constant="10" id="itb-vd-BPZ"/>
                         </constraints>
                     </view>
                 </subviews>

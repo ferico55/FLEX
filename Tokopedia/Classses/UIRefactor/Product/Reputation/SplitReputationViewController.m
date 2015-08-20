@@ -28,6 +28,7 @@
     detailVC.navigationBar.translucent = NO;
     splitViewController.viewControllers = [NSArray arrayWithObjects:masterVC, detailVC, nil];
     [self.view addSubview:splitViewController.view];
+    [splitViewController setValue:[NSNumber numberWithFloat:350.0] forKey:@"_masterColumnWidth"];
     
     //Add Constraint
     UIView *splitView = splitViewController.view;
@@ -36,7 +37,12 @@
 }
 
 - (void)dealloc {
-    [_del deallocVC];
+    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        if(! _isFromNotificationView)
+            [_del deallocVC];
+    }
+    else
+        [_del deallocVC];
 }
 
 
@@ -52,6 +58,14 @@
 
 
 #pragma mark - Method
+- (UINavigationController *)getDetailNavigation {
+    return [splitViewController.viewControllers lastObject];
+}
+
+- (UINavigationController *)getMasterNavigation {
+    return [splitViewController.viewControllers firstObject];
+}
+
 - (void)setDetailViewController:(UIViewController *)viewController {
     UINavigationController *detailVC = [[UINavigationController alloc] initWithRootViewController:viewController];
     detailVC.navigationBar.translucent = NO;

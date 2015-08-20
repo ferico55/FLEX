@@ -220,7 +220,7 @@
     } else {
         SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
         segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
-        segmentedReputationViewController.selectedIndex = CTagReviewSaya;
+        segmentedReputationViewController.selectedIndex = CTagSemuaReview;
         [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
         
         
