@@ -423,7 +423,6 @@
 		7AE493791B85AF3B001B1E40 /* CreatePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE48A7F1B85AF38001B1E40 /* CreatePasswordViewController.m */; };
 		7AE4937A1B85AF3B001B1E40 /* CreatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AE48A801B85AF38001B1E40 /* CreatePasswordViewController.xib */; };
 		7AE4937B1B85AF3B001B1E40 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE48A831B85AF38001B1E40 /* LoginViewController.m */; };
-		7AE4937C1B85AF3B001B1E40 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AE48A841B85AF38001B1E40 /* LoginViewController.xib */; };
 		7AE4937D1B85AF3B001B1E40 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE48A871B85AF38001B1E40 /* LogoutViewController.m */; };
 		7AE4937E1B85AF3B001B1E40 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE48A8A1B85AF38001B1E40 /* RegisterViewController.m */; };
 		7AE4937F1B85AF3B001B1E40 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AE48A8B1B85AF38001B1E40 /* RegisterViewController.xib */; };
@@ -1734,6 +1733,7 @@
 		7AE4989D1B85B04E001B1E40 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AE4989C1B85B04E001B1E40 /* AddressBook.framework */; };
 		7AE4989F1B85B077001B1E40 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AE4989E1B85B077001B1E40 /* MediaPlayer.framework */; };
 		7AE498A11B85B09D001B1E40 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AE498A01B85B09D001B1E40 /* CoreMotion.framework */; };
+		7AE498A31B85B40F001B1E40 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AE498A21B85B40F001B1E40 /* LoginViewController.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2612,7 +2612,6 @@
 		7AE48A801B85AF38001B1E40 /* CreatePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreatePasswordViewController.xib; sourceTree = "<group>"; };
 		7AE48A821B85AF38001B1E40 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7AE48A831B85AF38001B1E40 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		7AE48A841B85AF38001B1E40 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		7AE48A861B85AF38001B1E40 /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoutViewController.h; sourceTree = "<group>"; };
 		7AE48A871B85AF38001B1E40 /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutViewController.m; sourceTree = "<group>"; };
 		7AE48A891B85AF38001B1E40 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
@@ -4351,6 +4350,7 @@
 		7AE4989C1B85B04E001B1E40 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		7AE4989E1B85B077001B1E40 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		7AE498A01B85B09D001B1E40 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		7AE498A21B85B40F001B1E40 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -6188,9 +6188,9 @@
 		7AE48A811B85AF38001B1E40 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				7AE498A21B85B40F001B1E40 /* LoginViewController.xib */,
 				7AE48A821B85AF38001B1E40 /* LoginViewController.h */,
 				7AE48A831B85AF38001B1E40 /* LoginViewController.m */,
-				7AE48A841B85AF38001B1E40 /* LoginViewController.xib */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -9630,6 +9630,7 @@
 				7AE498151B85AF3B001B1E40 /* icon_location_28px.png in Resources */,
 				7AE495341B85AF3B001B1E40 /* SettingBankNameCell.xib in Resources */,
 				7AE497A51B85AF3B001B1E40 /* icon_smile20.png in Resources */,
+				7AE498A31B85B40F001B1E40 /* LoginViewController.xib in Resources */,
 				7AE4970B1B85AF3B001B1E40 /* icon_medal_diamond@2x.png in Resources */,
 				7AE496361B85AF3B001B1E40 /* icon_17.png in Resources */,
 				7AE497BC1B85AF3B001B1E40 /* icon_speed_fast.png in Resources */,
@@ -9972,7 +9973,6 @@
 				7AE494C01B85AF3B001B1E40 /* ProductListMyShopCell.xib in Resources */,
 				7AE493BF1B85AF3B001B1E40 /* CategoryViewController.xib in Resources */,
 				7AE495301B85AF3B001B1E40 /* SettingAddressExpandedCell.xib in Resources */,
-				7AE4937C1B85AF3B001B1E40 /* LoginViewController.xib in Resources */,
 				7AE497D01B85AF3B001B1E40 /* icon_star_active.png in Resources */,
 				7AE4981E1B85AF3B001B1E40 /* navigation-button-bg-pt.png in Resources */,
 				7AE495481B85AF3B001B1E40 /* ProfileSettingViewController.xib in Resources */,
