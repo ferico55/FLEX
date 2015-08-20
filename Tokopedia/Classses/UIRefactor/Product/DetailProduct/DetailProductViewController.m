@@ -2043,7 +2043,9 @@ UIAlertViewDelegate
             
             
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
-            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
+            self.navigationItem.rightBarButtonItems = nil;
+            
+            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin]) {
                 //MyShop
                 UIBarButtonItem *barbutton;
                 barbutton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting.png"] withAction:@selector(gestureSetting:)];
