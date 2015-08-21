@@ -121,7 +121,8 @@
 
 - (void)requestTimeout {
     [self requestCancel];
-    if(_requestCount < kTKPDREQUESTCOUNTMAX) {
+    NSInteger requestCountMax = _maxTries?:kTKPDREQUESTCOUNTMAX;
+    if(_requestCount < requestCountMax) {
         [self doRequest];
     } else {
         [self resetRequestCount];

@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CatalogSectionHeaderView : UIView
-{
-    IBOutlet UIView *viewContent;
-}
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
