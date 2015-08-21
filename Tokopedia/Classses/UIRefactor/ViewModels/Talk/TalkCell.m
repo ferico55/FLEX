@@ -66,6 +66,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     if(![modelView.talkOwnerStatus isEqualToString:@"1"] && [_userManager isLogin]) {
         [self.unfollowButton setHidden:NO];
+        self.totalCommentButton.translatesAutoresizingMaskIntoConstraints = YES;
         
         CGRect newFrame = self.totalCommentButton.frame;
         newFrame.origin.x = 0;
@@ -78,7 +79,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         newFrame.origin.x = [UIScreen mainScreen].bounds.size.width/320 * 75;
         self.totalCommentButton.frame = newFrame;
         self.divider.hidden = YES;
-        self.totalCommentButton.translatesAutoresizingMaskIntoConstraints = YES;
     }
     
     [self setTalkFollowStatus:[modelView.followStatus isEqualToString:@"1"] ? YES : NO];
