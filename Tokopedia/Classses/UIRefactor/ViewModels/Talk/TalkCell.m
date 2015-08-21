@@ -66,18 +66,21 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     if(![modelView.talkOwnerStatus isEqualToString:@"1"] && [_userManager isLogin]) {
         [self.unfollowButton setHidden:NO];
-        self.totalCommentButton.translatesAutoresizingMaskIntoConstraints = YES;
+        [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:NO];
         
         CGRect newFrame = self.totalCommentButton.frame;
         newFrame.origin.x = 0;
         self.totalCommentButton.frame = newFrame;
+
         self.divider.hidden = NO;
     } else {
         [self.unfollowButton setHidden:YES];
+        [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:YES];
         
         CGRect newFrame = self.totalCommentButton.frame;
         newFrame.origin.x = [UIScreen mainScreen].bounds.size.width/320 * 75;
         self.totalCommentButton.frame = newFrame;
+
         self.divider.hidden = YES;
     }
     
@@ -112,8 +115,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         [self.reputationButton setTitle:[NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage==nil? @"0":modelView.userReputation.positive_percentage] forState:UIControlStateNormal];
         [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
     }
-                                                                                           
-    [self.reputationButton setTitle:[ NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage == nil ? @"0" : modelView.userReputation.positive_percentage] forState:UIControlStateNormal];
 
 }
 
@@ -167,9 +168,10 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     else {
         ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
         vc.data = data;
-        
+
         UIViewController *controller = [_delegate getNavigationController:self];
         [controller.navigationController pushViewController:vc animated:YES];
+
     }
 }
 
@@ -209,6 +211,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 - (void)tapToProduct {
     UINavigationController *controller = [_delegate getNavigationController:self];
 //    [_navigateController navigateToProductFromViewController:controller withProductID:_selectedTalkProductID];
+    [_navigateController navigateToProductFromViewController:controller withName:nil withPrice:nil withId:_selectedTalkProductID withImageurl:nil withShopName:nil];
     
 }
 
@@ -273,7 +276,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _popTipView.leftPopUp = YES;
     
     UIButton *button = (UIButton *)sender;
-    [_popTipView presentPointingAtView:button inView:self.view animated:YES];
+    UITableView *table = [_delegate getTable];
+    [_popTipView presentPointingAtView:button inView:table animated:YES];
 }
 
 - (void)actionVote:(id)sender {

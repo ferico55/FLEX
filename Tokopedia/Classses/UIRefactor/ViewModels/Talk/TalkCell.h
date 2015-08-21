@@ -79,7 +79,7 @@
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) IBOutlet UIView *buttonsView;
 @property (weak, nonatomic) IBOutlet UIView *divider;
-@property (nonatomic, weak) IBOutlet id<TalkCellDelegate> delegate;
+@property (nonatomic, weak) id<TalkCellDelegate> delegate;
 
 @property (nonatomic, strong) NSString *selectedTalkUserID;
 @property (nonatomic, strong) NSString *selectedTalkShopID;

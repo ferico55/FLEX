@@ -9,10 +9,7 @@
 #import "FavoritedShopViewController.h"
 #import "string_home.h"
 #import "detail.h"
-#import "ShopTalkViewController.h"
-#import "ShopReviewViewController.h"
-#import "ShopNotesViewController.h"
-#import "TKPDTabShopViewController.h"
+
 #import "FavoritedShopCell.h"
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"

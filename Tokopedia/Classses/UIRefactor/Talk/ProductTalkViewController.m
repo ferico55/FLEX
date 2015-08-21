@@ -11,7 +11,6 @@
 #import "string_product.h"
 #import "detail.h"
 #import "GeneralAction.h"
-#import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
 #import "ProductTalkFormViewController.h"

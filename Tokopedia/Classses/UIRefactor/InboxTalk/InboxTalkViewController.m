@@ -9,7 +9,6 @@
 #import "string_inbox_message.h"
 #import "InboxTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
-#import "GeneralTalkCell.h"
 #import "ReportViewController.h"
 #import "Talk.h"
 #import "GeneralAction.h"
@@ -171,7 +170,7 @@
 }
 
 - (id)getNavigationController:(UITableViewCell *)cell {
-    return self;
+    return _delegate;
 }
 
 #pragma mark - Refresh View 
@@ -359,7 +358,7 @@
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [indicator startAnimating];
     
-    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
+    CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 60);
     UIView *loadingView = [[UIView alloc] initWithFrame:frame];
     [loadingView addSubview:indicator];
     

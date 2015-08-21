@@ -25,7 +25,5 @@ typedef NS_ENUM(NSInteger, InboxTalkType) {
 @property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
 @property InboxTalkType inboxTalkType;
 
-- (void)removeData:(NSString *)inboxID;
-- (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 
 @end
