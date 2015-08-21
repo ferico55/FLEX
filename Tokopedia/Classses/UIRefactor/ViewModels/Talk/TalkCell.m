@@ -78,7 +78,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:YES];
         
         CGRect newFrame = self.totalCommentButton.frame;
-        newFrame.origin.x = [UIScreen mainScreen].bounds.size.width/320 * 75;
+        newFrame.origin.x = [_delegate getTable].frame.size.width/320 * 75;
         self.totalCommentButton.frame = newFrame;
 
         self.divider.hidden = YES;
@@ -131,7 +131,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 #pragma mark - Tap Button
-- (IBAction)tapToDetailTalk:(id)sender {
+- (IBAction)tapToDetailTalk:(UITableViewCell*)cell {
     NSIndexPath *indexPath = [[_delegate getTable] indexPathForCell:self];
     
     NSInteger row = indexPath.row;
@@ -232,10 +232,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     TKPDTabViewController *controller = [_delegate getNavigationController:self];
     [controller.navigationController pushViewController:_reportController animated:YES];
-}
-
-- (void)tapToDelete {
-    
 }
 
 #pragma mark - Action Delegate

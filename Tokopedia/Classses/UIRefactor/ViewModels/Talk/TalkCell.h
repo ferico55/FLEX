@@ -42,7 +42,6 @@
     NavigateViewController *_navigateController;
     UserAuthentificationManager *_userManager;
     CMPopTipView *_popTipView;
-    ProductTalkDetailViewController *_detailViewController;
     
     TalkList *_unfollowTalk;
     TalkList *_deleteTalk;
@@ -59,6 +58,7 @@
 
 
 - (void)setTalkViewModel:(TalkModelView*)modelView;
+- (void)tapToDetailTalk:(UITableViewCell*)cell;
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadImageView;
@@ -85,6 +85,7 @@
 @property (nonatomic, strong) NSString *selectedTalkShopID;
 @property (nonatomic, strong) NSString *selectedTalkProductID;
 @property (nonatomic, strong) ReputationDetail *selectedTalkReputation;
+@property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
 
 
 @end

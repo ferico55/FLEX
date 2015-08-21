@@ -64,13 +64,13 @@
     NSIndexPath *_selectedIndexPath;
     NoResultView *_noResultView;
     TAGContainer *_gtmContainer;
-    CMPopTipView *popTipView;
     UserAuthentificationManager *_userManager;
     
     NSIndexPath *_selectedDetailIndexPath;
     
     NSInteger _currentTabMenuIndex;
     NSInteger _currentTabSegmentIndex;
+    BOOL isFirstShow;
 }
 
 #pragma mark - Initialization
@@ -85,7 +85,6 @@
 
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadTalk:) name:@"updateUnreadTalk" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataSource:) name:TKPDTabNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDeletedTalk:) name:@"TokopediaDeleteInboxTalk" object:nil];
 }
@@ -97,6 +96,7 @@
     [self initNotification];
     
     _page = 1;
+    isFirstShow = YES;
     
     _userManager = [UserAuthentificationManager new];
     _talkList = [NSMutableArray new];
@@ -146,8 +146,14 @@
     cell.selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)list.talk_user_id];
     cell.selectedTalkProductID = list.talk_product_id;
     cell.selectedTalkReputation = list.talk_user_reputation;
+    cell.detailViewController = _detailViewController;
     
     [cell setTalkViewModel:list.viewModel];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && indexPath.row == 1 && isFirstShow) {
+        [cell tapToDetailTalk:cell];
+        isFirstShow = NO;
+    }
     
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
@@ -358,7 +364,7 @@
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [indicator startAnimating];
     
-    CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 60);
+    CGRect frame = CGRectMake(0, 0, self.table.frame.size.width, 60);
     UIView *loadingView = [[UIView alloc] initWithFrame:frame];
     [loadingView addSubview:indicator];
     
@@ -389,6 +395,7 @@
     }
     
     [self.table reloadData];
+
     
     [_refreshControl endRefreshing];
 }
