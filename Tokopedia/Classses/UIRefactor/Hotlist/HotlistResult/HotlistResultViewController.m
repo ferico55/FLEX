@@ -116,6 +116,8 @@ typedef enum ScrollDirection {
     
     NSTimeInterval _timeinterval;
     NoResultView *_noResultView;
+    
+    PromoRequest *_promoRequest;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -131,7 +133,6 @@ typedef enum ScrollDirection {
 @property (nonatomic) UITableViewCellType cellType;
 
 @property (strong, nonatomic) NSMutableArray *promo;
-@property (strong, nonatomic) NSMutableArray *promoRequest;
 
 @property PromoCollectionViewCellType promoCellType;
 @property (strong, nonatomic) NSMutableArray *promoScrollPosition;
@@ -186,7 +187,6 @@ typedef enum ScrollDirection {
     _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, self.view.frame.size.width, 100)];
 
     _promo = [NSMutableArray new];
-    _promoRequest = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
 
     // set max data per page request
@@ -273,6 +273,8 @@ typedef enum ScrollDirection {
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [viewCollection addSubview:_refreshControl];
     
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -302,6 +304,7 @@ typedef enum ScrollDirection {
     [self configureRestKit];
     if (_isnodata) {
         [self request];
+        [self requestPromo];
     }
     self.hidesBottomBarWhenPushed = YES;
 }
@@ -319,7 +322,6 @@ typedef enum ScrollDirection {
 
 #pragma mark - Memory Management
 -(void)dealloc{
-    _promoRequest = nil;
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
@@ -757,6 +759,7 @@ typedef enum ScrollDirection {
                 }
                 
                 if (_product.count > 0) {
+                    
                     _descriptionview.hidden = NO;
                     _header.hidden = NO;
                     _filterview.hidden = NO;
@@ -784,21 +787,14 @@ typedef enum ScrollDirection {
                     
                     _filterview.hidden = NO;
                     
-                    NSString *key = [_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
-                    
-                    PromoRequest *promoRequest = [PromoRequest new];
-                    promoRequest.delegate = self;
-                    promoRequest.page = _page;
-                    [promoRequest requestForProductHotlist:key];
-                    
-                    [_promoRequest addObject:promoRequest];
+                    [self requestPromo];
                     
                 } else {
                     [flowLayout setFooterReferenceSize:CGSizeZero];
                     [viewCollection addSubview:_noResultView];
+                    [viewCollection reloadData];
+                    [viewCollection layoutIfNeeded];
                 }
-                [viewCollection reloadData];
-                [viewCollection layoutIfNeeded];
             }
         }
     }
@@ -845,6 +841,7 @@ typedef enum ScrollDirection {
     [viewCollection layoutIfNeeded];
     [self configureRestKit];
     [self request];
+    [self requestPromo];
 }
 
 - (void)registerNibCell:(NSString *)strTag withIdentifier:(NSString *)strIdentifier isFooterView:(BOOL)isFooter isHeader:(BOOL)isHeader
@@ -954,6 +951,7 @@ typedef enum ScrollDirection {
     
     [self configureRestKit];
     [self request];
+    [self requestPromo];
 }
 
 #pragma mark - Category Delegate
@@ -1051,6 +1049,7 @@ typedef enum ScrollDirection {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             [self configureRestKit];
             [self request];
+            [self requestPromo];
         }
     }
     
@@ -1142,10 +1141,18 @@ typedef enum ScrollDirection {
 
 #pragma mark - Promo request delegate
 
+- (void)requestPromo {
+    NSString *key = [_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
+    _promoRequest.page = _page;
+    [_promoRequest requestForProductHotlist:key];
+}
+
 - (void)didReceivePromo:(NSArray *)promo {
-    [_promo addObject:promo];
-    [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
+    if (promo) {
+        [_promo addObject:promo];
+        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
+    }
     [viewCollection reloadData];
     [viewCollection layoutIfNeeded];
 }

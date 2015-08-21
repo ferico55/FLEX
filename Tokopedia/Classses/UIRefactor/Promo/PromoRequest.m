@@ -244,8 +244,12 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 - (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     PromoResponse *response = [[result dictionary] objectForKey:@""];
     if (tag == PromoNetworkManagerGet) {
-        if ([self.delegate respondsToSelector:@selector(didReceivePromo:)] && response.result.list.count > 0) {
-            [self.delegate didReceivePromo:response.result.list];
+        if ([self.delegate respondsToSelector:@selector(didReceivePromo:)]) {
+            if (response.result.list.count > 0) {
+                [self.delegate didReceivePromo:response.result.list];
+            } else {
+                [self.delegate didReceivePromo:nil];
+            }
         }
     } else if (tag == PromoNetworkManagerAction) {
         if ([self.delegate respondsToSelector:@selector(didFinishedAddImpression)]) {
@@ -255,6 +259,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    [self.delegate didReceivePromo:nil];
 }
 
 - (void)requestPromo {
@@ -262,6 +267,8 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = PromoNetworkManagerGet;
+    _networkManager.maxTries = 1;
+    _networkManager.timeInterval = 3;
     [_networkManager doRequest];
 }
 
