@@ -12,7 +12,7 @@
 //#define kTkpdBaseURLString @"http://www.ft-feby.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#define kTkpdBaseURLString @"http://www.py-purnaresa.ndvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -20,7 +20,7 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-//#define kTkpdBaseURLString @"http://sx-suwarnold.dvl/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -246,4 +246,27 @@ typedef enum {
 
 #define GTMKeyActionReviewBase @"action_review_base_url"
 #define GTMKeyActionReviewPost @"action_review_post_url"
+
+#define GTMKeyPromoBase @"promo_base_url"
+#define GTMKeyPromoPost @"promo_post_url"
+#define GTMKeyPromoFull @"promo_full_url"
+
+#define GTMKeyPromoBaseAction   @"promo_base_action_url"
+#define GTMKeyPromoPostAction   @"promo_post_action_url"
+#define GTMKeyPromoFullAction   @"promo_full_action_url"
+
+#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define IS_RETINA ([[UIScreen mainScreen] scale] >= 2.0)
+
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+#define SCREEN_MAX_LENGTH (MAX(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define SCREEN_MIN_LENGTH (MIN(SCREEN_WIDTH, SCREEN_HEIGHT))
+
+#define IS_IPHONE_4_OR_LESS (IS_IPHONE && SCREEN_MAX_LENGTH < 568.0)
+#define IS_IPHONE_5 (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)
+#define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
+#define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
+
 #endif

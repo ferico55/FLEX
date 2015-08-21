@@ -10,7 +10,7 @@
 
 @interface CatalogSectionHeaderView ()
 
-//@property (weak, nonatomic) IBOutlet UIView *view;
+@property (weak, nonatomic) IBOutlet UIView *view;
 
 @end
 
@@ -20,23 +20,22 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView" owner:nil options:0];
-        self = [tempArr objectAtIndex:0];
-//        viewContent.layer.borderColor = [UIColor colorWithRed:158/255.0f green:158/255.0f blue:158/255.0f alpha:1.0f].CGColor;
-//        viewContent.layer.borderWidth = 1.0f;
-//        viewContent.layer.masksToBounds = YES;
+        [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView"
+                                      owner:self
+                                    options:nil];
+        self.view.frame = frame;        
+        [self addSubview:self.view];
+        [self layoutIfNeeded];
     }
-
     return self;
 }
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-//    [self addSubview:self.view];
-    viewContent.layer.borderColor = [UIColor colorWithRed:158/255.0f green:158/255.0f blue:158/255.0f alpha:1.0f].CGColor;
-    viewContent.layer.borderWidth = 1.0f;
-    viewContent.layer.masksToBounds = YES;
+    _view.layer.borderColor = [UIColor colorWithRed:158/255.0f green:158/255.0f blue:158/255.0f alpha:1.0f].CGColor;
+    _view.layer.borderWidth = 1.0f;
+    _view.layer.masksToBounds = YES;
 }
 
 @end

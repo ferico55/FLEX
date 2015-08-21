@@ -283,9 +283,8 @@ static CGFloat rowHeight = 40;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView" owner:nil options:0];
-    CatalogSectionHeaderView *view = [tempArr objectAtIndex:0];
-    
+    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 63);
+    CatalogSectionHeaderView *view = [[CatalogSectionHeaderView alloc] initWithFrame:frame];
     view.titleLabel.text = [_specificationTitles objectAtIndex:section];
     return view;
 }

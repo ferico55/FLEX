@@ -37,6 +37,10 @@
 #import "GeneralPhotoProductCell.h"
 #import "NavigateViewController.h"
 
+#import "PromoCollectionReusableView.h"
+#import "PromoRequest.h"
+
+#import "DetailProductViewController.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -57,14 +61,24 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeThreeColumn,
 };
 
+typedef enum ScrollDirection {
+    ScrollDirectionNone,
+    ScrollDirectionRight,
+    ScrollDirectionLeft,
+    ScrollDirectionUp,
+    ScrollDirectionDown,
+} ScrollDirection;
+
 @interface HotlistResultViewController ()
 <
-GeneralProductCellDelegate,
-CategoryMenuViewDelegate,
-SortViewControllerDelegate,
-FilterViewControllerDelegate,
-GeneralSingleProductDelegate,
-GeneralPhotoProductDelegate
+    GeneralProductCellDelegate,
+    CategoryMenuViewDelegate,
+    SortViewControllerDelegate,
+    FilterViewControllerDelegate,
+    GeneralSingleProductDelegate,
+    GeneralPhotoProductDelegate,
+    PromoCollectionViewDelegate,
+    PromoRequestDelegate
 >
 {
     NSInteger _page;
@@ -104,10 +118,11 @@ GeneralPhotoProductDelegate
     
     NSTimeInterval _timeinterval;
     NoResultView *_noResultView;
+    
+    PromoRequest *_promoRequest;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
@@ -118,6 +133,14 @@ GeneralPhotoProductDelegate
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipegestureright;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 @property (nonatomic) UITableViewCellType cellType;
+
+@property (strong, nonatomic) NSMutableArray *promo;
+
+@property PromoCollectionViewCellType promoCellType;
+@property (strong, nonatomic) NSMutableArray *promoScrollPosition;
+
+@property (assign, nonatomic) CGFloat lastContentOffset;
+@property ScrollDirection scrollDirection;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -165,7 +188,9 @@ GeneralPhotoProductDelegate
     _operationQueue = [NSOperationQueue new];
     _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, self.view.frame.size.width, 100)];
 
-    
+    _promo = [NSMutableArray new];
+    _promoScrollPosition = [NSMutableArray new];
+
     // set max data per page request
     _limit = kTKPDHOMEHOTLISTRESULT_LIMITPAGE;
     
@@ -224,15 +249,22 @@ GeneralPhotoProductDelegate
         if (self.cellType == UITableViewCellTypeOneColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeNormal;
+            
         } else if (self.cellType == UITableViewCellTypeTwoColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeNormal;
+
         } else if (self.cellType == UITableViewCellTypeThreeColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeThumbnail;
+
         }
     } else {
         self.cellType = UITableViewCellTypeTwoColumn;
+        self.promoCellType = PromoCollectionViewCellTypeNormal;
         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                forState:UIControlStateNormal];
     }
@@ -243,6 +275,11 @@ GeneralPhotoProductDelegate
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [viewCollection addSubview:_refreshControl];
     
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
+    [self requestPromo];
+    
+    self.scrollDirection = ScrollDirectionDown;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -258,10 +295,13 @@ GeneralPhotoProductDelegate
         [self registerNibCell:CProductSingleView withIdentifier:CProductSingleViewIdentifier isFooterView:NO isHeader:NO];
         [self registerNibCell:CProductThumbView withIdentifier:CProductThumbIdentifier isFooterView:NO isHeader:NO];
         
+        UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
+        [viewCollection registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
+
         viewCollection.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
         [viewCollection setAlwaysBounceVertical:YES];
-        [flowLayout setFooterReferenceSize:CGSizeMake(self.view.bounds.size.height, 50)];
-        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+        [flowLayout setFooterReferenceSize:CGSizeMake(self.view.frame.size.width, 50)];
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     }
     
     
@@ -285,7 +325,7 @@ GeneralPhotoProductDelegate
 }
 
 #pragma mark - Memory Management
--(void)dealloc{
+-(void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
@@ -412,16 +452,19 @@ GeneralPhotoProductDelegate
                     
                     if (self.cellType == UITableViewCellTypeOneColumn) {
                         self.cellType = UITableViewCellTypeTwoColumn;
+                        self.promoCellType = PromoCollectionViewCellTypeNormal;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                                forState:UIControlStateNormal];
                         
                     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
                         self.cellType = UITableViewCellTypeThreeColumn;
+                        self.promoCellType = PromoCollectionViewCellTypeThumbnail;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                                forState:UIControlStateNormal];
                         
                     } else if (self.cellType == UITableViewCellTypeThreeColumn) {
                         self.cellType = UITableViewCellTypeOneColumn;
+                        self.promoCellType = PromoCollectionViewCellTypeNormal;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                                forState:UIControlStateNormal];
                         
@@ -430,7 +473,7 @@ GeneralPhotoProductDelegate
                     NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
                     [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
                     [viewCollection reloadData];
-                    
+                    [viewCollection layoutIfNeeded];
                     break;
                 }
                 default:
@@ -624,7 +667,7 @@ GeneralPhotoProductDelegate
     NSDictionary* param = @{
                             kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry,
                             kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLISTRESULT_LIMITPAGE),
+                            kTKPDHOME_APILIMITPAGEKEY : @"30",
                             kTKPDHOME_APIORDERBYKEY : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
                             kTKPDHOME_APIDEPARTMENTIDKEY: [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
                             kTKPDHOME_APILOCATIONKEY :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
@@ -637,17 +680,12 @@ GeneralPhotoProductDelegate
                                                                     method:RKRequestMethodPOST
                                                                       path:kTKPDHOMEHOTLISTRESULT_APIPATH
                                                                 parameters:[param encrypt]];
-    //	[_cachecontroller getFileModificationDate];
-    //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-    //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
-    //[_cachecontroller clearCache];
+    
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
-        [_table reloadData];
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestfailure:error];
@@ -660,15 +698,6 @@ GeneralPhotoProductDelegate
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    //    }
-    //	else {
-    //        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    //        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    //        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-    //        NSLog(@"cache and updated in last 24 hours.");
-    //        [self requestfailure:nil];
-    //	}
 }
 
 
@@ -679,7 +708,6 @@ GeneralPhotoProductDelegate
     _hotlistdetail = info;
     NSString *statusstring = _hotlistdetail.status;
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
     if (status) {
         if (_page <=1 && !_isrefreshview) {
             //only save cache for first page
@@ -701,6 +729,7 @@ GeneralPhotoProductDelegate
     else {
         isFailedRequest = YES;
         [viewCollection reloadData];
+        [viewCollection layoutIfNeeded];
     }
 }
 
@@ -718,15 +747,11 @@ GeneralPhotoProductDelegate
                 
                 if (_page == 1) {
                     [_product removeAllObjects];
-                    [self.table setContentOffset:CGPointZero animated:YES];
+                    [_promo removeAllObjects];
                 }
+
+                [_product addObject:_hotlistdetail.result.list];
                 
-                [_product addObjectsFromArray: _hotlistdetail.result.list];
-                
-                if(_product.count == 0) {
-                    [flowLayout setFooterReferenceSize:CGSizeZero];
-                    [viewCollection addSubview:_noResultView];
-                }
                 _pagecontrol.hidden = NO;
                 _swipegestureleft.enabled = YES;
                 _swipegestureright.enabled = YES;
@@ -734,19 +759,17 @@ GeneralPhotoProductDelegate
                 
                 NSArray * departmenttree = _hotlistdetail.result.department_tree;
                 
-                //[_departmenttree removeAllObjects];
                 if (_departmenttree.count == 0) {
                     [_departmenttree addObjectsFromArray:departmenttree];
                 }
                 
-                if (_product.count >0) {
+                if (_product.count > 0) {
                     
                     _descriptionview.hidden = NO;
                     _header.hidden = NO;
                     _filterview.hidden = NO;
                     
                     _urinext =  _hotlistdetail.result.paging.uri_next;
-                    
                     NSURL *url = [NSURL URLWithString:_urinext];
                     NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                     
@@ -768,9 +791,15 @@ GeneralPhotoProductDelegate
                     _isnodata = NO;
                     
                     _filterview.hidden = NO;
+                    
+                    if (_page > 1) [self requestPromo];
+                    
+                } else {
+                    [flowLayout setFooterReferenceSize:CGSizeZero];
+                    [viewCollection addSubview:_noResultView];
+                    [viewCollection reloadData];
+                    [viewCollection layoutIfNeeded];
                 }
-                
-                [viewCollection reloadData];
             }
         }
     }
@@ -793,6 +822,7 @@ GeneralPhotoProductDelegate
         else
         {
             [viewCollection reloadData];
+            [viewCollection layoutIfNeeded];
             NSError *error = object;
             if (!([error code] == NSURLErrorCancelled)){
                 NSString *errorDescription = error.localizedDescription;
@@ -813,6 +843,7 @@ GeneralPhotoProductDelegate
 - (IBAction)pressRetryButton:(id)sender
 {
     [viewCollection reloadData];
+    [viewCollection layoutIfNeeded];
     [self configureRestKit];
     [self request];
 }
@@ -921,7 +952,6 @@ GeneralPhotoProductDelegate
     _isrefreshview = YES;
     
     [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
     [self configureRestKit];
     [self request];
@@ -994,15 +1024,17 @@ GeneralPhotoProductDelegate
     return cellSize;
 }
 
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _isnodata?0:_product.count;
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return _product.count?:1;
 }
 
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _isnodata?0:[[_product objectAtIndex:section] count];
+}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell;
-    List *list = [_product objectAtIndex:indexPath.row];
+    List *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cell = (ProductSingleViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductSingleViewIdentifier forIndexPath:indexPath];
         [(ProductSingleViewCell *)cell setViewModel:list.viewModel];
@@ -1014,10 +1046,9 @@ GeneralPhotoProductDelegate
         [(ProductThumbCell *)cell setViewModel:list.viewModel];
     }
     
-    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        
+    NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+    if (indexPath.section == section && indexPath.row == row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             [self configureRestKit];
             [self request];
@@ -1030,43 +1061,136 @@ GeneralPhotoProductDelegate
     return cell;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
-
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
-    return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
-}
-
-
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
-    
-    if(kind == UICollectionElementKindSectionFooter) {
-        if(isFailedRequest) {
-            isFailedRequest = !isFailedRequest;
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+    if (kind == UICollectionElementKindSectionHeader) {
+        if (indexPath.section == 0) {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                              withReuseIdentifier:CTagHeaderIdentifier
+                                                                     forIndexPath:indexPath];
+            [_header removeFromSuperview];
+            [reusableView addSubview:_header];
+        } else if (_promo.count >= indexPath.section && indexPath.section > 0) {
+            if ([_promo objectAtIndex:indexPath.section]) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                if (self.scrollDirection == ScrollDirectionDown) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                } else if (self.scrollDirection == ScrollDirectionUp) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenterWithoutAnimation];
+                }
+            } else {
+                reusableView = nil;
+            }
         } else {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:CTagFooterCollectionIdentifier forIndexPath:indexPath];
+            reusableView = nil;
         }
     }
-    else if(kind == UICollectionElementKindSectionHeader) {
-        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CTagHeaderIdentifier forIndexPath:indexPath];
-        [_header removeFromSuperview];
-        [reusableView addSubview:_header];
+    else if(kind == UICollectionElementKindSectionFooter) {
+        if(isFailedRequest) {
+            isFailedRequest = !isFailedRequest;
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"RetryView"
+                                                                     forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:CTagFooterCollectionIdentifier
+                                                                     forIndexPath:indexPath];
+        }
     }
-    
+
     return reusableView;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    CGSize size = CGSizeZero;
+    if (section == 0) {
+        _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
+        size = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
+    } else {
+        if (_promo.count > section && section > 0) {
+            if ([_promo objectAtIndex:section]) {
+                CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                size = CGSizeMake(self.view.frame.size.width, headerHeight);
+            }
+        }
+    }
+    return size;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+    NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
+    if (section == lastSection) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+            size = CGSizeMake(self.view.frame.size.width, 50);
+        }
+    } else if (_product.count == 0 && _page == 1) {
+        size = CGSizeMake(self.view.frame.size.width, 50);
+    }
+    return size;
+}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    List *list = _product[indexPath.row];
+	List *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     NavigateViewController *navigator = [NavigateViewController new];
     [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }
+
+#pragma mark - Promo request delegate
+
+- (void)requestPromo {
+    NSString *key = [_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
+    _promoRequest.page = _page;
+    [_promoRequest requestForProductHotlist:key];
+}
+
+- (void)didReceivePromo:(NSArray *)promo {
+    if (promo) {
+        [_promo addObject:promo];
+        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+    } else if (promo == nil && _page == 2) {
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    }
+    [viewCollection reloadData];
+    [viewCollection layoutIfNeeded];
+}
+
+#pragma mark - Promo collection delegate
+
+- (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
+    [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
+}
+
+- (void)didSelectPromoProduct:(PromoProduct *)product {
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = @{
+                kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+                kTKPD_AUTHKEY               : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
+                PromoImpressionKey          : product.ad_key,
+                PromoSemKey                 : product.ad_sem_key,
+                PromoReferralKey            : product.ad_r
+                };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Scroll delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.lastContentOffset > scrollView.contentOffset.y) {
+        self.scrollDirection = ScrollDirectionUp;
+    } else if (self.lastContentOffset < scrollView.contentOffset.y) {
+        self.scrollDirection = ScrollDirectionDown;
+    }
+    self.lastContentOffset = scrollView.contentOffset.y;
+}
+
 @end
