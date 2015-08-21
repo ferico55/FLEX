@@ -1745,7 +1745,6 @@
 		7AE4AF481B8743CB001B1E40 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE4A8841B8743C5001B1E40 /* MGSwipeTableCell.m */; };
 		7AE4AF491B8743CB001B1E40 /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 7AE4A8851B8743C5001B1E40 /* MGSwipeTableCell.podspec */; };
 		7AE4AF4A1B8743CB001B1E40 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7AE4A8861B8743C5001B1E40 /* README.md */; };
-		7AE4AF4B1B8743CB001B1E40 /* libVTiOSAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AE4A8881B8743C5001B1E40 /* libVTiOSAPI.a */; };
 		7AE4AF4C1B8743CB001B1E40 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7AE4A8891B8743C5001B1E40 /* vt-iOSlib-1.0.1.tar.gz */; };
 		7AE4AF4D1B8743CB001B1E40 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7AE4A88A1B8743C5001B1E40 /* vt-iOSlib-1.0.1.zip */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
@@ -4466,7 +4465,6 @@
 				85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
 				85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */,
-				7AE4AF4B1B8743CB001B1E40 /* libVTiOSAPI.a in Frameworks */,
 				FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
