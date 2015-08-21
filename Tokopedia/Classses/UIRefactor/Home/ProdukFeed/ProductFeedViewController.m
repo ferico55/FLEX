@@ -50,7 +50,6 @@ typedef enum ScrollDirection {
 
 @property (nonatomic, strong) NSMutableArray *product;
 @property (strong, nonatomic) NSMutableArray *promo;
-@property (strong, nonatomic) NSMutableArray *promoRequest;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -58,6 +57,8 @@ typedef enum ScrollDirection {
 @property (strong, nonatomic) NSMutableArray *promoScrollPosition;
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
+
+@property (strong, nonatomic) PromoRequest *promoRequest;
 
 @end
 
@@ -97,7 +98,6 @@ typedef enum ScrollDirection {
     //todo with variable
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
-    _promoRequest = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
 
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
@@ -114,7 +114,7 @@ typedef enum ScrollDirection {
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
@@ -129,6 +129,10 @@ typedef enum ScrollDirection {
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductFeedTag;
     [_networkManager doRequest];
+    
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
+    [self requestPromo];
     
     [self registerNib];
 }
@@ -183,6 +187,8 @@ typedef enum ScrollDirection {
                 ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
                 if (self.scrollDirection == ScrollDirectionDown) {
                     [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                } else if (self.scrollDirection == ScrollDirectionUp) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenterWithoutAnimation];
                 }
             } else {
                 reusableView = nil;
@@ -274,7 +280,6 @@ typedef enum ScrollDirection {
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     _networkManager = nil;
-    _promoRequest = nil;
 }
 
 #pragma mark - Tokopedia Network Delegate
@@ -372,12 +377,7 @@ typedef enum ScrollDirection {
             [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
         }
         
-        PromoRequest *promoRequest = [PromoRequest new];
-        promoRequest.delegate = self;
-        promoRequest.page = _page;
-        [promoRequest requestForProductFeed];
-        
-        [_promoRequest addObject:promoRequest];
+        if (_page > 1) [self requestPromo];
         
     } else {
         // no data at all
@@ -458,10 +458,18 @@ typedef enum ScrollDirection {
 
 #pragma mark - Promo request delegate
 
+- (void)requestPromo {
+    _promoRequest.page = _page;
+    [_promoRequest requestForProductFeed];
+}
+
 - (void)didReceivePromo:(NSArray *)promo {
-    [_promo addObject:promo];
-    [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
+    if (promo) {
+        [_promo addObject:promo];
+        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+    } else if (promo == nil && _page == 2) {
+        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    }
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
 }

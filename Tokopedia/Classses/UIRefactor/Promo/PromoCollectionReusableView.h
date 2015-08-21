@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, PromoCollectionViewCellType) {
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
 - (void)scrollToCenter;
+- (void)scrollToCenterWithoutAnimation;
 + (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type;
 + (CGFloat)collectionViewNormalHeight;
 

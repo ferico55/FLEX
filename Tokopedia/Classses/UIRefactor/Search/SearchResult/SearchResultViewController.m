@@ -83,7 +83,6 @@ typedef enum ScrollDirection {
 
 @property (strong, nonatomic) NSMutableArray *product;
 @property (strong, nonatomic) NSMutableArray *promo;
-@property (strong, nonatomic) NSMutableArray *promoRequest;
 @property (nonatomic) UITableViewCellType cellType;
 
 //toolbar view without share button
@@ -92,6 +91,7 @@ typedef enum ScrollDirection {
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
+@property (strong, nonatomic) PromoRequest *promoRequest;
 @property PromoCollectionViewCellType promoCellType;
 @property (strong, nonatomic) NSMutableArray *promoScrollPosition;
 
@@ -177,7 +177,6 @@ typedef enum ScrollDirection {
     /** create new **/
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
-    _promoRequest = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
     _urlarray = [NSMutableArray new];
@@ -212,7 +211,7 @@ typedef enum ScrollDirection {
     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
     [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, headerHeight)];
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
@@ -289,6 +288,12 @@ typedef enum ScrollDirection {
     [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
     
     [self request];
+    
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
+    [self requestPromo];
+    
+    self.scrollDirection = ScrollDirectionDown;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -317,7 +322,6 @@ typedef enum ScrollDirection {
     [tokopediaNetworkManager requestCancel];
     tokopediaNetworkManager.delegate = nil;
     tokopediaNetworkManager = nil;
-    _promoRequest = nil;
 }
 
 #pragma mark - Collection Delegate
@@ -399,6 +403,8 @@ typedef enum ScrollDirection {
                 ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
                 if (self.scrollDirection == ScrollDirectionDown) {
                     [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                } else if (self.scrollDirection == ScrollDirectionUp) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenterWithoutAnimation];
                 }
             } else {
                 reusableView = nil;
@@ -622,19 +628,8 @@ typedef enum ScrollDirection {
                     NSLog(@"next page : %zd",_page);
                     
                     _isnodata = NO;
-                    
-                    [_collectionView reloadData];
-                    [_collectionView layoutIfNeeded];
-                    
-                    NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
-                    NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
 
-                    PromoRequest *promoRequest = [PromoRequest new];
-                    promoRequest.delegate = self;
-                    promoRequest.page = _page;
-                    [promoRequest requestForProductQuery:search department:departmentId];
-                    
-                    [_promoRequest addObject:promoRequest];
+                    if (_page > 1) [self requestPromo];
                     
                 } else {
                     [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -1077,14 +1072,24 @@ typedef enum ScrollDirection {
 #pragma mark - Promo request delegate
 
 - (void)didReceivePromo:(NSArray *)promo {
-    [_promo addObject:promo];
-    [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
+    if (promo) {
+        [_promo addObject:promo];
+        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+    } else if (promo == nil && _page == 2) {
+        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    }
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
 }
 
 #pragma mark - Promo collection delegate
+
+- (void)requestPromo {
+    NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
+    NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
+    _promoRequest.page = _page;
+    [_promoRequest requestForProductQuery:search department:departmentId];
+}
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];

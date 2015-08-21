@@ -40,6 +40,8 @@
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
 
+#import "DetailProductViewController.h"
+
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
 #define CTagFooterCollectionView @"FooterCollectionReusableView"
@@ -275,6 +277,9 @@ typedef enum ScrollDirection {
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
+    [self requestPromo];
+    
+    self.scrollDirection = ScrollDirectionDown;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -295,8 +300,8 @@ typedef enum ScrollDirection {
 
         viewCollection.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
         [viewCollection setAlwaysBounceVertical:YES];
-        [flowLayout setFooterReferenceSize:CGSizeMake(self.view.bounds.size.height, 50)];
-        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+        [flowLayout setFooterReferenceSize:CGSizeMake(self.view.frame.size.width, 50)];
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     }
     
     
@@ -304,7 +309,6 @@ typedef enum ScrollDirection {
     [self configureRestKit];
     if (_isnodata) {
         [self request];
-        [self requestPromo];
     }
     self.hidesBottomBarWhenPushed = YES;
 }
@@ -321,7 +325,7 @@ typedef enum ScrollDirection {
 }
 
 #pragma mark - Memory Management
--(void)dealloc{
+-(void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
@@ -663,7 +667,7 @@ typedef enum ScrollDirection {
     NSDictionary* param = @{
                             kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry,
                             kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : @"12",
+                            kTKPDHOME_APILIMITPAGEKEY : @"30",
                             kTKPDHOME_APIORDERBYKEY : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
                             kTKPDHOME_APIDEPARTMENTIDKEY: [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
                             kTKPDHOME_APILOCATIONKEY :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
@@ -676,6 +680,7 @@ typedef enum ScrollDirection {
                                                                     method:RKRequestMethodPOST
                                                                       path:kTKPDHOMEHOTLISTRESULT_APIPATH
                                                                 parameters:[param encrypt]];
+    
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
         [_refreshControl endRefreshing];
@@ -787,7 +792,7 @@ typedef enum ScrollDirection {
                     
                     _filterview.hidden = NO;
                     
-                    [self requestPromo];
+                    if (_page > 1) [self requestPromo];
                     
                 } else {
                     [flowLayout setFooterReferenceSize:CGSizeZero];
@@ -841,7 +846,6 @@ typedef enum ScrollDirection {
     [viewCollection layoutIfNeeded];
     [self configureRestKit];
     [self request];
-    [self requestPromo];
 }
 
 - (void)registerNibCell:(NSString *)strTag withIdentifier:(NSString *)strIdentifier isFooterView:(BOOL)isFooter isHeader:(BOOL)isHeader
@@ -951,7 +955,6 @@ typedef enum ScrollDirection {
     
     [self configureRestKit];
     [self request];
-    [self requestPromo];
 }
 
 #pragma mark - Category Delegate
@@ -1022,7 +1025,7 @@ typedef enum ScrollDirection {
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return _product.count;
+    return _product.count?:1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -1049,7 +1052,6 @@ typedef enum ScrollDirection {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             [self configureRestKit];
             [self request];
-            [self requestPromo];
         }
         else {
             [flowLayout setFooterReferenceSize:CGSizeZero];
@@ -1080,6 +1082,8 @@ typedef enum ScrollDirection {
                 ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
                 if (self.scrollDirection == ScrollDirectionDown) {
                     [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                } else if (self.scrollDirection == ScrollDirectionUp) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenterWithoutAnimation];
                 }
             } else {
                 reusableView = nil;
@@ -1152,7 +1156,8 @@ typedef enum ScrollDirection {
     if (promo) {
         [_promo addObject:promo];
         [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
+    } else if (promo == nil && _page == 2) {
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     }
     [viewCollection reloadData];
     [viewCollection layoutIfNeeded];

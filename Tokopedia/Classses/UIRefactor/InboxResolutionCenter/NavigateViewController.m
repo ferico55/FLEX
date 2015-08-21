@@ -109,6 +109,13 @@
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)navigateToProductFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = data;
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withLoadedData:(NSDictionary*)loadedData {
     DetailProductViewController *productController = [DetailProductViewController new];
     productController.loadedData = loadedData;

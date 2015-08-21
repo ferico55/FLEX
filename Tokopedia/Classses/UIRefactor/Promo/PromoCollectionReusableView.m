@@ -37,6 +37,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 @implementation PromoCollectionReusableView
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     _flowLayout = [[UICollectionViewFlowLayout alloc] init];
     _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     [_collectionView setCollectionViewLayout:_flowLayout];
@@ -46,7 +47,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
     UINib *thumbCellNib = [UINib nibWithNibName:@"ProductThumbCell" bundle:nil];
-    [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];
+    [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];    
 }
 
 - (void)setCollectionViewCellType:(PromoCollectionViewCellType)collectionViewCellType {
@@ -139,20 +140,41 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
     [alert show];
 }
 
-- (void)scrollToCenter {
+- (void)centerPositionAnimated:(BOOL)animated {
     if ([_scrollPosition integerValue] == 0 && _promo.count > 2) {
         NSInteger x = _flowLayout.itemSize.width / 2;
         x += 5; // add cell spacing
-        [_collectionView setContentOffset:CGPointMake(x, 0) animated:YES];
+        [_collectionView setContentOffset:CGPointMake(x, 0) animated:animated];
     }
+}
+
+- (void)scrollToCenter {
+    if (_indexPath.section == 1) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self centerPositionAnimated:YES];
+        });
+    } else {
+        [self centerPositionAnimated:YES];
+    }
+}
+
+- (void)scrollToCenterWithoutAnimation {
+    [self centerPositionAnimated:NO];
 }
 
 - (void)setScrollPosition:(NSNumber *)scrollPosition {
     _scrollPosition = scrollPosition;
-    if (_promo.count > 2) {
-        NSInteger x = _flowLayout.itemSize.width * [_scrollPosition integerValue];
-        x += [_scrollPosition integerValue] * 10;
-        _collectionView.contentOffset = CGPointMake(x, 0);
+    NSInteger x = [_scrollPosition integerValue] * _flowLayout.itemSize.width;
+    NSInteger padding = [_scrollPosition integerValue] * _flowLayout.minimumLineSpacing;
+    CGPoint point = CGPointMake(x + padding, 0);
+    _collectionView.contentOffset = point;
+}
+
+- (void)animateScrollToCenter {
+    if ([_scrollPosition integerValue] == 0 && _promo.count > 2) {
+        NSInteger x = _flowLayout.itemSize.width / 2;
+        x += 5; // add cell spacing
+        [_collectionView setContentOffset:CGPointMake(x, 0) animated:YES];
     }
 }
 
