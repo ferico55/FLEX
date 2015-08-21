@@ -192,10 +192,18 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="4J2-1H-BQp" secondAttribute="bottom" constant="10.5" id="6I5-ra-wy3"/>
                     <constraint firstItem="4J2-1H-BQp" firstAttribute="top" secondItem="nqg-93-f7j" secondAttribute="topMargin" constant="1" id="6XH-lW-3iu"/>
+                    <constraint firstItem="4J2-1H-BQp" firstAttribute="leading" secondItem="nqg-93-f7j" secondAttribute="leadingMargin" constant="2" id="Ihj-wS-X8w"/>
+                    <constraint firstItem="4J2-1H-BQp" firstAttribute="top" secondItem="nqg-93-f7j" secondAttribute="topMargin" constant="1" id="Q29-bc-Yaq"/>
                     <constraint firstItem="4J2-1H-BQp" firstAttribute="leading" secondItem="nqg-93-f7j" secondAttribute="leadingMargin" constant="2" id="b1O-FL-p5p"/>
+                    <constraint firstAttribute="trailing" secondItem="4J2-1H-BQp" secondAttribute="trailing" constant="10" id="d39-ay-cHy"/>
                     <constraint firstAttribute="bottomMargin" secondItem="4J2-1H-BQp" secondAttribute="bottom" constant="2.5" id="fLO-6T-Emk"/>
                     <constraint firstAttribute="trailingMargin" secondItem="4J2-1H-BQp" secondAttribute="trailing" constant="2" id="hb3-k2-RGo"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="4J2-1H-BQp" secondAttribute="bottom" constant="2.5" id="ofG-D7-S2K"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="4J2-1H-BQp" secondAttribute="trailing" constant="2" id="ryp-ja-lHw"/>
+                    <constraint firstItem="4J2-1H-BQp" firstAttribute="top" secondItem="nqg-93-f7j" secondAttribute="top" constant="9" id="tte-xV-47d"/>
+                    <constraint firstItem="4J2-1H-BQp" firstAttribute="leading" secondItem="nqg-93-f7j" secondAttribute="leading" constant="10" id="yuF-s9-PTZ"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
