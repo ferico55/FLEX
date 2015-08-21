@@ -108,7 +108,6 @@
     
     //Set icon rate
     btnRate.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [btnRate setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile20" ofType:@"png"]] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning
@@ -144,7 +143,15 @@
     
     [_userNameLabel setText:_profile.result.user_info.user_name];
     [_userNameLabel setHidden:NO];
-    [btnRate setTitle:[NSString stringWithFormat:@"%@%% Positif", _profile.result.user_info.user_reputation.positive_percentage] forState:UIControlStateNormal];
+
+    if(_profile.result.user_info.user_reputation.no_reputation!=nil && [_profile.result.user_info.user_reputation.no_reputation isEqualToString:@"1"]) {
+        [btnRate setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnRate setTitle:@"" forState:UIControlStateNormal];
+    }
+    else {
+        [btnRate setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [btnRate setTitle:[NSString stringWithFormat:@"%@%% Positif", _profile.result.user_info.user_reputation.positive_percentage] forState:UIControlStateNormal];
+    }
 //    CGSize tempSize = [btnRate sizeThatFits:CGSizeMake(self.view.bounds.size.width-20, btnRate.bounds.size.height)];
 //    btnRate.frame = CGRectMake((self.view.bounds.size.width-tempSize.width)/2.0f, btnRate.frame.origin.y, tempSize.width+5, btnRate.bounds.size.height);
     btnRate.contentEdgeInsets = UIEdgeInsetsMake(0, -btnRate.imageView.image.size.width/4.0f, 0, 0);

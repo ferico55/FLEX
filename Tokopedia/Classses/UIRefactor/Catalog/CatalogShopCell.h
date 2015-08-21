@@ -19,7 +19,7 @@
 
 @interface CatalogShopCell : UITableViewCell
 {
-    IBOutlet UIView *viewContentStar;
+    IBOutlet UIView *viewContentStar, *expandViewContentStar;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;

@@ -57,6 +57,8 @@
              object:nil];
     
     [self setTextFieldData];
+    
+    _tableview.tableFooterView = [UIView new];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -80,9 +82,6 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = _tableCells[indexPath.row];
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.frame.size.width,1)];
-    lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
-    [cell.contentView addSubview:lineView];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }

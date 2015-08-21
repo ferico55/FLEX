@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -27,9 +27,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="335" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DRH-po-E65">
+                <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="335" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="DRH-po-E65">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="DIM-j3-CJw"/>
@@ -40,7 +40,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBL-or-xae">
-                            <rect key="frame" x="160" y="36" width="80" height="3"/>
+                            <rect key="frame" x="160" y="37" width="80" height="3"/>
                             <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="3" id="hVQ-ez-BCq"/>
@@ -100,10 +100,6 @@
                                 <action selector="tap:" destination="-2" eventType="touchUpInside" id="Voc-aY-Zah"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L9r-P0-oC5">
-                            <rect key="frame" x="0.0" y="39" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GTN-7d-HJj">
                             <rect key="frame" x="80" y="10" width="1" height="20"/>
                             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
@@ -142,7 +138,7 @@
                         <constraint firstItem="ogd-g8-Abb" firstAttribute="leading" secondItem="QwJ-TB-sXZ" secondAttribute="trailing" id="PVS-n9-EiA"/>
                         <constraint firstAttribute="bottom" secondItem="Dgi-7a-A8n" secondAttribute="bottom" constant="10" id="QMp-sc-jem"/>
                         <constraint firstItem="ogd-g8-Abb" firstAttribute="leading" secondItem="hBL-or-xae" secondAttribute="trailing" id="RXA-dr-AsB"/>
-                        <constraint firstAttribute="bottom" secondItem="hBL-or-xae" secondAttribute="bottom" constant="1" id="Ttr-59-UgM"/>
+                        <constraint firstAttribute="bottom" secondItem="hBL-or-xae" secondAttribute="bottom" id="Ttr-59-UgM"/>
                         <constraint firstAttribute="trailing" secondItem="fHq-mw-9Na" secondAttribute="trailing" id="Vqx-kO-n7v"/>
                         <constraint firstItem="ogd-g8-Abb" firstAttribute="width" secondItem="GTN-7d-HJj" secondAttribute="width" id="Xqy-u5-VLM"/>
                         <constraint firstItem="ogd-g8-Abb" firstAttribute="top" secondItem="Az8-b2-vuG" secondAttribute="top" constant="10" id="ZXn-Rx-cin"/>
@@ -157,7 +153,7 @@
                         <constraint firstItem="8sl-Bl-sD3" firstAttribute="leading" secondItem="GTN-7d-HJj" secondAttribute="trailing" constant="-1" id="nmr-7q-l5A"/>
                         <constraint firstItem="QwJ-TB-sXZ" firstAttribute="top" secondItem="Az8-b2-vuG" secondAttribute="top" id="qv6-iB-sDg"/>
                         <constraint firstItem="2Uw-fx-jJ2" firstAttribute="leading" secondItem="Az8-b2-vuG" secondAttribute="leading" id="s0f-2S-Yzo"/>
-                        <constraint firstItem="hBL-or-xae" firstAttribute="top" secondItem="QwJ-TB-sXZ" secondAttribute="bottom" constant="-4" id="uAg-o6-6Iy"/>
+                        <constraint firstItem="hBL-or-xae" firstAttribute="top" secondItem="QwJ-TB-sXZ" secondAttribute="bottom" constant="-3" id="uAg-o6-6Iy"/>
                         <constraint firstItem="ogd-g8-Abb" firstAttribute="height" secondItem="GTN-7d-HJj" secondAttribute="height" id="yFG-0c-uen"/>
                     </constraints>
                 </view>
@@ -187,7 +183,7 @@
                     </constraints>
                 </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="wLh-HR-YVh" secondAttribute="centerY" id="51e-rQ-0fX"/>
                 <constraint firstAttribute="centerX" secondItem="wLh-HR-YVh" secondAttribute="centerX" id="UhK-ay-iUF"/>

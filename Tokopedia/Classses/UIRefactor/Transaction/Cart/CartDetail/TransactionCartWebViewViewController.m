@@ -73,7 +73,7 @@
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     NSURL *url;
     
-    if (gateway == TYPE_GATEWAY_CLICK_BCA) {
+    if (gateway == TYPE_GATEWAY_BCA_CLICK_PAY) {
         self. title = @"KlikPay BCA";
         urlAddress =_BCAParam.bca_url;
         
@@ -161,7 +161,7 @@
      NSLog(@"%@", webView.request.URL.absoluteString);
 
     NSInteger gateway = [_gateway integerValue];
-    if ( gateway == TYPE_GATEWAY_CLICK_BCA)
+    if ( gateway == TYPE_GATEWAY_BCA_CLICK_PAY)
     {
         if ([request.URL.absoluteString isEqualToString:_BCAParam.callback] ||
             [request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION] ||

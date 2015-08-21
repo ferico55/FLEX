@@ -12,6 +12,7 @@
 
 - (void)awakeFromNib {
     [viewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionContentStar:)]];
+    [expandViewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noAction:)]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -20,6 +21,10 @@
 
 - (void)actionContentStar:(id)sender {
     [_delegate actionContentStar:((UITapGestureRecognizer *) sender).view];
+}
+
+- (void)noAction:(id)sender {
+
 }
 
 - (IBAction)tap:(id)sender

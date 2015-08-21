@@ -20,6 +20,8 @@
 @interface SettingAddressEditViewController ()
 <
     SettingAddressLocationViewDelegate,
+    UITableViewDataSource,
+    UITableViewDelegate,
     UIScrollViewDelegate,
     UITextFieldDelegate,
     UITextViewDelegate,
@@ -56,6 +58,11 @@
     NSDictionary *_selectedCity;
 }
 
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
+
 @property (weak, nonatomic) IBOutlet UITextField *textfieldreceivername;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldaddressname;
 @property (weak, nonatomic) IBOutlet TKPDTextView *textviewaddress;
@@ -68,6 +75,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UITableView *table;
 
 -(void)cancelActionAddAddress;
 -(void)requestActionAddAddress:(id)object;
@@ -96,22 +104,9 @@
 {
     [super viewDidLoad];
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
-    
-    CGRect frame = _scrollView.frame;
-    frame.size.width = screenWidth;
-    _scrollView.frame = frame;
-    
-     frame = _contentView.frame;
-    frame.size.width = screenWidth;
-    _contentView.frame = frame;
-    
-    _datainput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
-    
+    _section1Cells = [NSArray sortViewsWithTagInArray:_section1Cells];
 
-
+    _datainput =[NSMutableDictionary new];
     _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     _act.hidesWhenStopped = YES;
     
@@ -119,6 +114,7 @@
     
     _viewpassword.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?YES:NO;
     _textfieldpass.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?YES:NO;
+    [_table reloadData];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -128,8 +124,30 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    [_textfieldreceivername becomeFirstResponder];
+    _datainput = [NSMutableDictionary new];
+    
     _textviewaddress.placeholder = @"Tulis alamat";
+    
+    [_textfieldreceivername becomeFirstResponder];
+    [_textfieldreceivername addTarget:self
+                               action:@selector(textFieldShouldEndEditing:)
+                     forControlEvents:UIControlEventEditingChanged];
+    
+    [_textfieldaddressname addTarget:self
+                              action:@selector(textFieldShouldEndEditing:)
+                    forControlEvents:UIControlEventEditingChanged];
+    
+    [_textfieldpostcode addTarget:self
+                           action:@selector(textFieldShouldEndEditing:)
+                 forControlEvents:UIControlEventEditingChanged];
+    
+    [_textfieldphonenumber addTarget:self
+                              action:@selector(textFieldShouldEndEditing:)
+                    forControlEvents:UIControlEventEditingChanged];
+    
+    [_textfieldpass addTarget:self
+                       action:@selector(textFieldShouldEndEditing:)
+             forControlEvents:UIControlEventEditingChanged];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -615,6 +633,14 @@
     }
 }
 
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [_activetextfield resignFirstResponder];
+    [_activetextview resignFirstResponder];
+    [_textviewaddress resignFirstResponder];
+
+}
+
 #pragma mark - Textfield Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
@@ -666,10 +692,8 @@
 
 #pragma mark - Text View Delegate
 
--(BOOL)textViewShouldReturn:(UITextView *)textView{
-
+-(BOOL)textViewShouldReturn:(UITextView *)textView {
     [_activetextfield resignFirstResponder];
-    
     return YES;
 }
 
@@ -682,26 +706,112 @@
     return YES;
 }
 
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
-    [_activetextfield resignFirstResponder];
-    [_activetextview resignFirstResponder];
-    [_textviewaddress resignFirstResponder];
+- (void)textViewDidChange:(UITextView *)textView {
+    if (textView == _textviewaddress) {
+        [_datainput setObject:textView.text
+                       forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
+    }
 }
+
 
 #pragma mark - Keyboard Notification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    NSDictionary* keyboardInfo = [notification userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-
-    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    NSDictionary* info = [notification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _table.contentInset = contentInsets;
+    _table.scrollIndicatorInsets = contentInsets;
+    
+    if (_activetextfield == _textfieldphonenumber) {
+        [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    self.scrollView.contentInset = UIEdgeInsetsZero;
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                          delay:0
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         _table.contentInset = contentInsets;
+                         _table.scrollIndicatorInsets = contentInsets;
+                     }
+                     completion:^(BOOL finished){
+                     }];}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return _section0Cells.count;
+            break;
+        case 1:
+            return _section1Cells.count;
+            break;
+        case 2:
+            return _section2Cells.count;
+            break;
+        case 3:
+            return _section3Cells.count;
+            break;
+        default:
+            break;
+    }
+    return 0;
 }
 
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell= nil;
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0Cells[indexPath.row];
+            break;
+        case 1:
+            cell = _section1Cells[indexPath.row];
+            break;
+        case 2:
+            cell = _section2Cells[indexPath.row];
+            break;
+        case 3:
+            cell = _section3Cells[indexPath.row];
+            break;
+        default:
+            break;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSInteger sectionCount = 0;
+    sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?3:4;
+    return sectionCount;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+            return [_section0Cells[indexPath.row] frame].size.height;
+            break;
+        case 1:
+            return [_section1Cells[indexPath.row] frame].size.height;
+            break;
+        case 2:
+            return [_section2Cells[indexPath.row] frame].size.height;
+            break;
+        case 3:
+            return [_section3Cells[indexPath.row] frame].size.height;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
 
 
 #pragma mark - TokopediaNetworkManager Delegate

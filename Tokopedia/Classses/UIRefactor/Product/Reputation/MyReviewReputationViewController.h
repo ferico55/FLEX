@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class SegmentedReviewReputationViewController;
 @interface MyReviewReputationViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 {
     IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -16,7 +16,9 @@
 }
 
 
+@property (nonatomic, unsafe_unretained) SegmentedReviewReputationViewController *segmentedReviewReputationViewController;
 @property (nonatomic, strong) NSString *strNav;
+@property (nonatomic) BOOL getDataFromMasterDB;
 - (void)actionReview:(id)sender;
 - (void)actionReviewRate:(id)sender;
 - (void)actionBelumDibaca:(id)sender;

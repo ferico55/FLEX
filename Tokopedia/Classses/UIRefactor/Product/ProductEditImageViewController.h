@@ -27,7 +27,6 @@
 
 @property (nonatomic, weak) IBOutlet id<ProductEditImageViewControllerDelegate> delegate;
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintVerticalScrollview;
 
 @property (nonatomic,strong) NSDictionary *data;

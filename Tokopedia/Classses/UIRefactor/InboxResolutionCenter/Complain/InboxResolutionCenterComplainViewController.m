@@ -5,8 +5,8 @@
 //  Created by IT Tkpd on 2/26/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "ShopBadgeLevel.h"
 #import "CMPopTipView.h"
-#import "DetailProductViewController.h"
 #import "string_inbox_message.h"
 #import "NavigateViewController.h"
 
@@ -26,6 +26,7 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "ShopReputation.h"
+#import "SmileyAndMedal.h"
 
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
@@ -41,6 +42,7 @@
     UITabBarControllerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
+    SmileyDelegate,
     GeneralTableViewControllerDelegate,
     ResolutionCenterDetailViewControllerDelegate,
     InboxResolutionCenterComplainCellDelegate,
@@ -254,7 +256,19 @@
     
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
-    [AppDelegate generateMedal:resolution.resolution_shop.shop_reputation.reputation_score withImage:cell.btnReputation isLarge:NO];
+    
+    if(resolution.resolution_by.by_customer == 1)
+        [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge_object.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge_object.set withImage:cell.btnReputation isLarge:NO];
+    else {
+        if(resolution.resolution_customer.customer_reputation.no_reputation!=nil && [resolution.resolution_customer.customer_reputation.no_reputation isEqualToString:@"1"]) {
+            [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
+            [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+        else {
+            [cell.btnReputation setTitle:[NSString stringWithFormat:@"%@%%", resolution.resolution_customer.customer_reputation.positive_percentage] forState:UIControlStateNormal];
+            [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+    }
     
     //Set user label
 //    if([resolution.resolution_by.user_label isEqualToString:CPenjual]) {
@@ -459,8 +473,37 @@
 - (void)actionReputation:(id)sender {
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[((UIView *) sender).tag]).resolution_detail;
     
-    if(resolution.resolution_shop.shop_reputation.tooltip!=nil && resolution.resolution_shop.shop_reputation.tooltip.length>0)
-        [self initPopUp:resolution.resolution_shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+    
+    
+    
+    
+    
+    
+    
+    if(resolution.resolution_by.by_customer == 1) {
+        if(resolution.resolution_shop.shop_reputation.tooltip!=nil && resolution.resolution_shop.shop_reputation.tooltip.length>0)
+            [self initPopUp:resolution.resolution_shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+    }
+    else {
+        if(! (resolution.resolution_customer.customer_reputation.no_reputation!=nil && [resolution.resolution_customer.customer_reputation.no_reputation isEqualToString:@"1"])) {
+            int paddingRightLeftContent = 10;
+            UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+            
+            SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+            [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:resolution.resolution_customer.customer_reputation.neutral withRepSmile:resolution.resolution_customer.customer_reputation.positive withRepSad:resolution.resolution_customer.customer_reputation.negative withDelegate:self];
+            
+            //Init pop up
+            cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+            cmPopTitpView.delegate = self;
+            cmPopTitpView.backgroundColor = [UIColor whiteColor];
+            cmPopTitpView.animation = CMPopTipAnimationSlide;
+            cmPopTitpView.dismissTapAnywhere = YES;
+            cmPopTitpView.leftPopUp = YES;
+            
+            UIButton *button = (UIButton *)sender;
+            [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+        }
+    }
 }
 
 -(void)refreshRequest
@@ -761,6 +804,7 @@
     
     RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
     [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNoReputation,
                                                                  CNegative,
                                                                  CNeutral,
                                                                  CPositif]];
@@ -772,6 +816,9 @@
                                                            CReputationScore,
                                                            CScore,
                                                            CMinBadgeScore]];
+    
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
 
     [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
     [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
@@ -818,6 +865,7 @@
                                                                                             withMapping:resolutionDisputeMapping];
     
     
+    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
     [statusMapping addPropertyMapping:resultRel];
     
     [resultMapping addPropertyMapping:listRel];
@@ -903,6 +951,11 @@
 
 - (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
 {
+    [self dismissAllPopTipViews];
+}
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
 @end

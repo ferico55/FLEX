@@ -19,6 +19,7 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "UserAuthentificationManager.h"
 #import "EncodeDecoderManager.h"
+#import "SmileyAndMedal.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "TAGDataLayer.h"
@@ -322,7 +323,7 @@ typedef enum TagRequest {
     [_messages_selected removeAllObjects];
     if(_messages==nil || _messages.count==0) {
         _isnodata = YES;
-        _table.tableFooterView = [self getNoResult];
+//        _table.tableFooterView = [self getNoResult];
     }
     [_table endUpdates];
     
@@ -364,7 +365,15 @@ typedef enum TagRequest {
             ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
             ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
             ((InboxMessageCell*)cell).indexpath = indexPath;
-            [((InboxMessageCell*)cell).btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
+            
+            if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
+                [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [((InboxMessageCell*)cell).btnReputasi setTitle:@"" forState:UIControlStateNormal];
+            }
+            else {
+                [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [((InboxMessageCell*)cell).btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
+            }
             
             //Set user label
 //            if([list.user_label isEqualToString:CPenjual]) {
@@ -1004,6 +1013,7 @@ typedef enum TagRequest {
         
         RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
         [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                     CNoReputation,
                                                                      CNegative,
                                                                      CNeutral,
                                                                      CPositif]];
@@ -1152,20 +1162,24 @@ typedef enum TagRequest {
 #pragma mark - InboxMessage Delegate
 - (void)actionSmile:(id)sender {
     InboxMessageList *list = _messages[((UIView *) sender).tag];
-    int paddingRightLeftContent = 10;
 
-    UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    [((AppDelegate *) [UIApplication sharedApplication].delegate) showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.user_reputation.neutral withRepSmile:list.user_reputation.positive withRepSad:list.user_reputation.negative withDelegate:self];
-    
-    //Init pop up
-    popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-    popTipView.delegate = self;
-    popTipView.backgroundColor = [UIColor whiteColor];
-    popTipView.animation = CMPopTipAnimationSlide;
-    popTipView.dismissTapAnywhere = YES;
-    popTipView.leftPopUp = YES;
-    
-    UIButton *button = (UIButton *)sender;
-    [popTipView presentPointingAtView:button inView:self.view animated:YES];
+    if(! (list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"])) {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.user_reputation.neutral withRepSmile:list.user_reputation.positive withRepSad:list.user_reputation.negative withDelegate:self];
+        
+        //Init pop up
+        popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        popTipView.delegate = self;
+        popTipView.backgroundColor = [UIColor whiteColor];
+        popTipView.animation = CMPopTipAnimationSlide;
+        popTipView.dismissTapAnywhere = YES;
+        popTipView.leftPopUp = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [popTipView presentPointingAtView:button inView:self.view animated:YES];
+    }
 }
 @end

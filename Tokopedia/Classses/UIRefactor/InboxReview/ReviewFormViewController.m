@@ -13,6 +13,7 @@
 #import "DetailProductViewController.h"
 #import "NavigateViewController.h"
 #import "InboxReviewAction.h"
+#import "NavigateViewController.h"
 
 #import "string_inbox_review.h"
 
@@ -55,6 +56,7 @@
     NSMutableArray *_errorMessages;
     UIBarButtonItem *_barbuttonright;
     NSDictionary *_editedParam;
+    NavigateViewController *_TKPDNavigator;
 }
 
 #pragma mark - Initialization
@@ -229,6 +231,7 @@
     [super viewDidLoad];
     
     _operationQueue = [NSOperationQueue new];
+    _TKPDNavigator = [NavigateViewController new];
 
     [self initNavigationBar];
     [self initRatingProperty];
@@ -400,9 +403,7 @@
         switch (button.tag) {
             case 10:
             {
-                DetailProductViewController *vc = [DetailProductViewController new];
-                vc.data = @{@"product_id" : _selectedReviewDetail.review_product_id};
-                [self.navigationController pushViewController:vc animated:YES];
+                [_TKPDNavigator navigateToProductFromViewController:self withName:_selectedReviewDetail.review_product_name withPrice:nil withId:_selectedReviewDetail.review_product_id withImageurl:_selectedReviewDetail.review_product_image withShopName:nil];
                 break;
             }
                 
@@ -483,7 +484,8 @@
 
 - (IBAction)tapProduct:(id)sender {
     NavigateViewController *navigateController = [[NavigateViewController alloc] init];
-    [navigateController navigateToProductFromViewController:self withProductID:_selectedReviewDetail.review_product_id];    
+//    [navigateController navigateToProductFromViewController:self withProductID:_selectedReviewDetail.review_product_id];
+    [_TKPDNavigator navigateToProductFromViewController:self withName:_selectedReviewDetail.review_product_name withPrice:nil withId:_selectedReviewDetail.review_product_id withImageurl:_selectedReviewDetail.review_product_image withShopName:nil];
 }
 
 
