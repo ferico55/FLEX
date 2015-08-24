@@ -26,7 +26,6 @@
 #define CTagGetPriceAlert 10
 #define CTagDeletePriceAlert 11
 
-
 @interface AlertPriceNotificationViewController ()<TokopediaNetworkManagerDelegate, DepartmentListDelegate, LoadingViewDelegate, UIAlertViewDelegate>
 
 @end
@@ -63,8 +62,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CstringFilter style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     if(tempUnreadIndexPath != nil) {
         ((DetailPriceAlert *) [arrList objectAtIndex:tempUnreadIndexPath.row]).pricealert_total_unread = @"0";
     }
@@ -74,8 +72,7 @@
     tempUnreadIndexPath = nil;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     tokopediaNetworkManager.delegate = nil;
     [tokopediaNetworkManager requestCancel];
     tokopediaNetworkManager = nil;
@@ -98,26 +95,22 @@
 
 
 #pragma mark - UITableView Delegate And DataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(arrList == nil)
         return 0;
     
     return arrList.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 134;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     tempPriceAlert = [arrList objectAtIndex:indexPath.row];
     if(! [tempPriceAlert.pricealert_total_unread isEqualToString:@"0"]) {
         tempUnreadIndexPath = indexPath;
@@ -136,8 +129,7 @@
     [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if(arrList.count-1==indexPath.row && page>1 && (tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil)) {
         tblPriceAlert.tableFooterView = [self getLoadView:CTagGetPriceAlert].view;
     }
@@ -147,9 +139,7 @@
     }
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PriceAlertCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
     if(cell == nil) {
         NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
@@ -186,8 +176,7 @@
 }
 
 #pragma mark - UIAction View
-- (void)actionShowKategory:(id)sender
-{
+- (void)actionShowKategory:(id)sender {
     if(arrList!=nil && arrDepartment!=nil && arrDepartment.count>0) {
         DepartmentTableViewController *departmentViewController = [DepartmentTableViewController new];
         departmentViewController.del = self;
@@ -224,8 +213,7 @@
 //    }
 }
 
-- (void)actionCloseCell:(id)sender
-{
+- (void)actionCloseCell:(id)sender {
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
@@ -242,8 +230,7 @@
 
 
 #pragma mark - Method
-- (void)refreshView:(id)sender
-{
+- (void)refreshView:(id)sender {
     [refreshControl endRefreshing];
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
@@ -258,21 +245,18 @@
     }
 }
 
-- (NSString *)getPrice:(NSString *)strTempPrice
-{
+- (NSString *)getPrice:(NSString *)strTempPrice {
     return ([strTempPrice isEqualToString:@"Rp 0"])? CStringAllPrice:strTempPrice;
 }
 
-- (void)updatePriceAlert:(NSString *)strPrice
-{
+- (void)updatePriceAlert:(NSString *)strPrice {
     ((DetailPriceAlert *) [arrList objectAtIndex:[arrList indexOfObject:tempPriceAlert]]).pricealert_price = strPrice;
     [tblPriceAlert beginUpdates];
     [tblPriceAlert reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[arrList indexOfObject:tempPriceAlert] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [tblPriceAlert endUpdates];
 }
 
-- (void)deletingPriceAlert:(BOOL)isDeleting
-{
+- (void)deletingPriceAlert:(BOOL)isDeleting {
     if(isDeleting) {
         UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         activityIndicatorView.frame = CGRectMake(0, 0, 30, 30);
@@ -285,10 +269,7 @@
     }
 }
 
-
-
-- (LoadingView *)getLoadView:(int)tag
-{
+- (LoadingView *)getLoadView:(int)tag {
     if(loadingView == nil) {
         loadingView = [LoadingView new];
         loadingView.delegate = self;
@@ -298,8 +279,7 @@
     return loadingView;
 }
 
-- (UIActivityIndicatorView *)getActivityIndicator
-{
+- (UIActivityIndicatorView *)getActivityIndicator {
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activityIndicator.frame = CGRectMake(0, 10, 40, 40);
     [activityIndicator startAnimating];
@@ -307,8 +287,7 @@
     return activityIndicator;
 }
 
-- (TokopediaNetworkManager *)getNetworkManager:(int)tag
-{
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
     if(tokopediaNetworkManager == nil) {
         tokopediaNetworkManager = [TokopediaNetworkManager new];
         tokopediaNetworkManager.delegate = self;
@@ -318,10 +297,8 @@
     return tokopediaNetworkManager;
 }
 
-
 #pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
+- (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagGetPriceAlert) {
         NSMutableDictionary *dictParam = [[NSMutableDictionary alloc] initWithObjectsAndKeys:CGetPriceAlert, CAction, [NSNumber numberWithInt:page], CPage, nil];
         if(nSelectedDepartment > 0) {
@@ -337,8 +314,7 @@
     return nil;
 }
 
-- (NSString*)getPath:(int)tag
-{
+- (NSString*)getPath:(int)tag {
     if(tag == CTagGetPriceAlert) {
         return CInboxPriceAlert;
     }
@@ -349,8 +325,7 @@
     return nil;
 }
 
-- (id)getObjectManager:(int)tag
-{
+- (id)getObjectManager:(int)tag {
     if(tag == CTagGetPriceAlert) {
         rkObjectManager = [RKObjectManager sharedClient];
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[PriceAlert class]];
@@ -430,8 +405,7 @@
     return nil;
 }
 
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
     if(tag == CTagGetPriceAlert) {
         PriceAlert *tempPAlert = [((RKMappingResult *) result).dictionary objectForKey:@""];
         return tempPAlert.status;
@@ -444,8 +418,7 @@
     return nil;
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     if(tag == CTagGetPriceAlert) {
         tblPriceAlert.allowsSelection = YES;
         tblPriceAlert.tableFooterView = nil;
@@ -533,31 +506,27 @@
     rkObjectManager = nil;
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     if(tag == CTagGetPriceAlert) {
         
     }
 }
 
-- (void)actionBeforeRequest:(int)tag
-{
-    if(tag == CTagGetPriceAlert) {
-        
-    }
-
-}
-
-- (void)actionRequestAsync:(int)tag
-{
+- (void)actionBeforeRequest:(int)tag {
     if(tag == CTagGetPriceAlert) {
         
     }
 
 }
 
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
+- (void)actionRequestAsync:(int)tag {
+    if(tag == CTagGetPriceAlert) {
+        
+    }
+
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == CTagGetPriceAlert) {
         if(tblPriceAlert.allowsSelection) {
             tblPriceAlert.tableFooterView = [self getLoadView:CTagGetPriceAlert].view;
@@ -576,15 +545,12 @@
     rkObjectManager = nil;
 }
 
-
 #pragma mark - DepartmentList Delegate
-- (void)didCancel
-{
+- (void)didCancel {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)didFinishSelectedAtRow:(int)row
-{
+- (void)didFinishSelectedAtRow:(int)row{
     if(row != nSelectedDepartment) {
         lastSelectedDepartment = nSelectedDepartment;
         nSelectedDepartment = row;
@@ -595,10 +561,8 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
 #pragma mark - LoadingView Delegate
-- (void)pressRetryButton
-{
+- (void)pressRetryButton {
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringWaitLoading] delegate:self];
         [stickyAlertView show];
@@ -609,10 +573,8 @@
     }
 }
 
-
 #pragma mark  -UIAlertView Delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(objTagConfirmDelete) {
         if(buttonIndex == 1) {
             [self deletingPriceAlert:YES];
