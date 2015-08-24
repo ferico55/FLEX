@@ -41,6 +41,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *invalidStatusDescLabel;
 @property (strong, nonatomic) IBOutlet UIView *invalidHeaderView;
+@property (strong, nonatomic) IBOutlet UIView *headerWithReceiver;
 
 @end
 
@@ -209,47 +210,35 @@
         _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
         [_tableView reloadData];
         
-        if (_trackingOrder.detail.shipper_name) {
-            
-            _tableView.tableHeaderView = _headerViewComplete;
-            
-            UILabel *receiptNumberLabel = (UILabel *)[_headerViewComplete viewWithTag:1];
-            receiptNumberLabel.text = _trackingOrder.shipping_ref_num;
-            
-            UILabel *sendDateLabel = (UILabel *)[_headerViewComplete viewWithTag:2];
-            sendDateLabel.text = _trackingOrder.detail.send_date;
-            
-            UILabel *serviceCodeLabel = (UILabel *)[_headerViewComplete viewWithTag:3];
-            serviceCodeLabel.text = _trackingOrder.detail.service_code;
-            
-            UILabel *statusLabel = (UILabel *)[_headerViewComplete viewWithTag:4];
-            if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_REF_NUM_EDITED) {
-                statusLabel.text = @"Nomor Resi diganti oleh penjual";
-            } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
-                statusLabel.text = @"Delivered";
-            } else {
-                statusLabel.text = @"On Process";
-            }
-            
-        }else {
-            
-            _tableView.tableHeaderView = _headerView;
-            
-            UILabel *receiptNumberLabel = (UILabel *)[_headerView viewWithTag:1];
-            receiptNumberLabel.text = _trackingOrder.shipping_ref_num;
-            
-            UILabel *statusLabel = (UILabel *)[_headerView viewWithTag:4];
-            if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_REF_NUM_EDITED) {
-                statusLabel.text = @"Nomor Resi diganti oleh penjual";
-            } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
-                statusLabel.text = @"Delivered";
-            } else if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_WAITING) {
-                statusLabel.text = @"Belum ada update status pengiriman dari kurir";
-            } else {
-                statusLabel.text = @"On Process";
-            }
-            
+        if (_trackingOrder.detail.receiver_name) {
+            if (_isShippingTracking)
+                _tableView.tableHeaderView = _headerWithReceiver;
+            else
+                _tableView.tableHeaderView = _headerViewComplete;
         }
+        else
+             _tableView.tableHeaderView = _headerView;
+        
+        UILabel *receiptNumberLabel = (UILabel *)[_tableView.tableHeaderView viewWithTag:1];
+        receiptNumberLabel.text = _trackingOrder.shipping_ref_num;
+        
+        UILabel *sendDateLabel = (UILabel *)[_tableView.tableHeaderView viewWithTag:2];
+        sendDateLabel.text = _trackingOrder.detail.send_date;
+        
+        UILabel *serviceCodeLabel = (UILabel *)[_tableView.tableHeaderView viewWithTag:3];
+        serviceCodeLabel.text = _trackingOrder.detail.service_code;
+        
+        UILabel *statusLabel = (UILabel *)[_tableView.tableHeaderView viewWithTag:4];
+        if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_REF_NUM_EDITED) {
+            statusLabel.text = @"Nomor Resi diganti oleh penjual";
+        } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
+            statusLabel.text = @"Delivered";
+        } else {
+            statusLabel.text = @"On Process";
+        }
+        
+        UILabel *receiverNameLabel = (UILabel *)[_tableView.tableHeaderView viewWithTag:5];
+        receiverNameLabel.text = _trackingOrder.detail.receiver_name;
     }
     
     if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {

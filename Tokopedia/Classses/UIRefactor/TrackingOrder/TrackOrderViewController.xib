@@ -28,6 +28,8 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -38,6 +40,7 @@
                 <outlet property="headerHistoryView" destination="sWa-HK-dbj" id="bYU-h5-ee2"/>
                 <outlet property="headerView" destination="b3I-lr-iok" id="dwP-qL-UAj"/>
                 <outlet property="headerViewComplete" destination="wue-U3-jYD" id="nE9-HX-IPU"/>
+                <outlet property="headerWithReceiver" destination="IV9-Ng-tGb" id="FAt-n2-MxS"/>
                 <outlet property="invalidHeaderView" destination="RLg-S3-tDZ" id="8VP-Vu-iPE"/>
                 <outlet property="invalidStatusDescLabel" destination="UdR-O5-jeX" id="Zny-K1-5Yq"/>
                 <outlet property="invalidStatusTitle" destination="6ty-3f-JTw" id="yAj-vM-dBs"/>
@@ -320,15 +323,16 @@
                 <constraint firstItem="GqV-eZ-Zak" firstAttribute="leading" secondItem="b3I-lr-iok" secondAttribute="leading" id="zk2-ku-Hfc"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="686" y="90"/>
+            <point key="canvasLocation" x="681" y="102"/>
         </view>
         <view contentMode="scaleToFill" id="dDv-BM-PJD">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="aMS-ya-JdF">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="aMS-ya-JdF">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="KOz-Wx-kPC"/>
                         <outlet property="delegate" destination="-1" id="sqG-TV-eAT"/>
@@ -480,10 +484,10 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
             <point key="canvasLocation" x="537.5" y="381"/>
         </view>
         <view contentMode="scaleToFill" id="IV9-Ng-tGb">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="103"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="153"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HUD-O6-t4O">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HUD-O6-t4O">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="83"/>
                     <subviews>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CxU-Wk-X4A" userLabel="Border">
@@ -503,13 +507,13 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nama Penerima :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TQU-Au-n0E">
-                            <rect key="frame" x="15" y="41" width="118" height="21"/>
+                            <rect key="frame" x="14" y="45" width="118" height="21"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPM-hc-sc0">
-                            <rect key="frame" x="133" y="41" width="172" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPM-hc-sc0">
+                            <rect key="frame" x="133" y="44" width="172" height="21"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -520,11 +524,81 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="83" id="kyl-d4-YfJ"/>
+                    </constraints>
+                </view>
+                <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5OQ-cL-mMV">
+                    <rect key="frame" x="0.0" y="82" width="320" height="45"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOu-St-jXx">
+                            <rect key="frame" x="15" y="0.0" width="56" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="56" id="6CL-2S-1ju"/>
+                                <constraint firstAttribute="height" constant="45" id="fRp-7i-lr8"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RA6-J7-YNJ">
+                            <rect key="frame" x="71" y="0.0" width="234" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="B6c-Ox-JDy"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="234" id="Bk1-J0-bS7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oHZ-2P-zWR" userLabel="Border">
+                            <rect key="frame" x="0.0" y="44" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="NnT-Ev-l1y"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tfd-g0-gwE" userLabel="Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="NJr-ro-aab"/>
+                                <constraint firstAttribute="height" constant="1" id="U1x-Kj-O5Z"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="0.97647058819999999" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="fOu-St-jXx" firstAttribute="top" secondItem="5OQ-cL-mMV" secondAttribute="top" id="71S-fZ-DuJ"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="CZK-kY-ana"/>
+                        <constraint firstItem="oHZ-2P-zWR" firstAttribute="leading" secondItem="5OQ-cL-mMV" secondAttribute="leading" id="FtQ-66-a7O"/>
+                        <constraint firstAttribute="bottom" secondItem="oHZ-2P-zWR" secondAttribute="bottom" id="H1u-kL-yRq"/>
+                        <constraint firstItem="RA6-J7-YNJ" firstAttribute="top" secondItem="5OQ-cL-mMV" secondAttribute="top" id="K7X-oT-tNF"/>
+                        <constraint firstAttribute="bottom" secondItem="RA6-J7-YNJ" secondAttribute="bottom" id="NTa-ch-Nto"/>
+                        <constraint firstAttribute="trailing" secondItem="RA6-J7-YNJ" secondAttribute="trailing" constant="15" id="PDd-J8-w60"/>
+                        <constraint firstItem="Tfd-g0-gwE" firstAttribute="top" secondItem="5OQ-cL-mMV" secondAttribute="top" id="Ske-x1-NdO"/>
+                        <constraint firstAttribute="bottom" secondItem="fOu-St-jXx" secondAttribute="bottom" id="WVm-5z-JfO"/>
+                        <constraint firstItem="RA6-J7-YNJ" firstAttribute="leading" secondItem="fOu-St-jXx" secondAttribute="trailing" id="fjU-Te-fOa"/>
+                        <constraint firstItem="Tfd-g0-gwE" firstAttribute="leading" secondItem="5OQ-cL-mMV" secondAttribute="leading" id="nOD-Gp-3OF"/>
+                        <constraint firstItem="fOu-St-jXx" firstAttribute="leading" secondItem="5OQ-cL-mMV" secondAttribute="leading" constant="15" id="rHK-fL-B1X"/>
+                        <constraint firstAttribute="trailing" secondItem="Tfd-g0-gwE" secondAttribute="trailing" id="rY0-xv-HCF"/>
+                        <constraint firstAttribute="height" constant="45" id="rtx-5O-DFZ"/>
+                        <constraint firstAttribute="trailing" secondItem="oHZ-2P-zWR" secondAttribute="trailing" id="tTI-ac-4Wa"/>
+                        <constraint firstItem="RA6-J7-YNJ" firstAttribute="leading" secondItem="fOu-St-jXx" secondAttribute="trailing" id="txV-gk-0hR"/>
+                    </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="5OQ-cL-mMV" firstAttribute="leading" secondItem="IV9-Ng-tGb" secondAttribute="leading" id="7yy-fR-KV4"/>
+                <constraint firstItem="HUD-O6-t4O" firstAttribute="top" secondItem="IV9-Ng-tGb" secondAttribute="top" id="Qsv-Fe-yme"/>
+                <constraint firstAttribute="trailing" secondItem="5OQ-cL-mMV" secondAttribute="trailing" id="Ti4-Xd-VBO"/>
+                <constraint firstItem="5OQ-cL-mMV" firstAttribute="top" secondItem="HUD-O6-t4O" secondAttribute="bottom" constant="-1" id="Wu8-3J-veN"/>
+                <constraint firstAttribute="trailing" secondItem="HUD-O6-t4O" secondAttribute="trailing" id="c2i-Kr-vQZ"/>
+                <constraint firstItem="HUD-O6-t4O" firstAttribute="leading" secondItem="IV9-Ng-tGb" secondAttribute="leading" id="wRp-NX-iVS"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="686" y="-70.5"/>
+            <point key="canvasLocation" x="681" y="-58.5"/>
         </view>
     </objects>
 </document>
