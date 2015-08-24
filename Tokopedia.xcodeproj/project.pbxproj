@@ -10,6 +10,7 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AE4C11E1B8AD8C6001B1E40 /* NavigateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE4C11D1B8AD8C6001B1E40 /* NavigateViewController.m */; };
 		851D00001B7CA98200671399 /* ResolutionInputReceiptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7B01B7CA97E00671399 /* ResolutionInputReceiptViewController.m */; };
 		851D00011B7CA98200671399 /* ResolutionInputReceiptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851DF7B11B7CA97E00671399 /* ResolutionInputReceiptViewController.xib */; };
 		851D00021B7CA98200671399 /* DetailReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7B51B7CA97E00671399 /* DetailReviewViewController.m */; };
@@ -1711,7 +1712,6 @@
 		851DFFF11B7CA98200671399 /* InboxResolutionCenterObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7961B7CA97E00671399 /* InboxResolutionCenterObjectMapping.m */; };
 		851DFFF21B7CA98200671399 /* InboxResolutionCenterTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7981B7CA97E00671399 /* InboxResolutionCenterTabViewController.m */; };
 		851DFFF31B7CA98200671399 /* InboxResolutionCenterTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851DF7991B7CA97E00671399 /* InboxResolutionCenterTabViewController.xib */; };
-		851DFFF41B7CA98200671399 /* NavigateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF79B1B7CA97E00671399 /* NavigateViewController.m */; };
 		851DFFF51B7CA98200671399 /* InboxResolutionCenterOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF79E1B7CA97E00671399 /* InboxResolutionCenterOpenViewController.m */; };
 		851DFFF61B7CA98200671399 /* InboxResolutionCenterOpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851DF79F1B7CA97E00671399 /* InboxResolutionCenterOpenViewController.xib */; };
 		851DFFF71B7CA98200671399 /* RequestCancelResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7A21B7CA97E00671399 /* RequestCancelResolution.m */; };
@@ -1777,6 +1777,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AE4C11C1B8AD8C6001B1E40 /* NavigateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigateViewController.h; sourceTree = "<group>"; };
+		7AE4C11D1B8AD8C6001B1E40 /* NavigateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigateViewController.m; sourceTree = "<group>"; };
 		851DF28A1B7CA97D00671399 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		851DF28B1B7CA97D00671399 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		851DF28C1B7CA97D00671399 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -2934,8 +2936,6 @@
 		851DF7971B7CA97E00671399 /* InboxResolutionCenterTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionCenterTabViewController.h; sourceTree = "<group>"; };
 		851DF7981B7CA97E00671399 /* InboxResolutionCenterTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterTabViewController.m; sourceTree = "<group>"; };
 		851DF7991B7CA97E00671399 /* InboxResolutionCenterTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolutionCenterTabViewController.xib; sourceTree = "<group>"; };
-		851DF79A1B7CA97E00671399 /* NavigateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigateViewController.h; sourceTree = "<group>"; };
-		851DF79B1B7CA97E00671399 /* NavigateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigateViewController.m; sourceTree = "<group>"; };
 		851DF79D1B7CA97E00671399 /* InboxResolutionCenterOpenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionCenterOpenViewController.h; sourceTree = "<group>"; };
 		851DF79E1B7CA97E00671399 /* InboxResolutionCenterOpenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterOpenViewController.m; sourceTree = "<group>"; };
 		851DF79F1B7CA97E00671399 /* InboxResolutionCenterOpenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolutionCenterOpenViewController.xib; sourceTree = "<group>"; };
@@ -4447,6 +4447,15 @@
 				C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		7AE4C11B1B8AD8C6001B1E40 /* Navigator */ = {
+			isa = PBXGroup;
+			children = (
+				7AE4C11C1B8AD8C6001B1E40 /* NavigateViewController.h */,
+				7AE4C11D1B8AD8C6001B1E40 /* NavigateViewController.m */,
+			);
+			path = Navigator;
 			sourceTree = "<group>";
 		};
 		851DF2881B7CA97D00671399 /* Classses */ = {
@@ -6091,6 +6100,7 @@
 		851DF6251B7CA97E00671399 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7AE4C11B1B8AD8C6001B1E40 /* Navigator */,
 				851DF6261B7CA97E00671399 /* Activation */,
 				851DF6381B7CA97E00671399 /* Address */,
 				851DF6421B7CA97E00671399 /* Alert */,
@@ -6736,8 +6746,6 @@
 				851DF7971B7CA97E00671399 /* InboxResolutionCenterTabViewController.h */,
 				851DF7981B7CA97E00671399 /* InboxResolutionCenterTabViewController.m */,
 				851DF7991B7CA97E00671399 /* InboxResolutionCenterTabViewController.xib */,
-				851DF79A1B7CA97E00671399 /* NavigateViewController.h */,
-				851DF79B1B7CA97E00671399 /* NavigateViewController.m */,
 				851DF79C1B7CA97E00671399 /* OpenResolutionCenter */,
 				851DF7A01B7CA97E00671399 /* ResolutionCenterDetail */,
 				851DF7B21B7CA97E00671399 /* string_inbox_resolution_center.h */,
@@ -10713,7 +10721,6 @@
 				851DFF361B7CA98200671399 /* AlertInfoPaymentConfirmationView.m in Sources */,
 				851DFEE91B7CA98200671399 /* OrderShop.m in Sources */,
 				851DFD901B7CA98200671399 /* LabelMenu.m in Sources */,
-				851DFFF41B7CA98200671399 /* NavigateViewController.m in Sources */,
 				851DFE2D1B7CA98200671399 /* InboxTicketReply.m in Sources */,
 				851DFD8A1B7CA98200671399 /* URLCacheAlert.m in Sources */,
 				851DFDE51B7CA98200671399 /* TalkList.m in Sources */,
@@ -10728,6 +10735,7 @@
 				851DFE151B7CA98200671399 /* ResolutionConversation.m in Sources */,
 				851DFF231B7CA98200671399 /* WishListObjectResult.m in Sources */,
 				851DFFBA1B7CA98200671399 /* GeneralTalkCell.m in Sources */,
+				7AE4C11E1B8AD8C6001B1E40 /* NavigateViewController.m in Sources */,
 				851DFDF11B7CA98200671399 /* FavoriteShopAction.m in Sources */,
 				851DFE641B7CA98200671399 /* FavoriteShopResult.m in Sources */,
 				851DFE531B7CA98200671399 /* PriceAlert.m in Sources */,
