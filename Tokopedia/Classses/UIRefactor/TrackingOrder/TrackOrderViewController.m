@@ -121,6 +121,7 @@
                                                             API_ORDER_STATUS_KEY        : API_ORDER_STATUS_KEY,
                                                             API_SHIPPING_REF_NUM_KEY    : API_SHIPPING_REF_NUM_KEY,
                                                             API_INVALID_KEY             : API_INVALID_KEY,
+                                                            @"delivered" : @"delivered"
                                                             }];
     
     RKObjectMapping *trackHistoryMapping = [RKObjectMapping mappingForClass:[TrackOrderHistory class]];
@@ -196,7 +197,14 @@
     _track = [result objectForKey:@""];
     BOOL status = [_track.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status && _track.result.track_order) {
+        
         _trackingOrder = _track.result.track_order;
+
+        if (_isShippingTracking) {
+            _trackingOrder.detail = [TrackOrderDetail new];
+            _trackingOrder.detail.receiver_name = _trackingOrder.receiver_name;
+            _trackingOrder.order_status = ([_trackingOrder.delivered integerValue] == 1)?[NSString stringWithFormat:@"%zd",ORDER_DELIVERED]:@"-1";
+        }
         
         _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
         [_tableView reloadData];
