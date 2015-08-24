@@ -283,9 +283,8 @@ static CGFloat rowHeight = 40;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView" owner:nil options:0];
-    CatalogSectionHeaderView *view = [tempArr objectAtIndex:0];
-    
+    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 63);
+    CatalogSectionHeaderView *view = [[CatalogSectionHeaderView alloc] initWithFrame:frame];
     view.titleLabel.text = [_specificationTitles objectAtIndex:section];
     return view;
 }
@@ -677,9 +676,6 @@ static CGFloat rowHeight = 40;
 
 - (IBAction)tap:(id)sender
 {
-//    UIView *view = ((UITapGestureRecognizer *) sender).view;
-    
-
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
@@ -722,14 +718,9 @@ static CGFloat rowHeight = 40;
         }
         else {
             NSInteger startingIndex = _productPhotoPageControl.currentPage;
-    //        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
-    //        controller.canDownload = NO;
             GalleryViewController *gallery = [GalleryViewController new];
             gallery.canDownload = YES;
             [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
-            
-            
-
             gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self.navigationController presentViewController:gallery animated:YES completion:nil];
         }
@@ -762,7 +753,6 @@ static CGFloat rowHeight = 40;
 
 - (void)redirectViewController:(id)viewController
 {
-//    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Scroll view delegate
