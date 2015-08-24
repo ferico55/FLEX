@@ -39,6 +39,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _myShopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     _myUserID = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
     _navigateController = [NavigateViewController new];
+    _isSplitScreen = NO;
     
     UITapGestureRecognizer *productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToProduct)];
     [self.productImageView addGestureRecognizer:productGesture];
@@ -160,7 +161,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(row)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _isSplitScreen) {
         if (![data isEqualToDictionary:_detailViewController.data]) {
             [_detailViewController replaceDataSelected:data];
         }

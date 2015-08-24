@@ -147,6 +147,7 @@
     cell.selectedTalkProductID = list.talk_product_id;
     cell.selectedTalkReputation = list.talk_user_reputation;
     cell.detailViewController = _detailViewController;
+    cell.isSplitScreen = YES;
     
     [cell setTalkViewModel:list.viewModel];
     
