@@ -36,6 +36,7 @@
 
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
+#import "TKPDTabViewController.h"
 
 #import "ProductImages.h"
 @interface NavigateViewController()<SplitReputationVcProtocol>
@@ -170,21 +171,41 @@
         [viewController.navigationController pushViewController:controller animated:YES];
         
     } else {
-        InboxTalkViewController *vc = [InboxTalkViewController new];
-        vc.data=@{@"nav":@"inbox-talk"};
-        
-        InboxTalkViewController *vc1 = [InboxTalkViewController new];
-        vc1.data=@{@"nav":@"inbox-talk-my-product"};
-        
-        InboxTalkViewController *vc2 = [InboxTalkViewController new];
-        vc2.data=@{@"nav":@"inbox-talk-following"};
-        
-        NSArray *vcs = @[vc,vc1, vc2];
-        
-        TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
-        [controller setSelectedIndex:2];
-        [controller setViewControllers:vcs];
+//        InboxTalkViewController *vc = [InboxTalkViewController new];
+//        vc.data=@{@"nav":@"inbox-talk"};
+//        
+//        InboxTalkViewController *vc1 = [InboxTalkViewController new];
+//        vc1.data=@{@"nav":@"inbox-talk-my-product"};
+//        
+//        InboxTalkViewController *vc2 = [InboxTalkViewController new];
+//        vc2.data=@{@"nav":@"inbox-talk-following"};
+//        
+//        NSArray *vcs = @[vc,vc1, vc2];
+//        
+//        TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
+//        [controller setSelectedIndex:2];
+//        [controller setViewControllers:vcs];
+//        controller.hidesBottomBarWhenPushed = YES;
+//        
+//        [viewController.navigationController pushViewController:controller animated:YES];
+        TKPDTabViewController *controller = [TKPDTabViewController new];
         controller.hidesBottomBarWhenPushed = YES;
+        
+        InboxTalkViewController *allTalk = [InboxTalkViewController new];
+        allTalk.inboxTalkType = InboxTalkTypeAll;
+        allTalk.delegate = controller;
+        
+        InboxTalkViewController *myProductTalk = [InboxTalkViewController new];
+        myProductTalk.inboxTalkType = InboxTalkTypeMyProduct;
+        myProductTalk.delegate = controller;
+        
+        InboxTalkViewController *followingTalk = [InboxTalkViewController new];
+        followingTalk.inboxTalkType = InboxTalkTypeFollowing;
+        followingTalk.delegate = controller;
+        
+        controller.viewControllers = @[allTalk, myProductTalk, followingTalk];
+        controller.tabTitles = @[@"Semua", @"Produk Saya", @"Ikuti"];
+        controller.menuTitles = @[@"Semua Diskusi", @"Belum Dibaca"];
         
         [viewController.navigationController pushViewController:controller animated:YES];
     }

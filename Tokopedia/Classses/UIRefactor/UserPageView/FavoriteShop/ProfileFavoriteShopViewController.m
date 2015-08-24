@@ -14,10 +14,6 @@
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileFavoriteShopCell.h"
 
-#import "TKPDTabShopViewController.h"
-#import "ShopNotesViewController.h"
-#import "ShopReviewViewController.h"
-#import "ShopTalkViewController.h"
 
 #import "URLCacheController.h"
 #import "UserPageHeader.h"

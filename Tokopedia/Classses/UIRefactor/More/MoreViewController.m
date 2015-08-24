@@ -30,11 +30,8 @@
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 
-#import "TKPDTabShopViewController.h"
 #import "ShopFavoritedViewController.h"
-#import "ShopReviewViewController.h"
-#import "MyShopNoteViewController.h"
-#import "ShopTalkViewController.h"
+
 
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
