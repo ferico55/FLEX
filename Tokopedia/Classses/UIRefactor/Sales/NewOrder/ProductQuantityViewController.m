@@ -11,16 +11,19 @@
 #import "OrderProduct.h"
 #import "UITextView+UITextView_Placeholder.h"
 #import "DetailProductViewController.h"
+#import "NavigateViewController.h"
 
 @interface ProductQuantityViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     UITextFieldDelegate,
-    UITextViewDelegate
+    UITextViewDelegate,
+    UIAlertViewDelegate
 >
 {
     NSMutableArray *_productQuantity;
+    NavigateViewController *_TKPDNavigator;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -35,6 +38,7 @@
     [super viewDidLoad];
 
     self.title = @"Terima Sebagian";
+    _TKPDNavigator = [NavigateViewController new];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
@@ -51,7 +55,7 @@
     self.navigationItem.leftBarButtonItem = cancelButton;
 
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(tap:)];
     doneButton.tag = 2;
@@ -70,6 +74,16 @@
 
     [_explanationTextView setText:@"Terima sebagian"];
     _explanationTextView.delegate = self;
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:)
+               name:UIKeyboardWillShowNotification
+             object:nil];
+    
+    [nc addObserver:self selector:@selector(keyboardWillHide:)
+               name:UIKeyboardWillHideNotification
+             object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -128,36 +142,105 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OrderProduct *product = [_products objectAtIndex:indexPath.row];
-    DetailProductViewController *controller = [DetailProductViewController new];
-    controller.data = @{@"product_id":product.product_id};
-    [self.navigationController pushViewController:controller animated:YES];
+//    DetailProductViewController *controller = [DetailProductViewController new];
+//    controller.data = @{@"product_id":product.product_id};
+//    [self.navigationController pushViewController:controller animated:YES];
+    [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_picture withShopName:nil];
 }
 
 #pragma mark - Text field method
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    CGPoint point = textField.frame.origin;
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionMiddle
+                                  animated:YES];
+}
 
 - (void)textFieldDidChange:(UITextField *)textField
 {
     [[_productQuantity objectAtIndex:textField.tag] setObject:textField.text forKey:@"product_quantity"];
 }
 
+- (IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem *)sender;
+        if (button.tag == 1) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            NSString *title = @"Konfirmasi Pemrosesan Barang";
+            NSString *message = @"Apakah Anda yakin ingin menerima pesanan ini?\nUntuk penerimaan pesanan sebagian, produk dengan harga bersifat grosir tetap menggunakan harga produk yang tertulis di invoice";
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                                message:message
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Batal"
+                                                      otherButtonTitles:@"Ok", nil];
+            alertView.delegate = self;
+            [alertView show];
+        }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self validateProductQuantity];
+    }
+}
+
+- (void)validateProductQuantity {
+    BOOL valid = YES;
+    for (OrderProduct *product in _products) {
+        for (NSDictionary *dict in _productQuantity) {
+            if ([dict objectForKey:@"order_detail_id"] == product.order_detail_id) {
+                if ([[dict objectForKey:@"product_quantity"] integerValue] > product.product_quantity) {
+                    valid = NO;
+                }
+            }
+        }
+    }
+    if (valid) {
+        [self.delegate didUpdateProductQuantity:_productQuantity explanation:_explanationTextView.text];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        NSString *errorMessage = @"Anda memasukkan jumlah terlalu banyak";
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
+        [alert show];
+    }
+}
+
+#pragma mark - Keyboard Notification
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSValue *keyboardFrameBegin = [[notification userInfo] valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    self.tableView.contentInset = UIEdgeInsetsMake(22, 0, keyboardFrameBeginRect.size.height + 15, 0);
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+    self.tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
+}
+
 #pragma mark - Text view delegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self scrollToBottom];
+    });
+}
+
+- (void)scrollToBottom {
+    CGRect rect = [self.tableView convertRect:self.tableView.tableFooterView.bounds
+                                     fromView:self.tableView.tableFooterView];
+    [self.tableView scrollRectToVisible:rect animated:YES];
+}
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     if ([textView.text isEqualToString:@""]) {
         [textView setPlaceholder:@"Keterangan"];
     }
-}
-
-- (IBAction)tap:(id)sender
-{
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 2) {
-            [self.delegate didUpdateProductQuantity:_productQuantity explanation:_explanationTextView.text];            
-        }
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

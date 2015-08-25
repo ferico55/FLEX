@@ -7,43 +7,31 @@
 //
 
 #import "WishListObjectList.h"
+#import "ProductModelView.h"
 
 @implementation WishListObjectList
-@synthesize shop_gold_status;
-@synthesize shop_id;
-@synthesize product_rating_point;
-@synthesize product_department_id;
-@synthesize product_etalase;
-@synthesize shop_url;
-@synthesize shop_featured_shop;
-@synthesize product_status;
-@synthesize product_id;
-@synthesize product_image_full;
-@synthesize product_currency_id;
-@synthesize product_rating_desc;
-@synthesize product_currency;
-@synthesize product_talk_count;
-@synthesize product_price_no_idr;
-@synthesize product_image;
-@synthesize product_price;
-@synthesize product_sold_count;
-@synthesize product_returnable;
-@synthesize shop_location;
-@synthesize product_normal_price;
-@synthesize product_image_300;
-@synthesize shop_name;
-@synthesize product_review_count;
-@synthesize shop_is_owner;
-@synthesize product_url;
-@synthesize product_name;
-
 
 - (NSString*)product_name {
-    return [product_name kv_decodeHTMLCharacterEntities];
+    return [_product_name kv_decodeHTMLCharacterEntities];
 }
 
 - (NSString*)shop_name {
-    return [shop_name kv_decodeHTMLCharacterEntities];
+    return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
+- (ProductModelView*)viewModel {
+    if(_viewModel == nil) {
+        ProductModelView *viewModel = [[ProductModelView alloc] init];
+        [viewModel setProductName:self.product_name];
+        [viewModel setProductPrice:self.product_price];
+        [viewModel setProductShop:self.shop_name];
+        [viewModel setProductThumbUrl:self.product_image];
+        [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
+        
+        _viewModel = viewModel;
+    }
+    
+    return _viewModel;
 }
 
 @end

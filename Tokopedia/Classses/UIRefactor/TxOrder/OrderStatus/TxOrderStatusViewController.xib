@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TxOrderStatusViewController">
@@ -20,21 +20,24 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="280" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="63E-dj-1jg">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="meL-Rh-83Y"/>
                         <outlet property="delegate" destination="-1" id="NhA-4e-5g8"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="63E-dj-1jg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PJ7-9T-DZ2"/>
+                <constraint firstItem="63E-dj-1jg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PJ7-9T-DZ2">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstItem="63E-dj-1jg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dQV-to-aCL"/>
-                <constraint firstAttribute="trailing" secondItem="63E-dj-1jg" secondAttribute="trailing" id="jxi-Sb-Ttj"/>
+                <constraint firstAttribute="trailing" secondItem="63E-dj-1jg" secondAttribute="trailing" id="jxi-Sb-Ttj">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstAttribute="bottom" secondItem="63E-dj-1jg" secondAttribute="bottom" id="vOK-zv-qfB"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
         <view contentMode="scaleToFill" id="SPu-YJ-oxh" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
@@ -42,16 +45,12 @@
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="lI5-xt-RJP">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="52J-MN-RDd"/>
-                        <constraint firstAttribute="width" constant="20" id="bvB-wy-TYr"/>
-                    </constraints>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="lI5-xt-RJP" secondAttribute="centerX" id="PNx-iT-jEa"/>
-                <constraint firstItem="lI5-xt-RJP" firstAttribute="top" secondItem="SPu-YJ-oxh" secondAttribute="top" constant="7" id="xvC-fa-nKE"/>
+                <constraint firstAttribute="centerX" secondItem="lI5-xt-RJP" secondAttribute="centerX" id="Mjp-mg-pOr"/>
+                <constraint firstAttribute="centerY" secondItem="lI5-xt-RJP" secondAttribute="centerY" id="RgK-w6-MVx"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

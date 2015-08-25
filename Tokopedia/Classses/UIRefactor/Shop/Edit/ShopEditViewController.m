@@ -395,7 +395,7 @@
                             kTKPDSHOPEDIT_APITAGLINEKEY : tagline,
                             kTKPDSHOPEDIT_APISTATUSKEY : @(status),
                             kTKPDSHOPEDIT_APICLOSEUNTILKEY:closeuntil,
-                            kTKPDSHOPEDIT_APICLOSEDNOTEKEY: closenote
+                            kTKPDSHOPEDIT_APICLOSEDNOTEKEY: closenote,
                             };
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPEDITINFO_APIPATH parameters:[param encrypt]];
@@ -559,24 +559,18 @@
                 NSString *shopdesc = [_datainput objectForKey:kTKPDSHOPEDIT_APISHORTDESCKEY]?:_shop.info.shop_description;
                 NSString *tagline = [_datainput objectForKey:kTKPDSHOPEDIT_APITAGLINEKEY]?:_shop.info.shop_description;
                 
-                if (shopdesc && ![shopdesc isEqualToString:@""] &&
-                    tagline && ![tagline isEqualToString:@""] //&&
-                    ){ //status) {
-                    [self configureRestKit];
-                    [self requestaction:_datainput];
+                if (shopdesc.length == 0) {
+                    [message addObject:@"Deskripsi harus diisi."];
                 }
-                else
-                {
-                    if (!tagline || [tagline isEqualToString:@""]) {
-                        [message addObject:@"Slogan harus diisi."];
-                    }
-                    if (!shopdesc || [shopdesc isEqualToString:@""]) {
-                        [message addObject:@"Deskripsi harus diisi."];
-                    }
+                if (tagline.length == 0) {
+                    [message addObject:@"Slogan harus diisi."];
                 }
                 if (message.count>0) {
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:message delegate:self];
                     [alert show];
+                } else {
+                    [self configureRestKit];
+                    [self requestaction:_datainput];
                 }
                 break;
             }
@@ -636,6 +630,7 @@
         NSInteger limit = 48;
         NSString *string = _shop.info.shop_tagline;
         _textviewslogan.text = string?:@"";
+        [_datainput setObject:string forKey:kTKPDSHOPEDIT_APITAGLINEKEY];
         if (string) {
             _labelslogancharcount.text = [NSString stringWithFormat:@"%u", limit - _textviewslogan.text.length];
         }
@@ -643,6 +638,7 @@
         limit = 140;
         string = _shop.info.shop_description;
         _textviewdesc.text = string?:@"";
+        [_datainput setObject:string forKey:kTKPDSHOPEDIT_APISHORTDESCKEY];
         if (string) {
             _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewdesc.text.length];
         }
@@ -689,11 +685,9 @@
         if (!_shop.info.shop_is_gold) {
             _labelmembership.text = @"Regular Merchant";
             _badgesMembership.hidden = YES;
-        }
-        else
-        {
-            _badgesMembership.hidden = NO;
+        } else {
             _labelmembership.text = @"Gold Merchant";
+            _badgesMembership.hidden = NO;
         }
     }
 }
@@ -733,8 +727,10 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     if (textView == _textviewslogan) {
+        [_datainput setObject:textView.text forKey:kTKPDSHOPEDIT_APITAGLINEKEY];
         _labelslogancharcount.text = [NSString stringWithFormat:@"%zd", 48 - textView.text.length];
     } else if (textView == _textviewdesc) {
+        [_datainput setObject:textView.text forKey:kTKPDSHOPEDIT_APISHORTDESCKEY];
         _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", 140 - textView.text.length];
     }
 }

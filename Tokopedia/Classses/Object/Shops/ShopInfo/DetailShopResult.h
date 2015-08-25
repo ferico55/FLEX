@@ -15,6 +15,10 @@
 #import "Address.h"
 #import "ShopInfo.h"
 #import "ShopStats.h"
+#import "ResponseSpeed.h"
+#import "Rating.h"
+#define CResponseSpeed @"respond_speed"
+#define CRatings @"ratings"
 
 @interface DetailShopResult : NSObject
 
@@ -25,6 +29,8 @@
 @property (nonatomic, strong) NSArray *address;
 @property (nonatomic, strong) ShopInfo *info;
 @property (nonatomic, strong) ShopStats *stats;
+@property (nonatomic, strong) ResponseSpeed *respond_speed;
+@property (nonatomic, strong) Rating *ratings;
 @property (nonatomic, strong) NSNumber *is_open;
 
 @end

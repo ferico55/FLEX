@@ -11,10 +11,20 @@
 @implementation CatalogShopCell
 
 - (void)awakeFromNib {
+    [viewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionContentStar:)]];
+    [expandViewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noAction:)]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
+}
+
+- (void)actionContentStar:(id)sender {
+    [_delegate actionContentStar:((UITapGestureRecognizer *) sender).view];
+}
+
+- (void)noAction:(id)sender {
+
 }
 
 - (IBAction)tap:(id)sender
@@ -36,13 +46,7 @@
     }
 }
 
-- (void)setShopRate:(NSInteger)rate
-{
-    for (UIImageView *imageView in self.stars) {
-        if (imageView.tag <= rate) {
-            [imageView setImage:[UIImage imageNamed:@"icon_star_active.png"]];
-        }
-    }
+- (void)setTagContentStar:(int)tag {
+    viewContentStar.tag = tag;
 }
-
 @end

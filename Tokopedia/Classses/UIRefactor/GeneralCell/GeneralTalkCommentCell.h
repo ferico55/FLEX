@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "string_home.h"
+#import "ViewLabelUser.h"
 #import "MGSwipeTableCell.h"
 
 #define kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER @"GeneralTalkCommentCellIdentifier"
@@ -16,6 +17,7 @@
 #pragma mark - General Talk Comment Cell Delegate
 @protocol GeneralTalkCommentCellDelegate <NSObject>
 @required
+- (IBAction)actionSmile:(id)sender;
 -(void)GeneralTalkCommentCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
 
 @optional
@@ -27,17 +29,19 @@
 @interface GeneralTalkCommentCell : MGSwipeTableCell
 
 @property (nonatomic, weak) IBOutlet id<GeneralTalkCommentCellDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<GeneralTalkCommentCellDelegate> del;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
-@property (weak, nonatomic) IBOutlet UILabel *user_name;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *user_name;
 @property (weak, nonatomic) IBOutlet UILabel *create_time;
 @property (weak, nonatomic) IBOutlet UIImageView *user_image;
 @property (weak, nonatomic) IBOutlet UIImageView *commentfailimage;
-@property (weak, nonatomic) IBOutlet UIButton *loadingButton;
+@property (weak, nonatomic) IBOutlet UIButton *loadingButton, *btnReputation;
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 + (id)newcell;
+- (IBAction)actionSmile:(id)sender;
 + (CGSize)messageSize:(NSString*)message;
 + (CGFloat)maxTextWidth;
 + (CGFloat)textMarginVertical;

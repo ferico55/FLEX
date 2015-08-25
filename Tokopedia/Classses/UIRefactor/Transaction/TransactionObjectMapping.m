@@ -47,7 +47,8 @@
                                                  API_TOTAL_SHIPPING_RATE_KEY,
                                                  API_TOTAL_LOGISTIC_FEE_KEY,
                                                  API_CART_ERROR_1,
-                                                 API_CART_ERROR_2
+                                                 API_CART_ERROR_2,
+                                                 @"cart_is_price_changed"
                                                  ]];
     return listMapping;
 }
@@ -78,7 +79,8 @@
                                                      API_PRODUCT_NOTES_KEY,
                                                      API_PRICE_KEY,
                                                      API_PRODUCT_ERROR_MESSAGE_KEY,
-                                                     API_PRODUCT_MUST_INSURANCE_KEY
+                                                     API_PRODUCT_MUST_INSURANCE_KEY,
+                                                     @"product_price_last"
                                                      ]];
     return productMapping;
 }
@@ -149,6 +151,7 @@
     return shopinfoMapping;
 }
 
+
 -(RKObjectMapping*)transactionDetailSummaryMapping
 {
     RKObjectMapping *transactionMapping = [RKObjectMapping mappingForClass:[TransactionSummaryDetail class]];
@@ -188,7 +191,8 @@
                                                         API_GATEWAY_LIST_ID_KEY,
                                                         API_TOKEN_KEY,
                                                         API_STEP_KEY,
-                                                        API_DROPSHIP_LIST_KEY
+                                                        API_DROPSHIP_LIST_KEY,
+                                                        @"klikbca_user"
                                                         ]];
     return transactionMapping;
 }
@@ -237,5 +241,65 @@
     return shipmentspackageMapping;
 }
 
+#pragma mark - CC
+-(RKObjectMapping *)transactionCCDataMapping
+{
+    RKObjectMapping *ccDataMapping = [RKObjectMapping mappingForClass:[CCData class]];
+    [ccDataMapping addAttributeMappingsFromArray:@[@"city",
+                                                   @"postal_code",
+                                                   @"address",
+                                                   @"phone",
+                                                   @"state",
+                                                   @"last_name",
+                                                   @"first_name"]];
+    return ccDataMapping;
+}
+
+-(RKObjectMapping *)veritransDataMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[Veritrans class]];
+    [mapping addAttributeMappingsFromArray:@[@"token_url",
+                                             @"client_key"]];
+    return mapping;
+}
+
+-(RKObjectMapping *)dataCreditMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[DataCredit class]];
+    [mapping addAttributeMappingsFromArray:@[@"user_email",
+                                             @"payment_id",
+                                             @"cc_agent",
+                                             @"cc_type"]];
+    return mapping;
+}
+
+-(RKObjectMapping *)ccFeeMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[CCFee class]];
+    [mapping addAttributeMappingsFromArray:@[@"charge",
+                                             @"charge_idr",
+                                             @"total_idr",
+                                             @"total",
+                                             @"charge_25"
+                                             ]
+     ];
+    return mapping;
+}
+
+-(RKObjectMapping *)indomaretMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[IndomaretData class]];
+    [mapping addAttributeMappingsFromArray:@[@"charge_idr",
+                                             @"total_charge_real_idr",
+                                             @"total",
+                                             @"charge_real",
+                                             @"charge",
+                                             @"payment_code",
+                                             @"charge_real_idr",
+                                             @"total_idr"
+                                             ]
+     ];
+    return mapping;
+}
 
 @end

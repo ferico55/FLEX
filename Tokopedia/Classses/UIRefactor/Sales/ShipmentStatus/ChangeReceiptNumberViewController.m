@@ -43,6 +43,16 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.textField becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.textField resignFirstResponder];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -54,11 +64,35 @@
         if (button.tag == 1) {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
-            if (_textField.text.length >=8 && _textField.text.length <=17) {
-                [self.delegate changeReceiptNumber:_textField.text];
+            if (_textField.text.length >=7 && _textField.text.length <=17) {
+                if ([self.delegate respondsToSelector:@selector(changeReceiptNumber:orderHistory:)]) {
+                    
+                    NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
+                                                 self.order.order_detail.detail_ship_ref_num,
+                                                 _textField.text];
+                    
+                    NSDate *now = [NSDate date];
+
+                    NSDateFormatter *dateFormatFull = [[NSDateFormatter alloc] init];
+                    [dateFormatFull setDateFormat:@"d MM yyyy HH:mm"];
+                    
+                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                    [dateFormat setDateFormat:@"d/MM/yyyy HH:mm"];
+
+                    OrderHistory *history = [OrderHistory new];
+                    history.history_status_date = [dateFormat stringFromDate:now];
+                    history.history_status_date_full = [dateFormatFull stringFromDate:now];
+                    history.history_order_status = @"530";
+                    history.history_comments = historyComments;
+                    history.history_action_by = @"Seller";
+                    history.history_buyer_status = @"Perubahan nomor resi pengiriman";
+                    history.history_seller_status = @"Perubahan nomor resi pengiriman";
+                    
+                    [self.delegate changeReceiptNumber:_textField.text orderHistory:history];
+                }
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 8 - 17 karakter"]
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 7 - 17 karakter"]
                                                                                delegate:self];
                 [alert show];
             }

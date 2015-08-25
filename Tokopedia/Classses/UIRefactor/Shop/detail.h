@@ -126,6 +126,7 @@ typedef enum
 #pragma mark - Get Action
 #define kTKPDADD_WISHLIST_PRODUCT @"add_wishlist_product"
 #define kTKPDREMOVE_WISHLIST_PRODUCT @"remove_wishlist_product"
+#define kTKPDREMOVE_PRODUCT_PRICE_ALERT @"remove_product_price_alert"
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
@@ -136,6 +137,7 @@ typedef enum
 #define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"
 #define kTKPDDETAIL_APIGETSHOPTALKKEY @"get_shop_talk"
 #define kTKPDDETAIL_APIGETSHOPREVIEWKEY @"get_shop_review"
+#define kTKPDDETAIL_APIGETLIKEDISLIKE @"get_like_dislike_review_shop"
 
 #define kTKPDDETAIL_APIGETSHOPNOTESKEY @"get_shop_notes"
 #define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
@@ -179,6 +181,7 @@ typedef enum
 #define kTKPDDETAIL_APIDELETEPRODUCTKEY @"delete_product"
 #define ACTION_UPLOAD_PRODUCT_IMAGE @"upload_product_image"
 #define ACTION_DELETE_IMAGE @"delete_product_pic"
+#define ACTION_GET_CATALOG @"get_catalog"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APITOTALPAGEKEY @"total_page"
@@ -558,6 +561,8 @@ typedef enum
 #define kTKPDREVIEW_APIREVIEWPRODUCTRATEKEY @"review_rate_product"
 #define kTKPDREVIEW_APIREVIEWMESSAGEKEY @"review_message"
 #define kTKPDREVIEW_APIREVIEWUSERIDKEY @"review_user_id"
+#define KTKPDREVIEW_APIREVIEWUSERLABELIDKEY @"review_user_label_id"
+#define KTKPDREVIEW_APIREVIEWUSERLABELKEY @"review_user_label"
 
 #define kTKPDREVIEW_APIMONTHRANGEKEY @"month_range"
 #define kTKPDREVIEW_APIRATEACCURACYKEY @"shop_accuracy"
@@ -662,6 +667,7 @@ typedef enum
 #define kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY @"shop_rate_accuracy"
 #define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
 #define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
+#define kTKPDDETAIL_REVIEWIDS @"review_ids"
 #define kTKPDDETAIL_APISHOPNAMEKEY @"shop_name"
 #define kTKPDDETAIL_APISHOPISGOLD @"shop_is_gold"
 #define kTKPDDETAILCATALOG_APISHOPLOCATIONKEY @"shop_location"

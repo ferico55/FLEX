@@ -9,13 +9,13 @@
 #import "reputation_string.h"
 
 #import "ReputationShopHeader.h"
-#import "AlertReputation.h"
+//#import "AlertReputation.h"
 
 @interface ReputationShopHeader ()
 <
     UIScrollViewDelegate,
-    UISearchBarDelegate,
-    TKPDAlertViewDelegate
+    UISearchBarDelegate
+//    TKPDAlertViewDelegate
 >
 
 @end
@@ -46,8 +46,8 @@
         
         switch (btn.tag) {
             case 10 : {
-                AlertReputation *alertInfo = [AlertReputation newview];
-                [alertInfo show];
+//                AlertReputation *alertInfo = [AlertReputation newview];
+//                [alertInfo show];
                 
                 break;
             }
@@ -56,10 +56,10 @@
 }
 
 #pragma mark - Alert Delegate
--(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    
-}
+//-(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    
+//}
 
 
 @end

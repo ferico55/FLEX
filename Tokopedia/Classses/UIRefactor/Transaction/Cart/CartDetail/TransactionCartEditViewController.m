@@ -13,7 +13,7 @@
 #import "TransactionAction.h"
 #import "TransactionCartEditViewController.h"
 
-@interface TransactionCartEditViewController ()<UITextViewDelegate>
+@interface TransactionCartEditViewController ()<UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSOperationQueue *_operationQueue;
@@ -23,6 +23,7 @@
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
     CGSize _scrollviewContentSize;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
@@ -33,7 +34,9 @@
 @property (weak, nonatomic) IBOutlet UITextView *remarkTextView;
 @property (weak, nonatomic) IBOutlet UILabel *labelCounter;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraintTextView;
 
+@property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
 
 @end
 
@@ -58,7 +61,7 @@
     }
     
     _remarkTextView.delegate = self;
-    [_remarkTextView addSubview:_headerView];
+//    [_remarkTextView addSubview:_headerView];
     
     [self setDefaultData:_data];
     [_remarkTextView becomeFirstResponder];
@@ -77,7 +80,7 @@
 {
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
-    inset.top = _headerView.frame.size.height + 10;
+    inset.top = 12;//_headerView.frame.size.height + 10;
     _remarkTextView.textContainerInset = inset;
 }
 
@@ -105,6 +108,7 @@
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     [_activeTextView resignFirstResponder];
+    [_quantityTextField resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
@@ -112,6 +116,8 @@
             {
                 ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
                 product.product_notes = _remarkTextView.text;
+                [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+                product.product_quantity = _quantityTextField.text;
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 [_delegate shouldEditCartWithUserInfo:_dataInput];
             }
@@ -154,6 +160,7 @@
         _productPriceLabel.text = product.product_price_idr;
         _quantityStepper.value = [product.product_quantity integerValue];
         _quantityLabel.text = [NSString stringWithFormat:@"%zd",(NSInteger)_quantityStepper.value];
+        _quantityTextField.text = product.product_quantity;
         _quantityStepper.minimumValue= [product.product_min_order integerValue];
         _remarkTextView.text = product.product_notes;
         NSInteger counter = 144 - _remarkTextView.text.length;
@@ -173,14 +180,40 @@
     }
 }
 
-#pragma mark - TextView Delegate
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [_quantityTextField resignFirstResponder];
+}
 
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+
+    if ([_quantityTextField.text integerValue] < 1)
+        _quantityTextField.text = product.product_min_order;
+}
+
+- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString*)string
+{
+    NSString* newText;
+    
+    newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    return [newText intValue] < 1000;
+}
+
+#pragma mark - TextView Delegate
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [_quantityTextField resignFirstResponder];
+}
 
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
 {
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
-    inset.top = _headerView.frame.size.height;
+    inset.top = 0;
     UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(inset.left, inset.top, _remarkTextView.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
     placeholderLabel.font = [UIFont fontWithName:_remarkTextView.font.fontName size:_remarkTextView.font.pointSize];
@@ -208,31 +241,9 @@
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        _scrollviewContentSize = [_remarkTextView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_remarkTextView setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseOut
-                         animations:^{
-                             _scrollviewContentSize = [_remarkTextView contentSize];
-                             
-                             _keyboardPosition = [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             
-                             UIEdgeInsets inset = _remarkTextView.contentInset;
-                             inset.bottom = _keyboardPosition.y;
-                             [_remarkTextView setContentInset:inset];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
-    }
+    
+    _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    _bottomConstraintTextView.constant = _keyboardSize.height-40;
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {

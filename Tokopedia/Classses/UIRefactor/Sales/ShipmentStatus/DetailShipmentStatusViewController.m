@@ -19,6 +19,7 @@
 
 @interface DetailShipmentStatusViewController ()
 <
+    LabelMenuDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
     OrderDetailDelegate,
@@ -30,6 +31,9 @@
     RKResponseDescriptor *_responseActionDescriptorStatus;
     
     NSOperationQueue *_operationQueue;
+    
+    NSArray *_history;
+    NSString *_currentReceiptNumber;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -93,6 +97,9 @@
     } else {
         _changeReceiptButton.enabled = NO;
     }
+    
+    _history = _order.order_history;
+    _currentReceiptNumber = self.order.order_detail.detail_ship_ref_num;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -171,12 +178,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_order.order_history count];
+    return _history.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    OrderHistory *history = [_order.order_history objectAtIndex:indexPath.row];
+    OrderHistory *history = [_history objectAtIndex:indexPath.row];
     NSString *status;
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
         status = history.history_buyer_status;
@@ -185,6 +192,7 @@
     }
     if (![history.history_comments isEqualToString:@"0"]) {
         status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
+        status = [status stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     }
     CGSize messageSize = [DetailShipmentStatusCell messageSize:status];
     return messageSize.height;
@@ -201,25 +209,26 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     
-    OrderHistory *history = [_order.order_history objectAtIndex:indexPath.row];
+    OrderHistory *history = [_history objectAtIndex:indexPath.row];
     
     [cell setSubjectLabelText:history.history_action_by];
     cell.dateLabel.text = history.history_status_date_full;
     
     NSString *status;
     if ([history.history_action_by isEqualToString:@"Buyer"]) {
-        status = history.history_buyer_status;
+        status = [history.history_buyer_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
     } else {
-        status = history.history_seller_status;
+        status = [history.history_seller_status stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br><br>"];
     }
     if (![history.history_comments isEqualToString:@"0"]) {
-        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@", history.history_comments]];
+        status = [status stringByAppendingString:[NSString stringWithFormat:@"\n\nKeterangan: \n%@",
+                                                  history.history_comments]];
     }
     [cell setStatusLabelText:status];
     
     [cell setColorThemeForActionBy:history.history_action_by];
     
-    if (indexPath.row == (_order.order_history.count-1)) {
+    if (indexPath.row == (_history.count-1)) {
         [cell hideLine];
     }
     
@@ -237,6 +246,7 @@
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
                                                         kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY        : kTKPD_APIERRORMESSAGEKEY
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
@@ -264,7 +274,7 @@
     
     NSDictionary *param = @{
                             API_ACTION_KEY              : API_EDIT_SHIPPING_REF,
-                            API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
+                            API_USER_ID_KEY             : [[auth objectForKey:API_USER_ID_KEY] stringValue],
                             API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
                             API_SHIPMENT_REF_KEY        : receiptNumber,
                             };
@@ -289,14 +299,57 @@
             _order.order_detail.detail_ship_ref_num = receiptNumber;
             labelReceiptNumber.text = receiptNumber;
             
-        } else {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+            if ([self.delegate respondsToSelector:@selector(successChangeReceiptWithOrderHistory:)]) {
+
+                NSString *historyComments = [NSString stringWithFormat:@"Ubah dari %@ menjadi %@",
+                                             _currentReceiptNumber,
+                                             receiptNumber];
+
+                NSDate *now = [NSDate date];
+                
+                NSDateFormatter *dateFormatFull = [[NSDateFormatter alloc] init];
+                [dateFormatFull setDateFormat:@"d MM yyyy HH:mm"];
+                
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"d/MM/yyyy HH:mm"];
+                
+                OrderHistory *history = [OrderHistory new];
+                history.history_status_date = [dateFormat stringFromDate:now];
+                history.history_status_date_full = [dateFormatFull stringFromDate:now];
+                history.history_order_status = @"530";
+                history.history_comments = historyComments;
+                history.history_action_by = @"Seller";
+                history.history_buyer_status = @"Perubahan nomor resi pengiriman";
+                history.history_seller_status = @"Perubahan nomor resi pengiriman";
+
+                NSMutableArray *histories = [NSMutableArray arrayWithArray:_history];
+                [histories insertObject:history atIndex:0];
+                _history = histories;
+
+                [self.tableView reloadData];
+
+                [self.delegate successChangeReceiptWithOrderHistory:history];
+                
+                _currentReceiptNumber = receiptNumber;
+            }
+            
+        } else if (actionOrder.message_error) {
+
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
+                                                                           delegate:self];
             [alert show];
+            
+        } else {
+            
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah resi gagal."]
+                                                                           delegate:self];
+            [alert show];
+        
         }
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah resi gagal."] delegate:self];
         [alert show];
         
     }];
@@ -304,11 +357,6 @@
 
 
 #pragma mark - Method
-- (void)copy:(id)sender
-{
-    [UIPasteboard generalPasteboard].string = labelReceiptNumber.text;
-}
-
 - (void)longPress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state==UIGestureRecognizerStateBegan) {
@@ -325,9 +373,15 @@
 
 #pragma mark - Change receipt number delegate
 
-- (void)changeReceiptNumber:(NSString *)receiptNumber
+- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history
 {
     [self requestChangeReceiptNumber:receiptNumber];
 }
 
+
+#pragma mark - LabelMenu Delegate
+- (void)duplicate:(int)tag
+{
+    [UIPasteboard generalPasteboard].string = labelReceiptNumber.text;    
+}
 @end

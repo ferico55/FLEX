@@ -38,6 +38,7 @@
     NSDictionary *_auth;
     
     BOOL _isFinishCalculate;
+    BOOL _isFinishInsurance;
     
     TransactionObjectMapping *_mapping;
     
@@ -110,6 +111,7 @@
     if (_indexPage == 0) {
         [_networkManagerCalculate doRequest];
         _isFinishCalculate = NO;
+        [_tableView reloadData];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editInsurance:) name:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil];
@@ -280,25 +282,28 @@
         
     }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
-        
+        _isFinishCalculate = NO;
     }
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
-        
     }
+    [_tableView reloadData];
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
     if (tag == TAG_REQUEST_CALCULATE) {
-        [self requestSuccessActionCalculate:successResult withOperation:operation];
         _isFinishCalculate = YES;
+        [self requestSuccessActionCalculate:successResult withOperation:operation];
     }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
+        _isFinishCalculate = YES;
         [self requestSuccessActionEditAddress:successResult withOperation:operation];
     }
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
         [self requestSuccessActionEditInsurance:successResult withOperation:operation];
     }
+    
+    [_tableView reloadData];
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -309,7 +314,6 @@
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_CALCULATE) {
-        _isFinishCalculate = YES;
     }
     if (tag == TAG_REQUEST_EDIT_ADDRESS) {
         
@@ -317,6 +321,8 @@
     if (tag == TAG_REQUEST_EDIT_INSURANCE) {
         
     }
+    _isFinishCalculate = YES;
+    [_tableView reloadData];
 }
 
 #pragma mark - Request Action Calculate Price
@@ -448,7 +454,7 @@
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if (![package.price isEqualToString:@"0"]) {
+                    if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
                         [shipmentPackages addObject:package];
                     }
                 }
@@ -756,6 +762,7 @@
         cell = [self cellCartDetailAtIndexPage:indexPath];
     else
         cell = [self cellCartSummaryAtIndexPage:indexPath];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -949,7 +956,7 @@
         NSMutableArray *availablePackage = [NSMutableArray new];
         
         for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-            if (![package.price isEqualToString:@"0"]) {
+            if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
                 [availablePackage addObject:package];
             }
         }
@@ -1041,12 +1048,34 @@
             }
                 break;
             case 2:
+            {
                 cell.detailTextLabel.text = shipment.shipment_name;
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                }
+            }
                 break;
             case 3:
             {
                 NSString *shipmentPackageName = shipmentPackage.name?:cart.cart_shipments.shipment_package_name;
                 cell.detailTextLabel.text = shipmentPackageName;
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                }
                 break;
             }
             case 4:
@@ -1066,6 +1095,15 @@
                     insuranceName = cart.cart_insurance_name?:([cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
                      cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
                 }
                 cell.detailTextLabel.text = insuranceName;
                 break;
@@ -1089,6 +1127,15 @@
                 cell = _tableViewCell[6];
                 NSString *insuranceCost = cart.cart_insurance_price_idr;
                 [cell.detailTextLabel setText:insuranceCost animated:YES];
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                }
                 break;
             }
             default:
@@ -1140,7 +1187,7 @@
             else
             {
                 insuranceName = cart.cart_insurance_name?:([cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.accessoryType = UITableViewCellAccessoryNone;
             }
             cell.detailTextLabel.text = insuranceName;
             break;
@@ -1164,6 +1211,7 @@
         default:
             break;
     }
+    [cell setUserInteractionEnabled:NO];
     return cell;
 }
 
@@ -1179,7 +1227,7 @@
     NSDictionary *userInfo = aNotification.userInfo;
     TransactionCartList *cart = [userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY];
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
-    
+    _isFinishCalculate = YES;
     [_tableView reloadData];
 }
 

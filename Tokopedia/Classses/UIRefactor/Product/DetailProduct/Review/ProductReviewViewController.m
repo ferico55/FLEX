@@ -21,6 +21,7 @@
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
 #import "StickyAlert.h"
+#import "string_inbox_message.h"
 #import "NoResultView.h"
 
 #import "URLCacheController.h"
@@ -119,7 +120,7 @@
     _ratingviews = [NSArray sortViewsWithTagInArray:_ratingviews];
     _labelstars = [NSArray sortViewsWithTagInArray:_labelstars];
     _progressviews = [NSArray sortViewsWithTagInArray:_progressviews];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     _list = [NSMutableArray new];
     _param = [NSMutableDictionary new];
@@ -200,6 +201,7 @@
 		if (cell == nil) {
 			cell = [GeneralProductReviewCell newcell];
 			((GeneralProductReviewCell *)cell).delegate = self;
+            [((GeneralProductReviewCell*)cell).namelabel setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
 		}
 
         if (_list.count > indexPath.row) {
@@ -208,6 +210,25 @@
             ((GeneralProductReviewCell *)cell).data = list;
             ((GeneralProductReviewCell *)cell).namelabel.text = list.review_user_name;
             ((GeneralProductReviewCell *)cell).timelabel.text = list.review_create_time;
+            
+            //Set user label
+//            if([list.review_user_label isEqualToString:CPenjual]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPenjual];
+//            }
+//            else if([list.review_user_label isEqualToString:CPembeli]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPembeli];
+//            }
+//            else if([list.review_user_label isEqualToString:CAdministrator]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagAdministrator];
+//            }
+//            else if([list.review_user_label isEqualToString:CPengguna]) {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:CTagPengguna];
+//            }
+//            else {
+//                [((GeneralProductReviewCell*)cell).namelabel setColor:-1];//-1 is set to empty string
+//            }
+//            
+            [((GeneralProductReviewCell*)cell).namelabel setLabelBackground:list.review_user_label];
             
             if([list.review_response.response_message isEqualToString:@"0"]) {
                 [((GeneralProductReviewCell*)cell).commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
@@ -405,12 +426,15 @@
                                                  kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
                                                  kTKPDREVIEW_APIREVIEWRATEQUALITY,
                                                  kTKPDREVIEW_APIREVIEWRATESPEEDKEY,
+                                                 CReviewReputationID,
                                                  kTKPDREVIEW_APIREVIEWRATESERVICEKEY,
                                                  kTKPDREVIEW_APIREVIEWRATEACCURACYKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
 //                                                 kTKPDREVIEW_APIREVIEWRESPONSEKEY
-                                                 kTKPDREVIEW_APIREVIEWPRODUCTRATEKEY
+                                                 kTKPDREVIEW_APIREVIEWPRODUCTRATEKEY,
+                                                 KTKPDREVIEW_APIREVIEWUSERLABELIDKEY,
+                                                 KTKPDREVIEW_APIREVIEWUSERLABELKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -640,6 +664,12 @@
                     _table.tableFooterView = nil;
                     NSError *error = object;
                     NSString *errorDescription = error.localizedDescription;
+                    if(error.code == -1011) {
+                        errorDescription = CStringFailedInServer;
+                    } else if (error.code==-1009 || error.code==-999) {
+                        errorDescription = CStringNoConnection;
+                    }
+                    
                     UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                     [errorAlert show];
                 }
@@ -650,6 +680,12 @@
                 _table.tableFooterView = nil;
                 NSError *error = object;
                 NSString *errorDescription = error.localizedDescription;
+                if(error.code == -1011) {
+                    errorDescription = CStringFailedInServer;
+                } else if (error.code==-1009 || error.code==-999) {
+                    errorDescription = CStringNoConnection;
+                }
+                
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
             }

@@ -8,6 +8,7 @@
 #import "string_catalog.h"
 #import "detail.h"
 
+#import "CMPopTipView.h"
 #import "CatalogShopViewController.h"
 #import "CatalogShopCell.h"
 #import "UserAuthentificationManager.h"
@@ -15,7 +16,10 @@
 #import "FilterCatalogViewController.h"
 #import "CatalogProductViewController.h"
 #import "DetailProductViewController.h"
+#import "ShopBadgeLevel.h"
+#import "SmileyAndMedal.h"
 #import "ShopContainerViewController.h"
+#import "NavigateViewController.h"
 
 @interface CatalogShopViewController ()
 <
@@ -23,14 +27,19 @@
     UITableViewDelegate,
     GeneralTableViewControllerDelegate,
     FilterCatalogDelegate,
-    CatalogShopDelegate
+    CatalogShopDelegate,
+    CMPopTipViewDelegate
 >
 {
     UserAuthentificationManager *_userManager;
     
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
+    NavigateViewController *_navigator;
     
+    
+
+    CMPopTipView *cmPopTitpView;
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
     NSInteger _requestCount;
@@ -48,6 +57,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _navigator = [NavigateViewController new];
  
     self.title = @"Daftar Toko";
     
@@ -105,7 +116,7 @@
 
     CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
     cell.shopNameLabel.text = shop.shop_name;
-    cell.shopLocationLabel.text = shop.shop_location;
+    [cell.btnLocation setTitle:shop.shop_location||![shop.shop_location isEqualToString:@""]?shop.shop_location:@"-" forState:UIControlStateNormal];
     
     ProductList *product = [shop.product_list objectAtIndex:0];
     cell.productNameLabel.text = product.product_name;
@@ -130,8 +141,10 @@
         cell.masking.hidden = NO;
     }
     
-    NSInteger rateAverage = (shop.shop_rate_accuracy + shop.shop_rate_service + shop.shop_rate_speed) / 3;
-    [cell setShopRate:rateAverage];
+//    NSInteger rateAverage = (shop.shop_rate_accuracy + shop.shop_rate_service + shop.shop_rate_speed) / 3;
+//    [cell setShopRate:rateAverage];
+    [SmileyAndMedal generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level withSet:shop.shop_reputation.shop_badge_level.set withImage:cell.stars isLarge:YES];
+    [cell setTagContentStar:(int)indexPath.row];
     
     return cell;
 }
@@ -434,7 +447,54 @@
                    orderBy:@""];
 }
 
+
+#pragma mark - Method
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.leftPopUp = YES;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
 #pragma mark - Cell delegate
+- (void)actionContentStar:(id)sender {
+    CatalogShops *shop = _catalog_shops[((UIView *)sender).tag];
+    NSString *strDesc = [NSString stringWithFormat:@"%@ %@", shop.shop_reputation.shop_reputation_score, CStringPoin];
+    [self initPopUp:strDesc withSender:sender withRangeDesc:NSMakeRange(strDesc.length-CStringPoin.length, CStringPoin.length)];
+}
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -446,18 +506,14 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath
 {
-    DetailProductViewController *controller = [DetailProductViewController new];
     ProductList *product = [[[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
-    controller.data = @{kTKPDDETAIL_APIPRODUCTIDKEY:product.product_id};
-    [self.navigationController pushViewController:controller animated:YES];
+    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectBuyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    DetailProductViewController *controller = [DetailProductViewController new];
     ProductList *product = [[[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
-    controller.data = @{kTKPDDETAIL_APIPRODUCTIDKEY:product.product_id};
-    [self.navigationController pushViewController:controller animated:YES];   
+    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectOtherProductAtIndexPath:(NSIndexPath *)indexPath

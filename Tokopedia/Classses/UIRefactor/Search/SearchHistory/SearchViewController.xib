@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+=======
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+>>>>>>> release
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchViewController">
@@ -13,6 +20,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+<<<<<<< HEAD
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -22,11 +30,56 @@
                         <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="3gY-Wm-LpU">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+=======
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGu-Sr-Afb" userLabel="Search History - View">
+                    <rect key="frame" x="0.0" y="44" width="600" height="556"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3gY-Wm-LpU">
+                            <rect key="frame" x="0.0" y="44" width="600" height="512"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="392" id="GoT-Sc-yUK"/>
+                            </constraints>
+>>>>>>> release
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="6vr-kD-1Rx"/>
                                 <outlet property="delegate" destination="-1" id="YZ5-mT-yHV"/>
                             </connections>
                         </tableView>
+<<<<<<< HEAD
+=======
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGD-4w-dt6">
+                            <rect key="frame" x="550" y="0.0" width="46" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="9Df-tc-3Eb"/>
+                                <constraint firstAttribute="height" constant="44" id="PPn-DT-tYf"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <state key="normal" title="Hapus">
+                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="rPM-gu-gM1"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pencarian Terakhir" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6j-iT-PSE">
+                            <rect key="frame" x="15" y="0.0" width="486" height="44"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZNz-aX-x5R" userLabel="Border">
+                            <rect key="frame" x="15" y="44" width="585" height="1"/>
+                            <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="toh-hV-kSf"/>
+                            </constraints>
+                        </view>
+>>>>>>> release
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
@@ -36,6 +89,20 @@
                         <constraint firstItem="3gY-Wm-LpU" firstAttribute="top" secondItem="UGu-Sr-Afb" secondAttribute="top" id="jHI-kM-Wbp"/>
                     </constraints>
                 </view>
+<<<<<<< HEAD
+=======
+                <searchBar contentMode="scaleToFill" placeholder="Cari produk / toko" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Xm-Sf-r27">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="BpI-NQ-T71"/>
+                    </constraints>
+                    <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="p3n-bA-ELj"/>
+                    </connections>
+                </searchBar>
+>>>>>>> release
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
@@ -46,12 +113,11 @@
                 <constraint firstItem="UGu-Sr-Afb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="tnf-dv-1aL"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+<<<<<<< HEAD
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+=======
+            <point key="canvasLocation" x="180" y="237"/>
+>>>>>>> release
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

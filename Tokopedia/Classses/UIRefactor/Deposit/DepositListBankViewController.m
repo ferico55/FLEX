@@ -128,7 +128,13 @@
     _page = 1;
     _table.delegate = self;
     _table.dataSource = self;
+    
 
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [_table setFrame:CGRectMake(_table.frame.origin.x, _table.frame.origin.y, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height-100)];
 }
 
 -(void)viewWillAppear:(BOOL)animated

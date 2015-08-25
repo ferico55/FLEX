@@ -9,6 +9,7 @@
 #import "Login.h"
 
 #import "activation.h"
+#import "ReputationDetail.h"
 #import "RegisterViewController.h"
 #import "LoginViewController.h"
 #import "CreatePasswordViewController.h"
@@ -24,7 +25,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
 #import "AppsFlyerTracker.h"
-
 
 @interface LoginViewController () <FBLoginViewDelegate, LoginViewDelegate, CreatePasswordDelegate> {
     
@@ -49,6 +49,7 @@
     
     FBLoginView *_loginView;
     id<FBGraphUser> _facebookUser;
+    
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -81,25 +82,25 @@
 @synthesize emailTextField = _emailTextField;
 @synthesize passwordTextField = _passwordTextField;
 
-#pragma mark - Initialization
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    /** Cecking UI device iPhone or iPad (different xib) **/
-    self = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)?[super initWithNibName:kTKPDACTIVATION_LOGINNIBNAMEIPHONE bundle:nil]:[super initWithNibName:kTKPDACTIVATION_LOGINNIBNAMEIPAD bundle:nil];
-    
-    if (self) {
-        self.title = kTKPDACTIVATION_LOGINTITTLE;
-        UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-        [self.navigationItem setTitleView:logo];
-    }
-    return self;
-}
 
 #pragma mark - Life Cycle
+
 - (void)viewDidLoad
 {    
     [super viewDidLoad];
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        CGRect frame = _facebookLoginButton.frame;
+        frame.size.width = 400;
+        _facebookLoginButton.frame = frame;
+    }
+    else
+    {
+        CGRect frame = _facebookLoginButton.frame;
+        frame.size.width = [UIScreen mainScreen].bounds.size.width-30;
+        _facebookLoginButton.frame = frame;
+    }
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
@@ -130,13 +131,6 @@
     [_cheatView addGestureRecognizer:doubleTapGesture];
     [_cheatView setUserInteractionEnabled:YES];
     
-    _loginView = [[FBLoginView alloc] init];
-    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
-    _loginView.frame = CGRectMake(0, 0,
-                                 _facebookLoginButton.frame.size.width,
-                                 _facebookLoginButton.frame.size.height);
-    [_facebookLoginButton addSubview:_loginView];
-    
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _operationQueueFacebookLogin = [NSOperationQueue new];
@@ -146,7 +140,6 @@
 {
     [super viewWillAppear:animated];
     self.screenName = @"Login Page";
-    [FBSession.activeSession closeAndClearTokenInformation];
     
     _loginButton.layer.cornerRadius = 2;
     
@@ -156,7 +149,20 @@
     _passwordTextField.isTopRoundCorner = YES;
     _passwordTextField.isBottomRoundCorner = YES;
     
+    _loginView = [[FBLoginView alloc] init];
     _loginView.delegate = self;
+    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
+    _loginView.frame = CGRectMake(0, 0,
+                                  _facebookLoginButton.frame.size.width,
+                                  _facebookLoginButton.frame.size.height);
+    
+    [_loginView removeFromSuperview];
+    [_facebookLoginButton layoutIfNeeded];    
+    [_facebookLoginButton addSubview:_loginView];
+    
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -286,6 +292,10 @@
     _facebookLoginButton.hidden = NO;
     
     [_activityIndicator stopAnimating];
+    
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
 }
 
 - (void)setLoggingInState {
@@ -322,7 +332,16 @@
                                                         kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
                                                          kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
                                                         }];
+    
+    RKObjectMapping *userReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [userReputationMapping addAttributeMappingsFromArray:@[CPositif,
+                                                           CNegative,
+                                                           CNeutral,
+                                                           CNoReputation,
+                                                           CPositivePercentage]];
+    
     //add relationship mapping
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:userReputationMapping]];
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
@@ -363,7 +382,18 @@
                                                             kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
                                                          kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
                                                         }];
+    
+    
+    RKObjectMapping *userReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [userReputationMapping addAttributeMappingsFromArray:@[CPositif,
+                                                           CNegative,
+                                                           CNeutral,
+                                                           CNoReputation,
+                                                           CPositivePercentage]];
+    
+    
     //add relationship mapping
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:userReputationMapping]];
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
@@ -429,6 +459,16 @@
     
     _requestcount++;
     
+    FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
+    NSString *accessToken = [token accessToken]?:@"";
+    
+    NSString *gender = @"";
+    if ([[user objectForKey:@"gender"] isEqualToString:@"male"]) {
+        gender = @"1";
+    } else if ([[user objectForKey:@"gender"] isEqualToString:@"female"]) {
+        gender = @"2";
+    }
+    
     NSDictionary *param = @{
                             kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
                             kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
@@ -436,7 +476,8 @@
                             kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
                             kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
                             kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
-                            kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
+                            kTKPDLOGIN_API_GENDER_KEY       : gender,
+                            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
                             };
     
     NSLog(@"\n\n\n%@\n\n\n", param);
@@ -486,17 +527,29 @@
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            
+            if(_login.result.user_image != nil) {
+                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            }
+            
             [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            
+            if(_login.result.shop_avatar != nil) {
+                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            }
+            
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
             [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
+            
+            if(_login.result.user_reputation != nil) {
+                NSString *strResult = [NSString stringWithFormat:@"{\"no_reputation\":\"%@\",\"positive\":\"%@\",\"negative\":\"%@\",\"neutral\":\"%@\",\"positive_percentage\":\"%@\"}", _login.result.user_reputation.no_reputation, _login.result.user_reputation.positive, _login.result.user_reputation.negative, _login.result.user_reputation.neutral, _login.result.user_reputation.positive_percentage];
+                [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
+            }
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
@@ -515,20 +568,9 @@
                                                                 object:nil
                                                               userInfo:nil];
         } else if ([_login.result.status isEqualToString:@"1"]) {
-            
+
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-            [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
@@ -569,17 +611,30 @@
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            
+            
+            if(_login.result.user_image != nil) {
+                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            }
+            
             [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            
+            if(_login.result.shop_avatar != nil) {
+                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            }
+            
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
             [secureStorage setKeychainWithValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] withKey:kTKPD_USEREMAIL];
+            
+            if(_login.result.user_reputation != nil) {
+                NSString *strResult = [NSString stringWithFormat:@"{\"no_reputation\":\"%@\",\"positive\":\"%@\",\"negative\":\"%@\",\"neutral\":\"%@\",\"positive_percentage\":\"%@\"}", _login.result.user_reputation.no_reputation, _login.result.user_reputation.positive, _login.result.user_reputation.negative, _login.result.user_reputation.neutral, _login.result.user_reputation.positive_percentage];
+                [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
+            }
             
             //add user login to GA
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];

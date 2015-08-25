@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 11/5/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "CMPopTipView.h"
 #import "InboxMessageViewController.h"
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
@@ -15,18 +15,23 @@
 #import "string_home.h"
 #import "InboxMessageCell.h"
 #import "InboxMessageDetailViewController.h"
+#import "ReputationDetail.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "UserAuthentificationManager.h"
 #import "EncodeDecoderManager.h"
+#import "SmileyAndMedal.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-
+#import "TAGDataLayer.h"
 
 @interface InboxMessageViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     UISearchBarDelegate,
+    SmileyDelegate,
+    CMPopTipViewDelegate,
+    InboxMessageDelegate,
     UISearchDisplayDelegate,
     MGSwipeTableCellDelegate,
     TKPDTabInboxMessageNavigationControllerDelegate,
@@ -65,6 +70,7 @@ typedef enum TagRequest {
     BOOL _isnodata;
     BOOL _isrefreshview;
     BOOL _iseditmode;
+    CMPopTipView *popTipView;
     
     NSInteger _page;
     NSInteger _limit;
@@ -88,6 +94,13 @@ typedef enum TagRequest {
     NSString *_navthatwillrefresh;
     NSString *_messageNavigationFlag;
     
+    NSString *_inboxMessageBaseUrl;
+    NSString *_inboxMessagePostUrl;
+    NSString *_inboxMessageFullUrl;
+    
+    
+    TAGContainer *_gtmContainer;
+    
     BOOL _isrefreshnav;    
     
     __weak RKObjectManager *_objectmanager;
@@ -101,6 +114,8 @@ typedef enum TagRequest {
     EncodeDecoderManager *_encodeDecodeManager;
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
+    
+    NSIndexPath *_selectedIndexPath;
 }
 
 
@@ -154,7 +169,6 @@ typedef enum TagRequest {
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
     _encodeDecodeManager = [EncodeDecoderManager new];
-    _noresult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
@@ -196,9 +210,11 @@ typedef enum TagRequest {
     _table.allowsSelectionDuringEditing = YES;
     _table.allowsMultipleSelectionDuringEditing = YES;
     
+    // GTM
+    [self configureGTM];
+    
     [_networkManager doRequest];
 }
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -214,12 +230,21 @@ typedef enum TagRequest {
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [_networkManager requestCancel];
+//    [_networkManager requestCancel];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Method
+- (NoResultView *)getNoResult {
+    if(_noresult == nil) {
+        _noresult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
+    }
+    
+    return _noresult;
 }
 
 #pragma mark - IBAction
@@ -296,7 +321,13 @@ typedef enum TagRequest {
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
     [_messages_selected removeAllObjects];
+    if(_messages==nil || _messages.count==0) {
+        _isnodata = YES;
+//        _table.tableFooterView = [self getNoResult];
+    }
     [_table endUpdates];
+    
+
     
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
@@ -323,16 +354,44 @@ typedef enum TagRequest {
         if (cell == nil) {
             cell = [InboxMessageCell newcell];
             ((InboxMessageCell*)cell).delegate = self;
+            ((InboxMessageCell*) cell).del = self;
         }
 
         if (_messages.count > indexPath.row ) {
             InboxMessageList *list = _messages[indexPath.row];
             
+            ((InboxMessageCell*)cell).btnReputasi.tag = indexPath.row;
             ((InboxMessageCell*)cell).message_title.text = list.user_full_name;
             ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
             ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
             ((InboxMessageCell*)cell).indexpath = indexPath;
             
+            if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
+                [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [((InboxMessageCell*)cell).btnReputasi setTitle:@"" forState:UIControlStateNormal];
+            }
+            else {
+                [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [((InboxMessageCell*)cell).btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
+            }
+            
+            //Set user label
+//            if([list.user_label isEqualToString:CPenjual]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPenjual];
+//            }
+//            else if([list.user_label isEqualToString:CPembeli]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPembeli];
+//            }
+//            else if([list.user_label isEqualToString:CAdministrator]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagAdministrator];
+//            }
+//            else if([list.user_label isEqualToString:CPengguna]) {
+//                [((InboxMessageCell*)cell).message_title setColor:CTagPengguna];
+//            }
+//            else {
+//                [((InboxMessageCell*)cell).message_title setColor:-1];//-1 is set to empty string
+//            }
+            [((InboxMessageCell*)cell).message_title setLabelBackground:list.user_label];
             
             if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
                 if([list.message_read_status isEqualToString:@"1"]) {
@@ -341,23 +400,18 @@ typedef enum TagRequest {
                     ((InboxMessageCell*)cell).is_unread.hidden = NO;
                 }
             }
-                        
+            
+
+            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
             thumb = [UIImageView circleimageview:thumb];
-            if(![list.user_image isEqualToString:@"0"]) {
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                
-
-                thumb.image = nil;
-                [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            thumb.image = nil;
+            [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    [thumb setImage:image];
+                [thumb setImage:image];
 #pragma clang diagnostic pop
-                } failure:nil];
-            } else {
-                [thumb setImage:[UIImage imageNamed:@"default-boy.png"]];
-            }
+            } failure:nil];
         }
         
         return cell;
@@ -406,15 +460,28 @@ typedef enum TagRequest {
         
         NSInteger index = indexPath.row;
         InboxMessageList *list = _messages[index];
-        InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-        list.message_read_status = @"1";
-        vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id,
-                    KTKPDMESSAGE_TITLEKEY : list.message_title,
-                    KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"],
-                    MESSAGE_INDEX_PATH : indexPath
-                    };
-        [_table reloadData];
-        [self.navigationController pushViewController:vc animated:YES];
+
+        NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                               KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                               KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                               MESSAGE_INDEX_PATH : indexPath?:[NSIndexPath indexPathForRow:0 inSection:0]
+                               };
+
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            if (![data isEqualToDictionary:_detailViewController.data]) {
+                [_detailViewController replaceDataSelected:data];
+                [_table selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                _selectedIndexPath = indexPath;
+            }
+        }
+        else
+        {
+            InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+            list.message_read_status = @"1";
+            vc.data = data;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 
@@ -454,6 +521,7 @@ typedef enum TagRequest {
 
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+        _table.contentInset = UIEdgeInsetsMake(0, 0, _editarchiveview.bounds.size.height, 0);
 
     //show OPTION move to trash forever + back to inbox
     } else if (selected_vc == 3){
@@ -464,6 +532,7 @@ typedef enum TagRequest {
 
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+        _table.contentInset = UIEdgeInsetsMake(0, 0, _inboxtrashforeverview.bounds.size.height, 0);
 
     } else if (selected_vc == 2) {
         _inboxtrashview.hidden = NO;
@@ -473,6 +542,7 @@ typedef enum TagRequest {
 
         [_table setEditing:YES animated:YES];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+        _table.contentInset = UIEdgeInsetsMake(0, 0, _inboxtrashview.bounds.size.height, 0);
 
     } else {
         _editarchiveview.hidden = YES;
@@ -876,7 +946,7 @@ typedef enum TagRequest {
                                 kTKPDHOME_APIPAGEKEY:@(_page),
                                 KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
                                 KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
+                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
                                 };
         return param;
     }
@@ -886,7 +956,7 @@ typedef enum TagRequest {
 
 - (NSString *)getPath:(int)tag {
     if(tag == messageListTag) {
-        return KTKPDMESSAGE_PATHURL;
+        return [_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl;
     }
     
     return nil;
@@ -906,7 +976,13 @@ typedef enum TagRequest {
 
 - (id)getObjectManager:(int)tag {
     if(tag == messageListTag) {
-        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  [RKObjectManager sharedClient];
+//        _objectmanager =  ![_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxMessageBaseUrl]:[RKObjectManager sharedClient];
+        if([_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxMessageBaseUrl isEqualToString:@""]) {
+            _objectmanager = [RKObjectManager sharedClient];
+        } else {
+            _objectmanager = [RKObjectManager sharedClient:_inboxMessageBaseUrl];
+        }
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
@@ -929,8 +1005,20 @@ typedef enum TagRequest {
                                                      KTKPDMESSAGE_MESSAGEREPLYKEY,
                                                      KTKPDMESSAGE_INBOXIDKEY,
                                                      KTKPDMESSAGE_USERIMAGEKEY,
-                                                     KTKPDMESSAGE_JSONDATAKEY
+                                                     KTKPDMESSAGE_JSONDATAKEY,
+                                                     KTKPDMESSAGE_USER_LABEL,
+                                                     KTKPDMESSAGE_USER_LABEL_ID
                                                      ]];
+        
+        
+        RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+        [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                     CNoReputation,
+                                                                     CNegative,
+                                                                     CNeutral,
+                                                                     CPositif]];
+        RKRelationshipMapping *userReputationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:reviewUserReputationMapping];
+        [listMapping addPropertyMapping:userReputationRel];
         
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];
@@ -944,7 +1032,7 @@ typedef enum TagRequest {
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:KTKPDMESSAGE_PATHURL
+                                                                                                 pathPattern:[_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -982,7 +1070,7 @@ typedef enum TagRequest {
             _page = [[_networkManager splitUriToPage:_urinext] integerValue];
         } else {
             _isnodata = YES;
-            _table.tableFooterView = _noresult;
+            _table.tableFooterView = [self getNoResult];
         }
         
         if(_refreshControl.isRefreshing) {
@@ -997,6 +1085,22 @@ typedef enum TagRequest {
                 [_table selectRowAtIndexPath:indexpath animated:YES scrollPosition:UITableViewScrollPositionTop];
             }
             
+        }
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            NSIndexPath *indexpath = _selectedIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+            InboxMessageList *list = _messages[indexpath.row];
+            
+            NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                                   KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                                   KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                                   MESSAGE_INDEX_PATH : indexpath
+                                   };
+            if (![data isEqualToDictionary:_detailViewController.data]) {
+                [_detailViewController replaceDataSelected:data];
+            }
+            [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
 }
@@ -1024,5 +1128,58 @@ typedef enum TagRequest {
 }
 
 
+- (void)configureGTM {
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    _inboxMessageBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxMessageBase];
+    _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
+}
 
+
+#pragma mark - ToolTip Delegate
+- (void)dismissAllPopTipViews
+{
+    [popTipView dismissAnimated:YES];
+    popTipView = nil;
+}
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
+    [self dismissAllPopTipViews];
+}
+
+
+#pragma mark - InboxMessage Delegate
+- (void)actionSmile:(id)sender {
+    InboxMessageList *list = _messages[((UIView *) sender).tag];
+
+    if(! (list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"])) {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.user_reputation.neutral withRepSmile:list.user_reputation.positive withRepSad:list.user_reputation.negative withDelegate:self];
+        
+        //Init pop up
+        popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        popTipView.delegate = self;
+        popTipView.backgroundColor = [UIColor whiteColor];
+        popTipView.animation = CMPopTipAnimationSlide;
+        popTipView.dismissTapAnywhere = YES;
+        popTipView.leftPopUp = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [popTipView presentPointingAtView:button inView:self.view animated:YES];
+    }
+}
 @end

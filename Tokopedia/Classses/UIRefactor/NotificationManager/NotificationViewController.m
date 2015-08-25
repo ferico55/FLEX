@@ -5,7 +5,7 @@
 //  Created by Tokopedia PT on 12/15/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "AlertPriceNotificationViewController.h"
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
@@ -15,7 +15,8 @@
 #import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
-
+#import "SegmentedReviewReputationViewController.h"
+#import "SplitReputationViewController.h"
 #import "SalesNewOrderViewController.h"
 #import "ShipmentStatusViewController.h"
 
@@ -23,8 +24,15 @@
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusViewController.h"
 
+#import "TKPDTabViewController.h"
+#import "InboxTicketViewController.h"
+#import "InboxRootViewController.h"
+#import "InboxTalkSplitViewController.h"
+#import "InboxReviewSplitViewController.h"
+#import "InboxResolSplitViewController.h"
 
-@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate>
+
+@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate, SplitReputationVcProtocol>
 
 @property (weak, nonatomic) IBOutlet UILabel *messageCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *discussionCountLabel;
@@ -56,6 +64,9 @@
 @end
 
 @implementation NotificationViewController
+{
+    UISplitViewController *splitViewController;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -76,12 +87,26 @@
         _reviewCountLabel.text = _notification.result.inbox.inbox_review;
         [self updateLabelAppearance:_reviewCountLabel];
     }
-
+    
     if ([_notification.result.resolution integerValue] > 0) {
         _resolutionCenterCountLabel.text = [_notification.result.resolution stringValue];
         [self updateLabelAppearance:_resolutionCenterCountLabel];
     }
     
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
+    
+    if([_notification.result.inbox.inbox_wishlist integerValue] > 0) {
+        _priceNotificationCountLabel.text = _notification.result.inbox.inbox_wishlist;
+        [self updateLabelAppearance:_priceNotificationCountLabel];
+    }
+    
+    if([_notification.result.inbox.inbox_ticket integerValue] > 0) {
+        _customerCareCountLabel.text = _notification.result.inbox.inbox_ticket;
+        [self updateLabelAppearance:_customerCareCountLabel];
+    }
     
     // Payment section
     if([_notification.result.sales.sales_new_order integerValue] > 0) {
@@ -104,7 +129,7 @@
     } else {
         _shippingStatus.hidden = YES;
     }
-
+    
     // Purchase section
     if([_notification.result.purchase.purchase_reorder integerValue] > 0) {
         _orderCancelledLabel.text = _notification.result.purchase.purchase_reorder;
@@ -135,7 +160,6 @@
     } else {
         _receiveConfirmation.hidden = YES;
     }
-
     
 }
 
@@ -163,7 +187,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 4;
+            numberOfRows = 6;
             break;
             
         case 1:
@@ -178,6 +202,20 @@
             break;
     }
     return numberOfRows;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    // Background color
+    view.tintColor = [UIColor clearColor];
+    
+    // Text Color
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    //    [header.textLabel setTextColor:[UIColor whiteColor]];
+    
+    // Another way to set the background color
+    // Note: does not preserve gradient effect of original header
+    // header.contentView.backgroundColor = [UIColor blackColor];
 }
 
 
@@ -232,17 +270,17 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 4, self.view.frame.size.width, 30)];
-    titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:15];
     titleLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1];
     if (section == 0) titleLabel.text = @"Kotak Masuk";
     else if (section == 1) titleLabel.text = @"Penjualan";
     else if (section == 2) titleLabel.text = @"Pembelian";
-
+    
     UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(0, 33, self.view.frame.size.width, 1)];
     borderView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:0.5f];
-
+    
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 34)];
-    headerView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+    headerView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:0.7];
     [headerView addSubview:titleLabel];
     [headerView addSubview:borderView];
     
@@ -256,7 +294,7 @@
     CGRect messageFrame = label.frame;
     messageFrame.origin.x -= 18;
     label.frame = messageFrame;
-
+    
     UIView *redCircle = [[UIView alloc] initWithFrame:CGRectMake(40, 17, 8, 8)];
     redCircle.backgroundColor = [UIColor colorWithRed:229.0/255.0 green:28.0/255.0 blue:35.0/255.0 alpha:1];
     redCircle.layer.cornerRadius = 4;
@@ -271,75 +309,123 @@
     if([indexPath section] == 0) {
         switch ([indexPath row]) {
             case 0:{
-                InboxMessageViewController *vc = [InboxMessageViewController new];
-                vc.data=@{@"nav":@"inbox-message"};
-                
-                InboxMessageViewController *vc1 = [InboxMessageViewController new];
-                vc1.data=@{@"nav":@"inbox-message-sent"};
-                
-                InboxMessageViewController *vc2 = [InboxMessageViewController new];
-                vc2.data=@{@"nav":@"inbox-message-archive"};
-                
-                InboxMessageViewController *vc3 = [InboxMessageViewController new];
-                vc3.data=@{@"nav":@"inbox-message-trash"};
-                NSArray *vcs = @[vc,vc1, vc2, vc3];
-                
-                TKPDTabInboxMessageNavigationController *controller = [TKPDTabInboxMessageNavigationController new];
-                [controller setSelectedIndex:2];
-                [controller setViewControllers:vcs];
-                controller.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:controller];
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxRootViewController *controller = [InboxRootViewController new];
+                    [self.delegate pushViewController:controller];
+                    
+                } else {
+                    InboxMessageViewController *vc = [InboxMessageViewController new];
+                    vc.data=@{@"nav":@"inbox-message"};
+                    
+                    InboxMessageViewController *vc1 = [InboxMessageViewController new];
+                    vc1.data=@{@"nav":@"inbox-message-sent"};
+                    
+                    InboxMessageViewController *vc2 = [InboxMessageViewController new];
+                    vc2.data=@{@"nav":@"inbox-message-archive"};
+                    
+                    InboxMessageViewController *vc3 = [InboxMessageViewController new];
+                    vc3.data=@{@"nav":@"inbox-message-trash"};
+                    NSArray *vcs = @[vc,vc1, vc2, vc3];
+                    
+                    TKPDTabInboxMessageNavigationController *controller = [TKPDTabInboxMessageNavigationController new];
+                    [controller setSelectedIndex:2];
+                    [controller setViewControllers:vcs];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:controller];
+                }
 
                 break;
             }
             case 1 : {
-                InboxTalkViewController *vc = [InboxTalkViewController new];
-                vc.data=@{@"nav":@"inbox-talk"};
-                
-                InboxTalkViewController *vc1 = [InboxTalkViewController new];
-                vc1.data=@{@"nav":@"inbox-talk-my-product"};
-                
-                InboxTalkViewController *vc2 = [InboxTalkViewController new];
-                vc2.data=@{@"nav":@"inbox-talk-following"};
-                
-                NSArray *vcs = @[vc,vc1, vc2];
-                
-                TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
-                [controller setSelectedIndex:2];
-                [controller setViewControllers:vcs];
-                controller.hidesBottomBarWhenPushed = YES;
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxTalkSplitViewController *controller = [InboxTalkSplitViewController new];
+                    [self.delegate pushViewController:controller];
+                    
+                } else {
+                    InboxTalkViewController *vc = [InboxTalkViewController new];
+                    vc.data=@{@"nav":@"inbox-talk"};
+                    
+                    InboxTalkViewController *vc1 = [InboxTalkViewController new];
+                    vc1.data=@{@"nav":@"inbox-talk-my-product"};
+                    
+                    InboxTalkViewController *vc2 = [InboxTalkViewController new];
+                    vc2.data=@{@"nav":@"inbox-talk-following"};
+                    
+                    NSArray *vcs = @[vc,vc1, vc2];
+                    
+                    TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
+                    [controller setSelectedIndex:2];
+                    [controller setViewControllers:vcs];
+                    controller.hidesBottomBarWhenPushed = YES;
 
-                [self.delegate pushViewController:controller];
+                    [self.delegate pushViewController:controller];
+                }
 
                 break;
             }
                 
             case 2 : {
-                InboxReviewViewController *vc = [InboxReviewViewController new];
-                vc.data=@{@"nav":@"inbox-review"};
-                
-                InboxReviewViewController *vc1 = [InboxReviewViewController new];
-                vc1.data=@{@"nav":@"inbox-review-my-product"};
-                
-                InboxReviewViewController *vc2 = [InboxReviewViewController new];
-                vc2.data=@{@"nav":@"inbox-review-my-review"};
-                
-                NSArray *vcs = @[vc,vc1, vc2];
-                
-                TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-                [nc setSelectedIndex:2];
-                [nc setViewControllers:vcs];
-                nc.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:nc];
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    splitViewController = [UISplitViewController new];
+                    
+                    SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+                    splitReputationViewController.splitViewController = splitViewController;
+                    splitReputationViewController.isFromNotificationView = YES;
+                    splitReputationViewController.del = self;
+                    [self.delegate pushViewController:splitReputationViewController];
+                } else {
+                    SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+	                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+    	            [self.delegate pushViewController:segmentedReputationViewController];
+                }
                 break;
             }
             case 3:
             {
-                InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:vc];
+                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+                [self.delegate pushViewController:alertPriceNotificationViewController];
                 break;
             }
+            case 4:
+            {
+                TKPDTabViewController *controller = [TKPDTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                
+                InboxTicketViewController *allInbox = [InboxTicketViewController new];
+                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+                allInbox.delegate = controller;
+                
+                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+                unreadInbox.delegate = controller;
+                
+                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+                closedInbox.delegate = controller;
+                
+                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+                
+                [self.delegate pushViewController:controller];
+                break;
+            }
+                
+            case 5 : {
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:controller];
+                    
+                } else {
+                    InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.delegate pushViewController:controller];
+                }
+                break;
+            }
+
             default:
                 break;
         }
@@ -401,4 +487,8 @@
     
 }
 
+#pragma mark - SplitVC Delegate
+- (void)deallocVC {
+    splitViewController = nil;
+}
 @end

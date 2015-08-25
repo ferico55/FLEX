@@ -291,6 +291,7 @@
             _table.hidden = NO;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
+            _table.tableFooterView = nil;
             [self requestsuccess:mappingResult withOperation:operation];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
@@ -432,6 +433,8 @@
     _isrefreshview = YES;
     
     [_table reloadData];
+    _table.tableFooterView = nil;
+    
     /** request data **/
     [self configureRestKit];
     [self request];

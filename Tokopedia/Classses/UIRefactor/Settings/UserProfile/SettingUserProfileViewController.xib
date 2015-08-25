@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -85,11 +85,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-rh-Sq2" userLabel="Header View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="134"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_profile_picture.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="Bju-bE-bA5" userLabel="Profile Image View">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bju-bE-bA5" userLabel="Profile Image View">
                             <rect key="frame" x="120" y="15" width="80" height="80"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="80" id="Ahx-Wd-1Cf"/>
-                                <constraint firstAttribute="width" constant="80" id="noU-69-hb4"/>
+                                <constraint firstAttribute="width" constant="80" id="Y0C-GP-BFj"/>
+                                <constraint firstAttribute="height" constant="80" id="j5B-uw-SWv"/>
                             </constraints>
                         </imageView>
                         <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="PIA-Wl-ChN">
@@ -116,16 +116,15 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="centerX" secondItem="Bju-bE-bA5" secondAttribute="centerX" id="DRz-Rc-heT"/>
                         <constraint firstItem="PIA-Wl-ChN" firstAttribute="top" secondItem="6tV-rh-Sq2" secondAttribute="top" constant="47" id="Fbx-Do-axV"/>
                         <constraint firstAttribute="trailing" secondItem="PIA-Wl-ChN" secondAttribute="trailing" constant="150" id="HVE-aQ-LNa"/>
+                        <constraint firstItem="Bju-bE-bA5" firstAttribute="top" secondItem="6tV-rh-Sq2" secondAttribute="top" constant="15" id="NRu-Lm-hhT"/>
                         <constraint firstItem="PIA-Wl-ChN" firstAttribute="leading" secondItem="6tV-rh-Sq2" secondAttribute="leading" constant="150" id="S4D-6n-nDM"/>
                         <constraint firstAttribute="height" constant="134" id="TDH-uq-bId"/>
                         <constraint firstItem="xAJ-dZ-vVL" firstAttribute="leading" secondItem="6tV-rh-Sq2" secondAttribute="leading" constant="98" id="Wub-Nf-LdW"/>
-                        <constraint firstAttribute="trailing" secondItem="Bju-bE-bA5" secondAttribute="trailing" constant="120" id="bCU-tb-MXx"/>
                         <constraint firstAttribute="trailing" secondItem="xAJ-dZ-vVL" secondAttribute="trailing" constant="98" id="bSJ-bb-gaa"/>
-                        <constraint firstItem="Bju-bE-bA5" firstAttribute="top" secondItem="6tV-rh-Sq2" secondAttribute="top" constant="15" id="cgt-de-Nuk"/>
-                        <constraint firstItem="xAJ-dZ-vVL" firstAttribute="top" secondItem="Bju-bE-bA5" secondAttribute="bottom" constant="4" id="i8k-kb-rUu"/>
-                        <constraint firstItem="Bju-bE-bA5" firstAttribute="leading" secondItem="6tV-rh-Sq2" secondAttribute="leading" constant="120" id="znh-A9-1pF"/>
+                        <constraint firstItem="xAJ-dZ-vVL" firstAttribute="top" secondItem="Bju-bE-bA5" secondAttribute="bottom" constant="4" id="jOE-tS-t2e"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cxD-yj-EMl" userLabel="Full Name View">
@@ -594,7 +593,6 @@
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
-        <image name="icon_profile_picture.jpeg" width="200" height="200"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

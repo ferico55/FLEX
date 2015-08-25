@@ -19,6 +19,8 @@
 <
     SettingAddressLocationViewDelegate,
     UIScrollViewDelegate,
+    UITableViewDataSource,
+    UITableViewDelegate,
     UITextFieldDelegate,
     UITextViewDelegate
 >
@@ -51,9 +53,14 @@
     NSDictionary *_selectedProvince;
     NSDictionary *_selectedDistrict;
     NSDictionary *_selectedCity;
+    
+    UITextField *_activeTextField;
 }
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldaddressname;
 @property (weak, nonatomic) IBOutlet TKPDTextView *textviewaddress;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpostcode;
@@ -61,9 +68,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttoncity;
 @property (weak, nonatomic) IBOutlet UIButton *buttonprovince;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldphonenumber;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldfax;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 -(void)cancelActionAddAddress;
 -(void)configureRestKitActionAddAddress;
@@ -81,6 +89,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _section2Cells = [NSArray sortViewsWithTagInArray:_section2Cells];
+    _section3Cells = [NSArray sortViewsWithTagInArray:_section3Cells];
     
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -125,14 +136,6 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
-
-    CGRect frame = self.container.frame;
-    frame.size = CGSizeMake(self.view.frame.size.height,
-                            _contentView.frame.size.height);
-    frame.origin = CGPointZero;
-    self.container.frame = frame;
-    
-    [self.container addSubview:_contentView];
     
     _textviewaddress.placeholder = @"Alamat";
     
@@ -146,7 +149,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.container.contentSize = _contentView.frame.size;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = barButtonItem;
 }
 
 #pragma mark - Memory Management
@@ -215,79 +228,9 @@
             }
             case 11:
             {
-                //submit
-                Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
-                
-                NSMutableArray *messages = [NSMutableArray new];
-                
-                NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
-                NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
-                NSInteger postcode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
-                NSString *district = _selectedDistrict[DATA_ID_KEY]?:list.location_district_id;
-                NSString *city = _selectedCity[DATA_ID_KEY]?:list.location_city_id;
-                NSString *prov = _selectedProvince[DATA_ID_KEY]?:list.location_province_id;
-                NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
-                NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
-                //NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax;
-                
-                NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-                
-                if (addressname && ![addressname isEqualToString:@""] &&
-                    address && ![address isEqualToString:@""] &&
-                    postcode &&
-                    district &&
-                    city  &&
-                    prov  &&
-                    phone && ![phone isEqualToString:@""] && phoneCharCount>=6 &&
-                    email && [email isEmail]
-                    ) {
-                        [self configureRestKitActionAddAddress];
-                        [self requestActionAddAddress:_datainput];
-                }
-                else
-                {
-                    if (!addressname || [addressname isEqualToString:@""]) {
-                        [messages addObject:@"Nama Alamat harus diisi."];
-                    }
-                    if (!address || [address isEqualToString:@""]) {
-                        [messages addObject:@"Alamat harus diisi."];
-                    }
-                    if (!postcode) {
-                        [messages addObject:@"Kode Pos harus diisi."];
-                    }
-                    if (!prov) {
-                        [messages addObject:@"Provinsi harus diisi."];
-                    }
-                    if (!city) {
-                        [messages addObject:@"Kota harus diisi."];
-                    }
-                    if (!district) {
-                        [messages addObject:@"Kecamatan harus diisi."];
-                    }
-                    if (!phone || [phone isEqualToString:@""]) {
-                        [messages addObject:@"Telepon harus diisi."];
-                    }
-                    else
-                    {
-                        if (phoneCharCount<6) {
-                            [messages addObject:@"Phone minimum 6 Character"];
-                        }
-                    }
-                    if (!email) {
-                        [messages addObject:@"Email harus diisi."];
-                    }
-                    else{
-                        if (![email isEmail]) {
-                            [messages addObject:@"Format email harus benar."];
-                        }
-                    }
-                }
-                
-                NSLog(@"%@",messages);
-                
-                if (messages.count>0) {
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-                    [alert show];
+                if ([self isValidInput]) {
+                    [self configureRestKitActionAddAddress];
+                    [self requestActionAddAddress:_datainput];
                 }
                 break;
             }
@@ -295,6 +238,74 @@
                 break;
         }
     }
+}
+
+-(BOOL)isValidInput
+{
+    BOOL isValid = YES;
+    
+    Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    
+    NSMutableArray *messages = [NSMutableArray new];
+    
+    NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
+    NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
+    NSInteger postcode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
+    NSString *district = _selectedDistrict[DATA_ID_KEY]?:list.location_district_id;
+    NSString *city = _selectedCity[DATA_ID_KEY]?:list.location_city_id;
+    NSString *prov = _selectedProvince[DATA_ID_KEY]?:list.location_province_id;
+    NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
+    NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
+    
+    if (!addressname || [addressname isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Nama Alamat harus diisi."];
+    }
+    else if (!address || [address isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Alamat harus diisi."];
+    }
+    else if (!postcode||postcode ==0 ) {
+        isValid = NO;
+        [messages addObject:@"Kode Pos harus diisi."];
+    }
+    else if (!prov||[prov isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Provinsi harus diisi."];
+    }
+    else if (!city||[city isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Kota harus diisi."];
+    }
+    else if (!district||[district isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:@"Kecamatan harus diisi."];
+    }
+    else if (!email) {
+        isValid = NO;
+        [messages addObject:@"Email harus diisi."];
+    }
+    else if (![email isEmail]) {
+        isValid = NO;
+        [messages addObject:@"Format email harus benar."];
+    }
+    
+    NSString *regex = @"[0-9]*";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    if ([predicate evaluateWithObject:phone]) {
+        if (phone.length > 0 && phone.length < 6) {
+            [messages addObject:@"Telepon terlalu pendek, minimum 6 karakter."];
+        }
+    } else {
+        [messages addObject:@"Telepon harus berupa angka."];
+    }
+
+    if (!isValid) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        [alert show];
+    }
+
+    return  isValid;
 }
 
 #pragma mark - Request Action AddAddress
@@ -434,12 +445,36 @@
                                                                         object:nil
                                                                       userInfo:userinfo];
                     
-                    Address *address = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
-                    address.location_city_name = _selectedCity[DATA_NAME_KEY]?:@"";
-                    address.location_district_name = _selectedDistrict[DATA_NAME_KEY]?:@"";
-                    address.location_province_name = _selectedProvince[DATA_NAME_KEY]?:@"";
-                    [_delegate successEditAddress:address];
+                    if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
 
+                        Address *address = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+                        
+                        NSString *addressName = [userinfo objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:address.location_address_name;
+                        NSString *streetAddress = [userinfo objectForKey:kTKPDSHOP_APIADDRESSKEY]?:address.location_address;
+                        NSInteger postalCode = [[userinfo objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[address.location_postal_code integerValue];
+                        NSString *districtID = _selectedDistrict[@"ID"]?:address.location_district_id?:@"";
+                        NSString *cityID = _selectedCity[@"ID"]?:address.location_city_id?:@"";
+                        NSString *provinceID = _selectedProvince[@"ID"]?:address.location_province_id?:@"";
+                        NSString *phone = [userinfo objectForKey:kTKPDSHOP_APIPHONEKEY]?:address.location_phone?:@"";
+                        NSString *email = [userinfo objectForKey:kTKPDSHOP_APIEMAILKEY]?:address.location_email?:@"";
+                        NSString *fax = [userinfo objectForKey:kTKPDSHOP_APIFAXKEY]?:address.location_fax?:@"";
+                    
+                        address.location_city_name = _selectedCity[DATA_NAME_KEY]?:@"";
+                        address.location_district_name = _selectedDistrict[DATA_NAME_KEY]?:@"";
+                        address.location_province_name = _selectedProvince[DATA_NAME_KEY]?:@"";
+                        address.location_address_name = addressName;
+                        address.location_address = streetAddress;
+                        address.location_postal_code = [NSString stringWithFormat:@"%d", postalCode];
+                        address.location_district_id = districtID;
+                        address.location_city_id = cityID;
+                        address.location_province_id = provinceID;
+                        address.location_phone = phone;
+                        address.location_email = email;
+                        address.location_fax = fax;
+                        
+                        [self.delegate successEditAddress:address];
+                    }
+                    
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
                 }
@@ -464,6 +499,76 @@
 -(void)requestTimeoutActionAddAddress
 {
     [self cancelActionAddAddress];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return _section0Cells.count;
+            break;
+        case 1:
+            return _section1Cell.count;
+            break;
+        case 2:
+            return _section2Cells.count;
+            break;
+        case 3:
+            return _section3Cells.count;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell= nil;
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0Cells[indexPath.row];
+            break;
+        case 1:
+            cell = _section1Cell[indexPath.row];
+            break;
+        case 2:
+            cell = _section2Cells[indexPath.row];
+            break;
+        case 3:
+            cell = _section3Cells[indexPath.row];
+            break;
+        default:
+            break;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 4;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+            return [_section0Cells[indexPath.row] frame].size.height;
+            break;
+        case 1:
+            return [_section1Cell[indexPath.row] frame].size.height;
+            break;
+        case 2:
+            return [_section2Cells[indexPath.row] frame].size.height;
+            break;
+        case 3:
+            return [_section3Cells[indexPath.row] frame].size.height;
+            break;
+        default:
+            break;
+    }
+    return 0;
 }
 
 #pragma mark - Methods
@@ -554,6 +659,8 @@
 
 - (void)textFieldValueChanged:(UITextField *)textField
 {
+    _activetextview = nil;
+    _activeTextField = textField;
     if (textField == _textfieldaddressname) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIADDRESSNAMEKEY];
     } else if (textField == _textfieldpostcode) {
@@ -574,6 +681,8 @@
 
 #pragma mark - Text View Delegate
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+    _activeTextField = nil;
+    _activetextview = textView;
     [textView resignFirstResponder];
     Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
     if (!list.location_address_name) {
@@ -603,17 +712,46 @@
 }
 
 #pragma mark - Keyboard Notification
-
-- (void)keyboardWillShow:(NSNotification *)notification {
-    NSDictionary* keyboardInfo = [notification userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    self.container.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _tableView.contentInset = contentInsets;
+    _tableView.scrollIndicatorInsets = contentInsets;
+    
+    if (_activeTextField == _textfieldaddressname) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextField == _textfieldpostcode) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextField == _textfieldemail) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextField == _textfieldphonenumber) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextField == _textfieldfax) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activetextview == _textviewaddress) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    self.container.contentInset = UIEdgeInsetsZero;
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                          delay:0
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         _tableView.contentInset = contentInsets;
+                         _tableView.scrollIndicatorInsets = contentInsets;
+                     }
+                     completion:^(BOOL finished){
+                     }];
 }
 
 @end

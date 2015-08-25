@@ -27,11 +27,16 @@
 
 #import "NoResultView.h"
 
-@interface ShopNotesPageViewController () <UITableViewDataSource,
-UITableViewDelegate,
-TKPDTabInboxTalkNavigationControllerDelegate,
-ShopPageHeaderDelegate,
-UIAlertViewDelegate, MGSwipeTableCellDelegate>
+@interface ShopNotesPageViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UIAlertViewDelegate,
+    TKPDTabInboxTalkNavigationControllerDelegate,
+    ShopPageHeaderDelegate,
+    MGSwipeTableCellDelegate,
+    MyShopNoteDetailDelegate
+>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -156,8 +161,8 @@ UIAlertViewDelegate, MGSwipeTableCellDelegate>
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;
-    _table.tableHeaderView = _header;
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    //_table.tableHeaderView = _header;
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
@@ -202,16 +207,27 @@ UIAlertViewDelegate, MGSwipeTableCellDelegate>
 }
 
 #pragma mark - TableView Delegate
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return _header;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return _header.frame.size.height;
+}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NotesList *list = _list[indexPath.row];
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
-    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
-                kTKPDNOTES_APINOTEIDKEY:list.note_id,
-                kTKPDNOTES_APINOTETITLEKEY:list.note_title,
-                kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
-                @"shop_id" : [_data objectForKey:@"shop_id"]
+    vc.delegate = self;
+    vc.noteList = list;
+    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY)?:kTKPDSETTINGEDIT_DATATYPEDEFAULTVIEWKEY,
+                kTKPDNOTES_APINOTEIDKEY:list.note_id?:@(0),
+                kTKPDNOTES_APINOTETITLEKEY:list.note_title?:@"",
+                kTKPDNOTES_APINOTESTATUSKEY:list.note_status?:@"",
+                @"shop_id" : [_data objectForKey:@"shop_id"]?:@""
                 };
     
     [self.navigationController pushViewController:vc animated:YES];
@@ -498,14 +514,12 @@ UIAlertViewDelegate, MGSwipeTableCellDelegate>
     return self;
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark - Note detail delegate
+
+- (void)successEditNote:(NotesList *)noteList {
+    NSInteger index = [_list indexOfObject:noteList];
+    [_list replaceObjectAtIndex:index withObject:noteList];
+    [self.table reloadData];
+}
 
 @end

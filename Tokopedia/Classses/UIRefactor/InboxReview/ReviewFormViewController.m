@@ -11,6 +11,9 @@
 #import "ReviewList.h"
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
+#import "NavigateViewController.h"
+#import "InboxReviewAction.h"
+#import "NavigateViewController.h"
 
 #import "string_inbox_review.h"
 
@@ -53,6 +56,7 @@
     NSMutableArray *_errorMessages;
     UIBarButtonItem *_barbuttonright;
     NSDictionary *_editedParam;
+    NavigateViewController *_TKPDNavigator;
 }
 
 #pragma mark - Initialization
@@ -227,6 +231,7 @@
     [super viewDidLoad];
     
     _operationQueue = [NSOperationQueue new];
+    _TKPDNavigator = [NavigateViewController new];
 
     [self initNavigationBar];
     [self initRatingProperty];
@@ -245,13 +250,15 @@
     _objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxReviewAction class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxReviewActionResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY,
+                                                   REVIEW_ID_API_KEY,
+                                                   SHOW_DIALOG_RATE_API_KEY]];
     
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
@@ -278,7 +285,7 @@
         [self requestSuccess:mappingResult withOperation:operation];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:_isEditForm?@[CStringGagalMemperbaharuiUlasan]:@[CStringGagalMenambahUlasan] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:_isEditForm?@[CStringGagalMemperbaharuiUlasan]:@[CStringGagalMenambahUlasan] delegate:self];
         [stickyAlertView show];
         [self.navigationController popViewControllerAnimated:YES];
     }];
@@ -289,13 +296,27 @@
 - (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id info = [result objectForKey:@""];
-    GeneralAction *generalaction = info;
+    InboxReviewAction *generalaction = info;
     BOOL status = [generalaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if(status) {
         if([generalaction.result.is_success isEqualToString:@"1"]) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:_isEditForm?@[CStringBerhasilMemperbaharuiUlasan]:@[CStringBerhasilMenambahUlasan] delegate:self];
             [stickyAlertView show];
+            
+            NSDictionary *userinfo;
+            _editedParam = [self getEditedParam];
+            userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex), @"review_id" : generalaction.result.review_id?:@0};
+            if(_isEditForm) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterWriteReview" object:nil userInfo:userinfo];
+                if ([generalaction.result.show_dialog_rate boolValue]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SHOW_RATING_ALERT
+                                                                        object:@{kTKPD_ALWAYS_SHOW_RATING_ALERT:@"1"}];
+                }
+            }
+            
             [self.navigationController popViewControllerAnimated:YES];
         } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:generalaction.message_error delegate:self];
@@ -354,14 +375,14 @@
                 if([self validateReviewValue]) {
 //                    [self.navigationController popViewControllerAnimated:YES];
                     
-                    NSDictionary *userinfo;
-                    _editedParam = [self getEditedParam];
-                    userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex)};
-                    if(_isEditForm) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
-                    } else {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterWriteReview" object:nil userInfo:userinfo];
-                    }
+//                    NSDictionary *userinfo;
+//                    _editedParam = [self getEditedParam];
+//                    userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex)};
+//                    if(_isEditForm) {
+//                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
+//                    } else {
+//                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterWriteReview" object:nil userInfo:userinfo];
+//                    }
                     
                     
                     [self doSendReview];
@@ -382,9 +403,7 @@
         switch (button.tag) {
             case 10:
             {
-                DetailProductViewController *vc = [DetailProductViewController new];
-                vc.data = @{@"product_id" : _selectedReviewDetail.review_product_id};
-                [self.navigationController pushViewController:vc animated:YES];
+                [_TKPDNavigator navigateToProductFromViewController:self withName:_selectedReviewDetail.review_product_name withPrice:nil withId:_selectedReviewDetail.review_product_id withImageurl:_selectedReviewDetail.review_product_image withShopName:nil];
                 break;
             }
                 
@@ -461,6 +480,12 @@
         return NO;
     }
 
+}
+
+- (IBAction)tapProduct:(id)sender {
+    NavigateViewController *navigateController = [[NavigateViewController alloc] init];
+//    [navigateController navigateToProductFromViewController:self withProductID:_selectedReviewDetail.review_product_id];
+    [_TKPDNavigator navigateToProductFromViewController:self withName:_selectedReviewDetail.review_product_name withPrice:nil withId:_selectedReviewDetail.review_product_id withImageurl:_selectedReviewDetail.review_product_image withShopName:nil];
 }
 
 

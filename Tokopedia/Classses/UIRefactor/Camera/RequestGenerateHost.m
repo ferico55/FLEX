@@ -116,7 +116,17 @@
 -(void)requestFailureGenerateHost:(NSError*)object
 {
     if(_delegate!=nil && [_delegate respondsToSelector:@selector(failedGenerateHost:)])
-        [_delegate failedGenerateHost:@[[object localizedDescription]]];
+    {
+        NSArray *errors;
+        if(object.code == -1011) {
+            errors = @[@"Mohon maaf, terjadi kendala pada server"];
+        } else if (object.code==-1009 || object.code==-999) {
+            errors = @[@"Tidak ada koneksi internet"];
+        } else {
+            errors = @[object.localizedDescription];
+        }
+        [_delegate failedGenerateHost:errors];
+    }
 }
 
 -(void)requestProcessGenerateHost:(id)object

@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GalleryPhotoView.h"
 #import "GalleryPhoto.h"
+#import "TopAlignedLabel.h"
 
 
 typedef enum
@@ -21,7 +22,7 @@ typedef enum
 @protocol GalleryViewControllerDelegate;
 
 @interface GalleryViewController : UIViewController <UIScrollViewDelegate, GalleryPhotoDelegate> {
-    UILabel *lblTitle;
+    TopAlignedLabel *lblTitle;
     UIButton *btnDownload, *btnCancel;
 	BOOL _isScrolling;
 	BOOL _isThumbViewShowing;
@@ -41,6 +42,7 @@ typedef enum
 
 - (IBAction)actionDownload:(id)sender;
 - (IBAction)actionCancel:(id)sender;
+- (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex usingNetwork:(BOOL)usingNetwork;
 - (id)initWithPhotoSource:(NSObject<GalleryViewControllerDelegate>*)photoSrc withStartingIndex:(int)startIndex;
 - (void)gotoImageByIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)removeImageAtIndex:(NSUInteger)index;

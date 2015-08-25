@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NotesList.h"
 
 @protocol MyShopNoteDetailDelegate <NSObject>
 
-- (void)successEditNote:(NSString *)title text:(NSString *)text;
+- (void)successCreateNewNote;
+- (void)successEditNote:(NotesList *)noteList;
 
 @end
 
@@ -18,5 +20,6 @@
 
 @property (nonatomic,strong) NSDictionary *data;
 @property (nonatomic, weak) id<MyShopNoteDetailDelegate> delegate;
+@property (nonatomic, strong) NotesList *noteList;
 
 @end

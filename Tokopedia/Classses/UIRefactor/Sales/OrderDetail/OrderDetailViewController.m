@@ -5,7 +5,7 @@
 //  Created by Tokopedia PT on 1/19/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
+#import "LabelMenu.h"
 #import "OrderDetailViewController.h"
 #import "OrderDetailProductCell.h"
 #import "OrderDetailProductInformationCell.h"
@@ -19,11 +19,14 @@
 #import "CancelShipmentViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
-#import "DetailProductViewController.h"
 #import "NavigateViewController.h"
+
+#define CTagAddress 2
+#define CTagPhone 3
 
 @interface OrderDetailViewController ()
 <
+    LabelMenuDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
     ProductQuantityDelegate,
@@ -34,6 +37,7 @@
 >
 {
     NSDictionary *_textAttributes;
+    NavigateViewController *_TKPDNavigator;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *topButtonsView;
@@ -54,11 +58,11 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *receiverNameLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *addressLabel;
-@property (weak, nonatomic) IBOutlet UILabel *cityLabel;
-@property (weak, nonatomic) IBOutlet UILabel *countryLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *addressLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *cityLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *countryLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *phoneNumberLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *courierAgentLabel;
 
@@ -88,13 +92,34 @@
 {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    CGRect frame = _detailTransactionView.frame;
+    frame.size.width = screenWidth;
+    _detailTransactionView.frame = frame;
+    
     self.title = @"Detail Transaksi";
+    _TKPDNavigator = [NavigateViewController new];
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backButton;
+    
+    _phoneNumberLabel.delegate = _addressLabel.delegate = _cityLabel.delegate = _countryLabel.delegate = self;
+    _addressLabel.tag = _cityLabel.tag = _countryLabel.tag = CTagAddress;
+    _phoneNumberLabel.tag = CTagPhone;
+    [_addressLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    [_cityLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    [_countryLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    [_phoneNumberLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    
+    [_addressLabel setUserInteractionEnabled:YES];
+    [_cityLabel setUserInteractionEnabled:YES];
+    [_countryLabel setUserInteractionEnabled:YES];
+    [_phoneNumberLabel setUserInteractionEnabled:YES];
+    
     
     _tableView.tableHeaderView = _orderHeaderView;
     _tableView.tableFooterView = _orderFooterView;
@@ -165,8 +190,8 @@
     
     _phoneNumberLabel.text = _transaction.order_destination.receiver_phone;
     _courierAgentLabel.text = [NSString stringWithFormat:@"%@ - %@",
-                               _transaction.order_shipment.shipment_product,
-                               _transaction.order_shipment.shipment_name];
+                               _transaction.order_shipment.shipment_name,
+                               _transaction.order_shipment.shipment_product];
     
     _paymentMethodLabel.text = _transaction.order_payment.payment_gateway_name;
     
@@ -431,9 +456,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DetailProductViewController *controller = [DetailProductViewController new];
-    controller.data = @{@"product_id":[[_transaction.order_products objectAtIndex:indexPath.row] product_id]};
-    [self.navigationController pushViewController:controller animated:YES];
+    OrderProduct *product = [_transaction.order_products objectAtIndex:indexPath.section];
+    [_TKPDNavigator navigateToProductFromViewController:self
+                                               withName:product.product_name
+                                              withPrice:product.product_price
+                                                 withId:product.product_id
+                                           withImageurl:nil
+                                           withShopName:nil];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
@@ -443,6 +472,20 @@
     }
     return YES;
 }
+
+#pragma mark - Method
+- (void)longPress:(UILongPressGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        UILabel *lbl = (UILabel *)sender.view;
+        [lbl becomeFirstResponder];
+        
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setTargetRect:lbl.frame inView:lbl.superview];
+        [menu setMenuVisible:YES animated:YES];
+    }
+}
+
 
 #pragma mark - Action
 
@@ -792,4 +835,16 @@
     }
 }
 
+
+
+#pragma mark - LabelMenu Delegate
+- (void)duplicate:(int)tag
+{
+    if(tag == CTagAddress) {
+        [UIPasteboard generalPasteboard].string = [NSString stringWithFormat:@"%@ %@ %@", _addressLabel.text, _cityLabel.text, _countryLabel.text];
+    }
+    else if(tag == CTagPhone) {
+        [UIPasteboard generalPasteboard].string = _phoneNumberLabel.text;
+    }
+}
 @end

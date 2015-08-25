@@ -43,7 +43,12 @@
 }
 
 - (NSString *)getUserId {
-    return [[_auth objectForKey:@"user_id"] stringValue] ?: @"0";
+    if ([[_auth objectForKey:@"user_id"] stringValue]) {
+        return [[_auth objectForKey:@"user_id"] stringValue];
+    } else if ([_auth objectForKey:@"tmp_user_id"]){
+        return [[_auth objectForKey:@"tmp_user_id"] stringValue];
+    }
+    return @"0";
 }
 
 - (NSString*)getMyDeviceToken {
@@ -57,6 +62,10 @@
 
 - (NSString *)getShopId {
     return [_auth objectForKey:@"shop_id"]?:@"0";
+}
+
+- (NSString *)getShopName {
+    return [_auth objectForKey:@"shop_name"]?:@"0";
 }
 
 -(NSString *)getShopHasTerm

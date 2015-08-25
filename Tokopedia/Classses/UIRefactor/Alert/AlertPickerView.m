@@ -18,6 +18,12 @@
 @end
 
 @implementation AlertPickerView
+{
+    UITapGestureRecognizer *_newGesture;
+    NSInteger index;
+    NSInteger secondIndex;
+    __weak IBOutlet UIPickerView *pickerView;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -62,13 +68,22 @@
 // The number of columns of data
 - (int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 1;
+    if (_pickerCount==0) {
+        _pickerCount = 1;
+    }
+    return _pickerCount;
 }
 
 // The number of rows of data
 - (int)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    int datacount = (int)_pickerData.count;
+    int datacount = 0;
+    if (component == 0) {
+        datacount = (int)_pickerData.count;
+    }
+    if (component == 1) {
+        datacount = (int)_secondPickerData.count;
+    }
     return datacount;
 }
 
@@ -76,6 +91,12 @@
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     NSString *dataname = [_pickerData[row] objectForKey:DATA_NAME_KEY];
+    if (component == 0) {
+        dataname = [_pickerData[row] objectForKey:DATA_NAME_KEY];
+    }
+    if (component == 1) {
+        dataname = [_secondPickerData[row] objectForKey:DATA_NAME_KEY];
+    }
     return dataname;
 }
 
@@ -85,12 +106,18 @@
     if (!label)
     {
         label = [[UILabel alloc] init];
-        label.font = [UIFont fontWithName:@"GothamBook" size:16];
+        label.font = [UIFont fontWithName:@"Gotham Book" size:16];
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
     }
 
-    label.text=[_pickerData[row] objectForKey:DATA_NAME_KEY];
+    if (component == 0) {
+        label.text = [NSString stringWithFormat:@"%@",[_pickerData[row] objectForKey:DATA_NAME_KEY]];
+    }
+    if (component == 1) {
+        label.text = [NSString stringWithFormat:@"%@",[_secondPickerData[row] objectForKey:DATA_NAME_KEY]];
+    }
+    
     return label;
 }
 
@@ -99,7 +126,13 @@
 {
     // This method is triggered whenever the user makes a change to the picker selection.
     // The parameter named row and component represents what was selected.
-    _data = @{DATA_INDEX_KEY:@(row)};
+    if (component == 0) {
+        index = row;
+    }
+    if (component == 1) {
+        secondIndex = row;
+    }
+    _data = @{DATA_INDEX_KEY:@(index),DATA_INDEX_SECOND_KEY:@(secondIndex)};
 }
 
 #pragma mark - Methods
@@ -134,10 +167,10 @@
 		[_window addSubview:_background];
 	}
     _background.userInteractionEnabled = YES;
-    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
-    [_background addGestureRecognizer:gesture];
-    _gesture = gesture;
+    _newGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
+    [_background addGestureRecognizer:_newGesture];
     
+    self.frame = CGRectMake(0, self.frame.origin.y, _window.bounds.size.width, self.bounds.size.height);
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	
@@ -152,12 +185,21 @@
 			[_delegate didPresentAlertView:self];
 		}
 	}];
+    
+    index = [[_data objectForKey:DATA_INDEX_KEY] integerValue];
+    secondIndex = [[_data objectForKey:DATA_INDEX_SECOND_KEY] integerValue];
+    
+    [pickerView selectRow:index inComponent:0 animated:NO];
+    if (_pickerCount==2) {
+        [pickerView selectRow:secondIndex?:0 inComponent:1 animated:NO];
+    }
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
     [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     if(self.superview != nil){
+        [_background removeGestureRecognizer:_newGesture];
         [self dismissindex:buttonIndex silent:NO animated:animated];
     }
 }

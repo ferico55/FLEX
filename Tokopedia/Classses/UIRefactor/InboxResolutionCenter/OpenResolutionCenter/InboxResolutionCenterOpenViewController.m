@@ -115,7 +115,11 @@
     _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
     _uploadedImages = [NSArray sortViewsWithTagInArray:_uploadedImages];
     _uploadButtons = [NSArray sortViewsWithTagInArray:_uploadButtons];
-    [_cancelButtons makeObjectsPerformSelector:@selector(setHidden:)withObject:@(YES)];
+    for(UIButton *btn in _cancelButtons) {
+//        [_cancelButtons makeObjectsPerformSelector:@selector(setHidden:)withObject:@(YES)];
+        btn.hidden = YES;
+    }
+//    [_cancelButtons makeObjectsPerformSelector:@selector(setHidden:)withObject:@(YES)];
     
     
     [self setData];
@@ -135,6 +139,7 @@
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
 
+    [self adjustNavigationTitle];
 }
 
 -(void)setControllerTitle:(NSString *)controllerTitle

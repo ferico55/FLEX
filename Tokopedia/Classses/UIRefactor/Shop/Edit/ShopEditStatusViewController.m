@@ -17,7 +17,12 @@
 #import "AlertDatePickerView.h"
 
 #pragma mark - Shop Edit Status View Controller
-@interface ShopEditStatusViewController ()<UITextViewDelegate, TKPDAlertViewDelegate>
+@interface ShopEditStatusViewController ()
+<
+    UITextViewDelegate,
+    UIScrollViewDelegate,
+    TKPDAlertViewDelegate
+>
 {
     NSInteger _type;
     
@@ -50,6 +55,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelcatatan;
 @property (weak, nonatomic) IBOutlet UIButton *buttondate;
 @property (weak, nonatomic) IBOutlet UITextView *textviewnote;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 - (IBAction)tap:(id)sender;
 - (IBAction)gesture:(id)sender;
@@ -93,8 +100,15 @@
     
     [self setDefaultData:_data];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+    CGRect frame = _contentView.frame;
+    frame.size.width = self.view.frame.size.width;
+    frame.size.height = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 19; // 19 = status bar
+    _contentView.frame = frame;
+
+    [_scrollView addSubview:_contentView];
+    _scrollView.contentSize = CGSizeMake(frame.size.width, frame.size.height);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -222,19 +236,24 @@
                 ((UIImageView*)_thumbicon[0]).hidden = YES;
                 ((UIImageView*)_thumbicon[1]).hidden = NO;
                 
-                NSDateComponents* deltaComps = [NSDateComponents new];
-                [deltaComps setDay:7];
-                NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
-                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:tomorrow];
-                NSInteger year = [components year];
-                NSInteger month = [components month];
-                NSInteger day = [components day];
-                NSString *datestring = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
+                NSString *closedUntil;
+                if ([[_data objectForKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY] isEqualToString:@"0"]) {
+                    NSDateComponents* deltaComps = [NSDateComponents new];
+                    [deltaComps setDay:7];
+                    NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
+                    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:tomorrow];
+                    NSInteger year = [components year];
+                    NSInteger month = [components month];
+                    NSInteger day = [components day];
+                    NSString *dateString = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
+                    closedUntil = dateString;
+                } else {
+                    closedUntil = [_data objectForKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
+                }
                 
-                NSString *closedUntil = [_data objectForKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY]?:datestring;
                 [_datainput setObject:closedUntil forKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
-                NSString *until = [closedUntil isEqualToString:@"0"]?datestring:closedUntil;
-                [_buttondate setTitle:until forState:UIControlStateNormal];
+                [_buttondate setTitle:closedUntil forState:UIControlStateNormal];
+                
                 break;
             }
             default:
@@ -288,11 +307,21 @@
 }
 
 #pragma mark - Keyboard Notification
-- (void)keyboardWillShow:(NSNotification *)info {
-
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
+    self.scrollView.contentInset = UIEdgeInsetsZero;
+}
+
+#pragma mark - Scroll delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
 }
 
 @end

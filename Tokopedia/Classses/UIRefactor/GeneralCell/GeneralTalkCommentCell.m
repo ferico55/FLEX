@@ -21,6 +21,11 @@ static CGFloat textMarginVertical = 30.0f;
     [super setSelected:selected animated:animated];
 }
 
+#pragma mark - Method
+- (IBAction)actionSmile:(id)sender {
+    [_del actionSmile:sender];
+}
+
 #pragma mark - Factory Methods
 + (id)newcell
 {

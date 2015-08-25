@@ -95,7 +95,24 @@
                                                      target:(self)
                                                      action:@selector(tapbutton:)];
     editButton.tag = 11;
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+        
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem = barButton;
+    }
     self.navigationItem.rightBarButtonItem = editButton;
+}
+
+-(IBAction)tapBackButton:(id)sender
+{
+    [_splitVC.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad
@@ -664,7 +681,7 @@
 {
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:1],
-                                 NSFontAttributeName            : [UIFont boldSystemFontOfSize:16],
+                                 NSFontAttributeName            : [UIFont fontWithName:@"Gotham Medium" size:15.0],
                                  };
     
     NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] initWithString:string

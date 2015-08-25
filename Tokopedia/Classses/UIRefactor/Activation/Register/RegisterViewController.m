@@ -20,6 +20,7 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 #import "AppsFlyerTracker.h"
+#import "WebViewController.h"
 
 #pragma mark - Register View Controller
 @interface RegisterViewController ()
@@ -73,6 +74,8 @@
 @property (weak, nonatomic) IBOutlet UIView *facebookLoginView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
+@property (weak, nonatomic) IBOutlet UIButton *termsButton;
+@property (weak, nonatomic) IBOutlet UIButton *privacyButton;
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *facebookLoginActivityIndicator;
@@ -109,11 +112,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        CGRect frame = _facebookLoginView.frame;
+        frame.size.width = 550;
+        _facebookLoginView.frame = frame;
+    }
+    else
+    {
+        CGRect frame = _facebookLoginView.frame;
+        frame.size.width = [UIScreen mainScreen].bounds.size.width-30;
+        _facebookLoginView.frame = frame;
+    }
 
     self.title = kTKPDREGISTER_NEW_TITLE;
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _contentView.frame = screenRect;
+    
     _datainput = [NSMutableDictionary new];
-    [_datainput setObject:kTKPDREGISTER_APIGENDERKEY forKey:@"1"];
+    [_datainput setObject:@"1" forKey:kTKPDREGISTER_APIGENDERKEY];
 
     _operationQueue =[NSOperationQueue new];
     
@@ -138,9 +157,9 @@
                                  NSForegroundColorAttributeName : [UIColor lightGrayColor],
                                  };
     
-    NSString *aggreementText = @"Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi.";
-    _agreementLabel.attributedText = [[NSAttributedString alloc] initWithString:aggreementText
-                                                                     attributes:attributes];
+//    NSString *aggreementText = @"Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi.";
+//    _agreementLabel.attributedText = [[NSAttributedString alloc] initWithString:aggreementText
+//                                                                     attributes:attributes];
     _agreementLabel.userInteractionEnabled = YES;
 
     _loginView = [[FBLoginView alloc] init];
@@ -151,13 +170,16 @@
     [_facebookLoginView addSubview:_loginView];
 
     [_container addSubview:_contentView];
+    
     _container.contentSize = CGSizeMake(self.view.frame.size.width,
-                                        _contentView.frame.size.height);
+                                        _container.frame.size.height);
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Register Page";
+    self.title = kTKPDREGISTER_NEW_TITLE;
     
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;
@@ -172,12 +194,15 @@
     
     _loginView.delegate = self;
     
-    [FBSession.activeSession closeAndClearTokenInformation];
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    self.title = @"";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillShowNotification
                                                   object:nil];
@@ -326,7 +351,7 @@
     }
 }
 
-- (IBAction)tapsegment:(UISegmentedControl*)sender {
+- (IBAction)tapsegment:(UISegmentedControl *)sender {
     [_activetextfield resignFirstResponder];
     [_datainput setObject:@(sender.selectedSegmentIndex+1) forKey:kTKPDREGISTER_APIGENDERKEY];
 }
@@ -364,19 +389,27 @@
 -(void)cancel
 {
     [_request cancel];
-
     _request = nil;
+    
+    [_requestFacebookLogin cancel];
+    _requestFacebookLogin = nil;
+
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
+    
+    [_facebookObjectManager.operationQueue cancelAllOperations];
+    _facebookObjectManager = nil;
     
     _loadingView.hidden = YES;
     [_container addSubview:_contentView];
     _container.contentSize = CGSizeMake(self.view.frame.size.width,
                                         _contentView.frame.size.height);
     
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
+    if ([[FBSession activeSession] state] != FBSessionStateCreated) {
+        [[FBSession activeSession] closeAndClearTokenInformation];
+        [[FBSession activeSession] close];
+        [FBSession setActiveSession:nil];
+    }
 }
 
 - (void)configureRestKit
@@ -679,11 +712,10 @@
 // Call method when user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
     if ([[FBSession activeSession] state] == FBSessionStateOpen) {
-        [FBSession.activeSession closeAndClearTokenInformation];
-        [self requestLoginFacebookUser:user];        
         _facebookUser = user;
         _loadingView.hidden = NO;
         [_facebookLoginActivityIndicator startAnimating];
+        [self requestLoginFacebookUser:user];
     }
 }
 
@@ -783,6 +815,16 @@
     
     _requestcount++;
     
+    FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
+    NSString *accessToken = [token accessToken]?:@"";
+    
+    NSString *gender = @"";
+    if ([[user objectForKey:@"gender"] isEqualToString:@"male"]) {
+        gender = @"1";
+    } else if ([[user objectForKey:@"gender"] isEqualToString:@"female"]) {
+        gender = @"2";
+    }
+    
     NSDictionary *param = @{
                             kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
                             kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
@@ -790,7 +832,8 @@
                             kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
                             kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
                             kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
-                            kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
+                            kTKPDLOGIN_API_GENDER_KEY       : gender,
+                            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
                             };
     
     NSLog(@"\n\n\n%@\n\n\n", param);
@@ -834,11 +877,17 @@
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            
+            if(_login.result.user_image != nil) {
+                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            }
+            
             [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            
+            if(_login.result.shop_avatar != nil) {
+                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            }
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
@@ -861,18 +910,8 @@
         else if ([_login.result.status isEqualToString:@"1"]) {
             
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-            
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
             controller.delegate = self;
@@ -901,6 +940,20 @@
         [alert show];
         [self cancel];
     }
+}
+
+- (IBAction)tapTerms:(id)sender {
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strTitle = @"Syarat & Ketentuan";
+    webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+- (IBAction)tapPrivacy:(id)sender {
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strTitle = @"Kebijakan Privasi";
+    webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 

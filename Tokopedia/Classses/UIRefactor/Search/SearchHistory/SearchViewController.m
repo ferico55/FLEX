@@ -355,9 +355,13 @@ NSString *const SearchDomainCategory = @"Kategori";
     }
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [_searchBar setText:@""];
-    [_searchBar resignFirstResponder];
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [_searchbar setText:@""];
+    [_searchbar resignFirstResponder];
+    [self searchBar:_searchbar textDidChange:@""];
+    self.hidesBottomBarWhenPushed = YES;
+    self.navigationController.tabBarController.tabBar.hidden = NO;
 }
 
 

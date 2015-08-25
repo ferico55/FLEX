@@ -30,7 +30,8 @@
     ShipmentStatusCellDelegate,
     FilterShipmentStatusDelegate,
     ChangeReceiptNumberDelegate,
-    TrackOrderViewControllerDelegate
+    TrackOrderViewControllerDelegate,
+    DetailShipmentStatusDelegate
 >
 {
     NSMutableArray *_shipments;
@@ -613,14 +614,15 @@
     _actionObjectManager =  [RKObjectManager sharedClient];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                        kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
-                                                        }];
+    [statusMapping addAttributeMappingsFromArray:@[
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY,
+                                                   kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APIERRORMESSAGEKEY
+                                                   ]];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY : kTKPD_APIISSUCCESSKEY}];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
@@ -635,7 +637,7 @@
     [_actionObjectManager addResponseDescriptor:actionResponseDescriptorStatus];
 }
 
-- (void)requestChangeReceiptNumber:(NSString *)receiptNumber
+- (void)requestChangeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)orderHistory
 {
     [self configureActionReskit];
  
@@ -667,15 +669,24 @@
             [alert show];
         
             _selectedOrder.order_detail.detail_ship_ref_num = receiptNumber;
+
+            if (orderHistory) {
+                NSMutableArray *history = [NSMutableArray arrayWithArray:_selectedOrder.order_history];
+                [history insertObject:orderHistory atIndex:0];
+                _selectedOrder.order_history = history;
+            }
             
-        } else {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+            [self.tableView reloadData];
+            
+        } else if (actionOrder.message_error) {
+            NSArray *errorMessages = actionOrder.message_error?:@[@"Proses mengubah nomor resi gagal."];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
             [alert show];
         }
 
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
 
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses mengubah nomor resi gagal."] delegate:self];
         [alert show];
         
     }];
@@ -727,6 +738,7 @@
 
     DetailShipmentStatusViewController *controller = [DetailShipmentStatusViewController new];
     controller.order = order;
+    controller.delegate = self;
     controller.is_allow_manage_tx = _resultOrder.result.order.is_allow_manage_tx;
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -775,9 +787,9 @@
 
 #pragma mark - Change receipt number delegate
 
-- (void)changeReceiptNumber:(NSString *)receiptNumber
+- (void)changeReceiptNumber:(NSString *)receiptNumber orderHistory:(OrderHistory *)history
 {
-    [self requestChangeReceiptNumber:receiptNumber];
+    [self requestChangeReceiptNumber:receiptNumber orderHistory:history];
 }
 
 #pragma mark - Track order delegate
@@ -804,6 +816,17 @@
     _selectedOrder.order_deadline.deadline_finish_date = [dateFormatter stringFromDate:deadlineFinishDate];
     
     [self.tableView reloadData];
+}
+
+#pragma mark - Detail shipment delegate
+
+- (void)successChangeReceiptWithOrderHistory:(OrderHistory *)history {
+    if (history) {
+        NSMutableArray *histories = [NSMutableArray arrayWithArray:_selectedOrder.order_history];
+        [histories insertObject:history atIndex:0];
+        _selectedOrder.order_history = histories;
+        [self.tableView reloadData];
+    }
 }
 
 @end

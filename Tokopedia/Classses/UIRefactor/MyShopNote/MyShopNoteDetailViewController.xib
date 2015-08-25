@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -13,7 +13,6 @@
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -21,7 +20,6 @@
             <connections>
                 <outlet property="contentNoteTextView" destination="Q7v-o7-4nJ" id="jMd-PG-yQe"/>
                 <outlet property="timeNoteLabel" destination="Tww-wo-38B" id="rBg-Jo-pPA"/>
-                <outlet property="titleLabel" destination="nwF-Iv-Mle" id="p8L-RP-eVu"/>
                 <outlet property="titleNoteTextField" destination="1gX-EH-jNo" id="sqk-s9-fjr"/>
                 <outlet property="view" destination="iN0-l3-epB" id="qCh-in-6Zw"/>
             </connections>
@@ -31,15 +29,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwF-Iv-Mle">
-                    <rect key="frame" x="17" y="19" width="286" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Qg3-zb-jsB"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Judul" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1gX-EH-jNo">
                     <rect key="frame" x="17" y="19" width="286" height="21"/>
                     <constraints>
@@ -54,7 +43,7 @@
                 <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="September 3, 2014, 1:19" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tww-wo-38B" userLabel="Label Time">
                     <rect key="frame" x="17" y="45" width="286" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="lVK-gm-iJM"/>
+                        <constraint firstAttribute="height" constant="21" id="A69-e3-cUH"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
                     <nil key="highlightedColor"/>
@@ -63,7 +52,7 @@
                     <rect key="frame" x="0.0" y="82" width="320" height="4"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="4" id="caY-Lk-548"/>
+                        <constraint firstAttribute="height" constant="4" id="e7O-4p-KKy"/>
                     </constraints>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7v-o7-4nJ" customClass="TKPDTextView">
@@ -79,22 +68,19 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="3CR-Go-hoS" secondAttribute="trailing" id="29E-AD-WdH"/>
                 <constraint firstItem="1gX-EH-jNo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="6IH-rb-ZUt"/>
+                <constraint firstAttribute="trailing" secondItem="Q7v-o7-4nJ" secondAttribute="trailing" id="7uO-uu-sfg"/>
+                <constraint firstItem="3CR-Go-hoS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="82O-EU-AqM"/>
                 <constraint firstItem="1gX-EH-jNo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="BHY-PJ-Ujs"/>
-                <constraint firstAttribute="trailing" secondItem="Q7v-o7-4nJ" secondAttribute="trailing" id="CsA-qh-C6o"/>
-                <constraint firstAttribute="trailing" secondItem="Tww-wo-38B" secondAttribute="trailing" constant="17" id="DLV-MW-sUN"/>
-                <constraint firstItem="3CR-Go-hoS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="FWz-F9-z74"/>
-                <constraint firstAttribute="trailing" secondItem="nwF-Iv-Mle" secondAttribute="trailing" constant="17" id="JUr-54-8kB"/>
-                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="top" secondItem="3CR-Go-hoS" secondAttribute="bottom" id="L4J-MG-blZ"/>
-                <constraint firstAttribute="trailing" secondItem="3CR-Go-hoS" secondAttribute="trailing" id="PkW-LG-d24"/>
-                <constraint firstAttribute="bottom" secondItem="Q7v-o7-4nJ" secondAttribute="bottom" id="UZt-gk-AgC"/>
-                <constraint firstItem="Tww-wo-38B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="cNz-Dx-zUt"/>
-                <constraint firstItem="Tww-wo-38B" firstAttribute="top" secondItem="nwF-Iv-Mle" secondAttribute="bottom" constant="5" id="cbr-fZ-lGU"/>
-                <constraint firstItem="nwF-Iv-Mle" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="eBl-cC-b3b"/>
+                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="N3p-gy-RJg"/>
+                <constraint firstItem="Tww-wo-38B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="NZE-Eh-noK"/>
+                <constraint firstAttribute="bottom" secondItem="Q7v-o7-4nJ" secondAttribute="bottom" id="d53-6l-thv"/>
                 <constraint firstAttribute="trailing" secondItem="1gX-EH-jNo" secondAttribute="trailing" constant="17" id="eaA-gf-BAj"/>
-                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="hD9-dc-oCV"/>
-                <constraint firstItem="3CR-Go-hoS" firstAttribute="top" secondItem="Tww-wo-38B" secondAttribute="bottom" constant="16" id="xAU-8i-6fl"/>
-                <constraint firstItem="nwF-Iv-Mle" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="y6O-th-Lfq"/>
+                <constraint firstItem="Tww-wo-38B" firstAttribute="top" secondItem="1gX-EH-jNo" secondAttribute="bottom" constant="5" id="ihf-hU-Axm"/>
+                <constraint firstItem="Q7v-o7-4nJ" firstAttribute="top" secondItem="3CR-Go-hoS" secondAttribute="bottom" id="krn-HN-p1B"/>
+                <constraint firstAttribute="trailing" secondItem="Tww-wo-38B" secondAttribute="trailing" constant="17" id="uyh-ZR-fMh"/>
+                <constraint firstItem="3CR-Go-hoS" firstAttribute="top" secondItem="Tww-wo-38B" secondAttribute="bottom" constant="16" id="vfE-ZT-u19"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

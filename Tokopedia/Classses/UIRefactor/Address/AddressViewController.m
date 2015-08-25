@@ -10,17 +10,23 @@
 #import "DBManager.h"
 #import "AddressCell.h"
 #import "AddressViewController.h"
+#import "RequestAddress.h"
 
 #pragma mark - SettingAddress Location View Controller
-@interface AddressViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface AddressViewController () <UITableViewDelegate,UITableViewDataSource, RequestAddressDelegate>
 {
     NSInteger _type;
     NSDictionary *_selectedlocation;
     
     BOOL _isnodata;
     
-    NSMutableArray *_listLocation;
+    AddressObj *_addressObj;
+    
+    RequestAddress *_requestAddress;
+    UIBarButtonItem *_doneBarButton;
 }
+@property (strong, nonatomic) IBOutlet UIView *footer;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
@@ -42,58 +48,86 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
     
     [self.navigationController.navigationBar setTranslucent:NO];
     
-    _listLocation = [NSMutableArray new];
-    
-    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
+    _doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
                                                                       style:UIBarButtonItemStyleDone
                                                                      target:self
                                                                      action:@selector(tap:)];
-    doneBarButton.tag = 11;
-    self.navigationItem.rightBarButtonItem = doneBarButton;
+    _doneBarButton.tag = 11;
+    _doneBarButton.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _doneBarButton;
     
     _type =[[_data objectForKey:kTKPDLOCATION_DATALOCATIONTYPEKEY] integerValue];
     switch (_type) {
         case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
-            NSArray *listLocation = [[DBManager getSharedInstance]LoadDataQueryLocationNameAndID:[NSString stringWithFormat:@"select province_name,province_id from ws_province order by province_name"]];
-                                                                                            
-            [_listLocation addObjectsFromArray:listLocation];
+            self.title = @"Pilih Provinsi";
+            RequestAddress *request =[self requestAddress];
+            request.tag = 10;
+            [request doRequestProvinces];
              break;
         }
         case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
             self.title = @"Pilih Kota";
-            NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
             
-            NSArray *listLocation = [[DBManager getSharedInstance]LoadDataQueryLocationNameAndID:[NSString stringWithFormat:@"select city_name,city_id from ws_city d WHERE province_id = %zd order by city_name",provid]];
-            [_listLocation addObjectsFromArray:listLocation];
+            NSNumber *provid = [_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY];
+
+            RequestAddress *request =[self requestAddress];
+            request.tag = 11;
+            request.provinceID = provid;
+            [request doRequestCities];
             
             break;
         }
         case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
             self.title = @"Pilih Kecamatan";
-            NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
-            NSInteger cityid = [[_data objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue];
+            NSNumber *provid = [_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY];
+            NSNumber *cityid = [_data objectForKey:kTKPDLOCATION_DATACITYIDKEY];
             
-            NSArray *listLocation = [[DBManager getSharedInstance]LoadDataQueryLocationNameAndID:[NSString stringWithFormat:@"select district_name,district_id from ws_district d WHERE province_id = %zd and city_id=%zd order by district_name",provid,cityid]];
-            [_listLocation addObjectsFromArray:listLocation];
+            RequestAddress *request =[self requestAddress];
+            request.tag = 12;
+            request.provinceID = provid;
+            request.cityID = cityid;
+            [request doRequestDistricts];
             
             break;
         }
         default:
             break;
     }
-    
-    
+
     _selectedlocation = [_data objectForKey:DATA_SELECTED_LOCATION_KEY]?:@{};
-    
-    if (_listLocation.count > 0) {
-        _isnodata = NO;
+}
+
+-(void)successRequestAddress:(RequestAddress *)request withResultObj:(AddressObj *)addressObj
+{
+    _addressObj = addressObj;
+    _table.tableFooterView = nil;
+    [_act stopAnimating];
+    [_table reloadData];
+}
+
+-(void)failedRequestAddress:(NSArray *)errorMessages
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
+}
+
+
+-(RequestAddress*)requestAddress
+{
+    if (!_requestAddress) {
+        _requestAddress = [RequestAddress new];
+        _requestAddress.delegate = self;
     }
+    
+    return _requestAddress;
 }
 
 #pragma mark - Memory Management
@@ -158,7 +192,26 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _listLocation.count;
+    switch (_type) {
+        case kTKPDLOCATION_DATATYPEPROVINCEKEY:
+        {
+            return _addressObj.result.provinces.count;
+            break;
+        }
+        case kTKPDLOCATION_DATATYPEREGIONKEY:
+        {
+            return _addressObj.result.cities.count;
+            break;
+        }
+        case kTKPDLOCATION_DATATYPEDISTICTKEY:
+        {
+            return _addressObj.result.districts.count;
+            break;
+        }
+        default:
+            break;
+    }
+    return 0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -170,8 +223,40 @@
     if (cell == nil) {
         cell = [AddressCell newcell];
     }
-    ((AddressCell*)cell).data = _listLocation[indexPath.row];
-    ((AddressCell*)cell).imageview.hidden = !([_listLocation[indexPath.row][@"ID"] integerValue] == [_selectedlocation[@"ID"] integerValue]);
+    
+    NSDictionary *dataCell;
+    BOOL isHiddenCeckmark;
+    switch (_type) {
+        case kTKPDLOCATION_DATATYPEPROVINCEKEY:
+        {
+            AddressProvince *province = _addressObj.result.provinces[indexPath.row];
+            dataCell = @{@"Name":province.province_name,
+                         @"ID" :province.province_id};
+            isHiddenCeckmark = ([province.province_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;
+            break;
+        }
+        case kTKPDLOCATION_DATATYPEREGIONKEY:
+        {
+            AddressCity *city = _addressObj.result.cities[indexPath.row];
+            dataCell = @{@"Name":city.city_name,
+                         @"ID" :city.city_id};
+            isHiddenCeckmark = ([city.city_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;
+            break;
+        }
+        case kTKPDLOCATION_DATATYPEDISTICTKEY:
+        {
+            AddressDistrict *district = _addressObj.result.districts[indexPath.row];
+            dataCell = @{@"Name":district.district_name,
+                         @"ID" :district.district_id};
+            isHiddenCeckmark = ([district.district_id integerValue] == [_selectedlocation[@"ID"] integerValue])?NO:YES;
+            break;
+        }
+        default:
+            break;
+    }
+    ((AddressCell*)cell).data = dataCell;
+    ((AddressCell*)cell).imageview.hidden = isHiddenCeckmark;
+
 	
 	return cell;
 }
@@ -179,15 +264,16 @@
 #pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
+    [cell setBackgroundColor:[UIColor clearColor]];
+
 }
 
 #pragma mark - Cell Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _selectedlocation = _listLocation [indexPath.row];
+    _doneBarButton.enabled = YES;
+    AddressCell *cell = (AddressCell*)[tableView cellForRowAtIndexPath:indexPath];
+    _selectedlocation = cell.data;
     [_table reloadData];
 }
 

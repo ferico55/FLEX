@@ -17,6 +17,8 @@
 
 #define API_NEW_ORDER_PATH              @"myshop-order.pl"
 #define API_NEW_ORDER_ACTION_PATH       @"action/myshop-order.pl"
+#define API_PRODUCT_ACTION_PATH         @"action/product.pl"
+
 #define API_GET_NEW_ORDER_KEY           @"get_order_new"
 #define API_GET_NEW_ORDER_PROCESS_KEY   @"get_order_process"
 #define API_GET_NEW_ORDER_STATUS_KEY    @"get_order_status"

@@ -2,37 +2,54 @@
 //  ForgotPasswordViewController.m
 //  Tokopedia
 //
-//  Created by Tonito Acen on 4/13/15.
+//  Created by Feizal Badri Asmoro on 6/18/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
 #import "ForgotPasswordViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "StickyAlertView.h"
-
 #import "GeneralAction.h"
 #import "string_settings.h"
 
-@interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate>
-
-@property (weak, nonatomic) IBOutlet UIButton *buttonForgot;
-@property (weak, nonatomic) IBOutlet UITextField *emailText;
-
-@end
-
-@implementation ForgotPasswordViewController {
+@interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate> {
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager *_objectManager;
 }
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UITextField *emailText;
+@property (weak, nonatomic) IBOutlet UIButton *buttonForgot;
+
+@end
+
+@implementation ForgotPasswordViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
     
     self.title = TKPD_FORGETPASS_TITLE;
     
+    [self.scrollView addSubview:_contentView];
+    self.scrollView.contentSize = _contentView.frame.size;
+    
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    
+    _emailText.layer.cornerRadius = 2;
+    _emailText.layer.borderWidth = 1;
+    _emailText.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
+    
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 40)];
+    _emailText.leftView = leftView;
+    _emailText.leftViewMode = UITextFieldViewModeAlways;
+    
+    _buttonForgot.layer.cornerRadius = 2;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -40,12 +57,8 @@
     self.screenName = @"Forgot Password Page";
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Tokopedia Network Delegate
+
 - (NSString *)getPath:(int)tag {
     return TKPD_FORGETPASS_PATH;
 }
@@ -91,11 +104,12 @@
             [alert show];
         } else {
             if([action.result.is_success isEqualToString:TKPD_SUCCESS_VALUE]) {
-                NSString *errorMessage = [NSString stringWithFormat:@"Sebuah email telah dikirim ke alamat email yang terasosiasi dengan akun Anda, \n \n%@. \n \nEmail ini berisikan cara untuk mendapatkan password baru. \nDiharapkan menunggu beberapa saat, selama pengiriman email dalam proses.\nMohon diperhatikan bahwa alamat email di atas adalah benar,                                                                                            dan periksalah folder junk dan spam atau filter jika anda tidak menerima email tersebut.", _emailText.text];
+                NSString *errorMessage = [NSString stringWithFormat:@"Sebuah email telah dikirim ke alamat email yang terasosiasi dengan akun Anda, \n \n%@. \n \nEmail ini berisikan cara untuk mendapatkan kata sandi baru. \nDiharapkan menunggu beberapa saat, selama pengiriman email dalam proses.\nMohon diperhatikan bahwa alamat email di atas adalah benar,                                                                                            dan periksalah folder junk dan spam atau filter jika anda tidak menerima email tersebut.", _emailText.text];
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[errorMessage] delegate:self];
                 [alert show];
+                self.emailText.text = @"";
             } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal mengirimkan password ke email Anda."]
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal mengirimkan kata sandi ke email Anda."]
                                                                                delegate:self];
                 [alert show];
             }
@@ -117,11 +131,13 @@
 
 
 #pragma mark - Tap on Button
+
 - (IBAction)tap:(id)sender {
     [_networkManager doRequest];
 }
 
 #pragma mark - Keyboard
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [_emailText resignFirstResponder];
 }

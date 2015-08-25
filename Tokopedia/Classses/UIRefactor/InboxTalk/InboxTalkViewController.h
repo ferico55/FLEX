@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ProductTalkDetailViewController;
 
 @interface InboxTalkViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 
+- (void)removeData:(NSString *)inboxID;
+- (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+@property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
 
 @end

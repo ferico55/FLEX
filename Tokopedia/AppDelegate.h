@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "Tkpd.h"
+#import "TAGContainer.h"
+#import "TAGContainerOpener.h"
+#import "TAGManager.h"
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -15,4 +19,6 @@
 @property (strong, nonatomic) UIViewController *viewController;
 @property (strong, nonatomic) UIViewController *navigationController;
 
+@property (nonatomic, strong) TAGManager *tagManager;
+@property (nonatomic, strong) TAGContainer *container;
 @end

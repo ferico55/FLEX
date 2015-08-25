@@ -40,6 +40,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect frame = _readOption.frame;
+    frame.size.height = screenRect.size.height;
+    frame.size.width = screenRect.size.width;
+    _readOption.frame = frame;
+    
     _checkListImageViews = [NSArray sortViewsWithTagInArray:_checkListImageViews];
     _filterButtons = [NSArray sortViewsWithTagInArray:_filterButtons];
     
@@ -85,7 +91,25 @@
     _filterReadIndex = 0;
     [self updateCheckList];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+        
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem = barButton;
+    }
+    
 }
+
+-(IBAction)tapBackButton:(id)sender
+{
+    [_splitVC.navigationController popViewControllerAnimated:YES];
+}
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -275,6 +299,7 @@
         case 0:
         {
             if(!_myComplainViewController)_myComplainViewController = [InboxResolutionCenterComplainViewController new];
+            _myComplainViewController.detailViewController = _detailViewController;
             _myComplainViewController.isMyComplain = YES;
             _myComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _myComplainViewController;
@@ -285,6 +310,7 @@
             self.navigationItem.rightBarButtonItem = nil;
             
             if(!_buyerComplainViewController)_buyerComplainViewController = [InboxResolutionCenterComplainViewController new];
+            _buyerComplainViewController.detailViewController = _detailViewController;
             _buyerComplainViewController.isMyComplain = NO;
             _buyerComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _buyerComplainViewController;
@@ -349,7 +375,7 @@
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
     [attributedText addAttribute:NSFontAttributeName
-                           value:[UIFont boldSystemFontOfSize: 16.0f]
+                           value:[UIFont fontWithName:@"Gotham Medium" size:15.0]
                            range:NSMakeRange(0, [string length])];
     button.titleLabel.numberOfLines = 2;
     button.titleLabel.font = [UIFont systemFontOfSize: 11.0f];

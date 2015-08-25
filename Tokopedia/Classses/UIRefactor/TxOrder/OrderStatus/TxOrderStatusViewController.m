@@ -75,6 +75,8 @@
     
     TxOrderStatusList *_selectedTrackOrder;
     LoadingView *_loadingView;
+    
+    RequestCancelResolution *_requestCancelComplain;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -171,6 +173,7 @@
     }
     _networkManager.delegate = self;
 }
+
 
 -(void)viewDidDisappear:(BOOL)animated
 {
@@ -331,6 +334,7 @@
     }
     
     NSString *shipRef = order.order_detail.detail_ship_ref_num?:@"";
+    NSLog(@"shipping resi :%@",shipRef);
     NSString *lastComment = order.order_last.last_comments?:@"";
     
     [cell.shopNameLabel setText:order.order_shop.shop_name animated:YES];
@@ -362,7 +366,7 @@
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:12.0f],
+                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:11.0f],
                                  NSParagraphStyleAttributeName: style,
                                  };
     
@@ -412,17 +416,17 @@
         else
             title2 = @"Lacak";
     }
-    if ([self isShowButtonConfirmOrder:order]) {
-        if ([title1 isEqualToString:@""])
-            title1 = @"Sudah Terima";
-        else
-            title2 = @"Sudah Terima";
-    }
     if ([self isShowButtonComplainOrder:order]) {
         if ([title1 isEqualToString:@""])
             title1 = @"Komplain";
         else
             title2 = @"Komplain";
+    }
+    if ([self isShowButtonConfirmOrder:order]) {
+        if ([title1 isEqualToString:@""])
+            title1 = @"Sudah Terima";
+        else
+            title2 = @"Sudah Terima";
     }
     
     UIButton *button1 = (UIButton*)cell.twoButtons[0];
@@ -445,7 +449,7 @@
         imageName = @"icon_order_check-01.png";
     }
     if ([button.titleLabel.text isEqualToString:@"Komplain"]) {
-        imageName = @"icon_cancel_grey.png";
+        imageName = @"icon_komplain.png";
     }
     return imageName;
 }
@@ -481,9 +485,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_isNodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
+    cell.backgroundColor = [UIColor clearColor];
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.row] -1;
     
@@ -830,12 +832,6 @@
     BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(order.message_error)
-        {
-            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-            [alert show];
-        }
         if (order.result.is_success == 1) {
             UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertSuccess show];
@@ -846,23 +842,32 @@
         else
         {
             [self failedConfirmDelivery:object];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
+            [alert show];
         }
     }
     else
     {
         [self failedConfirmDelivery:object];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
+        [alert show];
     }
 }
 
 -(void)requestFailureFinishOrder:(id)object
 {
-    [self cancelFinishOrder];
     NSError *error = object;
-    if ([error code] != NSURLErrorCancelled) {
-        NSString *errorDescription = error.localizedDescription;
-        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-        [errorAlert show];
+
+    NSArray *errors;
+    if(error.code == -1011) {
+        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    } else if (error.code==-1009 || error.code==-999) {
+        errors = @[@"Tidak ada koneksi internet"];
+    } else {
+        errors = @[error.localizedDescription];
     }
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
+    [alert show];
 }
 
 -(void)requestProcessFinishOrder
@@ -980,7 +985,8 @@
             {
                 NSMutableArray *errors = [order.message_error mutableCopy];
                 for (int i = 0; i<errors.count; i++) {
-                    if ([order.message_error[i] containsString:@"Alamat"]) {
+                    if ([order.message_error[i] rangeOfString:@"Alamat"].location == NSNotFound) {
+                    //if ([order.message_error[i] containsString:@"Alamat"]) {
                         [errors replaceObjectAtIndex:i withObject:@"Pesan ulang tidak dapat dilakukan karena alamat tidak valid."];
                     }
                 }
@@ -994,6 +1000,7 @@
         [self requestFailureReOrder:object withError:nil];
     }
 }
+
 
 -(void)requestFailureReOrder:(TxOrderStatusList*)order withError:(NSError*)error
 {
@@ -1058,18 +1065,31 @@
 -(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderStatusList *order = _list[indexPath.row];
-    RequestCancelResolution *request = [RequestCancelResolution new];
+    RequestCancelResolution *request = [self requestCancelComlpain];
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     request.resolutionID = [resolutionID integerValue];
     request.delegate = self;
+    request.resolution = resolution;
     [request doRequest];
+}
+
+-(RequestCancelResolution*)requestCancelComlpain
+{
+    if (!_requestCancelComplain) {
+        _requestCancelComplain = [RequestCancelResolution new];
+        _requestCancelComplain.delegate = self;
+    }
+    
+    return _requestCancelComplain;
 }
 
 -(void)successCancelComplain:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
 {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus delegate:self];
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil membatalkan komplain"] delegate:self];
     [alert show];
+    [_list removeObject:resolution];
+    [_tableView reloadData];
     [self refreshRequest];
 }
 
@@ -1123,21 +1143,7 @@
     }
     else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
-        InboxReviewViewController *vc = [InboxReviewViewController new];
-        vc.data=@{@"nav":@"inbox-review"};
-        
-        InboxReviewViewController *vc1 = [InboxReviewViewController new];
-        vc1.data=@{@"nav":@"inbox-review-my-product"};
-        
-        InboxReviewViewController *vc2 = [InboxReviewViewController new];
-        vc2.data=@{@"nav":@"inbox-review-my-review"};
-        
-        NSArray *vcs = @[vc,vc1, vc2];
-        
-        TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-        [nc setSelectedIndex:2];
-        [nc setViewControllers:vcs];
-        [self.navigationController pushViewController:nc animated:YES];
+        [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {
@@ -1180,7 +1186,8 @@
        orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
        orderStatus == ORDER_DELIVERED ||
        orderStatus == ORDER_DELIVERY_FAILURE||
-        orderStatus == ORDER_SHIPPING_WAITING)
+       orderStatus == ORDER_SHIPPING_WAITING||
+       orderStatus == ORDER_DELIVERED_DUE_LIMIT)
     {
         
         if((orderStatus == ORDER_SHIPPING ||
@@ -1244,7 +1251,7 @@
 
 -(BOOL)isShowButtonReorder:(TxOrderStatusList*)order
 {
-    if (order.order_detail.detail_order_status == ORDER_CANCELED) {
+    if (order.order_detail.detail_order_status == ORDER_CANCELED || order.order_detail.detail_order_status == ORDER_REJECTED) {
         return YES;
     }
     return NO;

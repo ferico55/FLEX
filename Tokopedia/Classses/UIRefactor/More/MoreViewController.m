@@ -5,6 +5,10 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import "SplitReputationViewController.h"
+#import "MyReviewReputationViewController.h"
+#import "SegmentedReviewReputationViewController.h"
+#import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
@@ -35,8 +39,8 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
-//#import "TKPDTabViewController.h"
-//#import "InboxCustomerServiceViewController.h"
+#import "TKPDTabViewController.h"
+#import "InboxTicketViewController.h"
 
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
@@ -50,13 +54,17 @@
 #import "ProductListMyShopViewController.h"
 #import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
+#import "InboxResolSplitViewController.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
+
+#import "NavigateViewController.h"
+
 #import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
 
-@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate> {
+@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -69,6 +77,10 @@
     BOOL _isNoDataDeposit, hasLoadViewWillAppear;
     NotificationManager *_notifManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
+    NSTimer *_requestTimer;
+    
+    UISplitViewController *splitViewController;
+    NavigateViewController *_navigate;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -111,7 +123,7 @@
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
-        
+         
     }
     return self;
 }
@@ -121,7 +133,6 @@
 {
     
     [super viewDidLoad];
-    
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -130,6 +141,8 @@
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
+    
+    _navigate = [NavigateViewController new];
     
     _isNoDataDeposit  = YES;
     _depositRequestCount = 0;
@@ -172,9 +185,9 @@
     
     [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-
-    [self updateSaldoTokopedia:nil];    
-
+    
+    [self updateSaldoTokopedia:nil];
+    
     //manual GA Track
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker setAllowIDFACollection:YES];
@@ -288,7 +301,10 @@
         if(profileInfo.result.shop_info!=nil && profileInfo.result.shop_info.shop_avatar!=nil && ![profileInfo.result.shop_info.shop_avatar isEqualToString:@""]) {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             if(secureStorage != nil) {
-                [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                
+                if(profileInfo.result.shop_info.shop_avatar != nil) {
+                    [secureStorage setKeychainWithValue:profileInfo.result.shop_info.shop_avatar withKey:kTKPD_SHOP_AVATAR];
+                }
                 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:profileInfo.result.shop_info.shop_avatar]
                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                           timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -344,7 +360,7 @@
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];
     NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:profilePictureURL];
     [_profilePictureImageView setImageWithURLRequest:request
                                     placeholderImage:nil
                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -356,8 +372,9 @@
                                              } failure: nil];
     
     if([_auth objectForKey:@"shop_id"]) {
-        if([_auth objectForKey:@"shop_name"])
+        if([_auth objectForKey:@"shop_name"]) {
             _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
+        }
         
         NSString *strAvatar = [[_auth objectForKey:@"shop_avatar"] isMemberOfClass:[NSString class]]? [_auth objectForKey:@"shop_avatar"] : [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_avatar"]];
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strAvatar]
@@ -383,10 +400,6 @@
             _shopIsGoldLabel.text = @"        Gold Merchant";
         } else {
             _shopIsGoldLabel.text = @"Regular Merchant";
-            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
-            shopIsGoldLabelFrame.origin.x = 83;
-            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
-            _shopIsGoldLabel.text = @"";
         }
     }
 }
@@ -486,11 +499,11 @@
             break;
             
         case 4:
-            return 4;
+            return 6;
             break;
             
         case 5:
-            return 3;
+            return 4;
             break;
             
         case 6:
@@ -590,42 +603,25 @@
     
     else if (indexPath.section == 4) {
         if(indexPath.row == 0) {
-            InboxMessageViewController *vc = [InboxMessageViewController new];
-            vc.data=@{@"nav":@"inbox-message"};
-            
-            InboxMessageViewController *vc1 = [InboxMessageViewController new];
-            vc1.data=@{@"nav":@"inbox-message-sent"};
-            
-            InboxMessageViewController *vc2 = [InboxMessageViewController new];
-            vc2.data=@{@"nav":@"inbox-message-archive"};
-            
-            InboxMessageViewController *vc3 = [InboxMessageViewController new];
-            vc3.data=@{@"nav":@"inbox-message-trash"};
-            NSArray *vcs = @[vc,vc1, vc2, vc3];
-            
-            TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
-            [inboxController setSelectedIndex:2];
-            [inboxController setViewControllers:vcs];
-            inboxController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:inboxController animated:YES];
+            [_navigate navigateToInboxMessageFromViewController:self];
         } else if(indexPath.row == 1) {
-            InboxTalkViewController *vc = [InboxTalkViewController new];
-            vc.data=@{@"nav":@"inbox-talk"};
-            
-            InboxTalkViewController *vc1 = [InboxTalkViewController new];
-            vc1.data=@{@"nav":@"inbox-talk-my-product"};
-            
-            InboxTalkViewController *vc2 = [InboxTalkViewController new];
-            vc2.data=@{@"nav":@"inbox-talk-following"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            nc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:nc animated:YES];
+            [_navigate navigateToInboxTalkFromViewController:self];
         } else if (indexPath.row == 2) {
+            if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                splitViewController = [UISplitViewController new];
+                
+                SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
+                splitReputationViewController.splitViewController = splitViewController;
+                splitReputationViewController.del = self;
+                [self.navigationController pushViewController:splitReputationViewController animated:YES];
+            }
+            else  {
+                SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
+                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:segmentedReputationViewController animated:YES];
+            }
+            
+            /*
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
             
@@ -642,22 +638,46 @@
             [nc setViewControllers:vcs];
             nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
-            
+            */
         } else if (indexPath.row == 3) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-//            TKPDTabInboxCustomerServiceNavigationController *controller = [TKPDTabInboxCustomerServiceNavigationController new];
-//            controller.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:controller animated:YES];
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
             
-        } else if (indexPath.row  == 4) {
-            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+
+        } else if (indexPath.row == 4) {
+            TKPDTabViewController *controller = [TKPDTabViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
             
+            InboxTicketViewController *allInbox = [InboxTicketViewController new];
+            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+            allInbox.delegate = controller;
+            
+            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+            unreadInbox.delegate = controller;
+            
+            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+            closedInbox.delegate = controller;
+            
+            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+            controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+            
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (indexPath.row == 5) {
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            } else {
+                InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:controller animated:YES];
+            }
         }
-        
     }
     
     else if (indexPath.section == 5) {
@@ -667,9 +687,9 @@
             [tracker set:kGAIScreenName value:@"Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-//            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
-//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
-//            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+            //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            //            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
             
             if([MFMailComposeViewController canSendMail]) {
                 MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
@@ -682,7 +702,7 @@
                 [emailController setMessageBody:messageBody isHTML:YES];
                 [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
                 [emailController.navigationBar setTintColor:[UIColor whiteColor]];
-                 
+                
                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
                 [self presentViewController:emailController animated:YES completion:nil];
             } else {
@@ -711,6 +731,18 @@
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [self.navigationController pushViewController:webViewController animated:YES];
+        } else if(indexPath.row == 3) {
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:kGAIScreenName value:@"Share App"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            
+            NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
+            NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
+            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                             applicationActivities:nil];
+            activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+            [self presentViewController:activityController animated:YES completion:nil];
         }
     }
     
@@ -721,7 +753,7 @@
                                                                 object:nil
                                                               userInfo:@{}];
         }
-
+        
     }
     
     self.hidesBottomBarWhenPushed = NO;
@@ -773,6 +805,8 @@
                                                                                     path:API_DEPOSIT_PATH
                                                                               parameters:[param encrypt]];
     
+    [_requestTimer invalidate];
+    _requestTimer = nil;
     [_depositRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -780,6 +814,24 @@
     }];
     
     [_operationQueue addOperation:_depositRequest];
+    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:16.0 target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
+}
+
+- (void)requestTimeout {
+    [self requestCancel];
+    if(_depositRequestCount < kTKPDREQUESTCOUNTMAX) {
+        [self updateSaldoTokopedia:nil];
+    }
+}
+
+- (void)requestCancel {
+    [_depositRequest cancel];
+    _depositRequest = nil;
+    
+    [_depositObjectManager.operationQueue cancelAllOperations];
+    _depositObjectManager = nil;
+    
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -839,6 +891,7 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [self requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
@@ -874,4 +927,9 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+
+#pragma mark - SplitVC Delegate
+- (void)deallocVC {
+    splitViewController = nil;
+}
 @end

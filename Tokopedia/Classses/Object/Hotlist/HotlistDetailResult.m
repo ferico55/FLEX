@@ -10,4 +10,8 @@
 
 @implementation HotlistDetailResult
 
+- (NSString*)desc_key {
+    return [_desc_key kv_decodeHTMLCharacterEntities];
+}
+
 @end

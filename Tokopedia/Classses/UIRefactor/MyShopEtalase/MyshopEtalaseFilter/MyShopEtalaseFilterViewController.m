@@ -25,6 +25,9 @@
     NSInteger _requestcount;
     NSTimer *_timer;
     
+    NSString *_uriNext;
+    NSInteger _page;
+    
     Etalase *_etalase;
     
     TokopediaNetworkManager *_networkManager;
@@ -70,6 +73,8 @@
     _networkManager.delegate = self;
     _table.dataSource = self;
     _table.delegate = self;
+    
+    _page = 1;
     
     self.title = @"Etalase";
     
@@ -140,6 +145,12 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = barButtonItem;
 }
 
 #pragma mark - Memory Management
@@ -238,11 +249,24 @@
         if (_etalaseList.count > indexPath.row) {
             EtalaseList *list =_etalaseList[indexPath.row];
 
-            if ([list.etalase_name isEqualToString:_selectedEtalase.etalase_name]) {
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+            if(!_selectedEtalase || _selectedEtalase == @0) {
+                if ([list.etalase_name isEqualToString:[_data objectForKey:@"product_etalase_name"]]) {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                } else {
+                    if([list.etalase_name isEqualToString:@"Semua Etalase"]) {
+                        ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                    } else {
+                        ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                    }
+                }
             } else {
-                ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                if([_selectedEtalase.etalase_name isEqualToString:list.etalase_name]) {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = NO;
+                } else {
+                    ((MyShopEtalaseFilterCell*)cell).imageview.hidden = YES;
+                }
             }
+            
             
             ((MyShopEtalaseFilterCell*)cell).label.text = list.etalase_name;
             ((MyShopEtalaseFilterCell*)cell).indexpath = indexPath;
@@ -256,6 +280,13 @@
 {
     if (_isnodata) {
         cell.backgroundColor = [UIColor whiteColor];
+    }
+    
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            [_networkManager doRequest];
+        }
     }
 }
 
@@ -273,8 +304,10 @@
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
-                            kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+    NSDictionary* param = @{
+                            kTKPDDETAIL_APIACTIONKEY    : kTKPDDETAIL_APIGETETALASEKEY,
+                            kTKPDDETAIL_APISHOPIDKEY    : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPD_APIPAGEKEY            : [NSNumber numberWithInteger:_page],
                             };
     return param;
 }
@@ -311,6 +344,14 @@
 {
     [_act stopAnimating];
     _table.tableFooterView = nil;
+    
+    NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];
+    if (presentedEtalaseType == PRESENTED_ETALASE_ADD_PRODUCT && _etalaseList.count==0) {
+        EtalaseList *etalase = [EtalaseList new];
+        etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+        etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
+        [_etalaseList addObject:etalase];
+    }
 }
 
 - (RKObjectManager*)objectManagerEtalase
@@ -391,13 +432,24 @@
             NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
             
-            EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
-            if (!selectedEtalase) {
-                _selectedEtalase = _etalaseList[((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row];
-            }
-            else
-            {
+            
+            if([[_data objectForKey:@"product_etalase_name"] isEqualToString:@""]) {
+                if([_data objectForKey:ETALASE_OBJECT_SELECTED_KEY]) {
+                    EtalaseList *selectedEtalase = [_data objectForKey:ETALASE_OBJECT_SELECTED_KEY];
+                    _selectedEtalase = selectedEtalase;
+                }
+            } else {
+                EtalaseList *selectedEtalase = [EtalaseList new];
+                selectedEtalase.etalase_id = [_data objectForKey:@"product_etalase_id"];
+                selectedEtalase.etalase_name = [_data objectForKey:@"product_etalase_name"];
+                
                 _selectedEtalase = selectedEtalase;
+            }
+
+            
+            _uriNext = _etalase.result.paging.uri_next;
+            if (_uriNext) {
+                _page = [[_networkManager splitUriToPage:_uriNext] integerValue];
             }
             
             [_table reloadData];

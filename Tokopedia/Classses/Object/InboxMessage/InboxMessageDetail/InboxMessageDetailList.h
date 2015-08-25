@@ -22,7 +22,8 @@
 @property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, strong) NSString *user_image;
 @property (nonatomic, strong) NSString *is_not_delivered;
-
+@property (nonatomic, strong) NSString *user_label;
+@property (nonatomic, strong) NSString *user_label_id;
 @property (nonatomic) BOOL is_just_sent;
 
 

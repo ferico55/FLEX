@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "StarsRateView.h"
+#import "ViewLabelUser.h"
 
 #define kTKPDGENERALREVIEWCELLIDENTIFIER @"GeneralReviewCellIdentifier"
 
@@ -21,6 +22,8 @@
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 - (void)skipReview:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 - (void)reportReview:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+- (void)tapAtIndexPath:(NSIndexPath*)indexPath;
+
 @end
 
 #pragma mark - General Review Cell
@@ -28,12 +31,13 @@
 
 
 @property (nonatomic, weak) IBOutlet id<GeneralReviewCellDelegate> delegate;
+@property (nonatomic, weak) id<GeneralReviewCellDelegate> delegateReview;
 
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadIcon;
-@property (weak, nonatomic) IBOutlet UILabel *userNamelabel;
+@property (weak, nonatomic) IBOutlet ViewLabelUser *userNamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *productNamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *timelabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
@@ -54,11 +58,14 @@
 @property (weak, nonatomic) IBOutlet UIView *userTapView;
 @property (weak, nonatomic) IBOutlet UIView *productTapView;
 @property (weak, nonatomic) IBOutlet UIView *reviewTapView;
+@property (weak, nonatomic) IBOutlet UIButton *writeReviewButton;
 
 @property (strong,nonatomic) id data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 @property (nonatomic) BOOL productViewIsHidden;
+
+@property (strong, nonatomic) UIViewController *detailVC;
 
 +(id)newcell;
 

@@ -35,7 +35,7 @@
     self.navigationItem.leftBarButtonItem = cancelButton;
 
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(tap:)];
     doneButton.tag = 2;
@@ -152,7 +152,13 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
             if (_numberOfSelectedProduct > 0) {
-                [self.delegate didSelectProducts:_selectedProducts];
+                NSMutableArray *products = [NSMutableArray new];
+                for (id product in _selectedProducts) {
+                    if (![product isKindOfClass:[NSNull class]]) {
+                        [products addObject:product];
+                    }
+                }
+                [self.delegate didSelectProducts:products];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
         }

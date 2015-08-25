@@ -5,19 +5,26 @@
 //  Created by Tonito Acen on 3/31/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
+#import "DetailMyReviewReputationViewController.h"
+#import "InboxTalkViewController.h"
 #import "ReportViewController.h"
+#import "ProductReputationViewController.h"
 #import "ProductTalkViewController.h"
 #import "string.h"
+#import "ShopReviewPageViewController.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "GeneralAction.h"
+#import "LoginViewController.h"
+
 
 @interface ReportViewController () <UITextViewDelegate> {
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
+    
+    UserAuthentificationManager *_userManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
@@ -25,10 +32,12 @@
 @end
 
 @implementation ReportViewController
-
+@synthesize strProductID;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    _userManager = [UserAuthentificationManager new];
+    
     self.title = @"Lapor";
     [self setTextViewPlaceholder:@"Isi deskripsi laporan kamu disini.."];
     _operationQueue = [NSOperationQueue new];
@@ -40,13 +49,30 @@
     doneButton.tintColor = [UIColor whiteColor];
     doneButton.tag = 2;
     self.navigationItem.rightBarButtonItem = doneButton;
-
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+    
+    if(![_userManager isLogin]) {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = [_delegate didReceiveViewController];
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = [_delegate didReceiveViewController];
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        return;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+    
 //    [_messageTextView becomeFirstResponder];
 }
 
@@ -150,21 +176,38 @@
     if(_request.isExecuting)return;
     
     NSMutableDictionary *param = [NSMutableDictionary new];
-    [param addEntriesFromDictionary:[_delegate getParameter]];
+    if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]] || [_delegate isMemberOfClass:[ShopReviewPageViewController class]]) {
+        [param setObject:@"report_review" forKey:@"action"];
+        [param setObject:_strReviewID forKey:@"review_id"];
+        [param setObject:_strShopID forKey:@"shop_id"];
+    }
+    else {
+        [param addEntriesFromDictionary:(_strCommentTalkID==nil? [_delegate getParameter] :
+                                     @{@"action" : @"report_product_talk",
+                                       @"talk_id" : _strCommentTalkID?:@(0),
+                                       @"shop_id" : _strShopID? :@(0)
+                                       })];
+    }
+    
     [param setObject:_messageTextView.text forKey:@"text_message"];
     
-    if([_delegate isMemberOfClass:[ProductTalkViewController class]]) {
-        [param setObject:[((ProductTalkViewController *) _delegate).data objectForKey:kTKPD_PRODUCTIDKEY] forKey:kTKPD_PRODUCTIDKEY];
+    if([_delegate isMemberOfClass:[ProductTalkViewController class]] || [_delegate isMemberOfClass:[InboxTalkViewController class]] || [_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+        NSString *tempProductID = strProductID;
+        if(tempProductID==nil || [_delegate isMemberOfClass:[ProductTalkViewController class]])
+            tempProductID = [((ProductTalkViewController *) _delegate).data objectForKey:kTKPD_PRODUCTIDKEY];
+        [param setObject:tempProductID forKey:kTKPD_PRODUCTIDKEY];
     }
     
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_delegate getPath] parameters:[param encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [self requestSuccess:mappingResult withOperation:operation];
         [_timer invalidate];
         _timer = nil;
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [_timer invalidate];
         _timer = nil;
         [self requestFail:error];
@@ -214,6 +257,13 @@
                             UINavigationController *nav = (UINavigationController *)_delegate;
                             [nav.navigationController popViewControllerAnimated:YES];
                         }
+                        else if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
+                    }
+                    else {
+                        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedSendReport] delegate:self];
+                        [stickyAlertView show];
                     }
                 }
             }

@@ -11,23 +11,27 @@
 #import "InboxMessageDetail.h"
 #import "InboxMessageAction.h"
 #import "inbox.h"
+#import "string_inbox_message.h"
 #import "string_home.h"
 #import "HPGrowingTextView.h"
 #import "inbox.h"
 #import "detail.h"
 #import "NavigateViewController.h"
 
-@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
+@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UISplitViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIView *messagingview;
-@property (weak, nonatomic) IBOutlet UIView *header;
+@property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIButton *buttonloadmore;
 @property (weak, nonatomic) IBOutlet UIButton *buttonsend;
 @property (weak, nonatomic) IBOutlet UILabel *titlelabel;
 @property (weak, nonatomic) IBOutlet UILabel *titlebetween;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+
+@property (strong, nonatomic) UIPopoverController *masterPopoverController;
+
 
 
 @end
@@ -91,10 +95,10 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+//    barButtonItem.tag = 10;
+//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     _operationQueue = [NSOperationQueue new];
     _page = 1;
@@ -115,18 +119,17 @@
     _buttonsend.enabled = NO;
     
     [self setMessagingView];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+    {
+        [self configureRestKit];
+        [self loadData];
+    }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
-    
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
-        }
-    }
-    
 }
 
 - (void)dealloc{
@@ -142,19 +145,27 @@
 }
 
 - (void) setMessagingView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240, 45)];
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, [[UIScreen mainScreen] bounds].size.width - _buttonsend.frame.size.width -40, 45)];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+    {
+        CGRect frame = _growingtextview.frame;
+        frame.size.width = [[UIScreen mainScreen] bounds].size.width - _buttonsend.frame.size.width -40 -_masterViewController.view.frame.size.width;
+        _growingtextview.frame = frame;
+    }
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     _growingtextview.layer.borderWidth = 0.5f;
     _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _growingtextview.layer.cornerRadius = 5;
     _growingtextview.layer.masksToBounds = YES;
+    
 
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
@@ -162,6 +173,7 @@
     _growingtextview.enablesReturnKeyAutomatically = YES;
     
     [_messagingview addSubview:_growingtextview];
+        
     _messagingview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
@@ -229,6 +241,22 @@
         [cell.avatarImageView addGestureRecognizer:tapUser];
         [cell.avatarImageView setUserInteractionEnabled:YES];
         cell.avatarImageView.tag = [message.user_id integerValue];
+        cell.viewLabelUser.text = message.user_name;
+        
+        //Set user label
+//        if([message.user_label isEqualToString:CPenjual]) {
+//            [cell.viewLabelUser setColor:CTagPenjual];
+//        }
+//        else if([message.user_label isEqualToString:CPembeli]) {
+//            [cell.viewLabelUser setColor:CTagPembeli];
+//        }
+//        else if([message.user_label isEqualToString:CAdministrator]) {
+//            [cell.viewLabelUser setColor:CTagAdministrator];
+//        }
+//        else if([message.user_label isEqualToString:CPengguna]) {
+//            [cell.viewLabelUser setColor:CTagPengguna];
+//        }
+        [cell.viewLabelUser setLabelBackground:message.user_label];
 
         if([message.message_action isEqualToString:@"1"]) {
             if(message.is_just_sent) {
@@ -264,7 +292,10 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxMessageDetailList *messagedetaillist = _messages[indexPath.row];
     CGSize messageSize = [InboxMessageDetailCell messageSize:messagedetaillist.message_reply];
-
+    if(! [messagedetaillist.message_action isEqualToString:@"1"]) {
+        messageSize.height += CHeightUserLabel;
+    }
+    
     return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
 }
 
@@ -301,7 +332,9 @@
                                                  KTKPDMESSAGE_ISMODKEY,
                                                  KTKPDMESSAGE_USERIDKEY,
                                                  KTKPDMESSAGE_USERNAMEKEY,
-                                                 KTKPDMESSAGE_USERIMAGEKEY
+                                                 KTKPDMESSAGE_USERIMAGEKEY,
+                                                 KTKPDMESSAGE_USER_LABEL,
+                                                 KTKPDMESSAGE_USER_LABEL_ID
                                                  ]];
     
     RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailBetween class]];
@@ -349,8 +382,8 @@
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETDETAIL,
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : KTKPDMESSAGE_LIMITVALUE,
-                            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY],
-                            KTKPDMESSAGE_NAVKEY : [_data objectForKey:KTKPDMESSAGE_NAVKEY],
+                            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY]?:@"",
+                            KTKPDMESSAGE_NAVKEY : [_data objectForKey:KTKPDMESSAGE_NAVKEY]?:@"",
                             };
     
     _requestcount ++;
@@ -423,16 +456,17 @@
             [_messages removeAllObjects];
             [_messages addObjectsFromArray:_loadedmessages];
         } else {
+            [_messages removeAllObjects];
             NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
             [_messages addObjectsFromArray: reversedArray];
             
-            NSArray *between = messagelist.result.conversation_between;
+            NSArray *between = messagelist.result.conversation_between?:@[];
             NSMutableArray *between_name;
             between_name = [NSMutableArray new];
             
             for(int i=0;i<between.count;i++) {
                 InboxMessageDetailBetween *m_between = between[i];
-                [between_name addObject:m_between.user_name];
+                [between_name addObject:m_between.user_name?:@""];
             }
             
             NSString *btw;
@@ -443,13 +477,14 @@
             }
             
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 206, 44)];
+            
             label.numberOfLines = 2;
             label.font = [UIFont systemFontOfSize: 11.0f];
             label.textAlignment = NSTextAlignmentCenter;
             label.textColor = [UIColor whiteColor];
             
             NSString *title = [NSString stringWithFormat:@"%@\n%@", [_data objectForKey:KTKPDMESSAGE_TITLEKEY], btw];
-            
+
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
             [attributedText addAttribute:NSFontAttributeName
                                    value:[UIFont boldSystemFontOfSize: 16.0f]
@@ -466,7 +501,7 @@
             _isnodata = NO;
             _urinext =  messagelist.result.paging.uri_next;
 
-            if([_urinext isEqualToString:@"0"]) {
+            if([_urinext isEqualToString:@"0"] || !_urinext) {
                 [self hidebuttonmore:YES];
             } else {
                 [self showbuttonmore];
@@ -627,7 +662,10 @@
     // get a rect for the textView frame
     CGRect containerFrame = self.view.frame;
     
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+//    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+    containerFrame.size.height = self.view.bounds.size.height - keyboardBounds.size.height;
+    _table.contentInset = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
+    [_table scrollRectToVisible:CGRectMake(0, _table.contentSize.height, _table.bounds.size.width, 1) animated:YES];
     // animations settings
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
@@ -651,7 +689,9 @@
     self.view.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1.0];
     CGRect containerFrame = self.view.frame;
     
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
+//    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
+    containerFrame.size.height = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.bounds.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
     // animations settings
     [UIView beginAnimations:nil context:NULL];
@@ -696,6 +736,8 @@
 
 - (void) showbuttonmore {
     [_act stopAnimating];
+    
+    _table.tableHeaderView = _header;
     _buttonloadmore.hidden = NO;
 }
 
@@ -775,4 +817,20 @@
     [navigateController navigateToProfileFromViewController:self withUserID:userId];
 }
 
+-(void)replaceDataSelected:(NSDictionary *)data
+{
+    _data = data;
+    
+    if (data) {
+        _page = 1;
+    
+        [self configureRestKit];
+        [self loadData];
+    }
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
+}
 @end

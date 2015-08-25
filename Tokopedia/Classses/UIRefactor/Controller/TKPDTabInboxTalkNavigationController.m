@@ -72,6 +72,18 @@
 {
     [super viewDidLoad];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(tapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+    
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem = barButton;
+    }
+    
     [_segmentContainer.layer setShadowOffset:CGSizeMake(0, 0.5)];
     [_segmentContainer.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_segmentContainer.layer setShadowRadius:1];
@@ -150,6 +162,17 @@
         [_delegate tabBarController:self childControllerContentInset:inset];
     }
 }
+
+-(IBAction)tapBackButton:(id)sender
+{
+    if (!_splitVC) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+        [_splitVC.navigationController popViewControllerAnimated:YES];
+
+}
+
 
 #pragma mark -
 #pragma mark Properties
@@ -609,7 +632,7 @@
 - (void)setLabelButtonWithArrow:(UIButton *)button withString:(NSString*)string {
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:1],
-                                 NSFontAttributeName            : [UIFont boldSystemFontOfSize:16],
+                                 NSFontAttributeName            : [UIFont fontWithName:@"Gotham Medium" size:15.0],
                                  };
     
     NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] initWithString:string

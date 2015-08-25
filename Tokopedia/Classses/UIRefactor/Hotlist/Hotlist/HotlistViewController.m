@@ -10,9 +10,12 @@
 #import "search.h"
 #import "string_home.h"
 #import "HotlistViewController.h"
+#import "HotlistCollectionCell.h"
 #import "HotlistResultViewController.h"
 #import "SearchResultViewController.h"
 #import "CatalogViewController.h"
+
+#import "RetryCollectionReusableView.h"
 
 #import "URLCacheController.h"
 
@@ -20,15 +23,17 @@
 #import "LoadingView.h"
 #import "TableViewScrollAndSwipe.h"
 
-
 #pragma mark - HotlistView
 
 @interface HotlistViewController ()
 <
-    TokopediaNetworkManagerDelegate,
-    LoadingViewDelegate,
-    UITableViewDelegate,
-    UIGestureRecognizerDelegate
+TokopediaNetworkManagerDelegate,
+LoadingViewDelegate,
+UITableViewDelegate,
+UIGestureRecognizerDelegate,
+UICollectionViewDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout
 >
 {
     NSMutableArray *_product;
@@ -42,7 +47,7 @@
     BOOL _isNeedToRemoveAllObject;
     
     UIRefreshControl *_refreshControl;
-
+    
     NSTimeInterval _timeinterval;
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager  *_objectmanager;
@@ -52,12 +57,15 @@
     URLCacheConnection *_cacheConnection;
     URLCacheController *_cacheController;
     LoadingView *_loadingView;
+    
+    BOOL _isFailRequest;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *footer;
-
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic, readonly) UICollectionViewFlowLayout *flowLayout;
 
 @end
 
@@ -79,10 +87,10 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-        
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     self.screenName = @"Home - HotList";
-
+    
     _product = [NSMutableArray new];
     _page = 1;
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
@@ -93,6 +101,9 @@
     _table.delegate = self;
     _table.dataSource = self;
     _table.tableFooterView = _footer;
+    
+    
+    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
@@ -106,10 +117,10 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    [_table addSubview:_refreshControl];
+    [_collectionView addSubview:_refreshControl];
     
     
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
@@ -124,6 +135,16 @@
     } else {
         [_networkManager doRequest];
     }
+    
+    UINib *cellNib = [UINib nibWithNibName:@"HotlistCollectionCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"HotlistCollectionCellIdentifier"];
+    
+    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+    
+    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -143,15 +164,15 @@
         _page = 1;
         _isNeedToRemoveAllObject = YES;
         [_networkManager doRequest];
-        _table.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
+        _collectionView.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
     }
 }
 
 - (void) setTableInset {
     if([[UIScreen mainScreen]bounds].size.height >= 568) {
-        _table.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
+        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
     } else {
-        _table.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
+        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
     }
 }
 
@@ -166,92 +187,137 @@
     _networkManager = nil;
 }
 
+#pragma mark - Collection View Data Source
 
-#pragma mark - Table View Data Source
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _product.count;
-#else
-    return _isnodata ? 0 : _product.count;
-#endif
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        NSString *cellid = kTKPDHOTLISTCELL_IDENTIFIER;
-		
-		cell = (HotlistCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [HotlistCell newcell];
-			((HotlistCell*)cell).delegate = self;
-		}
-		
-		if (_product.count > indexPath.row) {
-            
-            HotlistList *hotlist = _product[indexPath.row];
-            ((HotlistCell*)cell).indexpath = indexPath;
-            ((HotlistCell *)cell).namelabel.text = hotlist.title;
-            ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
-            [((HotlistCell*)cell).act startAnimating];
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:hotlist.image_url_600] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-
-            UIImageView *thumb = ((HotlistCell*)cell).productimageview;
-            thumb.image = nil;
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
-                [thumb setContentMode:UIViewContentModeScaleAspectFill];
-#pragma clang diagnosti c pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
-            
-		}else [self reset:((HotlistCell*)cell)];
-	} else {
-		static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
-		
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		}
-		
-		cell.textLabel.text = kTKPDHOME_NODATACELLTITLE;
-		cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
-	}
-	return cell;
-}
-
-#pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
+    return _product.count;
     
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
+}
+
+- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellid = @"HotlistCollectionCellIdentifier";
+    HotlistCollectionCell *cell = (HotlistCollectionCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+    
+    [cell setViewModel:((HotlistList*)_product[indexPath.row]).viewModel];
+    
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            /** called if need to load next page **/
-            //NSLog(@"%@", NSStringFromSelector(_cmd));
+            _isFailRequest = NO;
             [_networkManager doRequest];
         }
-	}
+    }
+    
+    return cell;
+}
+
+
+#pragma mark - Delegate Cell
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    
+    if(kind == UICollectionElementKindSectionFooter) {
+        if(_isFailRequest) {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+            ((RetryCollectionReusableView*)reusableView).delegate = self;
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+        }
+    }
+    
+    return reusableView;
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    HotlistList *hotlist = _product[indexPath.row];
+    
+    if ([hotlist.url rangeOfString:@"/hot/"].length) {
+        HotlistCollectionCell *cell = (HotlistCollectionCell*)[collectionView cellForItemAtIndexPath:indexPath];
+        HotlistResultViewController *controller = [HotlistResultViewController new];
+        controller.image = cell.productimageview.image;
+        NSArray *query = [[[NSURL URLWithString:hotlist.url] path] componentsSeparatedByString: @"/"];
+        controller.data = @{
+                            kTKPDHOME_DATAQUERYKEY      : [query objectAtIndex:2]?:@"",
+                            kTKPHOME_DATAHEADERIMAGEKEY : cell.productimageview,
+                            kTKPDHOME_APIURLKEY         : hotlist.url,
+                            kTKPDHOME_APITITLEKEY       : hotlist.title,
+                            };
+        [self.delegate pushViewController:controller];
+        
+    } else if ([hotlist.url rangeOfString:@"/p/"].length) {
+        
+        NSURL *url = [NSURL URLWithString:hotlist.url];
+        
+        NSMutableDictionary *parameters = [NSMutableDictionary new];
+        
+        for (int i = 2; i < url.pathComponents.count; i++) {
+            if (i == 2) {
+                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_1];
+            } else if (i == 3) {
+                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_2];
+            } else if (i == 4) {
+                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_3];
+            }
+        }
+        
+        for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
+            NSString *key = [[parameter componentsSeparatedByString:@"="] objectAtIndex:0];
+            if ([key isEqualToString:kTKPDSEARCH_APIMINPRICEKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIMINPRICEKEY];
+            } else if ([key isEqualToString:kTKPDSEARCH_APIMAXPRICEKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIMAXPRICEKEY];
+            } else if ([key isEqualToString:kTKPDSEARCH_APIOBKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIOBKEY];
+            } else if ([key isEqualToString:kTKPDSEARCH_APILOCATIONIDKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APILOCATIONIDKEY];
+            } else if ([key isEqualToString:kTKPDSEARCH_APIGOLDMERCHANTKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIGOLDMERCHANTKEY];
+            }
+        }
+        [parameters setValue:@"search_product" forKey:kTKPDSEARCH_DATATYPE];
+        
+        SearchResultViewController *controller = [SearchResultViewController new];
+        controller.data = parameters;
+        controller.title = hotlist.title;
+        controller.hidesBottomBarWhenPushed = YES;
+        
+        [self.delegate pushViewController:controller];
+        
+    } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
+        
+        NSString *catalogID = [[hotlist.url componentsSeparatedByString:@"/"] objectAtIndex:4];
+        CatalogViewController *controller = [CatalogViewController new];
+        controller.catalogID = catalogID;
+        controller.catalogName = hotlist.title;
+        controller.catalogImage = hotlist.image_url_600;
+        controller.catalogPrice = hotlist.price_start;
+        [self.delegate pushViewController:controller];
+        
+    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat cellWidth;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        CGFloat screenWidth = screenRect.size.width/2;
+        cellWidth = screenWidth-15;
+    } else {
+        CGFloat screenWidth = screenRect.size.width;
+        cellWidth = screenWidth-20;
+    }
+    return CGSizeMake(cellWidth, cellWidth*173/300);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    return CGSizeMake(60.0f, 40.0f);
 }
 
 #pragma mark - Methods
--(void)reset:(UITableViewCell*)cell
-{
-    ((HotlistCell*)cell).productimageview = nil;
-    ((HotlistCell*)cell).pricelabel = nil;
-    ((HotlistCell*)cell).namelabel = nil;
-}
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
@@ -259,8 +325,7 @@
     _isrefreshview = YES;
     _isNeedToRemoveAllObject = YES;
     
-//    [_product removeAllObjects];
-    [_table reloadData];
+    [_collectionView reloadData];
     [_networkManager doRequest];
 }
 
@@ -341,14 +406,14 @@
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
     }
-        
+    
     if(_isNeedToRemoveAllObject) {
-       [_product removeAllObjects];
+        [_product removeAllObjects];
         _isNeedToRemoveAllObject = NO;
     }
     
     [_product addObjectsFromArray: hotlist.result.list];
-
+    
     if (_product.count >0) {
         _isnodata = NO;
         _urinext =  hotlist.result.paging.uri_next;
@@ -358,20 +423,19 @@
     if((_page - 1) == 1) {
         [self setToCache:operation];
     }
-
-    [_table reloadData];
+    
+    _isFailRequest = NO;
+    
+    [_collectionView reloadData];
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     [_refreshControl endRefreshing];
-    _table.tableFooterView = _loadingView.view;
+    _isFailRequest = YES;
+    [_collectionView reloadData];
 }
 
-//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-//    
-//}
-
-#pragma mark - Caching Part 
+#pragma mark - Caching Part
 - (void)initCacheHotlist {
     if(_page == 1) {
         NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"hotlist"];
@@ -428,6 +492,8 @@
 
 #pragma mark - Delegate LoadingView
 - (void)pressRetryButton {
+    _isFailRequest = NO;
+    [_collectionView reloadData];
     _table.tableFooterView = _footer;
     [_networkManager doRequest];
 }
@@ -438,7 +504,7 @@
     HotlistList *hotlist = _product[indexpath.row];
     
     if ([hotlist.url rangeOfString:@"/hot/"].length) {
-    
+        
         HotlistResultViewController *controller = [HotlistResultViewController new];
         controller.image = ((HotlistCell*)cell).productimageview.image;
         NSArray *query = [[[NSURL URLWithString:hotlist.url] path] componentsSeparatedByString: @"/"];
@@ -450,7 +516,7 @@
                             kTKPDHOME_APITITLEKEY       : hotlist.title,
                             };
         [self.delegate pushViewController:controller];
-    
+        
     } else if ([hotlist.url rangeOfString:@"/p/"].length) {
         
         NSURL *url = [NSURL URLWithString:hotlist.url];
@@ -467,8 +533,6 @@
             }
         }
         
-
-        
         for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
             NSString *key = [[parameter componentsSeparatedByString:@"="] objectAtIndex:0];
             if ([key isEqualToString:kTKPDSEARCH_APIMINPRICEKEY]) {
@@ -484,7 +548,7 @@
             }
         }
         [parameters setValue:@"search_product" forKey:kTKPDSEARCH_DATATYPE];
-
+        
         SearchResultViewController *controller = [SearchResultViewController new];
         controller.data = parameters;
         controller.title = hotlist.title;
@@ -493,7 +557,7 @@
         [self.delegate pushViewController:controller];
         
     } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
-
+        
         NSString *catalogID = [[hotlist.url componentsSeparatedByString:@"/"] objectAtIndex:4];
         CatalogViewController *controller = [CatalogViewController new];
         controller.catalogID = catalogID;
@@ -501,18 +565,13 @@
         controller.catalogImage = hotlist.image_url_600;
         controller.catalogPrice = hotlist.price_start;
         [self.delegate pushViewController:controller];
-    
+        
     }
-} 
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    NSLog(@"scrolling %f Y", scrollView.contentOffset.y);
-//    NSLog(@"scrolling %f X", scrollView.contentOffset.x);
 }
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
-    [_table scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+    [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
@@ -524,7 +583,7 @@
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
     }
-
+    
 }
 
 @end

@@ -5,12 +5,13 @@
 //  Created by IT Tkpd on 2/26/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
+#import "ReputationDetail.h"
 #import "ResolutionCenterDetailViewController.h"
 #import "ResolutionCenterInputViewController.h"
 #import "ResolutionInputReceiptViewController.h"
 #import "InboxResolutionCenterOpenViewController.h"
 #import "InboxResolutionCenterComplainViewController.h"
+#import "ShopReputation.h"
 
 #import "NavigateViewController.h"
 
@@ -21,6 +22,8 @@
 
 #import "ResolutionAction.h"
 #import "InboxResolutionCenterObjectMapping.h"
+
+#import "TxOrderStatusDetailViewController.h"
 
 #import "TokopediaNetworkManager.h"
 
@@ -52,7 +55,8 @@
     ResolutionCenterInputViewControllerDelegate,
     ResolutionInputReceiptViewControllerDelegate,
     InboxResolutionCenterOpenViewControllerDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    UISplitViewControllerDelegate
 >
 {
     BOOL _isNodata;
@@ -128,8 +132,10 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
-    [self configureRestKit];
-    [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        [self configureRestKit];
+        [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
+    }
     
     _inputConversation.layer.cornerRadius = 2;
     
@@ -166,6 +172,7 @@
     _usernameLabel.text = creatorDispute;
     _dateTimeLabel.text = _resolutionDetail.resolution_dispute.dispute_create_time;
     _invoiceLabel.text = _resolutionDetail.resolution_order.order_invoice_ref_num;
+    [btnReputation setTitle:_resolutionDetail.resolution_customer.customer_reputation.positive_percentage forState:UIControlStateNormal];
     
     NSString *imageURLString = imageURLString = _resolutionDetail.resolution_customer.customer_image;//(_resolutionDetail.resolution_by.by_customer == 1)?_resolutionDetail.resolution_shop.shop_image:_resolutionDetail.resolution_customer.customer_image;
     
@@ -328,7 +335,16 @@
         {
             if (buttonIndex == 1) {
                 [_delegate shouldCancelComplain:_resolution atIndexPath:_indexPath];
-                [self.navigationController popViewControllerAnimated:YES];
+                if ([_delegate isKindOfClass:[TxOrderStatusDetailViewController class]]) {
+                    NSArray *viewControllers = self.navigationController.viewControllers;
+                    UIViewController *destinationVC = viewControllers[viewControllers.count-3];
+                    [self.navigationController popToViewController:destinationVC animated:YES];
+                }
+                else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+
+                }
             }
         }
             break;
@@ -705,6 +721,7 @@
     NSString *sinceDateString = [NSString timeLeftSinceDate:createDate];
     cell.timeRemainingLabel.text = sinceDateString;
     cell.markLabel.text = [NSString convertHTML:[self markConversation:conversation]];
+    [cell.btnReputation setTitle:_resolutionDetail.resolution_customer.customer_reputation.positive_percentage forState:UIControlStateNormal];
     
     [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation];
     [cell.markLabel setCustomAttributedText:cell.markLabel.text];
@@ -1180,6 +1197,23 @@
     RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
     RKObjectMapping *resolutionConversationMapping = [_mapping resolutionConversationMapping];
     RKObjectMapping *resolutionAttachmentMapping = [_mapping resolutionAttachmentMapping];
+    
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNegative,
+                                                                 CNeutral,
+                                                                 CPositif]];
+    
+    
+    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
+    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
+                                                           CReputationBadge,
+                                                           CReputationScore,
+                                                           CScore,
+                                                           CMinBadgeScore]];
+    
+    [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
+    [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
     
     RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                    toKeyPath:kTKPD_APIRESULTKEY
@@ -1853,6 +1887,21 @@
             
         }
     }
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
+}
+
+-(void)replaceDataSelected:(InboxResolutionCenterList*)resolution indexPath:(NSIndexPath*)indexPath resolutionID:(NSString*)resolutionID
+{
+    _resolution = resolution;
+    _indexPath = indexPath;
+    _resolutionID = resolutionID;
+    
+    [self configureRestKit];
+    [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
 }
 
 @end

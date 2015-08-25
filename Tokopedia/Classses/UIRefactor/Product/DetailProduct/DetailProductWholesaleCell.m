@@ -65,7 +65,6 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    NSlog(@"asda");
     return _isnodata?1:_wholesales.count;
 #else
     NSInteger rows = _isnodata?0:_wholesales.count;
@@ -107,6 +106,7 @@
     _data = data;
     if (data) {
         NSArray *wholesales = [_data objectForKey:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY];
+        [_wholesales removeAllObjects];
         [_wholesales addObjectsFromArray:wholesales];
         
         if (_wholesales.count > 0) {

@@ -15,6 +15,9 @@
 @end
 
 @interface DetailProductOtherView : UIView
+{
+    IBOutlet UIView *viewContent;
+}
 
 
 @property (nonatomic, weak) IBOutlet id<DetailProductOtherViewDelegate> delegate;
@@ -27,5 +30,6 @@
 @property (nonatomic) NSInteger index;
 
 +(id)newview;
+- (UIView *)getViewContent;
 
 @end

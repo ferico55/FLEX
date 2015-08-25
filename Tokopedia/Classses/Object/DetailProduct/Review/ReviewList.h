@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "ReputationDetail.h"
 #import "ReviewResponse.h"
 #import "ReviewProductOwner.h"
+#define CReviewUserReputation @"review_user_reputation"
+#define CReviewReputationID @"review_reputation_id"
 
 @interface ReviewList : NSObject
 
@@ -20,9 +22,11 @@
 @property (nonatomic, strong) NSString *review_id;
 @property (nonatomic, strong) NSString *product_images;
 @property (nonatomic, strong) ReviewProductOwner *review_product_owner;
+@property (nonatomic, strong) NSString *review_reputation_id;
 @property (nonatomic, strong) NSString *review_user_name;
 @property (nonatomic, strong) NSString *review_message;
 @property (nonatomic, strong) NSString *review_user_id;
+@property (nonatomic, strong) ReputationDetail *review_user_reputation;
 
 // product
 @property (nonatomic) NSString* review_rate_quality;
@@ -39,5 +43,10 @@
 @property (nonatomic, strong) NSString *review_product_name;
 @property (nonatomic, strong) NSString *review_product_id;
 @property (nonatomic, strong) NSString *review_product_image;
+
+
+//User Label
+@property (nonatomic, strong) NSString *review_user_label;
+@property (nonatomic, strong) NSString *review_user_label_id;
 
 @end

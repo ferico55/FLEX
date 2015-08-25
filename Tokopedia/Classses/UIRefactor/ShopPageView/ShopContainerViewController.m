@@ -5,6 +5,8 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
+#import "CMPopTipView.h"
+#import "DetailProductViewController.h"
 #import "LoginViewController.h"
 #import "ShopPageHeader.h"
 #import "ShopContainerViewController.h"
@@ -15,6 +17,11 @@
 #import "ShopInfoViewController.h"
 #import "SendMessageViewController.h"
 #import "ShopSettingViewController.h"
+#import "ShopBadgeLevel.h"
+#import "ReputationDetail.h"
+#import "ResponseSpeed.h"
+#import "Rating.h"
+#import "TTTAttributedLabel.h"
 #import "ProductAddEditViewController.h"
 
 #import "URLCacheController.h"
@@ -23,11 +30,12 @@
 #import "detail.h"
 #import "string_product.h"
 
+#import "ShopBadgeLevel.h"
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
 
 
-@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate> {
+@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
     BOOL _isRefreshView;
     
@@ -50,6 +58,7 @@
     URLCacheConnection *_cacheConnection;
     NSTimeInterval _timeInterval;
     
+    CMPopTipView *cmPopTitpView;
     NSDictionary *_auth;
     UIBarButtonItem *_favoriteBarButton;
     UIBarButtonItem *_unfavoriteBarButton;
@@ -144,6 +153,7 @@
     [super viewDidLoad];
     
     [self initNotificationCenter];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 
     // Do any additional setup after loading the view from its nib.
     
@@ -332,6 +342,14 @@
                                                        kTKPDDETAILSHOP_APIOWNERMESSAGERKEY:kTKPDDETAILSHOP_APIOWNERMESSAGERKEY
                                                        }];
     
+    RKObjectMapping *ownerReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [ownerReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                            CNoReputation,
+                                                            CNegative,
+                                                            CPositif,
+                                                            CNeutral]];
+    
+    
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
     [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
@@ -363,8 +381,36 @@
                                                            kTKPDSHOP_APISHOPTOTALTRANSACTIONKEY:kTKPDSHOP_APISHOPTOTALTRANSACTIONKEY,
                                                            kTKPDSHOP_APISHOPTOTALETALASEKEY:kTKPDSHOP_APISHOPTOTALETALASEKEY,
                                                            kTKPDSHOP_APISHOPTOTALPRODUCTKEY:kTKPDSHOP_APISHOPTOTALPRODUCTKEY,
-                                                           kTKPDSHOP_APISHOPTOTALSOLDKEY:kTKPDSHOP_APISHOPTOTALSOLDKEY
+                                                           kTKPDSHOP_APISHOPTOTALSOLDKEY:kTKPDSHOP_APISHOPTOTALSOLDKEY,
+                                                           CTxCount:CTxCount,
+                                                           CHideRate:CHideRate,
+                                                           CTxCountSuccess:CTxCountSuccess,
+                                                           CRateFailure:CRateFailure,
+                                                           CShopTotalTransactionCancel:CShopTotalTransactionCancel,
+                                                           CShopReputationScore:CShopReputationScore,
+                                                           CRateSuccess:CRateSuccess
                                                            }];
+    
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
+    
+    RKObjectMapping *countScoreMapping = [RKObjectMapping mappingForClass:[CountRatingResult class]];
+    [countScoreMapping addAttributeMappingsFromDictionary:@{CCountScoreBad:CCountScoreBad,
+                                                            CCountScoreGood:CCountScoreGood,
+                                                            CCountScoreNeutral:CCountScoreNeutral}];
+    
+    RKObjectMapping *ratingMapping = [RKObjectMapping mappingForClass:[Rating class]];
+    RKObjectMapping *qualityMapping = [RKObjectMapping mappingForClass:[Quality class]];
+    [qualityMapping addAttributeMappingsFromDictionary:@{CRatingStar:CRatingStar,
+                                                         CAverage:CAverage,
+                                                         COneStarRank:COneStarRank,
+                                                         CCountTotal:CCountTotal,
+                                                         CFourStarRank:CFourStarRank,
+                                                         CFiveStarRank:CFiveStarRank,
+                                                         CTwoStarRank:CTwoStarRank,
+                                                         CThreeStarRank:CThreeStarRank}];
+
     
     RKObjectMapping *shipmentMapping = [RKObjectMapping mappingForClass:[Shipment class]];
     [shipmentMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APISHIPMENTIDKEY:kTKPDDETAILSHOP_APISHIPMENTIDKEY,
@@ -397,9 +443,27 @@
                                                     kTKPDSHOP_APIDISTRICTNAMEKEY,
                                                     kTKPDSHOP_APIADDRESSKEY
                                                     ]];
+    
+//    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
+//    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
+//                                                                     CTwoDay:CTwoDay,
+//                                                                     CThreeDay:CThreeDay,
+//                                                                     CSpeedLevel:CSpeedLevel,
+//                                                                     CBadge:CBadge,
+//                                                                     CCountTotal:CCountTotal}];
+    
     // Relationship Mapping
+    [ownerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:COwnerReputation toKeyPath:COwnerReputation withMapping:ownerReputationMapping]];
+    [ratingMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CQuality toKeyPath:CQuality withMapping:qualityMapping]];
+    [ratingMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CAccuracy toKeyPath:CAccuracy withMapping:qualityMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastOneMonth toKeyPath:CShopLastOneMonth withMapping:countScoreMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastSixMonth toKeyPath:CShopLastSixMonth withMapping:countScoreMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastTwelveMonth toKeyPath:CShopLastTwelveMonth withMapping:countScoreMapping]];
+    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APICLOSEDINFOKEY
                                                                                   toKeyPath:kTKPDDETAILSHOP_APICLOSEDINFOKEY
                                                                                 withMapping:closedinfoMapping]];
@@ -412,6 +476,8 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                   toKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                 withMapping:shopstatsMapping]];
+//    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CRatings toKeyPath:CRatings withMapping:ratingMapping]];
     
     RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY
                                                                                      toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY
@@ -663,8 +729,68 @@
     
 }
 
+#pragma mark - CMPopTipView Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
 
 #pragma mark - Method
+- (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
+    lblDesc.backgroundColor = [UIColor clearColor];
+    lblDesc.textAlignment = NSTextAlignmentLeft;
+    lblDesc.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    lblDesc.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
+    lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
+    lblDesc.numberOfLines = 0;
+}
+
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+
+- (void)showPopUp:(NSString *)strText withSender:(id)sender {
+    [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
+}
+
+- (UIViewController *)getActiveViewController {
+    return [_pageController.viewControllers lastObject];
+}
+
 - (void)setFavoriteRightButtonItem
 {
     StickyAlertView *stickyAlertView;
@@ -686,7 +812,7 @@
     if (_shop) {
         ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
         vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:@{}};
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -889,6 +1015,10 @@
         [_timer invalidate];
         _timer = nil;
         [self setFavoriteRightButtonItem];
+        NSArray *tempArr = self.navigationController.viewControllers;
+        if([[tempArr objectAtIndex:tempArr.count-2] isMemberOfClass:[DetailProductViewController class]]) {
+            [((DetailProductViewController *) [tempArr objectAtIndex:tempArr.count-2]) setButtonFav];
+        }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFavoriteError:error];

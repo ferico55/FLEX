@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -133,11 +138,11 @@
                         <constraint firstAttribute="height" constant="28" id="dSY-Pd-fVr"/>
                     </constraints>
                     <segments>
-                        <segment title="Perempuan"/>
-                        <segment title="Laki-Laki"/>
+                        <segment title="Pria"/>
+                        <segment title="Wanita"/>
                     </segments>
                     <connections>
-                        <action selector="tapsegment:" destination="-1" eventType="touchUpInside" id="esm-3c-t69"/>
+                        <action selector="tapsegment:" destination="-1" eventType="valueChanged" id="dt1-FT-j2M"/>
                     </connections>
                 </segmentedControl>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata Sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ekn-6v-JpQ" customClass="TextField">
@@ -179,8 +184,8 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8G-Rq-hLX"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH">
-                    <rect key="frame" x="44" y="342" width="261" height="36"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saya sudah membaca dan menerima " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH">
+                    <rect key="frame" x="42" y="333" width="261" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="IDN-xk-z9A"/>
                     </constraints>
@@ -227,14 +232,57 @@
                         <constraint firstAttribute="height" constant="20" id="bLc-pQ-7bO"/>
                     </constraints>
                 </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqv-1f-U1p">
+                    <rect key="frame" x="23" y="351" width="168" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="NWN-HD-iog"/>
+                        <constraint firstAttribute="width" constant="168" id="hhu-cp-uxK"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                    <state key="normal" title="syarat dan ketentuan">
+                        <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tapTerms:" destination="-1" eventType="touchUpInside" id="EXe-uc-bCg"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fzr-EG-EzD">
+                    <rect key="frame" x="204" y="351" width="110" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="110" id="67r-0t-kM4"/>
+                        <constraint firstAttribute="height" constant="30" id="C35-XC-I0c"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                    <state key="normal" title="kebijakan privasi">
+                        <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tapPrivacy:" destination="-1" eventType="touchUpInside" id="FGb-QA-m5d"/>
+                    </connections>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="serta" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="7Jh-lC-alZ">
+                    <rect key="frame" x="174" y="348" width="30" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="GRd-sg-rNF"/>
+                        <constraint firstAttribute="width" constant="30" id="JZB-HT-IC7"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="4q8-DK-AgL" firstAttribute="top" secondItem="Kz1-ge-iSa" secondAttribute="bottom" constant="42" id="06o-dB-qHs"/>
+                <constraint firstItem="oqv-1f-U1p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="23" id="1Zb-u3-iC4"/>
                 <constraint firstAttribute="trailing" secondItem="4q8-DK-AgL" secondAttribute="trailing" constant="15" id="4IV-NE-dBt"/>
                 <constraint firstAttribute="trailing" secondItem="Kz1-ge-iSa" secondAttribute="trailing" constant="15" id="7HD-LM-GE9"/>
+                <constraint firstItem="oqv-1f-U1p" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="25" id="7JE-sI-3d8"/>
                 <constraint firstAttribute="trailing" secondItem="ZWH-II-caf" secondAttribute="trailing" constant="28" id="9XC-JA-hOI"/>
                 <constraint firstItem="Vwu-wq-o6E" firstAttribute="top" secondItem="y3x-eA-9Vz" secondAttribute="bottom" constant="36" id="C5K-85-Udz"/>
+                <constraint firstItem="Fzr-EG-EzD" firstAttribute="leading" secondItem="7Jh-lC-alZ" secondAttribute="trailing" id="CPQ-Fk-Ap4"/>
                 <constraint firstItem="Om5-rq-kus" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Cq6-yM-oeJ"/>
                 <constraint firstAttribute="trailing" secondItem="y3x-eA-9Vz" secondAttribute="trailing" constant="15" id="Dlh-gL-jvI"/>
                 <constraint firstItem="ry4-mz-X5c" firstAttribute="top" secondItem="W9c-XX-w7W" secondAttribute="bottom" constant="42" id="F8d-yI-dYI"/>
@@ -244,19 +292,22 @@
                 <constraint firstItem="ekn-6v-JpQ" firstAttribute="top" secondItem="dh2-Tl-g6u" secondAttribute="bottom" constant="12" id="IB2-Ij-ZWP"/>
                 <constraint firstItem="Kz1-ge-iSa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="JaU-BV-0ES"/>
                 <constraint firstItem="ry4-mz-X5c" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="QhF-Cb-u9s"/>
-                <constraint firstItem="y3x-eA-9Vz" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="20" id="Svo-a3-PBq"/>
+                <constraint firstItem="7Jh-lC-alZ" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="22" id="R8l-eu-oUl"/>
+                <constraint firstItem="y3x-eA-9Vz" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="29" id="Svo-a3-PBq"/>
                 <constraint firstItem="ekn-6v-JpQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="TiC-dh-MRi"/>
                 <constraint firstItem="Om5-rq-kus" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="16" id="ZY6-SM-bTM"/>
-                <constraint firstAttribute="trailing" secondItem="95o-gu-FPH" secondAttribute="trailing" constant="15" id="Zw9-uA-sqp"/>
+                <constraint firstAttribute="trailing" secondItem="95o-gu-FPH" secondAttribute="trailing" constant="17" id="Zw9-uA-sqp"/>
                 <constraint firstAttribute="trailing" secondItem="Vwu-wq-o6E" secondAttribute="trailing" constant="15" id="a1S-k5-Evd"/>
-                <constraint firstItem="95o-gu-FPH" firstAttribute="leading" secondItem="Om5-rq-kus" secondAttribute="trailing" constant="4" id="bon-R3-S9b"/>
+                <constraint firstItem="95o-gu-FPH" firstAttribute="leading" secondItem="Om5-rq-kus" secondAttribute="trailing" constant="2" id="bon-R3-S9b"/>
+                <constraint firstItem="Fzr-EG-EzD" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="25" id="dMh-Ia-zGg"/>
                 <constraint firstItem="Kz1-ge-iSa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="58" id="e2Q-Bj-p3f"/>
                 <constraint firstAttribute="trailing" secondItem="W9c-XX-w7W" secondAttribute="trailing" constant="15" id="fQB-cQ-UF3"/>
+                <constraint firstItem="7Jh-lC-alZ" firstAttribute="leading" secondItem="Om5-rq-kus" secondAttribute="trailing" constant="134" id="gjF-Np-tQL"/>
                 <constraint firstAttribute="trailing" secondItem="1GC-F6-b5V" secondAttribute="trailing" constant="15" id="iG8-8y-Z4y"/>
                 <constraint firstItem="W9c-XX-w7W" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="15" id="iRY-Dv-erG"/>
                 <constraint firstAttribute="trailing" secondItem="dh2-Tl-g6u" secondAttribute="trailing" constant="15" id="iVO-KY-jkg"/>
-                <constraint firstItem="ZWH-II-caf" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="32" id="jgP-Re-a1q"/>
-                <constraint firstItem="95o-gu-FPH" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="16" id="k8b-Qd-IK7"/>
+                <constraint firstItem="ZWH-II-caf" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="41" id="jgP-Re-a1q"/>
+                <constraint firstItem="95o-gu-FPH" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="7" id="k8b-Qd-IK7"/>
                 <constraint firstItem="W9c-XX-w7W" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="qYZ-dU-Bq1"/>
                 <constraint firstAttribute="trailing" secondItem="ekn-6v-JpQ" secondAttribute="trailing" constant="15" id="sV4-9X-vWj"/>
                 <constraint firstAttribute="trailing" secondItem="ry4-mz-X5c" secondAttribute="trailing" constant="15" id="tKb-fD-yUr"/>

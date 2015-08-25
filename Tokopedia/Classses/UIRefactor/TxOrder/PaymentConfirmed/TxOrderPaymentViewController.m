@@ -1059,6 +1059,7 @@
     SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     NSString *password = [_dataInput objectForKey:DATA_PASSWORD_KEY];
+    NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY];
     
     if ([self isPaymentTypeBank] && _isNewRekening) {
         if (!bank.bank_account_name) {
@@ -1095,7 +1096,16 @@
             isValid = NO;
         }
     }
-    else if ([self isPaymentTypeTransfer]) {}
+    else if ([self isPaymentTypeTransfer]) {
+        if (!depositor || [depositor isEqualToString:@""]) {
+            [errorMessage addObject:ERRORMESSAGE_NILL_DEPOSITOR];
+            isValid = NO;
+        }
+        if (!systemBank.sysbank_id) {
+            [errorMessage addObject:ERRORMESSAGE_NILL_SYSTEM_BANK];
+            isValid = NO;
+        }
+    }
     NSString *paymentAmount = [_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY]?:@"";
     
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];

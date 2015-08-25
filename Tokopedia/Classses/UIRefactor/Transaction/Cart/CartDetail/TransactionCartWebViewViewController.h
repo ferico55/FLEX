@@ -14,6 +14,8 @@
 @required
 - (void)shouldDoRequestEMoney:(BOOL)isWSNew;
 - (void)shouldDoRequestBCAClickPay;
+- (void)doRequestCC:(NSDictionary*)param;
+- (void)isSucessSprintAsia:(NSDictionary*)param;
 - (void)refreshCartAfterCancelPayment;
 
 @end
@@ -23,13 +25,16 @@
 
 @property (nonatomic, weak) IBOutlet id<TransactionCartWebViewViewControllerDelegate> delegate;
 
-
 @property TransactionSummaryBCAParam *BCAParam;
+@property NSDictionary *CCParam;
 @property NSNumber *gateway;
+@property BOOL isVeritrans;
 @property NSString *token;
-@property NSString *URLStringMandiri;
+@property NSString *URLString;
 @property NSString *emoney_code;
 @property TransactionSummaryDetail *cartDetail;
+
+@property NSDictionary *data;
 
 @end
 

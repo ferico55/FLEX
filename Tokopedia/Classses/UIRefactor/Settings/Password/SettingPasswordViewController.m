@@ -13,6 +13,8 @@
 #import "SettingPasswordViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
+#define CStringMatchChangePass @"Kata sandi baru tidak sesuai dengan konfirmasi sandi"
+
 
 #pragma mark - Setting Password View Controller
 @interface SettingPasswordViewController () <UITextFieldDelegate, TokopediaNetworkManagerDelegate>
@@ -122,7 +124,14 @@
                 NSString *newpass = [_datainput objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY];
                 NSString *confirmpass = [_datainput objectForKey:kTKPDPROFILESETTING_APIPASSCONFIRMKEY];
                 if (pass && newpass && confirmpass) {
-                    [self requestAction:userinfo];
+                    if([newpass isEqualToString:confirmpass]) {
+                        [self requestAction:userinfo];
+                    }
+                    else {
+                        [errorMessages addObject:CStringMatchChangePass];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                        [alert show];
+                    }
                 }
                 else
                 {

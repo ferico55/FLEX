@@ -10,4 +10,8 @@
 
 @implementation OrderHistory
 
+- (NSString *)history_comments {
+    return [_history_comments stringByReplacingOccurrencesOfString:@"            " withString:@""];
+}
+
 @end
