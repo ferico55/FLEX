@@ -113,7 +113,21 @@
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintX];
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintY];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationUpdatePriceAlert:) name:@"TkpdUpdatePriceAlert" object:nil];
+    
     //Set Header
+    [self setHeader];
+}
+
+
+- (void)notificationUpdatePriceAlert:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSString *price = [userInfo objectForKey:@"price"];
+    
+    [self updatePriceAlert:price];
+}
+
+- (void)setHeader {
     UIView *tempViewContent = priceAlertCell.getViewContent;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[tempViewContent]-10-|" options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempViewContent)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[tempViewContent]" options:0 metrics:0 views:NSDictionaryOfVariableBindings(tempViewContent)]];
@@ -122,7 +136,7 @@
     [self setContentValue];
     constraintYLineHeader.constant = tempViewContent.frame.origin.y + tempViewContent.bounds.size.height + 1;
     constraintHeightTable.constant = self.view.bounds.size.height - (viewLineHeader.frame.origin.y+viewLineHeader.bounds.size.height);
-
+    
     [self.view bringSubviewToFront:viewLineHeader];
     [self.view layoutIfNeeded];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
@@ -135,10 +149,11 @@
         constraintWidthUrutkan.constant = 0;
         constraintWidthFilter.constant = self.view.bounds.size.width;
         constraintWidthSeparatorButton.constant = 0;
-//        [btnFilter setTitle:CstringFilter forState:UIControlStateNormal];
+        //        [btnFilter setTitle:CstringFilter forState:UIControlStateNormal];
         btnFilter.titleLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
         [btnFilter setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -386,7 +401,7 @@
 - (NoResultView *)getNoResultView
 {
     if(noResultView == nil) {
-        noResultView = [NoResultView new];
+        noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, tblDetailPriceAlert.frame.size.width, 200)];
     }
     
     return noResultView;
@@ -427,7 +442,7 @@
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 5.0;
     NSDictionary *attributes = @{NSParagraphStyleAttributeName: style};
-    NSAttributedString *myString = [[NSAttributedString alloc] initWithString:_detailPriceAlert.pricealert_product_name attributes:attributes];
+    NSAttributedString *myString = [[NSAttributedString alloc] initWithString:_detailPriceAlert.pricealert_product_name?:@"" attributes:attributes];
     priceAlertCell.getBtnProductName.titleLabel.attributedText = myString;
     
     CGSize tempSize = [priceAlertCell.getBtnProductName.titleLabel sizeThatFits:CGSizeMake(priceAlertCell.getBtnProductName.bounds.size.width, 9999)];
@@ -436,11 +451,11 @@
     else if(tempSize.height > priceAlertCell.getConstraintHeigthProductName.constant)
         priceAlertCell.getConstraintHeigthProductName.constant = tempSize.height;
     
-    [priceAlertCell setImageProduct:_imageHeader];
-    [priceAlertCell setLblDateProduct:_detailPriceAlert.pricealert_time];
-    [priceAlertCell setPriceNotification:[self getPrice:_detailPriceAlert.pricealert_price]];
-    [priceAlertCell setLowPrice:_detailPriceAlert.pricealert_price_min];
-    [priceAlertCell setProductName:_detailPriceAlert.pricealert_product_name];
+    [priceAlertCell setImageProduct:_imageHeader?:nil];
+    [priceAlertCell setLblDateProduct:_detailPriceAlert.pricealert_time?:@""];
+    [priceAlertCell setPriceNotification:[self getPrice:_detailPriceAlert.pricealert_price?:@""]];
+    [priceAlertCell setLowPrice:_detailPriceAlert.pricealert_price_min?:@""];
+    [priceAlertCell setProductName:_detailPriceAlert.pricealert_product_name?:@""];
     
     [priceAlertCell getBtnProductName].userInteractionEnabled = YES;
     [[priceAlertCell getBtnProductName] addTarget:self action:@selector(actionDetailProduct:) forControlEvents:UIControlEventTouchUpInside];
@@ -703,7 +718,7 @@
     if(tag == CTagGetDetailPriceList) {
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:CGetPriceAlertDetail forKey:CAction];
-        [param setObject:_detailPriceAlert.pricealert_id forKey:CPriceAlertID];
+        [param setObject:_detailPriceAlert.pricealert_id?:@"" forKey:CPriceAlertID];
         [param setObject:@(page) forKey:CPage];
         
         if(nSelectedFilter > 0) {
@@ -990,7 +1005,7 @@
         [self isGettingCatalogList:NO];
         
         if(catalogList==nil || catalogList.count==0) {
-            [tblDetailPriceAlert addSubview:[self getNoResultView].view];
+            [tblDetailPriceAlert addSubview:[self getNoResultView]];
         }
         else if(noResultView != nil) {
             [noResultView.view removeFromSuperview];
@@ -1043,6 +1058,7 @@
 
 - (void)actionBeforeRequest:(int)tag
 {
+
 }
 
 - (void)actionRequestAsync:(int)tag
@@ -1126,6 +1142,17 @@
 - (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
 {
     [self dismissAllPopTipViews];
+}
+
+#pragma mark - Replace Selected Data
+- (void)replaceDataSelected:(NSDictionary*)data {
+    _detailPriceAlert = [data objectForKey:@"price_alert"];
+    _imageHeader = [data objectForKey:@"image_header"];
+    [catalogList removeAllObjects];
+    [tblDetailPriceAlert reloadData];
+    page = 1;
+    [self setHeader];
+    
 }
 
 @end

@@ -20,10 +20,11 @@
 - (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID;
 
 #pragma mark - Inbox
--(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
--(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;
--(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController;
+- (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
+- (void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;
+- (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController;
 - (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController withGetDataFromMasterDB:(BOOL)getDataFromMaster;
--(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController;
+- (void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController;
+- (void)navigateToInboxPriceAlertFromViewController:(UIViewController*)viewController;
 
 @end

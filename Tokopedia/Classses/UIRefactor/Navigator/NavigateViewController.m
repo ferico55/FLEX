@@ -25,6 +25,9 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 
+#import "AlertPriceNotificationViewController.h"
+#import "InboxPriceAlertSplitViewController.h"
+
 #import "InboxTalkSplitViewController.h"
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
@@ -281,6 +284,17 @@
     } else {
         InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
         [viewController.navigationController pushViewController:controller animated:YES];
+    }
+}
+
+- (void)navigateToInboxPriceAlertFromViewController:(UIViewController *)viewController {
+    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxPriceAlertSplitViewController *controller = [InboxPriceAlertSplitViewController new];
+        [viewController.navigationController pushViewController:controller animated:YES];
+    } else {
+        AlertPriceNotificationViewController *priceAlertVC = [AlertPriceNotificationViewController new];
+        priceAlertVC.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:priceAlertVC animated:YES];
     }
 }
 
