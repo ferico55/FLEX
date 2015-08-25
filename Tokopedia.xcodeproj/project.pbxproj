@@ -11,6 +11,7 @@
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7AE4C11E1B8AD8C6001B1E40 /* NavigateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE4C11D1B8AD8C6001B1E40 /* NavigateViewController.m */; };
+		7AE4C1211B8AFE37001B1E40 /* InboxPriceAlertSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE4C1201B8AFE37001B1E40 /* InboxPriceAlertSplitViewController.m */; };
 		851D00001B7CA98200671399 /* ResolutionInputReceiptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7B01B7CA97E00671399 /* ResolutionInputReceiptViewController.m */; };
 		851D00011B7CA98200671399 /* ResolutionInputReceiptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851DF7B11B7CA97E00671399 /* ResolutionInputReceiptViewController.xib */; };
 		851D00021B7CA98200671399 /* DetailReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7B51B7CA97E00671399 /* DetailReviewViewController.m */; };
@@ -1779,6 +1780,8 @@
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7AE4C11C1B8AD8C6001B1E40 /* NavigateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigateViewController.h; sourceTree = "<group>"; };
 		7AE4C11D1B8AD8C6001B1E40 /* NavigateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigateViewController.m; sourceTree = "<group>"; };
+		7AE4C11F1B8AFE37001B1E40 /* InboxPriceAlertSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxPriceAlertSplitViewController.h; sourceTree = "<group>"; };
+		7AE4C1201B8AFE37001B1E40 /* InboxPriceAlertSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxPriceAlertSplitViewController.m; sourceTree = "<group>"; };
 		851DF28A1B7CA97D00671399 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		851DF28B1B7CA97D00671399 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		851DF28C1B7CA97D00671399 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -7003,6 +7006,8 @@
 				851DF8331B7CA97F00671399 /* PriceAlertViewController.m */,
 				851DF8341B7CA97F00671399 /* PriceAlertViewController.xib */,
 				851DF8351B7CA97F00671399 /* string_price_alert.h */,
+				7AE4C11F1B8AFE37001B1E40 /* InboxPriceAlertSplitViewController.h */,
+				7AE4C1201B8AFE37001B1E40 /* InboxPriceAlertSplitViewController.m */,
 			);
 			path = PriceAlert;
 			sourceTree = "<group>";
@@ -10697,6 +10702,7 @@
 				851D01B11B7CA98300671399 /* ProductTableViewCell.m in Sources */,
 				851D01731B7CA98300671399 /* TxOrderStatusDetailViewController.m in Sources */,
 				851D017F1B7CA98300671399 /* TxOrderConfirmationDetailViewController.m in Sources */,
+				7AE4C1211B8AFE37001B1E40 /* InboxPriceAlertSplitViewController.m in Sources */,
 				851DFF611B7CA98200671399 /* CatalogViewController.m in Sources */,
 				851DFE521B7CA98200671399 /* DetailPriceAlert.m in Sources */,
 				851DFEC41B7CA98200671399 /* JNE.m in Sources */,
@@ -11223,8 +11229,8 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c5a752ad-c68c-4db5-9243-f352404a0d95";
-				TARGETED_DEVICE_FAMILY = 1;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -11264,8 +11270,8 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c5a752ad-c68c-4db5-9243-f352404a0d95";
-				TARGETED_DEVICE_FAMILY = 1;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

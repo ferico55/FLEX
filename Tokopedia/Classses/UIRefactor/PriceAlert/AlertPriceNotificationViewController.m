@@ -22,6 +22,7 @@
 #import "string_product.h"
 #import "string_price_alert.h"
 #import "TokopediaNetworkManager.h"
+#import "DetailPriceAlertViewController.h"
 #define CCellIdentifier @"cell"
 #define CTagGetPriceAlert 10
 #define CTagDeletePriceAlert 11
@@ -45,21 +46,43 @@
     NSObject *objTagConfirmDelete;
     int nSelectedDepartment, lastSelectedDepartment;
     int page, latestPage;
+    BOOL isFirst;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = CStringNotificationHarga;
     page = 1;
+    isFirst = YES;
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(tapBackButton) forControlEvents:UIControlEventTouchUpInside];
+        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+        
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem = barButton;
+    }
     
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [tblPriceAlert addSubview:refreshControl];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationUpdatePriceAlert:) name:@"TkpdUpdatePriceAlert" object:nil];
+    
     tblPriceAlert.tableFooterView = [self getActivityIndicator];
     [[self getNetworkManager:CTagGetPriceAlert] doRequest];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CstringFilter style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
+}
+
+- (void)notificationUpdatePriceAlert:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSString *price = [userInfo objectForKey:@"price"];
+    
+    [self updatePriceAlert:price];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -122,11 +145,21 @@
     
     PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
     tempPriceAlert.pricealert_product_name = [NSString convertHTML:tempPriceAlert.pricealert_product_name];
-    DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
-    detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
-    detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
-    detailPriceAlertViewController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        if (![tempPriceAlert isEqual:_detailViewController.detailPriceAlert]) {
+            NSDictionary *data = @{@"price_alert" : tempPriceAlert, @"image_header" : cell.getProductImage.image};
+            [_detailViewController replaceDataSelected:data];
+        }
+    }
+    else {
+        DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
+        detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
+        detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
+        detailPriceAlertViewController.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
+    }
+    
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -171,6 +204,8 @@
     [cell setLblDateProduct:detailPriceAlert.pricealert_time];
     [cell setPriceNotification:[self getPrice:detailPriceAlert.pricealert_price]];
     [cell setLowPrice:detailPriceAlert.pricealert_price_min];
+    
+
     
     return cell;
 }
@@ -295,6 +330,10 @@
     tokopediaNetworkManager.tagRequest = tag;
     
     return tokopediaNetworkManager;
+}
+
+- (void)tapBackButton {
+    [_splitVC.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - TokopediaNetworkManager Delegate
@@ -482,6 +521,12 @@
         }
 
         [tblPriceAlert reloadData];
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && isFirst) {
+            NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
+            [self tableView:tblPriceAlert didSelectRowAtIndexPath:index];
+            isFirst = NO;
+        }
     }
     else if(tag == CTagDeletePriceAlert) {
         GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
