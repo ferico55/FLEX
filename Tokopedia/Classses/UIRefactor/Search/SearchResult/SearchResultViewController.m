@@ -491,8 +491,7 @@ typedef enum ScrollDirection {
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
-        _promo.count > section &&
-        section > 0) {
+        _promo.count > section && section > 0) {
         if ([_promo objectAtIndex:section]) {
             CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
             size = CGSizeMake(self.view.frame.size.width, headerHeight);

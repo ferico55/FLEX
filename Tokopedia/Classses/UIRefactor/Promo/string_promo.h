@@ -44,7 +44,7 @@
 #define API_PRODUCT_NAME_KEY            @"product_name"
 
 #define API_SHOP_URI_AD_KEY             @"shop_uri_ad"
-#define API_SHOP_IMAGE_KEY              @"shop_image_key"
+#define API_SHOP_IMAGE_KEY              @"shop_image"
 #define API_SHOP_URI_KEY                @"shop_uri"
 #define API_AD_KEY_KEY                  @"ad_key"
 

@@ -164,7 +164,7 @@
 }
 
 - (void) setTableInset {
-    _table.contentInset = UIEdgeInsetsMake(0, 0, 200, 0);
+    _table.contentInset = UIEdgeInsetsMake(40, 0, 200, 0);
 }
 
 #pragma mark - Initialization
@@ -182,7 +182,10 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    NSInteger rows = 0;
+    if (_promoShops.count > 0) rows++;
+    if (_shop.count > 0) rows++;
+    return rows;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -277,14 +280,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     CGFloat height = 0;
     if (section == 0) {
-        if (_promoShops.count > 0) {
-            height = 30;
-        } else if (_promoShops.count == 0 && _shop.count > 0) {
-            height = 40;
-        }
-    } else if (section == 1) {
-        if (_shop.count > 0) {
-            height = 40;
+        if (_promoShops.count > 0 && _shop.count > 0) {
+            height = 36;
         }
     }
     return height;
@@ -292,12 +289,15 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    UIView *view;
     if (section == 0 && _promoShops.count > 0) {
-        return _topAdsHeaderView;
+        _topAdsHeaderView.alpha = 1;
+        view = _topAdsHeaderView;
     } else if (section == 1 && _shop.count > 0){
-        return _shopHeaderView;
+        _shopHeaderView.alpha = 1;
+        view = _shopHeaderView;
     }
-    return nil;
+    return view;
 }
 
 #pragma mark - Table View Delegate

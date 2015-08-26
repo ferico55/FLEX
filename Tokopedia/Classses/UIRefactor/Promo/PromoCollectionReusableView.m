@@ -41,13 +41,18 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
     _flowLayout = [[UICollectionViewFlowLayout alloc] init];
     _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     [_collectionView setCollectionViewLayout:_flowLayout];
+    
+    if (IS_IPAD) {
+        _flowLayout.minimumLineSpacing = 14;
+    }
+    
     _collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
     UINib *thumbCellNib = [UINib nibWithNibName:@"ProductThumbCell" bundle:nil];
-    [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];    
+    [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];
 }
 
 - (void)setCollectionViewCellType:(PromoCollectionViewCellType)collectionViewCellType {
@@ -141,6 +146,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 }
 
 - (void)centerPositionAnimated:(BOOL)animated {
+    if (IS_IPAD) return;
     if ([_scrollPosition integerValue] == 0 && _promo.count > 2) {
         NSInteger x = _flowLayout.itemSize.width / 2;
         x += 5; // add cell spacing
@@ -149,6 +155,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 }
 
 - (void)scrollToCenter {
+    if (IS_IPAD) return;
     if (_indexPath.section == 1) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self centerPositionAnimated:YES];
@@ -159,11 +166,13 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 }
 
 - (void)scrollToCenterWithoutAnimation {
+    if (IS_IPAD) return;
     [self centerPositionAnimated:NO];
 }
 
 - (void)setScrollPosition:(NSNumber *)scrollPosition {
     _scrollPosition = scrollPosition;
+    if (IS_IPAD) return;
     NSInteger x = [_scrollPosition integerValue] * _flowLayout.itemSize.width;
     NSInteger padding = [_scrollPosition integerValue] * _flowLayout.minimumLineSpacing;
     CGPoint point = CGPointMake(x + padding, 0);
@@ -171,6 +180,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 }
 
 - (void)animateScrollToCenter {
+    if (IS_IPAD) return;
     if ([_scrollPosition integerValue] == 0 && _promo.count > 2) {
         NSInteger x = _flowLayout.itemSize.width / 2;
         x += 5; // add cell spacing
@@ -222,6 +232,12 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
             height = PromoThumbnailCellHeightSixPlus;
         }
+    } else if (IS_IPAD) {
+        if (type == PromoCollectionViewCellTypeNormal) {
+            height = PromoNormalCellHeightSixPlus;
+        } else if (type == PromoCollectionViewCellTypeThumbnail) {
+            height = PromoThumbnailCellHeightSixPlus;
+        }        
     }
     return height;
 }
