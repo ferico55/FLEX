@@ -2057,6 +2057,7 @@
     else
         cell.productPriceLabel.text = priceString;
     
+    product.product_total_weight = [NSString stringWithFormat:@"%.3f",[product.product_total_weight floatValue]];
     NSString *weightTotal = [NSString stringWithFormat:@"%@ Barang (%@ kg)",product.product_quantity, product.product_total_weight];
     attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
     [attributedString addAttribute:NSFontAttributeName
