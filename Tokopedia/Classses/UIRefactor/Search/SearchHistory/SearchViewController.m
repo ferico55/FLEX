@@ -16,6 +16,7 @@
 #import "SearchAutoCompleteViewController.h"
 #import "CatalogViewController.h"
 #import "NotificationManager.h"
+#import "HotlistResultViewController.h"
 
 #import "SearchAutoCompleteDomains.h"
 #import "SearchAutoCompleteObject.h"
@@ -47,9 +48,12 @@ NSString *const searchPath = @"search/%@";
     NSInteger *_requestCount;
     NSOperationQueue *_operationQueue;
     
-    NSMutableArray *_catalogs;
-    NSMutableArray *_categories;
+
     NSMutableArray *_domains;
+    
+    NSMutableArray *_general;
+    NSMutableArray *_hotlist;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -64,8 +68,8 @@ NSString *const searchPath = @"search/%@";
 @implementation SearchViewController
 
 NSString *const SearchDomainHistory = @"History";
-NSString *const SearchDomainCatalog = @"Katalog";
-NSString *const SearchDomainCategory = @"Kategori";
+NSString *const SearchDomainGeneral = @"Keyword";
+NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:@"SearchViewController" bundle:nibBundleOrNil];
@@ -90,8 +94,9 @@ NSString *const SearchDomainCategory = @"Kategori";
     _historyResult =[NSMutableArray new];
     _typedHistoryResult = [NSMutableArray new];
     _domains = [NSMutableArray new];
-    _catalogs = [NSMutableArray new];
-    _categories = [NSMutableArray new];
+
+    _general = [NSMutableArray new];
+    _hotlist = [NSMutableArray new];
     
 
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
@@ -208,7 +213,6 @@ NSString *const SearchDomainCategory = @"Kategori";
     return [_domains count];
 }
 
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSDictionary *domain = [_domains objectAtIndex:section];
     return [domain objectForKey:@"title"];
@@ -220,6 +224,26 @@ NSString *const SearchDomainCategory = @"Kategori";
     return [domainData count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if([[self tableView:tableView titleForHeaderInSection:section] isEqualToString:SearchDomainGeneral]) {
+        return 0;
+    }
+    return 30.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *myLabel = [[UILabel alloc] init];
+    myLabel.frame = CGRectMake(10, 0, [UIScreen mainScreen].bounds.size.width, 30.0f);
+    myLabel.font = [UIFont fontWithName:@"Gotham Medium" size:13.0];
+    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    myLabel.textColor = [UIColor lightGrayColor];
+    
+    UIView *headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1];
+    [headerView addSubview:myLabel];
+    
+    return headerView;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     SearchAutoCompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchAutoCompleteCellIdentifier"];
@@ -238,13 +262,13 @@ NSString *const SearchDomainCategory = @"Kategori";
         [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
         cell.searchTitle.attributedText = attributedText;
         [cell.searchImage setHidden:YES];
-    } else if([domainName isEqualToString:SearchDomainCatalog]) {
-        SearchAutoCompleteCatalog *catalog = _catalogs[indexPath.row];
-        [cell setViewModel:catalog.viewModel];
+    } else if([domainName isEqualToString:SearchDomainGeneral]) {
+        SearchAutoCompleteGeneral *general = _general[indexPath.row];
+        [cell setViewModel:general.viewModel];
         [cell setBoldSearchText:_searchBar.text];
-    } else if([domainName isEqualToString:SearchDomainCategory]) {
-        SearchAutoCompleteCategory *category = _categories[indexPath.row];
-        [cell setViewModel:category.viewModel];
+    } else if([domainName isEqualToString:SearchDomainHotlist]) {
+        SearchAutoCompleteHotlist *hotlist = _hotlist[indexPath.row];
+        [cell setViewModel:hotlist.viewModel];
         [cell setBoldSearchText:_searchBar.text];
     }
 
@@ -258,47 +282,25 @@ NSString *const SearchDomainCategory = @"Kategori";
     NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
     NSString *domainName = [domain objectForKey:@"title"];
     if([domainName isEqualToString:SearchDomainHistory]) {
-        [self goToResultPage:[_typedHistoryResult objectAtIndex:indexPath.row]];
-    } else if([domainName isEqualToString:SearchDomainCatalog]) {
-        NSArray *catalogs = [domain objectForKey:@"data"];
-        SearchAutoCompleteCatalog *catalog = [catalogs objectAtIndex:indexPath.row];
+        [self goToResultPage:[_historyResult objectAtIndex:indexPath.row]];
+    }
+    
+    else if ([domainName isEqualToString:SearchDomainGeneral]) {
+        NSArray *generals = [domain objectForKey:@"data"];
+        SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
 
-        CatalogViewController *vc = [CatalogViewController new];
-        vc.catalogID = catalog.id;
-        vc.catalogName = catalog.title;
-        vc.hidesBottomBarWhenPushed = YES;
+        [self goToResultPage:general.title];
+    }
+    else if ([domainName isEqualToString:SearchDomainHotlist]) {
+        NSArray *hotlists = [domain objectForKey:@"data"];
+        SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
+        NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
         
-        [self.navigationController pushViewController:vc animated:YES];
-    } else if([domainName isEqualToString:SearchDomainCategory]) {
-        NSArray *categories = [domain objectForKey:@"data"];
-        SearchAutoCompleteCategory *category = [categories objectAtIndex:indexPath.row];
+        HotlistResultViewController *controller = [HotlistResultViewController new];
+        controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
+        controller.hidesBottomBarWhenPushed = YES;
         
-        SearchResultViewController *vc = [SearchResultViewController new];
-        vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : category.id?:@"",
-                   kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : category.title?:@"",
-                   kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
-        
-        SearchResultViewController *vc1 = [SearchResultViewController new];
-        vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : category.id?:@"",
-                    kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : category.title?:@"",
-                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
-        
-        SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-        vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : category.id?:@"",
-                    kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : category.title?:@"",
-                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
-        
-        NSArray *viewcontrollers = @[vc,vc1,vc2];
-        
-        TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
-        [viewController setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTMENTIDKEY : category.id?:@"" }];
-        [viewController setNavigationTitle:category.title];
-        [viewController setSelectedIndex:0];
-        [viewController setViewControllers:viewcontrollers];
-        [viewController setNavigationTitle:category.title?:@""];
-        
-        viewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -357,9 +359,9 @@ NSString *const SearchDomainCategory = @"Kategori";
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    [_searchbar setText:@""];
-    [_searchbar resignFirstResponder];
-    [self searchBar:_searchbar textDidChange:@""];
+    [_searchBar setText:@""];
+    [_searchBar resignFirstResponder];
+    [self searchBar:_searchBar textDidChange:@""];
     self.hidesBottomBarWhenPushed = YES;
     self.navigationController.tabBarController.tabBar.hidden = NO;
 }
@@ -444,25 +446,26 @@ NSString *const SearchDomainCategory = @"Kategori";
 
 #pragma mark - Network
 - (void)configureRestkit {
-    NSString *urlString = [NSString stringWithFormat:@"http://ec2-52-74-246-185.ap-southeast-1.compute.amazonaws.com/"];
+    NSString *urlString = [NSString stringWithFormat:@"http://jahe.tokopedia.com/"];
     _objectManager = [RKObjectManager sharedClientUploadImage:urlString];
     
     RKObjectMapping *searchMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteObject class]];;
     RKObjectMapping *domainsMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteDomains class]];
     
-    RKObjectMapping *catalogMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteCatalog class]];
-    [catalogMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"image", @"id"]];
+    RKObjectMapping *generalMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteGeneral class]];
+    [generalMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"id"]];
     
-    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteCategory class]];
-    [categoryMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"id"]];
+    RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteHotlist class]];
+    [hotlistMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"id"]];
     
-    RKRelationshipMapping *catalogRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog" toKeyPath:@"catalog" withMapping:catalogMapping];
-    RKRelationshipMapping *categoryRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"category" toKeyPath:@"category" withMapping:categoryMapping];
+    RKRelationshipMapping *generalRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"general" toKeyPath:@"general" withMapping:generalMapping];
+    RKRelationshipMapping *hotlistRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hotlist" toKeyPath:@"hotlist" withMapping:hotlistMapping];
+    
     RKRelationshipMapping *domainsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"domains" toKeyPath:@"domains" withMapping:domainsMapping];
     
     
-    [domainsMapping addPropertyMapping:catalogRel];
-    [domainsMapping addPropertyMapping:categoryRel];
+    [domainsMapping addPropertyMapping:generalRel];
+    [domainsMapping addPropertyMapping:hotlistRel];
     [searchMapping addPropertyMapping:domainsRel];
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:searchMapping
@@ -485,24 +488,25 @@ NSString *const SearchDomainCategory = @"Kategori";
         SearchAutoCompleteObject *search = [result objectForKey:@""];
         
         [_domains removeAllObjects];
-        [_catalogs removeAllObjects];
-        [_categories removeAllObjects];
+        [_general removeAllObjects];
+        [_hotlist removeAllObjects];
         
-        [_catalogs addObjectsFromArray:search.domains.catalog];
-        [_categories addObjectsFromArray:search.domains.category];
+        [_general addObjectsFromArray:search.domains.general];
+        [_hotlist addObjectsFromArray:search.domains.hotlist];
 
+        if(_general.count > 0) {
+            [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
+        }
+        
+        if(_hotlist.count > 0) {
+            [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
+        }
         
         if(_typedHistoryResult.count > 0) {
             [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
         }
         
-        if(_catalogs.count > 0) {
-            [_domains addObject:@{@"title" : SearchDomainCatalog, @"data" : _catalogs}];
-        }
-            
-        if(_categories.count > 0) {
-            [_domains addObject:@{@"title" : SearchDomainCategory, @"data" : _categories}];
-        }
+        
         
         [_table reloadData];
         [_table setHidden:NO];

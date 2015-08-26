@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -19,19 +19,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2f6-fg-s8p">
-                        <rect key="frame" x="47" y="11" width="250" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2f6-fg-s8p">
+                        <rect key="frame" x="21" y="11" width="276" height="21"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ndj-2F-I47">
-                        <rect key="frame" x="8" y="7" width="30" height="30"/>
-                    </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="2f6-fg-s8p" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="21" id="VoX-qe-SMj"/>
+                    <constraint firstItem="2f6-fg-s8p" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="a91-ha-DvU"/>
+                    <constraint firstAttribute="bottom" secondItem="2f6-fg-s8p" secondAttribute="bottom" constant="11.5" id="dtm-y2-XzP"/>
+                    <constraint firstAttribute="trailing" secondItem="2f6-fg-s8p" secondAttribute="trailing" constant="23" id="jfO-m8-KvS"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="searchImage" destination="ndj-2F-I47" id="Ujm-eR-wND"/>
                 <outlet property="searchTitle" destination="2f6-fg-s8p" id="oqJ-D7-BFB"/>
             </connections>
         </tableViewCell>

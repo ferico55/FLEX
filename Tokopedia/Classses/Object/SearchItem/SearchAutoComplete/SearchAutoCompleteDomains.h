@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SearchAutoCompleteCatalog.h"
-#import "SearchAutoCompleteCategory.h"
+#import "SearchAutoCompleteGeneral.h"
+#import "SearchAutoCompleteHotlist.h"
 
 @interface SearchAutoCompleteDomains : NSObject
 
-@property (nonatomic, strong) NSArray *catalog;
-@property (nonatomic, strong) NSArray *category;
+@property (nonatomic, strong) NSArray *hotlist;
+@property (nonatomic, strong) NSArray *general;
 
 @end
