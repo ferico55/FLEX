@@ -1158,6 +1158,7 @@
     } else if (alertView.tag == 2) {
         if (buttonIndex == 1) {            
             [self deleteListAtIndexPath:_indexPath];
+            [self.navigationController popToViewController:self animated:YES];
         }
     }
 }
