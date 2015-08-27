@@ -26,8 +26,13 @@
         [[NSBundle mainBundle] loadNibNamed:@"LoadingView"
                                       owner:self
                                     options:nil];
-        [self addSubview:self.view];
         
+        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+        CGRect frame = self.view.frame;
+        frame.size.width = width;
+        self.view.frame = frame;
+        [self addSubview:self.view];
+        [self layoutIfNeeded];
         _buttonRetry.layer.cornerRadius = 3.0;
     }
 
