@@ -24,6 +24,8 @@
 {
     NSMutableArray *_productQuantity;
     NavigateViewController *_TKPDNavigator;
+    NSMutableArray *_originQuantity;
+    NSMutableArray *_updateQuantity;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -38,6 +40,7 @@
     [super viewDidLoad];
 
     self.title = @"Terima Sebagian";
+
     _TKPDNavigator = [NavigateViewController new];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
@@ -64,11 +67,16 @@
     _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
     _tableView.tableFooterView = _footerView;
     
+    _originQuantity = [NSMutableArray new];
+    _updateQuantity = [NSMutableArray new];
     _productQuantity = [NSMutableArray new];
     for (OrderProduct *product in _products) {
+        NSString *quantity = [NSString stringWithFormat:@"%ld", (long)product.product_quantity];
+        [_originQuantity addObject:quantity];
+        [_updateQuantity addObject:quantity];
         [_productQuantity addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"order_detail_id"    : product.order_detail_id,
-                                                                                    @"product_quantity"   : [NSString stringWithFormat:@"%ld", (long)product.product_quantity],
+                                                                                    @"product_quantity"   : quantity,
                                                                                     }]];
     }
 
@@ -142,9 +150,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OrderProduct *product = [_products objectAtIndex:indexPath.row];
-//    DetailProductViewController *controller = [DetailProductViewController new];
-//    controller.data = @{@"product_id":product.product_id};
-//    [self.navigationController pushViewController:controller animated:YES];
     [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_picture withShopName:nil];
 }
 
@@ -161,6 +166,7 @@
 - (void)textFieldDidChange:(UITextField *)textField
 {
     [[_productQuantity objectAtIndex:textField.tag] setObject:textField.text forKey:@"product_quantity"];
+    [_updateQuantity replaceObjectAtIndex:textField.tag withObject:textField.text];
 }
 
 - (IBAction)tap:(id)sender
@@ -191,20 +197,26 @@
 
 - (void)validateProductQuantity {
     BOOL valid = YES;
+    NSString *errorMessage;
     for (OrderProduct *product in _products) {
         for (NSDictionary *dict in _productQuantity) {
             if ([dict objectForKey:@"order_detail_id"] == product.order_detail_id) {
                 if ([[dict objectForKey:@"product_quantity"] integerValue] > product.product_quantity) {
                     valid = NO;
+                    errorMessage = @"Anda memasukkan jumlah terlalu banyak";
                 }
             }
         }
     }
+    if ([_originQuantity isEqualToArray:_updateQuantity]) {
+        valid = NO;
+        errorMessage = @"Silahkan menggunakan pilihan 'Terima Pesanan' apabila Anda menerima semua barang.";
+    }
     if (valid) {
-        [self.delegate didUpdateProductQuantity:_productQuantity explanation:_explanationTextView.text];
+        [self.delegate didUpdateProductQuantity:_productQuantity
+                                    explanation:_explanationTextView.text];
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
-        NSString *errorMessage = @"Anda memasukkan jumlah terlalu banyak";
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
         [alert show];
     }
