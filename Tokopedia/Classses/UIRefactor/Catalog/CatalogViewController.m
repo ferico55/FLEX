@@ -113,8 +113,9 @@ static CGFloat rowHeight = 40;
     UIImageView *imgPriceAlertView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [imgPriceAlertView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionAddNotificationPriceCatalog:)]];
     UIBarButtonItem *priceAlertItem = [[UIBarButtonItem alloc] initWithCustomView:imgPriceAlertView];
+    [priceAlertItem setAction:@selector(actionAddNotificationPriceCatalog:)];
+    [priceAlertItem setTarget:self];
     self.navigationItem.rightBarButtonItems = @[actionButton, priceAlertItem];
-    [priceAlertItem setEnabled:NO];
     [self setBackgroundPriceAlert:NO];
 
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -283,8 +284,7 @@ static CGFloat rowHeight = 40;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 63);
-    CatalogSectionHeaderView *view = [[CatalogSectionHeaderView alloc] initWithFrame:frame];
+    CatalogSectionHeaderView *view = [CatalogSectionHeaderView new];
     view.titleLabel.text = [_specificationTitles objectAtIndex:section];
     return view;
 }
@@ -302,6 +302,9 @@ static CGFloat rowHeight = 40;
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
     [resultMapping addAttributeMappingsFromArray:@[API_CATALOG_IMAGE_KEY,]];
+
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromArray:@[API_URI_NEXT_KEY]];
 
     RKObjectMapping *catalogInfoMapping = [RKObjectMapping mappingForClass:[CatalogInfo class]];
     [catalogInfoMapping addAttributeMappingsFromArray:@[API_CATALOG_NAME_KEY,
@@ -383,6 +386,10 @@ static CGFloat rowHeight = 40;
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
 
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                  toKeyPath:kTKPD_APIPAGINGKEY
+                                                                                withMapping:pagingMapping]];
+    
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog_info"
                                                                                   toKeyPath:@"catalog_info"
                                                                                 withMapping:catalogInfoMapping]];
@@ -691,7 +698,7 @@ static CGFloat rowHeight = 40;
     } else if ([sender isKindOfClass:[UIButton class]]) {
         CatalogShopViewController *controller = [CatalogShopViewController new];
         controller.catalog = _catalog;
-        controller.catalog_shops = _catalog.result.catalog_shops;
+        controller.catalog_shops = [NSMutableArray arrayWithArray:_catalog.result.catalog_shops];
         [self.navigationController pushViewController:controller animated:YES];
     }
     else if ([sender isKindOfClass:[UISegmentedControl class]]) {

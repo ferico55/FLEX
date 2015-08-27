@@ -8,24 +8,18 @@
 
 #import "CatalogSectionHeaderView.h"
 
-@interface CatalogSectionHeaderView ()
-
-@property (weak, nonatomic) IBOutlet UIView *view;
-
-@end
-
 @implementation CatalogSectionHeaderView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
+- (id)init {
+    self = [super init];
     if (self) {
         [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView"
                                       owner:self
                                     options:nil];
+        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+        CGRect frame = CGRectMake(0, 0, width, self.view.frame.size.height);
         self.view.frame = frame;
         [self addSubview:self.view];
-        [self layoutIfNeeded];
     }
     return self;
 }

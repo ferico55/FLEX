@@ -10,9 +10,15 @@
         </mutableArray>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CatalogSectionHeaderView">
+            <connections>
+                <outlet property="titleLabel" destination="2fi-Ha-BkW" id="MOq-yF-gLH"/>
+                <outlet property="view" destination="zhR-l7-T4y" id="GZP-HB-tDI"/>
+                <outlet property="viewContent" destination="iQ8-wg-ir0" id="frg-eU-se7"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="zhR-l7-T4y" customClass="CatalogSectionHeaderView">
+        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="zhR-l7-T4y">
             <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -24,7 +30,6 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="G94-y7-InC"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="270" id="eYY-1c-0VI"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                             <color key="textColor" red="0.25882352941176473" green="0.25882352941176473" blue="0.25882352941176473" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -34,7 +39,6 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="EK2-kd-Ofn"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="EXj-hs-JC7"/>
                         <constraint firstAttribute="trailing" secondItem="2fi-Ha-BkW" secondAttribute="trailing" constant="10" id="F1e-UC-pcQ"/>
                         <constraint firstAttribute="bottom" secondItem="2fi-Ha-BkW" secondAttribute="bottom" id="IoZ-um-dgG"/>
                         <constraint firstItem="2fi-Ha-BkW" firstAttribute="leading" secondItem="iQ8-wg-ir0" secondAttribute="leading" constant="10" id="XPw-CU-lNM"/>
@@ -42,7 +46,6 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="iQ8-wg-ir0" firstAttribute="top" secondItem="zhR-l7-T4y" secondAttribute="top" constant="17" id="LEX-Xw-UnA"/>
                 <constraint firstAttribute="bottom" secondItem="iQ8-wg-ir0" secondAttribute="bottom" id="goA-B0-JYc"/>
@@ -50,10 +53,6 @@
                 <constraint firstAttribute="trailing" secondItem="iQ8-wg-ir0" secondAttribute="trailing" constant="15" id="zHx-3V-B9d"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outlet property="titleLabel" destination="2fi-Ha-BkW" id="sb3-h2-Ybd"/>
-                <outlet property="viewContent" destination="iQ8-wg-ir0" id="jMh-sg-XsO"/>
-            </connections>
             <point key="canvasLocation" x="1089" y="-241.5"/>
         </view>
     </objects>

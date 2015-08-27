@@ -22,6 +22,7 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "Paging.h"
 
 @interface CatalogShopViewController ()
 <
@@ -55,7 +56,12 @@
     NSString *_orderBy;
     NSString *_location;
     
+    NSString *_uriNext;
+    NSInteger _page;
+    
     FilterCatalogViewController *_filterCatalogController;
+    
+    LoadingView *_loadingView;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -84,6 +90,9 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
+    _page = 2;
+    _uriNext = _catalog.result.paging.uri_next;
+    _catalogId = _catalog.result.catalog_info.catalog_id;
     
     _filterCatalogController = [[FilterCatalogViewController alloc] initWithStyle:UITableViewStyleGrouped];
     _filterCatalogController.catalog = _catalog;
@@ -152,6 +161,7 @@
                               placeholderImage:[UIImage imageNamed:@""]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                            cell.shopImageView.image = image;
+                                           cell.shopImageView.contentMode = UIViewContentModeScaleAspectFill;
     } failure:nil];
 
     if (shop.product_list.count > 1) {
@@ -171,12 +181,12 @@
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = _catalog_shops.count - 1;
-    if (section == indexPath.section) {
-//        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ([_searchKeyword isEqualToString:@""] || _searchKeyword == nil)) {
-//            NSLog(@"%@", NSStringFromSelector(_cmd));
-//            [_networkManager doRequest];
-//        }
+    NSInteger row = _catalog_shops.count - 1;
+    if (row == indexPath.row) {
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            NSLog(@"%@", NSStringFromSelector(_cmd));
+            [_networkManager doRequest];
+        }
     }
 }
 
@@ -249,6 +259,7 @@
                                  API_FILTER_CONDITION_KEY   : _condition?:@"",
                                  API_FILTER_LOCATION_KEY    : _location?:@"",
                                  API_FILTER_ORDER_BY_KEY    : _orderBy?:@"",
+                                 API_FILTER_PAGE_KEY        : [NSString stringWithFormat:@"%d", _page],
                                  };
     return parameters;
 }
@@ -262,6 +273,9 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
     [resultMapping addAttributeMappingsFromArray:@[API_CATALOG_IMAGE_KEY,]];
     
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromArray:@[API_URI_NEXT_KEY]];
+
     RKObjectMapping *catalogInfoMapping = [RKObjectMapping mappingForClass:[CatalogInfo class]];
     [catalogInfoMapping addAttributeMappingsFromArray:@[API_CATALOG_NAME_KEY,
                                                         API_CATALOG_DESCRIPTION_KEY,
@@ -330,7 +344,11 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
-    
+
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                  toKeyPath:kTKPD_APIPAGINGKEY
+                                                                                withMapping:pagingMapping]];
+
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog_info"
                                                                                   toKeyPath:@"catalog_info"
                                                                                 withMapping:catalogInfoMapping]];
@@ -388,33 +406,45 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    [_activityIndicatorView startAnimating];
+    self.tableView.tableFooterView = _footerView;
+    [self.activityIndicatorView startAnimating];
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     BOOL status = [[[result.dictionary objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
+        [self loadMappingResult:result];
         [_activityIndicatorView stopAnimating];
         [_tableView setTableFooterView:nil];
         [_refreshControl endRefreshing];
-        [self loadMappingResult:result];
     }
 }
 
 - (void)loadMappingResult:(RKMappingResult *)result {
     if (result && [result isKindOfClass:[RKMappingResult class]]) {
         Catalog *catalog = [result.dictionary objectForKey:@""];
-        _catalog_shops = catalog.result.catalog_shops;
+        if (_page == 1) [_catalog_shops removeAllObjects];
+        [_catalog_shops addObjectsFromArray:catalog.result.catalog_shops];
+        if (catalog.result.paging.uri_next) _page++;
+        _uriNext = catalog.result.paging.uri_next;
         [_tableView reloadData];
         [_tableView setTableFooterView:nil];
         [_activityIndicatorView stopAnimating];
+        [_refreshControl endRefreshing];
     }
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
-    LoadingView *loadingView = [LoadingView new];
-    loadingView.delegate = self;
-    _tableView.tableFooterView = loadingView;
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+    CGRect frame = CGRectMake(0, 0, width, 60);
+    _loadingView = [[LoadingView alloc] initWithFrame:frame];
+    _loadingView.delegate = self;
+    _tableView.tableFooterView = _loadingView;
+    [_refreshControl endRefreshing];
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    [_refreshControl endRefreshing];
 }
 
 - (void)pressRetryButton {
@@ -427,7 +457,7 @@
 
 - (void)didSelectObject:(id)object
 {
-    _catalog_shops = @[];
+    [_catalog_shops removeAllObjects];
     [_tableView reloadData];
     [_tableView setTableFooterView:_footerView];
     [_activityIndicatorView startAnimating];
@@ -446,6 +476,7 @@
     _location = @"";
     _condition = @"";
     _orderBy = orderBy;
+    _page = 1;
     
     [_networkManager doRequest];
 }
@@ -456,7 +487,7 @@
                      condition:(NSString *)condition
                       location:(NSString *)location
 {
-    _catalog_shops = @[];
+    [_catalog_shops removeAllObjects];
     [_tableView reloadData];
     [_tableView setTableFooterView:_footerView];
     [_activityIndicatorView startAnimating];
@@ -465,6 +496,7 @@
     _location = location;
     _condition = condition;
     _orderBy = @"";
+    _page = 1;
     
     [_networkManager doRequest];
 }
