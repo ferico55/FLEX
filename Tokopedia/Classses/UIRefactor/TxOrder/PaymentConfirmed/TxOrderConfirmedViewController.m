@@ -57,7 +57,6 @@
 {
     BOOL _isNodata;
     NSMutableArray *_list;
-    NSMutableArray *_isExpandedCell;
     NSString *_URINext;
     
     NSInteger _page;
@@ -107,7 +106,6 @@
     _isNodata = NO;
     _list = [NSMutableArray new];
     _mapping = [TxOrderObjectMapping new];
-    _isExpandedCell = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _orderDetail = [TxOrderConfirmedDetailOrder new];
     _dataInput = [NSMutableDictionary new];
@@ -200,13 +198,12 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
     switch (indexPath.row) {
         case 0:
             cell = [self cellConfirmedAtIndexPath:indexPath];
             break;
         case 1:
-            cell = (isShowBank)?[self cellConfirmedBankAtIndexPath:indexPath]:[self cellButtonArrowAtIndexPath:indexPath];
+            cell = [self cellConfirmedBankAtIndexPath:indexPath];
             break;
         case 2:
             cell = [self cellButtonAtIndexPath:indexPath];
@@ -222,12 +219,11 @@
 {
     CGFloat rowHeight = 0;
     
-    BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
     if (indexPath.row == 0) {
         rowHeight = 130;
     }
     else if (indexPath.row == 1)
-        rowHeight = isShowBank?181:44;
+        rowHeight = 130;
     else
     {
         rowHeight = 40;
@@ -239,21 +235,6 @@
     }
     
     return rowHeight;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
-    switch (indexPath.row) {
-        case 1:
-            isShowBank = !isShowBank;
-            [_isExpandedCell replaceObjectAtIndex:indexPath.section withObject:@(isShowBank)];
-            break;
-            
-        default:
-            break;
-    }
-    [_tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -352,7 +333,7 @@
         cell = [TxOrderConfirmedBankCell newCell];
     }
     [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
-    [cell.bankNameLabel setText:detailOrder.user_bank_name?:@"" animated:NO];
+    [cell.bankNameLabel setCustomAttributedText:detailOrder.user_bank_name?:@""];
     NSString *accountNumber = (![detailOrder.system_account_no isEqualToString:@""] && detailOrder.system_account_no != nil && ![detailOrder.system_account_no isEqualToString:@"0"])?detailOrder.system_account_no:@"";
     [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
     [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber] animated:NO];
@@ -490,7 +471,6 @@
     
     if (_page == 1||_page == 0) {
         _list = [order.result.list mutableCopy];
-        [_isExpandedCell removeAllObjects];
     }
     else
     {
@@ -501,9 +481,6 @@
         _isNodata = NO;
         _URINext =  order.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_URINext] integerValue];
-        for (int i =0; i<_list.count; i++) {
-            [_isExpandedCell addObject:@(NO)];
-        }
     }
     else
     {
