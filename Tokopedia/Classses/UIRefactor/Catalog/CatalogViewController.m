@@ -216,9 +216,14 @@ static CGFloat rowHeight = 40;
 }
 
 - (void)configureCell:(CatalogSpecificationCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    
+    NSString *title = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 9.0;
+    if (SYSTEM_VERSION_GREATER_THAN(iOS8_0)) {
+        style.lineSpacing = 9.0;
+    } else {
+        style.lineSpacing = 4.0;
+    }
 
     UIColor *gray = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
     
@@ -228,7 +233,6 @@ static CGFloat rowHeight = 40;
                                  NSForegroundColorAttributeName : gray,
                                  };
     
-    NSString *title = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([title isEqualToString:@""]) {
         [cell hideTopBorder:YES];
         cell.titleLabel.text = @"";
