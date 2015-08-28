@@ -109,6 +109,10 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 {    
     [super viewDidLoad];
     
+    UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
+    UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
+    self.navigationItem.titleView = topedImageView;
+    
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
