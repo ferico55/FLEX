@@ -2114,6 +2114,13 @@ UIAlertViewDelegate
                 [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
             }
             
+            if(_product.isDummyProduct) {
+                [viewContentWishList setHidden:YES];
+                self.navigationItem.rightBarButtonItems = nil;
+            } else {
+                [viewContentWishList setHidden:NO];
+            }
+            
             //decide description height
             id cell = [DetailProductDescriptionCell newcell];
             NSString *productdesc = _formattedProductDescription;
