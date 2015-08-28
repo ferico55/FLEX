@@ -913,9 +913,17 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
             controller.delegate = self;
-            controller.facebookUser = _facebookUser;
-            
-            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Facebook Registration"}];
+            if (_facebookUser) {
+                controller.facebookUser = _facebookUser;
+            } else if (_googleUser) {
+                controller.googleUser = _googleUser;
+                NSString *fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+                controller.fullName = fullName;
+                controller.email = _signIn.authentication.userEmail;
+            }
+
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration
+                                              withValues:@{AFEventParamRegistrationMethod : @"Facebook Registration"}];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
             navigationController.navigationBar.translucent = NO;

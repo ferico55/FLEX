@@ -583,6 +583,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 controller.facebookUser = _facebookUser;
             } else if (_googleUser) {
                 controller.googleUser = _googleUser;
+                NSString *fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+                controller.fullName = fullName;
+                controller.email = _signIn.authentication.userEmail;
             }
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];

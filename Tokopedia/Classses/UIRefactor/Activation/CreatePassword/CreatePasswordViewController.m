@@ -107,7 +107,9 @@
     _requestCount = 0;
     
     NSString *name;
-    if (_facebookUser) {
+    if (_fullName) {
+        name = _fullName;
+    } else if (_facebookUser) {
         name = [_facebookUser objectForKey:@"name"];
     } else if (_googleUser) {
         name = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
@@ -116,7 +118,9 @@
     
     
     NSString *email;
-    if (_facebookUser) {
+    if (_email) {
+        email = _email;
+    } else if (_facebookUser) {
         email = [_facebookUser objectForKey:@"email"];
     } else if (_googleUser) {
         GPPSignIn *signIn = [GPPSignIn sharedInstance];
