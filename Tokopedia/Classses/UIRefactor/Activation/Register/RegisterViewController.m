@@ -144,12 +144,19 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         
     _agreementLabel.userInteractionEnabled = YES;
 
+    _signIn = [GPPSignIn sharedInstance];
+    _signIn.shouldFetchGooglePlusUser = YES;
+    _signIn.shouldFetchGoogleUserEmail = YES;
+    _signIn.clientID = kClientId;
+    _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
+    _signIn.delegate = self;
+    [_signIn trySilentAuthentication];
+    
+    [_signInButton setStyle:kGPPSignInButtonStyleStandard];
+
     _loginView = [[FBLoginView alloc] init];
     _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
-    _loginView.frame = CGRectMake(0, 0,
-                                  _facebookLoginView.frame.size.width,
-                                  _facebookLoginView.frame.size.height);
-    [_facebookLoginView addSubview:_loginView];
+    _loginView.delegate = self;
 
     [_container addSubview:_contentView];
     
@@ -180,17 +187,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
     [FBSession setActiveSession:nil];
-    
-    _signIn = [GPPSignIn sharedInstance];
-    _signIn.shouldFetchGooglePlusUser = YES;
-    _signIn.shouldFetchGoogleUserEmail = YES;
-    _signIn.clientID = kClientId;
-    _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
-    _signIn.delegate = self;
-
-    [_signIn trySilentAuthentication];
-    
-    [_signInButton setStyle:kGPPSignInButtonStyleStandard];
     
     [self updateFormViewAppearance];
 }
@@ -872,6 +868,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         _isnodata = NO;
         if ([_login.result.status isEqualToString:@"2"]) {
             
+            [[GPPSignIn sharedInstance] signOut];
+            [[GPPSignIn sharedInstance] disconnect];
+            
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -907,9 +906,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else if ([_login.result.status isEqualToString:@"1"]) {
-
-            [[GPPSignIn sharedInstance] signOut];
-            [[GPPSignIn sharedInstance] disconnect];
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
@@ -1087,6 +1083,13 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         }
     }
     
+    [_loginView removeFromSuperview];
+    [_facebookLoginView layoutIfNeeded];
+    _loginView.frame = CGRectMake(0, 0,
+                                  _facebookLoginView.frame.size.width,
+                                  _facebookLoginView.frame.size.height);
+    [_facebookLoginView addSubview:_loginView];
+    [_loginView layoutIfNeeded];
 }
 
 @end

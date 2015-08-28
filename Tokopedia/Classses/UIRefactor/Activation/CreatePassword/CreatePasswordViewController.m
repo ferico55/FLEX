@@ -217,6 +217,8 @@
         [[FBSession activeSession] closeAndClearTokenInformation];
         [[FBSession activeSession] close];
         [FBSession setActiveSession:nil];
+        [[GPPSignIn sharedInstance] signOut];
+        [[GPPSignIn sharedInstance] disconnect];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
@@ -622,6 +624,10 @@
     BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         if (_login.result.is_login) {
+            
+            [[GPPSignIn sharedInstance] signOut];
+            [[GPPSignIn sharedInstance] disconnect];
+
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];

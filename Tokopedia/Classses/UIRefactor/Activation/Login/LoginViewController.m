@@ -109,19 +109,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 {    
     [super viewDidLoad];
     
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-        CGRect frame = _facebookLoginButton.frame;
-        frame.size.width = 400;
-        _facebookLoginButton.frame = frame;
-    }
-    else
-    {
-        CGRect frame = _facebookLoginButton.frame;
-        frame.size.width = [UIScreen mainScreen].bounds.size.width-30;
-        _facebookLoginButton.frame = frame;
-    }
-    
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
@@ -149,6 +136,16 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _thirdAppOperationQueue = [NSOperationQueue new];
+    
+    _signIn = [GPPSignIn sharedInstance];
+    _signIn.shouldFetchGooglePlusUser = YES;
+    _signIn.shouldFetchGoogleUserEmail = YES;
+    _signIn.clientID = kClientId;
+    _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
+    _signIn.delegate = self;
+    [_signIn trySilentAuthentication];
+    
+    [self.googleSignInButton setStyle:kGPPSignInButtonStyleStandard];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -167,16 +164,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
     [FBSession setActiveSession:nil];
-    
-    _signIn = [GPPSignIn sharedInstance];
-    _signIn.shouldFetchGooglePlusUser = YES;
-    _signIn.shouldFetchGoogleUserEmail = YES;
-    _signIn.clientID = kClientId;
-    _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
-    _signIn.delegate = self;
-    [_signIn trySilentAuthentication];
-    
-    [self.googleSignInButton setStyle:kGPPSignInButtonStyleStandard];
     
     _loginView = [[FBLoginView alloc] init];
     _loginView.delegate = self;
@@ -531,6 +518,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         _isnodata = NO;
         if ([_login.result.status isEqualToString:@"2"]) {
             
+            [[GPPSignIn sharedInstance] signOut];
+            [[GPPSignIn sharedInstance] disconnect];
+
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -580,9 +570,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                                                                 object:nil
                                                               userInfo:nil];
         } else if ([_login.result.status isEqualToString:@"1"]) {
-
-            [[GPPSignIn sharedInstance] signOut];
-            [[GPPSignIn sharedInstance] disconnect];
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
