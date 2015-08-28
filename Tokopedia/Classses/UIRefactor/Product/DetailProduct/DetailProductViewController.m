@@ -467,6 +467,7 @@ UIAlertViewDelegate
         Product *product = [Product new];
         product.result = result;
         product.status = @"OK";
+        product.isDummyProduct = YES;
         [self requestprocess:product];
         
         [self configureRestKit];
@@ -2027,6 +2028,7 @@ UIAlertViewDelegate
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
             id stats = [result objectForKey:@""];
             _product = stats;
+            _product.isDummyProduct = NO;
         }
 
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
@@ -2045,7 +2047,7 @@ UIAlertViewDelegate
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
             self.navigationItem.rightBarButtonItems = nil;
             
-            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin]) {
+            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin] && !_product.isDummyProduct) {
                 //MyShop
                 UIBarButtonItem *barbutton;
                 barbutton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting.png"] withAction:@selector(gestureSetting:)];
