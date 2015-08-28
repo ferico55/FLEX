@@ -31,9 +31,10 @@
 
 #import "TKPDPhotoPicker.h"
 #import "camera.h"
-#import "RequestUploadImage.h"
 
-@interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate>
+#import "RequestPayment.h"
+
+@interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate, RequestPaymentDelegate>
 {
     NSMutableDictionary *_dataInput;
     
@@ -46,9 +47,6 @@
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     
-    __weak RKObjectManager *_objectManagerConfirmPayment;
-    __weak RKManagedObjectRequestOperation *_requestConfirmPayment;
-    
     NSOperationQueue *_operationQueue;
     
     BOOL _isFinishRequestForm;
@@ -59,6 +57,7 @@
     NSArray *_bankAccount;
     
     TKPDPhotoPicker *_photoPicker;
+    RequestPayment *_requestPayment;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -67,6 +66,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *uploadPaymentButton;
 @property (weak, nonatomic) IBOutlet UIButton *uploadPaymentInfo;
 @property (strong, nonatomic) IBOutlet UITableViewCell *addRekBankCell;
+@property (weak, nonatomic) IBOutlet UIImageView *proofImageView;
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cell;
@@ -136,9 +136,6 @@
     [_branchViewLabel setCustomAttributedText:string];
 
     _addNewRekeningButton.layer.cornerRadius = 2;
-    _uploadPaymentButton.layer.cornerRadius = 4;
-    _uploadPaymentButton.layer.borderWidth = 1;
-    _uploadPaymentButton.layer.borderColor = [UIColor colorWithRed:(200.0/255.0f) green:(199.0/255.0f) blue:(204.0/255.0f) alpha:0.8f].CGColor;
 
     [_dataInput addEntriesFromDictionary:_data];
     
@@ -147,6 +144,7 @@
     _isNewRekening = NO;
     
     [_dataInput setObject:[NSDate date] forKey:DATA_PAYMENT_DATE_KEY];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -211,7 +209,9 @@
 }
 
 - (IBAction)tapUploadProofInfo:(id)sender {
+
 }
+
 - (IBAction)tap:(id)sender {
     [_activeTextField resignFirstResponder];
     [_activeTextView resignFirstResponder];
@@ -220,8 +220,7 @@
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         if (button.tag == TAG_BAR_BUTTON_TRANSACTION_DONE) {
             if ([self isValidInput]) {
-                [self configureRestKitConfirmPayment];
-                [self requestConfirmPayment:_dataInput];
+                [[self requestPayment] doRequestPaymentConfirmation];
             }
         }
         else
@@ -240,6 +239,15 @@
     }
 }
 
+-(RequestPayment*)requestPayment
+{
+    if (!_requestPayment) {
+        _requestPayment = [RequestPayment new];
+        _requestPayment.delegate = self;
+    }
+    return _requestPayment;
+}
+
 -(TKPDPhotoPicker *)photoPicker
 {
     _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
@@ -250,29 +258,18 @@
 
 -(void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
 {
-    UIImageView *imageView;
-    
     NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     
     UIImage* imagePhoto = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:userInfo forKey:DATA_SELECTED_PHOTO_KEY];
+    _proofImageView.image = imagePhoto;
     
-    [self actionUploadImage:object];
+    [_dataInput setObject:userInfo forKey:@"data_image_object"];
 }
 
-#pragma mark - Upload Image
--(void)actionUploadImage:(id)object
+-(id)getImageObject
 {
-//    RequestUploadImage *uploadImage = [RequestUploadImage new];
-//    uploadImage.imageObject = object;
-//    uploadImage.delegate = self;
-//    uploadImage.generateHost = _generateHost;
-//    uploadImage.action = ACTION_UPLOAD_PRODUCT_IMAGE;
-//    uploadImage.fieldName = @"fileToUpload";
-//    [uploadImage configureRestkitUploadPhoto];
-//    [uploadImage requestActionUploadPhoto];
+    return [_dataInput objectForKey:@"data_image_object"];
 }
 
 #pragma mark - Table View Data Source
@@ -462,7 +459,7 @@
             if ([self isPaymentTypeSaldoTokopedia]) {
                 return 0;
             }
-            return 78;
+            return 106;
             break;
         case 7:
             return _markCell.frame.size.height;
@@ -682,52 +679,10 @@
 
 
 #pragma mark - Request Confirm Payment
--(void)cancelConfirmPayment
+-(NSDictionary *)getParamConfirmation
 {
-    [_requestConfirmPayment cancel];
-    _requestConfirmPayment = nil;
-    [_objectManagerConfirmPayment.operationQueue cancelAllOperations];
-    _objectManagerConfirmPayment = nil;
-}
-
--(void)configureRestKitConfirmPayment
-{
-    _objectManagerConfirmPayment = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    [statusMapping addPropertyMapping:resultRel];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerConfirmPayment addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestConfirmPayment:(id)object
-{
-    if (_requestConfirmPayment.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
-    NSArray *selectedOrder = [userInfo objectForKey:DATA_SELECTED_ORDER_KEY];
-    MethodList *method = [userInfo objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
+    NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+    MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
@@ -780,132 +735,48 @@
                             API_BANK_ACCOUNT_NUMBER_KEY : bankAccountNumber,
                             API_BANK_ACCOUNT_ID_KEY : bankAccountID,
                             API_SYSTEM_BANK_ID_KEY : systemBankID,
-                            
                             };
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _requestConfirmPayment = [_objectManagerConfirmPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
-//#else
-    _requestConfirmPayment = [_objectManagerConfirmPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-//#endif
-    
-    [_requestConfirmPayment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessConfirmPayment:mappingResult withOperation:operation];
-        [timer invalidate];
-        _tableView.tableFooterView = nil;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureConfirmPayment:error];
-        [timer invalidate];
-        _tableView.tableFooterView = nil;
-    }];
-    
-    [_operationQueue addOperation:_requestConfirmPayment];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutConfirmPayment) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    return param;
 }
 
--(void)requestSuccessConfirmPayment:(id)object withOperation:(RKObjectRequestOperation *)operation
+-(void)requestSuccessConfirmPayment:(TransactionAction*)action
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *order = stat;
-    BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessConfirmPayment:object];
+    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+    if (_isConfirmed) {
+        NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil mengubah konfirmasi pembayaran", nil];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
+        [alert show];
+        [_delegate refreshRequest];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else{
+        NSInteger paymentAmount = [[_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY] integerValue];
+        MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
+        NSMutableArray *viewControllers = [NSMutableArray new];
+        [viewControllers addObjectsFromArray:self.navigationController.viewControllers];
+        
+        TxOrderPaymentConfirmationSuccessViewController *vc = [TxOrderPaymentConfirmationSuccessViewController new];
+        vc.confirmationPayment = method.method_name;
+        vc.delegate = self;
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setGroupingSeparator:@"."];
+        [formatter setGroupingSize:3];
+        [formatter setUsesGroupingSeparator:YES];
+        [formatter setSecondaryGroupingSize:3];
+        NSString *price = (paymentAmount>0)?[formatter stringFromNumber:@(paymentAmount)]:@"0";
+        TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
+        vc.totalPaymentValue = [self isPaymentTypeSaldoTokopedia]?form.order.order_left_amount_idr:[NSString stringWithFormat:@"Rp %@,-",price];
+        vc.methodName = method.method_name;
+        [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
+        self.navigationController.viewControllers = viewControllers;
+        [_delegate refreshRequest];
+        NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+        [_delegate successConfirmPayment:selectedOrder];
+        //[self.navigationController pushViewController:vc animated:YES];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
     }
 }
-
--(void)requestFailureConfirmPayment:(id)object
-{
-    [self requestProcessConfirmPayment:object];
-}
-
--(void)requestProcessConfirmPayment:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionAction *order = stat;
-            BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(order.message_error)
-                {
-                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                if(order.result.is_success == 1)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-                    if (_isConfirmed) {
-                        NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil mengubah konfirmasi pembayaran", nil];
-                        StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
-                        [alert show];
-                        [_delegate refreshRequest];
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }
-                    else{
-                        NSInteger paymentAmount = [[_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY] integerValue];
-                        MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
-                        NSMutableArray *viewControllers = [NSMutableArray new];
-                        [viewControllers addObjectsFromArray:self.navigationController.viewControllers];
-                        
-                        TxOrderPaymentConfirmationSuccessViewController *vc = [TxOrderPaymentConfirmationSuccessViewController new];
-                        vc.confirmationPayment = method.method_name;
-                        vc.delegate = self;
-                        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                        [formatter setGroupingSeparator:@"."];
-                        [formatter setGroupingSize:3];
-                        [formatter setUsesGroupingSeparator:YES];
-                        [formatter setSecondaryGroupingSize:3];
-                        NSString *price = (paymentAmount>0)?[formatter stringFromNumber:@(paymentAmount)]:@"0";
-                        TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
-                        vc.totalPaymentValue = [self isPaymentTypeSaldoTokopedia]?form.order.order_left_amount_idr:[NSString stringWithFormat:@"Rp %@,-",price];
-                        vc.methodName = method.method_name;
-                        [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
-                        self.navigationController.viewControllers = viewControllers;
-                        [_delegate refreshRequest];
-                        NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
-                        [_delegate successConfirmPayment:selectedOrder];
-                        //[self.navigationController pushViewController:vc animated:YES];
-                        
-                        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
-                    }
-                }
-            }
-        }
-        else{
-            
-            [self cancelConfirmPayment];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
--(void)requestTimeoutConfirmPayment
-{
-    [self cancelConfirmPayment];
-}
-
 
 #pragma mark - Methods
 -(BOOL)isPaymentTypeBank
@@ -1587,7 +1458,6 @@
     
     return _objectManager;
 }
-
 
 
 -(void)dealloc

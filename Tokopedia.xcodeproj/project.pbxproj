@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		45FFEF6F1B904E6100C7DC79 /* RequestPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FFEF6E1B904E6100C7DC79 /* RequestPayment.m */; };
+		45FFEF721B905D8300C7DC79 /* objectManagerPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FFEF711B905D8300C7DC79 /* objectManagerPayment.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		851D00001B7CA98200671399 /* ResolutionInputReceiptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7B01B7CA97E00671399 /* ResolutionInputReceiptViewController.m */; };
@@ -1775,6 +1777,10 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		45FFEF6D1B904E6100C7DC79 /* RequestPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPayment.h; sourceTree = "<group>"; };
+		45FFEF6E1B904E6100C7DC79 /* RequestPayment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPayment.m; sourceTree = "<group>"; };
+		45FFEF701B905D8300C7DC79 /* objectManagerPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objectManagerPayment.h; sourceTree = "<group>"; };
+		45FFEF711B905D8300C7DC79 /* objectManagerPayment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objectManagerPayment.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		851DF28A1B7CA97D00671399 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -7925,6 +7931,10 @@
 				851DFA8E1B7CA98000671399 /* TxOrderTabViewController.h */,
 				851DFA8F1B7CA98000671399 /* TxOrderTabViewController.m */,
 				851DFA901B7CA98000671399 /* TxOrderTabViewController.xib */,
+				45FFEF6D1B904E6100C7DC79 /* RequestPayment.h */,
+				45FFEF6E1B904E6100C7DC79 /* RequestPayment.m */,
+				45FFEF701B905D8300C7DC79 /* objectManagerPayment.h */,
+				45FFEF711B905D8300C7DC79 /* objectManagerPayment.m */,
 			);
 			path = TxOrder;
 			sourceTree = "<group>";
@@ -10556,6 +10566,7 @@
 				851DFE2A1B7CA98200671399 /* InboxTicketDetailAttachment.m in Sources */,
 				851DFE931B7CA98200671399 /* WarehouseResponse.m in Sources */,
 				851DFFF81B7CA98200671399 /* ResolutionCenterDetailCell.m in Sources */,
+				45FFEF6F1B904E6100C7DC79 /* RequestPayment.m in Sources */,
 				851DFDFF1B7CA98200671399 /* HotlistResult.m in Sources */,
 				851DFDD41B7CA98200671399 /* ProductDetail.m in Sources */,
 				851DFDDD1B7CA98200671399 /* ReviewResult.m in Sources */,
@@ -10934,6 +10945,7 @@
 				851DFF171B7CA98200671399 /* TxOrderStatusList.m in Sources */,
 				851DFE2E1B7CA98200671399 /* InboxTicketResult.m in Sources */,
 				851D00431B7CA98200671399 /* PriceAlertCell.m in Sources */,
+				45FFEF721B905D8300C7DC79 /* objectManagerPayment.m in Sources */,
 				851DFE351B7CA98200671399 /* ReplyInboxTicketResult.m in Sources */,
 				851DFDD91B7CA98200671399 /* Review.m in Sources */,
 				851DFFD31B7CA98200671399 /* HotlistCell.m in Sources */,
