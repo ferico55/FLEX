@@ -1,0 +1,7 @@
+#include "Pods-Tokopedia-Localytics.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/Localytics" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Localytics" "${PODS_ROOT}/Headers/Public/NJKWebViewProgress" "${PODS_ROOT}/Headers/Public/RestKit" "${PODS_ROOT}/Headers/Public/RestKit/RestKit" "${PODS_ROOT}/Headers/Public/RestKit/RestKit/CoreData" "${PODS_ROOT}/Headers/Public/RestKit/RestKit/Network" "${PODS_ROOT}/Headers/Public/RestKit/RestKit/ObjectMapping" "${PODS_ROOT}/Headers/Public/RestKit/RestKit/Support" "${PODS_ROOT}/Headers/Public/SOCKit" "${PODS_ROOT}/Headers/Public/TTTAttributedLabel" "${PODS_ROOT}/Headers/Public/TransitionKit"
+LIBRARY_SEARCH_PATHS = ${PODS_TOKOPEDIA_LOCALYTICS_LIBRARY_SEARCH_PATHS}
+OTHER_LDFLAGS = ${PODS_TOKOPEDIA_LOCALYTICS_OTHER_LDFLAGS} -ObjC
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES
