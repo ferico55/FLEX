@@ -565,7 +565,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         _ticketDetail.ticket_detail_user_image = _ticketInformation.ticket_first_message_image;
         _ticketDetail.ticket_detail_message = _ticketInformation.ticket_first_message;
         _ticketDetail.ticket_detail_create_time = _ticketInformation.ticket_create_time;
-        _ticketDetail.ticket_detail_is_cs = @"0";
+        
+        NSString *ticketCategory = _ticketInformation.ticket_category?:self.inboxTicket.ticket_category;
+        if ([ticketCategory isEqualToString:@"CS Ticket"]) {
+            _ticketDetail.ticket_detail_is_cs = @"1";
+        } else {
+            _ticketDetail.ticket_detail_is_cs = @"0";
+        }
     }
     
     NSMutableArray *tickets = [NSMutableArray new];
