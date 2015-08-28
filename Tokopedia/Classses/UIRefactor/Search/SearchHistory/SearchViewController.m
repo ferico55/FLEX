@@ -100,7 +100,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
 
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
-    [searchBar setPlaceholder:@"Sudah cek tokopedia belum ?"];
+    [searchBar setPlaceholder:@"Cari product, katalog dan toko"];
     [searchBar setOpaque:YES];
     [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
     [searchBar setTintColor:[UIColor whiteColor]];
@@ -546,16 +546,16 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 - (void)goToResultPage:(NSString*)searchText {
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.delegate = self;
-    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchBar.text?:@"" ,
+    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultViewController *vc1 = [SearchResultViewController new];
     vc.delegate = self;
-    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchBar.text?:@"" ,
+    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
                 kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchBar.text?:@"" ,
+    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
                 kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
