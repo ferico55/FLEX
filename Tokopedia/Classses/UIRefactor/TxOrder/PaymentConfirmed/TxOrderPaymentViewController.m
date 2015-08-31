@@ -212,8 +212,8 @@
 - (IBAction)tapUploadProofInfo:(id)sender {
     AlertInfoView *alert = [AlertInfoView new];
     alert.delegate = self;
-    [alert setText:@"Umumnya verifikasi pembayaran memakan waktu maksimal 1x24 jam."];
-    [alert setDetailText:@"Apabila pembayaran Anda belum juga diverifikasi, kami sarankan untuk mengupload bukti bayar Anda, sehingga dapat membantu mempercepat proses verifikasi pembayaran"];
+    [alert setText:@"Info"];
+    [alert setDetailText:@"Umumnya verifikasi pembayaran memakan waktu maksimal 1x24 jam.\n\nApabila pembayaran Anda belum juga diverifikasi, kami sarankan untuk mengupload bukti bayar Anda, sehingga dapat membantu mempercepat proses verifikasi pembayaran"];
     [alert show];
 }
 

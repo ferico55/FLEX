@@ -45,7 +45,9 @@
     
     [_detailTextLabel sizeToFit];
     
-    CGRect frame = _detailTextLabel.frame.origin.x + _detailTextLabel.frame.size.height
+    CGRect frame = self.frame;
+    frame.size.height = _detailTextLabel.frame.origin.y + _detailTextLabel.frame.size.height + 40;
+    self.frame = frame;
 
 }
 
