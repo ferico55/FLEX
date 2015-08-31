@@ -64,7 +64,7 @@
                 <outlet property="depositorTextField" destination="iZf-50-tca" id="E3X-wr-Umd"/>
                 <outlet property="footerView" destination="Oij-qP-Jc5" id="IPN-TD-V2n"/>
                 <outlet property="infoCell" destination="xgd-zX-xCo" id="yf0-BO-NgS"/>
-                <outlet property="infoConfirmation" destination="zEh-Hq-Rti" id="euN-MO-QFy"/>
+                <outlet property="infoConfirmation" destination="Kn2-oN-t3A" id="02W-3a-YZW"/>
                 <outlet property="infoNominalLabel" destination="IQn-Q6-7LC" id="BnH-dX-ib9"/>
                 <outlet property="lastInfoCell" destination="6cO-Ir-rDL" id="UBY-i8-X5h"/>
                 <outlet property="markCell" destination="aAj-7J-rIR" id="JtL-bB-5IJ"/>

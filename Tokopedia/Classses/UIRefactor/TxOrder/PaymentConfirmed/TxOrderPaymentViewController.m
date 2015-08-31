@@ -130,11 +130,9 @@
     [_infoNominalLabel setCustomAttributedText:_infoNominalLabel.text];
     [_infoConfirmation setCustomAttributedText:_infoConfirmation.text];
 
-    NSString *string = @"Masukkan password login Tokopedia anda. \n\nProduk yang sudah dipesan dan dikonfirmasikan pembayarannya tidak dapat dibatalkan.";
-    [_passwordLabel setCustomAttributedText:string];
-
-    string = @"Untuk Bank selain BCA diharuskan mengisi Kantor Cabang beserta kota tempat Bank berada. \nContoh: Pondok Indah - Jakarta Selatan";
+    NSString *string = @"Untuk Bank selain BCA diharuskan mengisi Kantor Cabang beserta kota tempat Bank berada. \nContoh: Pondok Indah - Jakarta Selatan";
     [_branchViewLabel setCustomAttributedText:string];
+    [_infoConfirmation setCustomAttributedText:_infoConfirmation.text];
 
     _addNewRekeningButton.layer.cornerRadius = 2;
 
