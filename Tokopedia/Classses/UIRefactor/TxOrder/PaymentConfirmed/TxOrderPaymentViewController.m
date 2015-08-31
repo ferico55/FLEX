@@ -267,9 +267,9 @@
     [_dataInput setObject:userInfo forKey:@"data_image_object"];
 }
 
--(id)getImageObject
+-(NSDictionary *)getImageObject
 {
-    return [_dataInput objectForKey:@"data_image_object"];
+    return [_dataInput objectForKey:@"data_image_object"]?:@{};
 }
 
 #pragma mark - Table View Data Source
@@ -412,7 +412,7 @@
         }
             break;
         case 1:
-            if (([self isPaymentTypeTransfer] || _isNewRekening) && indexPath.row == 2) {
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening ) && indexPath.row == 2) {
                 return 0;
             }
             break;
@@ -679,7 +679,7 @@
 
 
 #pragma mark - Request Confirm Payment
--(NSDictionary *)getParamConfirmation
+-(NSDictionary *)getParamConfirmationValidaion:(BOOL)isStepValidation
 {
     NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
@@ -712,6 +712,9 @@
     NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
     NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
     NSString *action = _isConfirmed?ACTION_EDIT_PAYMENT:ACTION_CONFIRM_PAYMENT;
+    if (isStepValidation) {
+        action = ACTION_CONFIRM_PAYMENT_VALIDATION;
+    }
     
     //TODO:: File name & file path
     
@@ -824,6 +827,8 @@
     NSArray *invoices =(_isConfirmed)?formIsConfirmed.order.order_invoice:[form.order.order_invoice componentsSeparatedByString:@","];
     NSString *invoice = [[invoices valueForKey:@"description"] componentsJoinedByString:@",\n"];
 
+    NSString *bankAccountString = selectedBank.bank_account_name?:@"Pilih Akun Bank";
+    
     if (cell == _section0Cell[0]) {
         UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
         textString = invoice;
@@ -838,6 +843,9 @@
     }
     if (cell == _section1Cell[1]) {
         textString = selectedMethod.method_name;
+    }
+    if (cell == _section1Cell[2]) {
+        textString = bankAccountString;
     }
     if (cell == _section2Cell[0]) {
         textString = systemBankString;

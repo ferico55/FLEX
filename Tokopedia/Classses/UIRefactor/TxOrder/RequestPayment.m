@@ -51,19 +51,19 @@
 
 -(void)doRequestPaymentConfirmation;
 {
-    if ([_delegate getImageObject]) {
-        [[self networkManagerValidation] doRequest];
+    if ([[_delegate getImageObject] isEqualToDictionary:@{}]) {
+        [self doRequestSubmit];
     }
     else
     {
-        [[self networkManagerSubmit] doRequest];
+        [self doRequestValidation];
     }
 }
 
 
 -(void)doRequestValidation
 {
-    
+    [[self networkManagerValidation]doRequest];
 }
 
 -(void)doRequestGenerateHost
@@ -76,14 +76,23 @@
 
 -(void)doUploadImage:(id)object withHost:(GenerateHost*)host;
 {
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:object};
-    uploadImage.delegate = self;
-    uploadImage.generateHost = host;
-    //uploadImage.action = ACTION_UPLOAD_PRODUCT_IMAGE;
-    uploadImage.fieldName = @"fileToUpload";
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    RequestUploadImage *requestImage = [RequestUploadImage new];
+    requestImage.generateHost = host;
+    requestImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:object};
+    requestImage.action = ACTION_UPLOAD_PROOF_IMAGE;
+    requestImage.fieldName = API_FORM_FIELD_NAME_PROOF;
+    requestImage.delegate = self;
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    requestImage.paymentID = [auth getUserId];
+    //TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+    //requestImage.paymentID = selectedConfirmation.payment_id?:@"";
+    [requestImage configureRestkitUploadPhoto];
+    [requestImage requestActionUploadPhoto];
+}
+
+-(void)doRequestSubmit
+{
+    [[self networkManagerSubmit] doRequest];
 }
 
 #pragma mark - Generate Host Delegate
@@ -104,18 +113,36 @@
     [[self networkManagerSubmit] doRequest];
 }
 
+-(void)failedUploadErrorMessage:(NSArray *)errorMessage
+{
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:_delegate];
+    [stickyAlertView show];
+}
+
+-(void)failedUploadObject:(id)object
+{
+    
+}
+
 #pragma mark - Network Manager Delegate
 
 -(NSDictionary *)getParameter:(int)tag
 {
+    if (tag == TAG_REQUEST_VALIDATION) {
+        return [_delegate getParamConfirmationValidaion:YES];
+    }
     if (tag == TAG_REQUEST_SUBMIT) {
-        return [_delegate getParamConfirmation];
+        return [_delegate getParamConfirmationValidaion:NO];
     }
     return nil;
 }
 
 -(NSString *)getPath:(int)tag
 {
+    if (tag == TAG_REQUEST_VALIDATION) {
+        return API_PATH_ACTION_TX_ORDER;
+    }
+    
     if (tag == TAG_REQUEST_SUBMIT) {
         return API_PATH_ACTION_TX_ORDER;
     }
@@ -124,6 +151,10 @@
 
 -(id)getObjectManager:(int)tag
 {
+    if (tag == TAG_REQUEST_VALIDATION) {
+        return [[self objectManager] objectManagerTransactionAction];
+    }
+    
     if (tag == TAG_REQUEST_SUBMIT) {
         return [[self objectManager] objectManagerTransactionAction];
     }
@@ -135,6 +166,10 @@
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     
+    if (tag == TAG_REQUEST_VALIDATION) {
+        TransactionAction *action = stat;
+        return action.status;
+    }
     if (tag == TAG_REQUEST_SUBMIT) {
         TransactionAction *action = stat;
         return action.status;
@@ -150,6 +185,21 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
+    if (tag == TAG_REQUEST_VALIDATION) {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        id stat = [result objectForKey:@""];
+        TransactionAction *order = stat;
+        if(order.message_error)
+        {
+            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:_delegate];
+            [alert show];
+        }
+        if(order.result.is_success == 1)
+        {
+            [self doRequestGenerateHost];
+        }
+    }
     if (tag == TAG_REQUEST_SUBMIT) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];

@@ -14,8 +14,8 @@
 
 @protocol RequestPaymentDelegate <NSObject>
 @required
--(id)getImageObject;
--(NSDictionary *)getParamConfirmation;
+-(NSDictionary *)getImageObject;
+-(NSDictionary *)getParamConfirmationValidaion:(BOOL)isStepValidation;
 -(void)requestSuccessConfirmPayment:(TransactionAction*)action;
 
 @end
