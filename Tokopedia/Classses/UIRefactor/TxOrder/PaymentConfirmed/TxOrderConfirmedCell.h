@@ -14,7 +14,7 @@
 @protocol TxOrderConfirmedCellDelegate <NSObject>
 @required
 - (void)didTapInvoiceButton:(UIButton*)button atIndexPath:(NSIndexPath*)indexPath;
-
+- (void)didTapPaymentProofIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @interface TxOrderConfirmedCell : UITableViewCell

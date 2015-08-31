@@ -37,5 +37,8 @@
     [_delegate didTapInvoiceButton:sender atIndexPath:_indexPath];
 }
 
+- (IBAction)tapImgPaymentProof:(id)sender {
+    [_delegate didTapPaymentProofIndexPath:_indexPath];
+}
 
 @end

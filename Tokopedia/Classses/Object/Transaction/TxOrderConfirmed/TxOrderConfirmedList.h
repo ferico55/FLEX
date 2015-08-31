@@ -22,5 +22,6 @@
 @property (nonatomic) NSInteger has_user_bank;
 @property (nonatomic, strong) NSDictionary *button;
 @property (nonatomic, strong) NSString *payment_amount;
+@property (nonatomic, strong) NSString *img_proof;
 
 @end
