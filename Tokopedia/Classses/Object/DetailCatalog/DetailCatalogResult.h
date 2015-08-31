@@ -14,6 +14,7 @@
 #import "CatalogMarketPlace.h"
 #import "CatalogShops.h"
 #import "CatalogLocation.h"
+#import "Paging.h"
 
 @interface DetailCatalogResult : NSObject
 
@@ -24,5 +25,6 @@
 @property (nonatomic, strong) NSArray *catalog_shops;
 @property (nonatomic, strong) NSString *catalog_image;
 @property (nonatomic, strong) NSArray *catalog_location;
+@property (nonatomic, strong) Paging *paging;
 
 @end

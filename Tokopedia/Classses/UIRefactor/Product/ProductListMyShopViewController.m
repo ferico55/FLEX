@@ -86,6 +86,9 @@
     LoadingView *_loadingView;
     
     BOOL _isNeedToSearch;
+    
+    SortViewController *_sortViewController;
+    ProductListMyShopFilterViewController *_filterViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -163,6 +166,9 @@
     _auth = [secureStorage keychainDictionary];
     
     [_networkManager doRequest];
+    
+    _sortViewController = [SortViewController new];
+    _filterViewController = [ProductListMyShopFilterViewController new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -315,11 +321,10 @@
             case BUTTON_FILTER_TYPE_SORT:
             {
                 NSIndexPath *indexpath = [_dataFilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
+                _sortViewController.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                vc.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                _sortViewController.delegate = self;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_sortViewController];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
@@ -327,12 +332,11 @@
             {
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
                 
-                ProductListMyShopFilterViewController *controller = [ProductListMyShopFilterViewController new];
-                controller.delegate = self;
-                controller.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
-                controller.shopID = [auth getShopId];
+                _filterViewController.delegate = self;
+                _filterViewController.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
+                _filterViewController.shopID = [auth getShopId];
                 
-                UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:_filterViewController];
                 navigation.navigationBar.translucent = NO;
                 
                 [self.navigationController presentViewController:navigation animated:YES completion:nil];
