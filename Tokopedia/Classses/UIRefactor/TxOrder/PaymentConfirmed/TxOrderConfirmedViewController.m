@@ -223,7 +223,11 @@
     CGFloat rowHeight = 0;
     
     if (indexPath.row == 0) {
-        rowHeight = 158; //158 //130
+        TxOrderConfirmedList *detailOrder = _list[indexPath.section];
+        if (!detailOrder.img_proof_url || [detailOrder.img_proof_url isEqualToString:@""]) {
+            rowHeight = 130;
+        }
+        else rowHeight = 158; //158 //130
     }
     else if (indexPath.row == 1)
         rowHeight = 130;
@@ -280,8 +284,7 @@
 -(void)didTapPaymentProofIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-    detailOrder.img_proof = @"https://ecs7.tokopedia.net/img/payment_proof/2015/8/12/10346786/10346786_0f084056-0878-4252-9808-4535823bf104.jpg";
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailOrder.img_proof] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailOrder.img_proof_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = [UIImageView new];
     _imageproof = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];    

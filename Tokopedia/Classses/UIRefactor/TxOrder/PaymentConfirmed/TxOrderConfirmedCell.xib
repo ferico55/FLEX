@@ -9,6 +9,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -18,14 +19,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TxOrderConfirmedCellIdentifier" rowHeight="130" id="GZV-gC-ecS" customClass="TxOrderConfirmedCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TxOrderConfirmedCellIdentifier" rowHeight="158" id="GZV-gC-ecS" customClass="TxOrderConfirmedCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="158"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GZV-gC-ecS" id="4os-R9-p3X">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tZf-VL-k6z">
-                        <rect key="frame" x="10" y="15" width="300" height="115"/>
+                        <rect key="frame" x="10" y="15" width="300" height="142"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z4N-Zc-AhV" userLabel="Invoice View">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="51"/>
@@ -79,7 +80,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TiS-aU-4mj" userLabel="User View">
-                                <rect key="frame" x="0.0" y="51" width="300" height="65"/>
+                                <rect key="frame" x="0.0" y="51" width="300" height="91"/>
                                 <subviews>
                                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Jumlah Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P5j-QQ-EmH">
                                         <rect key="frame" x="10" y="14" width="132" height="14"/>
@@ -97,15 +98,19 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qQm-gy-Edr" userLabel="Horizontal Border">
-                                        <rect key="frame" x="0.0" y="62" width="300" height="1"/>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qQm-gy-Edr" userLabel="Horizontal Border">
+                                        <rect key="frame" x="0.0" y="90" width="300" height="1"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="iJT-wS-PNn"/>
+                                            <constraint firstAttribute="height" constant="1" id="Vgh-6r-7LX"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KsD-0b-3FJ">
-                                        <rect key="frame" x="202" y="26" width="88" height="34"/>
+                                        <rect key="frame" x="202" y="34" width="88" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="88" id="Ljf-nb-wyD"/>
+                                            <constraint firstAttribute="height" constant="21" id="l7o-dB-h8u"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                         <state key="normal" title="3 invoice">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -114,23 +119,36 @@
                                             <action selector="tap:" destination="GZV-gC-ecS" eventType="touchUpInside" id="yeq-Y3-VAR"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jbu-UK-3O1">
+                                        <rect key="frame" x="125" y="62" width="167" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="167" id="g8d-62-aLV"/>
+                                            <constraint firstAttribute="height" constant="20" id="w2I-en-hOH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                        <state key="normal" title="Lihat Bukti Pembayaran">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tapImgPaymentProof:" destination="GZV-gC-ecS" eventType="touchUpInside" id="aCf-wB-4Ul"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="KsD-0b-3FJ" firstAttribute="leading" secondItem="TiS-aU-4mj" secondAttribute="leading" constant="202" id="428-up-ezS"/>
+                                    <constraint firstItem="qQm-gy-Edr" firstAttribute="leading" secondItem="TiS-aU-4mj" secondAttribute="leading" id="38h-tO-M3J"/>
+                                    <constraint firstAttribute="bottom" secondItem="qQm-gy-Edr" secondAttribute="bottom" id="6O8-BF-03o"/>
                                     <constraint firstItem="P5j-QQ-EmH" firstAttribute="leading" secondItem="TiS-aU-4mj" secondAttribute="leading" constant="10" id="6Tv-2f-z73"/>
                                     <constraint firstItem="P5j-QQ-EmH" firstAttribute="top" secondItem="TiS-aU-4mj" secondAttribute="top" constant="14" id="EFl-OD-at2"/>
                                     <constraint firstItem="M2x-Qx-tgq" firstAttribute="top" secondItem="TiS-aU-4mj" secondAttribute="top" constant="14" id="Oja-Bf-qp0"/>
-                                    <constraint firstItem="KsD-0b-3FJ" firstAttribute="top" secondItem="M2x-Qx-tgq" secondAttribute="bottom" id="PK1-Br-z22"/>
-                                    <constraint firstAttribute="height" constant="65" id="PgL-xY-bTY"/>
-                                    <constraint firstItem="qQm-gy-Edr" firstAttribute="leading" secondItem="TiS-aU-4mj" secondAttribute="leading" id="Pxd-kR-sbw"/>
-                                    <constraint firstAttribute="bottom" secondItem="qQm-gy-Edr" secondAttribute="bottom" constant="2" id="WBg-2s-iyR"/>
+                                    <constraint firstAttribute="height" constant="91" id="PgL-xY-bTY"/>
                                     <constraint firstAttribute="trailing" secondItem="M2x-Qx-tgq" secondAttribute="trailing" constant="10" id="Xyg-cO-WLp"/>
                                     <constraint firstItem="M2x-Qx-tgq" firstAttribute="leading" secondItem="P5j-QQ-EmH" secondAttribute="trailing" constant="16" id="aZV-rc-rdw"/>
-                                    <constraint firstItem="KsD-0b-3FJ" firstAttribute="top" secondItem="M2x-Qx-tgq" secondAttribute="bottom" id="t4x-aP-RRU"/>
-                                    <constraint firstAttribute="trailing" secondItem="qQm-gy-Edr" secondAttribute="trailing" id="yY4-75-2qt"/>
-                                    <constraint firstAttribute="trailing" secondItem="KsD-0b-3FJ" secondAttribute="trailing" constant="10" id="yhx-We-a6F"/>
-                                    <constraint firstItem="qQm-gy-Edr" firstAttribute="top" secondItem="KsD-0b-3FJ" secondAttribute="bottom" constant="2" id="z6G-nH-jL9"/>
+                                    <constraint firstAttribute="trailing" secondItem="Jbu-UK-3O1" secondAttribute="trailing" constant="8" id="bm0-QK-RSG"/>
+                                    <constraint firstItem="KsD-0b-3FJ" firstAttribute="top" secondItem="M2x-Qx-tgq" secondAttribute="bottom" constant="8" id="egL-nQ-fSS"/>
+                                    <constraint firstAttribute="trailing" secondItem="qQm-gy-Edr" secondAttribute="trailing" id="fAn-1O-nXL"/>
+                                    <constraint firstItem="qQm-gy-Edr" firstAttribute="top" secondItem="Jbu-UK-3O1" secondAttribute="bottom" constant="8" symbolic="YES" id="fug-lJ-efO"/>
+                                    <constraint firstAttribute="trailing" secondItem="KsD-0b-3FJ" secondAttribute="trailing" constant="10" id="wxO-Wr-dXC"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -157,7 +175,7 @@
                 <outlet property="totalInvoiceButton" destination="KsD-0b-3FJ" id="nX5-Aj-4zP"/>
                 <outlet property="totalPaymentLabel" destination="M2x-Qx-tgq" id="rKk-fA-EKE"/>
             </connections>
-            <point key="canvasLocation" x="176" y="321"/>
+            <point key="canvasLocation" x="176" y="335"/>
         </tableViewCell>
     </objects>
 </document>
