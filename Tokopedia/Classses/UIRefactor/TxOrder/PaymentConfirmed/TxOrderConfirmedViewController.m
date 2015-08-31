@@ -40,6 +40,8 @@
 #import "TKPDPhotoPicker.h"
 #import "LoadingView.h"
 
+#import "GalleryViewController.h"
+
 @interface TxOrderConfirmedViewController ()
 <
     UITableViewDelegate,
@@ -47,12 +49,11 @@
     UIAlertViewDelegate,
     TxOrderConfirmedButtonCellDelegate,
     TxOrderConfirmedCellDelegate,
-    GenerateHostDelegate,
-    RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
     TKPDPhotoPickerDelegate,
     TxOrderPaymentViewControllerDelegate,
-    LoadingViewDelegate
+    LoadingViewDelegate,
+    GalleryViewControllerDelegate
 >
 {
     BOOL _isNodata;
@@ -91,6 +92,8 @@
     LoadingView *_loadingView;
     
     UIAlertView *_loadingAlert;
+    
+    UIImage *_imageproof;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -220,7 +223,7 @@
     CGFloat rowHeight = 0;
     
     if (indexPath.row == 0) {
-        rowHeight = 130;
+        rowHeight = 158; //158 //130
     }
     else if (indexPath.row == 1)
         rowHeight = 130;
@@ -272,6 +275,45 @@
     //TODO:: Invoice
     [self configureRestKitDetail];
     [self requestDetail:detailOrder];
+}
+
+-(void)didTapPaymentProofIndexPath:(NSIndexPath *)indexPath
+{
+    TxOrderConfirmedList *detailOrder = _list[indexPath.section];
+    detailOrder.img_proof = @"https://ecs7.tokopedia.net/img/payment_proof/2015/8/12/10346786/10346786_0f084056-0878-4252-9808-4535823bf104.jpg";
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailOrder.img_proof] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    UIImageView *thumb = [UIImageView new];
+    _imageproof = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];    
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        _imageproof = image;
+        GalleryViewController *gallery = [GalleryViewController new];
+        gallery.canDownload = NO;
+        [gallery initWithPhotoSource:self withStartingIndex:0];
+        [self.navigationController presentViewController:gallery animated:YES completion:nil];
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        _imageproof = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+    }];
+}
+
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
+{
+    return 1;
+}
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
+{
+    return @"Bukti Pembayaran";
+}
+
+- (UIImage *)photoGallery:(NSUInteger)index {
+
+    return _imageproof;
 }
 
 #pragma mark - UIAlertViewDelegate
