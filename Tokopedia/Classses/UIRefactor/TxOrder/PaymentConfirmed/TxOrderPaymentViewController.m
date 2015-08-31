@@ -9,7 +9,6 @@
 #import "TxOrderObjectMapping.h"
 #import "TxOrderPaymentEdit.h"
 
-
 #import "TxOrderPaymentViewController.h"
 #import "TxOrderConfirmPaymentForm.h"
 #import "TxOrderConfirmationList.h"
@@ -30,7 +29,13 @@
 
 #import "DBManager.h"
 
-@interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate>
+#import "TKPDPhotoPicker.h"
+#import "camera.h"
+
+#import "RequestPayment.h"
+#import "AlertInfoView.h"
+
+@interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate, RequestPaymentDelegate>
 {
     NSMutableDictionary *_dataInput;
     
@@ -43,9 +48,6 @@
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     
-    __weak RKObjectManager *_objectManagerConfirmPayment;
-    __weak RKManagedObjectRequestOperation *_requestConfirmPayment;
-    
     NSOperationQueue *_operationQueue;
     
     BOOL _isFinishRequestForm;
@@ -54,14 +56,25 @@
     UITextView *_activeTextView;
     
     NSArray *_bankAccount;
+    
+    TKPDPhotoPicker *_photoPicker;
+    RequestPayment *_requestPayment;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UITableViewCell *uploadPaymentCell;
+@property (strong, nonatomic) IBOutlet UIView *upLoadPaymentView;
+@property (weak, nonatomic) IBOutlet UIButton *uploadPaymentButton;
+@property (weak, nonatomic) IBOutlet UIButton *uploadPaymentInfo;
+@property (strong, nonatomic) IBOutlet UITableViewCell *addRekBankCell;
+@property (weak, nonatomic) IBOutlet UIImageView *proofImageView;
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *sectionNewRekeningCells;
+@property (weak, nonatomic) IBOutlet UILabel *NewBankNameLabel;
+@property (strong, nonatomic) IBOutlet UITableViewCell *lastInfoCell;
 
 @property (weak, nonatomic) IBOutlet UILabel *infoNominalLabel;
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
@@ -110,22 +123,19 @@
     
     _sectionNewRekeningCells = [NSArray sortViewsWithTagInArray:_sectionNewRekeningCells];
     _section3CashCells = [NSArray sortViewsWithTagInArray:_section3CashCells];
+    _section1Cell = [NSArray sortViewsWithTagInArray:_section1Cell];
     
     self.title = _isConfirmed?TITLE_PAYMENT_EDIT_CONFIRMATION_FORM:TITLE_PAYMENT_CONFIRMATION_FORM;
-    
-
     
     [_infoNominalLabel setCustomAttributedText:_infoNominalLabel.text];
     [_infoConfirmation setCustomAttributedText:_infoConfirmation.text];
 
-    NSString *string = @"Masukkan password login Tokopedia anda. \n\nProduk yang sudah dipesan dan dikonfirmasikan pembayarannya tidak dapat dibatalkan.";
-    [_passwordLabel setCustomAttributedText:string];
-
-    string = @"Untuk Bank selain BCA diharuskan mengisi Kantor Cabang beserta kota tempat Bank berada. \nContoh: Pondok Indah - Jakarta Selatan";
+    NSString *string = @"Untuk Bank selain BCA diharuskan mengisi Kantor Cabang beserta kota tempat Bank berada. \nContoh: Pondok Indah - Jakarta Selatan";
     [_branchViewLabel setCustomAttributedText:string];
+    [_infoConfirmation setCustomAttributedText:_infoConfirmation.text];
 
     _addNewRekeningButton.layer.cornerRadius = 2;
-    
+
     [_dataInput addEntriesFromDictionary:_data];
     
     [_networkManager doRequest];
@@ -133,6 +143,7 @@
     _isNewRekening = NO;
     
     [_dataInput setObject:[NSDate date] forKey:DATA_PAYMENT_DATE_KEY];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -192,6 +203,18 @@
 }
 
 #pragma mark - View Action
+- (IBAction)tapUploadProof:(id)sender {
+    _photoPicker = [self photoPicker];
+}
+
+- (IBAction)tapUploadProofInfo:(id)sender {
+    AlertInfoView *alert = [AlertInfoView new];
+    alert.delegate = self;
+    [alert setText:@"Info"];
+    [alert setDetailText:@"Umumnya verifikasi pembayaran memakan waktu maksimal 1x24 jam.\n\nApabila pembayaran Anda belum juga diverifikasi, kami sarankan untuk mengupload bukti bayar Anda, sehingga dapat membantu mempercepat proses verifikasi pembayaran"];
+    [alert show];
+}
+
 - (IBAction)tap:(id)sender {
     [_activeTextField resignFirstResponder];
     [_activeTextView resignFirstResponder];
@@ -200,8 +223,7 @@
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         if (button.tag == TAG_BAR_BUTTON_TRANSACTION_DONE) {
             if ([self isValidInput]) {
-                [self configureRestKitConfirmPayment];
-                [self requestConfirmPayment:_dataInput];
+                [[self requestPayment] doRequestPaymentConfirmation];
             }
         }
         else
@@ -220,12 +242,47 @@
     }
 }
 
+-(RequestPayment*)requestPayment
+{
+    if (!_requestPayment) {
+        _requestPayment = [RequestPayment new];
+        _requestPayment.delegate = self;
+    }
+    return _requestPayment;
+}
+
+-(TKPDPhotoPicker *)photoPicker
+{
+    _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
+                                                  pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+    _photoPicker.delegate = self;
+    return _photoPicker;
+}
+
+-(void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
+{
+    NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    
+    UIImage* imagePhoto = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    
+    _proofImageView.image = imagePhoto;
+    
+    [_dataInput setObject:userInfo forKey:@"data_image_object"];
+}
+
+-(NSDictionary *)getImageObject
+{
+    return [_dataInput objectForKey:@"data_image_object"]?:@{};
+}
 
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (_isFinishRequestForm)
-        return (([self isPaymentTypeBank]&&_isNewRekening) || [self isPaymentTypeTransfer])?5:4;
+    {
+        NSInteger sectionCount = 10;
+        return sectionCount;
+    }
     else
         return 0;
 }
@@ -233,30 +290,33 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger rowCount = 0;
     switch (section) {
-        case 0:
-            rowCount = _section0Cell.count;
+        case 0: return _section0Cell.count;
             break;
-        case 1:
-            if ([self isPaymentTypeBank]&&_isNewRekening)
-                rowCount = 2;
-            else rowCount = ([self isPaymentTypeBank])?_section1Cell.count:2;
+        case 1: return _section1Cell.count;
             break;
         case 2:
-            if ([self isPaymentTypeBank]&&_isNewRekening)
-                rowCount = _sectionNewRekeningCells.count;
-            else if ([self isPaymentTypeBank])
-                rowCount = _section2Cell.count;
-            else rowCount = 1;
+            return 1;
             break;
         case 3:
-            if ([self isPaymentTypeBank]&&_isNewRekening)
-                rowCount = _section2Cell.count;
-            else if ([self isPaymentTypeTransfer])
-                rowCount = _section3CashCells.count;
-            else rowCount = 1;
+            return 1;
             break;
         case 4:
-            rowCount = 1;
+            return _sectionNewRekeningCells.count;
+            break;
+        case 5:
+            return _section2Cell.count;
+            break;
+        case 6:
+            return 1;
+            break;
+        case 7:
+            return 1;
+            break;
+        case 8:
+            return 1;
+            break;
+        case 9:
+            return 1;
             break;
         default:
             break;
@@ -273,32 +333,37 @@
         case 1: cell = _section1Cell[indexPath.row];
             break;
         case 2:
-            if ([self isPaymentTypeBank]&&_isNewRekening)
-                cell = _sectionNewRekeningCells[indexPath.row];
-            else if([self isPaymentTypeBank])
-                cell = _section2Cell[indexPath.row];
-            else if ([self isPaymentTypeTransfer])
-                cell = _infoCell;
-            else
-                cell = _markCell;
+            cell = _infoCell;
             break;
         case 3:
-            if ([self isPaymentTypeBank]&&_isNewRekening)
-                cell = _section2Cell[indexPath.row];
-            else if([self isPaymentTypeBank])
-                cell = _markCell;
-            else if ([self isPaymentTypeTransfer])
-                cell = _section3CashCells[indexPath.row];
-            else
-                cell = _passwordTokopediaCell;
+            cell = _addRekBankCell;
             break;
         case 4:
-                cell = _markCell;
+            cell = _sectionNewRekeningCells[indexPath.row];
+            break;
+        case 5:
+            cell = _section2Cell[indexPath.row];
+            break;
+        case 6:
+            cell = _uploadPaymentCell;
+            break;
+        case 7:
+            cell = _markCell;
+            break;
+        case 8:
+            cell = _passwordTokopediaCell;
+            break;
+        case 9:
+            cell = _lastInfoCell;
             break;
         default:
             break;
     }
     [self adjustDetailTextLabelCell:cell atIndextPath:indexPath];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width,1)];
+    lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
+    [cell.contentView addSubview:lineView];
+    cell.clipsToBounds = YES;
     cell.selectionStyle = UITableViewCellAccessoryNone;
     return cell;
 }
@@ -306,9 +371,19 @@
 #pragma mark - Table View Delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ([self isPaymentTypeBank] && _isNewRekening && section == 2)
-        return _addNewRekeningHeaderView.frame.size.height;
-    else return 10;
+    if ([self isPaymentTypeTransfer] && (section == 3 || section == 4)) {
+        return 1;
+    }
+    if ([self isPaymentTypeBank] && (section == 2 || section == 3 || section == 4 || section == 5)) {
+        return 1;
+    }
+    if ([self isPaymentTypeSaldoTokopedia] && (section == 2 || section == 3 || section == 4 || section == 5 || section == 6)) {
+        return 1;
+    }
+    if (section == 9) {
+        return 1;
+    }
+    return 10;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -339,28 +414,70 @@
             else return height;
         }
             break;
+        case 1:
+        {
+            BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || !selectedBank ) && indexPath.row == 2) {
+                return 0;
+            }
+        }
+            break;
         case 2:
-            if ([self isPaymentTypeBank]&&_isNewRekening)
-                return [_sectionNewRekeningCells[indexPath.row] frame].size.height;
-            else if([self isPaymentTypeBank])
-                return [_section2Cell[indexPath.row] frame].size.height;
-            else if ([self isPaymentTypeTransfer])
-                return _infoCell.frame.size.height;
-            else
-                return _markCell.frame.size.height;
+            if (![self isPaymentTypeTransfer]) {
+                return 0;
+            }
             break;
         case 3:
-            if ([self isPaymentTypeBank]&&_isNewRekening)
-                return [_section2Cell[indexPath.row] frame].size.height;
-            else if([self isPaymentTypeBank])
-                return _markCell.frame.size.height;
-            else if ([self isPaymentTypeTransfer])
-            return  [_section3CashCells[indexPath.row] frame].size.height;
-            else
-                return _passwordTokopediaCell.frame.size.height;
+            if ([self isPaymentTypeSaldoTokopedia]) {
+                return 0;
+            }
+            if (_isNewRekening) {
+                return 0;
+            }
+            if ([self isPaymentTypeTransfer]) {
+                return 0;
+            }
             break;
         case 4:
+            if ([self isPaymentTypeSaldoTokopedia]) {
+                return 0;
+            }
+            if ([self isPaymentTypeTransfer]) {
+                return 0;
+            }
+            else if (!_isNewRekening) {
+                return 0;
+            }
+            else
+            {
+                if (indexPath.row == 0)
+                    return 85;
+                else if (indexPath.row == 3)
+                    return 125;
+            }
+            break;
+        case 5:
+            if ([self isPaymentTypeSaldoTokopedia]) {
+                return 0;
+            }
+            break;
+        case 6:
+            if ([self isPaymentTypeSaldoTokopedia]) {
+                return 0;
+            }
+            return 106;
+            break;
+        case 7:
             return _markCell.frame.size.height;
+            break;
+        case 8:
+            if (![self isPaymentTypeSaldoTokopedia]) {
+                return 0;
+            }
+            return 82;
+            break;
+        case 9:
+            return _lastInfoCell.frame.size.height;
             break;
         default:
             break;
@@ -369,60 +486,19 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 3 && [self isPaymentTypeSaldoTokopedia]) {
-        return _passwordFooterView.frame.size.height;
+    if ([self isPaymentTypeTransfer] && (section == 3 || section == 4)) {
+        return 1;
     }
-
-    NSInteger sectionCount = (([self isPaymentTypeBank]&&_isNewRekening) || [self isPaymentTypeTransfer])?5:4;
-    if (section == sectionCount-1) {
-        return _section3FooterView.frame.size.height;
+    if ([self isPaymentTypeBank] && _isNewRekening && (section == 2 || section == 3 || section == 4 )) {
+        return 1;
     }
-    if (section == 2 && _isNewRekening) {
-        return  _branchFooterView.frame.size.height;
+    if ([self isPaymentTypeSaldoTokopedia] && (section == 2 || section == 3 || section == 4 || section == 5 || section == 6)) {
+        return 1;
     }
-    else if (section == 2 && [self isPaymentTypeBank] && !_isNewRekening)
-    {
-        return _section2FooterView.frame.size.height;
+    if (section == 8) {
+        return 1;
     }
-    if (section == 1) {
-        if ([self isPaymentTypeBank] && !_isNewRekening) return _addNewRekeningFooterView.frame.size.height;
-        else return 0;
-    }
-
-    return 0;
-}
-
--(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if ([self isPaymentTypeBank] && _isNewRekening && section == 2)
-        return _addNewRekeningHeaderView;
-    else return nil;
-}
-
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    if (section == 3 && [self isPaymentTypeSaldoTokopedia]) {
-        return _passwordFooterView;
-    }
-    NSInteger sectionCount = (([self isPaymentTypeBank]&&_isNewRekening) || [self isPaymentTypeTransfer])?5:4;
-    if (section == sectionCount-1) {
-        return _section3FooterView;
-    }
-    
-    if (section == 2 && _isNewRekening) {
-        return  _branchFooterView;
-    }
-    else if (section == 2 && [self isPaymentTypeBank] && !_isNewRekening)
-    {
-        return _section2FooterView;
-    }
-    
-    if (section == 1) {
-        if ([self isPaymentTypeBank] && !_isNewRekening) return _addNewRekeningFooterView;
-        else return nil;
-    }
-    
-    return nil;
+    return 10;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -430,97 +506,54 @@
     [_activeTextField resignFirstResponder];
     [_activeTextView resignFirstResponder];
     
-    switch (indexPath.section) {
-        case 1:
-        {
-            if (indexPath.row == 0) {
-                AlertDatePickerView *paymentDate = [AlertDatePickerView newview];
-                paymentDate.delegate = self;
-                NSDate *date = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY];
-                paymentDate.currentdate = date;
-                paymentDate.tag = 11;
-                paymentDate.isSetMinimumDate = NO;
-                [paymentDate show];
-            }
-            if(indexPath.row==1 &&_isFinishRequestForm) {
-                [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_PAYMENT_METHOD_KEY];
-                [self pushToGeneralViewControllerAtIndextPath:indexPath];
-            }
-            else if (indexPath.row == 2 && _isFinishRequestForm)
-            {
-                if (_bankAccount.count>0) {
-                    [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_BANK_ACCOUNT_KEY];
-                    [self pushToGeneralViewControllerAtIndextPath:indexPath];
-                }
-            }
-            break;
-        }
-        case 2:
-        {
-            if (indexPath.row==0)
-            {
-                if([self isPaymentTypeBank]&&_isNewRekening)
-                {
-                    BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-                    SettingBankNameViewController *vc = [SettingBankNameViewController new];
-                    vc.data = @{API_BANK_ID_KEY : @(bank.bank_id)};
-                    vc.delegate = self;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
-                else if ([self isPaymentTypeBank]) {
-                    [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
-                    [self pushToGeneralViewControllerAtIndextPath:indexPath];
-                }
-                //else if ([self isPaymentTypeSaldoTokopedia])
-                    //[_markTextView becomeFirstResponder];
-                else if ([self isPaymentTypeTransfer]) {
-                    AlertInfoPaymentConfirmationView *alertInfo = [AlertInfoPaymentConfirmationView newview];
-                    alertInfo.delegate = self;
-                    [alertInfo show];
-                }
-            }
-            else if (indexPath.row == 1)
-            {
-                if([self isPaymentTypeBank]&&_isNewRekening)
-                     [_accountNameTextField becomeFirstResponder];
-                else if ([self isPaymentTypeBank])
-                    [_totalPaymentTextField becomeFirstResponder];
-            }
-        }
-        break;
-        case 3:
-            if ([self isPaymentTypeBank]&&_isNewRekening)
-            {
-                if (indexPath.row==0)
-                {
-                    [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
-                    [self pushToGeneralViewControllerAtIndextPath:indexPath];
-                }
-                else if (indexPath.row == 1)
-                    [_totalPaymentTextField becomeFirstResponder];
-            }
-            if ([self isPaymentTypeTransfer]) {
-                if (indexPath.row == 0)
-                    [_depositorTextField becomeFirstResponder];
-                if (indexPath.row == 1)
-                {
-                    [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
-                    [self pushToGeneralViewControllerAtIndextPath:indexPath];
-                }
-                if (indexPath.row == 2) {
-                    [_totalPaymentTextField becomeFirstResponder];
-                }
-            }
-            else if ([self isPaymentTypeSaldoTokopedia])
-                 [_passwordTextField becomeFirstResponder];
-            else
-                //[_markTextView becomeFirstResponder];
-        break;
-        case 4:
-            //[_markTextView becomeFirstResponder];
-            break;
-        default:
-            break;
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell == _section2Cell[0]) {
+        [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
+        [self pushToGeneralViewControllerAtIndextPath:indexPath];
+    }
+    if (cell == _section2Cell[1]) {
+        [_totalPaymentTextField becomeFirstResponder];
+    }
+    
+    if (cell == _section1Cell[0]) {
+        AlertDatePickerView *paymentDate = [AlertDatePickerView newview];
+        paymentDate.delegate = self;
+        NSDate *date = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY];
+        paymentDate.currentdate = date;
+        paymentDate.tag = 11;
+        paymentDate.isSetMinimumDate = NO;
+        [paymentDate show];
+    }
+    if (cell == _section1Cell[1]) {
+        [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_PAYMENT_METHOD_KEY];
+        [self pushToGeneralViewControllerAtIndextPath:indexPath];
+    }
+    if (cell == _section1Cell[2]) {
+        [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_BANK_ACCOUNT_KEY];
+        [self pushToGeneralViewControllerAtIndextPath:indexPath];
+    }
+    
+    
+    if (cell == _sectionNewRekeningCells[0]) {
+        BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+        SettingBankNameViewController *vc = [SettingBankNameViewController new];
+        vc.data = @{API_BANK_ID_KEY : @(bank.bank_id)};
+        vc.delegate = self;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (cell == _sectionNewRekeningCells[1]) {
+        [_accountNameTextField becomeFirstResponder];
+    }
+    if (cell == _sectionNewRekeningCells[2]) {
+        [_rekeningNumberTextField becomeFirstResponder];
+    }    if (cell == _sectionNewRekeningCells[3]) {
+        [_branchTextField becomeFirstResponder];
+    }
+    
+    if (cell == _infoCell) {
+        AlertInfoPaymentConfirmationView *alertInfo = [AlertInfoPaymentConfirmationView newview];
+        alertInfo.delegate = self;
+        [alertInfo show];
     }
 }
 
@@ -652,52 +685,10 @@
 
 
 #pragma mark - Request Confirm Payment
--(void)cancelConfirmPayment
+-(NSDictionary *)getParamConfirmationValidation:(BOOL)isStepValidation pictObj:(NSString *)picObj
 {
-    [_requestConfirmPayment cancel];
-    _requestConfirmPayment = nil;
-    [_objectManagerConfirmPayment.operationQueue cancelAllOperations];
-    _objectManagerConfirmPayment = nil;
-}
-
--(void)configureRestKitConfirmPayment
-{
-    _objectManagerConfirmPayment = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    [statusMapping addPropertyMapping:resultRel];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerConfirmPayment addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestConfirmPayment:(id)object
-{
-    if (_requestConfirmPayment.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userInfo = (NSDictionary*)object;
-    NSArray *selectedOrder = [userInfo objectForKey:DATA_SELECTED_ORDER_KEY];
-    MethodList *method = [userInfo objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
+    NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+    MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
@@ -727,6 +718,9 @@
     NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
     NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
     NSString *action = _isConfirmed?ACTION_EDIT_PAYMENT:ACTION_CONFIRM_PAYMENT;
+    if (isStepValidation) {
+        action = ACTION_CONFIRM_PAYMENT_VALIDATION;
+    }
     
     //TODO:: File name & file path
     
@@ -750,132 +744,49 @@
                             API_BANK_ACCOUNT_NUMBER_KEY : bankAccountNumber,
                             API_BANK_ACCOUNT_ID_KEY : bankAccountID,
                             API_SYSTEM_BANK_ID_KEY : systemBankID,
-                            
+                            @"pic_obj":picObj
                             };
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _requestConfirmPayment = [_objectManagerConfirmPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
-//#else
-    _requestConfirmPayment = [_objectManagerConfirmPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-//#endif
-    
-    [_requestConfirmPayment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessConfirmPayment:mappingResult withOperation:operation];
-        [timer invalidate];
-        _tableView.tableFooterView = nil;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureConfirmPayment:error];
-        [timer invalidate];
-        _tableView.tableFooterView = nil;
-    }];
-    
-    [_operationQueue addOperation:_requestConfirmPayment];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutConfirmPayment) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    return param;
 }
 
--(void)requestSuccessConfirmPayment:(id)object withOperation:(RKObjectRequestOperation *)operation
+-(void)requestSuccessConfirmPayment:(TransactionAction*)action
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *order = stat;
-    BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessConfirmPayment:object];
+    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+    if (_isConfirmed) {
+        NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil mengubah konfirmasi pembayaran", nil];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
+        [alert show];
+        [_delegate refreshRequest];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else{
+        NSInteger paymentAmount = [[_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY] integerValue];
+        MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
+        NSMutableArray *viewControllers = [NSMutableArray new];
+        [viewControllers addObjectsFromArray:self.navigationController.viewControllers];
+        
+        TxOrderPaymentConfirmationSuccessViewController *vc = [TxOrderPaymentConfirmationSuccessViewController new];
+        vc.confirmationPayment = method.method_name;
+        vc.delegate = self;
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setGroupingSeparator:@"."];
+        [formatter setGroupingSize:3];
+        [formatter setUsesGroupingSeparator:YES];
+        [formatter setSecondaryGroupingSize:3];
+        NSString *price = (paymentAmount>0)?[formatter stringFromNumber:@(paymentAmount)]:@"0";
+        TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
+        vc.totalPaymentValue = [self isPaymentTypeSaldoTokopedia]?form.order.order_left_amount_idr:[NSString stringWithFormat:@"Rp %@,-",price];
+        vc.methodName = method.method_name;
+        [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
+        self.navigationController.viewControllers = viewControllers;
+        [_delegate refreshRequest];
+        NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+        [_delegate successConfirmPayment:selectedOrder];
+        //[self.navigationController pushViewController:vc animated:YES];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
     }
 }
-
--(void)requestFailureConfirmPayment:(id)object
-{
-    [self requestProcessConfirmPayment:object];
-}
-
--(void)requestProcessConfirmPayment:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionAction *order = stat;
-            BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(order.message_error)
-                {
-                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                if(order.result.is_success == 1)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-                    if (_isConfirmed) {
-                        NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil mengubah konfirmasi pembayaran", nil];
-                        StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
-                        [alert show];
-                        [_delegate refreshRequest];
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }
-                    else{
-                        NSInteger paymentAmount = [[_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY] integerValue];
-                        MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
-                        NSMutableArray *viewControllers = [NSMutableArray new];
-                        [viewControllers addObjectsFromArray:self.navigationController.viewControllers];
-                        
-                        TxOrderPaymentConfirmationSuccessViewController *vc = [TxOrderPaymentConfirmationSuccessViewController new];
-                        vc.confirmationPayment = method.method_name;
-                        vc.delegate = self;
-                        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                        [formatter setGroupingSeparator:@"."];
-                        [formatter setGroupingSize:3];
-                        [formatter setUsesGroupingSeparator:YES];
-                        [formatter setSecondaryGroupingSize:3];
-                        NSString *price = (paymentAmount>0)?[formatter stringFromNumber:@(paymentAmount)]:@"0";
-                        TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
-                        vc.totalPaymentValue = [self isPaymentTypeSaldoTokopedia]?form.order.order_left_amount_idr:[NSString stringWithFormat:@"Rp %@,-",price];
-                        vc.methodName = method.method_name;
-                        [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
-                        self.navigationController.viewControllers = viewControllers;
-                        [_delegate refreshRequest];
-                        NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
-                        [_delegate successConfirmPayment:selectedOrder];
-                        //[self.navigationController pushViewController:vc animated:YES];
-                        
-                        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
-                    }
-                }
-            }
-        }
-        else{
-            
-            [self cancelConfirmPayment];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
--(void)requestTimeoutConfirmPayment
-{
-    [self cancelConfirmPayment];
-}
-
 
 #pragma mark - Methods
 -(BOOL)isPaymentTypeBank
@@ -922,67 +833,34 @@
     
     NSArray *invoices =(_isConfirmed)?formIsConfirmed.order.order_invoice:[form.order.order_invoice componentsSeparatedByString:@","];
     NSString *invoice = [[invoices valueForKey:@"description"] componentsJoinedByString:@",\n"];
+
+    NSString *bankAccountString = selectedBank.bank_account_name?:@"Pilih Akun Bank";
     
-    switch (indexPath.section) {
-        case 0:
-            if (indexPath.row == 0)
-            {
-                UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
-                invoiceLabel.numberOfLines = 0;
-                textString = invoice;
-                [invoiceLabel setCustomAttributedText:invoice];
-                
-                //Calculate the expected size based on the font and linebreak mode of your label
-                CGSize maximumLabelSize = CGSizeMake(190,9999);
-                
-                CGSize expectedLabelSize = [textString sizeWithFont:invoiceLabel.font
-                                                  constrainedToSize:maximumLabelSize
-                                                      lineBreakMode:invoiceLabel.lineBreakMode];
-                
-                //adjust the label the the new height.
-                CGRect newFrame = invoiceLabel.frame;
-                newFrame.size.height = expectedLabelSize.height + 26;
-                invoiceLabel.frame = newFrame;
-            }
-            else if (indexPath.row == 1) textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;
-            break;
-        case 1:
-            if (indexPath.row == 0) textString = paymentDateString;
-            else if (indexPath.row == 1)textString = selectedMethod.method_name;
-            else if (indexPath.row == 2)
-            {
-                if (_bankAccount.count==0)
-                {
-                    textString = @"Belum Memiliki Akun Bank";
-                    cell.detailTextLabel.textColor = [UIColor grayColor];
-                    cell.accessoryType = UITableViewCellAccessoryNone;
-                }
-                else
-                {
-                    textString = selectedBank.bank_account_name?:@"Pilih Akun Bank";
-                    cell.detailTextLabel.textColor = [UIColor colorWithRed:(0.f/255.f) green:122.f/255.f blue:255.f/255.f alpha:1];
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                }
-            }
-            break;
-        case 2:
-            if (indexPath.row ==0)
-            {
-                if ([self isPaymentTypeBank]&&_isNewRekening)textString = selectedBank.bank_name?:@"Pilih Nama Bank";
-                else if ([self isPaymentTypeBank]) textString = systemBankString;
-            }
-            break;
-        case 3:
-            if (indexPath.row == 0 && [self isPaymentTypeBank]&&_isNewRekening)
-                textString = systemBankString;
-            if ((indexPath.row == 1)&&[self isPaymentTypeTransfer])
-                textString = systemBankString;
-            break;
-        case 4:
-            
-        default:
-            break;
+    if (cell == _section0Cell[0]) {
+        UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
+        textString = invoice;
+        [invoiceLabel setCustomAttributedText:invoice];
     }
+    if (cell == _section0Cell[1]) {
+        textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;
+    }
+    
+    if (cell == _section1Cell[0]) {
+        textString = paymentDateString;
+    }
+    if (cell == _section1Cell[1]) {
+        textString = selectedMethod.method_name;
+    }
+    if (cell == _section1Cell[2]) {
+        textString = bankAccountString;
+    }
+    if (cell == _section2Cell[0]) {
+        textString = systemBankString;
+    }
+    if (cell == _sectionNewRekeningCells[0]) {
+        _NewBankNameLabel.text = selectedBank.bank_name?:@"Pilih Nama Bank";
+    }
+    
     [cell.detailTextLabel setText:textString animated:YES];
 }
 
@@ -1595,6 +1473,7 @@
     
     return _objectManager;
 }
+
 
 -(void)dealloc
 {
