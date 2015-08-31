@@ -22,6 +22,7 @@
 #import "UploadImageParams.h"
 #import "RequestUploadImage.h"
 
+#import "ContactUsActionResponse.h"
 
 @interface ContactUsFormViewController ()
 <
@@ -31,10 +32,11 @@
     GenerateHostDelegate,
     RequestUploadImageDelegate,
     UITableViewDataSource,
-    UITableViewDelegate
+    UITableViewDelegate,
+    UITextViewDelegate
 >
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *typeCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *problemCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *problemDetailCell;
@@ -49,10 +51,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *invoiceTextField;
 @property (weak, nonatomic) IBOutlet TKPDTextView *messageTextView;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *uploadPhotoScrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *uploadPhotoScrollView;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *photoDeleteButtons;
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *photoButtons;
 
 @property (strong, nonatomic) NSMutableArray *uploadedPhotos;
 @property (strong, nonatomic) NSMutableArray *uploadedPhotosURL;
@@ -66,20 +67,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.title = @"Hubungi Kami";
+
     self.messageTextView.placeholder = @"Keterangan Masalah Anda";
+
     [self.uploadPhotoScrollView addSubview:_uploadPhotoCellSubview];
     self.uploadPhotoScrollView.contentSize = _uploadPhotoCellSubview.frame.size;
     
-    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim Pesan"
-                                                                   style:UIBarButtonItemStyleDone
-                                                                  target:self
-                                                                  action:@selector(sendMessage)];
-    self.navigationItem.rightBarButtonItem = saveButton;
-    
     self.photoImageViews = [NSArray sortViewsWithTagInArray:_photoImageViews];
-    self.photoButtons = [NSArray sortViewsWithTagInArray:_photoButtons];
     self.photoDeleteButtons = [NSArray sortViewsWithTagInArray:_photoDeleteButtons];
+    
+    [self showSaveButton];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -148,25 +147,46 @@
     return height;
 }
 
-#pragma mark - Scroll view delegate
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [self.view endEditing:YES];
-}
-
 #pragma mark - Actions
 
 - (IBAction)tap:(id)sender {
-
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *tap = sender;
+        if ([tap.view isKindOfClass:[UIImageView class]]) {
+            [self openPhotoGallery];
+        }
+    } else if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = sender;
+        if (button.tag <= 5) {
+            NSInteger index = button.tag-1;
+            if (_uploadedPhotos.count >= button.tag) {
+                [_uploadedPhotos removeObjectAtIndex:index];
+            }
+            if (_uploadedPhotosURL.count >= button.tag) {
+                [_uploadedPhotosURL removeObjectAtIndex:index];
+            }
+            if (_selectedImagesCameraController.count >= button.tag) {
+                [_selectedImagesCameraController removeObjectAtIndex:index];
+            }
+            if (_selectedIndexPathCameraController.count >= button.tag) {
+                [_selectedIndexPathCameraController removeObjectAtIndex:index];
+            }
+            UIImageView *imageView = [self.photoImageViews objectAtIndex:index];
+            imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
+            imageView.userInteractionEnabled = YES;
+            UIButton *button = [self.photoDeleteButtons objectAtIndex:index];
+            button.hidden = YES;
+        }
+    }
 }
 
 #pragma mark - Keyboard Notification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    NSDictionary* keyboardInfo = [notification userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    NSDictionary *keyboardInfo = [notification userInfo];
+    NSValue *keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
@@ -217,33 +237,19 @@
     [_uploadedPhotos removeAllObjects];
     [_uploadedPhotosURL removeAllObjects];
     
-//    self.photoScrollView.hidden = NO;
-//    
-//    NSInteger maxIndex = selectedImages.count;
-//    for (int i = 0; i < self.photosImageView.count; i++) {
-//        UIImageView *imageView = [self.photosImageView objectAtIndex:i];
-//        imageView.userInteractionEnabled = NO;
-//        if (i < maxIndex) {
-//            NSDictionary *photo = [[selectedImages objectAtIndex:i] objectForKey:@"photo"];
-//            UIImage *image = [photo objectForKey:@"photo"];
-//            imageView.image = image;
-//            imageView.hidden = NO;
-//            imageView.alpha = 0.7;
-//        } else {
-//            imageView.hidden = YES;
-//        }
-//        UIButton *button = [self.removePhotoButton objectAtIndex:i];
-//        button.hidden = YES;
-//    }
-//    
-//    if (selectedImages.count < 5) {
-//        CGFloat width = (90 * maxIndex) + 90;
-//        self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
-//    } else {
-//        CGFloat width = 90 * maxIndex;
-//        self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
-//    }
-//    
+    NSInteger maxIndex = selectedImages.count;
+    for (int i = 0; i < self.photoImageViews.count; i++) {
+        UIImageView *imageView = [self.photoImageViews objectAtIndex:i];
+        if (i < maxIndex) {
+            NSDictionary *photo = [[selectedImages objectAtIndex:i] objectForKey:@"photo"];
+            UIImage *image = [photo objectForKey:@"photo"];
+            imageView.image = image;
+            imageView.userInteractionEnabled = NO;
+            UIButton *button = [self.photoDeleteButtons objectAtIndex:i];
+            button.hidden = NO;
+        }
+    }
+    
 //    if (_generateHost) {
 //        for (NSDictionary *photo in _selectedImagesCameraController) {
 //            [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : photo}];
@@ -251,12 +257,55 @@
 //    } else {
 //        [_requestHost requestGenerateHost];
 //    }
-//    
-//    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-//    [indicatorView startAnimating];
-//    UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
-//    self.navigationItem.rightBarButtonItem = indicatorBarButton;
 }
 
+- (void)showLoadingBar {
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [indicatorView startAnimating];
+    UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
+    self.navigationItem.rightBarButtonItem = indicatorBarButton;
+}
+
+- (void)showSaveButton {
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim Pesan"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    self.navigationItem.rightBarButtonItem = saveButton;
+}
+
+#pragma mark - Text view delegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    CGPoint point = CGPointMake(0, self.tableView.contentOffset.y+self.tableView.contentInset.bottom);
+    [self.tableView setContentOffset:point animated:YES];
+}
+
+#pragma mark - Tokopedia network manager delegate
+
+- (NSString *)getPath:(int)tag {
+    return @"";
+}
+
+- (NSDictionary *)getParameter:(int)tag {
+    return @{};
+}
+
+- (id)getObjectManager:(int)tag {
+    return nil;
+}
+
+- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
+    ContactUsActionResponse *response = [mappingResult.dictionary objectForKey:@""];
+    return response.status;
+}
+
+- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    
+}
 
 @end
