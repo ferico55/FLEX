@@ -558,27 +558,27 @@
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
 {
     ShopContainerViewController *controller = [[ShopContainerViewController alloc] init];
-    CatalogShops *shop = [_catalog.result.catalog_shops objectAtIndex:indexPath.row];
+    CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
     controller.data = @{@"shop_id" : shop.shop_id, @"shop_name" : shop.shop_name};
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath
 {
-    ProductList *product = [[[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
+    ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
     [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectBuyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    ProductList *product = [[[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
+    ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
     [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectOtherProductAtIndexPath:(NSIndexPath *)indexPath
 {
     CatalogProductViewController *controller = [CatalogProductViewController new];
-    controller.product_list = [[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list];
+    controller.product_list = [[_catalog_shops objectAtIndex:indexPath.row] product_list];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
