@@ -363,13 +363,13 @@ UIAlertViewDelegate
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
     
-    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
-        _dinkButton.hidden = NO;
-        _buyButton.hidden = YES;
-    } else {
-        _dinkButton.hidden = YES;
-        _buyButton.hidden = NO;
-    }
+//    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
+//        _dinkButton.hidden = NO;
+//        _buyButton.hidden = YES;
+//    } else {
+//        _dinkButton.hidden = YES;
+//        _buyButton.hidden = NO;
+//    }
     
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
@@ -2049,6 +2049,7 @@ UIAlertViewDelegate
             
             if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin] && !_product.isDummyProduct) {
                 //MyShop
+                [_dinkButton setHidden:NO];
                 UIBarButtonItem *barbutton;
                 barbutton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting.png"] withAction:@selector(gestureSetting:)];
                 
@@ -2085,6 +2086,11 @@ UIAlertViewDelegate
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
             } else {
+                if(!_product.isDummyProduct) {
+                    [_buyButton setHidden:NO];
+                }
+                
+                
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
@@ -2182,7 +2188,7 @@ UIAlertViewDelegate
             //TODO::
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
-            backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+            backgroundGreyView.backgroundColor = [UIColor clearColor];
             [self.view insertSubview:backgroundGreyView belowSubview:self.table];
             
         }
