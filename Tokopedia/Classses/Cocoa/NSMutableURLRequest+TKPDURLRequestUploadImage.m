@@ -55,7 +55,6 @@
     [request setHTTPBody:body];
     
     NSString *urlString = [NSString stringWithFormat:@"http://%@/%@",uploadHost,@"ws/action/upload-image.pl"];
-    //NSString *urlString = @"http://tokopedia.dev/ws/action/upload-image.pl";
     
     [request setURL:[NSURL URLWithString:urlString]];
     

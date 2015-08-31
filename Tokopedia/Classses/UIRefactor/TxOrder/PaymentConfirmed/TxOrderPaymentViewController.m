@@ -33,6 +33,7 @@
 #import "camera.h"
 
 #import "RequestPayment.h"
+#import "AlertInfoView.h"
 
 @interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate, RequestPaymentDelegate>
 {
@@ -209,7 +210,11 @@
 }
 
 - (IBAction)tapUploadProofInfo:(id)sender {
-
+    AlertInfoView *alert = [AlertInfoView new];
+    alert.delegate = self;
+    [alert setText:@"Umumnya verifikasi pembayaran memakan waktu maksimal 1x24 jam."];
+    [alert setDetailText:@"Apabila pembayaran Anda belum juga diverifikasi, kami sarankan untuk mengupload bukti bayar Anda, sehingga dapat membantu mempercepat proses verifikasi pembayaran"];
+    [alert show];
 }
 
 - (IBAction)tap:(id)sender {
@@ -412,9 +417,12 @@
         }
             break;
         case 1:
-            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening ) && indexPath.row == 2) {
+        {
+            BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || !selectedBank ) && indexPath.row == 2) {
                 return 0;
             }
+        }
             break;
         case 2:
             if (![self isPaymentTypeTransfer]) {
@@ -679,7 +687,7 @@
 
 
 #pragma mark - Request Confirm Payment
--(NSDictionary *)getParamConfirmationValidaion:(BOOL)isStepValidation
+-(NSDictionary *)getParamConfirmationValidation:(BOOL)isStepValidation pictObj:(NSString *)picObj
 {
     NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
@@ -738,6 +746,7 @@
                             API_BANK_ACCOUNT_NUMBER_KEY : bankAccountNumber,
                             API_BANK_ACCOUNT_ID_KEY : bankAccountID,
                             API_SYSTEM_BANK_ID_KEY : systemBankID,
+                            @"pic_obj":picObj
                             };
     return param;
 }

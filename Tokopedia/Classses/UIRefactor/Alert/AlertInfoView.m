@@ -44,6 +44,8 @@
     _detailTextLabel.attributedText = attributedText;
     
     [_detailTextLabel sizeToFit];
+    
+    CGRect frame = _detailTextLabel.frame.origin.x + _detailTextLabel.frame.size.height
 
 }
 

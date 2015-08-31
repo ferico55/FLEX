@@ -13,12 +13,15 @@
 #import "objectManagerPayment.h"
 #import "RequestGenerateHost.h"
 #import "string_tx_order.h"
+#import "AlertInfoView.h"
 
 @implementation RequestPayment
 {
     objectManagerPayment *_objectManager;
     TokopediaNetworkManager *_networkManagerValidation;
     TokopediaNetworkManager *_networkManagerSubmit;
+    
+    UploadImage *_uploadImageObj;
 }
 
 -(TokopediaNetworkManager*)networkManagerValidation
@@ -38,7 +41,7 @@
         _networkManagerSubmit.tagRequest = TAG_REQUEST_SUBMIT;
         _networkManagerSubmit.delegate = self;
     }
-    return _networkManagerValidation;
+    return _networkManagerSubmit;
 }
 
 -(objectManagerPayment*)objectManager
@@ -110,7 +113,8 @@
 #pragma mark - Request Image Delegate
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
-    [[self networkManagerSubmit] doRequest];
+    _uploadImageObj = uploadImage;
+    [self doRequestSubmit];
 }
 
 -(void)failedUploadErrorMessage:(NSArray *)errorMessage
@@ -129,10 +133,10 @@
 -(NSDictionary *)getParameter:(int)tag
 {
     if (tag == TAG_REQUEST_VALIDATION) {
-        return [_delegate getParamConfirmationValidaion:YES];
+        return [_delegate getParamConfirmationValidation:YES pictObj:@""];
     }
     if (tag == TAG_REQUEST_SUBMIT) {
-        return [_delegate getParamConfirmationValidaion:NO];
+        return [_delegate getParamConfirmationValidation:NO pictObj:_uploadImageObj.result.pic_obj?:@""];
     }
     return nil;
 }
