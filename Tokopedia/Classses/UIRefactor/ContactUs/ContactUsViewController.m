@@ -22,6 +22,7 @@
     UICollectionViewDataSource,
     UICollectionViewDelegate,
     UICollectionViewDelegateFlowLayout,
+    UIWebViewDelegate,
     TokopediaNetworkManagerDelegate,
     GeneralTableViewControllerDelegate
 >
@@ -33,6 +34,7 @@
     TicketCategory *_selectedType;
     TicketCategory *_selectedProblem;
     TicketCategory *_selectedDetailProblem;
+    CGFloat _webViewHeight;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -152,7 +154,7 @@
     } else if (indexPath.section == 1) {
         height = 44;
     } else if (indexPath.section == 2) {
-        height = 200;
+        height = self.descriptionWebView.scrollView.contentSize.height + 20;
     }
     return height;
 }
@@ -371,35 +373,32 @@
                     _selectedProblem = category;
                 }
             }
+            [self.tableView reloadData];
         } else if (indexPath.row == 1) {
             for (TicketCategory *category in _selectedProblem.ticket_category_child) {
                 if ([category.ticket_category_name isEqualToString:object]) {
                     _selectedDetailProblem = category;
                     NSString *string = category.ticket_category_description;
-                    UIFont *font = [UIFont fontWithName:@"Helvetica" size:12];
+                    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
                     UIColor *color = [UIColor blackColor];
                     NSString *description = [self htmlFromBodyString:string
                                                             textFont:font
                                                            textColor:color];
+                    [self.descriptionWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
                     [self.descriptionWebView loadHTMLString:description baseURL:nil];
-                    self.descriptionWebView.delegate = self;
-                    self.descriptionWebView.scrollView.scrollEnabled = NO;
-                    self.descriptionWebView.scrollView.bounces = NO;
+                    self.tableView.tableFooterView = _footerView;
                 }
             }
         }
     }
-    [self.tableView reloadData];
 }
 
 #pragma mark - Web view methods
 
--(CGSize)sizeOfText:(NSString *)textToMesure widthOfTextView:(CGFloat)width withFont:(UIFont*)font
-{
-    CGSize ts = [textToMesure sizeWithFont:font
-                         constrainedToSize:CGSizeMake(width-20.0, FLT_MAX)
-                             lineBreakMode:NSLineBreakByWordWrapping];
-    return ts;
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.height"] floatValue];
+    self.descriptionWebView.scrollView.contentSize = CGSizeMake(_descriptionWebView.frame.size.width, height);
+    [self.tableView reloadData];
 }
 
 - (NSString *)htmlFromBodyString:(NSString *)htmlBodyString
