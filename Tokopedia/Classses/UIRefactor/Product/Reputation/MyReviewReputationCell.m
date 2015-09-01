@@ -272,7 +272,7 @@
     }
         
         
-    viewFlagReadUnread.hidden = [object.unassessed_reputation_review isEqualToString:@"0"] && [object.updated_reputation_review isEqualToString:@"0"] && removeFlag;
+    viewFlagReadUnread.hidden = [object.show_bookmark isEqualToString:@"1"]?NO:YES;
 
         
     
