@@ -227,7 +227,7 @@
         if (!detailOrder.img_proof_url || [detailOrder.img_proof_url isEqualToString:@""]) {
             rowHeight = 130;
         }
-        else rowHeight = 158; //158 //130
+        else rowHeight = 157; //158 //130
     }
     else if (indexPath.row == 1)
         rowHeight = 130;
