@@ -156,6 +156,10 @@
         [_delegate setIsRefresh:_isRefresh];
     }
     
+    UIEdgeInsets inset = _tableView.contentInset;
+    inset.bottom = 20;
+    [_tableView setContentInset:inset];
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
@@ -885,6 +889,7 @@
                 if (order.result.is_success == 1) {
                     NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
                     [self showStickyAlertSuccessMessage:array];
+                    [self refreshRequest];
                 }
                 else
                 {

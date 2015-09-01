@@ -1081,17 +1081,6 @@
 		45D706751B9460650088DFBF /* ProductSingleViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D7FF7C1B9460630088DFBF /* ProductSingleViewCell.xib */; };
 		45D706761B9460650088DFBF /* ProductThumbCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF7E1B9460630088DFBF /* ProductThumbCell.m */; };
 		45D706771B9460650088DFBF /* ProductThumbCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D7FF7F1B9460630088DFBF /* ProductThumbCell.xib */; };
-		45D706781B9460650088DFBF /* VTAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF831B9460630088DFBF /* VTAddress.m */; };
-		45D706791B9460650088DFBF /* VTBaseTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF851B9460630088DFBF /* VTBaseTransaction.m */; };
-		45D7067A1B9460650088DFBF /* VTBaseTransactionMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF871B9460630088DFBF /* VTBaseTransactionMethod.m */; };
-		45D7067B1B9460650088DFBF /* VTCardDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF891B9460630088DFBF /* VTCardDetails.m */; };
-		45D7067C1B9460650088DFBF /* VTConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF8B1B9460630088DFBF /* VTConfig.m */; };
-		45D7067D1B9460650088DFBF /* VTCustomerDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF8D1B9460630088DFBF /* VTCustomerDetails.m */; };
-		45D7067E1B9460650088DFBF /* VTDirect.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF8F1B9460630088DFBF /* VTDirect.m */; };
-		45D7067F1B9460650088DFBF /* VTiOSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF911B9460630088DFBF /* VTiOSAPI.m */; };
-		45D706801B9460650088DFBF /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF931B9460630088DFBF /* VTItemDetails.m */; };
-		45D706811B9460650088DFBF /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF951B9460630088DFBF /* VTToken.m */; };
-		45D706821B9460650088DFBF /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7FF971B9460630088DFBF /* VTTransactionDetails.m */; };
 		45D706831B9460650088DFBF /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = 45D7FF9A1B9460630088DFBF /* TokopediaDB.db */; };
 		45D706841B9460650088DFBF /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 45D7FF9C1B9460630088DFBF /* GothamBlack.ttf */; };
 		45D706851B9460650088DFBF /* GothamBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 45D7FF9D1B9460630088DFBF /* GothamBook.ttf */; };
@@ -4225,28 +4214,6 @@
 		45D7FF7D1B9460630088DFBF /* ProductThumbCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductThumbCell.h; sourceTree = "<group>"; };
 		45D7FF7E1B9460630088DFBF /* ProductThumbCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductThumbCell.m; sourceTree = "<group>"; };
 		45D7FF7F1B9460630088DFBF /* ProductThumbCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductThumbCell.xib; sourceTree = "<group>"; };
-		45D7FF821B9460630088DFBF /* VTAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTAddress.h; sourceTree = "<group>"; };
-		45D7FF831B9460630088DFBF /* VTAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTAddress.m; sourceTree = "<group>"; };
-		45D7FF841B9460630088DFBF /* VTBaseTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBaseTransaction.h; sourceTree = "<group>"; };
-		45D7FF851B9460630088DFBF /* VTBaseTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBaseTransaction.m; sourceTree = "<group>"; };
-		45D7FF861B9460630088DFBF /* VTBaseTransactionMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBaseTransactionMethod.h; sourceTree = "<group>"; };
-		45D7FF871B9460630088DFBF /* VTBaseTransactionMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBaseTransactionMethod.m; sourceTree = "<group>"; };
-		45D7FF881B9460630088DFBF /* VTCardDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCardDetails.h; sourceTree = "<group>"; };
-		45D7FF891B9460630088DFBF /* VTCardDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCardDetails.m; sourceTree = "<group>"; };
-		45D7FF8A1B9460630088DFBF /* VTConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTConfig.h; sourceTree = "<group>"; };
-		45D7FF8B1B9460630088DFBF /* VTConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTConfig.m; sourceTree = "<group>"; };
-		45D7FF8C1B9460630088DFBF /* VTCustomerDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCustomerDetails.h; sourceTree = "<group>"; };
-		45D7FF8D1B9460630088DFBF /* VTCustomerDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCustomerDetails.m; sourceTree = "<group>"; };
-		45D7FF8E1B9460630088DFBF /* VTDirect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTDirect.h; sourceTree = "<group>"; };
-		45D7FF8F1B9460630088DFBF /* VTDirect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTDirect.m; sourceTree = "<group>"; };
-		45D7FF901B9460630088DFBF /* VTiOSAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTiOSAPI.h; sourceTree = "<group>"; };
-		45D7FF911B9460630088DFBF /* VTiOSAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTiOSAPI.m; sourceTree = "<group>"; };
-		45D7FF921B9460630088DFBF /* VTItemDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTItemDetails.h; sourceTree = "<group>"; };
-		45D7FF931B9460630088DFBF /* VTItemDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTItemDetails.m; sourceTree = "<group>"; };
-		45D7FF941B9460630088DFBF /* VTToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTToken.h; sourceTree = "<group>"; };
-		45D7FF951B9460630088DFBF /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
-		45D7FF961B9460630088DFBF /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
-		45D7FF971B9460630088DFBF /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
 		45D7FF9A1B9460630088DFBF /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		45D7FF9C1B9460630088DFBF /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
 		45D7FF9D1B9460630088DFBF /* GothamBook.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBook.ttf; sourceTree = "<group>"; };
@@ -4820,7 +4787,6 @@
 				45D7F7751B9460610088DFBF /* Encryption */,
 				45D7F77D1B9460610088DFBF /* Object */,
 				45D7FADE1B9460620088DFBF /* UIRefactor */,
-				45D7FF801B9460630088DFBF /* Veritrans */,
 			);
 			path = Classses;
 			sourceTree = "<group>";
@@ -8482,43 +8448,6 @@
 			path = Product;
 			sourceTree = "<group>";
 		};
-		45D7FF801B9460630088DFBF /* Veritrans */ = {
-			isa = PBXGroup;
-			children = (
-				45D7FF811B9460630088DFBF /* VTiOSAPI */,
-			);
-			path = Veritrans;
-			sourceTree = "<group>";
-		};
-		45D7FF811B9460630088DFBF /* VTiOSAPI */ = {
-			isa = PBXGroup;
-			children = (
-				45D7FF821B9460630088DFBF /* VTAddress.h */,
-				45D7FF831B9460630088DFBF /* VTAddress.m */,
-				45D7FF841B9460630088DFBF /* VTBaseTransaction.h */,
-				45D7FF851B9460630088DFBF /* VTBaseTransaction.m */,
-				45D7FF861B9460630088DFBF /* VTBaseTransactionMethod.h */,
-				45D7FF871B9460630088DFBF /* VTBaseTransactionMethod.m */,
-				45D7FF881B9460630088DFBF /* VTCardDetails.h */,
-				45D7FF891B9460630088DFBF /* VTCardDetails.m */,
-				45D7FF8A1B9460630088DFBF /* VTConfig.h */,
-				45D7FF8B1B9460630088DFBF /* VTConfig.m */,
-				45D7FF8C1B9460630088DFBF /* VTCustomerDetails.h */,
-				45D7FF8D1B9460630088DFBF /* VTCustomerDetails.m */,
-				45D7FF8E1B9460630088DFBF /* VTDirect.h */,
-				45D7FF8F1B9460630088DFBF /* VTDirect.m */,
-				45D7FF901B9460630088DFBF /* VTiOSAPI.h */,
-				45D7FF911B9460630088DFBF /* VTiOSAPI.m */,
-				45D7FF921B9460630088DFBF /* VTItemDetails.h */,
-				45D7FF931B9460630088DFBF /* VTItemDetails.m */,
-				45D7FF941B9460630088DFBF /* VTToken.h */,
-				45D7FF951B9460630088DFBF /* VTToken.m */,
-				45D7FF961B9460630088DFBF /* VTTransactionDetails.h */,
-				45D7FF971B9460630088DFBF /* VTTransactionDetails.m */,
-			);
-			path = VTiOSAPI;
-			sourceTree = "<group>";
-		};
 		45D7FF981B9460630088DFBF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -10291,7 +10220,6 @@
 				45D703F71B9460650088DFBF /* AlertListView.m in Sources */,
 				45D703711B9460650088DFBF /* Shipment.m in Sources */,
 				45D7045E1B9460650088DFBF /* DepositSummaryViewController.m in Sources */,
-				45D706801B9460650088DFBF /* VTItemDetails.m in Sources */,
 				45D705611B9460650088DFBF /* ProductQuantityCell.m in Sources */,
 				45D702F91B9460650088DFBF /* TotalLikeDislikePost.m in Sources */,
 				45D705571B9460650088DFBF /* RetryCollectionReusableView.m in Sources */,
@@ -10349,7 +10277,6 @@
 				45D7033A1B9460650088DFBF /* ReputationDetail.m in Sources */,
 				45D7057F1B9460650088DFBF /* DetailShipmentStatusCell.m in Sources */,
 				45D705331B9460650088DFBF /* MyReviewReputationCell.m in Sources */,
-				45D706821B9460650088DFBF /* VTTransactionDetails.m in Sources */,
 				45D704D61B9460650088DFBF /* PurchaseViewController.m in Sources */,
 				45D702F51B9460650088DFBF /* LikeDislikePost.m in Sources */,
 				45D703B51B9460650088DFBF /* TransactionVoucherData.m in Sources */,
@@ -10368,7 +10295,6 @@
 				45D703E11B9460650088DFBF /* CreatePasswordViewController.m in Sources */,
 				45D702CA1B9460650088DFBF /* InboxResolutionCenterList.m in Sources */,
 				45D7033D1B9460650088DFBF /* ShopBadgeLevel.m in Sources */,
-				45D706781B9460650088DFBF /* VTAddress.m in Sources */,
 				45D7042A1B9460650088DFBF /* CategoryMenuViewController.m in Sources */,
 				45D7054F1B9460650088DFBF /* ReputationMyReviewViewController.m in Sources */,
 				45D702C11B9460650088DFBF /* InboxMessageDetail.m in Sources */,
@@ -10381,7 +10307,6 @@
 				45D704C51B9460650088DFBF /* ReviewFormViewController.m in Sources */,
 				45D705C51B9460650088DFBF /* ShopHeaderViewController.m in Sources */,
 				45D7036D1B9460650088DFBF /* ClosedInfo.m in Sources */,
-				45D706791B9460650088DFBF /* VTBaseTransaction.m in Sources */,
 				45D702BB1B9460650088DFBF /* HotlistList.m in Sources */,
 				45D7042D1B9460650088DFBF /* RequestCategory.m in Sources */,
 				45D704041B9460650088DFBF /* CameraController.m in Sources */,
@@ -10507,7 +10432,6 @@
 				45D703CD1B9460650088DFBF /* TxOrderPaymentEditForm.m in Sources */,
 				45D703511B9460650088DFBF /* WarehouseResult.m in Sources */,
 				45D702901B9460650088DFBF /* Product.m in Sources */,
-				45D7067F1B9460650088DFBF /* VTiOSAPI.m in Sources */,
 				45D7033E1B9460650088DFBF /* ShopReputation.m in Sources */,
 				45D702E41B9460650088DFBF /* DetailInboxTicket.m in Sources */,
 				45D702801B9460650088DFBF /* CatalogImages.m in Sources */,
@@ -10544,7 +10468,6 @@
 				45D705291B9460650088DFBF /* ProductListMyShopFilterViewController.m in Sources */,
 				45D702811B9460650088DFBF /* CatalogInfo.m in Sources */,
 				45D702C51B9460650088DFBF /* InboxMessageList.m in Sources */,
-				45D7067E1B9460650088DFBF /* VTDirect.m in Sources */,
 				45D702D01B9460650088DFBF /* ResolutionCenterDetailResult.m in Sources */,
 				45D7056F1B9460650088DFBF /* FilterSalesTransactionListViewController.m in Sources */,
 				45D703851B9460650088DFBF /* ShippingInfoResult.m in Sources */,
@@ -10568,7 +10491,6 @@
 				45D705871B9460650088DFBF /* ShipmentStatusViewController.m in Sources */,
 				45D702561B9460650088DFBF /* NSUserDefaultCategory.m in Sources */,
 				45D708F41B9460650088DFBF /* HPTextViewInternal.m in Sources */,
-				45D7067D1B9460650088DFBF /* VTCustomerDetails.m in Sources */,
 				45D702E71B9460650088DFBF /* InboxTicketDetailAttachment.m in Sources */,
 				45D703501B9460650088DFBF /* WarehouseResponse.m in Sources */,
 				45D704B51B9460650088DFBF /* ResolutionCenterDetailCell.m in Sources */,
@@ -10612,7 +10534,6 @@
 				45D703A41B9460650088DFBF /* OrderConfirmationDetail.m in Sources */,
 				45D702481B9460650088DFBF /* URLCacheConnection.m in Sources */,
 				45D7052F1B9460650088DFBF /* DetailMyReviewReputationViewController.m in Sources */,
-				45D7067B1B9460650088DFBF /* VTCardDetails.m in Sources */,
 				45D702591B9460650088DFBF /* TKPDSecureStorage.m in Sources */,
 				45D703C21B9460650088DFBF /* TxOrderConfirmedDetailOrder.m in Sources */,
 				45D7062C1B9460650088DFBF /* TransactionObjectManager.m in Sources */,
@@ -10674,7 +10595,6 @@
 				45D703C01B9460650088DFBF /* TxOrderConfirmedDetail.m in Sources */,
 				45D7037D1B9460650088DFBF /* SettingPaymentResult.m in Sources */,
 				45D7065F1B9460650088DFBF /* ProfileBiodataShopCell.m in Sources */,
-				45D7067C1B9460650088DFBF /* VTConfig.m in Sources */,
 				45D702ED1B9460650088DFBF /* InboxTicketTicket.m in Sources */,
 				45D703731B9460650088DFBF /* Shop.m in Sources */,
 				45D703EC1B9460650088DFBF /* RequestAddress.m in Sources */,
@@ -10690,7 +10610,6 @@
 				45D703221B9460650088DFBF /* ListFavoriteShop.m in Sources */,
 				45D703901B9460650088DFBF /* TransactionActionResult.m in Sources */,
 				45D703AB1B9460650088DFBF /* CCData.m in Sources */,
-				45D706811B9460650088DFBF /* VTToken.m in Sources */,
 				45D703B91B9460650088DFBF /* TxEMoneyResult.m in Sources */,
 				45D7038D1B9460650088DFBF /* TrackOrderHistory.m in Sources */,
 				45D705BF1B9460650088DFBF /* ShopFavoritedCell.m in Sources */,
@@ -10706,7 +10625,6 @@
 				45D706511B9460650088DFBF /* TxOrderConfirmedViewController.m in Sources */,
 				45D703F51B9460650088DFBF /* AlertInfoView.m in Sources */,
 				45D705E61B9460650088DFBF /* ShopProductPageViewController.m in Sources */,
-				45D7067A1B9460650088DFBF /* VTBaseTransactionMethod.m in Sources */,
 				45D705FD1B9460650088DFBF /* ChangeMessageUrlTagHandler.m in Sources */,
 				45D702D11B9460650088DFBF /* ResolutionDetailConversation.m in Sources */,
 				45D7027C1B9460650088DFBF /* DepositSummaryDetail.m in Sources */,
@@ -11125,8 +11043,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -11166,8 +11084,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -11221,7 +11139,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c177d300-9039-4d88-9dfe-5ae0433db037";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -11262,7 +11180,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c177d300-9039-4d88-9dfe-5ae0433db037";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;

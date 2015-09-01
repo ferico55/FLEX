@@ -108,6 +108,7 @@
 {
     StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:_delegate];
     [stickyAlertView show];
+    [_delegate actionAfterRequest];
 }
 
 #pragma mark - Request Image Delegate
@@ -125,7 +126,7 @@
 
 -(void)failedUploadObject:(id)object
 {
-    
+    [_delegate actionAfterRequest];
 }
 
 #pragma mark - Network Manager Delegate
@@ -213,12 +214,14 @@
             NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:_delegate];
             [alert show];
+            
         }
         if(order.result.is_success == 1)
         {
             [_delegate requestSuccessConfirmPayment:order];
         }
     }
+    [_delegate actionAfterRequest];
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
@@ -234,12 +237,11 @@
     
     StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_delegate];
     [failedAlert show];
-    
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-
+    [_delegate actionAfterRequest];
 }
 
 @end

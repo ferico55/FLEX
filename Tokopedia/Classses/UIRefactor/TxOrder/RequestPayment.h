@@ -17,7 +17,7 @@
 -(NSDictionary *)getImageObject;
 -(NSDictionary *)getParamConfirmationValidation:(BOOL)isStepValidation pictObj:(NSString*)picObj;
 -(void)requestSuccessConfirmPayment:(TransactionAction*)action;
-
+-(void)actionAfterRequest;
 @end
 
 @interface RequestPayment : NSObject <GenerateHostDelegate, TokopediaNetworkManagerDelegate, RequestUploadImageDelegate>

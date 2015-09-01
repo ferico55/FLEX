@@ -745,7 +745,7 @@ Contoh : 157500</string>
                                 <rect key="frame" x="176" y="0.0" width="129" height="44"/>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="-1" id="n9p-Bo-e9K"/>
                                 </connections>
@@ -770,7 +770,7 @@ Contoh : 157500</string>
                     <constraint firstAttribute="bottom" secondItem="BkY-S0-wRx" secondAttribute="bottom" id="dYo-2k-jWZ"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="-277" y="738"/>
+            <point key="canvasLocation" x="-277" y="632"/>
         </tableViewCell>
         <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="125" id="UIx-Zm-JNY" userLabel="cabang Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="125"/>

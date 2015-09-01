@@ -59,6 +59,7 @@
     
     TKPDPhotoPicker *_photoPicker;
     RequestPayment *_requestPayment;
+    UIAlertView *_loadingAlertView;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -223,7 +224,7 @@
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         if (button.tag == TAG_BAR_BUTTON_TRANSACTION_DONE) {
             if ([self isValidInput]) {
-                [[self requestPayment] doRequestPaymentConfirmation];
+                [self requestPaymentConfirmation];
             }
         }
         else
@@ -233,13 +234,40 @@
         }
     }
     else{
-        _isNewRekening = !(_isNewRekening);
         if (_isNewRekening) {
             BankAccountFormList *bankAccount = [BankAccountFormList new];
             [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
         }
+        _isNewRekening = !(_isNewRekening);
         [_tableView reloadData];
     }
+}
+
+-(void)requestPaymentConfirmation
+{
+    [self showLoadingView];
+    [[self requestPayment] doRequestPaymentConfirmation];
+}
+
+-(void)showLoadingView
+{
+    [self initLoadingView];
+    [_loadingAlertView show];
+}
+
+-(void)dismissLoadingView
+{
+    [_loadingAlertView dismissWithClickedButtonIndex:0 animated:YES];
+}
+
+-(void)initLoadingView
+{
+    _loadingAlertView = [[UIAlertView alloc] initWithTitle:@"Uploading" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
+    
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [indicator startAnimating];
+    
+    [_loadingAlertView setValue:indicator forKey:@"accessoryView"];
 }
 
 -(RequestPayment*)requestPayment
@@ -786,6 +814,11 @@
         
         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
     }
+}
+
+-(void)actionAfterRequest
+{
+    [self dismissLoadingView];
 }
 
 #pragma mark - Methods
