@@ -462,7 +462,7 @@
             }
             break;
         case 6:
-            if ([self isPaymentTypeSaldoTokopedia]) {
+            if ([self isPaymentTypeSaldoTokopedia] || _isConfirmed) {
                 return 0;
             }
             return 106;
