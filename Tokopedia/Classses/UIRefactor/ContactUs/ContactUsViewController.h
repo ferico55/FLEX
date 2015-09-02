@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ContactUsPresenter.h"
 
 @interface ContactUsViewController : UIViewController
+
+@property (nonatomic, strong) ContactUsPresenter *presenter;
 
 @end

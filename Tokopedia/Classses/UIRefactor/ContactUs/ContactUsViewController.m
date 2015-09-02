@@ -7,13 +7,10 @@
 //
 
 #import "ContactUsViewController.h"
-#import "TokopediaNetworkManager.h"
-#import "ContactUsResponse.h"
 #import "TicketCategory.h"
 #import "string_contact_us.h"
-#import "ContactUsFormViewController.h"
 #import "ContactUsTypeCell.h"
-#import "GeneralTableViewController.h"
+#import "ContactUsPresenter.h"
 
 @interface ContactUsViewController ()
 <
@@ -23,18 +20,15 @@
     UICollectionViewDelegate,
     UICollectionViewDelegateFlowLayout,
     UIWebViewDelegate,
-    TokopediaNetworkManagerDelegate,
-    GeneralTableViewControllerDelegate
+    ContactUsView
 >
 {
-    TokopediaNetworkManager *_networkManager;
-    RKObjectManager *_objectManager;
     NSArray *_categories;
     NSIndexPath *_selectedCollectionIndexPath;
     TicketCategory *_selectedType;
     TicketCategory *_selectedProblem;
     TicketCategory *_selectedDetailProblem;
-    CGFloat _webViewHeight;
+    ContactUsPresenter *_presenter;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -48,7 +42,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
-@property (weak, nonatomic) IBOutlet UIWebView *descriptionWebView;
+@property (strong, nonatomic) UIWebView *descriptionWebView;
 
 @end
 
@@ -56,34 +50,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     self.title = @"Hubungi Kami";
-    
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
-    
-    self.hidesBottomBarWhenPushed = YES;
-    
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
-    
-    UINib *nib = [UINib nibWithNibName:@"ContactUsTypeCell" bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:@"ContactUsTypeCell"];
-
-    [self.flowLayout setFooterReferenceSize:CGSizeMake(160, 160)];
-    [self.flowLayout setSectionInset:UIEdgeInsetsZero];
-    [self.collectionView setCollectionViewLayout:_flowLayout];
+    _presenter = [ContactUsPresenter new];
+    _presenter.view = self;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Table view delegate
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger sections;
@@ -154,41 +130,9 @@
     } else if (indexPath.section == 1) {
         height = 44;
     } else if (indexPath.section == 2) {
-        height = self.descriptionWebView.scrollView.contentSize.height + 20;
+        height = self.descriptionWebView.scrollView.contentSize.height;
     }
     return height;
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1) {
-        NSString *title;
-        NSMutableArray *choices = [NSMutableArray new];
-        TicketCategory *selectedCategory;
-        if (indexPath.row == 0) {
-            title = @"Pilih Masalah";
-            selectedCategory = _selectedProblem;
-            for (TicketCategory *category in _selectedType.ticket_category_child) {
-                [choices addObject:category.ticket_category_name];
-            }
-        } else if (indexPath.row == 1) {
-            title = @"Pilih Detail Masalah";
-            selectedCategory = _selectedDetailProblem;
-            for (TicketCategory *category in _selectedProblem.ticket_category_child) {
-                [choices addObject:category.ticket_category_name];
-            }
-        }
-        
-        GeneralTableViewController *controller = [GeneralTableViewController new];
-        controller.title = title;
-        controller.delegate = self;
-        controller.senderIndexPath = indexPath;
-        controller.objects = choices;
-        controller.selectedObject = selectedCategory.ticket_category_name;
-        
-        [self.navigationController pushViewController:controller animated:YES];
-    }
 }
 
 #pragma mark - Collection view data source
@@ -203,8 +147,19 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ContactUsTypeCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ContactUsTypeCell" forIndexPath:indexPath];
+    TicketCategory *category = [_categories objectAtIndex:indexPath.row];
+    cell.titleLabel.text = category.ticket_category_name;
     cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width / 2;
     cell.imageView.layer.borderWidth = 0;
+    if ([category.ticket_category_id isEqualToString:@"101"]) {
+        cell.imageView.image = [UIImage imageNamed:@"icon_problem_new_user.png"];
+    } else if ([category.ticket_category_id isEqualToString:@"102"]) {
+        cell.imageView.image = [UIImage imageNamed:@"icon_problem_buyer.png"];
+    } else if ([category.ticket_category_id isEqualToString:@"103"]) {
+        cell.imageView.image = [UIImage imageNamed:@""];
+    } else if ([category.ticket_category_id isEqualToString:@"104"]) {
+        cell.imageView.image = [UIImage imageNamed:@""];
+    }
     if (_selectedCollectionIndexPath) {
         cell.alpha = 0.5;
         if (indexPath.row == _selectedCollectionIndexPath.row) {
@@ -229,215 +184,24 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     _selectedCollectionIndexPath = indexPath;
-    if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            
-        } else if (indexPath.row == 1) {
-            
-        }
-    }
     _selectedType = [_categories objectAtIndex:indexPath.row];
     [collectionView reloadData];
     [self.tableView reloadData];
 }
 
-#pragma mark - Network manager
+#pragma mark - View delegate
 
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *param = @{@"action" : @"get_tree_ticket_category"};
-    return param;
-}
-
-- (NSString *)getPath:(int)tag {
-    return @"contact-us.pl";
-}
-
-- (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ContactUsResponse class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ContactUsResult class]];
-    
-    RKObjectMapping *ticketCategoryMapping = [RKObjectMapping mappingForClass:[TicketCategory class]];
-    [ticketCategoryMapping addAttributeMappingsFromArray:@[
-                                                           API_TICKET_CATEGORY_NAME_KEY,
-                                                           API_TICKET_CATEGORY_TREE_NO_KEY,
-                                                           API_TICKET_CATEGORY_DESCRIPTION_KEY,
-                                                           API_TICKET_CATEGORY_ID_KEY
-                                                           ]];
-    
-    RKObjectMapping *firstChildMapping = [RKObjectMapping mappingForClass:[TicketCategory class]];
-    [firstChildMapping addAttributeMappingsFromArray:@[API_TICKET_CATEGORY_NAME_KEY,
-                                                       API_TICKET_CATEGORY_TREE_NO_KEY,
-                                                       API_TICKET_CATEGORY_DESCRIPTION_KEY,
-                                                       API_TICKET_CATEGORY_ID_KEY
-                                                       ]];
-
-    RKObjectMapping *secondChildMapping = [RKObjectMapping mappingForClass:[TicketCategory class]];
-    [secondChildMapping addAttributeMappingsFromArray:@[API_TICKET_CATEGORY_NAME_KEY,
-                                                        API_TICKET_CATEGORY_TREE_NO_KEY,
-                                                        API_TICKET_CATEGORY_DESCRIPTION_KEY,
-                                                        API_TICKET_CATEGORY_ID_KEY
-                                                        ]];
-
-    RKObjectMapping *thirdChildMapping = [RKObjectMapping mappingForClass:[TicketCategory class]];
-    [thirdChildMapping addAttributeMappingsFromArray:@[API_TICKET_CATEGORY_NAME_KEY,
-                                                       API_TICKET_CATEGORY_TREE_NO_KEY,
-                                                       API_TICKET_CATEGORY_DESCRIPTION_KEY,
-                                                       API_TICKET_CATEGORY_ID_KEY
-                                                       ]];
-
-    RKObjectMapping *fourthChildMapping = [RKObjectMapping mappingForClass:[TicketCategory class]];
-    [fourthChildMapping addAttributeMappingsFromArray:@[API_TICKET_CATEGORY_NAME_KEY,
-                                                        API_TICKET_CATEGORY_TREE_NO_KEY,
-                                                        API_TICKET_CATEGORY_DESCRIPTION_KEY,
-                                                        API_TICKET_CATEGORY_ID_KEY
-                                                        ]];
-
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                  toKeyPath:kTKPD_APILISTKEY
-                                                                                withMapping:ticketCategoryMapping]];
-
-    [ticketCategoryMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TICKET_CATEGORY_CHILD_KEY
-                                                                                          toKeyPath:API_TICKET_CATEGORY_CHILD_KEY
-                                                                                        withMapping:firstChildMapping]];
-
-    [firstChildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TICKET_CATEGORY_CHILD_KEY
-                                                                                      toKeyPath:API_TICKET_CATEGORY_CHILD_KEY
-                                                                                    withMapping:secondChildMapping]];
-
-    [secondChildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TICKET_CATEGORY_CHILD_KEY
-                                                                                       toKeyPath:API_TICKET_CATEGORY_CHILD_KEY
-                                                                                     withMapping:thirdChildMapping]];
-
-    [thirdChildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TICKET_CATEGORY_CHILD_KEY
-                                                                                      toKeyPath:API_TICKET_CATEGORY_CHILD_KEY
-                                                                                    withMapping:fourthChildMapping]];
-
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:@"contact-us.pl"
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
-    return _objectManager;
-}
-
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    ContactUsResponse *response = [mappingResult.dictionary objectForKey:@""];
-    return response.status;
-}
-
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    ContactUsResponse *response = [mappingResult.dictionary objectForKey:@""];
-    _categories = response.result.list;
+- (void)setFormWithCategories:(NSArray *)categories {
+    _categories = categories;
     [self.tableView reloadData];
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+- (void)setRetryView {
     
 }
 
-#pragma mark - Actions
-
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = sender;
-        if (button.tag <= 4) {
-            
-        } else if (button.tag == 5) {
-            ContactUsFormViewController *controller = [ContactUsFormViewController new];
-            [self.navigationController pushViewController:controller animated:YES];
-        }
-    }
-}
-
-#pragma mark - General table delegate
-
-- (void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            for (TicketCategory *category in _selectedType.ticket_category_child) {
-                if ([category.ticket_category_name isEqualToString:object]) {
-                    _selectedProblem = category;
-                }
-            }
-            [self.tableView reloadData];
-        } else if (indexPath.row == 1) {
-            for (TicketCategory *category in _selectedProblem.ticket_category_child) {
-                if ([category.ticket_category_name isEqualToString:object]) {
-                    _selectedDetailProblem = category;
-                    NSString *string = category.ticket_category_description;
-                    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
-                    UIColor *color = [UIColor blackColor];
-                    NSString *description = [self htmlFromBodyString:string
-                                                            textFont:font
-                                                           textColor:color];
-                    [self.descriptionWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
-                    [self.descriptionWebView loadHTMLString:description baseURL:nil];
-                    self.tableView.tableFooterView = _footerView;
-                }
-            }
-        }
-    }
-}
-
-#pragma mark - Web view methods
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.height"] floatValue];
-    self.descriptionWebView.scrollView.contentSize = CGSizeMake(_descriptionWebView.frame.size.width, height);
-    [self.tableView reloadData];
-}
-
-- (NSString *)htmlFromBodyString:(NSString *)htmlBodyString
-                        textFont:(UIFont *)font
-                       textColor:(UIColor *)textColor
-{
-    int numComponents = CGColorGetNumberOfComponents([textColor CGColor]);
+- (void)setErrorView {
     
-    NSAssert(numComponents == 4 || numComponents == 2, @"Unsupported color format");
-    
-    // E.g. FF00A5
-    NSString *colorHexString = nil;
-    
-    const CGFloat *components = CGColorGetComponents([textColor CGColor]);
-    
-    if (numComponents == 4)
-    {
-        unsigned int red = components[0] * 255;
-        unsigned int green = components[1] * 255;
-        unsigned int blue = components[2] * 255;
-        colorHexString = [NSString stringWithFormat:@"%02X%02X%02X", red, green, blue];
-    }
-    else
-    {
-        unsigned int white = components[0] * 255;
-        colorHexString = [NSString stringWithFormat:@"%02X%02X%02X", white, white, white];
-    }
-    
-    NSString *HTML = [NSString stringWithFormat:@"<html>\n"
-                      "<head>\n"
-                      "<style type=\"text/css\">\n"
-                      "body {font-family: \"%@\"; font-size: %@; color:#%@;}\n"
-                      "</style>\n"
-                      "</head>\n"
-                      "<body>%@</body>\n"
-                      "</html>",
-                      font.familyName, @(font.pointSize), colorHexString, htmlBodyString];
-    
-    return HTML;
 }
 
 @end

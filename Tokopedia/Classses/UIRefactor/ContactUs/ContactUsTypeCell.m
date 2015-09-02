@@ -11,7 +11,6 @@
 @implementation ContactUsTypeCell
 
 - (void)awakeFromNib {
-    // Initialization code
 }
 
 @end

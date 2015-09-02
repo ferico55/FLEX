@@ -10,6 +10,7 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		85241A541B95A64300BF3AAC /* ContactUsDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85241A531B95A64300BF3AAC /* ContactUsDataManager.m */; };
 		853A1FFC1B849F040030F84B /* ContactUsActionResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A1FFB1B849F040030F84B /* ContactUsActionResponse.m */; };
 		853A1FFF1B849F230030F84B /* ContactUsActionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A1FFE1B849F230030F84B /* ContactUsActionResult.m */; };
 		853A20061B85B8FE0030F84B /* ContactUsTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A20041B85B8FE0030F84B /* ContactUsTypeCell.m */; };
@@ -1555,6 +1556,8 @@
 		85D3E5451B7DF47600E4723C /* icon_contact_us.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D3E53F1B7DF47600E4723C /* icon_contact_us.png */; };
 		85D3E5461B7DF47600E4723C /* icon_contact_us@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D3E5401B7DF47600E4723C /* icon_contact_us@2x.png */; };
 		85D3E5471B7DF47600E4723C /* icon_contact_us@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D3E5411B7DF47600E4723C /* icon_contact_us@3x.png */; };
+		85D421351B96979100CC6E8A /* ContactUsPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D421341B96979100CC6E8A /* ContactUsPresenter.m */; };
+		85D421381B9697F000CC6E8A /* ContactUsInteractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D421371B9697F000CC6E8A /* ContactUsInteractor.m */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -1594,6 +1597,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		85241A521B95A64300BF3AAC /* ContactUsDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsDataManager.h; sourceTree = "<group>"; };
+		85241A531B95A64300BF3AAC /* ContactUsDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsDataManager.m; sourceTree = "<group>"; };
 		853A1FFA1B849F040030F84B /* ContactUsActionResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsActionResponse.h; sourceTree = "<group>"; };
 		853A1FFB1B849F040030F84B /* ContactUsActionResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsActionResponse.m; sourceTree = "<group>"; };
 		853A1FFD1B849F230030F84B /* ContactUsActionResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsActionResult.h; sourceTree = "<group>"; };
@@ -3940,6 +3945,11 @@
 		85D3E53F1B7DF47600E4723C /* icon_contact_us.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_contact_us.png; sourceTree = "<group>"; };
 		85D3E5401B7DF47600E4723C /* icon_contact_us@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_contact_us@2x.png"; sourceTree = "<group>"; };
 		85D3E5411B7DF47600E4723C /* icon_contact_us@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_contact_us@3x.png"; sourceTree = "<group>"; };
+		85D421301B96966500CC6E8A /* ContactUsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsView.h; sourceTree = "<group>"; };
+		85D421331B96979100CC6E8A /* ContactUsPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsPresenter.h; sourceTree = "<group>"; };
+		85D421341B96979100CC6E8A /* ContactUsPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsPresenter.m; sourceTree = "<group>"; };
+		85D421361B9697F000CC6E8A /* ContactUsInteractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsInteractor.h; sourceTree = "<group>"; };
+		85D421371B9697F000CC6E8A /* ContactUsInteractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsInteractor.m; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -5909,6 +5919,13 @@
 		85D3D9181B7C81A300E4723C /* ContactUs */ = {
 			isa = PBXGroup;
 			children = (
+				85D421301B96966500CC6E8A /* ContactUsView.h */,
+				85D421331B96979100CC6E8A /* ContactUsPresenter.h */,
+				85D421341B96979100CC6E8A /* ContactUsPresenter.m */,
+				85D421361B9697F000CC6E8A /* ContactUsInteractor.h */,
+				85D421371B9697F000CC6E8A /* ContactUsInteractor.m */,
+				85241A521B95A64300BF3AAC /* ContactUsDataManager.h */,
+				85241A531B95A64300BF3AAC /* ContactUsDataManager.m */,
 				85D3D9191B7C81A300E4723C /* ContactUsViewController.h */,
 				85D3D91A1B7C81A300E4723C /* ContactUsViewController.m */,
 				85D3D91B1B7C81A300E4723C /* ContactUsViewController.xib */,
@@ -9536,6 +9553,7 @@
 				85D3E2F71B7C81A600E4723C /* ProfileFavoriteShopCell.m in Sources */,
 				85D3E1521B7C81A600E4723C /* InboxMessageCell.m in Sources */,
 				85D3DFFC1B7C81A600E4723C /* ReputationList.m in Sources */,
+				85D421381B9697F000CC6E8A /* ContactUsInteractor.m in Sources */,
 				85D3E2BA1B7C81A600E4723C /* TransactionCartResultPaymentCell.m in Sources */,
 				85D3E1911B7C81A600E4723C /* MyShopEtalaseEditViewController.m in Sources */,
 				85D3E2751B7C81A600E4723C /* ShopTalkViewController.m in Sources */,
@@ -9605,6 +9623,7 @@
 				85D3DF901B7C81A500E4723C /* HotlistResultInfo.m in Sources */,
 				85D3DFF31B7C81A600E4723C /* NotificationFormNotif.m in Sources */,
 				85D3E0111B7C81A600E4723C /* SearchData.m in Sources */,
+				85D421351B96979100CC6E8A /* ContactUsPresenter.m in Sources */,
 				85D3DF4F1B7C81A500E4723C /* DepositSummary.m in Sources */,
 				85D3E29F1B7C81A600E4723C /* TrackOrderViewController.m in Sources */,
 				85D3DF811B7C81A500E4723C /* FavoriteShopAction.m in Sources */,
@@ -10152,6 +10171,7 @@
 				85D3E1A21B7C81A600E4723C /* MyShopShipmentTableViewController.m in Sources */,
 				85D3DF7E1B7C81A500E4723C /* FavoritedShop.m in Sources */,
 				85D3DFFE1B7C81A600E4723C /* ActionOrder.m in Sources */,
+				85241A541B95A64300BF3AAC /* ContactUsDataManager.m in Sources */,
 				85D3E27B1B7C81A600E4723C /* ShopPageHeader.m in Sources */,
 				85D3DF4C1B7C81A500E4723C /* DepositForm.m in Sources */,
 				85D3E2551B7C81A600E4723C /* ShopDeliveryCell.m in Sources */,

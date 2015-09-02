@@ -23,7 +23,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactUsViewController">
             <connections>
                 <outlet property="collectionView" destination="xnd-ln-tOf" id="3Ju-av-TsZ"/>
-                <outlet property="descriptionWebView" destination="U1I-nW-Ee1" id="lUM-sv-gow"/>
                 <outlet property="flowLayout" destination="pix-kY-M9C" id="85o-Vd-52f"/>
                 <outlet property="footerView" destination="cFx-73-sJF" id="b5Q-Id-VDJ"/>
                 <outlet property="problemCell" destination="Bnl-B3-b8z" id="V47-4Z-zGF"/>
@@ -102,26 +101,11 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="231" y="1144"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="200" id="ZlQ-ug-jL4">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="200" id="ZlQ-ug-jL4">
             <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZlQ-ug-jL4" id="htP-UU-emv">
                 <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U1I-nW-Ee1">
-                        <rect key="frame" x="8" y="10" width="304" height="179.5"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="delegate" destination="-1" id="aty-8b-S1o"/>
-                        </connections>
-                    </webView>
-                </subviews>
-                <constraints>
-                    <constraint firstAttribute="bottom" secondItem="U1I-nW-Ee1" secondAttribute="bottom" constant="10" id="Egr-SG-2NI"/>
-                    <constraint firstItem="U1I-nW-Ee1" firstAttribute="leading" secondItem="htP-UU-emv" secondAttribute="leading" constant="8" id="Ozk-jU-pyl"/>
-                    <constraint firstItem="U1I-nW-Ee1" firstAttribute="top" secondItem="htP-UU-emv" secondAttribute="top" constant="10" id="RTx-HC-dDe"/>
-                    <constraint firstAttribute="trailing" secondItem="U1I-nW-Ee1" secondAttribute="trailing" constant="8" id="tPm-qe-iZT"/>
-                </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="192" y="1707"/>
         </tableViewCell>
@@ -249,7 +233,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="157" y="1558.5"/>
         </view>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="160" id="RPc-l6-zo4">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="160" id="RPc-l6-zo4">
             <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RPc-l6-zo4" id="Xv2-4C-PBd">
