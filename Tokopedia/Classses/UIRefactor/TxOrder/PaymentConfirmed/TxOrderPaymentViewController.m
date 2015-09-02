@@ -123,6 +123,7 @@
     _networkManager.delegate = self;
     
     _sectionNewRekeningCells = [NSArray sortViewsWithTagInArray:_sectionNewRekeningCells];
+    _section2Cell = [NSArray sortViewsWithTagInArray:_section2Cell];
     _section3CashCells = [NSArray sortViewsWithTagInArray:_section3CashCells];
     _section1Cell = [NSArray sortViewsWithTagInArray:_section1Cell];
     
@@ -485,6 +486,9 @@
             }
             break;
         case 5:
+            if (![self isPaymentTypeTransfer] && indexPath.row == 0) {
+                return 0;
+            }
             if ([self isPaymentTypeSaldoTokopedia]) {
                 return 0;
             }
@@ -536,10 +540,13 @@
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell == _section2Cell[0]) {
+        [_depositorTextField becomeFirstResponder];
+    }
+    if (cell == _section2Cell[1]) {
         [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
         [self pushToGeneralViewControllerAtIndextPath:indexPath];
     }
-    if (cell == _section2Cell[1]) {
+    if (cell == _section2Cell[2]) {
         [_totalPaymentTextField becomeFirstResponder];
     }
     
@@ -887,7 +894,7 @@
     if (cell == _section1Cell[2]) {
         textString = bankAccountString;
     }
-    if (cell == _section2Cell[0]) {
+    if (cell == _section2Cell[1]) {
         textString = systemBankString;
     }
     if (cell == _sectionNewRekeningCells[0]) {
@@ -1327,8 +1334,11 @@
     if (_activeTextField == _branchTextField) {
         [_tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell: _sectionNewRekeningCells[3]] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
+    if (_activeTextField == _depositorTextField) {
+        [_tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell: _section2Cell[0]] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
     if (_activeTextField == _totalPaymentTextField) {
-        [_tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell: _section2Cell[1]] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [_tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell: _section2Cell[2]] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     if (_activeTextView == _markTextView) {
         [_tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell: _markCell] atScrollPosition:UITableViewScrollPositionBottom animated:YES];

@@ -95,6 +95,7 @@
                 <outletCollection property="section3CashCells" destination="rUm-aR-uQ7" id="4MP-9E-qnV"/>
                 <outletCollection property="section3CashCells" destination="CmK-8x-hWR" id="zc8-pQ-yDV"/>
                 <outletCollection property="sectionNewRekeningCells" destination="4YS-UJ-UwZ" id="QDt-vP-FsI"/>
+                <outletCollection property="section2Cell" destination="4GS-NF-l1g" id="Bv5-Zh-JOb"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

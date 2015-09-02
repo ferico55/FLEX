@@ -199,6 +199,7 @@
             NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:_delegate];
             [alert show];
+            [_delegate actionAfterRequest];
         }
         if(order.result.is_success == 1)
         {
@@ -214,14 +215,15 @@
             NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:_delegate];
             [alert show];
+            [_delegate actionAfterRequest];
             
         }
         if(order.result.is_success == 1)
         {
             [_delegate requestSuccessConfirmPayment:order];
+            [_delegate actionAfterRequest];
         }
     }
-    [_delegate actionAfterRequest];
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
