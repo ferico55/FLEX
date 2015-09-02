@@ -34,6 +34,7 @@
         viewModel.reputation_score = _reputation_score;
         viewModel.user_reputation = _user_reputation;
         viewModel.shop_badge_level = _shop_badge_level;
+        viewModel.auto_read = _auto_read;
         
         _viewModel = viewModel;
     }

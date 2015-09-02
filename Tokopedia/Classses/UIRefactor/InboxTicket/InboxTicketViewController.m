@@ -215,7 +215,8 @@
                                                         API_LIST_TICKET_URL_DETAIL_KEY,
                                                         API_LIST_TICKET_UPDATE_BY_ID_KEY,
                                                         API_LIST_TICKET_ID_KEY,
-                                                        API_LIST_TICKET_UPDATE_BY_NAME_KEY
+                                                        API_LIST_TICKET_UPDATE_BY_NAME_KEY,
+                                                        API_LIST_TICKET_CATEGORY_ID_KEY
                                                         ]];
     
     RKObjectMapping *userInvolveMapping = [RKObjectMapping mappingForClass:[InboxTicketUserInvolve class]];

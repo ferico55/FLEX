@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking 4
 
+// Localytics
+#define COCOAPODS_POD_AVAILABLE_Localytics
+#define COCOAPODS_VERSION_MAJOR_Localytics 3
+#define COCOAPODS_VERSION_MINOR_Localytics 5
+#define COCOAPODS_VERSION_PATCH_Localytics 0
+
 // NJKWebViewProgress
 #define COCOAPODS_POD_AVAILABLE_NJKWebViewProgress
 #define COCOAPODS_VERSION_MAJOR_NJKWebViewProgress 0
