@@ -14,14 +14,9 @@
     // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
 - (void)setViewModel:(SearchAutoCompleteViewModel *)viewModel {
     [_searchTitle setText:viewModel.title];
+    [self setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.imageUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -40,7 +35,7 @@
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[_searchTitle text]];
     
     NSRange range = [[_searchTitle text] rangeOfString:searchText options:NSCaseInsensitiveSearch];
-    [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
+    [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0f]} range:range];
     [_searchTitle setAttributedText:attributedText];
 }
 

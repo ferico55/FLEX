@@ -1738,6 +1738,8 @@
 		7A081E8C1B8DBD2E001C5EE7 /* SearchAWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A081E8B1B8DBD2E001C5EE7 /* SearchAWS.m */; };
 		7A081E8F1B8DBD51001C5EE7 /* SearchAWSResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A081E8E1B8DBD51001C5EE7 /* SearchAWSResult.m */; };
 		7A081E991B8DBD7F001C5EE7 /* SearchAWSProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A081E981B8DBD7F001C5EE7 /* SearchAWSProduct.m */; };
+		7A081E9C1B94509C001C5EE7 /* SearchAutoCompleteHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A081E9B1B94509C001C5EE7 /* SearchAutoCompleteHeaderView.m */; };
+		7A081EA01B9450F5001C5EE7 /* UIView+HVDLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A081E9F1B9450F5001C5EE7 /* UIView+HVDLayout.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
@@ -3176,6 +3178,10 @@
 		7A081E8E1B8DBD51001C5EE7 /* SearchAWSResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAWSResult.m; sourceTree = "<group>"; };
 		7A081E971B8DBD7F001C5EE7 /* SearchAWSProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchAWSProduct.h; sourceTree = "<group>"; };
 		7A081E981B8DBD7F001C5EE7 /* SearchAWSProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAWSProduct.m; sourceTree = "<group>"; };
+		7A081E9A1B94509C001C5EE7 /* SearchAutoCompleteHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchAutoCompleteHeaderView.h; sourceTree = "<group>"; };
+		7A081E9B1B94509C001C5EE7 /* SearchAutoCompleteHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAutoCompleteHeaderView.m; sourceTree = "<group>"; };
+		7A081E9E1B9450F5001C5EE7 /* UIView+HVDLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HVDLayout.h"; sourceTree = "<group>"; };
+		7A081E9F1B9450F5001C5EE7 /* UIView+HVDLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HVDLayout.m"; sourceTree = "<group>"; };
 		7A08FAC11B8C8E06001C5EE7 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		7A08FAC21B8C8E06001C5EE7 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		7A08FAC31B8C8E06001C5EE7 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -5058,6 +5064,8 @@
 				7A0801671B8C8E08001C5EE7 /* SearchViewController.h */,
 				7A0801681B8C8E08001C5EE7 /* SearchViewController.m */,
 				7A0801691B8C8E08001C5EE7 /* SearchViewController.xib */,
+				7A081E9A1B94509C001C5EE7 /* SearchAutoCompleteHeaderView.h */,
+				7A081E9B1B94509C001C5EE7 /* SearchAutoCompleteHeaderView.m */,
 			);
 			path = SearchHistory;
 			sourceTree = "<group>";
@@ -6748,6 +6756,15 @@
 			path = SearchAWS;
 			sourceTree = "<group>";
 		};
+		7A081E9D1B9450F5001C5EE7 /* HVDLayout */ = {
+			isa = PBXGroup;
+			children = (
+				7A081E9E1B9450F5001C5EE7 /* UIView+HVDLayout.h */,
+				7A081E9F1B9450F5001C5EE7 /* UIView+HVDLayout.m */,
+			);
+			path = HVDLayout;
+			sourceTree = "<group>";
+		};
 		7A08FABF1B8C8E06001C5EE7 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -8403,6 +8420,7 @@
 		7A08FE671B8C8E07001C5EE7 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7A081E9D1B9450F5001C5EE7 /* HVDLayout */,
 				7A08FE681B8C8E07001C5EE7 /* Activation */,
 				7A08FE7A1B8C8E07001C5EE7 /* Address */,
 				7A08FE841B8C8E07001C5EE7 /* Alert */,
@@ -10671,6 +10689,7 @@
 				7A08071C1B8C8E0B001C5EE7 /* Track.m in Sources */,
 				7A0806101B8C8E0B001C5EE7 /* CatalogPrice.m in Sources */,
 				7A0805D41B8C8E0B001C5EE7 /* URLCacheConnection.m in Sources */,
+				7A081EA01B9450F5001C5EE7 /* UIView+HVDLayout.m in Sources */,
 				7A0805E51B8C8E0B001C5EE7 /* TKPDSecureStorage.m in Sources */,
 				7A0809C61B8C8E0D001C5EE7 /* TxOrderStatusDetailViewController.m in Sources */,
 				7A0806971B8C8E0B001C5EE7 /* NotificationPurchase.m in Sources */,
@@ -11074,6 +11093,7 @@
 				7A0807771B8C8E0B001C5EE7 /* LogoutViewController.m in Sources */,
 				7A0809C21B8C8E0D001C5EE7 /* TransactionObjectManager.m in Sources */,
 				7A0806AC1B8C8E0B001C5EE7 /* FavoriteShop.m in Sources */,
+				7A081E9C1B94509C001C5EE7 /* SearchAutoCompleteHeaderView.m in Sources */,
 				7A08062C1B8C8E0B001C5EE7 /* TalkCommentList.m in Sources */,
 				7A08076A1B8C8E0B001C5EE7 /* GenerateHostResult.m in Sources */,
 				7A0808EB1B8C8E0C001C5EE7 /* ChooseProductCell.m in Sources */,
@@ -11299,7 +11319,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0d580e03-dbd7-4416-a6e3-7360d96c5dfc";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -11340,7 +11360,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0d580e03-dbd7-4416-a6e3-7360d96c5dfc";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;

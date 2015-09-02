@@ -21,23 +21,13 @@
 #import "SearchAutoCompleteDomains.h"
 #import "SearchAutoCompleteObject.h"
 #import "SearchAutoCompleteCell.h"
+#import "SearchAutoCompleteHeaderView.h"
 
 NSString *const searchPath = @"search/%@";
 
-@interface SearchViewController ()
-<
-    UISearchBarDelegate,
-    UISearchDisplayDelegate,
-    UITableViewDelegate,
-    UITableViewDataSource,
-    SearchResultDelegate,
-    NotificationDelegate,
-    NotificationManagerDelegate
-> {
-    NSMutableArray *_typedHistoryResult;
+@interface SearchViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UICollectionViewDataSource, UICollectionViewDelegate, SearchResultDelegate, NotificationDelegate,NotificationManagerDelegate> {
+
     NSString *_filter;
-    NSMutableArray *_historyResult;
-    
     UITextField *_activeTextField;
     
     NotificationManager *_notifManager;
@@ -45,18 +35,19 @@ NSString *const searchPath = @"search/%@";
     
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_objectRequest;
+    
     NSInteger *_requestCount;
     NSOperationQueue *_operationQueue;
-    
 
     NSMutableArray *_domains;
-    
     NSMutableArray *_general;
     NSMutableArray *_hotlist;
+    NSMutableArray *_historyResult;
+    NSMutableArray *_typedHistoryResult;
     
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
@@ -71,6 +62,7 @@ NSString *const SearchDomainHistory = @"History";
 NSString *const SearchDomainGeneral = @"Keyword";
 NSString *const SearchDomainHotlist = @"Hotlist";
 
+#pragma mark - Lifecycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:@"SearchViewController" bundle:nibBundleOrNil];
     if (self) {
@@ -87,10 +79,6 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _operationQueue = [NSOperationQueue new];
     [self.navigationController.navigationBar setTranslucent:NO];
 
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
     _historyResult =[NSMutableArray new];
     _typedHistoryResult = [NSMutableArray new];
     _domains = [NSMutableArray new];
@@ -110,8 +98,6 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
     _searchBar.delegate = self;
     
-    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    _table.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
 
 
     _filter = @"search_product";
@@ -129,15 +115,17 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
-    [_table registerNib:cellNib forCellReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
+    
+    [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
+    
+    [self.collectionView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
 }
 
-
--(void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initNotificationManager];
     
-    self.navigationController.title = @"Cari";
     self.screenName = @"Search Page";
     self.hidesBottomBarWhenPushed = NO;
     
@@ -148,6 +136,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -156,8 +145,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 }
 
 #pragma mark - Memory Management
-
--(void)dealloc{
+- (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];    
 }
@@ -174,7 +162,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_historyResult insertObject:history atIndex:0];
     [_historyResult writeToFile:destPath atomically:YES];
     
-    [_table reloadData];
+    [_collectionView reloadData];
 }
 
 -(void)loadHistory {
@@ -198,55 +186,39 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
     [_historyResult writeToFile:destPath atomically:YES];
     
-    [_table reloadData];
+    [_collectionView reloadData];
 }
 
 
-#pragma mark - View Gesture
-- (IBAction)tap:(id)sender {
-    [_searchBar resignFirstResponder];
-    [self clearHistory];
-}
-
-#pragma mark - Table View Data Source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#pragma mark - Collection Delegate
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return [_domains count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSDictionary *domain = [_domains objectAtIndex:section];
-    return [domain objectForKey:@"title"];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSDictionary *domain = [_domains objectAtIndex:section];
     NSArray *domainData = [domain objectForKey:@"data"];
     return [domainData count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if([[self tableView:tableView titleForHeaderInSection:section] isEqualToString:SearchDomainGeneral]) {
-        return 0;
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *view = nil;
+    
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
+        NSDictionary *domain = [_domains objectAtIndex:[indexPath section]];
+
+        [header.titleLabel setText:[[domain objectForKey:@"title"] uppercaseString]];
+        view = header;
     }
-    return 30.0f;
+    
+    return view;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *myLabel = [[UILabel alloc] init];
-    myLabel.frame = CGRectMake(10, 0, [UIScreen mainScreen].bounds.size.width, 30.0f);
-    myLabel.font = [UIFont fontWithName:@"Gotham Medium" size:13.0];
-    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
-    myLabel.textColor = [UIColor lightGrayColor];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = nil;
     
-    UIView *headerView = [[UIView alloc] init];
-    headerView.backgroundColor = [UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1];
-    [headerView addSubview:myLabel];
-    
-    return headerView;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SearchAutoCompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchAutoCompleteCellIdentifier"];
+    SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
     NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
     NSString *domainName = [domain objectForKey:@"title"];
     if([domainName isEqualToString:SearchDomainHistory]) {
@@ -257,62 +229,97 @@ NSString *const SearchDomainHotlist = @"Hotlist";
             searchResult = [_historyResult objectAtIndex:indexPath.row];
         }
         NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
-
+        
         NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
         [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
-        cell.searchTitle.attributedText = attributedText;
-        [cell.searchImage setHidden:YES];
+        searchCell.searchTitle.attributedText = attributedText;
+        [searchCell.searchImage setHidden:YES];
     } else if([domainName isEqualToString:SearchDomainGeneral]) {
         SearchAutoCompleteGeneral *general = _general[indexPath.row];
-        [cell setViewModel:general.viewModel];
-        [cell setBoldSearchText:_searchBar.text];
+        [searchCell setViewModel:general.viewModel];
+        [searchCell setBoldSearchText:_searchBar.text];
     } else if([domainName isEqualToString:SearchDomainHotlist]) {
         SearchAutoCompleteHotlist *hotlist = _hotlist[indexPath.row];
-        [cell setViewModel:hotlist.viewModel];
-        [cell setBoldSearchText:_searchBar.text];
+        [searchCell setViewModel:hotlist.viewModel];
+        [searchCell setBoldSearchText:_searchBar.text];
     }
-
+    
+    cell = searchCell;
+    cell.hidden = NO;
+    
     return cell;
 }
 
-#pragma mark - TableView Delegate
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGSize size = CGSizeZero;
+    CGFloat maxWidth = collectionView.bounds.size.width;
     
-    NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
-    NSString *domainName = [domain objectForKey:@"title"];
-    if([domainName isEqualToString:SearchDomainHistory]) {
-        [self goToResultPage:[_historyResult objectAtIndex:indexPath.row]];
-    }
+    size = CGSizeMake(maxWidth, 35.0);
     
-    else if ([domainName isEqualToString:SearchDomainGeneral]) {
-        NSArray *generals = [domain objectForKey:@"data"];
-        SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
+    return size;
+}
 
-        [self goToResultPage:general.title];
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+    
+    NSDictionary *domain = [_domains objectAtIndex:section];
+    if(![[domain objectForKey:@"title"] isEqualToString:SearchDomainGeneral]) {
+        size = CGSizeMake(collectionView.bounds.size.width, 25);
     }
-    else if ([domainName isEqualToString:SearchDomainHotlist]) {
-        NSArray *hotlists = [domain objectForKey:@"data"];
-        SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
-        NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
-        
-        HotlistResultViewController *controller = [HotlistResultViewController new];
-        controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
-        controller.hidesBottomBarWhenPushed = YES;
-        
-        [self.navigationController pushViewController:controller animated:YES];
-    }
+    
+    return size;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return 1.0;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell  *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    [UIView animateWithDuration:0.10 delay:0 options:(UIViewAnimationOptionCurveEaseInOut)
+         animations:^{
+             [cell setBackgroundColor: collectionView.backgroundColor];
+         }
+         completion:^(BOOL finished){
+             [cell setBackgroundColor:[UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0]];
+             
+             NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
+             NSString *domainName = [domain objectForKey:@"title"];
+             if([domainName isEqualToString:SearchDomainHistory]) {
+                 [self goToResultPage:[_historyResult objectAtIndex:indexPath.row]];
+             }
+             
+             else if ([domainName isEqualToString:SearchDomainGeneral]) {
+                 NSArray *generals = [domain objectForKey:@"data"];
+                 SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
+                 
+                 [self goToResultPage:general.title];
+             }
+             else if ([domainName isEqualToString:SearchDomainHotlist]) {
+                 NSArray *hotlists = [domain objectForKey:@"data"];
+                 SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
+                 NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
+                 
+                 HotlistResultViewController *controller = [HotlistResultViewController new];
+                 controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
+                 controller.hidesBottomBarWhenPushed = YES;
+                 
+                 [self.navigationController pushViewController:controller animated:YES];
+             }
+
+         }
+     ];
 }
 
 
 #pragma mark - UISearchBar Delegate
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     [_typedHistoryResult removeAllObjects];
     
     if([searchText isEqualToString:@""]) {
         [_domains removeAllObjects];
         [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
-        [_table reloadData];
+        [_collectionView reloadData];
     } else {
         NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
         NSArray *historiesresult;
@@ -333,8 +340,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 }
 
-
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSArray *histories = _historyResult;
     NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([searchString length]) {
@@ -353,19 +359,16 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     }
     else {
         [_typedHistoryResult removeAllObjects];
-        [_table reloadData];
+        [_collectionView reloadData];
     }
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [_searchBar setText:@""];
     [_searchBar resignFirstResponder];
     [self searchBar:_searchBar textDidChange:@""];
-    self.hidesBottomBarWhenPushed = YES;
     self.navigationController.tabBarController.tabBar.hidden = NO;
 }
-
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:YES];
@@ -382,12 +385,11 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 }
 
 #pragma mark - properties
--(void)setData:(NSDictionary *)data {
+- (void)setData:(NSDictionary *)data {
     _data = data;
 }
 
 #pragma mark - Notification Manager
-
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
@@ -410,19 +412,17 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
 }
 
-
 - (void)keyboardWillShow:(NSNotification *)notification {
     NSDictionary* keyboardInfo = [notification userInfo];
     NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
     
-    _table.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
+    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    _table.contentInset = UIEdgeInsetsZero;
+    _collectionView.contentInset = UIEdgeInsetsZero;
 }
-
 
 - (void)reloadNotification {
     [self initNotificationManager];
@@ -506,10 +506,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
             [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
         }
         
-        
-        
-        [_table reloadData];
-        [_table setHidden:NO];
+        [_collectionView reloadData];
+        [_collectionView setHidden:NO];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
 
     }];
@@ -517,7 +515,6 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_operationQueue addOperation:_objectRequest];
     
 }
-
 
 #pragma mark - SearchBar Method
 - (void)activateSearchBar {
