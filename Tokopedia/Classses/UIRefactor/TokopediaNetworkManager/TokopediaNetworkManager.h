@@ -53,6 +53,7 @@
 @property (nonatomic) int tagRequest;
 @property (nonatomic) BOOL isParameterNotEncrypted;
 @property (nonatomic) NSTimeInterval timeInterval;
+@property (nonatomic) NSInteger maxTries;
 
 - (void)doRequest;
 - (void)requestSuccess:(id)successResult withOperation:(RKObjectRequestOperation*)operation;

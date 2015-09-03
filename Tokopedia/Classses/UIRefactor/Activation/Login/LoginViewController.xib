@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -24,6 +24,7 @@
                 <outlet property="loginButton" destination="BjJ-ah-R04" id="dvv-2B-Ufl"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
                 <outlet property="screenLogin" destination="tu9-kn-elL" id="oKK-HZ-puV"/>
+                <outlet property="signInButton" destination="RGM-60-cGb" id="9xv-RR-cqI"/>
                 <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
             </connections>
         </placeholder>
@@ -198,6 +199,39 @@
                         </mask>
                     </variation>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RGM-60-cGb" customClass="GPPSignInButton">
+                    <rect key="frame" x="15" y="314" width="290" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="290" id="0K2-31-hq3">
+                            <variation key="heightClass=regular-widthClass=regular" constant="400"/>
+                        </constraint>
+                        <constraint firstAttribute="height" constant="44" id="2di-TV-ybH"/>
+                        <constraint firstAttribute="height" constant="44" id="BHg-vL-5AY"/>
+                        <constraint firstAttribute="height" constant="44" id="aY2-O2-Mvs"/>
+                        <constraint firstAttribute="width" constant="290" id="hQb-kH-Bjf"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="0K2-31-hq3"/>
+                            <exclude reference="2di-TV-ybH"/>
+                            <exclude reference="BHg-vL-5AY"/>
+                            <exclude reference="hQb-kH-Bjf"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="BHg-vL-5AY"/>
+                            <exclude reference="hQb-kH-Bjf"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="0K2-31-hq3"/>
+                            <include reference="2di-TV-ybH"/>
+                            <exclude reference="hQb-kH-Bjf"/>
+                        </mask>
+                    </variation>
+                </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <subviews>
@@ -328,6 +362,7 @@
                     <variation key="heightClass=regular-widthClass=regular" constant="195"/>
                 </constraint>
                 <constraint firstAttribute="trailing" secondItem="QfQ-ON-DwI" secondAttribute="trailing" id="2yg-yP-Uk0"/>
+                <constraint firstItem="Gxv-a7-Kso" firstAttribute="bottom" secondItem="RGM-60-cGb" secondAttribute="bottom" constant="-52" id="33Q-2j-eD0"/>
                 <constraint firstAttribute="trailing" secondItem="Meb-uf-Mbe" secondAttribute="trailing" constant="85" id="4Si-Ux-v0o"/>
                 <constraint firstAttribute="centerY" secondItem="TaY-hL-DlK" secondAttribute="centerY" constant="168" id="4w4-kk-xgI">
                     <variation key="heightClass=regular-widthClass=regular" constant="238"/>
@@ -349,6 +384,7 @@
                 <constraint firstItem="TaY-hL-DlK" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" constant="50" id="Ie4-V5-UeL"/>
                 <constraint firstItem="tu9-kn-elL" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="IfZ-Ls-Ypu"/>
                 <constraint firstAttribute="centerY" secondItem="rJv-0e-sEO" secondAttribute="centerY" constant="125" id="JEf-HX-Ll7"/>
+                <constraint firstItem="RGM-60-cGb" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="Kte-J0-bnb"/>
                 <constraint firstItem="tu9-kn-elL" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="L3q-cu-7XL">
                     <variation key="heightClass=regular-widthClass=regular" constant="-200"/>
                 </constraint>
@@ -372,6 +408,7 @@
                 <constraint firstAttribute="trailing" secondItem="Gxv-a7-Kso" secondAttribute="trailing" constant="15" id="elO-Hg-n7S"/>
                 <constraint firstAttribute="centerX" secondItem="BjJ-ah-R04" secondAttribute="centerX" id="f8d-lh-bi4"/>
                 <constraint firstItem="BjJ-ah-R04" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="fuX-sn-d8p"/>
+                <constraint firstAttribute="trailing" secondItem="RGM-60-cGb" secondAttribute="trailing" constant="15" id="g5F-e0-2Lg"/>
                 <constraint firstAttribute="centerY" secondItem="BjJ-ah-R04" secondAttribute="centerY" constant="68" id="hCA-Kj-XiP">
                     <variation key="heightClass=regular-widthClass=regular" constant="138"/>
                 </constraint>
@@ -392,6 +429,7 @@
                 <constraint firstItem="QfQ-ON-DwI" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="rqG-rv-Vfg"/>
                 <constraint firstAttribute="centerX" secondItem="Meb-uf-Mbe" secondAttribute="centerX" id="sc1-XE-Bag"/>
                 <constraint firstItem="tu9-kn-elL" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="t1q-s8-g6S"/>
+                <constraint firstItem="RGM-60-cGb" firstAttribute="top" secondItem="Gxv-a7-Kso" secondAttribute="bottom" constant="8" id="tfj-AT-BAu"/>
                 <constraint firstItem="Meb-uf-Mbe" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="86" id="uhk-Lo-Gne"/>
                 <constraint firstAttribute="trailing" secondItem="QfQ-ON-DwI" secondAttribute="trailing" id="wye-zS-Fd9"/>
                 <constraint firstAttribute="centerX" secondItem="Gxv-a7-Kso" secondAttribute="centerX" id="xhJ-m2-dOf"/>
@@ -399,7 +437,7 @@
                 <constraint firstAttribute="trailing" secondItem="QfQ-ON-DwI" secondAttribute="trailing" id="ydm-K9-Tba"/>
             </constraints>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="27i-jT-rkW"/>

@@ -10,13 +10,11 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import "AppsFlyerTracker.h"
 #import "Localytics.h"
-
 
 @implementation AppDelegate
 
@@ -121,10 +119,8 @@
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;
     }
-    
     return NO;
 }
-
 
 #pragma mark - reset persist data if freshly installed
 - (void)preparePersistData

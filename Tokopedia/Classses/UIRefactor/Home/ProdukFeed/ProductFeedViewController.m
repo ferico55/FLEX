@@ -18,21 +18,47 @@
 #import "NavigateViewController.h"
 #import "ProductCell.h"
 
+#import "PromoCollectionReusableView.h"
+#import "PromoRequest.h"
+
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 static NSInteger const normalWidth = 320;
 static NSInteger const normalHeight = 568;
 
-@interface ProductFeedViewController() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
-
-
-@property (nonatomic, strong) NSMutableArray *product;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
-
-
 typedef enum TagRequest {
     ProductFeedTag
 } TagRequest;
+
+typedef enum ScrollDirection {
+    ScrollDirectionNone,
+    ScrollDirectionRight,
+    ScrollDirectionLeft,
+    ScrollDirectionUp,
+    ScrollDirectionDown,
+} ScrollDirection;
+
+@interface ProductFeedViewController()
+<
+    UICollectionViewDataSource,
+    UICollectionViewDelegate,
+    UICollectionViewDelegateFlowLayout,
+    UIScrollViewDelegate,
+    TokopediaNetworkManagerDelegate,
+    PromoCollectionViewDelegate,
+    PromoRequestDelegate
+>
+
+@property (nonatomic, strong) NSMutableArray *product;
+@property (strong, nonatomic) NSMutableArray *promo;
+
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+
+@property (strong, nonatomic) NSMutableArray *promoScrollPosition;
+@property (assign, nonatomic) CGFloat lastContentOffset;
+@property ScrollDirection scrollDirection;
+
+@property (strong, nonatomic) PromoRequest *promoRequest;
 
 @end
 
@@ -71,6 +97,9 @@ typedef enum TagRequest {
     
     //todo with variable
     _product = [NSMutableArray new];
+    _promo = [NSMutableArray new];
+    _promoScrollPosition = [NSMutableArray new];
+
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
     _isNoData = (_product.count > 0);
     _page = 1;
@@ -85,7 +114,7 @@ typedef enum TagRequest {
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
@@ -100,6 +129,12 @@ typedef enum TagRequest {
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductFeedTag;
     [_networkManager doRequest];
+    
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
+    [self requestPromo];
+    
+    [self registerNib];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -108,20 +143,26 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Collection Delegate
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return _product.count;
 }
 
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return [[_product objectAtIndex:section] count];
+}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:productFeedCellIdentifier forIndexPath:indexPath];
     
-    ProductFeedList *product = _product[indexPath.row];
+    ProductFeedList *product = [_product[indexPath.section] objectAtIndex:indexPath.row];
     [cell setViewModel:product.viewModel];
     
     //next page if already last cell
+    
+    NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
-    if (row == indexPath.row) {
+    if (indexPath.section == section && indexPath.row == row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
             [_networkManager doRequest];
@@ -132,23 +173,46 @@ typedef enum TagRequest {
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    [self registerNib];
     UICollectionReusableView *reusableView = nil;
-    
-    if(kind == UICollectionElementKindSectionFooter) {
-        if(_isFailRequest) {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+    if (kind == UICollectionElementKindSectionHeader) {
+        if (_promo.count >= indexPath.section && indexPath.section > 0) {
+            if ([_promo objectAtIndex:indexPath.section]) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = PromoCollectionViewCellTypeNormal;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                if (self.scrollDirection == ScrollDirectionDown) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                } else if (self.scrollDirection == ScrollDirectionUp) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenterWithoutAnimation];
+                }
+            } else {
+                reusableView = nil;
+            }
         } else {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+            reusableView = nil;
+        }
+    } else if (kind == UICollectionElementKindSectionFooter) {
+        if(_isFailRequest) {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"RetryView"
+                                                                     forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"FooterView"
+                                                                     forIndexPath:indexPath];
         }
     }
-    
     return reusableView;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    ProductFeedList *product = [_product objectAtIndex:indexPath.row];
+    ProductFeedList *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 //    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
@@ -184,9 +248,29 @@ typedef enum TagRequest {
     return cellSize;
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
-    return UIEdgeInsetsMake(10, 10, 10, 10);
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    CGSize size = CGSizeZero;
+    if (_promo.count > section && section > 0) {
+        if ([_promo objectAtIndex:section]) {
+            CGFloat headerHeight = [PromoCollectionReusableView collectionViewNormalHeight];
+            size = CGSizeMake(self.view.frame.size.width, headerHeight);
+        }
+    }
+    return size;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+    NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
+    if (section == lastSection) {
+        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+            size = CGSizeMake(self.view.frame.size.width, 50);
+        }
+    } else if (_product.count == 0 && _page == 1) {
+        size = CGSizeMake(self.view.frame.size.width, 50);
+    }
+    return size;
 }
 
 #pragma mark - Memory Management
@@ -200,7 +284,9 @@ typedef enum TagRequest {
 
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:kTKPDHOMEPRODUCTFEEDACT, kTKPDHOME_APIACTIONKEY, @(_page),kTKPDHOME_APIPAGEKEY, @(kTKPDHOMEHOTLIST_LIMITPAGE), kTKPDHOME_APILIMITPAGEKEY, nil];
+    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:kTKPDHOMEPRODUCTFEEDACT, kTKPDHOME_APIACTIONKEY,
+                               @(_page), kTKPDHOME_APIPAGEKEY,
+                               @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
     
     return parameter;
 }
@@ -271,13 +357,15 @@ typedef enum TagRequest {
     ProductFeed *feed = [result objectForKey:@""];
     [_noResult removeFromSuperview];
     
-    if(_page == 1) {
-        _product = [feed.result.list mutableCopy];
-    } else {
-        [_product addObjectsFromArray: feed.result.list];
-    }
-    
-    if (_product.count >0) {
+    if (feed.result.list.count > 0) {
+        
+        if (_page == 1) {
+            [_product removeAllObjects];
+            [_promo removeAllObjects];
+        }
+        
+        [_product addObject:feed.result.list];
+        
         _isNoData = NO;
         _nextPageUri =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
@@ -288,6 +376,9 @@ typedef enum TagRequest {
         } else {
             [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
         }
+        
+        if (_page > 1) [self requestPromo];
+        
     } else {
         // no data at all
         _isNoData = YES;
@@ -297,19 +388,19 @@ typedef enum TagRequest {
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
-        [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+        [_collectionView reloadData];
     } else  {
         [_collectionView reloadData];
     }
-    
+    [_collectionView layoutIfNeeded];
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     _isShowRefreshControl = NO;
     [_refreshControl endRefreshing];
-    
     _isFailRequest = YES;
     [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
@@ -342,6 +433,7 @@ typedef enum TagRequest {
     [_networkManager doRequest];
     _isFailRequest = NO;
     [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh {
@@ -359,6 +451,56 @@ typedef enum TagRequest {
     
     UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+    
+    UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
+}
+
+#pragma mark - Promo request delegate
+
+- (void)requestPromo {
+    _promoRequest.page = _page;
+    [_promoRequest requestForProductFeed];
+}
+
+- (void)didReceivePromo:(NSArray *)promo {
+    if (promo) {
+        [_promo addObject:promo];
+        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+    } else if (promo == nil && _page == 2) {
+        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    }
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
+}
+
+#pragma mark - Promo collection delegate
+
+- (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
+    [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
+}
+
+- (void)didSelectPromoProduct:(PromoProduct *)product {
+    NavigateViewController *navigateController = [NavigateViewController new];
+    NSDictionary *data = @{
+                           kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+                           PromoImpressionKey          : product.ad_key,
+                           PromoSemKey                 : product.ad_sem_key,
+                           PromoReferralKey            : product.ad_r
+                           };
+    [navigateController navigateToProductFromViewController:self withData:data];
+}
+
+#pragma mark - Scroll delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.lastContentOffset > scrollView.contentOffset.y) {
+        self.scrollDirection = ScrollDirectionUp;
+    } else if (self.lastContentOffset < scrollView.contentOffset.y) {
+        self.scrollDirection = ScrollDirectionDown;
+    }
+    self.lastContentOffset = scrollView.contentOffset.y;
 }
 
 @end

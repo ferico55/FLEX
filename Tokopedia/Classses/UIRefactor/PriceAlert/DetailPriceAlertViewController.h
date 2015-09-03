@@ -9,17 +9,22 @@
 #import <UIKit/UIKit.h>
 @class DetailPriceAlert;
 
-@interface DetailPriceAlertViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-{
+@interface DetailPriceAlertViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
     IBOutlet UITableView *tblDetailPriceAlert;
     IBOutlet UIView *viewLineHeader, *viewSeparatorUrutkan;
     IBOutlet UIButton *btnSort, *btnFilter;
     IBOutlet NSLayoutConstraint *constraintHeightTable, *constraintWidthSeparatorButton, *constraintYLineHeader, *constraintWidthUrutkan, *constraintWidthFilter;
 }
 
-@property (nonatomic, unsafe_unretained) UIImage *imageHeader;
-@property (nonatomic, unsafe_unretained) DetailPriceAlert *detailPriceAlert;
 - (void)updatePriceAlert:(NSString *)strPrice;
+- (void)replaceDataSelected:(NSDictionary*)data;
+
 - (IBAction)actionSort:(id)sender;
 - (IBAction)actionFilter:(id)sender;
+
+@property (nonatomic, weak) UIImage *imageHeader;
+@property (nonatomic, weak) DetailPriceAlert *detailPriceAlert;
+@property (strong, nonatomic) UIViewController *masterVC;
+
+
 @end

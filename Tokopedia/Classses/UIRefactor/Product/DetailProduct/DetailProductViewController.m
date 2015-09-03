@@ -60,11 +60,6 @@
 
 #import "DetailProductOtherView.h"
 
-#import "TKPDTabShopViewController.h"
-#import "ShopTalkViewController.h"
-#import "ShopReviewViewController.h"
-#import "ShopNotesViewController.h"
-
 #import "TransactionATCViewController.h"
 #import "ShopContainerViewController.h"
 #import "UserAuthentificationManager.h"

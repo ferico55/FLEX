@@ -20,10 +20,7 @@
 
 #import "ShopDescriptionView.h"
 #import "ShopStatView.h"
-#import "TKPDTabShopViewController.h"
-#import "ShopTalkViewController.h"
-#import "ShopReviewViewController.h"
-#import "ShopNotesViewController.h"
+
 #import "ShopDelegate.h"
 
 #import "ProductAddEditViewController.h"

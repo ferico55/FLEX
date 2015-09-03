@@ -7,15 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+@class DetailPriceAlertViewController;
 
-@interface AlertPriceNotificationViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-{
+@interface AlertPriceNotificationViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
     IBOutlet UITableView *tblPriceAlert;
     IBOutlet UIView *viewCategory;
     IBOutlet UIImageView *imgArrow;
     IBOutlet NSLayoutConstraint *constraintSpaceViewCategoryAndTbl;
 }
 
-- (IBAction)actionShowKategory:(id)sender;
+- (IBAction)actionShowCategory:(id)sender;
 - (void)updatePriceAlert:(NSString *)strPrice;
+- (void)replaceDataSelected:(id)data;
+
+@property (strong, nonatomic) DetailPriceAlertViewController *detailViewController;
+@property (strong, nonatomic) UIViewController *splitVC;
+
+
+
 @end

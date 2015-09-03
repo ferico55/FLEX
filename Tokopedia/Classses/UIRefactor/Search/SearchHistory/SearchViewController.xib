@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchViewController">
             <connections>
-                <outlet property="buttonclear" destination="RGD-4w-dt6" id="4Un-pK-x2a"/>
-                <outlet property="searchbar" destination="7Xm-Sf-r27" id="GFB-Hx-xs8"/>
-                <outlet property="searchhistoryview" destination="UGu-Sr-Afb" id="6sQ-Zw-CYj"/>
+                <outlet property="searchBar" destination="7Xm-Sf-r27" id="Q3G-cL-7SC"/>
                 <outlet property="table" destination="3gY-Wm-LpU" id="SpY-sx-Q8e"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -29,59 +21,27 @@
                     <rect key="frame" x="0.0" y="44" width="600" height="556"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3gY-Wm-LpU">
-                            <rect key="frame" x="0.0" y="44" width="600" height="512"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="392" id="GoT-Sc-yUK"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="GoT-Sc-yUK"/>
+                                </mask>
+                            </variation>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="6vr-kD-1Rx"/>
                                 <outlet property="delegate" destination="-1" id="YZ5-mT-yHV"/>
                             </connections>
                         </tableView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGD-4w-dt6">
-                            <rect key="frame" x="550" y="0.0" width="46" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="46" id="9Df-tc-3Eb"/>
-                                <constraint firstAttribute="height" constant="44" id="PPn-DT-tYf"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                            <state key="normal" title="Hapus">
-                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="rPM-gu-gM1"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pencarian Terakhir" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6j-iT-PSE">
-                            <rect key="frame" x="15" y="0.0" width="486" height="44"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZNz-aX-x5R" userLabel="Border">
-                            <rect key="frame" x="15" y="44" width="585" height="1"/>
-                            <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="toh-hV-kSf"/>
-                            </constraints>
-                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="RGD-4w-dt6" firstAttribute="leading" secondItem="E6j-iT-PSE" secondAttribute="trailing" constant="49" id="1rz-To-UB0"/>
-                        <constraint firstItem="ZNz-aX-x5R" firstAttribute="top" secondItem="E6j-iT-PSE" secondAttribute="bottom" id="FOp-by-PAH"/>
-                        <constraint firstItem="E6j-iT-PSE" firstAttribute="leading" secondItem="ZNz-aX-x5R" secondAttribute="leading" id="GBr-ab-Wuy"/>
-                        <constraint firstAttribute="trailing" secondItem="RGD-4w-dt6" secondAttribute="trailing" constant="4" id="HRj-HJ-xrB"/>
-                        <constraint firstItem="E6j-iT-PSE" firstAttribute="bottom" secondItem="RGD-4w-dt6" secondAttribute="bottom" id="WDb-Wb-DZw"/>
-                        <constraint firstItem="ZNz-aX-x5R" firstAttribute="leading" secondItem="UGu-Sr-Afb" secondAttribute="leading" constant="15" id="fkg-fE-1iK"/>
-                        <constraint firstItem="RGD-4w-dt6" firstAttribute="top" secondItem="UGu-Sr-Afb" secondAttribute="top" id="iQs-7L-jOY"/>
-                        <constraint firstAttribute="trailing" secondItem="ZNz-aX-x5R" secondAttribute="trailing" id="kRf-xw-KGd"/>
+                        <constraint firstItem="3gY-Wm-LpU" firstAttribute="top" secondItem="UGu-Sr-Afb" secondAttribute="top" id="P8P-yj-DZF"/>
                         <constraint firstAttribute="trailing" secondItem="3gY-Wm-LpU" secondAttribute="trailing" id="stY-q5-NsQ"/>
-                        <constraint firstItem="3gY-Wm-LpU" firstAttribute="top" secondItem="RGD-4w-dt6" secondAttribute="bottom" id="tlV-Y6-erR"/>
                         <constraint firstAttribute="bottom" secondItem="3gY-Wm-LpU" secondAttribute="bottom" id="ulq-Gu-eXJ"/>
-                        <constraint firstItem="E6j-iT-PSE" firstAttribute="top" secondItem="RGD-4w-dt6" secondAttribute="top" id="yEZ-lt-czs"/>
                         <constraint firstItem="3gY-Wm-LpU" firstAttribute="leading" secondItem="UGu-Sr-Afb" secondAttribute="leading" id="ypb-ck-xBW"/>
                     </constraints>
                 </view>
