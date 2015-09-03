@@ -358,13 +358,13 @@ UIAlertViewDelegate
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
     
-    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
-        _dinkButton.hidden = NO;
-        _buyButton.hidden = YES;
-    } else {
-        _dinkButton.hidden = YES;
-        _buyButton.hidden = NO;
-    }
+//    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
+//        _dinkButton.hidden = NO;
+//        _buyButton.hidden = YES;
+//    } else {
+//        _dinkButton.hidden = YES;
+//        _buyButton.hidden = NO;
+//    }
     
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
@@ -462,6 +462,7 @@ UIAlertViewDelegate
         Product *product = [Product new];
         product.result = result;
         product.status = @"OK";
+        product.isDummyProduct = YES;
         [self requestprocess:product];
         
         [self configureRestKit];
@@ -2022,6 +2023,7 @@ UIAlertViewDelegate
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
             id stats = [result objectForKey:@""];
             _product = stats;
+            _product.isDummyProduct = NO;
         }
 
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
@@ -2040,8 +2042,9 @@ UIAlertViewDelegate
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
             self.navigationItem.rightBarButtonItems = nil;
             
-            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin]) {
+            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin] && !_product.isDummyProduct) {
                 //MyShop
+                [_dinkButton setHidden:NO];
                 UIBarButtonItem *barbutton;
                 barbutton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting.png"] withAction:@selector(gestureSetting:)];
                 
@@ -2078,6 +2081,11 @@ UIAlertViewDelegate
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
             } else {
+                if(!_product.isDummyProduct) {
+                    [_buyButton setHidden:NO];
+                }
+                
+                
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
@@ -2105,6 +2113,13 @@ UIAlertViewDelegate
                 
                 //Set background priceAlert
                 [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
+            }
+            
+            if(_product.isDummyProduct) {
+                [viewContentWishList setHidden:YES];
+                self.navigationItem.rightBarButtonItems = nil;
+            } else {
+                [viewContentWishList setHidden:NO];
             }
             
             //decide description height
@@ -2168,7 +2183,7 @@ UIAlertViewDelegate
             //TODO::
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
-            backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+            backgroundGreyView.backgroundColor = [UIColor clearColor];
             [self.view insertSubview:backgroundGreyView belowSubview:self.table];
             
         }

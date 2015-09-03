@@ -60,6 +60,8 @@
     NSString *_endDate;
     
     NSDictionary *_auth;
+    
+    FilterSalesTransactionListViewController *_filterViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -98,6 +100,9 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
+    
+    _filterViewController = [FilterSalesTransactionListViewController new];
+    _filterViewController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -749,9 +754,7 @@
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
-    controller.delegate = self;
-    navigationController.viewControllers = @[controller];
+    navigationController.viewControllers = @[_filterViewController];
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }

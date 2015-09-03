@@ -21,6 +21,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "AppsFlyerTracker.h"
 #import "WebViewController.h"
+#import "TransactionCartRootViewController.h"
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
@@ -695,18 +696,23 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
 - (void)createPasswordSuccess
 {
-    LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
-    if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)])
-    {
-        [loginController.delegate redirectViewController:loginController.redirectViewController];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        [self.tabBarController setSelectedIndex:0];
-        
+    if ([self.navigationController.viewControllers[0] isKindOfClass:[LoginViewController class]]) {
+        LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
+        if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
+            [loginController.delegate redirectViewController:loginController.redirectViewController];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.tabBarController setSelectedIndex:0];
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                object:nil
+                                                              userInfo:nil];
+        }
+    } else if ([self.navigationController.viewControllers[0] isKindOfClass:[TransactionCartRootViewController class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.tabBarController setSelectedIndex:3];
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                             object:nil
                                                           userInfo:nil];
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
     }
 }
@@ -901,17 +907,25 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
             
-            LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
-            if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
-                [loginController.delegate redirectViewController:loginController.redirectViewController];
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            } else {
-                [self.tabBarController setSelectedIndex:0];
-                
+            if ([self.navigationController.viewControllers[0] isKindOfClass:[LoginViewController class]]) {
+                LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
+                if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
+                    [loginController.delegate redirectViewController:loginController.redirectViewController];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    [self.tabBarController setSelectedIndex:0];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                        object:nil
+                                                                      userInfo:nil];
+                }
+            } else if ([self.navigationController.viewControllers[0] isKindOfClass:[TransactionCartRootViewController class]]) {
+                [self.navigationController popViewControllerAnimated:YES];
+                [self.tabBarController setSelectedIndex:3];
                 [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                     object:nil
                                                                   userInfo:nil];
             }
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else if ([_login.result.status isEqualToString:@"1"]) {

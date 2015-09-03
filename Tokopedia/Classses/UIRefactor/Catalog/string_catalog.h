@@ -14,11 +14,14 @@
 #define API_FILTER_LOCATION_KEY         @"location"
 #define API_FILTER_CONDITION_KEY        @"condition"
 #define API_FILTER_ORDER_BY_KEY         @"order_by"
+#define API_FILTER_PAGE_KEY             @"page"
 
 #define API_STATUS_KEY                  @"status"
 #define API_CONFIG_KEY                  @"config"
 #define API_SERVER_PROCESS_TIME_KEY     @"server_process_time"
 #define API_RESULT_KEY                  @"result"
+
+#define API_URI_NEXT_KEY                @"uri_next"
 
 #define API_CATALOG_INFO_KEY            @"catalog_info"
 #define API_CATALOG_NAME_KEY            @"catalog_name"

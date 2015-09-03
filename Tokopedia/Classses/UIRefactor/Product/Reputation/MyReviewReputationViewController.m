@@ -349,6 +349,7 @@
                                                                  CCreateTimeAgo,
                                                                  CRevieweeRole,
                                                                  COrderID,
+                                                                 @"auto_read",
                                                                  CUnaccessedReputationReview,
                                                                  CShowRevieweeSCore,
                                                                  CRole]];
@@ -761,6 +762,7 @@
         DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
         detailMyReviewReputationViewController.tag = (int)((UIButton *) sender).tag;
         detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
+        detailMyReviewReputationViewController.autoRead = tempObj.auto_read;
 
         
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

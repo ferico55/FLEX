@@ -10,6 +10,8 @@
 
 @interface CatalogSectionHeaderView : UIView
 
+@property (weak, nonatomic) IBOutlet UIView *view;
+@property (weak, nonatomic) IBOutlet UIView *viewContent;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
