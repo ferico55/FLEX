@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BBEFBFB1107DABE4D840FCB0"
+               BlueprintIdentifier = "A59461B55D0EECEDE3F49746"
                BuildableName = "libPods-Tokopedia-NJKWebViewProgress.a"
                BlueprintName = "Pods-Tokopedia-NJKWebViewProgress"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BBEFBFB1107DABE4D840FCB0"
+            BlueprintIdentifier = "A59461B55D0EECEDE3F49746"
             BuildableName = "libPods-Tokopedia-NJKWebViewProgress.a"
             BlueprintName = "Pods-Tokopedia-NJKWebViewProgress"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -60,7 +60,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BBEFBFB1107DABE4D840FCB0"
+            BlueprintIdentifier = "A59461B55D0EECEDE3F49746"
             BuildableName = "libPods-Tokopedia-NJKWebViewProgress.a"
             BlueprintName = "Pods-Tokopedia-NJKWebViewProgress"
             ReferencedContainer = "container:Pods.xcodeproj">

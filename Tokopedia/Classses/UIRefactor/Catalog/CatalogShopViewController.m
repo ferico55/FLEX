@@ -20,6 +20,9 @@
 #import "SmileyAndMedal.h"
 #import "ShopContainerViewController.h"
 #import "NavigateViewController.h"
+#import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
+#import "Paging.h"
 
 @interface CatalogShopViewController ()
 <
@@ -28,7 +31,9 @@
     GeneralTableViewControllerDelegate,
     FilterCatalogDelegate,
     CatalogShopDelegate,
-    CMPopTipViewDelegate
+    CMPopTipViewDelegate,
+    TokopediaNetworkManagerDelegate,
+    LoadingViewDelegate
 >
 {
     UserAuthentificationManager *_userManager;
@@ -37,14 +42,26 @@
     __weak RKManagedObjectRequestOperation *_request;
     NavigateViewController *_navigator;
     
-    
-
     CMPopTipView *cmPopTitpView;
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
     NSInteger _requestCount;
     
     UIRefreshControl *_refreshControl;
+    
+    TokopediaNetworkManager *_networkManager;
+    
+    NSString *_catalogId;
+    NSString *_condition;
+    NSString *_orderBy;
+    NSString *_location;
+    
+    NSString *_uriNext;
+    NSInteger _page;
+    
+    FilterCatalogViewController *_filterCatalogController;
+    
+    LoadingView *_loadingView;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -70,6 +87,21 @@
     
     _tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);    
     _operationQueue = [NSOperationQueue new];
+    
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    _page = 2;
+    _uriNext = _catalog.result.paging.uri_next;
+    _catalogId = _catalog.result.catalog_info.catalog_id;
+    
+    _filterCatalogController = [[FilterCatalogViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    _filterCatalogController.catalog = _catalog;
+    _filterCatalogController.delegate = self;
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_tableView addSubview:_refreshControl];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -129,6 +161,7 @@
                               placeholderImage:[UIImage imageNamed:@""]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                            cell.shopImageView.image = image;
+                                           cell.shopImageView.contentMode = UIViewContentModeScaleAspectFill;
     } failure:nil];
 
     if (shop.product_list.count > 1) {
@@ -141,13 +174,22 @@
         cell.masking.hidden = NO;
     }
     
-//    NSInteger rateAverage = (shop.shop_rate_accuracy + shop.shop_rate_service + shop.shop_rate_speed) / 3;
-//    [cell setShopRate:rateAverage];
     [SmileyAndMedal generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level withSet:shop.shop_reputation.shop_badge_level.set withImage:cell.stars isLarge:YES];
     [cell setTagContentStar:(int)indexPath.row];
     
     return cell;
 }
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger row = _catalog_shops.count - 1;
+    if (row == indexPath.row) {
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            NSLog(@"%@", NSStringFromSelector(_cmd));
+            [_networkManager doRequest];
+        }
+    }
+}
+
 
 #pragma mark - Actions
 
@@ -166,7 +208,19 @@
                                    @"Harga - Dari yang Terendah",
                                    @"Harga - Dari yang Tertinggi",
                                    ];
-            controller.selectedObject = @"Produk Terjual";
+            
+            NSString *selectedObject = @"Produk Terjual";
+            if ([_orderBy isEqualToString:@"1"]) {
+                selectedObject = @"Produk Terjual";
+            } else if ([_orderBy isEqualToString:@"2"]) {
+                selectedObject = @"Penilaian";
+            } else if ([_orderBy isEqualToString:@"3"]) {
+                selectedObject = @"Harga - Dari yang Terendah";
+            } else if ([_orderBy isEqualToString:@"4"]) {
+                selectedObject = @"Harga - Dari yang Tertinggi";
+            }
+            
+            controller.selectedObject = selectedObject;
             controller.isPresentedViewController = YES;
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -175,10 +229,7 @@
         
         } else if (button.tag == 2) {
         
-            FilterCatalogViewController *controller = [[FilterCatalogViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            controller.catalog = _catalog;
-            controller.delegate = self;
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:_filterCatalogController];
             navigationController.navigationBar.translucent = NO;
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 
@@ -195,10 +246,25 @@
     }
 }
 
-#pragma mark - RestKit Methods
+#pragma mark - Network manager delegate
 
-- (void)configureRestKit
-{
+- (NSString *)getPath:(int)tag {
+    return API_CATALOG_PATH;
+}
+
+- (NSDictionary *)getParameter:(int)tag {
+    NSDictionary *parameters = @{
+                                 API_ACTION_KEY             : API_GET_CATALOG_DETAIL_KEY,
+                                 API_CATALOG_ID_KEY         : _catalogId?:@"",
+                                 API_FILTER_CONDITION_KEY   : _condition?:@"",
+                                 API_FILTER_LOCATION_KEY    : _location?:@"",
+                                 API_FILTER_ORDER_BY_KEY    : _orderBy?:@"",
+                                 API_FILTER_PAGE_KEY        : [NSString stringWithFormat:@"%d", _page],
+                                 };
+    return parameters;
+}
+
+- (id)getObjectManager:(int)tag {
     _objectManager =  [RKObjectManager sharedClient];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Catalog class]];
@@ -207,6 +273,9 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
     [resultMapping addAttributeMappingsFromArray:@[API_CATALOG_IMAGE_KEY,]];
     
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromArray:@[API_URI_NEXT_KEY]];
+
     RKObjectMapping *catalogInfoMapping = [RKObjectMapping mappingForClass:[CatalogInfo class]];
     [catalogInfoMapping addAttributeMappingsFromArray:@[API_CATALOG_NAME_KEY,
                                                         API_CATALOG_DESCRIPTION_KEY,
@@ -275,7 +344,11 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
-    
+
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                  toKeyPath:kTKPD_APIPAGINGKEY
+                                                                                withMapping:pagingMapping]];
+
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog_info"
                                                                                   toKeyPath:@"catalog_info"
                                                                                 withMapping:catalogInfoMapping]];
@@ -323,95 +396,68 @@
                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectManager addResponseDescriptor:response];
+
+    return _objectManager;
 }
 
-- (void)requestCatalogId:(NSString *)catalogId
-                location:(NSString *)location
-               condition:(NSString *)condition
-                 orderBy:(NSString *)orderBy
-{
-    if (_request.isExecuting) return;
-    
-    [self configureRestKit];
-    
-    _requestCount++;
-    
-    [_activityIndicatorView startAnimating];
-    
-    NSDictionary *parameters = @{
-                                 API_ACTION_KEY             : API_GET_CATALOG_DETAIL_KEY,
-                                 API_CATALOG_ID_KEY         : catalogId,
-                                 API_FILTER_CONDITION_KEY   : condition,
-                                 API_FILTER_LOCATION_KEY    : location,
-                                 API_FILTER_ORDER_BY_KEY    : orderBy,
-                                 };
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:API_CATALOG_PATH
-                                                                parameters:[parameters encrypt]];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        [_activityIndicatorView stopAnimating];
-        [_tableView setTableFooterView:nil];
-        [self requestResult:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_activityIndicatorView stopAnimating];
-        [_tableView setTableFooterView:nil];
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(cancel)
-                                            userInfo:nil
-                                             repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+- (NSString *)getRequestStatus:(RKMappingResult *)result withTag:(int)tag {
+    Catalog *catalog = [result.dictionary objectForKey:@""];
+    return catalog.status;
 }
 
-- (void)requestResult:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation
-{
+- (void)actionBeforeRequest:(int)tag {
+    self.tableView.tableFooterView = _footerView;
+    [self.activityIndicatorView startAnimating];
+}
+
+- (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     BOOL status = [[[result.dictionary objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         [self loadMappingResult:result];
-    } else {
-        [self cancel];
-        if ([(NSError *)result code] == NSURLErrorCancelled && _requestCount < kTKPDREQUESTCOUNTMAX) {
-            [self performSelector:@selector(configureRestKit)
-                       withObject:nil
-                       afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(request)
-                       withObject:nil
-                       afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
+        [_activityIndicatorView stopAnimating];
+        [_tableView setTableFooterView:nil];
+        [_refreshControl endRefreshing];
     }
 }
 
-- (void)loadMappingResult:(RKMappingResult *)result
-{
+- (void)loadMappingResult:(RKMappingResult *)result {
     if (result && [result isKindOfClass:[RKMappingResult class]]) {
         Catalog *catalog = [result.dictionary objectForKey:@""];
-        _catalog_shops = catalog.result.catalog_shops;
+        if (_page == 1) [_catalog_shops removeAllObjects];
+        [_catalog_shops addObjectsFromArray:catalog.result.catalog_shops];
+        if (catalog.result.paging.uri_next) _page++;
+        _uriNext = catalog.result.paging.uri_next;
         [_tableView reloadData];
         [_tableView setTableFooterView:nil];
         [_activityIndicatorView stopAnimating];
+        [_refreshControl endRefreshing];
     }
 }
 
-- (void)cancel
-{
-    [_request cancel];
-    _request = nil;
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+    CGRect frame = CGRectMake(0, 0, width, 60);
+    _loadingView = [[LoadingView alloc] initWithFrame:frame];
+    _loadingView.delegate = self;
+    _tableView.tableFooterView = _loadingView;
+    [_refreshControl endRefreshing];
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    [_refreshControl endRefreshing];
+}
+
+- (void)pressRetryButton {
+    _tableView.tableFooterView = _footerView;
+    [_activityIndicatorView startAnimating];
+    [_networkManager doRequest];
 }
 
 #pragma mark - General table delegate
 
 - (void)didSelectObject:(id)object
 {
-    _catalog_shops = @[];
+    [_catalog_shops removeAllObjects];
     [_tableView reloadData];
     [_tableView setTableFooterView:_footerView];
     [_activityIndicatorView startAnimating];
@@ -425,10 +471,14 @@
     } else if ([object isEqualToString:@"Harga - Dari yang Tertinggi"]) {        
         orderBy = @"4";
     }
-    [self requestCatalogId:_catalog.result.catalog_info.catalog_id
-                  location:@""
-                 condition:@""
-                   orderBy:orderBy];
+    
+    _catalogId = _catalog.result.catalog_info.catalog_id;
+    _location = @"";
+    _condition = @"";
+    _orderBy = orderBy;
+    _page = 1;
+    
+    [_networkManager doRequest];
 }
 
 #pragma mark - Filter delegate
@@ -437,18 +487,27 @@
                      condition:(NSString *)condition
                       location:(NSString *)location
 {
-    _catalog_shops = @[];
+    [_catalog_shops removeAllObjects];
     [_tableView reloadData];
     [_tableView setTableFooterView:_footerView];
     [_activityIndicatorView startAnimating];
-    [self requestCatalogId:catalog.result.catalog_info.catalog_id
-                  location:location
-                 condition:condition
-                   orderBy:@""];
+    
+    _catalogId = catalog.result.catalog_info.catalog_id;
+    _location = location;
+    _condition = condition;
+    _orderBy = @"";
+    _page = 1;
+    
+    [_networkManager doRequest];
 }
 
+-(void)refreshView:(UIRefreshControl *)refresh {
+    _catalogId = _catalog.result.catalog_info.catalog_id;
+    [_networkManager doRequest];
+}
 
 #pragma mark - Method
+
 - (void)dismissAllPopTipViews
 {
     [cmPopTitpView dismissAnimated:YES];
@@ -499,27 +558,27 @@
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
 {
     ShopContainerViewController *controller = [[ShopContainerViewController alloc] init];
-    CatalogShops *shop = [_catalog.result.catalog_shops objectAtIndex:indexPath.row];
+    CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
     controller.data = @{@"shop_id" : shop.shop_id, @"shop_name" : shop.shop_name};
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath
 {
-    ProductList *product = [[[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
+    ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
     [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectBuyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    ProductList *product = [[[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
+    ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
     [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectOtherProductAtIndexPath:(NSIndexPath *)indexPath
 {
     CatalogProductViewController *controller = [CatalogProductViewController new];
-    controller.product_list = [[_catalog.result.catalog_shops objectAtIndex:indexPath.row] product_list];
+    controller.product_list = [[_catalog_shops objectAtIndex:indexPath.row] product_list];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

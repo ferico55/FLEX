@@ -89,6 +89,10 @@
 {    
     [super viewDidLoad];
     
+    UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
+    UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
+    self.navigationItem.titleView = topedImageView;
+    
     if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
     {
         CGRect frame = _facebookLoginButton.frame;
