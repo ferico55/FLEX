@@ -194,34 +194,34 @@
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
         TransactionAction *order = stat;
-        if(order.message_error)
+        if(order.result.is_success == 1)
+        {
+            [self doRequestGenerateHost];
+        }
+        else
         {
             NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:_delegate];
             [alert show];
             [_delegate actionAfterRequest];
-        }
-        if(order.result.is_success == 1)
-        {
-            [self doRequestGenerateHost];
         }
     }
     if (tag == TAG_REQUEST_SUBMIT) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
         TransactionAction *order = stat;
-        if(order.message_error)
+        if(order.result.is_success == 1)
+        {
+            [_delegate requestSuccessConfirmPayment:order];
+            [_delegate actionAfterRequest];
+        }
+        else
         {
             NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:_delegate];
             [alert show];
             [_delegate actionAfterRequest];
             
-        }
-        if(order.result.is_success == 1)
-        {
-            [_delegate requestSuccessConfirmPayment:order];
-            [_delegate actionAfterRequest];
         }
     }
 }
@@ -239,6 +239,7 @@
     
     StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_delegate];
     [failedAlert show];
+    [_delegate actionAfterRequest];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
