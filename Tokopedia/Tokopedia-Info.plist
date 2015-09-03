@@ -29,11 +29,23 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string>com.tokopedia.Tokopedia</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>tagmanager.c.com.tokopedia.Tokopedia</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.tokopedia.Tokopedia</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.tokopedia.Tokopedia</string>
 			</array>
 		</dict>
 	</array>

@@ -23,6 +23,10 @@
 #import "WebViewController.h"
 #import "TransactionCartRootViewController.h"
 
+#import <GoogleOpenSource/GoogleOpenSource.h>
+
+static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
+
 #pragma mark - Register View Controller
 @interface RegisterViewController ()
 <
@@ -53,13 +57,16 @@
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     
-    __weak RKObjectManager *_facebookObjectManager;
-    __weak RKManagedObjectRequestOperation *_requestFacebookLogin;
+    __weak RKObjectManager *_thirdAppObjectManager;
+    __weak RKManagedObjectRequestOperation *_thirdAppLoginRequest;
 
     NSOperationQueue *_operationQueue;
     
     FBLoginView *_loginView;
     id<FBGraphUser> _facebookUser;
+    
+    GPPSignIn *_signIn;
+    GTLPlusPerson *_googleUser;
 }
 
 @property (weak, nonatomic) IBOutlet TextField *texfieldfullname;
@@ -80,6 +87,11 @@
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *facebookLoginActivityIndicator;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 
 - (IBAction)tap:(id)sender;
 - (IBAction)tapsegment:(id)sender;
@@ -114,24 +126,6 @@
 {
     [super viewDidLoad];
     
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-        CGRect frame = _facebookLoginView.frame;
-        frame.size.width = 550;
-        _facebookLoginView.frame = frame;
-    }
-    else
-    {
-        CGRect frame = _facebookLoginView.frame;
-        frame.size.width = [UIScreen mainScreen].bounds.size.width-30;
-        _facebookLoginView.frame = frame;
-    }
-
-    self.title = kTKPDREGISTER_NEW_TITLE;
-    
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    _contentView.frame = screenRect;
-    
     _datainput = [NSMutableDictionary new];
     [_datainput setObject:@"1" forKey:kTKPDREGISTER_APIGENDERKEY];
 
@@ -148,33 +142,29 @@
     
     //set default data
     [_datainput setObject:@(1) forKey:kTKPDREGISTER_APIGENDERKEY];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor lightGrayColor],
-                                 };
-    
-//    NSString *aggreementText = @"Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi.";
-//    _agreementLabel.attributedText = [[NSAttributedString alloc] initWithString:aggreementText
-//                                                                     attributes:attributes];
+        
     _agreementLabel.userInteractionEnabled = YES;
+
+    _signIn = [GPPSignIn sharedInstance];
+    _signIn.shouldFetchGooglePlusUser = YES;
+    _signIn.shouldFetchGoogleUserEmail = YES;
+    _signIn.clientID = kClientId;
+    _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
+    _signIn.delegate = self;
+    [_signIn trySilentAuthentication];
+    
+    [_signInButton setStyle:kGPPSignInButtonStyleStandard];
 
     _loginView = [[FBLoginView alloc] init];
     _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
-    _loginView.frame = CGRectMake(0, 0,
-                                  _facebookLoginView.frame.size.width,
-                                  _facebookLoginView.frame.size.height);
-    [_facebookLoginView addSubview:_loginView];
+    _loginView.delegate = self;
 
     [_container addSubview:_contentView];
     
-    _container.contentSize = CGSizeMake(self.view.frame.size.width,
-                                        _container.frame.size.height);
-
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateFormViewAppearance)
+                                                 name:kTKPDForceUpdateFacebookButton
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -198,6 +188,8 @@
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
     [FBSession setActiveSession:nil];
+    
+    [self updateFormViewAppearance];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -392,14 +384,14 @@
     [_request cancel];
     _request = nil;
     
-    [_requestFacebookLogin cancel];
-    _requestFacebookLogin = nil;
+    [_thirdAppLoginRequest cancel];
+    _thirdAppLoginRequest = nil;
 
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
     
-    [_facebookObjectManager.operationQueue cancelAllOperations];
-    _facebookObjectManager = nil;
+    [_thirdAppObjectManager.operationQueue cancelAllOperations];
+    _thirdAppObjectManager = nil;
     
     _loadingView.hidden = YES;
     [_container addSubview:_contentView];
@@ -718,10 +710,32 @@
 // Call method when user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
     if ([[FBSession activeSession] state] == FBSessionStateOpen) {
+        
         _facebookUser = user;
+
         _loadingView.hidden = NO;
         [_facebookLoginActivityIndicator startAnimating];
-        [self requestLoginFacebookUser:user];
+
+        FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
+        NSString *accessToken = [token accessToken]?:@"";
+        
+        NSString *gender = @"";
+        if ([[user objectForKey:@"gender"] isEqualToString:@"male"]) {
+            gender = @"1";
+        } else if ([[user objectForKey:@"gender"] isEqualToString:@"female"]) {
+            gender = @"2";
+        }
+        
+        NSDictionary *data = @{
+            kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
+            kTKPDLOGIN_API_EMAIL_KEY        : [user objectForKey:@"email"]?:@"",
+            kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
+            kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
+            kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
+            kTKPDLOGIN_API_GENDER_KEY       : gender,
+            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
+        };
+        [self requestThirdAppUser:data];
     }
 }
 
@@ -775,7 +789,7 @@
 - (void)configureRestKitFacebookLogin
 {
     // initialize RestKit
-    _facebookObjectManager =  [RKObjectManager sharedClient];
+    _thirdAppObjectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Login class]];
@@ -810,46 +824,27 @@
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_facebookObjectManager addResponseDescriptor:responseDescriptorStatus];
+    [_thirdAppObjectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)requestLoginFacebookUser:(id<FBGraphUser>)user
+- (void)requestThirdAppUser:(NSDictionary *)data
 {
-    if (_requestFacebookLogin.isExecuting) return;
+    if (_thirdAppLoginRequest.isExecuting) return;
     
     [self configureRestKitFacebookLogin];
     
     _requestcount++;
     
-    FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
-    NSString *accessToken = [token accessToken]?:@"";
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:data];
+    [parameters setObject:kTKPDREGISTER_APIDOLOGINKEY forKey:kTKPDREGISTER_APIACTIONKEY];
+    NSLog(@"\n\n\n%@\n\n\n", parameters);
     
-    NSString *gender = @"";
-    if ([[user objectForKey:@"gender"] isEqualToString:@"male"]) {
-        gender = @"1";
-    } else if ([[user objectForKey:@"gender"] isEqualToString:@"female"]) {
-        gender = @"2";
-    }
-    
-    NSDictionary *param = @{
-                            kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
-                            kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
-                            kTKPDLOGIN_API_EMAIL_KEY        : [user objectForKey:@"email"]?:@"",
-                            kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
-                            kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
-                            kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
-                            kTKPDLOGIN_API_GENDER_KEY       : gender,
-                            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
-                            };
-    
-    NSLog(@"\n\n\n%@\n\n\n", param);
-    
-    _requestFacebookLogin = [_facebookObjectManager appropriateObjectRequestOperationWithObject:self
+    _thirdAppLoginRequest = [_thirdAppObjectManager appropriateObjectRequestOperationWithObject:self
                                                                                          method:RKRequestMethodPOST
                                                                                            path:kTKPDLOGIN_FACEBOOK_APIPATH
-                                                                                     parameters:[param encrypt]];
+                                                                                     parameters:[parameters encrypt]];
     
-    NSLog(@"\n\n\n%@\n\n\n", _requestFacebookLogin);
+    NSLog(@"\n\n\n%@\n\n\n", _thirdAppLoginRequest);
     
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                                       target:self
@@ -860,24 +855,27 @@
     [[NSRunLoop currentRunLoop] addTimer:timer
                                  forMode:NSRunLoopCommonModes];
     
-    [_requestFacebookLogin setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [_thirdAppLoginRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
-        [self requestFacebookLoginResult:mappingResult withOperation:operation];
+        [self requestThirdAppLoginResult:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [timer invalidate];
         [self requestfailure:error];
     }];
     
-    [_operationQueue addOperation:_requestFacebookLogin];
+    [_operationQueue addOperation:_thirdAppLoginRequest];
 }
 
-- (void)requestFacebookLoginResult:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation
+- (void)requestThirdAppLoginResult:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation
 {
     _login = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         _isnodata = NO;
         if ([_login.result.status isEqualToString:@"2"]) {
+            
+            [[GPPSignIn sharedInstance] signOut];
+            [[GPPSignIn sharedInstance] disconnect];
             
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
@@ -922,16 +920,24 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else if ([_login.result.status isEqualToString:@"1"]) {
-            
+
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
             controller.delegate = self;
-            controller.facebookUser = _facebookUser;
-            
-            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Facebook Registration"}];
+            if (_facebookUser) {
+                controller.facebookUser = _facebookUser;
+            } else if (_googleUser) {
+                controller.googleUser = _googleUser;
+                NSString *fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+                controller.fullName = fullName;
+                controller.email = _signIn.authentication.userEmail;
+            }
+
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration
+                                              withValues:@{AFEventParamRegistrationMethod : @"Facebook Registration"}];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
             navigationController.navigationBar.translucent = NO;
@@ -970,5 +976,142 @@
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
+- (void)finishedWithAuth: (GTMOAuth2Authentication *)auth
+                   error: (NSError *) error {
+    NSLog(@"Received error %@ and auth object %@",error, auth);
+    if (error) {
+        NSArray *messages = @[[error localizedDescription]];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages
+                                                                       delegate:self];
+        [alert show];
+    } else {
+        [self requestGoogleUserDataAuth:auth error:error];
+    }
+}
+
+- (void)requestGoogleUserDataAuth: (GTMOAuth2Authentication *)auth
+                            error: (NSError *) error {
+    GTLQueryPlus *query = [GTLQueryPlus queryForPeopleGetWithUserId:@"me"];
+    NSLog(@"email %@ ", [NSString stringWithFormat:@"Email: %@", _signIn.authentication.userEmail]);
+    NSLog(@"Received error %@ and auth object %@",error, auth);
+    GTLServicePlus* plusService = [[GTLServicePlus alloc] init] ;
+    plusService.retryEnabled = YES;
+    [plusService setAuthorizer:_signIn.authentication];
+    plusService.apiVersion = @"v1";
+    [plusService executeQuery:query
+            completionHandler:^(GTLServiceTicket *ticket,
+                                GTLPlusPerson *person,
+                                NSError *error) {
+                if (error) {
+                    NSArray *message = @[[error localizedDescription]];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:message delegate:self];
+                    [alert show];
+                } else {
+                    NSString *gender = @"";
+                    if ([person.gender isEqualToString:@"male"]) {
+                        gender = @"1";
+                    } else if ([person.gender isEqualToString:@"female"]) {
+                        gender = @"2";
+                    }
+                    
+                    NSString *birthday = @"";
+                    if (person.birthday) {
+                        NSArray *birthdayComponents = [person.birthday componentsSeparatedByString:@"-"];
+                        NSString *year = [birthdayComponents objectAtIndex:0];
+                        if (![year isEqualToString:@"0000"]) {
+                            NSString *day = [birthdayComponents objectAtIndex:2];
+                            NSString *month = [birthdayComponents objectAtIndex:1];
+                            birthday = [NSString stringWithFormat:@"%@/%@/%@", day, month, year];
+                        }
+                    }
+                    
+                    NSDictionary *data = @{
+                                           kTKPDLOGIN_API_APP_TYPE_KEY     : @"2",
+                                           kTKPDLOGIN_API_EMAIL_KEY        : _signIn.authentication.userEmail,
+                                           kTKPDLOGIN_API_NAME_KEY         : [person.name.givenName stringByAppendingFormat:@" %@", person.name.familyName],
+                                           kTKPDLOGIN_API_ID_KEY           : person.identifier?:@"",
+                                           kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
+                                           kTKPDLOGIN_API_GENDER_KEY       : gender?:@"",
+                                           };
+                    
+                    _googleUser = person;
+                    
+                    [self requestThirdAppUser:data];
+                }
+            }];
+}
+
+- (void)updateFormViewAppearance {
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+    CGRect contentViewFrame = _contentView.frame;
+    CGFloat contentViewWidth = 0;
+    CGFloat contentViewMarginLeft = 0;
+    CGFloat contentViewMarginTop = 0;
+    CGFloat constant;
+    NSString *facebookButtonTitle = @"Sign in";
+    
+    if (IS_IPHONE_5 || IS_IPHONE_4_OR_LESS) {
+        constant =  (width / 2) - 30;
+        contentViewWidth = width;
+        contentViewMarginLeft = 0;
+        self.facebookButtonTopConstraint.constant = 26;
+        self.googleButtonTopConstraint.constant = 25;
+        
+    } else if (IS_IPHONE_6) {
+        constant =  (335 / 2) - 30;
+        contentViewWidth = 345;
+        contentViewMarginLeft = 15;
+        contentViewMarginTop = 20;
+        self.facebookButtonTopConstraint.constant = 26;
+        self.googleButtonTopConstraint.constant = 25;
+        
+    } else if (IS_IPHONE_6P) {
+        constant =  (354 / 2) - 24;
+        contentViewWidth = 354;
+        contentViewMarginLeft = 30;
+        contentViewMarginTop = 40;
+        
+    } else if (IS_IPAD) {
+        constant =  (500 / 2) - 24;
+        contentViewWidth = 500;
+        contentViewMarginLeft = 134;
+        contentViewMarginTop = 134;
+        self.facebookButtonTopConstraint.constant = 26;
+        self.googleButtonTopConstraint.constant = 25;
+        [_signInButton setStyle:kGPPSignInButtonStyleWide];
+        facebookButtonTitle = @"Sign in with Facebook";
+        
+    }
+    
+    contentViewFrame.size.width = contentViewWidth;
+    contentViewFrame.origin.x = contentViewMarginLeft;
+    contentViewFrame.origin.y = contentViewMarginTop;
+    _contentView.frame = contentViewFrame;
+
+    _container.contentSize = CGSizeMake(width, _contentView.frame.size.height);
+    
+    self.googleButtonWidthConstraint.constant = constant;
+    self.facebookButtonWidthConstraint.constant = constant;
+    
+    _loginView.frame = CGRectMake(0, 0, constant, 42);
+    for (id obj in _loginView.subviews) {
+        if ([obj isKindOfClass:[UILabel class]]) {
+            UILabel *label = obj;
+            label.text = facebookButtonTitle;
+        } else if ([obj isKindOfClass:[UIButton class]]) {
+            UIButton *button = obj;
+            button.frame = CGRectMake(0, 0, constant, 42);
+            button.layer.shadowOpacity = 0;
+        }
+    }
+    
+    [_loginView removeFromSuperview];
+    [_facebookLoginView layoutIfNeeded];
+    _loginView.frame = CGRectMake(0, 0,
+                                  _facebookLoginView.frame.size.width,
+                                  _facebookLoginView.frame.size.height);
+    [_facebookLoginView addSubview:_loginView];
+    [_loginView layoutIfNeeded];
+}
 
 @end
