@@ -30,12 +30,12 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="auN-Ld-XaN" secondAttribute="trailing" id="9hb-xv-KOU">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
                 <constraint firstAttribute="bottom" secondItem="auN-Ld-XaN" secondAttribute="bottom" id="ObK-fz-LBw"/>
                 <constraint firstItem="auN-Ld-XaN" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gmZ-gn-e00"/>
                 <constraint firstItem="auN-Ld-XaN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yCa-AG-Kjb">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
             </constraints>
         </view>
@@ -43,11 +43,19 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-In-1r1">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-In-1r1">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="DX4-Jt-XjF"/>
+                        <constraint firstAttribute="height" constant="20" id="YD6-UW-DZR"/>
+                    </constraints>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerY" secondItem="ZBL-In-1r1" secondAttribute="centerY" id="2yv-pH-btq"/>
+                <constraint firstAttribute="centerX" secondItem="ZBL-In-1r1" secondAttribute="centerX" id="MQy-60-SIe"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>

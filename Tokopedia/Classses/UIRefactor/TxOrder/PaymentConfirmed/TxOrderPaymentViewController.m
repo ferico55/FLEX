@@ -393,7 +393,7 @@
     lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
     [cell.contentView addSubview:lineView];
     cell.clipsToBounds = YES;
-    cell.selectionStyle = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellAccessoryNone;    
     return cell;
 }
 
@@ -591,6 +591,7 @@
         [alertInfo show];
     }
 }
+
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {

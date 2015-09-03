@@ -24,10 +24,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UpD-RD-asJ" userLabel="RekeningView">
-                        <rect key="frame" x="10" y="0.0" width="160" height="125"/>
+                        <rect key="frame" x="10" y="0.0" width="185" height="125"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dari Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6h6-Uh-4Yt">
-                                <rect key="frame" x="10" y="14" width="140" height="21"/>
+                                <rect key="frame" x="10" y="14" width="165" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="cR3-v6-BtO"/>
                                 </constraints>
@@ -36,7 +36,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpz-KL-d9U">
-                                <rect key="frame" x="10" y="40" width="140" height="14"/>
+                                <rect key="frame" x="10" y="40" width="165" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="ei8-2j-v4V"/>
                                 </constraints>
@@ -44,8 +44,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdy-Ur-jLk">
-                                <rect key="frame" x="10" y="62" width="140" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdy-Ur-jLk">
+                                <rect key="frame" x="10" y="62" width="165" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="oqJ-Ku-JiZ"/>
                                 </constraints>
@@ -54,7 +54,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DC-S1-XdR">
-                                <rect key="frame" x="10" y="84" width="140" height="14"/>
+                                <rect key="frame" x="10" y="84" width="165" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="NMy-44-SAl"/>
                                 </constraints>
@@ -80,10 +80,10 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p8c-zx-IV4" userLabel="User View">
-                        <rect key="frame" x="170" y="0.0" width="140" height="125"/>
+                        <rect key="frame" x="195" y="0.0" width="115" height="125"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rekening Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVI-wH-ue5">
-                                <rect key="frame" x="10" y="12" width="120" height="21"/>
+                                <rect key="frame" x="10" y="12" width="95" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="ZwD-ut-LMC"/>
                                 </constraints>
@@ -91,10 +91,10 @@
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hR1-af-dFo">
-                                <rect key="frame" x="10" y="37" width="120" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hR1-af-dFo">
+                                <rect key="frame" x="10" y="37" width="95" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="yAL-hJ-Yhm"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="yAL-hJ-Yhm"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -125,7 +125,7 @@
                     <constraint firstItem="eT5-q5-lW0" firstAttribute="top" secondItem="wdF-rz-wbf" secondAttribute="top" id="5lh-iv-axN"/>
                     <constraint firstAttribute="bottom" secondItem="p8c-zx-IV4" secondAttribute="bottom" id="7WI-HJ-aMp"/>
                     <constraint firstItem="UpD-RD-asJ" firstAttribute="top" secondItem="wdF-rz-wbf" secondAttribute="top" id="Cgz-s7-tFd"/>
-                    <constraint firstItem="p8c-zx-IV4" firstAttribute="width" secondItem="UpD-RD-asJ" secondAttribute="width" constant="-20" id="D4D-hQ-wAf"/>
+                    <constraint firstItem="p8c-zx-IV4" firstAttribute="width" secondItem="UpD-RD-asJ" secondAttribute="width" constant="-70" id="D4D-hQ-wAf"/>
                     <constraint firstItem="p8c-zx-IV4" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="trailing" id="ab5-uM-VHY"/>
                     <constraint firstAttribute="trailing" secondItem="eT5-q5-lW0" secondAttribute="trailing" constant="10" id="asy-7l-c0O"/>
                     <constraint firstAttribute="trailing" secondItem="p8c-zx-IV4" secondAttribute="trailing" constant="10" id="awC-qN-eyH"/>

@@ -227,11 +227,7 @@
     CGFloat rowHeight = 0;
     
     if (indexPath.row == 0) {
-        TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-        if (!detailOrder.img_proof_url || [detailOrder.img_proof_url isEqualToString:@""]) {
-            rowHeight = 130;
-        }
-        else rowHeight = 157; //158 //130
+        rowHeight = 137;
     }
     else if (indexPath.row == 1)
         rowHeight = 130;
@@ -381,11 +377,11 @@
     if (cell == nil) {
         cell = [TxOrderConfirmedBankCell newCell];
     }
-    [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
+    [cell.userNameLabel setCustomAttributedText:detailOrder.user_account_name?:@""];
     [cell.bankNameLabel setCustomAttributedText:detailOrder.user_bank_name?:@""];
     NSString *accountNumber = (![detailOrder.system_account_no isEqualToString:@""] && detailOrder.system_account_no != nil && ![detailOrder.system_account_no isEqualToString:@"0"])?detailOrder.system_account_no:@"";
-    [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
-    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber] animated:NO];
+    [cell.nomorRekLabel setCustomAttributedText:detailOrder.user_account_no?:@""];
+    [cell.recieverNomorRekLabel setCustomAttributedText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber]];
     
     if ([cell.userNameLabel.text isEqualToString:@""]) {
         cell.userNameLabel.text =@"-";
