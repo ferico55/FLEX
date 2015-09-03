@@ -787,16 +787,19 @@ PromoCollectionViewDelegate
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.department_id;
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
+            [_params removeObjectForKey:@"search"];
+//            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
             [_networkManager requestCancel];
-            [_act startAnimating];
-            
+//            [_act startAnimating];
+//            
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
                 [self.delegate updateTabCategory:departementID];
             }
             
-            [_networkManager doRequest];
+            [self refreshView:nil];
+//            [_networkManager doRequest];
         }
+        
         
         else if ([query[1] isEqualToString:@"catalog"]) {
             [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
