@@ -508,6 +508,7 @@
         [dictResult setObject:CGetListReputationReview forKey:@"action"];
         [dictResult setObject:_detailMyInboxReputation.reputation_inbox_id forKey:@"reputation_inbox_id"];
         [dictResult setObject:_detailMyInboxReputation.reputation_id forKey:@"reputation_id"];
+        [dictResult setObject:self.autoRead forKey:@"auto_read"];
         
         return dictResult;
     }

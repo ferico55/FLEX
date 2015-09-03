@@ -19,6 +19,8 @@
 
 @property (nonatomic, unsafe_unretained) DetailMyInboxReputation *detailMyInboxReputation;
 @property (nonatomic) int tag;
+@property (nonatomic, weak) NSString *autoRead;
+
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription;
 - (void)reloadTable;
 - (void)successGiveReview;

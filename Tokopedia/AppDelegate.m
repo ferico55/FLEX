@@ -14,6 +14,7 @@
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import "AppsFlyerTracker.h"
+#import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
 
 @implementation AppDelegate
@@ -46,6 +47,8 @@
                                        openType:kTAGOpenTypePreferFresh
                                         timeout:nil
                                        notifier:self];
+        
+        [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee" launchOptions:launchOptions];
         
         //appsflyer init
         [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";

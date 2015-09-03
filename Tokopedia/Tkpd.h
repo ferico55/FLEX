@@ -112,6 +112,7 @@ typedef enum {
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 #define iOS7_0 @"7.0"
+#define iOS8_0 @"8.0"
 
 #define TKPD_FADEANIMATIONDURATION 0.3
 

@@ -113,8 +113,9 @@ static CGFloat rowHeight = 40;
     UIImageView *imgPriceAlertView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [imgPriceAlertView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionAddNotificationPriceCatalog:)]];
     UIBarButtonItem *priceAlertItem = [[UIBarButtonItem alloc] initWithCustomView:imgPriceAlertView];
+    [priceAlertItem setAction:@selector(actionAddNotificationPriceCatalog:)];
+    [priceAlertItem setTarget:self];
     self.navigationItem.rightBarButtonItems = @[actionButton, priceAlertItem];
-    [priceAlertItem setEnabled:NO];
     [self setBackgroundPriceAlert:NO];
 
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -215,9 +216,14 @@ static CGFloat rowHeight = 40;
 }
 
 - (void)configureCell:(CatalogSpecificationCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    
+    NSString *title = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 9.0;
+    if (SYSTEM_VERSION_GREATER_THAN(iOS8_0)) {
+        style.lineSpacing = 9.0;
+    } else {
+        style.lineSpacing = 4.0;
+    }
 
     UIColor *gray = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
     
@@ -227,7 +233,6 @@ static CGFloat rowHeight = 40;
                                  NSForegroundColorAttributeName : gray,
                                  };
     
-    NSString *title = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([title isEqualToString:@""]) {
         [cell hideTopBorder:YES];
         cell.titleLabel.text = @"";
@@ -283,9 +288,7 @@ static CGFloat rowHeight = 40;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"CatalogSectionHeaderView" owner:nil options:0];
-    CatalogSectionHeaderView *view = [tempArr objectAtIndex:0];
-    
+    CatalogSectionHeaderView *view = [CatalogSectionHeaderView new];
     view.titleLabel.text = [_specificationTitles objectAtIndex:section];
     return view;
 }
@@ -303,6 +306,9 @@ static CGFloat rowHeight = 40;
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
     [resultMapping addAttributeMappingsFromArray:@[API_CATALOG_IMAGE_KEY,]];
+
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromArray:@[API_URI_NEXT_KEY]];
 
     RKObjectMapping *catalogInfoMapping = [RKObjectMapping mappingForClass:[CatalogInfo class]];
     [catalogInfoMapping addAttributeMappingsFromArray:@[API_CATALOG_NAME_KEY,
@@ -384,6 +390,10 @@ static CGFloat rowHeight = 40;
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
 
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
+                                                                                  toKeyPath:kTKPD_APIPAGINGKEY
+                                                                                withMapping:pagingMapping]];
+    
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog_info"
                                                                                   toKeyPath:@"catalog_info"
                                                                                 withMapping:catalogInfoMapping]];
@@ -677,9 +687,6 @@ static CGFloat rowHeight = 40;
 
 - (IBAction)tap:(id)sender
 {
-//    UIView *view = ((UITapGestureRecognizer *) sender).view;
-    
-
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
@@ -695,7 +702,7 @@ static CGFloat rowHeight = 40;
     } else if ([sender isKindOfClass:[UIButton class]]) {
         CatalogShopViewController *controller = [CatalogShopViewController new];
         controller.catalog = _catalog;
-        controller.catalog_shops = _catalog.result.catalog_shops;
+        controller.catalog_shops = [NSMutableArray arrayWithArray:_catalog.result.catalog_shops];
         [self.navigationController pushViewController:controller animated:YES];
     }
     else if ([sender isKindOfClass:[UISegmentedControl class]]) {
@@ -722,14 +729,9 @@ static CGFloat rowHeight = 40;
         }
         else {
             NSInteger startingIndex = _productPhotoPageControl.currentPage;
-    //        GalleryViewController *controller = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:startingIndex];
-    //        controller.canDownload = NO;
             GalleryViewController *gallery = [GalleryViewController new];
             gallery.canDownload = YES;
             [gallery initWithPhotoSource:self withStartingIndex:startingIndex];
-            
-            
-
             gallery.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self.navigationController presentViewController:gallery animated:YES completion:nil];
         }
@@ -762,7 +764,6 @@ static CGFloat rowHeight = 40;
 
 - (void)redirectViewController:(id)viewController
 {
-//    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Scroll view delegate
