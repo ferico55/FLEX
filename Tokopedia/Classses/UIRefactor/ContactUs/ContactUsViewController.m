@@ -19,8 +19,7 @@
     UICollectionViewDataSource,
     UICollectionViewDelegate,
     UICollectionViewDelegateFlowLayout,
-    UIWebViewDelegate,
-    ContactUsView
+    UIWebViewDelegate
 >
 {
     NSArray *_categories;
@@ -28,7 +27,7 @@
     TicketCategory *_selectedType;
     TicketCategory *_selectedProblem;
     TicketCategory *_selectedDetailProblem;
-    ContactUsPresenter *_presenter;
+
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -50,9 +49,32 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.title = @"Hubungi Kami";
-    _presenter = [ContactUsPresenter new];
-    _presenter.view = self;
+
+    self.hidesBottomBarWhenPushed = YES;
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
+    UINib *nib = [UINib nibWithNibName:@"ContactUsTypeCell" bundle:nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:@"ContactUsTypeCell"];
+    
+    [self.flowLayout setFooterReferenceSize:CGSizeMake(160, 160)];
+    [self.flowLayout setSectionInset:UIEdgeInsetsZero];
+    [self.collectionView setCollectionViewLayout:_flowLayout];
+    
+    ContactUsPresenter *presenter = [ContactUsPresenter new];
+    ContactUsInteractor *interactor = [ContactUsInteractor new];
+    interactor.output = presenter;
+    presenter.userInterface = self;
+    presenter.interactor = interactor;
+    self.eventHandler = presenter;
+
+    [self.eventHandler updateView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -135,6 +157,10 @@
     return height;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.eventHandler didTapProblem];
+}
+
 #pragma mark - Collection view data source
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -156,9 +182,9 @@
     } else if ([category.ticket_category_id isEqualToString:@"102"]) {
         cell.imageView.image = [UIImage imageNamed:@"icon_problem_buyer.png"];
     } else if ([category.ticket_category_id isEqualToString:@"103"]) {
-        cell.imageView.image = [UIImage imageNamed:@""];
+        cell.imageView.image = [UIImage imageNamed:@"icon_problem_shopper.png"];
     } else if ([category.ticket_category_id isEqualToString:@"104"]) {
-        cell.imageView.image = [UIImage imageNamed:@""];
+        cell.imageView.image = [UIImage imageNamed:@"icon_problem_about_account.png"];
     }
     if (_selectedCollectionIndexPath) {
         cell.alpha = 0.5;
@@ -191,17 +217,9 @@
 
 #pragma mark - View delegate
 
-- (void)setFormWithCategories:(NSArray *)categories {
-    _categories = categories;
+- (void)showContactUsFormData:(NSArray *)data {
+    _categories = data;
     [self.tableView reloadData];
-}
-
-- (void)setRetryView {
-    
-}
-
-- (void)setErrorView {
-    
 }
 
 @end

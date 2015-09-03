@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ContactUsResponse.h"
+#import "ContactUsInteractorIO.h"
 
-@interface ContactUsInteractor : NSObject
+@interface ContactUsInteractor : NSObject <ContactUsInteractorInput>
+
+@property (nonatomic, weak) id <ContactUsInteractorOutput> output;
 
 @end

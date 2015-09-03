@@ -1,5 +1,5 @@
 //
-//  ContactUsView.h
+//  ContactUsModuleInterface.h
 //  Tokopedia
 //
 //  Created by Tokopedia on 9/2/15.
@@ -8,10 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol ContactUsView <NSObject>
+@protocol ContactUsModuleInterface <NSObject>
 
-- (void)setFormWithCategories:(NSArray *)categories;
-- (void)setErrorView;
-- (void)setRetryView;
+- (void)updateView;
+- (void)didTapProblem;
 
 @end

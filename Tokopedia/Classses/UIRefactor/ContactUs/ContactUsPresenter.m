@@ -10,4 +10,19 @@
 
 @implementation ContactUsPresenter
 
+- (void)updateView {
+    [self.interactor loadTicketCategory];
+}
+
+- (void)didTapProblem {
+    [self.interactor loadProblem];
+}
+
+- (void)didReceiveTicketCategoryResponse:(ContactUsResponse *)response {
+    [self.userInterface showContactUsFormData:response.result.list];
+}
+
+- (void)didReceiveProblem:(id)problem {
+}
+
 @end

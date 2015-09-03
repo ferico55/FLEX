@@ -9,17 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "ContactUsResponse.h"
 
-@protocol ContactUsDataManagerDelegate <NSObject>
-
-- (void)didReceiveTicketResponse:(ContactUsResponse *)response;
-- (void)didReceiveTicketError:(NSError *)error;
-
-@end
-
 @interface ContactUsDataManager : NSObject
 
-@property (nonatomic, weak) id<ContactUsDataManagerDelegate> delegate;
-
-- (void)requestTicketCategories;
+- (void)requestTicketCategoriesResponse:(void (^)(ContactUsResponse *))response
+                                  error:(void (^)(NSError *))error;
 
 @end

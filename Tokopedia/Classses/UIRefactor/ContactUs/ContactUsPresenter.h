@@ -7,14 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ContactUsView.h"
+#import "ContactUsViewInterface.h"
 #import "ContactUsInteractor.h"
+#import "ContactUsModuleInterface.h"
 
-@interface ContactUsPresenter : NSObject
+@protocol ContactUsViewInterface;
 
-@property (nonatomic, strong) id<ContactUsView> view;
-@property (nonatomic, strong) ContactUsInteractor *interactor;
+@interface ContactUsPresenter : NSObject <ContactUsInteractorOutput, ContactUsModuleInterface>
 
-- (void)showContactUsForm;
+@property (nonatomic, strong) id<ContactUsInteractorInput> interactor;
+@property (nonatomic, strong) UIViewController<ContactUsViewInterface> *userInterface;
 
 @end

@@ -1558,6 +1558,7 @@
 		85D3E5471B7DF47600E4723C /* icon_contact_us@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85D3E5411B7DF47600E4723C /* icon_contact_us@3x.png */; };
 		85D421351B96979100CC6E8A /* ContactUsPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D421341B96979100CC6E8A /* ContactUsPresenter.m */; };
 		85D421381B9697F000CC6E8A /* ContactUsInteractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D421371B9697F000CC6E8A /* ContactUsInteractor.m */; };
+		85D4213B1B96D18D00CC6E8A /* DataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D4213A1B96D18D00CC6E8A /* DataRequest.m */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -3945,11 +3946,15 @@
 		85D3E53F1B7DF47600E4723C /* icon_contact_us.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_contact_us.png; sourceTree = "<group>"; };
 		85D3E5401B7DF47600E4723C /* icon_contact_us@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_contact_us@2x.png"; sourceTree = "<group>"; };
 		85D3E5411B7DF47600E4723C /* icon_contact_us@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_contact_us@3x.png"; sourceTree = "<group>"; };
-		85D421301B96966500CC6E8A /* ContactUsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsView.h; sourceTree = "<group>"; };
+		85D421301B96966500CC6E8A /* ContactUsViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsViewInterface.h; sourceTree = "<group>"; };
 		85D421331B96979100CC6E8A /* ContactUsPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsPresenter.h; sourceTree = "<group>"; };
 		85D421341B96979100CC6E8A /* ContactUsPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsPresenter.m; sourceTree = "<group>"; };
 		85D421361B9697F000CC6E8A /* ContactUsInteractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsInteractor.h; sourceTree = "<group>"; };
 		85D421371B9697F000CC6E8A /* ContactUsInteractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsInteractor.m; sourceTree = "<group>"; };
+		85D421391B96D18D00CC6E8A /* DataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataRequest.h; sourceTree = "<group>"; };
+		85D4213A1B96D18D00CC6E8A /* DataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataRequest.m; sourceTree = "<group>"; };
+		85D4213C1B96DAF300CC6E8A /* ContactUsInteractorIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsInteractorIO.h; sourceTree = "<group>"; };
+		85D4213F1B96E2E500CC6E8A /* ContactUsModuleInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsModuleInterface.h; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -5919,7 +5924,9 @@
 		85D3D9181B7C81A300E4723C /* ContactUs */ = {
 			isa = PBXGroup;
 			children = (
-				85D421301B96966500CC6E8A /* ContactUsView.h */,
+				85D421301B96966500CC6E8A /* ContactUsViewInterface.h */,
+				85D4213F1B96E2E500CC6E8A /* ContactUsModuleInterface.h */,
+				85D4213C1B96DAF300CC6E8A /* ContactUsInteractorIO.h */,
 				85D421331B96979100CC6E8A /* ContactUsPresenter.h */,
 				85D421341B96979100CC6E8A /* ContactUsPresenter.m */,
 				85D421361B9697F000CC6E8A /* ContactUsInteractor.h */,
@@ -5936,6 +5943,8 @@
 				853A20031B85B8FE0030F84B /* ContactUsTypeCell.h */,
 				853A20041B85B8FE0030F84B /* ContactUsTypeCell.m */,
 				853A20051B85B8FE0030F84B /* ContactUsTypeCell.xib */,
+				85D421391B96D18D00CC6E8A /* DataRequest.h */,
+				85D4213A1B96D18D00CC6E8A /* DataRequest.m */,
 			);
 			path = ContactUs;
 			sourceTree = "<group>";
@@ -9646,6 +9655,7 @@
 				85D3E2FD1B7C81A600E4723C /* UserPageHeader.m in Sources */,
 				85D3DFEF1B7C81A600E4723C /* BankAccountGetDefaultForm.m in Sources */,
 				85D3E1F01B7C81A600E4723C /* HeaderCollectionReusableView.m in Sources */,
+				85D4213B1B96D18D00CC6E8A /* DataRequest.m in Sources */,
 				85D3DFD51B7C81A600E4723C /* ProductFeedResult.m in Sources */,
 				85D3E0341B7C81A600E4723C /* AddProductSubmitResult.m in Sources */,
 				85D3E20E1B7C81A600E4723C /* BarCodeViewController.m in Sources */,
