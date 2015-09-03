@@ -54,12 +54,9 @@
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 
-#import "ContactUsViewController.h"
-
 #import <MessageUI/MessageUI.h>
 
-#import "ContactUsPresenter.h"
-#import "ContactUsInteractor.h"
+#import "ContactUsWireframe.h"
 
 #define CTagProfileInfo 12
 
@@ -690,8 +687,9 @@
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-            ContactUsViewController *controller = [ContactUsViewController new];
-            [self.navigationController pushViewController:controller animated:YES];
+
+            
+            
         } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker setAllowIDFACollection:YES];

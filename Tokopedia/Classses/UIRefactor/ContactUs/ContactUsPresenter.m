@@ -7,8 +7,11 @@
 //
 
 #import "ContactUsPresenter.h"
+#import "ContactUsWireframe.h"
 
 @implementation ContactUsPresenter
+
+#pragma mark - Input
 
 - (void)updateView {
     [self.interactor loadTicketCategory];
@@ -17,6 +20,12 @@
 - (void)didTapProblem {
     [self.interactor loadProblem];
 }
+
+- (void)didTapContactUsButton {
+
+}
+
+#pragma mark - Output
 
 - (void)didReceiveTicketCategoryResponse:(ContactUsResponse *)response {
     [self.userInterface showContactUsFormData:response.result.list];

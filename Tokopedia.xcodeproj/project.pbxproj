@@ -1559,6 +1559,9 @@
 		85D421351B96979100CC6E8A /* ContactUsPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D421341B96979100CC6E8A /* ContactUsPresenter.m */; };
 		85D421381B9697F000CC6E8A /* ContactUsInteractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D421371B9697F000CC6E8A /* ContactUsInteractor.m */; };
 		85D4213B1B96D18D00CC6E8A /* DataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D4213A1B96D18D00CC6E8A /* DataRequest.m */; };
+		85E7836B1B97FEE200F6D2FA /* ContactUsWireframe.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E7836A1B97FEE200F6D2FA /* ContactUsWireframe.m */; };
+		85E783711B98053500F6D2FA /* TPRootWireframe.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E783701B98053500F6D2FA /* TPRootWireframe.m */; };
+		85E783741B98055900F6D2FA /* TPContactUsDependencies.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E783731B98055900F6D2FA /* TPContactUsDependencies.m */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -3955,6 +3958,12 @@
 		85D4213A1B96D18D00CC6E8A /* DataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataRequest.m; sourceTree = "<group>"; };
 		85D4213C1B96DAF300CC6E8A /* ContactUsInteractorIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsInteractorIO.h; sourceTree = "<group>"; };
 		85D4213F1B96E2E500CC6E8A /* ContactUsModuleInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsModuleInterface.h; sourceTree = "<group>"; };
+		85E783691B97FEE200F6D2FA /* ContactUsWireframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsWireframe.h; sourceTree = "<group>"; };
+		85E7836A1B97FEE200F6D2FA /* ContactUsWireframe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsWireframe.m; sourceTree = "<group>"; };
+		85E7836F1B98053500F6D2FA /* TPRootWireframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPRootWireframe.h; sourceTree = "<group>"; };
+		85E783701B98053500F6D2FA /* TPRootWireframe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPRootWireframe.m; sourceTree = "<group>"; };
+		85E783721B98055900F6D2FA /* TPContactUsDependencies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPContactUsDependencies.h; sourceTree = "<group>"; };
+		85E783731B98055900F6D2FA /* TPContactUsDependencies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPContactUsDependencies.m; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -5924,6 +5933,12 @@
 		85D3D9181B7C81A300E4723C /* ContactUs */ = {
 			isa = PBXGroup;
 			children = (
+				85E7836F1B98053500F6D2FA /* TPRootWireframe.h */,
+				85E783701B98053500F6D2FA /* TPRootWireframe.m */,
+				85E783721B98055900F6D2FA /* TPContactUsDependencies.h */,
+				85E783731B98055900F6D2FA /* TPContactUsDependencies.m */,
+				85E783691B97FEE200F6D2FA /* ContactUsWireframe.h */,
+				85E7836A1B97FEE200F6D2FA /* ContactUsWireframe.m */,
 				85D421301B96966500CC6E8A /* ContactUsViewInterface.h */,
 				85D4213F1B96E2E500CC6E8A /* ContactUsModuleInterface.h */,
 				85D4213C1B96DAF300CC6E8A /* ContactUsInteractorIO.h */,
@@ -9578,6 +9593,7 @@
 				85D3E2531B7C81A600E4723C /* CreateShopViewController.m in Sources */,
 				85D3E1241B7C81A600E4723C /* GeneralPhotoProductCell.m in Sources */,
 				85D3E1C01B7C81A600E4723C /* GalleryPhotoView.m in Sources */,
+				85E783711B98053500F6D2FA /* TPRootWireframe.m in Sources */,
 				85D3E2A31B7C81A600E4723C /* TransactionCartCell.m in Sources */,
 				85D3E0701B7C81A600E4723C /* TransactionVoucher.m in Sources */,
 				85D3E08B1B7C81A600E4723C /* TxOrderPaymentEditOrder.m in Sources */,
@@ -9896,6 +9912,7 @@
 				85D3E0D31B7C81A600E4723C /* CatalogShopCell.m in Sources */,
 				85D3E04A1B7C81A600E4723C /* TrackOrderHistory.m in Sources */,
 				FCAAEA4619F7534B00904AFB /* MainViewController.m in Sources */,
+				85E7836B1B97FEE200F6D2FA /* ContactUsWireframe.m in Sources */,
 				85D3E1771B7C81A600E4723C /* InboxTalkCell.m in Sources */,
 				85D3E1581B7C81A600E4723C /* InboxMessageViewController.m in Sources */,
 				85D3E1F91B7C81A600E4723C /* FilterNewOrderViewController.m in Sources */,
@@ -9948,6 +9965,7 @@
 				85D3E25E1B7C81A600E4723C /* ShopDescriptionView.m in Sources */,
 				85D3DFA81B7C81A500E4723C /* ResolutionDispute.m in Sources */,
 				85D3E2671B7C81A600E4723C /* ShopInfoShipmentCell.m in Sources */,
+				85E783741B98055900F6D2FA /* TPContactUsDependencies.m in Sources */,
 				85D3E0741B7C81A600E4723C /* TxEMoneyData.m in Sources */,
 				85D3DFD11B7C81A600E4723C /* PriceAlert.m in Sources */,
 				85D3E4F61B7C81A600E4723C /* HPGrowingTextView.m in Sources */,

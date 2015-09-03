@@ -66,13 +66,6 @@
     [self.flowLayout setFooterReferenceSize:CGSizeMake(160, 160)];
     [self.flowLayout setSectionInset:UIEdgeInsetsZero];
     [self.collectionView setCollectionViewLayout:_flowLayout];
-    
-    ContactUsPresenter *presenter = [ContactUsPresenter new];
-    ContactUsInteractor *interactor = [ContactUsInteractor new];
-    interactor.output = presenter;
-    presenter.userInterface = self;
-    presenter.interactor = interactor;
-    self.eventHandler = presenter;
 
     [self.eventHandler updateView];
 }

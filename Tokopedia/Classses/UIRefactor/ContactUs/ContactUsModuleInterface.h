@@ -12,5 +12,6 @@
 
 - (void)updateView;
 - (void)didTapProblem;
+- (void)didTapContactUsButton;
 
 @end
