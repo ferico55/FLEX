@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     BOOL _isrefreshview;
     
     UIRefreshControl *_refreshControl;
-    SearchAWS *_searchitem;
+    SearchAWS *_searchObject;
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
@@ -422,7 +422,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 title = [NSString stringWithFormat:@"Jual %@ | Tokopedia",
                          [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString]];
             }
-            NSURL *url = [NSURL URLWithString: _searchitem.result.search_url?:@"www.tokopedia.com"];
+            NSURL *url = [NSURL URLWithString: _searchObject.result.search_url?:@"www.tokopedia.com"];
             UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                              applicationActivities:nil];
             activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
@@ -538,7 +538,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        @"redirect_url" : @"redirect_url", @"department_id" : @"department_id"
                                                         }];
     
     
@@ -596,6 +597,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     SearchAWS *search = [result objectForKey:@""];
+    _searchObject = search;
+    
     [_noResultView removeFromSuperview];
     
     if(_isNeedToRemoveAllObject) {
@@ -603,49 +606,120 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         _isNeedToRemoveAllObject = NO;
     }
     
-    if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
-        [_product addObjectsFromArray: search.result.products];
-    } else {
-        [_product addObjectsFromArray: search.result.catalogs];
-    }
-    
-    NSString *hascatalog = search.result.has_catalog;
-    
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        hascatalog = @"1";
-    }
-    
-    //setting is this product has catalog or not
-    if ([hascatalog isEqualToString:@"1"] && hascatalog) {
-        NSDictionary *userInfo = @{@"count":@(3)};
-        [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
-    }
-    else if ([hascatalog isEqualToString:@"0"] && hascatalog){
-        NSDictionary *userInfo = @{@"count":@(2)};
-        [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
-    }
-    
-    if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
-        _isnodata = NO;
-        _urinext =  search.result.paging.uri_next;
-        _start = [[self splitUriToPage:_urinext] integerValue];
-        if([_urinext isEqualToString:@""]) {
+    NSString *redirect_url = search.redirect_url;
+    if([redirect_url isEqualToString:@""]) {
+        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
+            [_product addObjectsFromArray: search.result.products];
+        } else {
+            [_product addObjectsFromArray: search.result.catalogs];
+        }
+        
+        NSString *hascatalog = search.result.has_catalog;
+        
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+            hascatalog = @"1";
+        }
+        
+        //setting is this product has catalog or not
+        if ([hascatalog isEqualToString:@"1"] && hascatalog) {
+            NSDictionary *userInfo = @{@"count":@(3)};
+            [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
+        }
+        else if ([hascatalog isEqualToString:@"0"] && hascatalog){
+            NSDictionary *userInfo = @{@"count":@(2)};
+            [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
+        }
+        
+        if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
+            _isnodata = NO;
+            _urinext =  search.result.paging.uri_next;
+            _start = [[self splitUriToPage:_urinext] integerValue];
+            if([_urinext isEqualToString:@""]) {
+                [_flowLayout setFooterReferenceSize:CGSizeZero];
+            }
+        } else {
             [_flowLayout setFooterReferenceSize:CGSizeZero];
+            [_collectionView addSubview:_noResultView];
+            
+        }
+        
+        if(_refreshControl.isRefreshing) {
+            [_refreshControl endRefreshing];
+            [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
+            [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+        } else  {
+            [_collectionView reloadData];
         }
     } else {
-        [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResultView];
+
+        NSURL *url = [NSURL URLWithString:search.redirect_url];
+        NSArray* query = [[url path] componentsSeparatedByString: @"/"];
         
+        // Redirect URI to hotlist
+        if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
+            [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
+        }
+        // redirect uri to search category
+        else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
+            NSString *departementID = search.department_id;
+            [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
+            [_networkManager requestCancel];
+            [_act startAnimating];
+            
+            if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
+                [self.delegate updateTabCategory:departementID];
+            }
+            
+            [_networkManager doRequest];
+        }
+        
+        else if ([query[1] isEqualToString:@"catalog"]) {
+            [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
+        }
+    }
+}
+
+
+- (void)redirectToCatalogResult{
+    NSURL *url = [NSURL URLWithString:_searchObject.redirect_url];
+    NSArray* query = [[url path] componentsSeparatedByString: @"/"];
+    
+    NSString *catalogID = query[2];
+    CatalogViewController *vc = [CatalogViewController new];
+    vc.catalogID = catalogID;
+    NSArray *catalogNames = [query[3] componentsSeparatedByCharactersInSet:
+                             [NSCharacterSet characterSetWithCharactersInString:@"-"]
+                             ];
+    vc.catalogName = [[catalogNames componentsJoinedByString:@" "] capitalizedString];
+    vc.catalogPrice = @"";
+    vc.hidesBottomBarWhenPushed = YES;
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    
+    if(viewControllers.count > 0) {
+        [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
     }
     
-    if(_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-        [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
-        [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-    } else  {
-        [_collectionView reloadData];
-    }
+    self.navigationController.viewControllers = viewControllers;
+}
 
+- (void)redirectToHotlistResult{
+    NSURL *url = [NSURL URLWithString:_searchObject.redirect_url];
+    NSArray* query = [[url path] componentsSeparatedByString: @"/"];
+    
+    HotlistResultViewController *vc = [HotlistResultViewController new];
+    vc.data = @{
+                kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES),
+                kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]
+                };
+    
+    vc.hidesBottomBarWhenPushed = YES;
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+    
+    if(viewControllers.count > 0) {
+        [viewControllers replaceObjectAtIndex:(viewControllers.count - 1) withObject:vc];
+    }
+    self.navigationController.viewControllers = viewControllers;
 }
 
 - (NSString*)splitUriToPage:(NSString*)uri {

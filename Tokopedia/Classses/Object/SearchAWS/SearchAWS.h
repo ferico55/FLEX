@@ -14,6 +14,8 @@
 
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *server_process_time;
+@property (nonatomic, strong) NSString *redirect_url;
+@property (nonatomic, strong) NSString *department_id;
 @property (strong, nonatomic) SearchAWSResult *result;
 
 @end
