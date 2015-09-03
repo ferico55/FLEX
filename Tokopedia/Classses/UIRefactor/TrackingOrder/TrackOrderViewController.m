@@ -237,8 +237,8 @@
             statusLabel.text = @"On Process";
         }
         
-        UILabel *receiverNameLabel = (UILabel *)[_tableView.tableHeaderView viewWithTag:5];
-        receiverNameLabel.text = _trackingOrder.detail.receiver_name;
+        UILabel *receiverNameLabel = (UILabel *)[_tableView.tableHeaderView viewWithTag:6];
+        receiverNameLabel.text = _trackingOrder.detail.receiver_name?:@"";
     }
     
     if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {

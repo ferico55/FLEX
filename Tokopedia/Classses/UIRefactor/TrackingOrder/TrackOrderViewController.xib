@@ -490,30 +490,47 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HUD-O6-t4O">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="83"/>
                     <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CxU-Wk-X4A" userLabel="Border">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CxU-Wk-X4A" userLabel="Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="Mtk-bC-Eh9"/>
+                            </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nomor Resi :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3O-zB-HuI">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor Resi :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3O-zB-HuI">
                             <rect key="frame" x="15" y="12" width="100" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="GNd-jz-arS"/>
+                                <constraint firstAttribute="width" constant="100" id="cKs-Lq-jqh"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4U-hk-0lc">
+                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4U-hk-0lc">
                             <rect key="frame" x="115" y="12" width="190" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="xih-qg-Xaq"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nama Penerima :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TQU-Au-n0E">
-                            <rect key="frame" x="14" y="45" width="118" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Penerima :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TQU-Au-n0E">
+                            <rect key="frame" x="15" y="45" width="118" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="eYu-g8-ADs"/>
+                                <constraint firstAttribute="width" constant="118" id="hgn-IO-sCl"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPM-hc-sc0">
-                            <rect key="frame" x="133" y="44" width="172" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPM-hc-sc0">
+                            <rect key="frame" x="134" y="44" width="171" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="Reh-hJ-HOX"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -525,7 +542,20 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                     </subviews>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="E4U-hk-0lc" secondAttribute="trailing" constant="15" id="3VQ-9H-I8N"/>
+                        <constraint firstItem="PPM-hc-sc0" firstAttribute="leading" secondItem="TQU-Au-n0E" secondAttribute="trailing" constant="1" id="MFp-Jy-A4n"/>
+                        <constraint firstAttribute="trailing" secondItem="PPM-hc-sc0" secondAttribute="trailing" constant="15" id="RP0-ey-3T9"/>
+                        <constraint firstAttribute="trailing" secondItem="CxU-Wk-X4A" secondAttribute="trailing" id="RqR-Xi-NAx"/>
+                        <constraint firstItem="z3O-zB-HuI" firstAttribute="top" secondItem="CxU-Wk-X4A" secondAttribute="bottom" constant="11" id="Ru9-dM-sTc"/>
+                        <constraint firstItem="PPM-hc-sc0" firstAttribute="top" secondItem="E4U-hk-0lc" secondAttribute="bottom" constant="11" id="VBv-kd-U8P"/>
+                        <constraint firstItem="TQU-Au-n0E" firstAttribute="top" secondItem="E4U-hk-0lc" secondAttribute="bottom" constant="12" id="cyA-BB-Kd0"/>
                         <constraint firstAttribute="height" constant="83" id="kyl-d4-YfJ"/>
+                        <constraint firstItem="E4U-hk-0lc" firstAttribute="top" secondItem="CxU-Wk-X4A" secondAttribute="bottom" constant="11" id="mJQ-jZ-zOH"/>
+                        <constraint firstItem="z3O-zB-HuI" firstAttribute="leading" secondItem="HUD-O6-t4O" secondAttribute="leading" constant="15" id="nGG-pd-qNA"/>
+                        <constraint firstItem="E4U-hk-0lc" firstAttribute="leading" secondItem="z3O-zB-HuI" secondAttribute="trailing" id="nfs-rg-Bzn"/>
+                        <constraint firstItem="CxU-Wk-X4A" firstAttribute="leading" secondItem="HUD-O6-t4O" secondAttribute="leading" id="rJT-EQ-zM0"/>
+                        <constraint firstItem="TQU-Au-n0E" firstAttribute="leading" secondItem="HUD-O6-t4O" secondAttribute="leading" constant="15" id="tCa-S3-nP7"/>
+                        <constraint firstItem="CxU-Wk-X4A" firstAttribute="top" secondItem="HUD-O6-t4O" secondAttribute="top" id="tim-od-egL"/>
                     </constraints>
                 </view>
                 <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5OQ-cL-mMV">
@@ -534,7 +564,7 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOu-St-jXx">
                             <rect key="frame" x="15" y="0.0" width="56" height="45"/>
                             <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="56" id="6CL-2S-1ju"/>
+                                <constraint firstAttribute="width" constant="56" id="6CL-2S-1ju"/>
                                 <constraint firstAttribute="height" constant="45" id="fRp-7i-lr8"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
@@ -545,7 +575,6 @@ Namun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.</strin
                             <rect key="frame" x="71" y="0.0" width="234" height="45"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="B6c-Ox-JDy"/>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="234" id="Bk1-J0-bS7"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
