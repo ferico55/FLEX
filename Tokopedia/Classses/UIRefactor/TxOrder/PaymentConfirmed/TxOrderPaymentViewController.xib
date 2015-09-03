@@ -595,6 +595,11 @@ Contoh : 157500</string>
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="7dP-29-tfN"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="tap:" destination="-1" eventType="touchUpInside" id="KIL-Fz-4YT"/>
                                 </connections>
@@ -602,14 +607,37 @@ Contoh : 157500</string>
                         </subviews>
                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="JEO-Sj-mWB" secondAttribute="trailing" constant="15" id="BIP-Eh-fC7"/>
                             <constraint firstAttribute="height" constant="40" id="KIF-Ox-8Pm"/>
                             <constraint firstItem="JEO-Sj-mWB" firstAttribute="top" secondItem="djV-sw-E5V" secondAttribute="top" id="Mw1-dm-fdM"/>
                             <constraint firstItem="JEO-Sj-mWB" firstAttribute="leading" secondItem="t0h-sJ-t52" secondAttribute="trailing" constant="61" id="Tde-ah-mdR"/>
                             <constraint firstItem="t0h-sJ-t52" firstAttribute="top" secondItem="djV-sw-E5V" secondAttribute="top" constant="16" id="YPU-d8-zoD"/>
                             <constraint firstAttribute="bottom" secondItem="JEO-Sj-mWB" secondAttribute="bottom" id="hCS-X6-ZS6"/>
+                            <constraint firstAttribute="bottom" secondItem="JEO-Sj-mWB" secondAttribute="bottom" id="jVY-4U-RHJ"/>
+                            <constraint firstItem="JEO-Sj-mWB" firstAttribute="top" secondItem="djV-sw-E5V" secondAttribute="top" id="rSh-7H-zR3"/>
                             <constraint firstItem="t0h-sJ-t52" firstAttribute="bottom" secondItem="djV-sw-E5V" secondAttribute="bottomMargin" id="rTy-lW-cT2"/>
+                            <constraint firstItem="JEO-Sj-mWB" firstAttribute="leading" secondItem="t0h-sJ-t52" secondAttribute="trailing" constant="61" id="u6j-zm-yng"/>
                             <constraint firstItem="t0h-sJ-t52" firstAttribute="leading" secondItem="djV-sw-E5V" secondAttribute="leading" constant="15" id="zYx-ca-8dT"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="BIP-Eh-fC7"/>
+                                <exclude reference="jVY-4U-RHJ"/>
+                                <exclude reference="rSh-7H-zR3"/>
+                                <exclude reference="u6j-zm-yng"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="BIP-Eh-fC7"/>
+                                <exclude reference="Mw1-dm-fdM"/>
+                                <exclude reference="Tde-ah-mdR"/>
+                                <exclude reference="hCS-X6-ZS6"/>
+                                <include reference="jVY-4U-RHJ"/>
+                                <include reference="rSh-7H-zR3"/>
+                                <include reference="u6j-zm-yng"/>
+                            </mask>
+                        </variation>
                     </view>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hVJ-ne-H0P">
                         <rect key="frame" x="0.0" y="40" width="320" height="44"/>
@@ -911,7 +939,7 @@ Contoh : 157500</string>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="16f-3Y-366">
                         <rect key="frame" x="0.0" y="70" width="320" height="35"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfm-Pn-avB">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfm-Pn-avB">
                                 <rect key="frame" x="19" y="0.0" width="143" height="30"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <state key="normal" title="Info Selengkapnya">

@@ -30,12 +30,12 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="auN-Ld-XaN" secondAttribute="trailing" id="9hb-xv-KOU">
-                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="10"/>
                 </constraint>
                 <constraint firstAttribute="bottom" secondItem="auN-Ld-XaN" secondAttribute="bottom" id="ObK-fz-LBw"/>
                 <constraint firstItem="auN-Ld-XaN" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gmZ-gn-e00"/>
                 <constraint firstItem="auN-Ld-XaN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yCa-AG-Kjb">
-                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="10"/>
                 </constraint>
             </constraints>
         </view>
