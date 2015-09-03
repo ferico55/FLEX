@@ -14,10 +14,12 @@
 -(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 -(void)navigateToInvoiceFromViewController:(UIViewController*)viewController withInvoiceURL:(NSString *)invoiceURL;
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings indexImage:(NSInteger)index;
-//- (void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString*)productID;
-- (void)navigateToProductFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data;
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString*)name withPrice:(NSString*)price withId:(NSString*)productId withImageurl:(NSString*)url withShopName:(NSString*)shopName;
 - (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID;
+
+- (void)navigateToProductFromViewController:(UIViewController *)viewController
+                                  promoData:(NSDictionary *)data
+                                productData:(NSDictionary *)productData;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;

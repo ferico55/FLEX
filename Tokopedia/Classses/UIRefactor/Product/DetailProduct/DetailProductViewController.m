@@ -3098,6 +3098,8 @@ UIAlertViewDelegate
     NSString *adKey = [_data objectForKey:PromoImpressionKey];
     NSString *adSemKey = [_data objectForKey:PromoSemKey];
     NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
-    [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+    if (adKey) {
+        [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+    }
 }
 @end

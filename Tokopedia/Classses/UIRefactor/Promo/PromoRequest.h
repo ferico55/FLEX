@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "PromoResponse.h"
 
+#define PromoProductId       @"product_id"
 #define PromoImpressionKey   @"ad_key"
 #define PromoSemKey          @"ad_sem_key"
 #define PromoReferralKey     @"ad_r"
