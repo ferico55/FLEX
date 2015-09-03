@@ -15,6 +15,7 @@
 #pragma mark - Setting Address Detail View Controller
 @interface SettingAddressDetailViewController ()
 <
+    UITableViewDelegate,
     UIScrollViewDelegate,
     UIAlertViewDelegate,
     SettingAddressEditViewControllerDelegate
@@ -30,9 +31,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelphonenumber;
 @property (weak, nonatomic) IBOutlet UIView *viewdefault;
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
@@ -83,11 +81,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-}
-
-- (void)viewWillLayoutSubviews
-{
-    _scrollView.contentSize = _contentView.frame.size;
 }
 
 - (void)didReceiveMemoryWarning
@@ -265,8 +258,6 @@
     }
     return 0;
 }
-
-
 
 #pragma mark - Edit address delegate
 
