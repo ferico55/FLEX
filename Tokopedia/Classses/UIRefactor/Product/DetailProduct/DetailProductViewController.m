@@ -44,6 +44,7 @@
 
 #import "StarsRateView.h"
 #import "MarqueeLabel.h"
+#import "PromoRequest.h"
 
 #import "DetailProductViewController.h"
 #import "DetailProductWholesaleCell.h"
@@ -2135,6 +2136,8 @@ UIAlertViewDelegate
             [self setHeaderviewData];
             [self setFooterViewData];
             [self setOtherProducts];
+            [self addImpressionClick];
+            
             _isnodata = NO;
             [_table reloadData];
             
@@ -3088,5 +3091,13 @@ UIAlertViewDelegate
     
     _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
     _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
+}
+
+- (void)addImpressionClick {
+    __strong PromoRequest *promoRequest = [[PromoRequest alloc] init];
+    NSString *adKey = [_data objectForKey:PromoImpressionKey];
+    NSString *adSemKey = [_data objectForKey:PromoSemKey];
+    NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
+    [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
 }
 @end
