@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		45AA16291B97F2A30061D951 /* VTAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA16141B97F2A30061D951 /* VTAddress.m */; };
+		45AA162A1B97F2A30061D951 /* VTBaseTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA16161B97F2A30061D951 /* VTBaseTransaction.m */; };
+		45AA162B1B97F2A30061D951 /* VTBaseTransactionMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA16181B97F2A30061D951 /* VTBaseTransactionMethod.m */; };
+		45AA162C1B97F2A30061D951 /* VTCardDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA161A1B97F2A30061D951 /* VTCardDetails.m */; };
+		45AA162D1B97F2A30061D951 /* VTConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA161C1B97F2A30061D951 /* VTConfig.m */; };
+		45AA162E1B97F2A30061D951 /* VTCustomerDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA161E1B97F2A30061D951 /* VTCustomerDetails.m */; };
+		45AA162F1B97F2A30061D951 /* VTDirect.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA16201B97F2A30061D951 /* VTDirect.m */; };
+		45AA16301B97F2A30061D951 /* VTiOSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA16221B97F2A30061D951 /* VTiOSAPI.m */; };
+		45AA16311B97F2A30061D951 /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA16241B97F2A30061D951 /* VTItemDetails.m */; };
+		45AA16321B97F2A30061D951 /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA16261B97F2A30061D951 /* VTToken.m */; };
+		45AA16331B97F2A30061D951 /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AA16281B97F2A30061D951 /* VTTransactionDetails.m */; };
 		45D702471B9460650088DFBF /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7F7451B9460610088DFBF /* URLCacheAlert.m */; };
 		45D702481B9460650088DFBF /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7F7471B9460610088DFBF /* URLCacheConnection.m */; };
 		45D702491B9460650088DFBF /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7F7491B9460610088DFBF /* URLCacheController.m */; };
@@ -1714,7 +1725,6 @@
 		45D708F91B9460650088DFBF /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D702401B9460650088DFBF /* MGSwipeTableCell.m */; };
 		45D708FA1B9460650088DFBF /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 45D702411B9460650088DFBF /* MGSwipeTableCell.podspec */; };
 		45D708FB1B9460650088DFBF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 45D702421B9460650088DFBF /* README.md */; };
-		45D708FC1B9460650088DFBF /* libVTiOSAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D702441B9460650088DFBF /* libVTiOSAPI.a */; };
 		45D708FD1B9460650088DFBF /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 45D702451B9460650088DFBF /* vt-iOSlib-1.0.1.tar.gz */; };
 		45D708FE1B9460650088DFBF /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 45D702461B9460650088DFBF /* vt-iOSlib-1.0.1.zip */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1767,6 +1777,28 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		45AA16131B97F2A30061D951 /* VTAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTAddress.h; sourceTree = "<group>"; };
+		45AA16141B97F2A30061D951 /* VTAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTAddress.m; sourceTree = "<group>"; };
+		45AA16151B97F2A30061D951 /* VTBaseTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBaseTransaction.h; sourceTree = "<group>"; };
+		45AA16161B97F2A30061D951 /* VTBaseTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBaseTransaction.m; sourceTree = "<group>"; };
+		45AA16171B97F2A30061D951 /* VTBaseTransactionMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBaseTransactionMethod.h; sourceTree = "<group>"; };
+		45AA16181B97F2A30061D951 /* VTBaseTransactionMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBaseTransactionMethod.m; sourceTree = "<group>"; };
+		45AA16191B97F2A30061D951 /* VTCardDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCardDetails.h; sourceTree = "<group>"; };
+		45AA161A1B97F2A30061D951 /* VTCardDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCardDetails.m; sourceTree = "<group>"; };
+		45AA161B1B97F2A30061D951 /* VTConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTConfig.h; sourceTree = "<group>"; };
+		45AA161C1B97F2A30061D951 /* VTConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTConfig.m; sourceTree = "<group>"; };
+		45AA161D1B97F2A30061D951 /* VTCustomerDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCustomerDetails.h; sourceTree = "<group>"; };
+		45AA161E1B97F2A30061D951 /* VTCustomerDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCustomerDetails.m; sourceTree = "<group>"; };
+		45AA161F1B97F2A30061D951 /* VTDirect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTDirect.h; sourceTree = "<group>"; };
+		45AA16201B97F2A30061D951 /* VTDirect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTDirect.m; sourceTree = "<group>"; };
+		45AA16211B97F2A30061D951 /* VTiOSAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTiOSAPI.h; sourceTree = "<group>"; };
+		45AA16221B97F2A30061D951 /* VTiOSAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTiOSAPI.m; sourceTree = "<group>"; };
+		45AA16231B97F2A30061D951 /* VTItemDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTItemDetails.h; sourceTree = "<group>"; };
+		45AA16241B97F2A30061D951 /* VTItemDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTItemDetails.m; sourceTree = "<group>"; };
+		45AA16251B97F2A30061D951 /* VTToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTToken.h; sourceTree = "<group>"; };
+		45AA16261B97F2A30061D951 /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
+		45AA16271B97F2A30061D951 /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
+		45AA16281B97F2A30061D951 /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
 		45D700001B9460630088DFBF /* icon_button_share@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_share@3x.png"; sourceTree = "<group>"; };
 		45D700011B9460630088DFBF /* icon_button_wishlist_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_button_wishlist_active.png; sourceTree = "<group>"; };
 		45D700021B9460630088DFBF /* icon_button_wishlist_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_button_wishlist_active@2x.png"; sourceTree = "<group>"; };
@@ -4389,7 +4421,6 @@
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
 				FCFF63561ABA79660076000E /* FacebookSDK.framework in Frameworks */,
-				45D708FC1B9460650088DFBF /* libVTiOSAPI.a in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
@@ -4413,6 +4444,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		45AA16111B97F2A30061D951 /* Veritrans */ = {
+			isa = PBXGroup;
+			children = (
+				45AA16121B97F2A30061D951 /* VTiOSAPI */,
+			);
+			path = Veritrans;
+			sourceTree = "<group>";
+		};
+		45AA16121B97F2A30061D951 /* VTiOSAPI */ = {
+			isa = PBXGroup;
+			children = (
+				45AA16131B97F2A30061D951 /* VTAddress.h */,
+				45AA16141B97F2A30061D951 /* VTAddress.m */,
+				45AA16151B97F2A30061D951 /* VTBaseTransaction.h */,
+				45AA16161B97F2A30061D951 /* VTBaseTransaction.m */,
+				45AA16171B97F2A30061D951 /* VTBaseTransactionMethod.h */,
+				45AA16181B97F2A30061D951 /* VTBaseTransactionMethod.m */,
+				45AA16191B97F2A30061D951 /* VTCardDetails.h */,
+				45AA161A1B97F2A30061D951 /* VTCardDetails.m */,
+				45AA161B1B97F2A30061D951 /* VTConfig.h */,
+				45AA161C1B97F2A30061D951 /* VTConfig.m */,
+				45AA161D1B97F2A30061D951 /* VTCustomerDetails.h */,
+				45AA161E1B97F2A30061D951 /* VTCustomerDetails.m */,
+				45AA161F1B97F2A30061D951 /* VTDirect.h */,
+				45AA16201B97F2A30061D951 /* VTDirect.m */,
+				45AA16211B97F2A30061D951 /* VTiOSAPI.h */,
+				45AA16221B97F2A30061D951 /* VTiOSAPI.m */,
+				45AA16231B97F2A30061D951 /* VTItemDetails.h */,
+				45AA16241B97F2A30061D951 /* VTItemDetails.m */,
+				45AA16251B97F2A30061D951 /* VTToken.h */,
+				45AA16261B97F2A30061D951 /* VTToken.m */,
+				45AA16271B97F2A30061D951 /* VTTransactionDetails.h */,
+				45AA16281B97F2A30061D951 /* VTTransactionDetails.m */,
+			);
+			path = VTiOSAPI;
+			sourceTree = "<group>";
+		};
 		45D700131B9460630088DFBF /* icon_category_3x */ = {
 			isa = PBXGroup;
 			children = (
@@ -4782,6 +4850,7 @@
 		45D7F7421B9460610088DFBF /* Classses */ = {
 			isa = PBXGroup;
 			children = (
+				45AA16111B97F2A30061D951 /* Veritrans */,
 				45D7F7431B9460610088DFBF /* CacheController */,
 				45D7F74A1B9460610088DFBF /* Cocoa */,
 				45D7F7751B9460610088DFBF /* Encryption */,
@@ -10280,6 +10349,7 @@
 				45D704D61B9460650088DFBF /* PurchaseViewController.m in Sources */,
 				45D702F51B9460650088DFBF /* LikeDislikePost.m in Sources */,
 				45D703B51B9460650088DFBF /* TransactionVoucherData.m in Sources */,
+				45AA16311B97F2A30061D951 /* VTItemDetails.m in Sources */,
 				45D703401B9460650088DFBF /* ResponseSpeed.m in Sources */,
 				45D703041B9460650088DFBF /* ResponseComment.m in Sources */,
 				45D703BC1B9460650088DFBF /* TxOrderCancelPaymentResult.m in Sources */,
@@ -10375,6 +10445,7 @@
 				45D7060A1B9460650088DFBF /* TransactionATCViewController.m in Sources */,
 				45D708F81B9460650088DFBF /* MGSwipeButton.m in Sources */,
 				45D7031E1B9460650088DFBF /* ProfileEdit.m in Sources */,
+				45AA162C1B97F2A30061D951 /* VTCardDetails.m in Sources */,
 				45D706571B9460650088DFBF /* WebViewInvoiceViewController.m in Sources */,
 				45D7046D1B9460650088DFBF /* GeneralProductCollectionViewCell.m in Sources */,
 				45D704361B9460650088DFBF /* TKPDTabInboxReviewNavigationController.m in Sources */,
@@ -10420,6 +10491,7 @@
 				45D7045A1B9460650088DFBF /* DepositListBankViewController.m in Sources */,
 				45D703A81B9460650088DFBF /* TxOrderConfirmationList.m in Sources */,
 				45D703C31B9460650088DFBF /* TxOrderConfirmedDetailPayment.m in Sources */,
+				45AA16301B97F2A30061D951 /* VTiOSAPI.m in Sources */,
 				45D702AC1B9460650088DFBF /* FavoritedShopList.m in Sources */,
 				45D702711B9460650088DFBF /* CatalogList.m in Sources */,
 				45D705911B9460650088DFBF /* SearchResultViewController.m in Sources */,
@@ -10542,6 +10614,7 @@
 				45D7041A1B9460650088DFBF /* CatalogShopViewController.m in Sources */,
 				45D703DF1B9460650088DFBF /* WishListObjectList.m in Sources */,
 				45D7030B1B9460650088DFBF /* NotificationPurchase.m in Sources */,
+				45AA16321B97F2A30061D951 /* VTToken.m in Sources */,
 				45D7034F1B9460650088DFBF /* OrderTransaction.m in Sources */,
 				45D704F31B9460650088DFBF /* MyShopShipmentTableViewController.m in Sources */,
 				45D702E21B9460650088DFBF /* InboxTalkResult.m in Sources */,
@@ -10555,6 +10628,7 @@
 				45D706141B9460650088DFBF /* TransactionCartHeaderView.m in Sources */,
 				45D7025D1B9460650088DFBF /* UITextView+UITextView_Placeholder.m in Sources */,
 				45D705391B9460650088DFBF /* ProductDetailReputationViewController.m in Sources */,
+				45AA162B1B97F2A30061D951 /* VTBaseTransactionMethod.m in Sources */,
 				45D704451B9460650088DFBF /* LoadingView.m in Sources */,
 				45D705651B9460650088DFBF /* SalesNewOrderViewController.m in Sources */,
 				45D703A31B9460650088DFBF /* TransactionEditAddressFormResult.m in Sources */,
@@ -10690,6 +10764,7 @@
 				45D7055B1B9460650088DFBF /* ChooseProductViewController.m in Sources */,
 				45D704FE1B9460650088DFBF /* DetailPriceAlertViewController.m in Sources */,
 				45D706411B9460650088DFBF /* TxOrderConfirmationProductCell.m in Sources */,
+				45AA162D1B97F2A30061D951 /* VTConfig.m in Sources */,
 				45D703591B9460650088DFBF /* SendMessage.m in Sources */,
 				45D703D61B9460650088DFBF /* GeneratedHost.m in Sources */,
 				45D702DB1B9460650088DFBF /* InboxReviewActionResult.m in Sources */,
@@ -10759,9 +10834,11 @@
 				45D7061C1B9460650088DFBF /* TransactionCCDetailViewController.m in Sources */,
 				45D7036C1B9460650088DFBF /* Address.m in Sources */,
 				45D702641B9460650088DFBF /* CreatePasswordResult.m in Sources */,
+				45AA162E1B97F2A30061D951 /* VTCustomerDetails.m in Sources */,
 				45D7058C1B9460650088DFBF /* SearchResultCell.m in Sources */,
 				45D703EA1B9460650088DFBF /* AddressViewController.m in Sources */,
 				45D704E81B9460650088DFBF /* MyShopEtalaseViewController.m in Sources */,
+				45AA162A1B97F2A30061D951 /* VTBaseTransaction.m in Sources */,
 				45D703361B9460650088DFBF /* PrivacyFormResult.m in Sources */,
 				45D7048A1B9460650088DFBF /* MyWishlistViewController.m in Sources */,
 				45D705B11B9460650088DFBF /* SettingUserPhoneViewController.m in Sources */,
@@ -10794,6 +10871,7 @@
 				45D703841B9460650088DFBF /* ShippingInfo.m in Sources */,
 				45D706701B9460650088DFBF /* ProductTableViewCell.m in Sources */,
 				45D705E81B9460650088DFBF /* ShopReviewPageViewController.m in Sources */,
+				45AA162F1B97F2A30061D951 /* VTDirect.m in Sources */,
 				45D706331B9460650088DFBF /* TxOrderStatusViewController.m in Sources */,
 				45D702661B9460650088DFBF /* LoginResult.m in Sources */,
 				45D702611B9460650088DFBF /* RSA.m in Sources */,
@@ -10845,6 +10923,7 @@
 				45D7029E1B9460650088DFBF /* Talk.m in Sources */,
 				45D702A31B9460650088DFBF /* TalkResult.m in Sources */,
 				45D705081B9460650088DFBF /* DetailProductOtherView.m in Sources */,
+				45AA16331B97F2A30061D951 /* VTTransactionDetails.m in Sources */,
 				45D702FF1B9460650088DFBF /* DetailReviewReputaionViewModel.m in Sources */,
 				45D704EC1B9460650088DFBF /* MyShopNoteViewController.m in Sources */,
 				45D702CE1B9460650088DFBF /* ResolutionBy.m in Sources */,
@@ -10985,6 +11064,7 @@
 				45D704BF1B9460650088DFBF /* DetailReviewViewController.m in Sources */,
 				45D705C31B9460650088DFBF /* ShopDescriptionView.m in Sources */,
 				45D704CE1B9460650088DFBF /* InboxTicketDetailViewController.m in Sources */,
+				45AA16291B97F2A30061D951 /* VTAddress.m in Sources */,
 				45D703D11B9460650088DFBF /* TxOrderPaymentEditSystemBank.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -11140,7 +11220,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -11181,7 +11261,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
