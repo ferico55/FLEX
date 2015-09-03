@@ -293,15 +293,21 @@
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         //NSLOG(@"thumb: %@", thumb);
         _imageproof = image;
-        GalleryViewController *gallery = [GalleryViewController new];
-        gallery.canDownload = NO;
-        [gallery initWithPhotoSource:self withStartingIndex:0];
-        [self.navigationController presentViewController:gallery animated:YES completion:nil];
+        [self pushToGallery];
 #pragma clang diagnostic pop
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         _imageproof = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+        [self pushToGallery];
     }];
+}
+
+-(void)pushToGallery
+{
+    GalleryViewController *gallery = [GalleryViewController new];
+    gallery.canDownload = NO;
+    [gallery initWithPhotoSource:self withStartingIndex:0];
+    [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
 - (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
@@ -362,6 +368,7 @@
     [cell.dateLabel setText:detailOrder.payment_date animated:YES];
     [cell.totalPaymentLabel setText:detailOrder.payment_amount animated:YES];
     [cell.totalInvoiceButton setTitle:[NSString stringWithFormat:@"%@ Invoice", detailOrder.order_count] forState:UIControlStateNormal];
+    cell.imagePayementProofButton.hidden = ([detailOrder.img_proof_url isEqualToString:@""]||detailOrder.img_proof_url == nil)?YES:NO;
     
     cell.indexPath = indexPath;
     return cell;

@@ -175,6 +175,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="dateLabel" destination="Hsl-ET-YWf" id="LUv-HX-S3q"/>
+                <outlet property="imagePayementProofButton" destination="Jbu-UK-3O1" id="OdT-F6-IF0"/>
                 <outlet property="totalInvoiceButton" destination="KsD-0b-3FJ" id="nX5-Aj-4zP"/>
                 <outlet property="totalPaymentLabel" destination="M2x-Qx-tgq" id="rKk-fA-EKE"/>
             </connections>

@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *totalInvoiceButton;
+@property (weak, nonatomic) IBOutlet UIButton *imagePayementProofButton;
 
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
