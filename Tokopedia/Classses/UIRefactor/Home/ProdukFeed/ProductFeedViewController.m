@@ -482,13 +482,22 @@ typedef enum ScrollDirection {
 
 - (void)didSelectPromoProduct:(PromoProduct *)product {
     NavigateViewController *navigateController = [NavigateViewController new];
-    NSDictionary *data = @{
-                           kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-                           PromoImpressionKey          : product.ad_key,
-                           PromoSemKey                 : product.ad_sem_key,
-                           PromoReferralKey            : product.ad_r
-                           };
-    [navigateController navigateToProductFromViewController:self withData:data];
+    NSDictionary *productData = @{
+        @"product_id"       : product.product_id?:@"",
+        @"product_name"     : product.product_name?:@"",
+        @"product_image"    : product.product_image_200?:@"",
+        @"product_price"    :product.product_price?:@"",
+        @"shop_name"        : product.shop_name?:@""
+    };
+    NSDictionary *promoData = @{
+        kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+        PromoImpressionKey          : product.ad_key,
+        PromoSemKey                 : product.ad_sem_key,
+        PromoReferralKey            : product.ad_r
+    };
+    [navigateController navigateToProductFromViewController:self
+                                                  promoData:promoData
+                                                productData:productData];
 }
 
 #pragma mark - Scroll delegate

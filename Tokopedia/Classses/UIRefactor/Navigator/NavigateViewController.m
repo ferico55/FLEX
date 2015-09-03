@@ -42,6 +42,9 @@
 #import "TKPDTabViewController.h"
 
 #import "ProductImages.h"
+
+#import "PromoRequest.h"
+
 @interface NavigateViewController()<SplitReputationVcProtocol>
 
 @end
@@ -113,11 +116,17 @@
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)navigateToProductFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
-    DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = data;
-    vc.hidesBottomBarWhenPushed = YES;
-    [viewController.navigationController pushViewController:vc animated:YES];
+- (void)navigateToProductFromViewController:(UIViewController *)viewController
+                                  promoData:(NSDictionary *)data
+                                productData:(NSDictionary *)productData {
+
+    DetailProductViewController *productController = [DetailProductViewController new];
+    productController.loadedData = productData;
+    productController.data = data;
+    productController.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:productController animated:YES];
+    
 }
 
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withLoadedData:(NSDictionary*)loadedData {
