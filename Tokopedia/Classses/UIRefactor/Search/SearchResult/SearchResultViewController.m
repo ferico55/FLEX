@@ -45,6 +45,9 @@
 
 #import "NavigateViewController.h"
 
+#import "PromoCollectionReusableView.h"
+#import "PromoRequest.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -53,19 +56,52 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeThreeColumn,
 };
 
-@interface SearchResultViewController () <GeneralProductCellDelegate, TKPDTabNavigationControllerDelegate,SortViewControllerDelegate,FilterViewControllerDelegate,GeneralPhotoProductDelegate,GeneralSingleProductDelegate,TokopediaNetworkManagerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout
+typedef enum ScrollDirection {
+    ScrollDirectionNone,
+    ScrollDirectionRight,
+    ScrollDirectionLeft,
+    ScrollDirectionUp,
+    ScrollDirectionDown,
+} ScrollDirection;
+
+static NSString *const startPerPage = @"24";
+
+@interface SearchResultViewController ()
+<
+UITableViewDataSource,
+UITableViewDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout,
+GeneralProductCellDelegate,
+TKPDTabNavigationControllerDelegate,
+SortViewControllerDelegate,
+FilterViewControllerDelegate,
+GeneralPhotoProductDelegate,
+GeneralSingleProductDelegate,
+TokopediaNetworkManagerDelegate,
+LoadingViewDelegate,
+PromoRequestDelegate,
+PromoCollectionViewDelegate
 >
 
-@property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) NSMutableArray *product;
+@property (strong, nonatomic) NSMutableArray *promo;
 @property (nonatomic) UITableViewCellType cellType;
 
 @property (weak, nonatomic) IBOutlet UIView *toolbarView;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+
+@property (strong, nonatomic) PromoRequest *promoRequest;
+@property PromoCollectionViewCellType promoCellType;
+@property (strong, nonatomic) NSMutableArray *promoScrollPosition;
+
+@property (assign, nonatomic) CGFloat lastContentOffset;
+@property ScrollDirection scrollDirection;
 
 @end
 
@@ -123,6 +159,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
+    _promo = [NSMutableArray new];
+    _promoScrollPosition = [NSMutableArray new];
+    
     _params = [NSMutableDictionary new];
     _start = 0;
     
@@ -132,8 +171,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
     
+    CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+    [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, headerHeight)];
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
@@ -163,15 +204,22 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         if (self.cellType == UITableViewCellTypeOneColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeNormal;
+            
         } else if (self.cellType == UITableViewCellTypeTwoColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeNormal;
+            
         } else if (self.cellType == UITableViewCellTypeThreeColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeThumbnail;
+            
         }
     } else {
         self.cellType = UITableViewCellTypeTwoColumn;
+        self.promoCellType = PromoCollectionViewCellTypeNormal;
         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                forState:UIControlStateNormal];
     }
@@ -181,9 +229,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     UINib *singleCellNib = [UINib nibWithNibName:@"ProductSingleViewCell" bundle:nil];
     [_collectionView registerNib:singleCellNib forCellWithReuseIdentifier:@"ProductSingleViewIdentifier"];
+    
     UINib *thumbCellNib = [UINib nibWithNibName:@"ProductThumbCell" bundle:nil];
     [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];
-    
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
@@ -191,7 +239,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
     
+    UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
+    
     [self configureGTM];
+    
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
+    [self requestPromo];
+    self.scrollDirection = ScrollDirectionDown;
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
@@ -224,15 +280,20 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 }
 
 #pragma mark - Collection Delegate
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return _product.count;
+}
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return (_product.count != 0)?_product.count:0;
+    return ([[_product objectAtIndex:section] count] != 0)?[[_product objectAtIndex:section] count]:0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellid;
     UICollectionViewCell *cell = nil;
     
-    List *list = [_product objectAtIndex:indexPath.row];
+    SearchAWSProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -266,9 +327,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
     
     //next page if already last cell
+    
+    NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
-    if (row == indexPath.row) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@""] && _urinext != 0) {
+    if (indexPath.section == section && indexPath.row == row) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
@@ -279,21 +342,48 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
-    
-    if(kind == UICollectionElementKindSectionFooter) {
-        if(_isFailRequest) {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+    if (kind == UICollectionElementKindSectionHeader) {
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
+            _promo.count >= indexPath.section &&
+            indexPath.section > 0) {
+            if ([_promo objectAtIndex:indexPath.section]) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                if (self.scrollDirection == ScrollDirectionDown) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                } else if (self.scrollDirection == ScrollDirectionUp) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenterWithoutAnimation];
+                }
+            } else {
+                reusableView = nil;
+            }
         } else {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
+            reusableView = nil;
         }
     }
-    
+    else if(kind == UICollectionElementKindSectionFooter) {
+        if(_isFailRequest) {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"RetryView"
+                                                                     forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"FooterView"
+                                                                     forIndexPath:indexPath];
+        }
+    }
     return reusableView;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    List *product = [_product objectAtIndex:indexPath.row];
+    SearchAWSProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
         CatalogViewController *vc = [CatalogViewController new];
         vc.catalogID = product.catalog_id;
@@ -305,7 +395,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     } else {
         [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
     }
-    
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -353,9 +442,29 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     return cellSize;
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
-    return UIEdgeInsetsMake(10, 10, 10, 10);
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
+        _promo.count > section && section > 0) {
+        if ([_promo objectAtIndex:section]) {
+            CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+            size = CGSizeMake(self.view.frame.size.width, headerHeight);
+        }
+    }
+    return size;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+    NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
+    if (section == lastSection) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+            size = CGSizeMake(self.view.frame.size.width, 50);
+        }
+    } else if (_product.count == 0 && _start == 0) {
+        size = CGSizeMake(self.view.frame.size.width, 50);
+    }
+    return size;
 }
 
 #pragma mark - Methods
@@ -435,23 +544,26 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             
             if (self.cellType == UITableViewCellTypeOneColumn) {
                 self.cellType = UITableViewCellTypeTwoColumn;
+                self.promoCellType = PromoCollectionViewCellTypeNormal;
                 [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                        forState:UIControlStateNormal];
                 
             } else if (self.cellType == UITableViewCellTypeTwoColumn) {
                 self.cellType = UITableViewCellTypeThreeColumn;
+                self.promoCellType = PromoCollectionViewCellTypeThumbnail;
                 [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                        forState:UIControlStateNormal];
                 
             } else if (self.cellType == UITableViewCellTypeThreeColumn) {
                 self.cellType = UITableViewCellTypeOneColumn;
+                self.promoCellType = PromoCollectionViewCellTypeNormal;
                 [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                        forState:UIControlStateNormal];
-                
             }
             
             _collectionView.contentOffset = CGPointMake(0, 0);
             [_collectionView reloadData];
+            [_collectionView layoutIfNeeded];
             
             NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
             [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
@@ -501,7 +613,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:@"24" forKey:@"rows"];
+    [parameter setObject:startPerPage forKey:@"rows"];
     [parameter setObject:@(_start) forKey:@"start"];
     
     [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
@@ -607,12 +719,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     }
     
     NSString *redirect_url = search.redirect_url;
-    if([redirect_url isEqualToString:@""]) {
-        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
-            [_product addObjectsFromArray: search.result.products];
-        } else {
-            [_product addObjectsFromArray: search.result.catalogs];
-        }
+    if([redirect_url isEqualToString:@""] || redirect_url == nil) {
+        
         
         NSString *hascatalog = search.result.has_catalog;
         
@@ -630,6 +738,20 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
         }
         
+        if(_start == 0) {
+            [_product removeAllObjects];
+            [_promo removeAllObjects];
+            [_collectionView setContentOffset:CGPointZero animated:YES];
+            [_collectionView reloadData];
+            [_collectionView layoutIfNeeded];
+        }
+        
+        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
+            [_product addObject: search.result.products];
+        } else {
+            [_product addObject: search.result.catalogs];
+        }
+        
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
             _isnodata = NO;
             _urinext =  search.result.paging.uri_next;
@@ -643,10 +765,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             
         }
         
+        if(_start > 0) [self requestPromo];
+        
         if(_refreshControl.isRefreshing) {
             [_refreshControl endRefreshing];
             [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
-            [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+            //            [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
         } else  {
             [_collectionView reloadData];
         }
@@ -744,6 +868,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _isrefreshview = NO;
     _isFailRequest = YES;
     [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
     [_refreshControl endRefreshing];
 }
 
@@ -762,6 +887,58 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     _searchBaseUrl = [_gtmContainer stringForKey:GTMKeySearchBase];
     _searchPostUrl = [_gtmContainer stringForKey:GTMKeySearchPost];
     _searchFullUrl = [_gtmContainer stringForKey:GTMKeySearchFull];
+}
+
+#pragma mark - Promo request delegate
+
+- (void)didReceivePromo:(NSArray *)promo {
+    if (promo) {
+        [_promo addObject:promo];
+        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+    } else if (promo == nil && _start == startPerPage) {
+        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    }
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
+}
+
+#pragma mark - Promo collection delegate
+
+- (void)requestPromo {
+    NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
+    NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
+    _promoRequest.page = _start/[startPerPage integerValue];
+    [_promoRequest requestForProductQuery:search department:departmentId];
+}
+
+- (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
+    [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
+}
+
+- (void)didSelectPromoProduct:(PromoProduct *)product {
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+        NavigateViewController *navigateController = [NavigateViewController new];
+        NSDictionary *data = @{
+                               kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+                               kTKPD_AUTHKEY               : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
+                               PromoImpressionKey          : product.ad_key,
+                               PromoSemKey                 : product.ad_sem_key,
+                               PromoReferralKey            : product.ad_r
+                               };
+        [navigateController navigateToProductFromViewController:self withData:data];
+    }
+}
+
+#pragma mark - Scroll delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.lastContentOffset > scrollView.contentOffset.y) {
+        self.scrollDirection = ScrollDirectionUp;
+    } else if (self.lastContentOffset < scrollView.contentOffset.y) {
+        self.scrollDirection = ScrollDirectionDown;
+    }
+    self.lastContentOffset = scrollView.contentOffset.y;
 }
 
 @end
